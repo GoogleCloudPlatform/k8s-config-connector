@@ -44,6 +44,8 @@ type Blueprint struct {
 	Package *string `json:"package,omitempty"`
 }
 
+/* found existing non-generated go type "ErrorBudget", skipping
+
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget
 type ErrorBudget struct {
 	// Optional. The maximum number of failed units allowed in a location without
@@ -56,6 +58,7 @@ type ErrorBudget struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget.allowed_percentage
 	AllowedPercentage *int32 `json:"allowedPercentage,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
 

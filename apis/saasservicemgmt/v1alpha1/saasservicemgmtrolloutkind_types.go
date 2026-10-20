@@ -84,6 +84,19 @@ type SaaSServiceMgmtRolloutKindSpec struct {
 	ErrorBudget *ErrorBudget `json:"errorBudget,omitempty"`
 }
 
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget
+type ErrorBudget struct {
+	// Optional. The maximum number of failed units allowed in a location without
+	//  pausing the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget.allowed_count
+	AllowedCount *int32 `json:"allowedCount,omitempty"`
+
+	// Optional. The maximum percentage of units allowed to fail (0, 100] within a
+	//  location without pausing the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget.allowed_percentage
+	AllowedPercentage *int32 `json:"allowedPercentage,omitempty"`
+}
+
 // SaaSServiceMgmtRolloutKindStatus defines the config connector machine state of SaaSServiceMgmtRolloutKind
 type SaaSServiceMgmtRolloutKindStatus struct {
 	/* Conditions represent the latest available observations of the
