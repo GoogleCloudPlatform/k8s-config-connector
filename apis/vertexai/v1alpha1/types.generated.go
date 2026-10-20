@@ -26,6 +26,7 @@
 // resource: VertexAICustomJob:CustomJob
 // resource: VertexAITensorboard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
+// resource: VertexAIFeaturestoreEntityTypeFeature:Feature
 
 package v1alpha1
 
@@ -250,6 +251,12 @@ type ExampleStoreConfig struct {
 	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
 }
 
+/* unreachable type Feature_MonitoringStatsAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly
+type Feature_MonitoringStatsAnomaly struct {
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
 type FeatureGroup_BigQuery struct {
 	// Required. Immutable. The BigQuery source URI that points to either a
@@ -299,6 +306,112 @@ type FeatureGroup_BigQuery_TimeSeries struct {
 	TimestampColumn *string `json:"timestampColumn,omitempty"`
 }
 
+/* unreachable type FeatureStatsAndAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly
+type FeatureStatsAndAnomaly struct {
+	// Feature Id.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_id
+	FeatureID *string `json:"featureID,omitempty"`
+
+	// Feature stats. e.g. histogram buckets.
+	//  In the format of tensorflow.metadata.v0.DatasetFeatureStatistics.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_stats
+	FeatureStats *Value `json:"featureStats,omitempty"`
+
+	// Deviation from the current stats to baseline stats.
+	//    1. For categorical feature, the distribution distance is calculated by
+	//       L-inifinity norm.
+	//    2. For numerical feature, the distribution distance is calculated by
+	//       Jensen–Shannon divergence.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.distribution_deviation
+	DistributionDeviation *float64 `json:"distributionDeviation,omitempty"`
+
+	// This is the threshold used when detecting drifts, which is set in
+	//  FeatureMonitor.FeatureSelectionConfig.FeatureConfig.drift_threshold
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.drift_detection_threshold
+	DriftDetectionThreshold *float64 `json:"driftDetectionThreshold,omitempty"`
+
+	// If set to true, indicates current stats is detected as and comparing
+	//  with baseline stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.drift_detected
+	DriftDetected *bool `json:"driftDetected,omitempty"`
+
+	// The timestamp we take snapshot for feature values to generate stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.stats_time
+	StatsTime *string `json:"statsTime,omitempty"`
+
+	// The ID of the FeatureMonitorJob that generated this FeatureStatsAndAnomaly.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_monitor_job_id
+	FeatureMonitorJobID *int64 `json:"featureMonitorJobID,omitempty"`
+
+	// The ID of the FeatureMonitor that this FeatureStatsAndAnomaly generated
+	//  according to.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_monitor_id
+	FeatureMonitorID *string `json:"featureMonitorID,omitempty"`
+}
+*/
+
+/* unreachable type FeatureStatsAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly
+type FeatureStatsAnomaly struct {
+	// Feature importance score, only populated when cross-feature monitoring is
+	//  enabled. For now only used to represent feature attribution score within
+	//  range [0, 1] for
+	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW]
+	//  and
+	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.score
+	Score *float64 `json:"score,omitempty"`
+
+	// Path of the stats file for current feature values in Cloud Storage bucket.
+	//  Format: gs://<bucket_name>/<object_name>/stats.
+	//  Example: gs://monitoring_bucket/feature_name/stats.
+	//  Stats are stored as binary format with Protobuf message
+	//  [tensorflow.metadata.v0.FeatureNameStatistics](https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/statistics.proto).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.stats_uri
+	StatsURI *string `json:"statsURI,omitempty"`
+
+	// Path of the anomaly file for current feature values in Cloud Storage
+	//  bucket.
+	//  Format: gs://<bucket_name>/<object_name>/anomalies.
+	//  Example: gs://monitoring_bucket/feature_name/anomalies.
+	//  Stats are stored as binary format with Protobuf message
+	//  Anoamlies are stored as binary format with Protobuf message
+	//  [tensorflow.metadata.v0.AnomalyInfo]
+	//  (https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/anomalies.proto).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.anomaly_uri
+	AnomalyURI *string `json:"anomalyURI,omitempty"`
+
+	// Deviation from the current stats to baseline stats.
+	//    1. For categorical feature, the distribution distance is calculated by
+	//       L-inifinity norm.
+	//    2. For numerical feature, the distribution distance is calculated by
+	//       Jensen–Shannon divergence.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.distribution_deviation
+	DistributionDeviation *float64 `json:"distributionDeviation,omitempty"`
+
+	// This is the threshold used when detecting anomalies.
+	//  The threshold can be changed by user, so this one might be different from
+	//  [ThresholdConfig.value][google.cloud.aiplatform.v1beta1.ThresholdConfig.value].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.anomaly_detection_threshold
+	AnomalyDetectionThreshold *float64 `json:"anomalyDetectionThreshold,omitempty"`
+
+	// The start timestamp of window where stats were generated.
+	//  For objectives where time window doesn't make sense (e.g. Featurestore
+	//  Snapshot Monitoring), start_time is only used to indicate the monitoring
+	//  intervals, so it always equals to (end_time - monitoring_interval).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The end timestamp of window where stats were generated.
+	//  For objectives where time window doesn't make sense (e.g. Featurestore
+	//  Snapshot Monitoring), end_time indicates the timestamp of the data used to
+	//  generate stats (e.g. timestamp we take snapshots for feature values).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
 type Featurestore_OnlineServingConfig struct {
 	// The number of nodes for the online store. The number of nodes doesn't
@@ -337,6 +450,106 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling.cpu_utilization_target
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
+
+/* unreachable type FeaturestoreMonitoringConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig
+type FeaturestoreMonitoringConfig struct {
+	// The config for Snapshot Analysis Based Feature Monitoring.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.snapshot_analysis
+	SnapshotAnalysis *FeaturestoreMonitoringConfig_SnapshotAnalysis `json:"snapshotAnalysis,omitempty"`
+
+	// The config for ImportFeatures Analysis Based Feature Monitoring.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.import_features_analysis
+	ImportFeaturesAnalysis *FeaturestoreMonitoringConfig_ImportFeaturesAnalysis `json:"importFeaturesAnalysis,omitempty"`
+
+	// Threshold for numerical features of anomaly detection.
+	//  This is shared by all objectives of Featurestore Monitoring for numerical
+	//  features (i.e. Features with type
+	//  ([Feature.ValueType][google.cloud.aiplatform.v1beta1.Feature.ValueType])
+	//  DOUBLE or INT64).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.numerical_threshold_config
+	NumericalThresholdConfig *FeaturestoreMonitoringConfig_ThresholdConfig `json:"numericalThresholdConfig,omitempty"`
+
+	// Threshold for categorical features of anomaly detection.
+	//  This is shared by all types of Featurestore Monitoring for categorical
+	//  features (i.e. Features with type
+	//  ([Feature.ValueType][google.cloud.aiplatform.v1beta1.Feature.ValueType])
+	//  BOOL or STRING).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.categorical_threshold_config
+	CategoricalThresholdConfig *FeaturestoreMonitoringConfig_ThresholdConfig `json:"categoricalThresholdConfig,omitempty"`
+}
+*/
+
+/* unreachable type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis
+type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis struct {
+	// Whether to enable / disable / inherite default hebavior for import
+	//  features analysis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis.state
+	State *string `json:"state,omitempty"`
+
+	// The baseline used to do anomaly detection for the statistics generated by
+	//  import features analysis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis.anomaly_detection_baseline
+	AnomalyDetectionBaseline *string `json:"anomalyDetectionBaseline,omitempty"`
+}
+*/
+
+/* unreachable type FeaturestoreMonitoringConfig_SnapshotAnalysis
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis
+type FeaturestoreMonitoringConfig_SnapshotAnalysis struct {
+	// The monitoring schedule for snapshot analysis.
+	//  For EntityType-level config:
+	//    unset / disabled = true indicates disabled by
+	//    default for Features under it; otherwise by default enable snapshot
+	//    analysis monitoring with monitoring_interval for Features under it.
+	//  Feature-level config:
+	//    disabled = true indicates disabled regardless of the EntityType-level
+	//    config; unset monitoring_interval indicates going with EntityType-level
+	//    config; otherwise run snapshot analysis monitoring with
+	//    monitoring_interval regardless of the EntityType-level config.
+	//  Explicitly Disable the snapshot analysis based monitoring.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Configuration of the snapshot analysis based monitoring pipeline running
+	//  interval. The value is rolled up to full day.
+	//  If both
+	//  [monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days]
+	//  and the deprecated `monitoring_interval` field
+	//  are set when creating/updating EntityTypes/Features,
+	//  [monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days]
+	//  will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval
+	MonitoringInterval *string `json:"monitoringInterval,omitempty"`
+
+	// Configuration of the snapshot analysis based monitoring pipeline
+	//  running interval. The value indicates number of days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days
+	MonitoringIntervalDays *int32 `json:"monitoringIntervalDays,omitempty"`
+
+	// Customized export features time window for snapshot analysis. Unit is one
+	//  day. Default value is 3 weeks. Minimum value is 1 day. Maximum value is
+	//  4000 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.staleness_days
+	StalenessDays *int32 `json:"stalenessDays,omitempty"`
+}
+*/
+
+/* unreachable type FeaturestoreMonitoringConfig_ThresholdConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ThresholdConfig
+type FeaturestoreMonitoringConfig_ThresholdConfig struct {
+	// Specify a threshold value that can trigger the alert.
+	//  1. For categorical feature, the distribution distance is calculated by
+	//  L-inifinity norm.
+	//  2. For numerical feature, the distribution distance is calculated by
+	//  Jensen–Shannon divergence. Each feature must have a non-zero threshold
+	//  if they need to be monitored. Otherwise no alert will be triggered for
+	//  that feature.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ThresholdConfig.value
+	Value *float64 `json:"value,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
 type FlexStart struct {
@@ -631,3 +844,16 @@ type Money struct {
 	// +kcc:proto:field=google.type.Money.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
+
+/* unreachable type Feature_MonitoringStatsAnomalyObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly
+type Feature_MonitoringStatsAnomalyObservedState struct {
+	// Output only. The objective for each stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly.objective
+	Objective *string `json:"objective,omitempty"`
+
+	// Output only. The stats and anomalies generated at specific timestamp.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly.feature_stats_anomaly
+	FeatureStatsAnomaly *FeatureStatsAnomaly `json:"featureStatsAnomaly,omitempty"`
+}
+*/

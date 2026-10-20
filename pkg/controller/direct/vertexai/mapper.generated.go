@@ -1077,6 +1077,98 @@ func VertexAIFeatureGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.ServiceAgentType = direct.Enum_ToProto[pb.FeatureGroup_ServiceAgentType](mapCtx, in.ServiceAgentType)
 	return out
 }
+
+/* found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto", skipping
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto", skipping
+
+	func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec) *pb.Feature {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Feature{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, in.ValueType)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		// MISSING: Etag
+		// MISSING: MonitoringConfig
+		// MISSING: DisableMonitoring
+		// MISSING: MonitoringStats
+		// MISSING: MonitoringStatsAnomalies
+		// MISSING: FeatureStatsAndAnomaly
+		// MISSING: VersionColumnName
+		// MISSING: PointOfContact
+		return out
+	}
+*/
+func VertexAIFeaturestoreEntityTypeFeatureStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func VertexAIFeaturestoreEntityTypeFeatureStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
 func VertexAIFeaturestoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krmvertexaiv1alpha1.VertexAIFeaturestoreObservedState {
 	if in == nil {
 		return nil
