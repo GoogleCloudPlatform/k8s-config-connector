@@ -6,6 +6,7 @@
 [spec_etag] crd=dataplexencryptionconfigs.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=iamaccesspolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=kmsekmconnections.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
