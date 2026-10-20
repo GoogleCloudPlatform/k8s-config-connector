@@ -254,7 +254,7 @@ BLOCKED_KINDS=(
     "StorageBatchOperationsJob"
     "StorageInsightsDatasetConfig"
     "StorageRapidCache"
-    "TelcoAutomationEdgeSlm"
+    "TelcoAutomationEdgeSLM"
     "TestingDeviceSession"
     "TPUQueuedResource"
     "TranscoderJob"
