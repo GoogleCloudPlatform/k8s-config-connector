@@ -158,6 +158,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/google/api/*.proto
     ${VERSION_DIR}/google/api/*/*/*.proto
+    ${VERSION_DIR}/google/appengine/*/*.proto
     ${VERSION_DIR}/google/bigtable/*/*/*.proto
     ${VERSION_DIR}/google/cloud/bigquery/*/*.proto
     ${VERSION_DIR}/google/cloud/*/*/*.proto

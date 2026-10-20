@@ -20,6 +20,7 @@ require (
 	cloud.google.com/go/apigeeregistry v1.0.0
 	cloud.google.com/go/apihub v1.0.0
 	cloud.google.com/go/apikeys v1.2.7
+	cloud.google.com/go/appengine v1.14.0
 	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/artifactregistry v1.25.0
 	cloud.google.com/go/asset v1.27.0
