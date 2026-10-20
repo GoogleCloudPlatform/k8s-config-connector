@@ -13,6 +13,7 @@ This page provides a guide to the most common configuration and management tasks
 *   **[Choose Controller Implementations (Direct vs. Terraform)](controller-configuration.md)**: Manually select between Direct, Terraform, or DCL controllers for specific resources.
 *   **[Pause Reconciliation](pause.md)**: Temporarily stop Config Connector from managing one or more resources.
 *   **[Configure Exponential Backoff](exponential-backoff-configuration.md)**: Customize the maximum retry delay ceiling or halt automated error retries for resources managed by Direct controllers.
+*   **[Enterprise Declarative Orchestration Guide](../guides/enterprise-declarative-orchestration.md)**: Architectural blueprint for consistent schema handling, hierarchical error reporting, drift detection/correction configurations, and multi-cluster HA/DR.
 *   **[Pin to an Older Version (Backward Compatibility)](compatabilityversion.md)**: Run a specific namespace at an older version of Config Connector to ensure stability during upgrades.
 
 ## Advanced Configuration

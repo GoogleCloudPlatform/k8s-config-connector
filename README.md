@@ -31,6 +31,8 @@ See [Config Connector CLI](./docs/cli/README.md) for documentation on the `confi
 
 See [Managing Config Connector with GitOps (ArgoCD)](./docs/guides/gitops-argocd.md) for instructions on deploying and upgrading via GitOps.
 
+See [Enterprise Declarative Orchestration Guide](./docs/guides/enterprise-declarative-orchestration.md) for architectural patterns, consistent schema handling, hierarchical error reporting, drift configurations, and multi-cluster HA/DR.
+
 See
 [Choosing an installation type](https://cloud.google.com/config-connector/docs/concepts/installation-types)
 to decide how you want to install Config Connector.
