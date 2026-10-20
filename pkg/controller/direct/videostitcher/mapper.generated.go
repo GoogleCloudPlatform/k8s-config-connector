@@ -45,6 +45,78 @@ func AkamaiCDNKey_ToProto(mapCtx *direct.MapContext, in *krm.AkamaiCDNKey) *pb.A
 	out.TokenKey = in.TokenKey
 	return out
 }
+func FetchOptions_FromProto(mapCtx *direct.MapContext, in *pb.FetchOptions) *krm.FetchOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FetchOptions{}
+	out.Headers = in.Headers
+	return out
+}
+func FetchOptions_ToProto(mapCtx *direct.MapContext, in *krm.FetchOptions) *pb.FetchOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FetchOptions{}
+	out.Headers = in.Headers
+	return out
+}
+func GamLiveConfig_FromProto(mapCtx *direct.MapContext, in *pb.GamLiveConfig) *krm.GamLiveConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GamLiveConfig{}
+	out.NetworkCode = direct.LazyPtr(in.GetNetworkCode())
+	// MISSING: AssetKey
+	// MISSING: CustomAssetKey
+	return out
+}
+func GamLiveConfig_ToProto(mapCtx *direct.MapContext, in *krm.GamLiveConfig) *pb.GamLiveConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GamLiveConfig{}
+	out.NetworkCode = direct.ValueOf(in.NetworkCode)
+	// MISSING: AssetKey
+	// MISSING: CustomAssetKey
+	return out
+}
+func GamLiveConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GamLiveConfig) *krm.GamLiveConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GamLiveConfigObservedState{}
+	// MISSING: NetworkCode
+	out.AssetKey = direct.LazyPtr(in.GetAssetKey())
+	out.CustomAssetKey = direct.LazyPtr(in.GetCustomAssetKey())
+	return out
+}
+func GamLiveConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GamLiveConfigObservedState) *pb.GamLiveConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GamLiveConfig{}
+	// MISSING: NetworkCode
+	out.AssetKey = direct.ValueOf(in.AssetKey)
+	out.CustomAssetKey = direct.ValueOf(in.CustomAssetKey)
+	return out
+}
+func GamVodConfig_FromProto(mapCtx *direct.MapContext, in *pb.GamVodConfig) *krm.GamVodConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GamVodConfig{}
+	out.NetworkCode = direct.LazyPtr(in.GetNetworkCode())
+	return out
+}
+func GamVodConfig_ToProto(mapCtx *direct.MapContext, in *krm.GamVodConfig) *pb.GamVodConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GamVodConfig{}
+	out.NetworkCode = direct.ValueOf(in.NetworkCode)
+	return out
+}
 func GoogleCDNKey_FromProto(mapCtx *direct.MapContext, in *pb.GoogleCdnKey) *krm.GoogleCDNKey {
 	if in == nil {
 		return nil
@@ -99,6 +171,60 @@ func MediaCDNKey_TokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.MediaCDN
 	out.QueryParameter = direct.ValueOf(in.QueryParameter)
 	return out
 }
+func PrefetchConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrefetchConfig) *krm.PrefetchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrefetchConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.InitialAdRequestDuration = direct.StringDuration_FromProto(mapCtx, in.GetInitialAdRequestDuration())
+	return out
+}
+func PrefetchConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrefetchConfig) *pb.PrefetchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrefetchConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.InitialAdRequestDuration = direct.StringDuration_ToProto(mapCtx, in.InitialAdRequestDuration)
+	return out
+}
+func Slate_GamSlate_FromProto(mapCtx *direct.MapContext, in *pb.Slate_GamSlate) *krm.Slate_GamSlate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Slate_GamSlate{}
+	out.NetworkCode = direct.LazyPtr(in.GetNetworkCode())
+	// MISSING: GamSlateID
+	return out
+}
+func Slate_GamSlate_ToProto(mapCtx *direct.MapContext, in *krm.Slate_GamSlate) *pb.Slate_GamSlate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Slate_GamSlate{}
+	out.NetworkCode = direct.ValueOf(in.NetworkCode)
+	// MISSING: GamSlateID
+	return out
+}
+func Slate_GamSlateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Slate_GamSlate) *krm.Slate_GamSlateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Slate_GamSlateObservedState{}
+	// MISSING: NetworkCode
+	out.GamSlateID = direct.LazyPtr(in.GetGamSlateId())
+	return out
+}
+func Slate_GamSlateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Slate_GamSlateObservedState) *pb.Slate_GamSlate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Slate_GamSlate{}
+	// MISSING: NetworkCode
+	out.GamSlateId = direct.ValueOf(in.GamSlateID)
+	return out
+}
 func VideoStitcherCDNKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.CdnKey) *krm.VideoStitcherCDNKeySpec {
 	if in == nil {
 		return nil
@@ -127,5 +253,137 @@ func VideoStitcherCDNKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.VideoSti
 	}
 	// MISSING: Name
 	out.Hostname = direct.ValueOf(in.Hostname)
+	return out
+}
+func VideoStitcherLiveConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LiveConfig) *krm.VideoStitcherLiveConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherLiveConfigObservedState{}
+	// MISSING: Name
+	out.GamLiveConfig = GamLiveConfigObservedState_FromProto(mapCtx, in.GetGamLiveConfig())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func VideoStitcherLiveConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherLiveConfigObservedState) *pb.LiveConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LiveConfig{}
+	// MISSING: Name
+	out.GamLiveConfig = GamLiveConfigObservedState_ToProto(mapCtx, in.GamLiveConfig)
+	out.State = direct.Enum_ToProto[pb.LiveConfig_State](mapCtx, in.State)
+	return out
+}
+func VideoStitcherLiveConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.LiveConfig) *krm.VideoStitcherLiveConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherLiveConfigSpec{}
+	// MISSING: Name
+	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
+	out.AdTagURI = direct.LazyPtr(in.GetAdTagUri())
+	out.GamLiveConfig = GamLiveConfig_FromProto(mapCtx, in.GetGamLiveConfig())
+	out.AdTracking = direct.Enum_FromProto(mapCtx, in.GetAdTracking())
+	out.DefaultSlate = direct.LazyPtr(in.GetDefaultSlate())
+	out.StitchingPolicy = direct.Enum_FromProto(mapCtx, in.GetStitchingPolicy())
+	out.PrefetchConfig = PrefetchConfig_FromProto(mapCtx, in.GetPrefetchConfig())
+	out.SourceFetchOptions = FetchOptions_FromProto(mapCtx, in.GetSourceFetchOptions())
+	return out
+}
+func VideoStitcherLiveConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherLiveConfigSpec) *pb.LiveConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LiveConfig{}
+	// MISSING: Name
+	out.SourceUri = direct.ValueOf(in.SourceURI)
+	out.AdTagUri = direct.ValueOf(in.AdTagURI)
+	out.GamLiveConfig = GamLiveConfig_ToProto(mapCtx, in.GamLiveConfig)
+	out.AdTracking = direct.Enum_ToProto[pb.AdTracking](mapCtx, in.AdTracking)
+	out.DefaultSlate = direct.ValueOf(in.DefaultSlate)
+	out.StitchingPolicy = direct.Enum_ToProto[pb.LiveConfig_StitchingPolicy](mapCtx, in.StitchingPolicy)
+	out.PrefetchConfig = PrefetchConfig_ToProto(mapCtx, in.PrefetchConfig)
+	out.SourceFetchOptions = FetchOptions_ToProto(mapCtx, in.SourceFetchOptions)
+	return out
+}
+func VideoStitcherSlateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Slate) *krm.VideoStitcherSlateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherSlateObservedState{}
+	// MISSING: Name
+	out.GamSlate = Slate_GamSlateObservedState_FromProto(mapCtx, in.GetGamSlate())
+	return out
+}
+func VideoStitcherSlateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherSlateObservedState) *pb.Slate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Slate{}
+	// MISSING: Name
+	out.GamSlate = Slate_GamSlateObservedState_ToProto(mapCtx, in.GamSlate)
+	return out
+}
+func VideoStitcherSlateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Slate) *krm.VideoStitcherSlateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherSlateSpec{}
+	// MISSING: Name
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.GamSlate = Slate_GamSlate_FromProto(mapCtx, in.GetGamSlate())
+	return out
+}
+func VideoStitcherSlateSpec_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherSlateSpec) *pb.Slate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Slate{}
+	// MISSING: Name
+	out.Uri = direct.ValueOf(in.URI)
+	out.GamSlate = Slate_GamSlate_ToProto(mapCtx, in.GamSlate)
+	return out
+}
+func VideoStitcherVODConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VodConfig) *krm.VideoStitcherVODConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherVODConfigObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func VideoStitcherVODConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherVODConfigObservedState) *pb.VodConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VodConfig{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.VodConfig_State](mapCtx, in.State)
+	return out
+}
+func VideoStitcherVODConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VodConfig) *krm.VideoStitcherVODConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VideoStitcherVODConfigSpec{}
+	// MISSING: Name
+	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
+	out.AdTagURI = direct.LazyPtr(in.GetAdTagUri())
+	out.GamVodConfig = GamVodConfig_FromProto(mapCtx, in.GetGamVodConfig())
+	out.SourceFetchOptions = FetchOptions_FromProto(mapCtx, in.GetSourceFetchOptions())
+	return out
+}
+func VideoStitcherVODConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherVODConfigSpec) *pb.VodConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VodConfig{}
+	// MISSING: Name
+	out.SourceUri = direct.ValueOf(in.SourceURI)
+	out.AdTagUri = direct.ValueOf(in.AdTagURI)
+	out.GamVodConfig = GamVodConfig_ToProto(mapCtx, in.GamVodConfig)
+	out.SourceFetchOptions = FetchOptions_ToProto(mapCtx, in.SourceFetchOptions)
 	return out
 }

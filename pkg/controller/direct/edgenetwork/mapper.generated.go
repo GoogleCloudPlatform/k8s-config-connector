@@ -29,6 +29,56 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func EdgeNetworkInterconnectAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krm.EdgeNetworkInterconnectAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EdgeNetworkInterconnectAttachmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func EdgeNetworkInterconnectAttachmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeNetworkInterconnectAttachmentObservedState) *pb.InterconnectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.ResourceState](mapCtx, in.State)
+	return out
+}
+func EdgeNetworkInterconnectAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krm.EdgeNetworkInterconnectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EdgeNetworkInterconnectAttachmentSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Interconnect = direct.LazyPtr(in.GetInterconnect())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.VlanID = direct.LazyPtr(in.GetVlanId())
+	out.Mtu = direct.LazyPtr(in.GetMtu())
+	return out
+}
+func EdgeNetworkInterconnectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeNetworkInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachment{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Interconnect = direct.ValueOf(in.Interconnect)
+	out.Network = direct.ValueOf(in.Network)
+	out.VlanId = direct.ValueOf(in.VlanID)
+	out.Mtu = direct.ValueOf(in.Mtu)
+	return out
+}
 func EdgenetworkRouterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.EdgenetworkRouterObservedState {
 	if in == nil {
 		return nil

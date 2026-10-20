@@ -20,6 +20,7 @@
 // resource: DevConnectConnection:Connection
 // resource: DevConnectInsightsConfig:InsightsConfig
 // resource: DevConnectAccountConnector:AccountConnector
+// resource: DeveloperConnectGitRepositoryLink:GitRepositoryLink
 
 package v1alpha1
 

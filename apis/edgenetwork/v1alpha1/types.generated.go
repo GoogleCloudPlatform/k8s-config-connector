@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.edgenetwork.v1
 // resource: EdgenetworkRouter:Router
+// resource: EdgeNetworkInterconnectAttachment:InterconnectAttachment
 
 package v1alpha1
 

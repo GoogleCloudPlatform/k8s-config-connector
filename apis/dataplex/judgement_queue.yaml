@@ -48,6 +48,43 @@ entries:
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_number}/buckets/{bucket_id}"
     status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//dataplex.googleapis.com/projects/{project}/locations/{location}/lakes/{lake}/content/{content}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/lakes/{lake}/content/{content}" contains ancestor segment(s) lakes/{lake} with no matching reference or field on DataplexContentSpec
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.lakes.content: https://docs.cloud.google.com/dataplex/docs/reference/rest/v1/projects.locations.lakes.content'
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.lakeRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to LakeRef, read from the lakes segment of projects/{project}/locations/{location}/lakes/{lake}/content/{content}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: DataplexContent
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/lakes/{lake}, which already names the location; a reference to it could replace location and the root reference
+    status: open
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -279,6 +316,50 @@ entries:
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/entryGroups/{entry_group}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}" contains ancestor segment(s) lakes/{lake} with no matching reference or field on DataplexEnvironmentSpec
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.lakes.environments: https://docs.cloud.google.com/dataplex/docs/reference/rest/v1/projects.locations.lakes.environments'
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.infrastructureSpec.osImage.javaLibraries
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.infrastructureSpec.osImage.pythonPackages
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.lakeRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to LakeRef, read from the lakes segment of projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: DataplexEnvironment
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/lakes/{lake}, which already names the location; a reference to it could replace location and the root reference
     status: open
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
