@@ -742,6 +742,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/logging/docs/">{{logging_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogscope.md">LoggingLogScope</a></td>
+</tr>
+<tr>
+  <td><a href="/logging/docs/">{{logging_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogsink.md">LoggingLogSink</a></td>
 </tr>
 <tr>

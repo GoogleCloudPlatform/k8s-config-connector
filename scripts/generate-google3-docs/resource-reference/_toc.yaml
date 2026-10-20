@@ -265,6 +265,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/logging/logginglogexclusion.md
   - title: "LoggingLogMetric"
     path: /config-connector/docs/reference/resource-docs/logging/logginglogmetric.md
+  - title: "LoggingLogScope"
+    path: /config-connector/docs/reference/resource-docs/logging/logginglogscope.md
   - title: "LoggingLogSink"
     path: /config-connector/docs/reference/resource-docs/logging/logginglogsink.md
   - title: "LoggingLogView"
