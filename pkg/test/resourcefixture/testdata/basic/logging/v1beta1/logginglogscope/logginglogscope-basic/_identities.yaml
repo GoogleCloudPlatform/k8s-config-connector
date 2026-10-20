@@ -1,0 +1,6 @@
+- caisURL: //logging.googleapis.com/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogScope
+  name: logginglogscope-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

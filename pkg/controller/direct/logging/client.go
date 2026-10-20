@@ -47,3 +47,17 @@ func (m *gcpClient) newProjectMetricsService(ctx context.Context) (*api.Projects
 
 	return api.NewProjectsMetricsService(service), nil
 }
+
+func (m *gcpClient) newProjectsLocationsLogScopesService(ctx context.Context) (*api.ProjectsLocationsLogScopesService, error) {
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	service, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
+	if err != nil {
+		return nil, fmt.Errorf("building service for logging: %w", err)
+	}
+
+	return api.NewProjectsLocationsLogScopesService(service), nil
+}

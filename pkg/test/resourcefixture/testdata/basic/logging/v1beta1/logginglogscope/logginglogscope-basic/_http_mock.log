@@ -1,0 +1,108 @@
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "error": {
+    "code": 404,
+    "message": "LogScope projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes?alt=json&logScopeId=logginglogscope-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "A sample log scope",
+  "resourceNames": [
+    "projects/${projectId}"
+  ]
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample log scope",
+  "name": "projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample log scope",
+  "name": "projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}?alt=json&prettyPrint=false&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "An updated sample log scope"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated sample log scope",
+  "name": "projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated sample log scope",
+  "name": "projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{}
