@@ -1462,7 +1462,7 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
 	// MISSING: ContainerLogMaxSize
 	// MISSING: ContainerLogMaxFiles
-	// MISSING: AllowedUnsafeSysctls
+	out.AllowedUnsafeSysctls = in.AllowedUnsafeSysctls
 	// MISSING: EvictionSoft
 	// MISSING: EvictionSoftGracePeriod
 	// MISSING: EvictionMinimumReclaim
@@ -1492,7 +1492,7 @@ func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb
 	out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
 	// MISSING: ContainerLogMaxSize
 	// MISSING: ContainerLogMaxFiles
-	// MISSING: AllowedUnsafeSysctls
+	out.AllowedUnsafeSysctls = in.AllowedUnsafeSysctls
 	// MISSING: EvictionSoft
 	// MISSING: EvictionSoftGracePeriod
 	// MISSING: EvictionMinimumReclaim

@@ -19,6 +19,10 @@ spec:
   location: us-central1-a
   nodeConfig:
     kubeletConfig:
+      allowedUnsafeSysctls:
+      - kernel.msg*
+      - kernel.sem
+      - net.core.somaxconn
       cpuCfsQuota: true
       cpuCfsQuotaPeriod: 100ms
       cpuManagerPolicy: none

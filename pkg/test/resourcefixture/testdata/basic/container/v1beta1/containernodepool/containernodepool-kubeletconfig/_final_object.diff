@@ -4,11 +4,11 @@
 <   generation: 3
 ---
 >   generation: 2
-31d29
+35d33
 <   resourceID: nodepool-sample-${uniqueId}
-38a37
+42a41
 >   externalRef: projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
-43c42
+47c46
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

@@ -86,7 +86,6 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".config.boot_disk_kms_key")
 	f.Unimplemented_NotYetTriaged(".config.gpu_direct_config")
 	f.SpecField(".config.kubelet_config")
-	f.Unimplemented_NotYetTriaged(".config.kubelet_config.allowed_unsafe_sysctls")
 	f.Unimplemented_NotYetTriaged(".config.kubelet_config.container_log_max_files")
 	f.Unimplemented_NotYetTriaged(".config.kubelet_config.container_log_max_size")
 	f.Unimplemented_NotYetTriaged(".config.kubelet_config.crash_loop_back_off")
