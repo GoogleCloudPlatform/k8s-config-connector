@@ -322,7 +322,6 @@ BLOCKED_KINDS=(
     "VMwareEngineManagementDNSZoneBinding"
     "VMwareEnginePrivateConnection"
     "WebSecurityScannerScanConfig"
-    "WorkloadManagerEvaluation"
 )
 
 declare -A BLOCKED_MAP

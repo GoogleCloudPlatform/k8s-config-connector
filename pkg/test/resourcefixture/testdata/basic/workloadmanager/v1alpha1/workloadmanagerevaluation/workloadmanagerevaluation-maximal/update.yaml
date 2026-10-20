@@ -1,7 +1,8 @@
 apiVersion: workloadmanager.cnrm.cloud.google.com/v1alpha1
 kind: WorkloadManagerEvaluation
 metadata:
-  name: workloadmanagerevaluation-maximal-${uniqueId}
+  # Evaluation IDs default to metadata.name and are limited to 36 characters.
+  name: evaluation-maximal-${uniqueId}
 spec:
   projectRef:
     external: projects/${projectId}
@@ -9,8 +10,9 @@ spec:
   evaluationType: SQL_SERVER
   description: "Updated Maximal WorkloadManager Evaluation"
   schedule: "0 */6 * * *"
+  # Labels are unchanged: real GCP rejects label updates on evaluations.
   labels:
-    env: test-env-updated
+    env: test-env
   resourceFilter:
     scopeRefs:
       - projectRef:
