@@ -16,10 +16,22 @@ package gcpurls
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 	"strings"
 	"sync"
 )
+
+// GetUniverseDomain returns the configured universe domain, defaulting to "googleapis.com".
+func GetUniverseDomain() string {
+	if v := os.Getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"); v != "" {
+		return v
+	}
+	if v := os.Getenv("GOOGLE_UNIVERSE_DOMAIN"); v != "" {
+		return v
+	}
+	return "googleapis.com"
+}
 
 // RegisteredTemplate is an interface for accessing template information.
 type RegisteredTemplate interface {
@@ -109,8 +121,27 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 
 	// Check and strip host
 	if t.host != "" {
+		service := strings.TrimSuffix(t.host, ".googleapis.com")
 		if strings.HasPrefix(s, t.host+"/") {
-			s = strings.TrimPrefix(s, t.host)
+			s = strings.TrimPrefix(s, t.host+"/")
+		} else if host := t.Host(); host != "" && strings.HasPrefix(s, host+"/") {
+			s = strings.TrimPrefix(s, host+"/")
+		} else if slashIdx := strings.Index(s, "/"); slashIdx != -1 {
+			hostSegment := s[:slashIdx]
+			if strings.HasPrefix(hostSegment, service+".") {
+				s = s[slashIdx+1:]
+			}
+		}
+	}
+
+	// Strip optional API version prefix if the template doesn't expect it
+	if !strings.HasPrefix(t.template, "v1/") && !strings.HasPrefix(t.template, "v2/") && !strings.HasPrefix(t.template, "v3/") &&
+		!strings.HasPrefix(t.template, "v1beta1/") && !strings.HasPrefix(t.template, "v1alpha1/") {
+		for _, v := range []string{"v1/", "v2/", "v3/", "v1beta1/", "v1alpha1/", "v1beta/", "v1alpha/"} {
+			if strings.HasPrefix(s, v) {
+				s = strings.TrimPrefix(s, v)
+				break
+			}
 		}
 	}
 
@@ -166,8 +197,17 @@ func (t *URLTemplate[T]) CanonicalForm() string {
 	return t.template
 }
 
-// Host returns the host.
+// Host returns the host dynamically resolved with the configured universe domain.
 func (t *URLTemplate[T]) Host() string {
+	domain := GetUniverseDomain()
+	if domain != "" && domain != "googleapis.com" && strings.HasSuffix(t.host, ".googleapis.com") {
+		return strings.TrimSuffix(t.host, ".googleapis.com") + "." + domain
+	}
+	return t.host
+}
+
+// CanonicalHost returns the base host without universe substitution.
+func (t *URLTemplate[T]) CanonicalHost() string {
 	return t.host
 }
 

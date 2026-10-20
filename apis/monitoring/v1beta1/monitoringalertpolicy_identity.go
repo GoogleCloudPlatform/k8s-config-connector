@@ -28,6 +28,7 @@ import (
 
 var (
 	_ identity.ServerGeneratedIdentity = &MonitoringAlertPolicyIdentity{}
+	_ identity.IdentityV2              = &MonitoringAlertPolicyIdentity{}
 	_ identity.Resource                = &MonitoringAlertPolicy{}
 )
 
@@ -79,8 +80,21 @@ func (i *MonitoringAlertPolicyIdentity) FromExternal(ref string) error {
 	normalized = strings.TrimPrefix(normalized, "https:")
 	normalized = strings.TrimPrefix(normalized, "http:")
 	normalized = strings.TrimPrefix(normalized, "//")
-	normalized = strings.TrimPrefix(normalized, "monitoring.googleapis.com/")
+
+	// Strip monitoring host if present
+	if slashIdx := strings.Index(normalized, "/"); slashIdx != -1 {
+		host := normalized[:slashIdx]
+		if strings.HasPrefix(host, "monitoring.") || host == "monitoring.googleapis.com" {
+			normalized = normalized[slashIdx+1:]
+		}
+	}
 	normalized = strings.TrimPrefix(normalized, "v3/")
+
+	// Unescape URL-encoded colon in project if present
+	if strings.Contains(normalized, "%3A") || strings.Contains(normalized, "%3a") {
+		normalized = strings.ReplaceAll(normalized, "%3A", ":")
+		normalized = strings.ReplaceAll(normalized, "%3a", ":")
+	}
 
 	// This relative format is a very special case and unusual for a GCP API.
 	// For example, the IncidentList resource under Monitoring Dashboard explicitly

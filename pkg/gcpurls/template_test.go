@@ -325,3 +325,44 @@ func TestPanics(t *testing.T) {
 		Template[string]("", "items/{foo}")
 	})
 }
+
+func TestCustomUniverseDomain(t *testing.T) {
+	tmpl := Template[AlloyDBBackupIdentity]("alloydb.googleapis.com", "projects/{project}/locations/{location}/backups/{backup}")
+
+	// Default domain
+	if got := tmpl.Host(); got != "alloydb.googleapis.com" {
+		t.Errorf("expected alloydb.googleapis.com, got %s", got)
+	}
+
+	// Custom domain via environment variable
+	t.Setenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", "custom.universe.goog")
+	if got := tmpl.Host(); got != "alloydb.custom.universe.goog" {
+		t.Errorf("expected alloydb.custom.universe.goog, got %s", got)
+	}
+
+	// Parse sovereign URI
+	sovereignURL := "//alloydb.custom.universe.goog/projects/partition:sample-project/locations/u-region-1/backups/my-backup"
+	id, match, err := tmpl.Parse(sovereignURL)
+	if err != nil {
+		t.Fatalf("unexpected error parsing sovereign URL: %v", err)
+	}
+	if !match {
+		t.Fatalf("expected sovereign URL to match")
+	}
+	if id.Project != "partition:sample-project" || id.Location != "u-region-1" || id.Backup != "my-backup" {
+		t.Errorf("unexpected parsed identity: %+v", id)
+	}
+
+	// Parse full HTTPS URL with API version
+	httpsURL := "https://alloydb.custom.universe.goog/v1/projects/partition:sample-project/locations/u-region-1/backups/my-backup"
+	id2, match, err := tmpl.Parse(httpsURL)
+	if err != nil {
+		t.Fatalf("unexpected error parsing HTTPS sovereign URL: %v", err)
+	}
+	if !match {
+		t.Fatalf("expected HTTPS sovereign URL to match")
+	}
+	if id2.Project != "partition:sample-project" || id2.Location != "u-region-1" || id2.Backup != "my-backup" {
+		t.Errorf("unexpected parsed identity: %+v", id2)
+	}
+}

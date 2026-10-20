@@ -56,6 +56,38 @@ func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
 				AlertPolicy: "my-policy",
 			},
 		},
+		{
+			name: "colon-partitioned sovereign project",
+			ref:  "projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "url-encoded colon-partitioned sovereign project",
+			ref:  "projects/partition%3Asample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "sovereign full authority uri",
+			ref:  "//monitoring.custom.universe.goog/projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
+		{
+			name: "sovereign https url with v3 route",
+			ref:  "https://monitoring.custom.universe.goog/v3/projects/partition:sample-project/alertPolicies/my-policy",
+			want: &MonitoringAlertPolicyIdentity{
+				Project:     "partition:sample-project",
+				AlertPolicy: "my-policy",
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -72,5 +104,20 @@ func TestMonitoringAlertPolicyIdentity_FromExternal(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestMonitoringAlertPolicyIdentity_Host(t *testing.T) {
+	i := &MonitoringAlertPolicyIdentity{}
+
+	// Default domain
+	if got := i.Host(); got != "monitoring.googleapis.com" {
+		t.Errorf("expected monitoring.googleapis.com, got %s", got)
+	}
+
+	// Sovereign domain
+	t.Setenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN", "custom.universe.goog")
+	if got := i.Host(); got != "monitoring.custom.universe.goog" {
+		t.Errorf("expected monitoring.custom.universe.goog, got %s", got)
 	}
 }

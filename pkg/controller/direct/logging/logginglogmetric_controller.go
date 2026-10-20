@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"sort"
-	"strings"
 
 	api "google.golang.org/api/logging/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -105,12 +104,6 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 }
 
 func (m *logMetricModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	if !strings.HasPrefix(url, "//logging.googleapis.com/") {
-		return nil, nil
-	}
-
-	url = strings.TrimPrefix(url, "//logging.googleapis.com/")
-
 	id := &krm.LoggingLogMetricIdentity{}
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil

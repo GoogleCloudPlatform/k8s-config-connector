@@ -24,6 +24,7 @@ import (
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 
 	apipb "google.golang.org/genproto/googleapis/api"
 	distributionpb "google.golang.org/genproto/googleapis/api/distribution"
@@ -166,9 +167,12 @@ func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *kr
 		if strings.HasPrefix(dest, "bigquery.googleapis.com/") {
 			val := strings.TrimPrefix(dest, "bigquery.googleapis.com/")
 			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.DatasetRef{External: val}
-		} else if strings.HasPrefix(dest, "logging.googleapis.com/") {
-			val := strings.TrimPrefix(dest, "logging.googleapis.com/")
-			out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: val}
+		} else if strings.HasPrefix(dest, "logging.") {
+			slashIdx := strings.Index(dest, "/")
+			if slashIdx != -1 {
+				val := dest[slashIdx+1:]
+				out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: val}
+			}
 		} else if strings.HasPrefix(dest, "pubsub.googleapis.com/") {
 			val := strings.TrimPrefix(dest, "pubsub.googleapis.com/")
 			out.Destination.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: val}
@@ -219,8 +223,9 @@ func LoggingLogSinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogSin
 		out.Destination = ext
 	} else if in.Destination.LoggingLogBucketRef != nil && in.Destination.LoggingLogBucketRef.External != "" {
 		ext := in.Destination.LoggingLogBucketRef.External
-		if !strings.HasPrefix(ext, "logging.googleapis.com/") {
-			ext = "logging.googleapis.com/" + ext
+		loggingAuthority := "logging." + gcpurls.GetUniverseDomain()
+		if !strings.HasPrefix(ext, loggingAuthority+"/") && !strings.HasPrefix(ext, "logging.googleapis.com/") && !strings.HasPrefix(ext, "logging.") {
+			ext = loggingAuthority + "/" + ext
 		}
 		out.Destination = ext
 	} else if in.Destination.PubSubTopicRef != nil && in.Destination.PubSubTopicRef.External != "" {

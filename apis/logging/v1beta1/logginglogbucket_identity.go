@@ -117,7 +117,7 @@ func (i *LogBucketIdentity) FromExternal(ref string) error {
 }
 
 func (i *LogBucketIdentity) Host() string {
-	return "logging.googleapis.com"
+	return ProjectLogBucketIdentityFormat.Host()
 }
 
 func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Reader, obj *LoggingLogBucket) (*LogBucketIdentity, error) {

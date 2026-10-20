@@ -20,6 +20,7 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
@@ -60,6 +61,9 @@ type Config struct {
 	// but UserProjectOverride is set to true, then the TF provider uses the resource's project.
 	// https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#billing_project
 	BillingProject string
+
+	// UniverseDomain is the default domain for API requests (e.g. googleapis.com or custom.universe.goog)
+	UniverseDomain string
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
@@ -113,6 +117,14 @@ func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	cfgMap["scopes"] = config.Scopes
 	cfgMap["user_project_override"] = config.UserProjectOverride
 	cfgMap["billing_project"] = config.BillingProject
+
+	universeDomain := config.UniverseDomain
+	if universeDomain == "" {
+		universeDomain = gcpurls.GetUniverseDomain()
+	}
+	if universeDomain != "" && universeDomain != "googleapis.com" {
+		cfgMap["universe_domain"] = universeDomain
+	}
 
 	schema := tfschema.InternalMap(googleProvider.Schema).CoreConfigSchema()
 	cfg := terraform.NewResourceConfigShimmed(krmtotf.MapToCtyVal(cfgMap, schema.ImpliedType()), schema)
