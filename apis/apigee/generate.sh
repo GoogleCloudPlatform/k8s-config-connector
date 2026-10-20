@@ -35,6 +35,7 @@ ${CONTROLLERBUILDER} generate-types \
   --service mockgcp.cloud.apigee.v1 \
   --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
   --resource ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct \
+  --resource ApigeeSyncAuthorization:GoogleCloudApigeeV1SyncAuthorization \
   --prune-unused-types=false \
   --skip-scaffold-files
 
