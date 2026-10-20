@@ -98,6 +98,30 @@ spec:
           name: name
           type: name
         supportsConditions: false
+    - name: google_access_context_manager_authorized_orgs_desc
+      kind: AccessContextManagerAuthorizedOrgsDesc
+      version: v1alpha1
+      idTemplate: "{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: name
+        nameValueTemplate: "{{parent}}/authorizedOrgsDescs/{{value}}"
+      resourceID:
+        targetField: name
+        valueTemplate: "{{parent}}/authorizedOrgsDescs/{{value}}"
+      resourceReferences:
+        - tfField: parent
+          description: |-
+            The AccessContextManagerAccessPolicy this
+            AccessContextManagerAuthorizedOrgsDesc lives in.
+          key: accessPolicyRef
+          gvk:
+            kind: AccessContextManagerAccessPolicy
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          valueTemplate: "accessPolicies/{{value}}"
+          targetField: name
     - name: google_access_context_manager_service_perimeter
       kind: AccessContextManagerServicePerimeter
       idTemplate: "{{name}}"
