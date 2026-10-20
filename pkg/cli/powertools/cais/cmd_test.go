@@ -279,6 +279,14 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
 											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
 										}
+									} else if gk.Kind == "SecuritycenterSecurityHealthAnalyticsCustomModule" {
+										placeholder := "1792528067365337255"
+										if strings.Contains(u.GetName(), "max") {
+											placeholder = "1792528049302448382"
+										}
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
 									}
 								}
 							}

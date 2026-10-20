@@ -1,0 +1,205 @@
+POST https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 3
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 3
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528067365337255
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 3
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255?%24alt=json%3Benum-encoding%3Dint&updateMask=customConfig%2CenablementState
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: security_health_analytics_custom_module.name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528067365337255
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 4
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 2,
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 4
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 2,
+  "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528067365337255
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "customConfig": {
+    "description": "The rotation period is greater than 30 days.",
+    "predicate": {
+      "expression": "resource.rotationPeriod \u003e duration('2592000s')"
+    },
+    "recommendation": "Set the rotation period to less than or equal to 30 days.",
+    "resourceSelector": {
+      "resourceTypes": [
+        "cloudkms.googleapis.com/CryptoKey"
+      ]
+    },
+    "severity": 4
+  },
+  "displayName": "custom_sha_module_${uniqueId}",
+  "enablementState": 2,
+  "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528067365337255
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

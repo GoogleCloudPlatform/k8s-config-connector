@@ -1,0 +1,6 @@
+- caisURL: //securitycenter.googleapis.com/organizations/${TEST_ORG_ID}/securityHealthAnalyticsSettings/customModules/1792528049302448382
+  group: securitycenter.cnrm.cloud.google.com
+  kind: SecuritycenterSecurityHealthAnalyticsCustomModule
+  name: scsha-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

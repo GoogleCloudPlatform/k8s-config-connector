@@ -1,0 +1,48 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecuritycenterSecurityHealthAnalyticsCustomModule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: scsha-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  customConfig:
+    customOutput:
+      properties:
+      - name: rotation_period
+        valueExpression:
+          description: Updated resource rotation period value
+          expression: resource.rotationPeriod
+          location: customOutput.properties[0]
+          title: Rotation Period Updated
+    description: Updated rotation period description.
+    predicate:
+      description: Updated checks if key rotation period is too long
+      expression: resource.rotationPeriod > duration('2592000s')
+      location: customConfig.predicate
+      title: Key Rotation Check Updated
+    recommendation: Updated recommendation.
+    resourceSelector:
+      resourceTypes:
+      - cloudkms.googleapis.com/CryptoKey
+    severity: CRITICAL
+  displayName: custom_sha_max_${uniqueId}
+  enablementState: DISABLED
+  organizationRef:
+    external: organizations/${organizationID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382
+  observedGeneration: 2
+  observedState:
+    lastEditor: mock-editor@gcp-mock.iam.gserviceaccount.com
+    updateTime: "1970-01-01T00:00:00Z"

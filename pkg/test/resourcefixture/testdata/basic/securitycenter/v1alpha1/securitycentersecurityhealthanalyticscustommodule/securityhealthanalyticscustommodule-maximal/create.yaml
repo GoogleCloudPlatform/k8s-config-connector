@@ -1,0 +1,29 @@
+apiVersion: securitycenter.cnrm.cloud.google.com/v1alpha1
+kind: SecuritycenterSecurityHealthAnalyticsCustomModule
+metadata:
+  name: scsha-max-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  displayName: "custom_sha_max_${uniqueId}"
+  enablementState: ENABLED
+  customConfig:
+    predicate:
+      expression: "resource.rotationPeriod > duration('2592000s')"
+      title: "Key Rotation Check"
+      description: "Checks if key rotation period is too long"
+      location: "customConfig.predicate"
+    customOutput:
+      properties:
+        - name: "rotation_period"
+          valueExpression:
+            expression: "resource.rotationPeriod"
+            title: "Rotation Period"
+            description: "Resource rotation period value"
+            location: "customOutput.properties[0]"
+    resourceSelector:
+      resourceTypes:
+        - "cloudkms.googleapis.com/CryptoKey"
+    severity: HIGH
+    description: "The rotation period is greater than 30 days."
+    recommendation: "Set the rotation period to less than or equal to 30 days."

@@ -36,6 +36,7 @@ type SecuritycenterSecurityHealthAnalyticsCustomModuleSpec struct {
 
 	// The SecuritycenterSecurityHealthAnalyticsCustomModule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// The display name of the Security Health Analytics custom module. This
 	//  display name becomes the finding category for all findings that are
 	//  returned by this custom module. The display name must be between 1 and
