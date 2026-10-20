@@ -22,8 +22,8 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com",
-        "serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com"
+        "serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com",
+        "serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com"
       ],
       "role": "roles/storage.admin"
     }
@@ -58,8 +58,8 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com",
-        "serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com"
+        "serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com",
+        "serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com"
       ],
       "role": "roles/storage.admin"
     }

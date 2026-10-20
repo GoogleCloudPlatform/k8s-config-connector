@@ -576,7 +576,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used.</p>
+            <p>Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used. This supports all standard IAM member formats, such as `user:`, `serviceAccount:`, `group:`, `domain:`, etc.</p>
         </td>
     </tr>
     <tr>
