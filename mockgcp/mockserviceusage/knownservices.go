@@ -46,6 +46,7 @@ var allServices = []string{
 	"osconfig.googleapis.com",
 	"oslogin.googleapis.com",
 	"privateca.googleapis.com",
+	"cloudkms.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {
