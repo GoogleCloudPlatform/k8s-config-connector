@@ -48,3 +48,11 @@ func VectorSchema_ToProto(mapCtx *direct.MapContext, in map[string]krm.VectorFie
 	}
 	return out
 }
+
+func DedicatedInfrastructure_Mode_ToProto(mapCtx *direct.MapContext, in *string) *pb.DedicatedInfrastructure_Mode {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.DedicatedInfrastructure_Mode](mapCtx, in)
+	return &v
+}

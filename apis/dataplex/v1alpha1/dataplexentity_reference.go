@@ -26,7 +26,6 @@ import (
 )
 
 var _ refsv1beta1.Ref = &EntityRef{}
-var DataplexEntityGVK = GroupVersion.WithKind("DataplexEntity")
 
 // EntityRef is a reference to a DataplexEntity.
 type EntityRef struct {

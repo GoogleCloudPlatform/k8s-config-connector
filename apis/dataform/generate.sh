@@ -62,6 +62,19 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DataformRepository:Repository \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DataformWorkflowConfig:WorkflowConfig
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataformWorkflowConfig:WorkflowConfig
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dataform.v1,google.cloud.dataform.v1beta1 \
   --api-version "dataform.cnrm.cloud.google.com/v1beta1" \

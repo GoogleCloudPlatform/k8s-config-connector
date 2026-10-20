@@ -26,6 +26,7 @@
 // resource: APIHubAttribute:Attribute
 // resource: APIHubDependency:Dependency
 // resource: APIHubCuration:Curation
+// resource: ApihubSpec:Spec
 
 package v1alpha1
 
@@ -73,6 +74,37 @@ type Attribute_AllowedValue struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
+type Attribute_AllowedValueWithRequired struct {
+	// Required. The ID of the allowed value.
+	//  * If provided, the same will be used. The service will throw an error if
+	//  the specified id is already used by another allowed value in the same
+	//  attribute resource.
+	//  * If not provided, a system generated id derived from the display name
+	//  will be used. In this case, the service will handle conflict resolution
+	//  by adding a system generated suffix in case of duplicates.
+	//
+	//  This value should be 4-63 characters, and valid characters
+	//  are /[a-z][0-9]-/.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Required. The display name of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. When set to true, the allowed value cannot be updated or
+	//  deleted by the user. It can only be true for System defined attributes.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues
 type AttributeValues struct {
 	// The attribute values associated with a resource in case attribute data
@@ -96,6 +128,29 @@ type AttributeValues struct {
 	URIValues *AttributeValues_StringAttributeValues `json:"uriValues,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues
+type AttributeValuesWithRequired struct {
+	// The attribute values associated with a resource in case attribute data
+	//  type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
+	EnumValues *AttributeValues_EnumAttributeValuesWithRequired `json:"enumValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is string.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
+	StringValues *AttributeValues_StringAttributeValuesWithRequired `json:"stringValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
+	JsonValues *AttributeValues_StringAttributeValuesWithRequired `json:"jsonValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is URL, URI or IP, like gs://bucket-name/object-name.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.uri_values
+	URIValues *AttributeValues_StringAttributeValuesWithRequired `json:"uriValues,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
 type AttributeValues_EnumAttributeValues struct {
 	// Required. The attribute values in case attribute data type is enum.
@@ -103,11 +158,28 @@ type AttributeValues_EnumAttributeValues struct {
 	Values []Attribute_AllowedValue `json:"values,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
+type AttributeValues_EnumAttributeValuesWithRequired struct {
+	// Required. The attribute values in case attribute data type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
+	// +required
+	Values []Attribute_AllowedValueWithRequired `json:"values,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
 type AttributeValues_StringAttributeValues struct {
 	// Required. The attribute values in case attribute data type is string or
 	//  JSON.
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
+type AttributeValues_StringAttributeValuesWithRequired struct {
+	// Required. The attribute values in case attribute data type is string or
+	//  JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
+	// +required
 	Values []string `json:"values,omitempty"`
 }
 
@@ -218,6 +290,83 @@ type GoogleServiceAccountConfig struct {
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.Issue
+type Issue struct {
+	// Required. Rule code unique to each rule defined in linter.
+	// +kcc:proto:field=google.cloud.apihub.v1.Issue.code
+	// +required
+	Code *string `json:"code,omitempty"`
+
+	// Required. An array of strings indicating the location in the analyzed
+	//  document where the rule was triggered.
+	// +kcc:proto:field=google.cloud.apihub.v1.Issue.path
+	// +required
+	Path []string `json:"path,omitempty"`
+
+	// Required. Human-readable message describing the issue found by the linter.
+	// +kcc:proto:field=google.cloud.apihub.v1.Issue.message
+	// +required
+	Message *string `json:"message,omitempty"`
+
+	// Required. Severity level of the rule violation.
+	// +kcc:proto:field=google.cloud.apihub.v1.Issue.severity
+	// +required
+	Severity *string `json:"severity,omitempty"`
+
+	// Required. Object describing where in the file the issue was found.
+	// +kcc:proto:field=google.cloud.apihub.v1.Issue.range
+	// +required
+	Range *Range `json:"range,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.LintResponse
+type LintResponse struct {
+	// Optional. Array of issues found in the analyzed document.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.issues
+	Issues []Issue `json:"issues,omitempty"`
+
+	// Optional. Summary of all issue types and counts for each severity level.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.summary
+	Summary []LintResponse_SummaryEntry `json:"summary,omitempty"`
+
+	// Required. Lint state represents success or failure for linting.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.state
+	// +required
+	State *string `json:"state,omitempty"`
+
+	// Required. Name of the linting application.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.source
+	// +required
+	Source *string `json:"source,omitempty"`
+
+	// Required. Name of the linter used.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.linter
+	// +required
+	Linter *string `json:"linter,omitempty"`
+
+	// Required. Timestamp when the linting response was generated.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.create_time
+	// +required
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.LintResponse.SummaryEntry
+type LintResponse_SummaryEntry struct {
+	// Required. Severity of the issue.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.SummaryEntry.severity
+	// +required
+	Severity *string `json:"severity,omitempty"`
+
+	// Required. Count of issues with the given severity.
+	// +kcc:proto:field=google.cloud.apihub.v1.LintResponse.SummaryEntry.count
+	// +required
+	Count *int32 `json:"count,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.OpenApiSpecDetails
+type OpenAPISpecDetails struct {
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Owner
 type Owner struct {
 	// Optional. The name of the owner.
@@ -291,12 +440,56 @@ type PluginActionConfig struct {
 	TriggerMode *string `json:"triggerMode,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.Point
+type Point struct {
+	// Required. Line number (zero-indexed).
+	// +kcc:proto:field=google.cloud.apihub.v1.Point.line
+	// +required
+	Line *int32 `json:"line,omitempty"`
+
+	// Required. Character position within the line (zero-indexed).
+	// +kcc:proto:field=google.cloud.apihub.v1.Point.character
+	// +required
+	Character *int32 `json:"character,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Range
+type Range struct {
+	// Required. Start of the issue.
+	// +kcc:proto:field=google.cloud.apihub.v1.Range.start
+	// +required
+	Start *Point `json:"start,omitempty"`
+
+	// Required. End of the issue.
+	// +kcc:proto:field=google.cloud.apihub.v1.Range.end
+	// +required
+	End *Point `json:"end,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata
 type SourceMetadata struct {
 }
 
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
 type SourceMetadata_PluginInstanceActionSource struct {
+}
+
+// +kcc:proto=google.cloud.apihub.v1.SpecContents
+type SpecContents struct {
+	// Required. The contents of the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.SpecContents.contents
+	// +required
+	Contents []byte `json:"contents,omitempty"`
+
+	// Required. The mime type of the content for example application/json,
+	//  application/yaml, application/wsdl etc.
+	// +kcc:proto:field=google.cloud.apihub.v1.SpecContents.mime_type
+	// +required
+	MimeType *string `json:"mimeType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.SpecDetails
+type SpecDetails struct {
 }
 
 // +kcc:observedstate:proto=google.cloud.apihub.v1.AttributeValues
@@ -329,6 +522,34 @@ type DependencyEntityReferenceObservedState struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.apihub.v1.OpenApiSpecDetails
+type OpenAPISpecDetailsObservedState struct {
+	// Output only. The format of the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.format
+	Format *string `json:"format,omitempty"`
+
+	// Output only. The version in the spec.
+	//  This maps to `info.version` in OpenAPI spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.version
+	Version *string `json:"version,omitempty"`
+
+	// Output only. Owner details for the spec.
+	//  This maps to `info.contact` in OpenAPI spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.OpenApiSpecDetails.owner
+	Owner *OwnerObservedState `json:"owner,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.Owner
+type OwnerObservedState struct {
+	// Optional. The name of the owner.
+	// +kcc:proto:field=google.cloud.apihub.v1.Owner.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The email of the owner.
+	// +kcc:proto:field=google.cloud.apihub.v1.Owner.email
+	Email *string `json:"email,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
 type SourceMetadata_PluginInstanceActionSourceObservedState struct {
 	// Output only. The resource name of the source plugin instance.
@@ -340,4 +561,19 @@ type SourceMetadata_PluginInstanceActionSourceObservedState struct {
 	// Output only. The id of the plugin instance action.
 	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource.action_id
 	ActionID *string `json:"actionID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.SpecDetails
+type SpecDetailsObservedState struct {
+	// Output only. Additional details apart from `OperationDetails` parsed from
+	//  an OpenAPI spec. The OperationDetails parsed from the spec can be
+	//  obtained by using
+	//  [ListAPIOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
+	//  method.
+	// +kcc:proto:field=google.cloud.apihub.v1.SpecDetails.open_api_spec_details
+	OpenAPISpecDetails *OpenAPISpecDetailsObservedState `json:"openAPISpecDetails,omitempty"`
+
+	// Output only. The description of the spec.
+	// +kcc:proto:field=google.cloud.apihub.v1.SpecDetails.description
+	Description *string `json:"description,omitempty"`
 }

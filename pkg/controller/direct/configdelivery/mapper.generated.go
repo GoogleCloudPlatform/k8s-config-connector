@@ -140,6 +140,46 @@ func ConfigDeliveryResourceBundleSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func ConfigdeliveryVariantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Variant) *krm.ConfigdeliveryVariantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigdeliveryVariantObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func ConfigdeliveryVariantObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigdeliveryVariantObservedState) *pb.Variant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Variant{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func ConfigdeliveryVariantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Variant) *krm.ConfigdeliveryVariantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigdeliveryVariantSpec{}
+	out.Labels = in.Labels
+	out.Resources = in.Resources
+	// MISSING: Name
+	return out
+}
+func ConfigdeliveryVariantSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigdeliveryVariantSpec) *pb.Variant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Variant{}
+	out.Labels = in.Labels
+	out.Resources = in.Resources
+	// MISSING: Name
+	return out
+}
 func Fleet_FromProto(mapCtx *direct.MapContext, in *pb.Fleet) *krm.Fleet {
 	if in == nil {
 		return nil

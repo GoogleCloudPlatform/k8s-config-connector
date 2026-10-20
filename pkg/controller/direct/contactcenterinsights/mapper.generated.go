@@ -569,6 +569,58 @@ func CCInsightsQAScorecardSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsi
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func CCInsightsQaQuestionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion) *krm.CCInsightsQaQuestionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQaQuestionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Metrics = QaQuestion_MetricsObservedState_FromProto(mapCtx, in.GetMetrics())
+	return out
+}
+func CCInsightsQaQuestionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQaQuestionObservedState) *pb.QaQuestion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaQuestion{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Metrics = QaQuestion_MetricsObservedState_ToProto(mapCtx, in.Metrics)
+	return out
+}
+func CCInsightsQaQuestionSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion) *krm.CCInsightsQaQuestionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQaQuestionSpec{}
+	// MISSING: Name
+	out.Abbreviation = direct.LazyPtr(in.GetAbbreviation())
+	out.QuestionBody = direct.LazyPtr(in.GetQuestionBody())
+	out.AnswerInstructions = direct.LazyPtr(in.GetAnswerInstructions())
+	out.AnswerChoices = direct.Slice_FromProto(mapCtx, in.AnswerChoices, QaQuestion_AnswerChoice_FromProto)
+	out.Tags = in.Tags
+	out.Order = direct.LazyPtr(in.GetOrder())
+	out.TuningMetadata = QaQuestion_TuningMetadata_FromProto(mapCtx, in.GetTuningMetadata())
+	return out
+}
+func CCInsightsQaQuestionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQaQuestionSpec) *pb.QaQuestion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaQuestion{}
+	// MISSING: Name
+	out.Abbreviation = direct.ValueOf(in.Abbreviation)
+	out.QuestionBody = direct.ValueOf(in.QuestionBody)
+	out.AnswerInstructions = direct.ValueOf(in.AnswerInstructions)
+	out.AnswerChoices = direct.Slice_ToProto(mapCtx, in.AnswerChoices, QaQuestion_AnswerChoice_ToProto)
+	out.Tags = in.Tags
+	out.Order = direct.ValueOf(in.Order)
+	out.TuningMetadata = QaQuestion_TuningMetadata_ToProto(mapCtx, in.TuningMetadata)
+	return out
+}
 func CCInsightsViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.View) *krm.CCInsightsViewObservedState {
 	if in == nil {
 		return nil
@@ -1530,6 +1582,96 @@ func QaAnswer_AnswerValueObservedState_NaValue_ToProto(mapCtx *direct.MapContext
 		return nil
 	}
 	return &pb.QaAnswer_AnswerValue_NaValue{NaValue: *in}
+}
+func QaQuestion_AnswerChoice_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_AnswerChoice) *krm.QaQuestion_AnswerChoice {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QaQuestion_AnswerChoice{}
+	out.StrValue = direct.LazyPtr(in.GetStrValue())
+	out.NumValue = direct.LazyPtr(in.GetNumValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.NaValue = direct.LazyPtr(in.GetNaValue())
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Score = in.Score
+	return out
+}
+func QaQuestion_AnswerChoice_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_AnswerChoice) *pb.QaQuestion_AnswerChoice {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaQuestion_AnswerChoice{}
+	if oneof := QaQuestion_AnswerChoice_StrValue_ToProto(mapCtx, in.StrValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := QaQuestion_AnswerChoice_NumValue_ToProto(mapCtx, in.NumValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := QaQuestion_AnswerChoice_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := QaQuestion_AnswerChoice_NaValue_ToProto(mapCtx, in.NaValue); oneof != nil {
+		out.Value = oneof
+	}
+	out.Key = direct.ValueOf(in.Key)
+	out.Score = in.Score
+	return out
+}
+func QaQuestion_AnswerChoice_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.QaQuestion_AnswerChoice_StrValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.QaQuestion_AnswerChoice_StrValue{StrValue: *in}
+}
+func QaQuestion_AnswerChoice_NumValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.QaQuestion_AnswerChoice_NumValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.QaQuestion_AnswerChoice_NumValue{NumValue: *in}
+}
+func QaQuestion_AnswerChoice_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaQuestion_AnswerChoice_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.QaQuestion_AnswerChoice_BoolValue{BoolValue: *in}
+}
+func QaQuestion_AnswerChoice_NaValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaQuestion_AnswerChoice_NaValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.QaQuestion_AnswerChoice_NaValue{NaValue: *in}
+}
+func QaQuestion_Metrics_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_Metrics) *krm.QaQuestion_Metrics {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QaQuestion_Metrics{}
+	// MISSING: Accuracy
+	return out
+}
+func QaQuestion_Metrics_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_Metrics) *pb.QaQuestion_Metrics {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaQuestion_Metrics{}
+	// MISSING: Accuracy
+	return out
+}
+func QaQuestion_MetricsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_Metrics) *krm.QaQuestion_MetricsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QaQuestion_MetricsObservedState{}
+	out.Accuracy = direct.LazyPtr(in.GetAccuracy())
+	return out
+}
+func QaQuestion_MetricsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_MetricsObservedState) *pb.QaQuestion_Metrics {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaQuestion_Metrics{}
+	out.Accuracy = direct.ValueOf(in.Accuracy)
+	return out
 }
 func QaScorecardResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult) *krm.QaScorecardResult {
 	if in == nil {

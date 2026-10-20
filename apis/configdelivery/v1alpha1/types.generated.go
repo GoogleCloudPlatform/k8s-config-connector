@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.configdelivery.v1
 // resource: ConfigDeliveryFleetPackage:FleetPackage
+// resource: ConfigdeliveryVariant:Variant
 
 package v1alpha1
 

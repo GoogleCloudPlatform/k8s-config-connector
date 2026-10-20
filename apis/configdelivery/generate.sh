@@ -42,6 +42,17 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1" \
     --resource ConfigDeliveryFleetPackage:FleetPackage
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ConfigdeliveryVariant:Variant
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigdeliveryVariant:Variant
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.configdelivery.v1 \
     --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1"
