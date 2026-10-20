@@ -20,6 +20,7 @@
 // krm.group: artifactregistry.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.devtools.artifactregistry.v1
+// proto.service: google.type
 
 package artifactregistry
 
@@ -29,8 +30,57 @@ import (
 	krmartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 )
 
+func ArtifactRegistryAttachmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Attachment) *krmartifactregistryv1alpha1.ArtifactRegistryAttachmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryAttachmentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.OciVersionName = direct.LazyPtr(in.GetOciVersionName())
+	return out
+}
+func ArtifactRegistryAttachmentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryAttachmentObservedState) *pb.Attachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attachment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.OciVersionName = direct.ValueOf(in.OciVersionName)
+	return out
+}
+func ArtifactRegistryAttachmentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Attachment) *krmartifactregistryv1alpha1.ArtifactRegistryAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryAttachmentSpec{}
+	// MISSING: Name
+	out.Target = direct.LazyPtr(in.GetTarget())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.AttachmentNamespace = direct.LazyPtr(in.GetAttachmentNamespace())
+	out.Annotations = in.Annotations
+	out.Files = in.Files
+	return out
+}
+func ArtifactRegistryAttachmentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryAttachmentSpec) *pb.Attachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attachment{}
+	// MISSING: Name
+	out.Target = direct.ValueOf(in.Target)
+	out.Type = direct.ValueOf(in.Type)
+	out.AttachmentNamespace = direct.ValueOf(in.AttachmentNamespace)
+	out.Annotations = in.Annotations
+	out.Files = in.Files
+	return out
+}
 func ArtifactRegistryRepositoryCommonRepository_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_CommonRemoteRepository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository {
 	if in == nil {
 		return nil
@@ -355,6 +405,30 @@ func ArtifactRegistryRepositoryVirtualRepositoryConfig_v1beta1_ToProto(mapCtx *d
 	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_v1beta1_ToProto)
 	return out
 }
+func ArtifactRegistryRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Rule) *krmartifactregistryv1alpha1.ArtifactRegistryRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.ArtifactRegistryRuleSpec{}
+	// MISSING: Name
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	out.Operation = direct.Enum_FromProto(mapCtx, in.GetOperation())
+	out.Condition = Expr_v1alpha1_FromProto(mapCtx, in.GetCondition())
+	out.PackageID = direct.LazyPtr(in.GetPackageId())
+	return out
+}
+func ArtifactRegistryRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryRuleSpec) *pb.Rule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rule{}
+	// MISSING: Name
+	out.Action = direct.Enum_ToProto[pb.Rule_Action](mapCtx, in.Action)
+	out.Operation = direct.Enum_ToProto[pb.Rule_Operation](mapCtx, in.Operation)
+	out.Condition = Expr_v1alpha1_ToProto(mapCtx, in.Condition)
+	out.PackageId = direct.ValueOf(in.PackageID)
+	return out
+}
 func ArtifactRegistryVPCSCConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {
 	if in == nil {
 		return nil
@@ -443,6 +517,28 @@ func CleanupPolicyMostRecentVersions_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out := &pb.CleanupPolicyMostRecentVersions{}
 	out.PackageNamePrefixes = in.PackageNamePrefixes
 	out.KeepCount = in.KeepCount
+	return out
+}
+func Expr_v1alpha1_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmartifactregistryv1alpha1.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1alpha1.Expr{}
+	out.Expression = direct.LazyPtr(in.GetExpression())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.Expr) *exprpb.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &exprpb.Expr{}
+	out.Expression = direct.ValueOf(in.Expression)
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	out.Location = direct.ValueOf(in.Location)
 	return out
 }
 func Repository_DockerRepositoryConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository_DockerRepositoryConfig) *krmartifactregistryv1beta1.Repository_DockerRepositoryConfig {
