@@ -3428,6 +3428,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gsuiteaddons.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3873,6 +3885,18 @@ rules:
   - delete
 - apiGroups:
   - resourcemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - retail.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5358,6 +5382,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - gsuiteaddons.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5655,6 +5687,14 @@ rules:
   - watch
 - apiGroups:
   - resourcemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - retail.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

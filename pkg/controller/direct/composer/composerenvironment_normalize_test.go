@@ -74,17 +74,17 @@ func TestComposerEnvironment_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := EncryptionConfig_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
+		protoObj := EncryptionConfig_v1beta1_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
 		if mapCtx.Err() != nil {
-			t.Fatalf("EncryptionConfig_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("EncryptionConfig_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.GetKmsKeyName() != selfLink {
 			t.Errorf("protoObj KmsKeyName = %q, want %q", protoObj.GetKmsKeyName(), selfLink)
 		}
 
-		fromProto := EncryptionConfig_FromProto(mapCtx, protoObj)
+		fromProto := EncryptionConfig_v1beta1_FromProto(mapCtx, protoObj)
 		if mapCtx.Err() != nil {
-			t.Fatalf("EncryptionConfig_FromProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("EncryptionConfig_v1beta1_FromProto unexpected error: %v", mapCtx.Err())
 		}
 		if fromProto.KMSKeyRef == nil || fromProto.KMSKeyRef.External != selfLink {
 			t.Errorf("fromProto KMSKeyRef.External = %v, want %q", fromProto.KMSKeyRef, selfLink)
@@ -118,17 +118,17 @@ func TestComposerEnvironment_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := EncryptionConfig_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
+		protoObj := EncryptionConfig_v1beta1_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
 		if mapCtx.Err() != nil {
-			t.Fatalf("EncryptionConfig_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("EncryptionConfig_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.GetKmsKeyName() != externalKey {
 			t.Errorf("protoObj KmsKeyName = %q, want %q", protoObj.GetKmsKeyName(), externalKey)
 		}
 
-		fromProto := EncryptionConfig_FromProto(mapCtx, protoObj)
+		fromProto := EncryptionConfig_v1beta1_FromProto(mapCtx, protoObj)
 		if mapCtx.Err() != nil {
-			t.Fatalf("EncryptionConfig_FromProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("EncryptionConfig_v1beta1_FromProto unexpected error: %v", mapCtx.Err())
 		}
 		if fromProto.KMSKeyRef == nil || fromProto.KMSKeyRef.External != externalKey {
 			t.Errorf("fromProto KMSKeyRef.External = %v, want %q", fromProto.KMSKeyRef, externalKey)
@@ -151,9 +151,9 @@ func TestComposerEnvironment_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := EncryptionConfig_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
+		protoObj := EncryptionConfig_v1beta1_ToProto(mapCtx, obj.Spec.Config.EncryptionConfig)
 		if mapCtx.Err() != nil {
-			t.Fatalf("EncryptionConfig_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("EncryptionConfig_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj != nil {
 			t.Errorf("protoObj = %v, want nil", protoObj)

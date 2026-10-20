@@ -17,6 +17,7 @@ package dataform
 import (
 	apiv1pb "cloud.google.com/go/dataform/apiv1/dataformpb"
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -150,4 +151,22 @@ func InvocationConfig_QueryPriority_ToProto(mapCtx *direct.MapContext, in *strin
 	}
 	v := direct.Enum_ToProto[apiv1pb.InvocationConfig_QueryPriority](mapCtx, in)
 	return &v
+}
+
+func PrivateResourceMetadataObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv1pb.PrivateResourceMetadata) *krmv1alpha1.PrivateResourceMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.PrivateResourceMetadataObservedState{}
+	out.UserScoped = direct.LazyPtr(in.GetUserScoped())
+	return out
+}
+
+func PrivateResourceMetadataObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PrivateResourceMetadataObservedState) *apiv1pb.PrivateResourceMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &apiv1pb.PrivateResourceMetadata{}
+	out.UserScoped = direct.ValueOf(in.UserScoped)
+	return out
 }

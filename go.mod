@@ -68,6 +68,7 @@ require (
 	cloud.google.com/go/gkebackup v1.13.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/grafeas v0.3.17
+	cloud.google.com/go/gsuiteaddons v1.12.0
 	cloud.google.com/go/hypercomputecluster v1.1.0
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
@@ -99,6 +100,7 @@ require (
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
 	cloud.google.com/go/redis v1.25.0
 	cloud.google.com/go/resourcemanager v1.15.0
+	cloud.google.com/go/retail v1.31.0
 	cloud.google.com/go/run v1.21.0
 	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0

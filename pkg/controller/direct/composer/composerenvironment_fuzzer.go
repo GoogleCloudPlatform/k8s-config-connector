@@ -29,8 +29,8 @@ func init() {
 
 func composerEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Environment{},
-		ComposerEnvironmentSpec_FromProto, ComposerEnvironmentSpec_ToProto,
-		ComposerEnvironmentObservedState_FromProto, ComposerEnvironmentObservedState_ToProto,
+		ComposerEnvironmentSpec_v1beta1_FromProto, ComposerEnvironmentSpec_v1beta1_ToProto,
+		ComposerEnvironmentObservedState_v1beta1_FromProto, ComposerEnvironmentObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")          // special field

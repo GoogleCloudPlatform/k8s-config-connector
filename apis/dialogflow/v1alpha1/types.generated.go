@@ -21,9 +21,12 @@
 // resource: DialogflowKnowledgeBase:KnowledgeBase
 // resource: DialogflowGenerator:Generator
 // resource: DialogflowConversationDataset:ConversationDataset
+// resource: DialogflowConversationModel:ConversationModel
 // resource: DialogflowEnvironment:Environment
 // resource: DialogflowPlaybook:Playbook
 // resource: DialogflowTransitionRouteGroup:TransitionRouteGroup
+// resource: DialogflowFlow:Flow
+// resource: DialogflowPage:Page
 
 package v1alpha1
 
@@ -145,6 +148,26 @@ type CodeBlock struct {
 	Code *string `json:"code,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dialogflow.cx.v3.DataStoreConnection
+type DataStoreConnection struct {
+	// The type of the connected data store.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store_type
+	DataStoreType *string `json:"dataStoreType,omitempty"`
+
+	// The full name of the referenced data store.
+	//  Formats:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+	//  `projects/{project}/locations/{location}/dataStores/{data_store}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store
+	DataStore *string `json:"dataStore,omitempty"`
+
+	// The document processing mode for the data store connection. Should only be
+	//  set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
+	//  considered as DOCUMENTS, as this is the legacy mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.document_processing_mode
+	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Environment.TestCasesConfig
 type Environment_TestCasesConfig struct {
 	// A list of test case names to run. They should be under the same agent.
@@ -189,6 +212,165 @@ type Environment_WebhookConfig struct {
 	//  [`service_directory`][google.cloud.dialogflow.cx.v3.Webhook.service_directory].
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Environment.WebhookConfig.webhook_overrides
 	WebhookOverrides []Webhook `json:"webhookOverrides,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.EventHandler
+type EventHandler struct {
+
+	// Required. The name of the event to handle.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.event
+	// +required
+	Event *string `json:"event,omitempty"`
+
+	// The fulfillment to call when the event occurs.
+	//  Handling webhook errors with a fulfillment enabled with webhook could
+	//  cause infinite loop. It is invalid to specify such fulfillment for a
+	//  handler handling webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_page
+	TargetPage *string `json:"targetPage,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_flow
+	TargetFlow *string `json:"targetFlow,omitempty"`
+
+	// The target playbook to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_playbook
+	TargetPlaybook *string `json:"targetPlaybook,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings
+type Flow_MultiLanguageSettings struct {
+	// Optional. Enable multi-language detection for this flow. This can be set
+	//  only if [agent level multi language
+	//  setting][Agent.enable_multi_language_training] is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection
+	EnableMultiLanguageDetection *bool `json:"enableMultiLanguageDetection,omitempty"`
+
+	// Optional. Agent will respond in the detected language if the detected
+	//  language code is in the supported resolved languages for this flow. This
+	//  will be used only if multi-language training is enabled in the
+	//  [agent][google.cloud.dialogflow.cx.v3.Agent.enable_multi_language_training]
+	//  and multi-language detection is enabled in the
+	//  [flow][google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection].
+	//  The supported languages must be a subset of the languages supported by
+	//  the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.supported_response_language_codes
+	SupportedResponseLanguageCodes []string `json:"supportedResponseLanguageCodes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form
+type Form struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_Parameter `json:"parameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_Parameter struct {
+	// Required. The human-readable name of the parameter, unique within the
+	//  form.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates whether the parameter is required. Optional parameters will not
+	//  trigger prompts; however, they are filled if the user specifies them.
+	//  Required parameters must be filled before form filling concludes.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.required
+	Required *bool `json:"required,omitempty"`
+
+	// Required. The entity type of the parameter.
+	//  Format:
+	//  `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+	//  system entity types (for example,
+	//  `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+	//  for developer entity types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.entity_type
+	// +required
+	EntityType *string `json:"entityType,omitempty"`
+
+	// Indicates whether the parameter represents a list of values.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.is_list
+	IsList *bool `json:"isList,omitempty"`
+
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	// +required
+	FillBehavior *Form_Parameter_FillBehavior `json:"fillBehavior,omitempty"`
+
+	// The default value of an optional parameter. If the parameter is required,
+	//  the default value will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Indicates whether the parameter content should be redacted in log.  If
+	//  redaction is enabled, the parameter content will be replaced by parameter
+	//  name during logging.
+	//  Note: the parameter content is subject to redaction if either parameter
+	//  level redaction or [entity type level
+	//  redaction][google.cloud.dialogflow.cx.v3.EntityType.redact] is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.redact
+	Redact *bool `json:"redact,omitempty"`
+
+	// Hierarchical advanced settings for this parameter. The settings exposed
+	//  at the lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehavior struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	// +required
+	InitialPromptFulfillment *Fulfillment `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandler `json:"repromptEventHandlers,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment
@@ -379,6 +561,39 @@ type Handler_LifecycleHandler struct {
 	Fulfillment *Fulfillment `json:"fulfillment,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
+type KnowledgeConnectorSettings struct {
+	// Whether Knowledge Connector is enabled or not.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The fulfillment to be triggered.
+	//
+	//  When the answers from the Knowledge Connector are selected by Dialogflow,
+	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
+	//  (contains up to the 5 highest confidence answers) and
+	//  `$request.knowledge.questions` (contains the corresponding questions) to
+	//  construct the fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_page
+	TargetPage *string `json:"targetPage,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_flow
+	TargetFlow *string `json:"targetFlow,omitempty"`
+
+	// Optional. List of related data store connections.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.data_store_connections
+	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dialogflow.cx.v3.LlmModelSettings
 type LlmModelSettings struct {
 	// The selected LLM model.
@@ -388,6 +603,27 @@ type LlmModelSettings struct {
 	// The custom prompt to use.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.LlmModelSettings.prompt_text
 	PromptText *string `json:"promptText,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.NluSettings
+type NluSettings struct {
+	// Indicates the type of NLU model.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.model_type
+	ModelType *string `json:"modelType,omitempty"`
+
+	// To filter out false positive results and still get variety in matched
+	//  natural language inputs for your agent, you can tune the machine learning
+	//  classification threshold. If the returned score value is less than the
+	//  threshold value, then a no-match event will be triggered. The score values
+	//  range from 0.0 (completely uncertain) to 1.0 (completely certain). If set
+	//  to 0.0, the default of 0.3 is used. You can set a separate classification
+	//  threshold for the flow in each language enabled for the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.classification_threshold
+	ClassificationThreshold *float32 `json:"classificationThreshold,omitempty"`
+
+	// Indicates NLU model training mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.model_training_mode
+	ModelTrainingMode *string `json:"modelTrainingMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ParameterDefinition
@@ -857,6 +1093,14 @@ type Webhook_ServiceDirectoryConfig struct {
 	GenericWebService *Webhook_GenericWebService `json:"genericWebService,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dialogflow.v2.ArticleSuggestionModelMetadata
+type ArticleSuggestionModelMetadata struct {
+	// Optional. Type of the article suggestion model. If not provided, model_type
+	//  is used.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ArticleSuggestionModelMetadata.training_model_type
+	TrainingModelType *string `json:"trainingModelType,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
 type ConversationContext struct {
 	// Optional. List of message transcripts in the conversation.
@@ -973,6 +1217,16 @@ type InputConfig struct {
 	GCSSource *GCSSources `json:"gcsSource,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dialogflow.v2.InputDataset
+type InputDataset struct {
+	// Required. ConversationDataset resource name. Format:
+	//  `projects/<Project ID>/locations/<Location
+	//  ID>/conversationDatasets/<Conversation Dataset ID>`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InputDataset.dataset
+	// +required
+	Dataset *string `json:"dataset,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dialogflow.v2.MessageEntry
 type MessageEntry struct {
 	// Optional. Participant role of the message.
@@ -992,6 +1246,14 @@ type MessageEntry struct {
 	// Optional. Create time of the message entry.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.create_time
 	CreateTime *string `json:"createTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SmartReplyModelMetadata
+type SmartReplyModelMetadata struct {
+	// Optional. Type of the smart reply model. If not provided, model_type is
+	//  used.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SmartReplyModelMetadata.training_model_type
+	TrainingModelType *string `json:"trainingModelType,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.SummarizationContext
@@ -1085,6 +1347,77 @@ type Value struct {
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.EventHandler
+type EventHandlerObservedState struct {
+	// Output only. The unique identifier of this event handler.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.name
+	Name *string `json:"name,omitempty"`
+
+	// The fulfillment to call when the event occurs.
+	//  Handling webhook errors with a fulfillment enabled with webhook could
+	//  cause infinite loop. It is invalid to specify such fulfillment for a
+	//  handler handling webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
+	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form
+type FormObservedState struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_ParameterObservedState `json:"parameters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_ParameterObservedState struct {
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	FillBehavior *Form_Parameter_FillBehaviorObservedState `json:"fillBehavior,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehaviorObservedState struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	InitialPromptFulfillment *FulfillmentObservedState `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandlerObservedState `json:"repromptEventHandlers,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment
 type FulfillmentObservedState struct {
 	// The list of rich message responses to present to the user.
@@ -1133,6 +1466,19 @@ type Handler_LifecycleHandlerObservedState struct {
 	// Required. The fulfillment to call when this handler is triggered.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.fulfillment
 	Fulfillment *FulfillmentObservedState `json:"fulfillment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
+type KnowledgeConnectorSettingsObservedState struct {
+	// The fulfillment to be triggered.
+	//
+	//  When the answers from the Knowledge Connector are selected by Dialogflow,
+	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
+	//  (contains up to the 5 highest confidence answers) and
+	//  `$request.knowledge.questions` (contains the corresponding questions) to
+	//  construct the fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
+	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage
