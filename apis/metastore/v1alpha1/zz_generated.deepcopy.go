@@ -996,7 +996,7 @@ func (in *Secret) DeepCopyInto(out *Secret) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }
