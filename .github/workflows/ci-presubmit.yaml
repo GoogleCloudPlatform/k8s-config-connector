@@ -242,6 +242,27 @@ jobs:
           path: /tmp/artifacts/
 
 
+  test-migrate-gke-addon:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'destroyed' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/test-migrate-gke-addon"
+        run: |
+          ./dev/ci/presubmits/test-migrate-gke-addon
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-test-migrate-gke-addon
+          path: /tmp/artifacts/
+
+
   test-mockgcp:
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'destroyed' }}
@@ -787,6 +808,7 @@ jobs:
       - run-linters
       - smoketest-with-kind
       - test-fuzz-random-mappers
+      - test-migrate-gke-addon
       - test-mockgcp
       - test-pause
       - tests-e2e-direct-iam
