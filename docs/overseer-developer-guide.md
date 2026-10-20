@@ -106,7 +106,7 @@ spec:
 - Link to relevant GCP API docs or error logs.
 ```
 
-#### Workflow & Resource Migration Requests
+#### Direct Resource Workflow & Resource Migration Requests
 *Real-world examples: [Issue #10694](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10694), [Issue #11228](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11228)*
 
 ```markdown
@@ -116,7 +116,7 @@ spec:
 - Target API Version: `v1beta1`
 
 ### Objective
-Migrate the resource from legacy TF/DCL to direct reconciler (or scaffold greenfield resource).
+Migrate the resource from legacy TF/DCL to direct reconciler (or scaffold direct resource).
 
 ### References
 - GCP API Documentation: https://cloud.google.com/spanner/docs/...

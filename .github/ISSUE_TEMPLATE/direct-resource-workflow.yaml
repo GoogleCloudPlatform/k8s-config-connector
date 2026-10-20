@@ -1,0 +1,78 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Direct Resource Workflow'
+description: 'Track the Direct (Greenfield) implementation of a new GCP resource'
+title: 'ai:feat: KCC support for <Kind>'
+labels: ['greenfield', 'overseer', 'workflow/greenfield']
+body:
+- id: 'use-case-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Generic Use-Case Description'
+    description: 'Provide a generic description of the use case for this resource. Do NOT include internal tracker IDs (e.g. b/<id>), internal URLs, or customer names.'
+    placeholder: 'Describe the resource and its generic use case in Kubernetes Config Connector...'
+  validations:
+    required: true
+
+- id: 'proto-package'
+  type: 'input'
+  attributes:
+    label: 'Proto Package'
+    description: 'The GCP protobuf package path for this resource.'
+    placeholder: 'google.cloud.<service>.<version>'
+  validations:
+    required: true
+
+- id: 'proto-message'
+  type: 'input'
+  attributes:
+    label: 'Proto Message'
+    description: 'The GCP protobuf message name corresponding to this resource.'
+    placeholder: '<ResourceName>'
+  validations:
+    required: true
+
+- id: 'gcp-api-doc'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation Link'
+    description: 'Public GCP API reference documentation URL for this resource.'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+
+- id: 'target-kcc-group-version'
+  type: 'input'
+  attributes:
+    label: 'Target KCC Group / Version'
+    description: 'The target KCC API group and version (e.g. <service>.cnrm.cloud.google.com/v1alpha1).'
+    placeholder: '<service>.cnrm.cloud.google.com/v1alpha1'
+  validations:
+    required: true
+
+- type: 'checkboxes'
+  id: 'implementation-phases'
+  attributes:
+    label: 'Implementation Phases'
+    description: 'Track the 3-phase implementation deliverables across sequential PRs.'
+    options:
+      - label: 'Phase 1: API Types, CRDs, Identity & References'
+      - label: 'Phase 2: Direct Controller, Mappers, Registration & Fuzzer'
+      - label: 'Phase 3: Resource Fixtures, MockGCP HTTP Log Alignment & Docs'
+
+- type: 'markdown'
+  attributes:
+    value: |
+      Workflow reference: https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/.agents/workflows/kcc-greenfield.txt
