@@ -95,6 +95,21 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if len(tokens) == 2 && tokens[0] == "tagBindings" {
 		replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".response.name" {
+			resTokens := strings.Split(value, "/")
+			if len(resTokens) == 2 && resTokens[0] == "tagKeys" && resTokens[1] != "namespaced" {
+				replacements.ReplaceStringValue(resTokens[1], "${tagKeyID}")
+			}
+			if len(resTokens) == 2 && resTokens[0] == "tagValues" && resTokens[1] != "namespaced" {
+				replacements.ReplaceStringValue(resTokens[1], "${tagValueID}")
+			}
+			if len(resTokens) == 2 && resTokens[0] == "tagBindings" {
+				replacements.ReplaceStringValue(resTokens[1], "${tagBindingID}")
+			}
+		}
+	})
 }
 
 // isCloudResourceManagerAPI returns true if this is a cloud resource manager URL
@@ -103,8 +118,7 @@ func isCloudResourceManagerAPI(event mockgcpregistry.Event) bool {
 	if err != nil {
 		klog.Fatalf("cannot parse URL %q", event.URL())
 	}
-	switch u.Host {
-	case "cloudresourcemanager.googleapis.com":
+	if u.Host == "cloudresourcemanager.googleapis.com" || strings.HasSuffix(u.Host, "-cloudresourcemanager.googleapis.com") {
 		return true
 	}
 	return false

@@ -404,8 +404,8 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
-			// Ignore project ID lookup calls to Cloud Resource Manager made by direct controller reference resolution
-			if strings.HasPrefix(path, "/projects/${projectNumber}") {
+			// Ignore project ID/number lookup calls to Cloud Resource Manager made by direct controller reference resolution
+			if strings.HasPrefix(path, "/projects/${projectNumber}") || strings.HasPrefix(path, "/projects/${projectId}") {
 				continue
 			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
