@@ -79,6 +79,10 @@ kustomize create
 
 # The following kinds are hardcoded here to block them from being included in the release bundle
 # until they pass a final manual verification. Once verified, they should be removed from this list.
+#
+# Only alpha kinds can be blocked: a released (v1beta1 or later) CRD may already be in use, and
+# dropping it from the bundle would remove it from new installs. The build fails if a listed kind's
+# CRD has a v1beta1 or later version, or if its versions can't be read.
 BLOCKED_KINDS=(
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"
@@ -252,15 +256,40 @@ for b in "${BLOCKED_KINDS[@]}"; do
     BLOCKED_MAP["${b,,}"]=1
 done
 
+# Match a spec.versions[].name line, tolerating indentation, a list dash and quotes.
+ALPHA_VERSION_RE="^[[:space:]]*(-[[:space:]]+)?name:[[:space:]]*[\"']?v[0-9]+alpha[0-9]+[\"']?[[:space:]]*$"
+NON_ALPHA_VERSION_RE="^[[:space:]]*(-[[:space:]]+)?name:[[:space:]]*[\"']?v[0-9]+(beta[0-9]+)?[\"']?[[:space:]]*$"
+
 VALID_FILES=()
+RELEASED_BLOCKED=()
+UNREADABLE_BLOCKED=()
 for f in config/crds/resources/*.yaml; do
     KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
-    if [[ -n "${BLOCKED_MAP[${KIND,,}]:-}" ]]; then
+    if [[ -z "${BLOCKED_MAP[${KIND,,}]:-}" ]]; then
+        VALID_FILES+=("$f")
+    elif grep -q -E "${NON_ALPHA_VERSION_RE}" "$f"; then
+        RELEASED_BLOCKED+=("${KIND} ($f)")
+    elif grep -q -E "${ALPHA_VERSION_RE}" "$f"; then
         echo "Excluding unverified greenfield CRD from release bundle: $f"
     else
-        VALID_FILES+=("$f")
+        UNREADABLE_BLOCKED+=("${KIND} ($f)")
     fi
 done
+
+if [[ ${#RELEASED_BLOCKED[@]} -gt 0 ]]; then
+    echo "ERROR: BLOCKED_KINDS can only list alpha kinds, but these CRDs have a v1beta1 or later version:" >&2
+    printf '  %s\n' "${RELEASED_BLOCKED[@]}" >&2
+    echo "Remove them from BLOCKED_KINDS in dev/tasks/build-release-bundle." >&2
+fi
+if [[ ${#UNREADABLE_BLOCKED[@]} -gt 0 ]]; then
+    echo "ERROR: could not read the versions of these blocked CRDs, so can't tell whether they are alpha-only:" >&2
+    printf '  %s\n' "${UNREADABLE_BLOCKED[@]}" >&2
+    echo "Update ALPHA_VERSION_RE and NON_ALPHA_VERSION_RE in dev/tasks/build-release-bundle." >&2
+fi
+if [[ ${#RELEASED_BLOCKED[@]} -gt 0 || ${#UNREADABLE_BLOCKED[@]} -gt 0 ]]; then
+    rm -f "${REPO_ROOT}/kustomization.yaml"
+    exit 1
+fi
 
 if [[ ${#VALID_FILES[@]} -gt 0 ]]; then
     kustomize edit add resource "${VALID_FILES[@]}"
