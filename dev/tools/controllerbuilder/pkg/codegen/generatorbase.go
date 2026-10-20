@@ -201,6 +201,16 @@ type generatedFile struct {
 	fileAnnotation *annotations.FileAnnotation
 
 	imports map[string]string
+
+	// reservedTypeNames holds Go type names that will be declared by the
+	// scaffolder in non-generated files, so they should not be preserved
+	// from an existing types.generated.go file.
+	reservedTypeNames map[string]bool
+
+	// validKRMTypes holds active KRM struct names in the target API
+	// packages when generating mappers; existing mapper functions for
+	// deleted or pruned KRM types are not preserved.
+	validKRMTypes map[string]bool
 }
 
 type generatedFileKey struct {
@@ -225,12 +235,21 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 }
 
 func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedImports bool) error {
+	dir := f.OutputDir()
+	p := filepath.Join(dir, f.key.FileName)
+
+	existingBytes, err := os.ReadFile(p)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("reading existing file %q: %w", p, err)
+	}
+
+	if len(existingBytes) > 0 {
+		f.mergeWithExisting(existingBytes, dir)
+	}
+
 	if f.body.Len() == 0 && !writeEmptyFiles {
 		return nil
 	}
-
-	dir := f.OutputDir()
-	p := filepath.Join(dir, f.key.FileName)
 
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("creating directory %q: %w", dir, err)
@@ -240,16 +259,10 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedI
 
 	if addCopyright {
 		year := time.Now().Year()
-
-		b, err := os.ReadFile(p)
-		if err != nil && !os.IsNotExist(err) {
-			return fmt.Errorf("reading file %q (checking for existing copyright): %w", p, err)
-		} else {
-			existingCopyrightYear, ok := extractCopyrightYear(b)
-			if ok {
-				year = existingCopyrightYear
-			}
+		if existingCopyrightYear, ok := extractCopyrightYear(existingBytes); ok {
+			year = existingCopyrightYear
 		}
+
 		writeCopyright(&w, year)
 	}
 
