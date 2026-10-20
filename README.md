@@ -27,6 +27,10 @@ controllers, CRDs, install bundles, and sample resource configurations.
 
 See https://cloud.google.com/config-connector/docs/overview.
 
+See [Config Connector Core Principles](./docs/guides/core-principles.md) for in-depth documentation on the reconciliation loop, managing annotations, handling drift, and dependency management.
+
+See [Practical Complex Examples](./docs/guides/practical-examples.md) for production-grade, commented resource configurations across Google Cloud services.
+
 See [Config Connector CLI](./docs/cli/README.md) for documentation on the `config-connector` command-line tool.
 
 See [Managing Config Connector with GitOps (ArgoCD)](./docs/guides/gitops-argocd.md) for instructions on deploying and upgrading via GitOps.
