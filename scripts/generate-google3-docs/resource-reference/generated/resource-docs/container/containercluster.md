@@ -2775,7 +2775,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2785,7 +2785,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2795,7 +2795,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2885,7 +2885,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2895,7 +2895,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2905,7 +2905,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2975,7 +2975,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -2985,7 +2985,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2995,7 +2995,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -3025,7 +3025,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -3035,7 +3035,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -3045,7 +3045,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>

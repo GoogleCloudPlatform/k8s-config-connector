@@ -82,7 +82,7 @@ func (in *AuthConfig_OAUTH2ClientCredentials) DeepCopyInto(out *AuthConfig_OAUTH
 	}
 	if in.ClientSecretRef != nil {
 		in, out := &in.ClientSecretRef, &out.ClientSecretRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }
@@ -102,7 +102,7 @@ func (in *AuthConfig_OAUTH2JwtBearer) DeepCopyInto(out *AuthConfig_OAUTH2JwtBear
 	*out = *in
 	if in.ClientKeyRef != nil {
 		in, out := &in.ClientKeyRef, &out.ClientKeyRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.JwtClaims != nil {
@@ -162,7 +162,7 @@ func (in *AuthConfig_SSHPublicKey) DeepCopyInto(out *AuthConfig_SSHPublicKey) {
 	}
 	if in.SSHClientCertRef != nil {
 		in, out := &in.SSHClientCertRef, &out.SSHClientCertRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.CertType != nil {
@@ -172,7 +172,7 @@ func (in *AuthConfig_SSHPublicKey) DeepCopyInto(out *AuthConfig_SSHPublicKey) {
 	}
 	if in.SSHClientCertPassRef != nil {
 		in, out := &in.SSHClientCertPassRef, &out.SSHClientCertPassRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }
@@ -197,7 +197,7 @@ func (in *AuthConfig_UserPassword) DeepCopyInto(out *AuthConfig_UserPassword) {
 	}
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }
@@ -237,7 +237,7 @@ func (in *ConfigVariable) DeepCopyInto(out *ConfigVariable) {
 	}
 	if in.SecretValueRef != nil {
 		in, out := &in.SecretValueRef, &out.SecretValueRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }
@@ -669,22 +669,22 @@ func (in *SSLConfig) DeepCopyInto(out *SSLConfig) {
 	}
 	if in.PrivateServerCertificateRef != nil {
 		in, out := &in.PrivateServerCertificateRef, &out.PrivateServerCertificateRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.ClientCertificateRef != nil {
 		in, out := &in.ClientCertificateRef, &out.ClientCertificateRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.ClientPrivateKeyRef != nil {
 		in, out := &in.ClientPrivateKeyRef, &out.ClientPrivateKeyRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.ClientPrivateKeyPassRef != nil {
 		in, out := &in.ClientPrivateKeyPassRef, &out.ClientPrivateKeyPassRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.ServerCertType != nil {
