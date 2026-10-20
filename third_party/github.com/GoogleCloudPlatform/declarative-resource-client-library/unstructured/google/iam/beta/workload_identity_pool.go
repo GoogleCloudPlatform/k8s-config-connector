@@ -44,6 +44,9 @@ func WorkloadIdentityPoolToUnstructured(r *dclService.WorkloadIdentityPool) *uns
 	if r.Location != nil {
 		u.Object["location"] = *r.Location
 	}
+	if r.Mode != nil {
+		u.Object["mode"] = *r.Mode
+	}
 	if r.Name != nil {
 		u.Object["name"] = *r.Name
 	}
@@ -84,6 +87,13 @@ func UnstructuredToWorkloadIdentityPool(u *unstructured.Resource) (*dclService.W
 			r.Location = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Location: expected string")
+		}
+	}
+	if _, ok := u.Object["mode"]; ok {
+		if s, ok := u.Object["mode"].(string); ok {
+			r.Mode = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.Mode: expected string")
 		}
 	}
 	if _, ok := u.Object["name"]; ok {

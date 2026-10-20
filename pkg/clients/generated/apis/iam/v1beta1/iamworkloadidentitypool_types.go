@@ -54,6 +54,10 @@ type IAMWorkloadIdentityPoolSpec struct {
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
+	/* Immutable. The mode the pool is operating in. Possible values: MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN, SYSTEM_TRUST_DOMAIN */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 

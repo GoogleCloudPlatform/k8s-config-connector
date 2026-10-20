@@ -1693,6 +1693,11 @@ func (in *IAMWorkloadIdentityPoolSpec) DeepCopyInto(out *IAMWorkloadIdentityPool
 		*out = new(string)
 		**out = **in
 	}
+	if in.Mode != nil {
+		in, out := &in.Mode, &out.Mode
+		*out = new(string)
+		**out = **in
+	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID

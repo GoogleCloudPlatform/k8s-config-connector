@@ -426,6 +426,11 @@ func canonicalizeWorkloadIdentityPoolDesiredState(rawDesired, rawInitial *Worklo
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
+	if dcl.StringCanonicalize(rawDesired.Mode, rawInitial.Mode) {
+		canonicalDesired.Mode = rawInitial.Mode
+	} else {
+		canonicalDesired.Mode = rawDesired.Mode
+	}
 	return canonicalDesired, nil
 }
 
@@ -471,6 +476,14 @@ func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *Wor
 	rawNew.Project = rawDesired.Project
 
 	rawNew.Location = rawDesired.Location
+
+	if dcl.IsEmptyValueIndirect(rawNew.Mode) && dcl.IsEmptyValueIndirect(rawDesired.Mode) {
+		rawNew.Mode = rawDesired.Mode
+	} else {
+		if dcl.StringCanonicalize(rawDesired.Mode, rawNew.Mode) {
+			rawNew.Mode = rawDesired.Mode
+		}
+	}
 
 	return rawNew, nil
 }
@@ -542,6 +555,13 @@ func diffWorkloadIdentityPool(c *Client, desired, actual *WorkloadIdentityPool, 
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	if len(newDiffs) > 0 {
 		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
 	}
@@ -558,6 +578,7 @@ func (r *WorkloadIdentityPool) urlNormalized() *WorkloadIdentityPool {
 	normalized.Description = dcl.SelfLinkToName(r.Description)
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
+	normalized.Mode = dcl.SelfLinkToName(r.Mode)
 	return &normalized
 }
 
@@ -635,6 +656,9 @@ func expandWorkloadIdentityPool(c *Client, f *WorkloadIdentityPool) (map[string]
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["location"] = v
 	}
+	if v := f.Mode; dcl.ValueShouldBeSent(v) {
+		m["mode"] = v
+	}
 
 	return m, nil
 }
@@ -658,6 +682,7 @@ func flattenWorkloadIdentityPool(c *Client, i interface{}, res *WorkloadIdentity
 	resultRes.Disabled = dcl.FlattenBool(m["disabled"])
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
+	resultRes.Mode = dcl.FlattenString(m["mode"])
 
 	return resultRes
 }

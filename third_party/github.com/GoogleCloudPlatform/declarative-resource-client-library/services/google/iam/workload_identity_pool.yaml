@@ -93,6 +93,11 @@ components:
           x-dcl-go-name: Location
           description: The location for the resource
           x-kubernetes-immutable: true
+        mode:
+          type: string
+          x-dcl-go-name: Mode
+          description: 'The mode the pool is operating in. Possible values: MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN, SYSTEM_TRUST_DOMAIN'
+          x-kubernetes-immutable: true
         name:
           type: string
           x-dcl-go-name: Name

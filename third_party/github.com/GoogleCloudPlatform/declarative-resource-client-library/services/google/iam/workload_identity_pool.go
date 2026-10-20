@@ -29,6 +29,7 @@ type WorkloadIdentityPool struct {
 	Disabled    *bool                          `json:"disabled"`
 	Project     *string                        `json:"project"`
 	Location    *string                        `json:"location"`
+	Mode        *string                        `json:"mode"`
 }
 
 func (r *WorkloadIdentityPool) String() string {

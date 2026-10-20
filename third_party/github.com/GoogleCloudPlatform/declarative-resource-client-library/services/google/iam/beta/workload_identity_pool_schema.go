@@ -130,6 +130,12 @@ func DCLWorkloadIdentityPoolSchema() *dcl.Schema {
 								Description: "The location for the resource",
 								Immutable:   true,
 							},
+							"mode": &dcl.Property{
+								Type:        "string",
+								GoName:      "Mode",
+								Description: "The mode the pool is operating in. Possible values: MODE_UNSPECIFIED, FEDERATION_ONLY, TRUST_DOMAIN, SYSTEM_TRUST_DOMAIN",
+								Immutable:   true,
+							},
 							"name": &dcl.Property{
 								Type:        "string",
 								GoName:      "Name",
