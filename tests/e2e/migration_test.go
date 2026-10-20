@@ -123,7 +123,8 @@ func TestMigrationToDirect(t *testing.T) {
 
 			// Skip fixtures that explicitly specify the direct reconciler annotation in their create.yaml,
 			// as they are already direct-first tests, not migration tests.
-			if strings.Contains(string(fixture.Create), "alpha.cnrm.cloud.google.com/reconciler: direct") {
+			if strings.Contains(string(fixture.Create), "alpha.cnrm.cloud.google.com/reconciler: direct") ||
+				strings.Contains(string(fixture.Create), "cnrm.cloud.google.com/reconciler: direct") {
 				continue
 			}
 
