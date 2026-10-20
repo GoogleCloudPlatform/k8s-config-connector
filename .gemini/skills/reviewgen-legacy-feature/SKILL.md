@@ -17,6 +17,7 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
     1. Verify schema addition in the schema map (`map[string]*schema.Schema`).
     2. Verify expanding logic (Terraform struct -> GCP SDK) is implemented for new fields.
     3. Verify flattening logic (GCP SDK -> Terraform struct) is implemented for new fields.
+    4. **The Empty Block Flattener Invariant (`ForceNew: true`)**: For optional nested blocks marked `ForceNew: true`, if all attributes within the block are empty in GCP's API response, the flattener **must return `nil` or empty slice**, not a map with zero-values. Returning a zero-value map causes Terraform to compute a permanent diff, triggering endless resource recreation cycles in KCC.
 *   **Modifying Existing Fields (Backwards-Compatible Behavior Changes)**:
     1. Schema definition updated as required.
     2. Related expanding/flattening logic updated to match the modified schema.
@@ -90,7 +91,9 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 ### C. Direct Controller Alignment
 1. **Adding New Fields**:
    * **Direct Types, Mappers & Fuzzers**: If the brownfield resource already has a direct type (`apis/`), mapper (`pkg/controller/direct/`), and/or fuzzer, ensure changes are added to those files.
+   * **Dual-Controller Requirement**: For dual-controller resources, updating BOTH the legacy patch and direct mapper/fuzzer/type files is **mandatory**.
    * **Reference Types**: If the new field requires a reference type that was not already implemented, the reference type must be added.
+   * **Reference Resolution Timing**: Verify that reference resolution is strictly performed on **line 1 of `Create()` and `Update()`**, NEVER in `AdapterForObject()`. Resolving references in `AdapterForObject()` causes deletion deadlocks when referenced objects are deleted first (per PR #13573).
    * **Direct Controller `Update()` Logic**: If the resource already has a direct controller (`_controller.go`), verify if special handling is needed in `Update()`:
      - *Value Equivalence Diffing*: If the desired value and actual value of the new field are formatted differently but mean the same thing, the diffing logic in `Update()` must be updated to recognize equivalence.
      - *Field Comparison Lists*: When `Update()` compares desired and actual resources based on explicit field names, add the new fields to the comparison list.
@@ -105,17 +108,27 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 
 ---
 
+## 4. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+
+Reviewer personas must enforce strict isolation between internal tracking systems and the public repository:
+*   **Blocking Finding on Buganizer IDs**: Treat any Buganizer ID (`b/<id>`) or internal tracker URL (e.g. `https://buganizer.corp.google.com/...`) appearing anywhere on GitHub (PR title, description, commit messages, code comments, test fixtures, or release notes) as an absolute **BLOCKING FINDING**. The PR must not be approved or LGTM'd until all internal references are removed.
+*   **Blocking Finding on Customer Names**: Treat any customer name or private account identifier anywhere on GitHub as an absolute **BLOCKING FINDING**.
+*   **Reviewer Hygiene**: Reviewer comments must **NEVER** contain Buganizer IDs, internal URLs, or customer names. Refer strictly to the public GitHub issue or PR number.
+
+---
+
 ## Standard Review Summary Template
 
 ```markdown
 ### Legacy Feature Review Results
 
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names in PR title, description, commits, comments, or release notes)
 * **Real GCP Test Verification**: [Pass/Pending/Needs-Human-Verification] - (Verified via minor _http.log vs _http_mock.log diffs or contributor claim. For bot PRs: prompt human reviewer with timestamp window)
 * **TF / DCL Patch Integrity**: [Pass/Fail] - (Verified schema, expanders, and flatteners)
 * **CRD & Service Mapping**: [Pass/Fail] - (CRD and servicemapping updated)
 * **Test Fixture Coverage**: [Pass/Fail] - (Verified create.yaml / update.yaml coverage)
 * **MockGCP and Real GCP Alignment**: [Pass/Fail] - (No unexpected diffs in new fields in _http.log vs _http_mock.log)
-* **Direct Controller Alignment**: [Pass/Fail] - (Updated apis/, mappers, fuzzers, and immutability checks if present)
+* **Direct Controller Alignment**: [Pass/Fail] - (Updated apis/, mappers, fuzzers, and immutability checks if present; reference resolution strictly in Create/Update)
 
 #### Actionable Findings:
 1. [File line number and specific issue]

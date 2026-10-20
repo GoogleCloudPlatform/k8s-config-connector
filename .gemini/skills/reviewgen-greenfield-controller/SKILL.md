@@ -19,3 +19,11 @@ grep -rn "+generated:controller" pkg/controller/direct/<service>/ 2>/dev/null
   - Read and follow **[`.gemini/skills/reviewgen-greenfield-controller/generated/SKILL.md`](generated/SKILL.md)** using `view_file`.
 - **If the PR is an in-flight handwritten controller PR whose `*_controller.go` does NOT contain `// +generated:controller` and `apis/<service>/generate.sh` does not invoke `generate-controller`**:
   - Read and follow **[`.gemini/skills/reviewgen-greenfield-controller/legacy/SKILL.md`](legacy/SKILL.md)** using `view_file`.
+
+---
+
+## SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+
+Across all greenfield controller reviews:
+*   **Blocking Finding**: Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   **Reviewer Hygiene**: Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
