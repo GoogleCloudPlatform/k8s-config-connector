@@ -17,6 +17,202 @@
 // krm.group: automl.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.automl.v1
-// resource: AutoMLDataset:Dataset
+// resource: AutoMLModel:Model
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.automl.v1.ImageClassificationModelMetadata
+type ImageClassificationModelMetadata struct {
+	// Optional. The ID of the `base` model. If it is specified, the new model
+	//  will be created based on the `base` model. Otherwise, the new model will be
+	//  created from scratch. The `base` model must be in the same
+	//  `project` and `location` as the new model to create, and have the same
+	//  `model_type`.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.base_model_id
+	BaseModelID *string `json:"baseModelID,omitempty"`
+
+	// Optional. The train budget of creating this model, expressed in milli node
+	//  hours i.e. 1,000 value in this field means 1 node hour. The actual
+	//  `train_cost` will be equal or less than this value. If further model
+	//  training ceases to provide any improvements, it will stop without using
+	//  full budget and the stop_reason will be `MODEL_CONVERGED`.
+	//  Note, node_hour  = actual_hour * number_of_nodes_invovled.
+	//  For model type `cloud`(default), the train budget must be between 8,000
+	//  and 800,000 milli node hours, inclusive. The default value is 192, 000
+	//  which represents one day in wall time. For model type
+	//  `mobile-low-latency-1`, `mobile-versatile-1`, `mobile-high-accuracy-1`,
+	//  `mobile-core-ml-low-latency-1`, `mobile-core-ml-versatile-1`,
+	//  `mobile-core-ml-high-accuracy-1`, the train budget must be between 1,000
+	//  and 100,000 milli node hours, inclusive. The default value is 24, 000 which
+	//  represents one day in wall time.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.train_budget_milli_node_hours
+	TrainBudgetMilliNodeHours *int64 `json:"trainBudgetMilliNodeHours,omitempty"`
+
+	// Optional. Type of the model. The available values are:
+	//  *   `cloud` - Model to be used via prediction calls to AutoML API.
+	//                This is the default value.
+	//  *   `mobile-low-latency-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards. Expected to have low latency, but
+	//                may have lower prediction quality than other models.
+	//  *   `mobile-versatile-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards.
+	//  *   `mobile-high-accuracy-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards.  Expected to have a higher
+	//                latency, but should also have a higher prediction quality
+	//                than other models.
+	//  *   `mobile-core-ml-low-latency-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
+	//                ML afterwards. Expected to have low latency, but may have
+	//                lower prediction quality than other models.
+	//  *   `mobile-core-ml-versatile-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core
+	//                ML afterwards.
+	//  *   `mobile-core-ml-high-accuracy-1` - A model that, in addition to
+	//                providing prediction via AutoML API, can also be exported
+	//                (see [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with
+	//                Core ML afterwards.  Expected to have a higher latency, but
+	//                should also have a higher prediction quality than other
+	//                models.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.model_type
+	ModelType *string `json:"modelType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.ImageObjectDetectionModelMetadata
+type ImageObjectDetectionModelMetadata struct {
+	// Optional. Type of the model. The available values are:
+	//  *   `cloud-high-accuracy-1` - (default) A model to be used via prediction
+	//                calls to AutoML API. Expected to have a higher latency, but
+	//                should also have a higher prediction quality than other
+	//                models.
+	//  *   `cloud-low-latency-1` -  A model to be used via prediction
+	//                calls to AutoML API. Expected to have low latency, but may
+	//                have lower prediction quality than other models.
+	//  *   `mobile-low-latency-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards. Expected to have low latency, but
+	//                may have lower prediction quality than other models.
+	//  *   `mobile-versatile-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards.
+	//  *   `mobile-high-accuracy-1` - A model that, in addition to providing
+	//                prediction via AutoML API, can also be exported (see
+	//                [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device
+	//                with TensorFlow afterwards.  Expected to have a higher
+	//                latency, but should also have a higher prediction quality
+	//                than other models.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.model_type
+	ModelType *string `json:"modelType,omitempty"`
+
+	// Optional. The train budget of creating this model, expressed in milli node
+	//  hours i.e. 1,000 value in this field means 1 node hour. The actual
+	//  `train_cost` will be equal or less than this value. If further model
+	//  training ceases to provide any improvements, it will stop without using
+	//  full budget and the stop_reason will be `MODEL_CONVERGED`.
+	//  Note, node_hour  = actual_hour * number_of_nodes_invovled.
+	//  For model type `cloud-high-accuracy-1`(default) and `cloud-low-latency-1`,
+	//  the train budget must be between 20,000 and 900,000 milli node hours,
+	//  inclusive. The default value is 216, 000 which represents one day in
+	//  wall time.
+	//  For model type `mobile-low-latency-1`, `mobile-versatile-1`,
+	//  `mobile-high-accuracy-1`, `mobile-core-ml-low-latency-1`,
+	//  `mobile-core-ml-versatile-1`, `mobile-core-ml-high-accuracy-1`, the train
+	//  budget must be between 1,000 and 100,000 milli node hours, inclusive.
+	//  The default value is 24, 000 which represents one day in wall time.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.train_budget_milli_node_hours
+	TrainBudgetMilliNodeHours *int64 `json:"trainBudgetMilliNodeHours,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.TextClassificationModelMetadata
+type TextClassificationModelMetadata struct {
+	// Output only. Classification type of the dataset used to train this model.
+	// +kcc:proto:field=google.cloud.automl.v1.TextClassificationModelMetadata.classification_type
+	ClassificationType *string `json:"classificationType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.automl.v1.TextExtractionModelMetadata
+type TextExtractionModelMetadata struct {
+}
+
+// +kcc:proto=google.cloud.automl.v1.TextSentimentModelMetadata
+type TextSentimentModelMetadata struct {
+}
+
+// +kcc:proto=google.cloud.automl.v1.TranslationModelMetadata
+type TranslationModelMetadata struct {
+	// The resource name of the model to use as a baseline to train the custom
+	//  model. If unset, we use the default base model provided by Google
+	//  Translate. Format:
+	//  `projects/{project_id}/locations/{location_id}/models/{model_id}`
+	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.base_model
+	BaseModel *string `json:"baseModel,omitempty"`
+
+	// Output only. Inferred from the dataset.
+	//  The source language (The BCP-47 language code) that is used for training.
+	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.source_language_code
+	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
+
+	// Output only. The target language (The BCP-47 language code) that is used
+	//  for training.
+	// +kcc:proto:field=google.cloud.automl.v1.TranslationModelMetadata.target_language_code
+	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.automl.v1.ImageClassificationModelMetadata
+type ImageClassificationModelMetadataObservedState struct {
+	// Output only. The actual train cost of creating this model, expressed in
+	//  milli node hours, i.e. 1,000 value in this field means 1 node hour.
+	//  Guaranteed to not exceed the train budget.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.train_cost_milli_node_hours
+	TrainCostMilliNodeHours *int64 `json:"trainCostMilliNodeHours,omitempty"`
+
+	// Output only. The reason that this create model operation stopped,
+	//  e.g. `BUDGET_REACHED`, `MODEL_CONVERGED`.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.stop_reason
+	StopReason *string `json:"stopReason,omitempty"`
+
+	// Output only. An approximate number of online prediction QPS that can
+	//  be supported by this model per each node on which it is deployed.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps
+	NodeQps *float64 `json:"nodeQps,omitempty"`
+
+	// Output only. The number of nodes this model is deployed on. A node is an
+	//  abstraction of a machine resource, which can handle online prediction QPS
+	//  as given in the node_qps field.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageClassificationModelMetadata.node_count
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.automl.v1.ImageObjectDetectionModelMetadata
+type ImageObjectDetectionModelMetadataObservedState struct {
+	// Output only. The number of nodes this model is deployed on. A node is an
+	//  abstraction of a machine resource, which can handle online prediction QPS
+	//  as given in the qps_per_node field.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.node_count
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+
+	// Output only. An approximate number of online prediction QPS that can
+	//  be supported by this model per each node on which it is deployed.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.node_qps
+	NodeQps *float64 `json:"nodeQps,omitempty"`
+
+	// Output only. The reason that this create model operation stopped,
+	//  e.g. `BUDGET_REACHED`, `MODEL_CONVERGED`.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.stop_reason
+	StopReason *string `json:"stopReason,omitempty"`
+
+	// Output only. The actual train cost of creating this model, expressed in
+	//  milli node hours, i.e. 1,000 value in this field means 1 node hour.
+	//  Guaranteed to not exceed the train budget.
+	// +kcc:proto:field=google.cloud.automl.v1.ImageObjectDetectionModelMetadata.train_cost_milli_node_hours
+	TrainCostMilliNodeHours *int64 `json:"trainCostMilliNodeHours,omitempty"`
+}

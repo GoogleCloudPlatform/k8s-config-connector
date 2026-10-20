@@ -531,6 +531,23 @@
 [missing_field] crd=artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcscPolicy" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableSovereignControls" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.partner" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetID" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentState" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageClassificationModelMetadata.baseModelID" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageClassificationModelMetadata.modelType" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageClassificationModelMetadata.trainBudgetMilliNodeHours" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageObjectDetectionModelMetadata.modelType" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageObjectDetectionModelMetadata.trainBudgetMilliNodeHours" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.textClassificationModelMetadata.classificationType" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.textExtractionModelMetadata" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.textSentimentModelMetadata" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.translationModelMetadata.baseModel" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.translationModelMetadata.sourceLanguageCode" is not set in unstructured objects
+[missing_field] crd=automlmodels.automl.cnrm.cloud.google.com version=v1alpha1: field ".spec.translationModelMetadata.targetLanguageCode" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].peeringMode" is not set in unstructured objects

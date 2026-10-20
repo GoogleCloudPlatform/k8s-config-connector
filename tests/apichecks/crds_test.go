@@ -1127,6 +1127,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dialogflowplaybooks.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.handlers[].lifecycleHandler.fulfillment.messages[].knowledgeInfoCard)
 		"dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.messages[].knowledgeInfoCard)
 		"notebooksruntimes.notebooks.cnrm.cloud.google.com":                             true, // GCP known pattern: Empty oneof option (spec.virtualMachine.virtualMachineConfig.bootImage)
+		"automlmodels.automl.cnrm.cloud.google.com":                                     true, // GCP known pattern: Empty oneof option (spec.textExtractionModelMetadata)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
