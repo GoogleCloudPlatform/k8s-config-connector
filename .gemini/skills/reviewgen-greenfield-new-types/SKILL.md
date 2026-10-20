@@ -1,61 +1,28 @@
 ---
 name: reviewgen-greenfield-new-types
-description: Provides provides clear review criteria for reviewing PRs that add new KCC types for Greenfield resources.
+description: Entry point for reviewing KCC Greenfield types PRs. Routes between Step 1a (`prepopulate/SKILL.md` for initial mechanical `--prepopulate-resource` scaffolding PRs), Step 1b (`judgement/SKILL.md` for `judgement_queue.yaml` triage and finalization PRs), and `legacy/SKILL.md` (for in-flight PRs generated without `judgement_queue.yaml`).
 ---
 
-# Review guide for KCC Greenfield new types PRs
-Please respect the following review criteria and invariants when reviewing.
+# Review Guide for KCC Greenfield New Types PRs (Router)
 
-## 1. API Versioning
-*   All Greenfield resources must be implemented as `v1alpha1` in KRM.
-*   Verify that `spec.versions.name = v1alpha1` in the generated CRD YAML.
-*   Verify files are placed in: `apis/${resource_group}/v1alpha1/`.
-*   *Note:* Do not confuse the GCP API version (which can be higher, e.g., v1) with the KRM version (which must be `v1alpha1`).
+This skill is the entry point for reviewing **Greenfield Step 1a (Prepopulate)**, **Greenfield Step 1b (Judgement Queue Triage)**, and **In-Flight Legacy Greenfield Types** PRs. It routes to one of three review checklists depending on whether `apis/<service>/judgement_queue.yaml` contains `<Kind>` and whether its `untriaged-bulk-generation` entry is `status: open` (Step 1a) or `status: resolved` (Step 1b).
 
-## 2. Copyright Year
-*   All new `.go` and `.sh` files must contain a copyright header.
-<!-- TODO: Dynamically determine year -->
-*   The copyright year **must be 2026**. 
+## Detect Mode and Route
 
-## 3. Pointers (Go Types)
-*   For `${resource_name}_types.go`, review the field comments (e.g., Kubebuilder tags indicating `required` or `optional`).
-*   **Strict Rule:** If a field is a Go scalar primitive type (e.g., `string`, `bool`, `int`, `int32`, `int64`, `float64`), it **must be a pointer** (e.g., `*string`, `*bool`), regardless of whether it is optional or required. **Pay special attention to the `Location` field**, which must also be a pointer.
-*   **Collection Exception:** Do **not** make slice fields (e.g., `[]string`) or map fields (e.g., `map[string]string`) pointers (i.e., do not write `*[]string` or `*map[string]string`).
+Inspect `apis/<service>/judgement_queue.yaml` for the target `<Kind>`:
 
-## 4. References & Identity
-*   All string fields referencing a GCP resource identifier must map to a reference struct in Go to validate format/semantics.
-*   If a resource is a child of another GCP resource, this relationship must be explicitly denoted in the code.
-*   The  `apis/refs/v1beta1/` directory is deprecated. No new `${resource_name}_reference.go` file is added under `apis/refs/v1beta1/` directory. No new `<Kind>Ref` implementation is added into existing files under `apis/refs/v1beta1/` directory. 
-*   Only use `refs.Normalize` and do not use `refs.NormalizeWithFallback` for greenfield resources.
-*   
-
-## 5. Completeness & Heuristics (Proto-to-CRD mapping)
-*   **Completeness Goal:** Greenfield resources must aim for 100% coverage of the fields defined in the Google API proto. Compare the generated CRD YAML against the generated proto files. The CRD must map **all** fields declared in the Proto.
-*   **1:1 Kind to Proto Mapping:** Enforce a strict 1:1 relationship between resource Kinds and Proto definitions. Verify that no single Proto is shared by multiple Kinds, and no single Kind points to multiple Protos.
-*   Find the proto definition in `.build/third_party/googleapis/google/...` matching the service named in the resource's `generate.sh` (e.g., `google.cloud.apihub.v1`).
-*   Verify that fields are mapped using these rules:
-    1. **`status` Mapping:** Fields containing `(google.api.field_behavior) = OUTPUT_ONLY` in the proto must map only to Go's `Status` struct (represented as `status` in the CRD).
-    2. **`spec` Mapping:** Fields without `OUTPUT_ONLY` behavior in the proto must map to Go's `Spec` struct (represented as `spec` in the CRD).
-*   CRD fields must align with the Kubernetes Resource Model (KRM) conventions. Useful references include:
-    *   [Kubernetes Resource Management Design Proposal](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md)
-    *   [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/main/contributors/devel/sig-architecture/api-conventions.md)
-
-## 6. Exception Files
-*   Greenfield PRs must **not** add exceptions to any exception files (e.g., tracking omitted fields, unmapped types) with the sole exception of `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
-
-# Review Comment Template
-When proposing changes or stating LGTM, format the review description as follows:
-
-```markdown
-### KCC Auto-Review Results
-* **Trigger criteria matched**: [Yes/No]
-* **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
-* **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found, especially `Location`)
-* **Completeness & Heuristics**: [Pass/Fail] - (List any missing or incorrectly mapped fields)
-* **1:1 Kind to Proto Mapping**: [Pass/Fail] - (List any shared Protos or Kinds pointing to multiple Protos)
-* **References/Identity**: [Pass/Fail] - (List any missing resource references)
-* **Exception Files**: [Pass/Fail] - (List any modified exception files other than `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`)
-
-#### Detailed Findings / Actions Required:
-1. [Specify file, line number, and exact issue]
+```bash
+awk -v kind="<Kind>" '
+  $1 == "-" && $2 == "kind:" && $3 == kind { in_kind=1; next }
+  in_kind && $1 == "-" && $2 == "kind:" { in_kind=0 }
+  in_kind && $1 == "reason:" && $2 == "untriaged-bulk-generation" { found=1; next }
+  found && $1 == "status:" { print $2; exit }
+' "apis/<service>/judgement_queue.yaml" 2>/dev/null
 ```
+
+- **If `untriaged-bulk-generation` is `open` (Step 1a / `step/gen-types`: Mechanical Prepopulate PR)**:
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md)** using `view_file`.
+- **If `untriaged-bulk-generation` is `resolved` (Step 1b / `step/types-judgement`: Judgement Queue Triage & Finalize Types PR)**:
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md)** using `view_file`.
+- **If `apis/<service>/judgement_queue.yaml` does not exist or has no entry for `<Kind>` (In-Flight Legacy Greenfield Types PR)**:
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md)** using `view_file`.
