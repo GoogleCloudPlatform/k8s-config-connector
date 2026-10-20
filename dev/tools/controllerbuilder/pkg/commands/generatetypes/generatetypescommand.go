@@ -63,6 +63,7 @@ type GenerateCRDOptions struct {
 	EmitPluralAcronyms  bool
 	EmitMessageMaps     bool
 	AllowNonGAProto     bool
+	AllowDeprecated     bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -86,6 +87,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "case plural acronyms as KRM conventions want, so related_uris becomes relatedURIs rather than relatedUris (enabled automatically by --prepopulate-resource)")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out (enabled automatically by --prepopulate-resource)")
 	cmd.Flags().BoolVar(&o.AllowNonGAProto, "allow-non-ga-proto", false, "allow scaffolding new resources backed by non-GA (alpha or beta) proto packages")
+	cmd.Flags().BoolVar(&o.AllowDeprecated, "allow-deprecated", false, "allow scaffolding new resources backed by a deprecated proto service")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -156,6 +158,21 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
 			if isNonGAProto(resourceProtoFullName) {
 				return fmt.Errorf("resource %s resolves to non-GA proto %q; use a GA proto package or pass --allow-non-ga-proto", resource.Kind, resourceProtoFullName)
+			}
+		}
+	}
+	if !o.AllowDeprecated && !o.SkipScaffoldFiles {
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			msg, err := resourceMessage(api, resourceProtoFullName)
+			if err != nil {
+				return err
+			}
+			if reason, ok := deprecatedResourceReason(api, msg); ok {
+				return fmt.Errorf("resource %s (%s) is deprecated (%s); pass --allow-deprecated to scaffold anyway", resource.Kind, resourceProtoFullName, reason)
 			}
 		}
 	}
