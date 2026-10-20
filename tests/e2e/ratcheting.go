@@ -362,7 +362,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "identityplatform.cnrm.cloud.google.com", Kind: "IdentityPlatformTenant"}:
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSAutokeyConfig"}:
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
-	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKeyVersion"}:
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSImportJob"}:
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyHandle"}:
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRingImportJob"}:
