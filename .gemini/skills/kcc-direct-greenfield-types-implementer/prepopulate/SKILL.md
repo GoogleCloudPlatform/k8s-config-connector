@@ -28,6 +28,9 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 1. Ensure `.build/third_party/googleapis` is populated (run `./dev/tools/controllerbuilder/generate-proto.sh` if missing).
 2. Locate the target proto message in `.build/third_party/googleapis/google/...` and confirm it belongs to a **GA** proto package (e.g., `v1`, `v2`, `v4` — not `v1alpha*` or `v1beta*`).
    - Do **not** pass `--allow-non-ga-proto` unless explicitly instructed.
+3. If the target proto message cannot be located in `.build/third_party/googleapis`:
+   - Search `.build/googleapis.pb` and `googleapis` git history to confirm whether the message exists or if the resource name was misidentified.
+   - If the resource does not exist in GCP APIs or protobuf definitions, document the findings in `.gemini/journals/<service_name>.md` (per `.gemini/skills/kcc-agentic-journaler/SKILL.md`) and report to maintainers.
 
 ### Phase 2: Configure `apis/<service_short>/generate.sh`
 Locate `apis/<service_short>/generate.sh` (or create it if the service is brand new) and configure all three `controllerbuilder` commands (`generate-types`, `generate-identity`, and `generate-mapper`) with `--prepopulate-resource`:
