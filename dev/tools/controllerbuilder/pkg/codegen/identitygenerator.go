@@ -173,11 +173,12 @@ type HandWrittenOverrides struct {
 	IdentityMethods            map[string]bool
 	HasGetIdentityFromSpec     bool
 	ResourceMethods            map[string]bool
-	HasGVKVar                  bool
-	HasRefStruct               bool
-	HasRefRegister             bool
-	RefMethods                 map[string]bool
-	HasHandWrittenIdentityTest bool
+	HasGVKVar                     bool
+	HasRefStruct                  bool
+	RefStructMissingNameNamespace bool
+	HasRefRegister                bool
+	RefMethods                    map[string]bool
+	HasHandWrittenIdentityTest    bool
 }
 
 // NewIdentityGenerator creates a new IdentityGenerator.
@@ -284,14 +285,24 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 	g.recordPatternJudgements(plan, msg, patterns, patOverride, normPath, tied)
 
 	plan.ServerGeneratedID = (serverGenID || typeInfo.ResourceIDServer) && plan.ResourceIDField != nil
-	if plan.ServerGeneratedID && shouldEmitIdentityFile(plan, &plan.Overrides) {
-		plan.Judgement = append(plan.Judgement, judgement.Entry{
-			Kind:   plan.Kind,
-			Group:  g.opts.Group,
-			Reason: judgement.ReasonIdentityServerGeneratedID,
-			Detail: fmt.Sprintf("generated %sIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name", plan.Kind),
-			Status: judgement.StatusOpen,
-		})
+	if shouldEmitIdentityFile(plan, &plan.Overrides) {
+		if plan.ServerGeneratedID {
+			plan.Judgement = append(plan.Judgement, judgement.Entry{
+				Kind:   plan.Kind,
+				Group:  g.opts.Group,
+				Reason: judgement.ReasonIdentityServerGeneratedID,
+				Detail: fmt.Sprintf("generated %sIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name", plan.Kind),
+				Status: judgement.StatusOpen,
+			})
+		} else if plan.ResourceIDField != nil && isNameFieldOutputOnly(msg) {
+			plan.Judgement = append(plan.Judgement, judgement.Entry{
+				Kind:   plan.Kind,
+				Group:  g.opts.Group,
+				Reason: judgement.ReasonIdentityServerGeneratedID,
+				Detail: "proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter",
+				Status: judgement.StatusOpen,
+			})
+		}
 	}
 	g.resolveSpecAncestors(plan, typeInfo)
 	return plan, nil

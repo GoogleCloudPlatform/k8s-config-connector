@@ -246,6 +246,17 @@ func getResourceDescriptorProto(msg protoreflect.MessageDescriptor) *annotations
 	return rd
 }
 
+func isNameFieldOutputOnly(msg protoreflect.MessageDescriptor) bool {
+	if msg == nil {
+		return false
+	}
+	f := msg.Fields().ByName("name")
+	if f == nil {
+		return false
+	}
+	return IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY)
+}
+
 var (
 	caiVarNormalizeRe = regexp.MustCompile(`\{\{[^}]+\}\}`)
 	caiDoubleBraceRe  = regexp.MustCompile(`\{\{([^}]+)\}\}`)
@@ -256,46 +267,54 @@ func (g *IdentityGenerator) ensureCAILoaded() error {
 		g.caiByType = make(map[string][]string)
 		g.caiFormats = make(map[string]bool)
 
-		path := g.resolveCAIMetadataPath()
-		if path == "" {
-			return
-		}
-		f, err := os.Open(path)
-		if err != nil {
-			g.caiLoadErr = fmt.Errorf("opening CAI metadata %s: %w", path, err)
-			return
-		}
-		defer f.Close()
-
-		type caiEntry struct {
-			ResourceType string   `json:"resourceType"`
-			NameFormats  []string `json:"nameFormats"`
-		}
-		sc := bufio.NewScanner(f)
-		lineNum := 0
-		for sc.Scan() {
-			lineNum++
-			var e caiEntry
-			if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
-				g.caiLoadErr = fmt.Errorf("parsing CAI metadata %s line %d: %w", path, lineNum, err)
+		paths := g.resolveCAIMetadataPaths()
+		for _, path := range paths {
+			if err := g.loadCAIMetadataFile(path); err != nil {
+				g.caiLoadErr = err
 				return
 			}
-			g.caiByType[e.ResourceType] = append(g.caiByType[e.ResourceType], e.NameFormats...)
-			for _, nf := range e.NameFormats {
-				g.caiFormats[caiVarNormalizeRe.ReplaceAllString(nf, "{}")] = true
-			}
-		}
-		if err := sc.Err(); err != nil {
-			g.caiLoadErr = fmt.Errorf("scanning CAI metadata %s: %w", path, err)
 		}
 	})
 	return g.caiLoadErr
 }
 
-func (g *IdentityGenerator) resolveCAIMetadataPath() string {
+func (g *IdentityGenerator) loadCAIMetadataFile(path string) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("opening CAI metadata %s: %w", path, err)
+	}
+	defer f.Close()
+
+	type caiEntry struct {
+		ResourceType string   `json:"resourceType"`
+		NameFormats  []string `json:"nameFormats"`
+	}
+	sc := bufio.NewScanner(f)
+	lineNum := 0
+	for sc.Scan() {
+		lineNum++
+		var e caiEntry
+		if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
+			return fmt.Errorf("parsing CAI metadata %s line %d: %w", path, lineNum, err)
+		}
+		g.caiByType[e.ResourceType] = append(g.caiByType[e.ResourceType], e.NameFormats...)
+		for _, nf := range e.NameFormats {
+			g.caiFormats[caiVarNormalizeRe.ReplaceAllString(nf, "{}")] = true
+		}
+	}
+	if err := sc.Err(); err != nil {
+		return fmt.Errorf("scanning CAI metadata %s: %w", path, err)
+	}
+	return nil
+}
+
+func (g *IdentityGenerator) resolveCAIMetadataPaths() []string {
 	path := g.opts.CAIMetadataPath
 	if g.opts.APIDirectory == "" {
-		return path
+		if path == "" {
+			return nil
+		}
+		return []string{path}
 	}
 	repoRoot := filepath.Dir(strings.TrimRight(g.opts.APIDirectory, "/"))
 	candidate := filepath.Join(repoRoot, "docs", "ai", "metadata", "cloudassetinventory_names.jsonl")
@@ -304,10 +323,18 @@ func (g *IdentityGenerator) resolveCAIMetadataPath() string {
 			path = candidate
 		}
 	}
+	if path == "" {
+		return nil
+	}
+	paths := []string{path}
 	if path == candidate {
+		discoveryCandidate := filepath.Join(repoRoot, "docs", "ai", "metadata", "discovery_names.jsonl")
+		if _, err := os.Stat(discoveryCandidate); err == nil {
+			paths = append(paths, discoveryCandidate)
+		}
 		g.loadRegistryTestAllowlist(repoRoot)
 	}
-	return path
+	return paths
 }
 
 func (g *IdentityGenerator) loadRegistryTestAllowlist(repoRoot string) {

@@ -19,8 +19,11 @@ package judgement
 // decide which [refs] findings an open entry covers. Keeping both in one place
 // means the two cannot drift apart.
 const (
-	// ReasonPossibleReference: the proto field has a
+	// ReasonAuthoritativeProtoReference: the proto field has a
 	// google.api.resource_reference annotation. The detail names the type.
+	ReasonAuthoritativeProtoReference = "authoritative-proto-reference"
+	// ReasonPossibleReference: legacy alias for ReasonAuthoritativeProtoReference
+	// retained for backward compatibility with existing judgement_queue.yaml files.
 	ReasonPossibleReference = "possible-reference"
 	// ReasonPossibleReferenceByDescription: refs.Classify, the rule
 	// TestMissingRefs applies, says the field is a reference. The detail says
@@ -38,6 +41,7 @@ const (
 )
 
 var referenceReasons = map[string]bool{
+	ReasonAuthoritativeProtoReference:         true,
 	ReasonPossibleReference:                   true,
 	ReasonPossibleReferenceByDescription:      true,
 	ReasonPossibleReferenceByDescriptionLoose: true,
@@ -120,6 +124,17 @@ const ReasonRequiredNotEnforced = "required-not-enforced"
 // ReasonEtagInSpec: a top-level etag field was generated in Spec because the
 // proto does not mark it OUTPUT_ONLY.
 const ReasonEtagInSpec = "etag-in-spec"
+
+// ReasonPossibleStatusFieldInSpec: an optional top-level field with a
+// well-known status, lifecycle, or identifier name (such as state, status,
+// startTime, endTime, lastUpdateTime, createTime, updateTime, deleteTime, id,
+// uid, selfLink, or reconciling) was generated in Spec because the proto does
+// not mark it OUTPUT_ONLY.
+const ReasonPossibleStatusFieldInSpec = "possible-status-field-in-spec"
+
+// ReasonLocationOrParentRef: a location, region, or zone field in Spec may be
+// replaced by a parent/location reference or kept as a plain string.
+const ReasonLocationOrParentRef = "location-or-parent-ref"
 
 // Reasons for deprecated proto resources, fields, and messages.
 const (
