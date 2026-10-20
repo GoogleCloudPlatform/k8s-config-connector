@@ -128,6 +128,7 @@ func MaintenanceExclusionOptions_ToProto(mapCtx *direct.MapContext, in *krm.Main
 	}
 	out := &pb.MaintenanceExclusionOptions{}
 	out.Scope = direct.Enum_ToProto[pb.MaintenanceExclusionOptions_Scope](mapCtx, in.Scope)
+	out.EndTimeBehavior = direct.Enum_ToProto[pb.MaintenanceExclusionOptions_EndTimeBehavior](mapCtx, in.EndTimeBehavior)
 	return out
 }
 
