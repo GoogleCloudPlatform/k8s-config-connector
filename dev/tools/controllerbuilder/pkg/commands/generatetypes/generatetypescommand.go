@@ -240,7 +240,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			continue
 		}
 		if o.PrepopulateResource {
-			untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
+			untriaged, _, err := untriagedState(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group, scaffolder.PathToTypeFile(resource))
 			if err != nil {
 				return fmt.Errorf("reading judgement queue: %w", err)
 			}
@@ -335,7 +335,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				// after a generator change they can name a field the types file
 				// does not have.
 				if o.PrepopulateResource {
-					untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
+					untriaged, missingFromQueue, err := untriagedState(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group, scaffolder.PathToTypeFile(resource))
 					if err != nil {
 						return fmt.Errorf("reading judgement queue: %w", err)
 					}
@@ -347,6 +347,28 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						prepopulated, err := prepopulate(msg, typeGenerator, writeOptions, specOptions)
 						if err != nil {
 							return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
+						}
+						if missingFromQueue {
+							prepopulated.Judgement = append(prepopulated.Judgement, scaffolder.ParentJudgement(resource)...)
+							if linkResolver != nil {
+								if data, err := os.ReadFile(scaffolder.PathToTypeFile(resource)); err == nil {
+									if guesses := sourcelinks.Parse(data).Guesses(); len(guesses) > 0 {
+										_, linkEntries, err := resolveSourceLinks(ctx, linkResolver, api, resource.Kind, gv.Group, protoFullNames[resource.Kind])
+										if err != nil {
+											return err
+										}
+										wantReasons := make(map[string]bool, len(guesses))
+										for _, g := range guesses {
+											wantReasons[g] = true
+										}
+										for _, le := range linkEntries {
+											if wantReasons[le.Reason] {
+												queued = append(queued, le)
+											}
+										}
+									}
+								}
+							}
 						}
 						queued = append(queued, scaffold.JudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement)...)
 					}
@@ -544,22 +566,33 @@ func resourceMessage(api *protoapi.Proto, fullName string) (protoreflect.Message
 	return msg, nil
 }
 
-// isUntriaged reports whether the service's judgement queue still has an open
-// untriaged-bulk-generation entry for the Kind. PrepopulateSpec queues that
-// entry when it scaffolds the Kind, and a reviewer resolves it once they have
-// looked the Kind over.
-func isUntriaged(apiDir, goPackage, kind, group string) (bool, error) {
+// untriagedState reports whether the service's judgement queue still has an
+// open untriaged-bulk-generation entry for the Kind, or whether the Kind's
+// <kind>_types.go file was scaffolded with --prepopulate-resource (carries
+// +kcc:required-from-proto) and its untriaged-bulk-generation entry was lost
+// from judgement_queue.yaml (for example, during a rebase conflict).
+func untriagedState(apiDir, goPackage, kind, group, typeFilePath string) (untriaged bool, missingFromQueue bool, err error) {
 	q, err := judgement.Read(judgementQueuePath(apiDir, goPackage))
 	if err != nil {
-		return false, err
+		return false, false, err
 	}
 	for _, e := range q.Entries {
 		if e.Kind == kind && e.Group == group && e.Field == "" &&
-			e.Reason == judgement.ReasonUntriagedBulkGeneration && e.IsOpen() {
-			return true, nil
+			e.Reason == judgement.ReasonUntriagedBulkGeneration {
+			return e.IsOpen(), false, nil
 		}
 	}
-	return false, nil
+	b, err := os.ReadFile(typeFilePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, false, nil
+		}
+		return false, false, err
+	}
+	if strings.Contains(string(b), codegen.RequiredFromProtoMarker) {
+		return true, true, nil
+	}
+	return false, false, nil
 }
 
 // prepopulate fills in the Spec and ObservedState for a new <kind>_types.go
