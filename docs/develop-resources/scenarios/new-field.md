@@ -1,6 +1,6 @@
 # Add a new field
 
-_<span style="text-decoration:underline;">Note: If this is a Terraform-based or DCL-based resource, please migrate them to the direct approach([Alpha](./migrate-tf-resource-alpha.md), [Beta](./migrate-tf-resource-beta.md)) first before running the following steps.</span> _
+_<span style="text-decoration:underline;">Note: If this is a Terraform-based or DCL-based resource, please migrate them to the direct approach ([Alpha](./migrate-tf-resource-alpha.md), [Beta](./migrate-tf-resource-beta.md)) first, or follow the [Terraform-based field and resource guide](./terraform-field-and-resource.md) if updating the legacy reconciler.</span> _
 
 ## 1. Generate the field
 

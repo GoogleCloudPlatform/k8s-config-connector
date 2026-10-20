@@ -59,6 +59,7 @@ The [deep-dives](./deep-dives) section gives you all the tools and exit criteria
 
 * [Add a new resource](./scenarios/new-resource.md)
 * [Add a new field](./scenarios/new-field.md)
+* [Add a Terraform-based Field or Resource](./scenarios/terraform-field-and-resource.md)
 * [Promote a Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Alpha)](./scenarios/migrate-tf-resource-alpha.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Beta)](./scenarios/migrate-tf-resource-beta.md)

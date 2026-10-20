@@ -1,7 +1,7 @@
 # Note
 This document provides an overview of how this project previously updated the Google Terraform Provider (TPG). It serves as a resource for individuals interested in understanding past update procedures and gaining insights into potential future strategies.
 
-We are actively evaluating the optimal long-term strategy for managing Terraform as a dependency. In the interim, for those requiring modifications to the Terraform provider code, please refer to the [README.ChangingTerraform.md](README.ChangingTerraform.md) document for detailed instructions.
+We are actively evaluating the optimal long-term strategy for managing Terraform as a dependency. In the interim, for those requiring modifications to the Terraform provider code, please refer to the [Terraform-Based Field and Resource Playbook](../develop-resources/scenarios/terraform-field-and-resource.md) for detailed instructions.
 
 
 # Updating the Google Terraform Provider
@@ -72,7 +72,7 @@ We are actively evaluating the optimal long-term strategy for managing Terraform
     step following the below recommendations.
     1.  If you understand the bug well and want to unblock the TF provider
         upgrade quickly to delivery some user requested features, follow the
-        [instructions](README.ChangingTerraform.md) to create a TF provider
+        [instructions](../develop-resources/scenarios/terraform-field-and-resource.md) to create a TF provider
         patch to fix the bug locally. Surface the issue separately to the
         terraform team by creating an
         [issue](https://github.com/hashicorp/terraform-provider-google/issues)
