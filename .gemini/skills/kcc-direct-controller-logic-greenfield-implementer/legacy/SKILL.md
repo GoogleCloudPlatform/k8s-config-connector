@@ -23,10 +23,11 @@ Use this legacy guide **only** when iterating on an in-flight PR that already ha
     Update `pkg/controller/direct/<service_name>/<resource_lower>_controller.go` to implement `Find`, `Create`, `Update`, and `Delete`. Ensure correct error handling (e.g., handling 404s in `Find`), and adhere to these structural patterns:
     - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`.
     - **Handling Non-API / KRM-only Spec Fields**: If the KRM Spec has fields that are not represented in the GCP resource's proto message, parse and store them as separate fields on the adapter struct.
-    - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
+    - **NormalizeReferences Timing (CRITICAL)**: Always call `common.NormalizeReferences` on **line 1 of `Create()` and `Update()`** (or inside a `buildDesired()` helper invoked strictly from `Create()` and `Update()`), NEVER in `AdapterForObject()`.
+      *Rationale*: `Delete()` must never attempt to resolve external references. If a referenced dependency is deleted first, resolving references in `AdapterForObject` blocks finalizer cleanup and causes an unrecoverable deletion deadlock (per PR #13573):
       ```go
-      if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-          return nil, fmt.Errorf("normalizing references: %w", err)
+      if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+          return fmt.Errorf("normalizing references: %w", err)
       }
       ```
     - **Identity Parent Paths**: Use `ParentString()` on the resource's identity type instead of constructing formatting string patterns manually inside the controller.

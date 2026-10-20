@@ -56,6 +56,8 @@ func (a *adapter) buildDesired(ctx context.Context, u *unstructured.Unstructured
 > - Normalizing object references (`common.NormalizeReferences`).
 > - Canonicalizing value formats (e.g., standardizing string casing, project number vs ID resolution, or relative vs full URL paths).
 > - Applying default parameters or computed fields required by the GCP API.
+> 
+> **Important (Reference Resolution Timing)**: `NormalizeReferences` must be called inside `buildDesired` (invoked strictly by `Create()` and `Update()`), **NEVER inside `AdapterForObject()`**. Resolving references in `AdapterForObject` blocks `Delete()` when dependencies are deleted first and causes an unrecoverable deletion deadlock (per PR #13573).
 
 ### Step 2.b: Using `buildDesired` in `Create()`
 ```go

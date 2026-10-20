@@ -42,12 +42,17 @@ Please respect the following review criteria and invariants when reviewing in-fl
 ## 6. Exception Files
 *   Greenfield PRs must **not** add exceptions to any exception files (e.g., tracking omitted fields, unmapped types) with the sole exception of `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+## 7. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
 * **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found, especially `Location`)
 * **Completeness & Heuristics**: [Pass/Fail] - (List any missing or incorrectly mapped fields)

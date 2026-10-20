@@ -75,6 +75,13 @@ Please enforce all of the following review criteria and invariants.
 
 ---
 
+## 5. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
+
+---
+
 # Review Comment Template
 
 When proposing changes or stating LGTM, format the review description as follows:
@@ -82,6 +89,7 @@ When proposing changes or stating LGTM, format the review description as follows
 ```markdown
 ### KCC Greenfield Step 1 (Prepopulate) Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **`generate.sh` & Flags Check**: [Pass/Fail] - (Verify `generate-types --prepopulate-resource`, `generate-identity`, `generate-mapper --prepopulate-resource`, and no `--allow-non-ga-proto`)
 * **Judgement Queue Open Check**: [Pass/Fail] - (Confirm `apis/<service>/judgement_queue.yaml` has `untriaged-bulk-generation` with `status: open` and no premature manual resolutions)
 * **Mechanical Output & Idempotency**: [Pass/Fail] - (Confirm `./apis/<service>/generate.sh` produces zero diff and `<kind>_types.go` was not hand-edited)
