@@ -80,6 +80,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	grpcMux.AddCustomHandler(s.buildLogScopeHandler())
 	grpcMux.AddService(pb.NewMetricsServiceV2Client(conn))
 	grpcMux.AddService(pb.NewConfigServiceV2Client(conn))
 	grpcMux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)

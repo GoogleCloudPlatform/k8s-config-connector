@@ -37,6 +37,7 @@ import (
 type Mux interface {
 	http.Handler
 	AddService(client any, opt ...ServiceOption)
+	AddCustomHandler(handler func(w http.ResponseWriter, r *http.Request) bool)
 }
 
 // grpcMux implements Mux.
@@ -51,6 +52,10 @@ type grpcMux struct {
 
 	// overrideHeaders allows changing headers before they are sent
 	overrideHeaders func(response http.ResponseWriter)
+}
+
+func (m *grpcMux) AddCustomHandler(handler func(w http.ResponseWriter, r *http.Request) bool) {
+	m.customHandlers = append(m.customHandlers, handler)
 }
 
 var _ Mux = (*grpcMux)(nil)
