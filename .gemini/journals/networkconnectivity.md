@@ -22,3 +22,10 @@
   3. Normalized `generatedActivationKey` and `peeringNetwork` in `mockgcp/mocknetworkconnectivity/normalize.go` and `tests/e2e/normalize.go`.
 - **Impact**: When testing or updating transports, only mutable fields valid in `PENDING_KEY` state (`description`, `labels`) can be modified prior to provider activation. Defaulted fields like `stackType` must be aligned in `compareTransport`.
 
+### [2026-10-20] Non-existent resource NetworkConnectivityServiceConnectionGateway
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `NetworkConnectivityServiceConnectionGateway` (Issue #14172).
+- **Problem**: Investigation of `.build/third_party/googleapis/google/cloud/networkconnectivity/` (across `v1`, `v1beta`, and `v1alpha1`), `.build/googleapis.pb`, and `mockgcp` confirmed that no protobuf message, RPC, or resource definition exists for `ServiceConnectionGateway`. Running `controllerbuilder generate-types` fails with `failed to find the proto message google.cloud.networkconnectivity.v1.ServiceConnectionGateway: proto: not found`. The only service connection resources in `cross_network_automation.proto` are `ServiceConnectionMap`, `ServiceConnectionPolicy`, and `ServiceConnectionToken`.
+- **Solution**: Documented findings in `.gemini/journals/networkconnectivity.md` (per `.gemini/skills/kcc-agentic-journaler/SKILL.md`), and updated `prepopulate/SKILL.md` guidance for handling non-existent resources.
+- **Impact**: Future agents working on `networkconnectivity` will know that `ServiceConnectionGateway` does not exist in Google Cloud Network Connectivity APIs and cannot be generated.
+
+
