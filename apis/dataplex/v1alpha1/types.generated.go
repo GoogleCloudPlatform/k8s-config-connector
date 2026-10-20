@@ -36,6 +36,8 @@
 // resource: DataplexEntryLink:EntryLink
 // resource: DataplexGlossaryCategory:GlossaryCategory
 // resource: DataplexGlossaryTerm:GlossaryTerm
+// resource: DataplexContent:Content
+// resource: DataplexEnvironment:Environment
 
 package v1alpha1
 
@@ -333,6 +335,22 @@ type AssetStatus struct {
 	//  attached resources.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
 	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.Notebook
+type Content_Notebook struct {
+	// Required. Kernel Type of the notebook.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.Notebook.kernel_type
+	// +required
+	KernelType *string `json:"kernelType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.SqlScript
+type Content_SQLScript struct {
+	// Required. Query Engine to be used for the Sql Query.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.SqlScript.engine
+	// +required
+	Engine *string `json:"engine,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.DataAccessSpec
@@ -1176,6 +1194,91 @@ type EntryType_Authorization struct {
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
 
+/* unreachable type Environment_Endpoints
+// +kcc:proto=google.cloud.dataplex.v1.Environment.Endpoints
+type Environment_Endpoints struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec
+type Environment_InfrastructureSpec struct {
+	// Optional. Compute resources needed for analyze interactive workloads.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.compute
+	Compute *Environment_InfrastructureSpec_ComputeResources `json:"compute,omitempty"`
+
+	// Required. Software Runtime Configuration for analyze interactive
+	//  workloads.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.os_image
+	// +required
+	OSImage *Environment_InfrastructureSpec_OSImageRuntime `json:"osImage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources
+type Environment_InfrastructureSpec_ComputeResources struct {
+	// Optional. Size in GB of the disk. Default is 100 GB.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Optional. Total number of nodes in the sessions created for this
+	//  environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Optional. Max configurable nodes.
+	//  If max_node_count > node_count, then auto-scaling is enabled.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime
+type Environment_InfrastructureSpec_OSImageRuntime struct {
+	// Required. Dataplex Universal Catalog Image version.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.image_version
+	// +required
+	ImageVersion *string `json:"imageVersion,omitempty"`
+
+	// Optional. List of Java jars to be included in the runtime environment.
+	//  Valid input includes Cloud Storage URIs to Jar binaries.
+	//  For example, gs://bucket-name/my/path/to/file.jar
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.java_libraries
+	JavaLibraries []string `json:"javaLibraries,omitempty"`
+
+	// Optional. A list of python packages to be installed.
+	//  Valid formats include Cloud Storage URI to a PIP installable library.
+	//  For example, gs://bucket-name/my/path/to/lib.tar.gz
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.python_packages
+	PythonPackages []string `json:"pythonPackages,omitempty"`
+
+	// Optional. Spark properties to provide configuration for use in sessions
+	//  created for this environment. The properties to set on daemon config
+	//  files. Property keys are specified in `prefix:property` format. The
+	//  prefix must be "spark".
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.properties
+	Properties map[string]string `json:"properties,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.SessionSpec
+type Environment_SessionSpec struct {
+	// Optional. The idle time configuration of the session. The session will be
+	//  auto-terminated at the end of this period.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionSpec.max_idle_duration
+	MaxIdleDuration *string `json:"maxIdleDuration,omitempty"`
+
+	// Optional. If True, this causes sessions to be pre-created and available
+	//  for faster startup to enable interactive exploration use-cases. This
+	//  defaults to False to avoid additional billed charges. These can only be
+	//  set to True for the environment with name set to "default", and with
+	//  default configuration.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionSpec.enable_fast_startup
+	EnableFastStartup *bool `json:"enableFastStartup,omitempty"`
+}
+
+/* unreachable type Environment_SessionStatus
+// +kcc:proto=google.cloud.dataplex.v1.Environment.SessionStatus
+type Environment_SessionStatus struct {
+}
+*/
+
 // +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
 type Lake_MetastoreStatus struct {
 	// Current state of association.
@@ -1757,6 +1860,25 @@ type EntrySourceObservedState struct {
 	//  the source location for data external to Google Cloud.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.location
 	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Environment.Endpoints
+type Environment_EndpointsObservedState struct {
+	// Output only. URI to serve notebook APIs
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.Endpoints.notebooks
+	Notebooks *string `json:"notebooks,omitempty"`
+
+	// Output only. URI to serve SQL APIs
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.Endpoints.sql
+	SQL *string `json:"sql,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Environment.SessionStatus
+type Environment_SessionStatusObservedState struct {
+	// Output only. Queries over sessions to mark whether the environment is
+	//  currently active or not
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionStatus.active
+	Active *bool `json:"active,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.StorageAccess

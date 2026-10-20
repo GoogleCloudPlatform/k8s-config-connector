@@ -21,6 +21,33 @@
 # file does not have.
 
 entries:
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//configdelivery.googleapis.com/projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" contains ancestor segment(s) resourceBundles/{resource_bundle} with no matching reference or field on ConfigDeliveryReleaseSpec
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to ConfigDeliveryResourceBundleRef, read from the resourceBundles segment of projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

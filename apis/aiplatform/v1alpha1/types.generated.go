@@ -29,6 +29,7 @@
 // resource: VertexAISchedule:Schedule
 // resource: AIPlatformReasoningEngine:ReasoningEngine
 // resource: AIPlatformFeatureView:FeatureView
+// resource: AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 package v1alpha1
 
@@ -190,6 +191,14 @@ type CodeExecutionResult struct {
 	Output *string `json:"output,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.ColabImage
+type ColabImage struct {
+	// Optional. The release name of the NotebookRuntime Colab image, e.g.
+	//  "py310". If not specified, detault to the latest release.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.release_name
+	ReleaseName *string `json:"releaseName,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Content
 type Content struct {
 	// Optional. The producer of the content. Must be either 'user' or 'model'.
@@ -243,6 +252,25 @@ type EnvVar struct {
 	//  references will never be expanded, regardless of whether the variable
 	//  exists or not.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.EnvVar
+type EnvVarWithRequired struct {
+	// Required. Name of the environment variable. Must be a valid C identifier.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. Variables that reference a $(VAR_NAME) are expanded
+	//  using the previous defined environment variables in the container and
+	//  any service environment variables. If a variable cannot be resolved,
+	//  the reference in the input string will be unchanged. The $(VAR_NAME)
+	//  syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped
+	//  references will never be expanded, regardless of whether the variable
+	//  exists or not.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
+	// +required
 	Value *string `json:"value,omitempty"`
 }
 
@@ -1006,6 +1034,23 @@ type MachineSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 
+	// Optional. Immutable. The Nvidia GPU partition size.
+	//
+	//  When specified, the requested accelerators will be partitioned into
+	//  smaller GPU partitions. For example, if the request is for 8 units of
+	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	//  create 8 * 7 = 56 partitioned MIG instances.
+	//
+	//  The partition size must be a value supported by the requested accelerator.
+	//  Refer to
+	//  [Nvidia GPU
+	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	//  for the available partition sizes.
+	//
+	//  If set, the accelerator_count should be set to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
 	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
 	//  available from GKE. (Example: tpu_topology: "2x2x1").
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.tpu_topology
@@ -1365,6 +1410,15 @@ type ModelSourceInfo struct {
 	Copy *bool `json:"copy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEUCConfig struct {
+	// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+	//  In proto3, the default value of a boolean is false. In this way, by default
+	//  EUC will be enabled for NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.euc_disabled
+	EUCDisabled *bool `json:"eucDisabled,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
 type NotebookExecutionJob_CustomEnvironmentSpec struct {
 	// The specification of a single machine for the execution job.
@@ -1389,6 +1443,36 @@ type NotebookExecutionJob_DirectNotebookSource struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime
 type NotebookExecutionJob_WorkbenchRuntime struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig
+type NotebookIdleShutdownConfig struct {
+	// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
+	//  accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
+	//  * 60.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_timeout
+	// +required
+	IdleTimeout *string `json:"idleTimeout,omitempty"`
+
+	// Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_shutdown_disabled
+	IdleShutdownDisabled *bool `json:"idleShutdownDisabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookSoftwareConfig
+type NotebookSoftwareConfig struct {
+	// Optional. Google-managed NotebookRuntime colab image.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.colab_image
+	ColabImage *ColabImage `json:"colabImage,omitempty"`
+
+	// Optional. Environment variables to be passed to the container.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.env
+	Env []EnvVarWithRequired `json:"env,omitempty"`
+
+	// Optional. Post startup script config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.post_startup_script_config
+	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.Part
@@ -1481,6 +1565,23 @@ type Port struct {
 	//  Must be a valid port number, between 1 and 65535 inclusive.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Port.container_port
 	ContainerPort *int32 `json:"containerPort,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PostStartupScriptConfig
+type PostStartupScriptConfig struct {
+	// Optional. Post startup script to run after runtime is started.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script
+	PostStartupScript *string `json:"postStartupScript,omitempty"`
+
+	// Optional. Post startup script url to download. Example:
+	//  `gs://bucket/script.sh`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script_url
+	PostStartupScriptURL *string `json:"postStartupScriptURL,omitempty"`
+
+	// Optional. Post startup script behavior that defines download and execution
+	//  behavior.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script_behavior
+	PostStartupScriptBehavior *string `json:"postStartupScriptBehavior,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.PredefinedSplit
@@ -1854,6 +1955,19 @@ type SecretEnvVar struct {
 	//  will provide the value for this environment variable.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.secret_ref
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ShieldedVmConfig
+type ShieldedVMConfig struct {
+	// Defines whether the instance has [Secure
+	//  Boot](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot)
+	//  enabled.
+	//
+	//  Secure Boot helps ensure that the system only runs authentic software by
+	//  verifying the digital signature of all boot components, and halting the
+	//  boot process if signature verification fails.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ShieldedVmConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
@@ -2440,6 +2554,15 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ColabImage
+type ColabImageObservedState struct {
+	// Output only. A human-readable description of the specified colab image
+	//  release, populated by the system. Example: "Python 3.10", "Latest - current
+	//  Python 3.11"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.description
+	Description *string `json:"description,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata
 type FeatureView_BigtableMetadataObservedState struct {
 	// The Bigtable App Profile to use for reading from Bigtable.
@@ -2490,6 +2613,26 @@ type Model_OriginalModelInfoObservedState struct {
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEUCConfigObservedState struct {
+	// Output only. Whether ActAs check is bypassed for service account attached
+	//  to the VM. If false, we need ActAs check for the default Compute Engine
+	//  Service account. When a Runtime is created, a VM is allocated using Default
+	//  Compute Engine Service Account. Any user requesting to use this Runtime
+	//  requires Service Account User (ActAs) permission over this SA. If true,
+	//  Runtime owner is using EUC and does not require the above permission as VM
+	//  no longer use default Compute Engine SA, but a P4SA.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.bypass_actas_check
+	BypassActasCheck *bool `json:"bypassActasCheck,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookSoftwareConfig
+type NotebookSoftwareConfigObservedState struct {
+	// Optional. Google-managed NotebookRuntime colab image.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.colab_image
+	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool
 type ResourcePoolObservedState struct {

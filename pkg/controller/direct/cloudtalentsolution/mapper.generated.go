@@ -93,6 +93,24 @@ found existing non-generated mapping function "CloudTalentSolutionCompanySpec_To
 		return out
 	}
 */
+func CloudTalentSolutionTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.CloudTalentSolutionTenantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudTalentSolutionTenantSpec{}
+	// MISSING: Name
+	out.ExternalID = direct.LazyPtr(in.GetExternalId())
+	return out
+}
+func CloudTalentSolutionTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudTalentSolutionTenantSpec) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.ExternalId = direct.ValueOf(in.ExternalID)
+	return out
+}
 func Company_DerivedInfo_FromProto(mapCtx *direct.MapContext, in *pb.Company_DerivedInfo) *krm.Company_DerivedInfo {
 	if in == nil {
 		return nil

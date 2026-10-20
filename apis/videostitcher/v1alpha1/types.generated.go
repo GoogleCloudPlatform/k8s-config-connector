@@ -18,6 +18,9 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.video.stitcher.v1
 // resource: VideoStitcherCDNKey:CdnKey
+// resource: VideoStitcherLiveConfig:LiveConfig
+// resource: VideoStitcherSlate:Slate
+// resource: VideoStitcherVODConfig:VodConfig
 
 package v1alpha1
 
@@ -26,6 +29,32 @@ type AkamaiCDNKey struct {
 	// Input only. Token key for the Akamai CDN edge configuration.
 	// +kcc:proto:field=google.cloud.video.stitcher.v1.AkamaiCdnKey.token_key
 	TokenKey []byte `json:"tokenKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.stitcher.v1.FetchOptions
+type FetchOptions struct {
+	// Custom headers to pass into fetch request.
+	//  Headers must have a maximum of 3 key value pairs.
+	//  Each key value pair must have a maximum of 256 characters per key and 256
+	//  characters per value.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.FetchOptions.headers
+	Headers map[string]string `json:"headers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.stitcher.v1.GamLiveConfig
+type GamLiveConfig struct {
+	// Required. Ad Manager network code to associate with the live config.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.GamLiveConfig.network_code
+	// +required
+	NetworkCode *string `json:"networkCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.stitcher.v1.GamVodConfig
+type GamVodConfig struct {
+	// Required. Ad Manager network code to associate with the VOD config.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.GamVodConfig.network_code
+	// +required
+	NetworkCode *string `json:"networkCode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.stitcher.v1.GoogleCdnKey
@@ -67,4 +96,47 @@ type MediaCDNKey_TokenConfig struct {
 	//  Defaults to `edge-cache-token`.
 	// +kcc:proto:field=google.cloud.video.stitcher.v1.MediaCdnKey.TokenConfig.query_parameter
 	QueryParameter *string `json:"queryParameter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.stitcher.v1.PrefetchConfig
+type PrefetchConfig struct {
+	// Required. Indicates whether the option to prefetch ad requests is enabled.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.PrefetchConfig.enabled
+	// +required
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The duration in seconds of the part of the break to be prefetched.
+	//  This field is only relevant if prefetch is enabled.
+	//  You should set this duration to as long as possible to increase the
+	//  benefits of prefetching, but not longer than the shortest ad break
+	//  expected. For example, for a live event with 30s and 60s ad breaks, the
+	//  initial duration should be set to 30s.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.PrefetchConfig.initial_ad_request_duration
+	InitialAdRequestDuration *string `json:"initialAdRequestDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.stitcher.v1.Slate.GamSlate
+type Slate_GamSlate struct {
+	// Required. Ad Manager network code to associate with the live config.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.Slate.GamSlate.network_code
+	// +required
+	NetworkCode *string `json:"networkCode,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.stitcher.v1.GamLiveConfig
+type GamLiveConfigObservedState struct {
+	// Output only. The asset key identifier generated for the live config.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.GamLiveConfig.asset_key
+	AssetKey *string `json:"assetKey,omitempty"`
+
+	// Output only. The custom asset key identifier generated for the live config.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.GamLiveConfig.custom_asset_key
+	CustomAssetKey *string `json:"customAssetKey,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.stitcher.v1.Slate.GamSlate
+type Slate_GamSlateObservedState struct {
+	// Output only. The identifier generated for the slate by GAM.
+	// +kcc:proto:field=google.cloud.video.stitcher.v1.Slate.GamSlate.gam_slate_id
+	GamSlateID *int64 `json:"gamSlateID,omitempty"`
 }

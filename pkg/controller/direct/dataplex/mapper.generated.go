@@ -431,6 +431,42 @@ func Asset_SecurityStatus_ToProto(mapCtx *direct.MapContext, in *krm.Asset_Secur
 	return out
 }
 
+func Content_Notebook_FromProto(mapCtx *direct.MapContext, in *pb.Content_Notebook) *krm.Content_Notebook {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Content_Notebook{}
+	out.KernelType = direct.Enum_FromProto(mapCtx, in.GetKernelType())
+	return out
+}
+
+func Content_Notebook_ToProto(mapCtx *direct.MapContext, in *krm.Content_Notebook) *pb.Content_Notebook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content_Notebook{}
+	out.KernelType = direct.Enum_ToProto[pb.Content_Notebook_KernelType](mapCtx, in.KernelType)
+	return out
+}
+
+func Content_SQLScript_FromProto(mapCtx *direct.MapContext, in *pb.Content_SqlScript) *krm.Content_SQLScript {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Content_SQLScript{}
+	out.Engine = direct.Enum_FromProto(mapCtx, in.GetEngine())
+	return out
+}
+
+func Content_SQLScript_ToProto(mapCtx *direct.MapContext, in *krm.Content_SQLScript) *pb.Content_SqlScript {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content_SqlScript{}
+	out.Engine = direct.Enum_ToProto[pb.Content_SqlScript_QueryEngine](mapCtx, in.Engine)
+	return out
+}
+
 func DataAccessSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAccessSpec) *krm.DataAccessSpec {
 	if in == nil {
 		return nil
@@ -1794,6 +1830,73 @@ func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetS
 	return out
 }
 
+func DataplexContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexContentObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentObservedState) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexContentSpec{}
+	// MISSING: Name
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataText = direct.LazyPtr(in.GetDataText())
+	out.SQLScript = Content_SQLScript_FromProto(mapCtx, in.GetSqlScript())
+	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
+	return out
+}
+
+func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentSpec) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	out.Path = direct.ValueOf(in.Path)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := DataplexContentSpec_DataText_ToProto(mapCtx, in.DataText); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Content_SQLScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Content = &pb.Content_SqlScript_{SqlScript: oneof}
+	}
+	if oneof := Content_Notebook_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Content = &pb.Content_Notebook_{Notebook: oneof}
+	}
+	return out
+}
+
+func DataplexContentSpec_DataText_ToProto(mapCtx *direct.MapContext, in *string) *pb.Content_DataText {
+	if in == nil {
+		return nil
+	}
+	return &pb.Content_DataText{DataText: *in}
+}
+
 func DataplexDataAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetObservedState {
 	if in == nil {
 		return nil
@@ -2482,6 +2585,64 @@ func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEn
 	return out
 }
 
+func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEnvironmentObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
+	return out
+}
+
+func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
+	return out
+}
+
+func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEnvironmentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.InfrastructureSpec = Environment_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.SessionSpec = Environment_SessionSpec_FromProto(mapCtx, in.GetSessionSpec())
+	return out
+}
+
+func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentSpec) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.InfrastructureSpec = Environment_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.SessionSpec = Environment_SessionSpec_ToProto(mapCtx, in.SessionSpec)
+	return out
+}
+
 func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryCategory) *krm.DataplexGlossaryCategoryObservedState {
 	if in == nil {
 		return nil
@@ -3103,6 +3264,134 @@ func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryTyp
 	}
 	out := &pb.EntryType_Authorization{}
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
+	return out
+}
+
+func Environment_EndpointsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krm.Environment_EndpointsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_EndpointsObservedState{}
+	out.Notebooks = direct.LazyPtr(in.GetNotebooks())
+	out.SQL = direct.LazyPtr(in.GetSql())
+	return out
+}
+
+func Environment_EndpointsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environment_EndpointsObservedState) *pb.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_Endpoints{}
+	out.Notebooks = direct.ValueOf(in.Notebooks)
+	out.Sql = direct.ValueOf(in.SQL)
+	return out
+}
+
+func Environment_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec) *krm.Environment_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec{}
+	out.Compute = Environment_InfrastructureSpec_ComputeResources_FromProto(mapCtx, in.GetCompute())
+	out.OSImage = Environment_InfrastructureSpec_OSImageRuntime_FromProto(mapCtx, in.GetOsImage())
+	return out
+}
+
+func Environment_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec) *pb.Environment_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec{}
+	if oneof := Environment_InfrastructureSpec_ComputeResources_ToProto(mapCtx, in.Compute); oneof != nil {
+		out.Resources = &pb.Environment_InfrastructureSpec_Compute{Compute: oneof}
+	}
+	if oneof := Environment_InfrastructureSpec_OSImageRuntime_ToProto(mapCtx, in.OSImage); oneof != nil {
+		out.Runtime = &pb.Environment_InfrastructureSpec_OsImage{OsImage: oneof}
+	}
+	return out
+}
+
+func Environment_InfrastructureSpec_ComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec_ComputeResources) *krm.Environment_InfrastructureSpec_ComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec_ComputeResources{}
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	return out
+}
+
+func Environment_InfrastructureSpec_ComputeResources_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec_ComputeResources) *pb.Environment_InfrastructureSpec_ComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec_ComputeResources{}
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	return out
+}
+
+func Environment_InfrastructureSpec_OSImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec_OsImageRuntime) *krm.Environment_InfrastructureSpec_OSImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec_OSImageRuntime{}
+	out.ImageVersion = direct.LazyPtr(in.GetImageVersion())
+	out.JavaLibraries = in.JavaLibraries
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+
+func Environment_InfrastructureSpec_OSImageRuntime_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec_OSImageRuntime) *pb.Environment_InfrastructureSpec_OsImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec_OsImageRuntime{}
+	out.ImageVersion = direct.ValueOf(in.ImageVersion)
+	out.JavaLibraries = in.JavaLibraries
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+
+func Environment_SessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionSpec) *krm.Environment_SessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_SessionSpec{}
+	out.MaxIdleDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxIdleDuration())
+	out.EnableFastStartup = direct.LazyPtr(in.GetEnableFastStartup())
+	return out
+}
+
+func Environment_SessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment_SessionSpec) *pb.Environment_SessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionSpec{}
+	out.MaxIdleDuration = direct.StringDuration_ToProto(mapCtx, in.MaxIdleDuration)
+	out.EnableFastStartup = direct.ValueOf(in.EnableFastStartup)
+	return out
+}
+
+func Environment_SessionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krm.Environment_SessionStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_SessionStatusObservedState{}
+	out.Active = direct.LazyPtr(in.GetActive())
+	return out
+}
+
+func Environment_SessionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environment_SessionStatusObservedState) *pb.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionStatus{}
+	out.Active = direct.ValueOf(in.Active)
 	return out
 }
 

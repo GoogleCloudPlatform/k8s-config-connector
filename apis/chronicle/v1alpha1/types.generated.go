@@ -22,6 +22,9 @@
 // resource: ChronicleNativeDashboard:NativeDashboard
 // resource: ChronicleFindingsRefinement:FindingsRefinement
 // resource: ChronicleReferenceList:ReferenceList
+// resource: ChronicleDataAccessLabel:DataAccessLabel
+// resource: ChronicleDataAccessScope:DataAccessScope
+// resource: ChronicleRule:Rule
 
 package v1alpha1
 
@@ -109,6 +112,18 @@ type AdvancedFilterConfig_ValueSource struct {
 	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.ValueSource.query_options
 	QueryOptions *AdvancedFilterConfig_QueryOptions `json:"queryOptions,omitempty"`
 }
+
+/* unreachable type CompilationDiagnostic
+// +kcc:proto=google.cloud.chronicle.v1.CompilationDiagnostic
+type CompilationDiagnostic struct {
+}
+*/
+
+/* unreachable type CompilationPosition
+// +kcc:proto=google.cloud.chronicle.v1.CompilationPosition
+type CompilationPosition struct {
+}
+*/
 
 // +kcc:proto=google.cloud.chronicle.v1.DashboardDefinition
 type DashboardDefinition struct {
@@ -231,6 +246,27 @@ type DashboardUserData struct {
 	IsPinned *bool `json:"isPinned,omitempty"`
 }
 
+// +kcc:proto=google.cloud.chronicle.v1.DataAccessLabelReference
+type DataAccessLabelReference struct {
+	// The name of the data access label.
+	// +kcc:guess=possible-reference target=ChronicleDataAccessLabel
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataAccessLabelReference.data_access_label
+	DataAccessLabel *string `json:"dataAccessLabel,omitempty"`
+
+	// The name of the log type.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataAccessLabelReference.log_type
+	LogType *string `json:"logType,omitempty"`
+
+	// The asset namespace configured in the forwarder
+	//  of the customer's events.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataAccessLabelReference.asset_namespace
+	AssetNamespace *string `json:"assetNamespace,omitempty"`
+
+	// The ingestion label configured in the forwarder of the customer's events.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataAccessLabelReference.ingestion_label
+	IngestionLabel *IngestionLabel `json:"ingestionLabel,omitempty"`
+}
+
 // +kcc:proto=google.cloud.chronicle.v1.DataTableColumnInfo
 type DataTableColumnInfo struct {
 	// Entity proto field path that the column is mapped to
@@ -291,6 +327,35 @@ type FilterOperatorAndValues struct {
 	FieldValues []string `json:"fieldValues,omitempty"`
 }
 
+// +kcc:proto=google.cloud.chronicle.v1.IngestionLabel
+type IngestionLabel struct {
+	// Required. The key of the ingestion label. Always required.
+	// +kcc:proto:field=google.cloud.chronicle.v1.IngestionLabel.ingestion_label_key
+	// +required
+	IngestionLabelKey *string `json:"ingestionLabelKey,omitempty"`
+
+	// Optional. The value of the ingestion label. Optional. An object
+	//  with no provided value and some key provided would match
+	//  against the given key and ANY value.
+	// +kcc:proto:field=google.cloud.chronicle.v1.IngestionLabel.ingestion_label_value
+	IngestionLabelValue *string `json:"ingestionLabelValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.InputsUsed
+type InputsUsed struct {
+	// Optional. Whether the rule queries UDM events.
+	// +kcc:proto:field=google.cloud.chronicle.v1.InputsUsed.uses_udm
+	UsesUdm *bool `json:"usesUdm,omitempty"`
+
+	// Optional. Whether the rule queries entity events.
+	// +kcc:proto:field=google.cloud.chronicle.v1.InputsUsed.uses_entity
+	UsesEntity *bool `json:"usesEntity,omitempty"`
+
+	// Optional. Whether the rule queries detections.
+	// +kcc:proto:field=google.cloud.chronicle.v1.InputsUsed.uses_detection
+	UsesDetection *bool `json:"usesDetection,omitempty"`
+}
+
 // +kcc:proto=google.cloud.chronicle.v1.OutcomeFilter
 type OutcomeFilter struct {
 	// Required. The outcome variable name.
@@ -335,6 +400,14 @@ type ScopeInfo struct {
 	ReferenceListScope *ReferenceListScope `json:"referenceListScope,omitempty"`
 }
 
+// +kcc:proto=google.cloud.chronicle.v1.Severity
+type Severity struct {
+	// The display name of the severity level. Extracted from the meta section of
+	//  the rule text.
+	// +kcc:proto:field=google.cloud.chronicle.v1.Severity.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 /* unreachable type Watchlist_EntityCount
 // +kcc:proto=google.cloud.chronicle.v1.Watchlist.EntityCount
 type Watchlist_EntityCount struct {
@@ -376,6 +449,47 @@ type Interval struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.chronicle.v1.CompilationDiagnostic
+type CompilationDiagnosticObservedState struct {
+	// Output only. The diagnostic message.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationDiagnostic.message
+	Message *string `json:"message,omitempty"`
+
+	// Output only. The approximate position in the rule text associated with the
+	//  compilation diagnostic.
+	//  Compilation Position may be empty.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationDiagnostic.position
+	Position *CompilationPositionObservedState `json:"position,omitempty"`
+
+	// Output only. The severity of a rule's compilation diagnostic.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationDiagnostic.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Output only. Link to documentation that describes a diagnostic in more
+	//  detail.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationDiagnostic.uri
+	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.chronicle.v1.CompilationPosition
+type CompilationPositionObservedState struct {
+	// Output only. Start line number, beginning at 1.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationPosition.start_line
+	StartLine *int32 `json:"startLine,omitempty"`
+
+	// Output only. Start column number, beginning at 1.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationPosition.start_column
+	StartColumn *int32 `json:"startColumn,omitempty"`
+
+	// Output only. End line number, beginning at 1.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationPosition.end_line
+	EndLine *int32 `json:"endLine,omitempty"`
+
+	// Output only. End column number, beginning at 1.
+	// +kcc:proto:field=google.cloud.chronicle.v1.CompilationPosition.end_column
+	EndColumn *int32 `json:"endColumn,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.chronicle.v1.DashboardDefinition
 type DashboardDefinitionObservedState struct {
 	// Charts in the dashboard.
@@ -387,6 +501,17 @@ type DashboardDefinitionObservedState struct {
 type DashboardDefinition_ChartConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.dashboard_chart
 	DashboardChart *string `json:"dashboardChart,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.chronicle.v1.DataAccessLabelReference
+type DataAccessLabelReferenceObservedState struct {
+	// Output only. The display name of the label.
+	//  Data access label and log types's name
+	//  will match the display name of the resource.
+	//  The asset namespace will match the namespace itself.
+	//  The ingestion key value pair will match the key of the tuple.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataAccessLabelReference.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.chronicle.v1.Watchlist.EntityCount

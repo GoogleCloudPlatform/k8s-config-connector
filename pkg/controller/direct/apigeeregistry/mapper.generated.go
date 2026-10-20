@@ -168,6 +168,122 @@ func ApigeeRegistryInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Apige
 	out.Config = Instance_Config_ToProto(mapCtx, in.Config)
 	return out
 }
+func ApigeeregistryAPIDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApigeeregistryAPIDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryAPIDeploymentObservedState{}
+	// MISSING: Name
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	out.RevisionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionUpdateTime())
+	return out
+}
+func ApigeeregistryAPIDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryAPIDeploymentObservedState) *pb.ApiDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiDeployment{}
+	// MISSING: Name
+	out.RevisionId = direct.ValueOf(in.RevisionID)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	out.RevisionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionUpdateTime)
+	return out
+}
+func ApigeeregistryAPIDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiDeployment) *krm.ApigeeregistryAPIDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryAPIDeploymentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.APISpecRevision = direct.LazyPtr(in.GetApiSpecRevision())
+	out.EndpointURI = direct.LazyPtr(in.GetEndpointUri())
+	out.ExternalChannelURI = direct.LazyPtr(in.GetExternalChannelUri())
+	out.IntendedAudience = direct.LazyPtr(in.GetIntendedAudience())
+	out.AccessGuidance = direct.LazyPtr(in.GetAccessGuidance())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func ApigeeregistryAPIDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryAPIDeploymentSpec) *pb.ApiDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiDeployment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.ApiSpecRevision = direct.ValueOf(in.APISpecRevision)
+	out.EndpointUri = direct.ValueOf(in.EndpointURI)
+	out.ExternalChannelUri = direct.ValueOf(in.ExternalChannelURI)
+	out.IntendedAudience = direct.ValueOf(in.IntendedAudience)
+	out.AccessGuidance = direct.ValueOf(in.AccessGuidance)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func ApigeeregistryAPISpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApigeeregistryAPISpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryAPISpecObservedState{}
+	// MISSING: Name
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	out.RevisionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionUpdateTime())
+	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
+	out.Hash = direct.LazyPtr(in.GetHash())
+	return out
+}
+func ApigeeregistryAPISpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryAPISpecObservedState) *pb.ApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiSpec{}
+	// MISSING: Name
+	out.RevisionId = direct.ValueOf(in.RevisionID)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	out.RevisionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionUpdateTime)
+	out.SizeBytes = direct.ValueOf(in.SizeBytes)
+	out.Hash = direct.ValueOf(in.Hash)
+	return out
+}
+func ApigeeregistryAPISpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.ApiSpec) *krm.ApigeeregistryAPISpecSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApigeeregistryAPISpecSpec{}
+	// MISSING: Name
+	out.Filename = direct.LazyPtr(in.GetFilename())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
+	out.Contents = in.GetContents()
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func ApigeeregistryAPISpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApigeeregistryAPISpecSpec) *pb.ApiSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiSpec{}
+	// MISSING: Name
+	out.Filename = direct.ValueOf(in.Filename)
+	out.Description = direct.ValueOf(in.Description)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.SourceUri = direct.ValueOf(in.SourceURI)
+	out.Contents = in.Contents
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
 func Instance_Config_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Config) *krm.Instance_Config {
 	if in == nil {
 		return nil

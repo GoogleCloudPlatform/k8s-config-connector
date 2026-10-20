@@ -31,7 +31,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
@@ -41,7 +40,6 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ManagedKafkaConsumerGroup:ConsumerGroup \
   --resource ManagedKafkaTopic:Topic
 
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
@@ -49,14 +47,43 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ManagedKafkaCluster:Cluster \
   --resource ManagedKafkaTopic:Topic
 
-${CONTROLLERBUILDER} generate-mapper \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ManagedKafkaACL:Acl \
+  --resource ManagedKafkaConnector:Connector
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --resource ManagedKafkaACL:Acl \
+  --resource ManagedKafkaConnector:Connector
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.managedkafka.schemaregistry.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ManagedKafkaSchemaRegistry:SchemaRegistry
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.managedkafka.schemaregistry.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --resource ManagedKafkaSchemaRegistry:SchemaRegistry
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.managedkafka.v1,google.cloud.managedkafka.schemaregistry.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/managedkafka" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/managedkafka/

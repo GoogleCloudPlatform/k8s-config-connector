@@ -31,32 +31,47 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1  \
-    --resource VMwareEngineNetwork:VmwareEngineNetwork \
-    --resource VMwareEngineNetworkPeering:NetworkPeering \
-    --resource VMwareEngineNetworkPolicy:NetworkPolicy \
-    --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
-    --resource VMwareEnginePrivateCloud:PrivateCloud \
-    --resource VMwareEnginePrivateConnection:PrivateConnection \
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource VMwareEngineNetwork:VmwareEngineNetwork \
+  --resource VMwareEngineNetworkPeering:NetworkPeering \
+  --resource VMwareEngineNetworkPolicy:NetworkPolicy \
+  --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
+  --resource VMwareEnginePrivateCloud:PrivateCloud \
+  --resource VMwareEnginePrivateConnection:PrivateConnection
 
-
-
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1beta1  \
-    --resource VMwareEngineExternalAddress:ExternalAddress
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
+  --resource VMwareEngineExternalAddress:ExternalAddress
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource VMwareEngineCluster:Cluster \
+  --resource VMwareEngineLoggingServer:LoggingServer \
+  --resource VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource VMwareEngineCluster:Cluster \
+  --resource VMwareEngineLoggingServer:LoggingServer \
+  --resource VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.vmwareengine.v1 \
-  --api-version "vmwareengine.cnrm.cloud.google.com/v1beta1" \
-  --multiversion
+  --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
+  --multiversion \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/vmwareengine" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vmwareengine/

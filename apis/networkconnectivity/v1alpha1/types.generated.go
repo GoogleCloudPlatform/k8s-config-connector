@@ -25,6 +25,8 @@
 // resource: NetworkConnectivityTransport:Transport
 // resource: NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
 // resource: NetworkConnectivityDestination:Destination
+// resource: NetworkConnectivityPolicyBasedRoute:PolicyBasedRoute
+// resource: NetworkConnectivityServiceConnectionToken:ServiceConnectionToken
 
 package v1alpha1
 
@@ -40,6 +42,53 @@ type Destination_DestinationEndpoint struct {
 	// +required
 	Csp *string `json:"csp,omitempty"`
 }
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter
+type PolicyBasedRoute_Filter struct {
+	// Optional. The IP protocol that this policy-based route applies to. Valid
+	//  values are 'TCP', 'UDP', and 'ALL'. Default is 'ALL'.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.ip_protocol
+	IPProtocol *string `json:"ipProtocol,omitempty"`
+
+	// Optional. The source IP range of outgoing packets that this policy-based
+	//  route applies to. Default is "0.0.0.0/0" if protocol version is IPv4.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.src_range
+	SrcRange *string `json:"srcRange,omitempty"`
+
+	// Optional. The destination IP range of outgoing packets that this
+	//  policy-based route applies to. Default is "0.0.0.0/0" if protocol version
+	//  is IPv4.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.dest_range
+	DestRange *string `json:"destRange,omitempty"`
+
+	// Required. Internet protocol versions this policy-based route applies to.
+	//  For this version, only IPV4 is supported. IPV6 is supported in preview.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.protocol_version
+	// +required
+	ProtocolVersion *string `json:"protocolVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.InterconnectAttachment
+type PolicyBasedRoute_InterconnectAttachment struct {
+	// Optional. Cloud region to install this policy-based route on interconnect
+	//  attachment. Use `all` to install it on all interconnect attachments.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.InterconnectAttachment.region
+	Region *string `json:"region,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.VirtualMachine
+type PolicyBasedRoute_VirtualMachine struct {
+	// Optional. A list of VM instance tags that this policy-based route applies
+	//  to. VM instances that have ANY of tags specified here installs this PBR.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.VirtualMachine.tags
+	Tags []string `json:"tags,omitempty"`
+}
+
+/* unreachable type PolicyBasedRoute_Warnings
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings
+type PolicyBasedRoute_Warnings struct {
+}
+*/
 
 /* unreachable type StateTimeline_StateMetadata
 // +kcc:proto=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata
@@ -794,6 +843,26 @@ type Destination_DestinationEndpointObservedState struct {
 	// Output only. Time when the `DestinationEndpoint` resource was updated.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings
+type PolicyBasedRoute_WarningsObservedState struct {
+	// Output only. A warning code, if applicable.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.code
+	Code *string `json:"code,omitempty"`
+
+	// Output only. Metadata about this warning in key: value format. The key
+	//  should provides more detail on the warning being returned. For example,
+	//  for warnings where there are no results in a list request for a
+	//  particular zone, this key might be scope and the key value might be the
+	//  zone name. Other examples might be a key indicating a deprecated resource
+	//  and a suggested replacement.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.data
+	Data map[string]string `json:"data,omitempty"`
+
+	// Output only. A human-readable description of the warning code.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.warning_message
+	WarningMessage *string `json:"warningMessage,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.StateTimeline
