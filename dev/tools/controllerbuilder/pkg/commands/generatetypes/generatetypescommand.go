@@ -64,6 +64,7 @@ type GenerateCRDOptions struct {
 	EmitMessageMaps     bool
 	AllowNonGAProto     bool
 	AllowDeprecated     bool
+	AllowNonDeclarative bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -88,6 +89,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out (enabled automatically by --prepopulate-resource)")
 	cmd.Flags().BoolVar(&o.AllowNonGAProto, "allow-non-ga-proto", false, "allow scaffolding new resources backed by non-GA (alpha or beta) proto packages")
 	cmd.Flags().BoolVar(&o.AllowDeprecated, "allow-deprecated", false, "allow scaffolding new resources backed by a deprecated proto service")
+	cmd.Flags().BoolVar(&o.AllowNonDeclarative, "allow-non-declarative", false, "allow scaffolding new resources whose resource pattern indicates an ephemeral, data-plane, version-snapshot, or point-in-time backup resource")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -151,17 +153,22 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		RequiredFromProto: o.PrepopulateResource,
 	}
 	if !o.AllowNonGAProto && !o.SkipScaffoldFiles {
+		var rejected []string
 		for _, resource := range o.Resources {
 			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
 				continue
 			}
 			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
 			if isNonGAProto(resourceProtoFullName) {
-				return fmt.Errorf("resource %s resolves to non-GA proto %q; use a GA proto package or pass --allow-non-ga-proto", resource.Kind, resourceProtoFullName)
+				rejected = append(rejected, fmt.Sprintf("  - resource %s resolves to non-GA proto %q", resource.Kind, resourceProtoFullName))
 			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d non-GA resource(s) (use a GA proto package or pass --allow-non-ga-proto):\n%s", len(rejected), strings.Join(rejected, "\n"))
 		}
 	}
 	if !o.AllowDeprecated && !o.SkipScaffoldFiles {
+		var rejected []string
 		for _, resource := range o.Resources {
 			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
 				continue
@@ -172,8 +179,30 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				return err
 			}
 			if reason, ok := deprecatedResourceReason(api, msg); ok {
-				return fmt.Errorf("resource %s (%s) is deprecated (%s); pass --allow-deprecated to scaffold anyway", resource.Kind, resourceProtoFullName, reason)
+				rejected = append(rejected, fmt.Sprintf("  - resource %s (%s) is deprecated (%s)", resource.Kind, resourceProtoFullName, reason))
 			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d deprecated resource(s) (pass --allow-deprecated to scaffold anyway):\n%s", len(rejected), strings.Join(rejected, "\n"))
+		}
+	}
+	if !o.AllowNonDeclarative && !o.SkipScaffoldFiles {
+		var rejected []string
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			msg, err := resourceMessage(api, resourceProtoFullName)
+			if err != nil {
+				return err
+			}
+			if reason, ok := nonDeclarativeResourceReason(api, msg); ok {
+				rejected = append(rejected, fmt.Sprintf("  - resource %s (%s) appears non-declarative (%s)", resource.Kind, resourceProtoFullName, reason))
+			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d suspected non-declarative resource(s) (see docs/ai/declarative-resource-criteria.md or pass --allow-non-declarative):\n%s", len(rejected), strings.Join(rejected, "\n"))
 		}
 	}
 	if scaffolder.DocFileNotExist() {
@@ -743,3 +772,4 @@ func isNonGAProto(fullName string) bool {
 	}
 	return false
 }
+
