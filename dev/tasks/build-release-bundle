@@ -79,6 +79,11 @@ kustomize create
 
 # The following kinds are hardcoded here to block them from being included in the release bundle
 # until they pass a final manual verification. Once verified, they should be removed from this list.
+#
+# Only kinds whose CRD has no v1beta1 version may be listed here. A CRD with a v1beta1 version is
+# installed by the operator and may already be in use, so dropping it from the bundle silently
+# removes it from new installs and leaves existing clusters with a stale CRD. The build fails if a
+# listed kind's CRD has a v1beta1 version.
 BLOCKED_KINDS=(
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"
@@ -253,14 +258,28 @@ for b in "${BLOCKED_KINDS[@]}"; do
 done
 
 VALID_FILES=()
+BLOCKED_BETA_CRDS=()
 for f in config/crds/resources/*.yaml; do
     KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
     if [[ -n "${BLOCKED_MAP[${KIND,,}]:-}" ]]; then
-        echo "Excluding unverified greenfield CRD from release bundle: $f"
+        # spec.versions[].name, e.g. "  - name: v1beta1" or "    name: v1beta1"
+        if grep -q -E "^(  - |    )name: v1beta1$" "$f"; then
+            BLOCKED_BETA_CRDS+=("${KIND} ($f)")
+        else
+            echo "Excluding unverified greenfield CRD from release bundle: $f"
+        fi
     else
         VALID_FILES+=("$f")
     fi
 done
+
+if [[ ${#BLOCKED_BETA_CRDS[@]} -gt 0 ]]; then
+    echo "ERROR: BLOCKED_KINDS must only contain alpha kinds, but these kinds have a v1beta1 CRD version:" >&2
+    printf '  %s\n' "${BLOCKED_BETA_CRDS[@]}" >&2
+    echo "Remove them from BLOCKED_KINDS in dev/tasks/build-release-bundle." >&2
+    rm -f "${REPO_ROOT}/kustomization.yaml"
+    exit 1
+fi
 
 if [[ ${#VALID_FILES[@]} -gt 0 ]]; then
     kustomize edit add resource "${VALID_FILES[@]}"
