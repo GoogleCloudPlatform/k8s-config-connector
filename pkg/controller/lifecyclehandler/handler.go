@@ -21,6 +21,7 @@ import (
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
@@ -309,14 +310,25 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	structuredreporting.ReportError(ctx, err, resource)
-	msg := fmt.Errorf("Update call failed: %w", err).Error()
-	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
+
+	var conditionReason string
+	var conditionMsg string
+
+	if host, ok := gcp.IsServiceEndpointUnavailableError(err); ok {
+		conditionReason = k8s.ServiceEndpointUnavailable
+		conditionMsg = fmt.Sprintf("Service subdomain %s does not exist in DNS: %v", host, err)
+	} else {
+		conditionReason = k8s.UpdateFailed
+		conditionMsg = fmt.Errorf("Update call failed: %w", err).Error()
+	}
+
+	setCondition(resource, corev1.ConditionFalse, conditionReason, conditionMsg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
 
-	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, conditionReason, conditionMsg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
 
