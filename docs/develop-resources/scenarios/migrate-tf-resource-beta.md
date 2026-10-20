@@ -11,12 +11,15 @@ compatible. Example things to look out for:
 In the API and mapper step, we require the migration to happen in two stages:
 
 *   The first stage is to make sure all APIs and their behavior are exactly the
-    same after migration (verifying via  the golden logs).
+    same after migration (verifying via the golden logs).
 *   The second stage is to add new fields to make the resource up-to-date with
     what the current GCP service supports.
 
+> **CRITICAL: 100% Field Parity Invariant**:
+> A Direct Controller migrating an existing Terraform or DCL resource must support **every single field** present in the legacy CRD. Dropping even a single field causes Config Connector to wipe that configuration from GCP during the first reconcile loop after customer upgrade, resulting in data loss or service disruption.
+
 In the controller step, we do not require the direct controller and the
-Terraform/DCL based controller  to behave exactly the same, but fixing the
+Terraform/DCL based controller to behave exactly the same, but fixing the
 legacy or non Kubernetes-native  problems like merging config back to `spec`
 (`state-into-spec:merge`), setting defaulting on-behalf of users.
 

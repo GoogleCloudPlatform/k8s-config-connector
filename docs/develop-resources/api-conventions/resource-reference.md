@@ -37,16 +37,21 @@ As a naming convention, the resource reference field should be `<Kind>Ref(s)`.
 # API Rule
 
 
-```yaml
+```go
 type <KindRef> struct {
   // +optional   
   External string   `json:"external,omitempty"`
   // +optional  
   Name string       `json:"name,omitempty"`
   // +optional
-  Namespace string  `json:"name,omitempty"`
+  Namespace string  `json:"namespace,omitempty"`
 }
 ```
+
+Config Connector resource references adhere to a standard 3-tier contract (`apis/refs/v1beta1`):
+1. **`name`**: References a KCC resource of the expected kind within the same Kubernetes namespace.
+2. **`name` + `namespace`**: References a KCC resource located in a different Kubernetes namespace.
+3. **`external`**: References an existing GCP resource by its canonical resource ID or URI (for resources not managed by KCC, or cross-project references).
 
 # Validation
 

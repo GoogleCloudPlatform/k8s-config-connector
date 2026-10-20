@@ -1,0 +1,68 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Field Addition'
+description: 'Request or track adding a missing field to an existing KCC resource'
+title: 'feat(<Kind>): add <fieldName> field'
+labels: ['kind/enhancement']
+body:
+- id: 'field-addition-info'
+  type: 'markdown'
+  attributes:
+    value: |
+      ### Field Addition Intake
+- id: 'target-resource'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind'
+    description: 'The KCC Resource Kind (e.g. StorageBucket, ComputeInstance)'
+    placeholder: 'StorageBucket'
+  validations:
+    required: true
+- id: 'archetype'
+  type: 'dropdown'
+  attributes:
+    label: 'Controller Archetype'
+    description: 'Check pkg/controller/resourceconfig/static_config.go or CRD labels to determine the managing archetype'
+    options:
+      - 'Direct'
+      - 'Terraform-Based'
+      - 'DCL-Based'
+      - 'Dual-Controller'
+  validations:
+    required: true
+- id: 'target-field'
+  type: 'input'
+  attributes:
+    label: 'Target Field Path'
+    description: 'The field path in KRM (e.g. spec.hierarchicalNamespace.enabled or status.observedState.createTime)'
+    placeholder: 'spec.<fieldName>'
+  validations:
+    required: true
+- id: 'api-doc-link'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation URL'
+    description: 'Link to official Google Cloud documentation for the field'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+- id: 'use-case'
+  type: 'textarea'
+  attributes:
+    label: 'Use Case Description'
+    description: 'Describe the use case and desired behavior for this field. (Do NOT include internal bug IDs, internal URLs, or customer names per SOUL.md Invariant 7).'
+    placeholder: 'As a user, I need to configure...'
+  validations:
+    required: true

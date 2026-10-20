@@ -49,10 +49,10 @@ To write a new MockGCP server or to validate an existing one for the Direct reso
 #### Record real GCP log
 
 ```
-hack/record-gcp fixtures/<your_resource_test>
+hack/record-gcp pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>
 ```
 
-- `your_resource_test` is the folder directory name where you put the create.yaml and update.yaml files in. You can also use keywords to run multiple test suites. i.e. `hack/record-gcp fixtures/sql` matches all test suites that contains `sql`
+- `your_resource_test` is the fixture test directory name (typically under `pkg/test/resourcefixture/testdata/basic/...`) where you put the `create.yaml` and `update.yaml` files. You can also use paths or keywords to run test suites, e.g. `hack/record-gcp pkg/test/resourcefixture/testdata/basic/sql/...` matches all test suites that contain `sql`.
 
 ```bash
 git add <golden_file> <log_file> && git commit -m "log: real gcp"
@@ -66,13 +66,13 @@ If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_CRUD_TE
 #### Record mock GCP log.
 
 ```
-hack/compare-mock fixtures/<your_resource_test>
+hack/compare-mock pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>
 ```
 
-- `your_resource_test` is the folder directory name where you put the create.yaml and update.yaml files in. You can also use keywords to run multiple test suites. i.e. `hack/record-gcp fixtures/sql` matches all test suites that contains `sql`
+- `your_resource_test` is the fixture test directory name (typically under `pkg/test/resourcefixture/testdata/basic/...`) where you put the `create.yaml` and `update.yaml` files. You can also use paths or keywords to run test suites, e.g. `hack/compare-mock pkg/test/resourcefixture/testdata/basic/sql/...` matches all test suites that contain `sql`.
 
 ```bash
-git add <golden_file> <log_file> && git commit -m "log: real gcp"
+git add <golden_file> <log_file> && git commit -m "test: add mockgcp test"
 ```
 
 - `golden_file` is the `_generated_object_<your_resource_test>.golden.yaml` file based on *mock GCP reconciliation*.

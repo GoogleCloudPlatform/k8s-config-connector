@@ -1,4 +1,10 @@
-# Overview
+# [DEPRECATED] Overview
+
+> **DEPRECATION NOTICE**: This document is archived and preserved for historical context only.
+> Please refer to the canonical and up-to-date guide:
+> **[Terraform Field and Resource Playbook](../develop-resources/scenarios/terraform-field-and-resource.md)**.
+
+---
 
 This README provides guidance on modifying the Config Connector's [local copy](third_party/github.com/hashicorp/terraform-provider-google-beta) of the [Terraform Provider Google (TPG) Beta](https://github.com/hashicorp/terraform-provider-google-beta) library, maintained as a [Git Subtree](https://www.atlassian.com/git/tutorials/git-subtree).
 

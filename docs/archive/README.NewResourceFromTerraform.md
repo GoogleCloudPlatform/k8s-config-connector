@@ -1,4 +1,10 @@
-# Add a New Resource
+# [DEPRECATED] Add a New Resource
+
+> **DEPRECATION NOTICE**: This document is archived and preserved for historical context only.
+> Please refer to the canonical and up-to-date guide:
+> **[Terraform Field and Resource Playbook](../develop-resources/scenarios/terraform-field-and-resource.md)**.
+
+---
 
 The instructions will help you add a new resource to Config Connector through
 [Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google).

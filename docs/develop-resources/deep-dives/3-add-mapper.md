@@ -13,7 +13,7 @@ go run . generate-mapper \
    --api-version "storage.cnrm.cloud.google.com/v1beta1"
 ```
 
-**Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](https://github.com/xiaoweim/k8s-config-connector/blob/master/dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go#L132).
+**Note**: We suggest using the same proto for your mock GCP and for you type-generation tool to generate the Config Connector API and mapper to avoid mismatch in schema definitions. There are some exceptions where you need to [replace the proto go package](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/dev/tools/controllerbuilder/pkg/codegen/mappergenerator.go#L132).
 
 ### Simple path
 
@@ -21,24 +21,28 @@ If no comments marked `MISSING` and all the mapper functions look good, you are 
 
 ### Custom path
 
-If you need manual changes to some methods, remove the method or/and the `MISSING` comment from the generated code and move to the next step (step 3.2).   
+> **WARNING**: `mapper.generated.go` is automatically generated and overwritten by code generators. Never edit `mapper.generated.go` directly. Custom mapping logic must be placed in `<resource>_mappings.go`.
+
+If you need manual changes to some methods, implement them in `<resource>_mappings.go` as described in step 3.2.
 
 
 ## 3.2 Add manual mapper code
 
-Create a` <resource>_mappings.go` under` pkg/controller/direct/<service> `only if the auto-generated code cannot fulfill the mappings.
+Create a `<resource>_mappings.go` under `pkg/controller/direct/<service>` only if the auto-generated code cannot fulfill the mappings.
 
-If you have a lot of fields that need to be manually written, you can split the work into several PRs, just keep the `MISSING `comments for reference. Also, comment out the code you plan to update with `/*NOTYET*/ `comments
+> **Zero Defaulting Invariant**: Mappers must perform pure 1:1 translation between KRM and GCP proto types. Never inject default values into conversion mappers. Defaulting belongs to either the GCP service API itself or explicit KRM defaulting webhooks.
+
+If you have a lot of fields that need to be manually written, you can split the work into several PRs, just keep the `MISSING` comments for reference. Also, comment out the code you plan to update with `/*NOTYET*/` comments.
 
 
 ### To change a method
 
-* Move the code that needs manual change from `<resource>_generated.mappings.go `to `<resource>_mappings.go` 
+* Implement your custom mapping function in `<resource>_mappings.go` instead of `<resource>_generated.mappings.go`. The code generator automatically detects handwritten mapping functions and skips generating conflicting ones.
 
 ### To add a missing method
 
-* Follow the naming convention as the auto-generated code. You shall have two methods `<field>_ToProto` and` <field>_FromProto`
-* Remove the `MISSING` comment
+* Follow the naming convention as the auto-generated code. You shall have two methods `<field>_ToProto` and `<field>_FromProto`.
+* Implement the custom functions in `<resource>_mappings.go`.
 
 ## 3.3 (Optional) Add fuzzer test
 
@@ -48,7 +52,6 @@ Note: For Beta resources, a fuzzer test is required for both the `Spec` and `Sta
 export REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd $REPO_ROOT/dev/tools/controllerbuilder
 
-LLM_MODEL="gemini-2.0-flash-exp" \
 go run main.go prompt \
   <<EOF > $REPO_ROOT/pkg/controller/direct/bigquerydatatransfer/transferconfig_fuzzer.go
 // +tool:fuzz-gen

@@ -12,18 +12,62 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'Greenfield Resource Workflow'
-description: 'Track the Greenfield implementation of a new resource'
-title: 'ai:feat: KCC support for <Kind>'
-labels: ['greenfield', 'overseer', 'workflow/greenfield']
+name: 'Direct Resource Workflow'
+description: 'Track the implementation of a new Direct controller resource'
+title: 'feat: KCC support for <Kind>'
+labels: ['area/direct-controllers', 'kind/enhancement']
 body:
-- id: 'workflow-desc'
+- id: 'resource-info'
+  type: 'markdown'
+  attributes:
+    value: |
+      ### Direct Resource Intake Checklist
+- id: 'proto-package'
+  type: 'input'
+  attributes:
+    label: 'Protobuf Package'
+    description: 'The Google Cloud protobuf package (e.g. google.cloud.bigquery.datatransfer.v1)'
+    placeholder: 'google.cloud.<service>.<version>'
+  validations:
+    required: true
+- id: 'proto-message'
+  type: 'input'
+  attributes:
+    label: 'Protobuf Message / Resource'
+    description: 'The primary Protobuf message name (e.g. TransferConfig)'
+    placeholder: '<ResourceName>'
+  validations:
+    required: true
+- id: 'api-doc-link'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation URL'
+    description: 'Link to official Google Cloud documentation for this resource'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+- id: 'kcc-group-version'
+  type: 'input'
+  attributes:
+    label: 'Target KCC Group and Version'
+    description: 'Target API group and version in KCC (e.g. bigquerydatatransfer.cnrm.cloud.google.com/v1alpha1)'
+    placeholder: '<service>.cnrm.cloud.google.com/v1alpha1'
+  validations:
+    required: true
+- id: 'phases'
+  type: 'checkboxes'
+  attributes:
+    label: 'Implementation Phases'
+    description: 'Track the 3-phase multi-PR delivery pipeline'
+    options:
+      - label: 'Phase 1: API Types, CRDs, Identity & References (PR: Part of #<this_issue>, release-note: NONE)'
+      - label: 'Phase 2: Direct Controller, Mappers, Registration & Fuzzer (PR: Part of #<this_issue>, release-note: NONE)'
+      - label: 'Phase 3: Resource Fixtures, MockGCP HTTP Log Alignment & Docs (PR: Fixes #<this_issue>, customer release note)'
+- id: 'use-case'
   type: 'textarea'
   attributes:
-    label: 'Description'
-    value: |
-      This issue is to track the Greenfield implementation of <Kind>.
-
-      Workflow: https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/.agents/workflows/kcc-greenfield.txt
+    label: 'Use Case Description'
+    description: 'Describe the generic customer use case for managing this resource with Config Connector. (Do NOT include internal bug IDs, internal URLs, or customer names per SOUL.md Invariant 7).'
+    placeholder: 'As a platform engineer, I want to declaratively provision...'
   validations:
     required: true

@@ -103,6 +103,9 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
    * For an **Unmigrated Dual-Controller Resource**, after verifying code/type changes, inspect both real logs (**`_http_old_controller.log`** vs **`_http.log`**, `_http.diff`) and mock logs (**`_http_old_controller_mock.log`** vs **`_http_mock.log`**, `_http_mock.diff`) to ensure traffic aligns for the newly added/modified fields.
    * Discrepancies between legacy controller traffic and direct controller traffic for the target feature indicate that the direct mapper/controller was not properly updated or handles the new field differently.
 
+### D. Public Issue & PR Hygiene (SOUL.md Invariant 7)
+* **Blocking Finding**: Verify that the PR title, description, commit messages, code comments, test fixtures, and release notes contain **NO** Buganizer IDs (`b/<id>`), internal Buganizer URLs, or customer names. Any occurrence is a blocking review failure. Review comments must also never contain Buganizer IDs or customer names.
+
 ---
 
 ## Standard Review Summary Template
@@ -116,6 +119,7 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 * **Test Fixture Coverage**: [Pass/Fail] - (Verified create.yaml / update.yaml coverage)
 * **MockGCP and Real GCP Alignment**: [Pass/Fail] - (No unexpected diffs in new fields in _http.log vs _http_mock.log)
 * **Direct Controller Alignment**: [Pass/Fail] - (Updated apis/, mappers, fuzzers, and immutability checks if present)
+* **Public Hygiene (SOUL.md Invariant 7)**: [Pass/Fail] - (No Buganizer IDs, internal URLs, or customer names in PR, commits, or comments)
 
 #### Actionable Findings:
 1. [File line number and specific issue]

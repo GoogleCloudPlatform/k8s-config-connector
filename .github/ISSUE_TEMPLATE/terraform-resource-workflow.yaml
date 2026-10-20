@@ -1,0 +1,66 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Terraform Resource Workflow'
+description: 'Track adding a new brownfield resource via Terraform Provider Google Beta'
+title: 'feat(tf): add <Kind> via ServiceMapping'
+labels: ['area/terraform-controllers', 'kind/enhancement']
+body:
+- id: 'tf-info'
+  type: 'markdown'
+  attributes:
+    value: |
+      ### Terraform-Backed Resource Intake Checklist
+- id: 'target-kind'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind'
+    description: 'The KCC Resource Kind to expose (e.g. ComputeAddress)'
+    placeholder: '<Kind>'
+  validations:
+    required: true
+- id: 'tpg-resource'
+  type: 'input'
+  attributes:
+    label: 'TPG Beta Resource Name'
+    description: 'The Terraform Provider Google Beta resource name (e.g. google_compute_address)'
+    placeholder: 'google_<service>_<resource>'
+  validations:
+    required: true
+- id: 'service-mapping'
+  type: 'input'
+  attributes:
+    label: 'ServiceMapping YAML File'
+    description: 'The ServiceMapping configuration file under config/servicemappings/'
+    placeholder: 'config/servicemappings/<service>.yaml'
+  validations:
+    required: true
+- id: 'phases'
+  type: 'checkboxes'
+  attributes:
+    label: 'Implementation Checklist'
+    options:
+      - label: 'TPG Beta schema and expander/flattener patched under third_party/... (make vet passes)'
+      - label: 'ServiceMapping configuration added with proper resourceReferences and observedFields'
+      - label: 'CRDs and reference docs generated via make manifests and make resource-docs'
+      - label: 'Integration tests pass: go test -v -tags=integration ./pkg/test/resourcefixture/testdata/basic/<service>/...'
+      - label: 'make ready-pr passes'
+- id: 'use-case'
+  type: 'textarea'
+  attributes:
+    label: 'Use Case Description'
+    description: 'Describe the use case for managing this resource. (Do NOT include internal bug IDs or customer names per SOUL.md Invariant 7).'
+    placeholder: 'As a user, I want to manage...'
+  validations:
+    required: true

@@ -48,6 +48,22 @@ We often abbreviate ConfigConnectorContext to CCC or "triple-C".
 
 Each resource is represented by a file under `config/crds/resources`.
 
+Config Connector reconciles GCP resources across three co-existing controller engines:
+1. **Direct Controllers** (`pkg/controller/direct/`, `apis/`): Modern Go SDK-native reconcilers backed by hermetic in-memory tests via MockGCP.
+2. **Terraform-Based Controllers** (`third_party/.../terraform-provider-google-beta/`, `config/servicemappings/`, dynamic controller): Brownfield reconcilers backing legacy KCC resources.
+3. **DCL-Based Controllers** (`pkg/dcl/`, `declarative-resource-client-library`): Brownfield reconcilers backing legacy KCC resources.
+4. **Dual-Controller Resources**: Resources transitioning from legacy TF/DCL to Direct, where both engines are supported in parallel until cutover.
+
+### Controller Archetype Triage Matrix (Mandatory Before Modifying Code)
+
+Before writing any code, determine which controller archetype manages the target resource:
+
+| Check | Location / Command | Controller Archetype | Action Path |
+| :--- | :--- | :--- | :--- |
+| **Step 1: Check `static_config.go`** | Check `{Group, Kind}` in `pkg/controller/resourceconfig/static_config.go` | **Direct** (if `DefaultController: Direct`)<br>**Dual** (if `SupportedControllers` has `Direct` + `TF`/`DCL`)<br>**Terraform** (if `DefaultController: Terraform`)<br>**DCL** (if `DefaultController: DCL`) | Follow archetype playbooks below. |
+| **Step 2: Inspect CRD Labels** | Check YAML under `config/crds/resources/` for:<br>• `cnrm.cloud.google.com/tf2crd: "true"`<br>• `cnrm.cloud.google.com/dcl2crd: "true"` | **Terraform-Based** if `tf2crd=true`<br>**DCL-Based** if `dcl2crd=true`<br>**Direct** if neither label is present | Confirms runtime engine if `static_config.go` is ungenerated. |
+| **Step 3: Greenfield Resource** | New GCP API not yet represented in KCC | **Direct Controller** (Mandatory default) | Follow 3-Phase Multi-PR pipeline. |
+
 A top-level parent controller routes reconciliation to one of three underlying controllers: Terraform (TF), DCL, or Direct. The controller is selected using the following order of precedence:
 
 1.  **Resource Annotation (deprecated):** A resource can specify a controller directly using the annotation `cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged and it will be deprecated in the future.
@@ -56,9 +72,17 @@ A top-level parent controller routes reconciliation to one of three underlying c
 
 3.  **Static Configuration:** A static map in `pkg/controller/resourceconfig/static_config.go` defines the default and supported controllers for each resource. This is the default mechanism if no overrides are specified.
 
-Direct controllers can be found under `pkg/controller/direct`.
-The controller will have a file name ending in `_controller.go`.
-The controller will call `RegisterModel` using a KRM containing the resource name and ending in GVK.
+### Direct Controller Registration
+
+Direct controllers can be found under `pkg/controller/direct/<service>/`.
+The controller file ends in `_controller.go` and calls `RegisterModel` inside `init()`.
+**Mandatory Registration Step**: In addition to `RegisterModel`, every direct controller package must be registered via an anonymous import in `pkg/controller/direct/register/register.go`:
+```go
+import (
+    ...
+    _ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"
+)
+```
 
 # Resource Status
 
@@ -125,3 +149,20 @@ We then run the tests again against our mockgcp emulation/testing layer for GCP 
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
 Detailed guidance on aligning mock logs with real GCP can be found in `mockgcp/GEMINI.md`.
+
+# Multi-PR Staging Protocol and Conventions
+
+For complex changes and new resources (>400 lines), follow the Greenfield 3-Phase Multi-PR pipeline:
+- **Phase 1**: API Types, CRDs, Identity & References (`Part of #<issue_id>`, release note: `NONE`)
+- **Phase 2**: Direct Controller, Mappers, Registration in `register.go`, Fuzzer (`Part of #<issue_id>`, release note: `NONE`)
+- **Phase 3**: Resource Fixtures, MockGCP HTTP Log Alignment, Reference Docs (`Fixes #<issue_id>`, customer-facing release note)
+
+For single PRs (<400 lines) like small field additions and bug fixes:
+- Use `Fixes #<issue_id>` and provide a customer-facing release note.
+
+# Public Issue & PR Hygiene (SOUL.md Invariant 7)
+
+Config Connector is an open-source repository:
+- The bugs should have the Issues, but the issues/PRs should never show the bug ID or customer names.
+- Never write `b/<id>`, Buganizer URLs, or customer names in issues, PR titles, PR descriptions, comments, commit messages, code comments, test fixtures, or release notes.
+- Link the public GitHub issue/PR URL in the Buganizer tracker instead.

@@ -21,7 +21,10 @@ Follow [deep-dives Step 2](../deep-dives/2-define-apis.md)
 
 The PR shall contain the types and deepcopy codes. It shall follow the direct resource [recommended styles and conventions](../api-conventions). **It can change the existing fields since it is Alpha**.
 
-* Make sure the generated code is placed under `./apis/<service>/v1alpha1`. If not, please check your flags.
+> **100% Field Parity Invariant**:
+> Even for Alpha resources, ensure that all fields currently configured by existing users in the Terraform/DCL controller continue to be supported or cleanly migrated. Dropping fields causes Config Connector to wipe configuration from GCP on reconcile.
+
+* Make sure the generated code is placed under `./apis/<service>/v1alpha1`. If not, please check your flags.
 * Add `cnrm.cloud.google.com/dcl2crd: "true"` or `cnrm.cloud.google.com/tf2crd: "true"` to the API tag [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92), to continue using Terraform-based controllers. *This relies on the existing Terraform-based controller to validate your API.*
 
 ### PR Reviews

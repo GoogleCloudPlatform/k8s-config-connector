@@ -79,7 +79,6 @@ All beta resource can have a Google Reference documentation Connector
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](./../../../scripts/generate-google3-docs/resource-reference/overview.md)
     by adding a row for your resource to the resource table. Note that {{spanner_name}} is the template variable for Cloud Spanner. 
-    The template variables for gcp product names can be found [here](https://source.corp.google.com/piper///depot/google3/third_party/devsite/cloud/en/_shared/_product_names.html).
     
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](./../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)
@@ -88,8 +87,14 @@ All beta resource can have a Google Reference documentation Connector
 
 1.  Run `make resource-docs`. You should see your resource generated to the [scripts/generate-google3-docs/resource-reference/generated/resource-docs](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs) folder.
 
-1. Wait for the next Config Connector release, the release sheriff will publish the reference doc in Google based on the auto-generated doc folder. 
+1. Wait for the next Config Connector release, the release sheriff will publish the reference doc based on the auto-generated doc folder. 
 
-## 5.6 Add reference document 
+## 5.6 Add release notes
 
-Once you finish adding an Alpha resource, a Beta resource, or new fields to existing resources, you can add a [releasenote](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/releasenotes) for the next release. The release sheriff will publish the note.
+When submitting your PR for an Alpha resource, Beta resource, or new fields to existing resources, include a customer-facing release note in the ````release-note```` block of your PR description:
+
+```release-note
+`KindName`: added support for `fieldName`
+```
+
+For intermediate PRs in a multi-PR sequence, enter `NONE`. The release sheriff aggregates release notes during the release process using `dev/tasks/gather-release-notes`.

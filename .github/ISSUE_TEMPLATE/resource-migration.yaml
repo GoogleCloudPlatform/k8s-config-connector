@@ -1,0 +1,66 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Resource Migration (TF/DCL to Direct)'
+description: 'Track migrating a legacy Terraform or DCL resource to a Direct controller'
+title: 'migration(<Kind>): migrate to direct controller'
+labels: ['area/direct-controllers', 'kind/cleanup']
+body:
+- id: 'migration-info'
+  type: 'markdown'
+  attributes:
+    value: |
+      ### Resource Migration Intake Checklist
+- id: 'target-resource'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind'
+    description: 'The KCC Resource Kind to migrate (e.g. StorageBucket, SpannerInstance)'
+    placeholder: 'SpannerInstance'
+  validations:
+    required: true
+- id: 'legacy-controller'
+  type: 'dropdown'
+  attributes:
+    label: 'Current Legacy Controller Archetype'
+    options:
+      - 'Terraform'
+      - 'DCL'
+  validations:
+    required: true
+- id: 'parity-guarantee'
+  type: 'checkboxes'
+  attributes:
+    label: '100% Field Parity Verification'
+    description: 'Mandatory verification to prevent dropping user fields during migration'
+    options:
+      - label: 'I verify that 100% of all spec and status fields in the existing CRD are supported in the direct types (zero dropped fields)'
+    required: true
+- id: 'phases'
+  type: 'checkboxes'
+  attributes:
+    label: 'Migration Phases'
+    description: 'Track the multi-stage migration pipeline'
+    options:
+      - label: 'Phase 1: Direct API types with dual-controller labels (cnrm.cloud.google.com/tf2crd or dcl2crd: "true")'
+      - label: 'Phase 2: Side-by-side golden testing via hack/compare-mock and roundtrip fuzzer'
+      - label: 'Phase 3: Direct reconciler implementation, registration in register.go, and cutover of DefaultController'
+- id: 'notes'
+  type: 'textarea'
+  attributes:
+    label: 'Migration Notes & Special Handling'
+    description: 'Document any special diffing, state-into-spec handling, or AIP-128 custom behavior. (Do NOT include internal bug IDs or customer names).'
+    placeholder: 'Special considerations for migration...'
+  validations:
+    required: false

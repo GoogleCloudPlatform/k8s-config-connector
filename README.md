@@ -40,5 +40,20 @@ For simple starter examples, see the
 
 ## Contributing to Config Connector
 
-Please refer to our [contribution guide](CONTRIBUTING.md) for more details.
+Please refer to our [contribution guide](CONTRIBUTING.md) for details on getting started, architecture tracks, and local testing.
+
+### Controller Engines & Architecture
+Config Connector manages GCP resources across three co-existing controller engines:
+- **Direct Controllers** (`pkg/controller/direct/`, `apis/`): Modern Go SDK-native controllers backed by hermetic in-memory tests via MockGCP. All new resources and features use Direct Controllers.
+- **Terraform-Based Controllers** (`third_party/.../terraform-provider-google-beta/`, `config/servicemappings/`, dynamic controller): Brownfield reconcilers backing legacy resources.
+- **DCL-Based Controllers** (`pkg/dcl/`, `declarative-resource-client-library`): Brownfield reconcilers backing legacy resources.
+- **Dual-Controller Resources**: Resources transitioning from legacy TF/DCL to Direct, where both engines are supported in parallel until cutover.
+
+### Developer Documentation & Agent Entry Points
+- [CONTRIBUTING.md](CONTRIBUTING.md): Comprehensive developer onboarding and 3-track workflow guide.
+- [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md): Direct entry points and architectural rules for autonomous AI coding agents.
+- [GEMINI.md](GEMINI.md): Project context, controller triage matrix, and testing conventions.
+- [Direct Resource Development Guide](docs/develop-resources/README.md): Deep dives, API conventions, and step-by-step scenarios.
+- [Terraform Field and Resource Playbook](docs/develop-resources/scenarios/terraform-field-and-resource.md): Guide for maintaining Terraform-based resources.
+- [DCL Field and Resource Playbook](docs/develop-resources/scenarios/dcl-field-and-resource.md): Guide for maintaining DCL-based resources.
 

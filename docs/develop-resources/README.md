@@ -43,11 +43,11 @@ Familiarity with Kubernetes is not required to develop Config Connector resource
 
 The [scenarios](./scenarios) section lists all the common scenarios you may want to contribute to Config Connector. Each scenario contains the tools and guided steps to establish your task. We recommend you use the following principles to find the scenario best suite your case, and get started from there. 
 
-*  **Check the CRD:** Examine the latest [CRDs](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds). The version can be found from the file name. If the resource exists but is in Alpha (and therefore not yet in the [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview)), follow the [Alpha to Beta promotion guide](./scenarios/alpha-to-beta.md). This may be the simplest solution.
+*  **Check the CRD:** Examine the latest [CRDs](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/config/crds). The version can be found from the file name. If the resource exists but is in Alpha (and therefore not yet in the [Config Connector API Reference](https://cloud.google.com/config-connector/docs/reference/overview)), follow the [Alpha to Beta promotion guide](./scenarios/alpha-to-beta.md). This may be the simplest solution.
 
 * **File an issue (if no CRD exists):** If no CRD is found, you'll likely need to create a new resource. Before starting this process, check if an issue is already filed. If not, please file an issue to avoid duplication of effort and allow us to coordinate effectively. If you are willing to take the resource yourself, please assign the issue.
 
-* **Prioritize the direct approach:** We are currently prioritizing the Direct approach over Terraform/DCL-based resource implementations.  If you encounter issues preventing the use of the direct approach, please let us know in the filed issue so we can assist.
+* **Prioritize the direct approach:** We are currently prioritizing the Direct approach over Terraform/DCL-based resource implementations. If you encounter issues preventing the use of the direct approach, please let us know in the filed issue so we can assist.
 
 The [api-conventions](./api-conventions) section is topic specific and focus on the Config Connector's solution on that topic.
 
@@ -57,9 +57,11 @@ The [deep-dives](./deep-dives) section gives you all the tools and exit criteria
 
 ## Develop by scenarios
 
-* [Add a new resource](./scenarios/new-resource.md)
-* [Add a new field](./scenarios/new-field.md)
-* [Promote a Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
+* [Add a new direct resource](./scenarios/new-resource.md)
+* [Add a new direct field](./scenarios/new-field.md)
+* [Add or update Terraform-based fields and resources](./scenarios/terraform-field-and-resource.md)
+* [Add or update DCL-based fields and resources](./scenarios/dcl-field-and-resource.md)
+* [Promote an Alpha Resource to Beta](./scenarios/alpha-to-beta.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Alpha)](./scenarios/migrate-tf-resource-alpha.md)
 * [Migrate a Terraform/DCL-based Resource to Direct (Beta)](./scenarios/migrate-tf-resource-beta.md)
 

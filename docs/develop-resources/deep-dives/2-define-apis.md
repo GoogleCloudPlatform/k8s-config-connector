@@ -97,7 +97,29 @@ According to the above principles, you can decide how to process the following.
 
 * Add other CR validations according to the [CustomResource field validations guide](../api-conventions/validations.md)
 
-* (Only for Terraform/DCL Beta) Existing `spec` and `status` fields should still be there, except the [output-only spec](https://paste.googleplex.com/4694303066030080) should be removed from `spec` and add to `status.observedState`.
+* (Only for Terraform/DCL Beta) Existing `spec` and `status` fields should still be there, except that output-only fields must be removed from `spec` and placed under `status.observedState`:
+
+```go
+type MyResourceSpec struct {
+    // Configurable input fields go here
+    DisplayName *string `json:"displayName,omitempty"`
+}
+
+type MyResourceStatus struct {
+    /* Conditions represent the latest available observations of the object's current state. */
+    Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+    /* ObservedGeneration is the generation of the resource that was most recently observed. */
+    ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+    /* ObservedState is the state of the resource as reported by the GCP API. */
+    ObservedState *MyResourceObservedState `json:"observedState,omitempty"`
+}
+
+type MyResourceObservedState struct {
+    // Output-only server-computed fields go here
+    CreateTime *string `json:"createTime,omitempty"`
+    UpdateTime *string `json:"updateTime,omitempty"`
+}
+```
 
 ### Exit Criteria
 
