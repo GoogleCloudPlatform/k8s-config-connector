@@ -23,13 +23,22 @@ def run_shell(cmd, cwd=None):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
     return result
 
+def is_ga_proto_package(pkg):
+    if not pkg or pkg == "unknown":
+        return False
+    for seg in pkg.split('.'):
+        if 'alpha' in seg or 'beta' in seg:
+            return False
+    return True
+
 def get_gcp_resources(googleapis_dir):
     resources = {} 
     service_rpcs = {} # Map service to its RPCs
     service_messages = {} # Map service_pkg to set of message names
     
     for root, _, files in os.walk(googleapis_dir):
-        if "third_party" in root: continue
+        rel_root = os.path.relpath(root, googleapis_dir)
+        if "third_party" in rel_root.split(os.sep): continue
         for file in files:
             if not file.endswith(".proto"): continue
             path = os.path.join(root, file)
@@ -64,7 +73,7 @@ def get_gcp_resources(googleapis_dir):
                         is_definition = not block.startswith('_reference') and not block.startswith('_container') and not block.startswith('_definition')
                         
                         if is_definition:
-                            if rtype not in resources or not resources[rtype].get('is_proto_defined', False):
+                            if rtype not in resources:
                                 service_name, name = rtype.split('/')
                                 resources[rtype] = {
                                     'service': service_name.split('.')[0],
@@ -74,6 +83,12 @@ def get_gcp_resources(googleapis_dir):
                                     'patterns': [],
                                     'is_proto_defined': True
                                 }
+                            else:
+                                if not resources[rtype].get('is_proto_defined', False):
+                                    resources[rtype]['is_proto_defined'] = True
+                                    resources[rtype]['pkg'] = service_pkg
+                                elif not is_ga_proto_package(resources[rtype]['pkg']) and is_ga_proto_package(service_pkg):
+                                    resources[rtype]['pkg'] = service_pkg
                             p_matches = re.findall(r'pattern:\s*"([^"]+)"', block)
                             resources[rtype]['patterns'].extend(p_matches)
                         else:
@@ -185,17 +200,53 @@ def get_gcp_resources(googleapis_dir):
     return resources
 
 def get_kcc_resources(kcc_dir):
+    seen = set()
     resources = []
+
+    def add_resource(group, kind):
+        key = (group, kind)
+        if key not in seen:
+            seen.add(key)
+            resources.append({'group': group, 'kind': kind})
+
     static_config_path = os.path.join(kcc_dir, "pkg/controller/resourceconfig/static_config.go")
     if os.path.exists(static_config_path):
         with open(static_config_path, 'r') as f:
             for line in f:
                 m = re.search(r'Group:\s*"([a-z0-9.]+)"\s*,\s*Kind:\s*"([A-Za-z0-9]+)"', line)
                 if m:
-                    resources.append({
-                        'group': m.group(1),
-                        'kind': m.group(2)
-                    })
+                    add_resource(m.group(1), m.group(2))
+
+    crds_dir = os.path.join(kcc_dir, "config/crds/resources")
+    if os.path.exists(crds_dir):
+        for fname in os.listdir(crds_dir):
+            if not fname.endswith(".yaml"):
+                continue
+            fpath = os.path.join(crds_dir, fname)
+            with open(fpath, 'r', errors='ignore') as f:
+                text = f.read()
+            gm = re.search(r'^\s*group:\s*([a-z0-9.]+)', text, re.MULTILINE)
+            km = re.search(r'^\s*names:\s*\n(?:\s+.*\n)*?\s*kind:\s*([A-Za-z0-9]+)', text, re.MULTILINE)
+            if gm and km:
+                add_resource(gm.group(1), km.group(1))
+
+    apis_dir = os.path.join(kcc_dir, "apis")
+    if os.path.exists(apis_dir):
+        for root, _, files in os.walk(apis_dir):
+            for fname in files:
+                if not fname.endswith("_types.go"):
+                    continue
+                rel_parts = os.path.relpath(root, apis_dir).split(os.sep)
+                if not rel_parts:
+                    continue
+                service = rel_parts[0]
+                group = f"{service}.cnrm.cloud.google.com"
+                fpath = os.path.join(root, fname)
+                with open(fpath, 'r', errors='ignore') as f:
+                    text = f.read()
+                for km in re.finditer(r'WithKind\("([A-Za-z0-9]+)"\)', text):
+                    add_resource(group, km.group(1))
+
     return resources
 
 def match_resources(gcp_resources, kcc_resources):
@@ -207,7 +258,7 @@ def match_resources(gcp_resources, kcc_resources):
         kcc_map[service].append(res['kind'])
 
     service_aliases = {
-        "cloudresourcemanager": ["resourcemanager"],
+        "cloudresourcemanager": ["resourcemanager", "tags"],
         "analyticshub": ["bigqueryanalyticshub"],
         "biglake": ["bigquerybiglake"],
         "container": ["container", "gke"],
@@ -221,6 +272,8 @@ def match_resources(gcp_resources, kcc_resources):
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
         "batch": ["cloudbatch"],
+        "config": ["configdeployment"],
+        "jobs": ["cloudtalentsolution"],
     }
 
     kcc_kind_aliases = {
@@ -413,6 +466,8 @@ def unify_hierarchies(resources):
                 'rtypes': [] # Keep track of original rtypes
             }
         
+        if not is_ga_proto_package(unified[key]['pkg']) and is_ga_proto_package(info['pkg']):
+            unified[key]['pkg'] = info['pkg']
         unified[key]['ops'].update(info['ops'])
         unified[key]['patterns'].extend(info['patterns'])
         unified[key]['rtypes'].append(rtype)
@@ -442,12 +497,17 @@ def main():
     temp_dir = os.path.join(os.environ.get("TMPDIR", "/tmp"), "kcc_coverage")
     os.makedirs(temp_dir, exist_ok=True)
     
-    googleapis_dir = os.path.join(temp_dir, "googleapis")
-    prepare_repo("https://github.com/googleapis/googleapis.git", googleapis_dir, googleapis_sha)
-
     kcc_dir = "." if kcc_sha.upper() == "LOCAL" else os.path.join(temp_dir, "kcc")
     if kcc_sha.upper() != "LOCAL":
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
+
+    if googleapis_sha.upper() == "LOCAL":
+        googleapis_dir = os.path.join(kcc_dir, ".build/third_party/googleapis")
+    elif os.path.isdir(googleapis_sha):
+        googleapis_dir = googleapis_sha
+    else:
+        googleapis_dir = os.path.join(temp_dir, "googleapis")
+        prepare_repo("https://github.com/googleapis/googleapis.git", googleapis_dir, googleapis_sha)
 
     gcp_raw = get_gcp_resources(googleapis_dir)
     
@@ -488,7 +548,7 @@ def main():
         kcc_map[service].append(res['kind'])
 
     service_aliases = {
-        "cloudresourcemanager": ["resourcemanager"],
+        "cloudresourcemanager": ["resourcemanager", "tags"],
         "analyticshub": ["bigqueryanalyticshub"],
         "biglake": ["bigquerybiglake"],
         "container": ["container", "gke"],
@@ -502,6 +562,8 @@ def main():
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
         "batch": ["cloudbatch"],
+        "config": ["configdeployment"],
+        "jobs": ["cloudtalentsolution"],
     }
 
     kcc_kind_aliases = {
@@ -685,6 +747,8 @@ def main():
                 "resource": key,
                 "service": info['service'],
                 "kind": kcc_kind,
+                "pkg": info['pkg'],
+                "proto_message": f"{info['pkg']}.{info['name']}" if info['pkg'] else "",
                 "patterns": info['patterns'],
                 "layer": layer,
                 "available_ops": available_ops,

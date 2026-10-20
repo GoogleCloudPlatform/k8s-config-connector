@@ -9,6 +9,29 @@ Use this skill to execute bulk `--prepopulate-resource` scaffolding (`<kind>_typ
 
 ---
 
+## 0. Sourcing Candidate GCP Resources
+
+When the user asks to source missing GCP resources (or does not provide an explicit list of `<service>:<Kind>:<ProtoMessage>` targets), derive the candidate batch deterministically using `hack/tools/greenfield`:
+
+1. **Generate the Unified Coverage List against Local `googleapis` and KCC:**
+   ```bash
+   python3 hack/tools/greenfield/calculate_coverage.py LOCAL LOCAL 50 --resources-list
+   ```
+   This reads `.build/third_party/googleapis` (pinned by `apis/git.versions`), applies `hack/tools/greenfield/coverage_skip.json`, `hack/tools/greenfield/deprecated_services.json`, and `hack/tools/greenfield/services_acronyms.json`, scans `pkg/controller/resourceconfig/static_config.go`, `config/crds/resources/*.yaml`, and `apis/*/*/*_types.go`, and writes `hack/tools/greenfield/resources_list.json`.
+   > **Remember:** Revert or clean `hack/tools/greenfield/resources_list.json` (`git checkout -- hack/tools/greenfield/resources_list.json`) before committing your branch unless explicitly asked to update the snapshot.
+
+2. **Filter `resources_list.json` to Actionable Bulk-Generation Candidates:**
+   Select entries from `hack/tools/greenfield/resources_list.json` that satisfy **all** of the following:
+   - `status == "missing"`
+   - **Manageable lifecycle (`CREATE` + `READ` + `DELETE`):**
+     - **Group 1 (Full CRUD):** `missing_ops == []` (`CREATE`, `READ`, `UPDATE`, `DELETE`)
+     - **Group 2 (Immutable Declarative Infrastructure):** `missing_ops == ["UPDATE"]` (`CREATE`, `READ`, `DELETE`)
+   - **GA Proto Package Only:** `pkg` is non-empty (skip REST-only/Discovery APIs with `pkg == ""`) and contains **no** `alpha` or `beta` version segment (enforced by `controllerbuilder`'s default `--allow-non-ga-proto=false`).
+   - **Compiled in `.build/googleapis.pb`:** Verify that `proto_message` (`<pkg>.<ProtoName>`) exists as a message descriptor in `.build/googleapis.pb`.
+   - **Declarative Resource Criteria:** Exclude non-declarative resources (ephemeral jobs, evaluations, previews, imports/exports, queries, conversational sessions, and other data-plane/imperative artifacts) enforced by `controllerbuilder`'s non-declarative filter (`dev/tools/controllerbuilder/pkg/commands/generatetypes/nondeclarative.go`) and [`docs/ai/declarative-resource-criteria.md`](../../../../docs/ai/declarative-resource-criteria.md).
+
+---
+
 ## 1. Core Guardrails
 
 1. **GA Protos Only (Fail-Fast on Non-GA Protos; Never Pass `--allow-non-ga-proto`):**

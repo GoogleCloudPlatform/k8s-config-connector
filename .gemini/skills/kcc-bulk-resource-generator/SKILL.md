@@ -9,9 +9,10 @@ This skill orchestrates the two-phase workflow for bulk-scaffolding multiple gre
 
 ---
 
-## Phase 1: Bulk Generation & Category Splitting
+## Phase 1: Candidate Sourcing, Bulk Generation & Category Splitting
 
 Read and follow `.gemini/skills/kcc-bulk-resource-generator/generate/SKILL.md` (`IsSkillFile: true`) to:
+0. Source missing manageable GA declarative GCP resources using `hack/tools/greenfield/calculate_coverage.py LOCAL LOCAL 50 --resources-list` (cross-checked against `hack/tools/greenfield/{coverage_skip.json,deprecated_services.json,services_acronyms.json}`, `.build/googleapis.pb`, and `docs/ai/declarative-resource-criteria.md`).
 1. Configure `apis/<service>/generate.sh` with `generate-types --prepopulate-resource`, `generate-identity`, and `generate-mapper --prepopulate-resource` (strictly omitting `--allow-non-ga-proto`).
 2. Run batch code and CRD generation across all candidate services.
 3. Classify and split the resulting services into committed branches by category:
