@@ -1251,6 +1251,7 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 	if err != nil {
 		return err
 	}
+	url = formatMonitoringAlertPolicyURL(url)
 
 	log.Printf("[DEBUG] Creating new AlertPolicy: %#v", obj)
 	billingProject := ""
@@ -1325,6 +1326,7 @@ func resourceMonitoringAlertPolicyRead(d *schema.ResourceData, meta interface{})
 	if err != nil {
 		return err
 	}
+	url = formatMonitoringAlertPolicyURL(url)
 
 	billingProject := ""
 
@@ -1475,6 +1477,7 @@ func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{
 	if err != nil {
 		return err
 	}
+	url = formatMonitoringAlertPolicyURL(url)
 
 	log.Printf("[DEBUG] Updating AlertPolicy %q: %#v", d.Id(), obj)
 	updateMask := []string{}
@@ -1573,6 +1576,7 @@ func resourceMonitoringAlertPolicyDelete(d *schema.ResourceData, meta interface{
 	if err != nil {
 		return err
 	}
+	url = formatMonitoringAlertPolicyURL(url)
 
 	var obj map[string]interface{}
 	log.Printf("[DEBUG] Deleting AlertPolicy %q", d.Id())
@@ -3634,4 +3638,22 @@ func expandMonitoringAlertPolicyConditionsConditionSqlBooleanTest(v interface{},
 
 func expandMonitoringAlertPolicyConditionsConditionSqlBooleanTestColumn(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
+}
+
+func formatMonitoringAlertPolicyURL(rawURL string) string {
+	// If URL contains /projects/<partition>:<project>/, escape the colon as %3A
+	// so that the REST API router does not mistake :<project> for a custom method.
+	parts := strings.Split(rawURL, "/projects/")
+	if len(parts) == 2 {
+		rest := parts[1]
+		slashIdx := strings.Index(rest, "/")
+		if slashIdx != -1 {
+			projectSegment := rest[:slashIdx]
+			if strings.Contains(projectSegment, ":") {
+				escapedProject := strings.ReplaceAll(projectSegment, ":", "%3A")
+				return parts[0] + "/projects/" + escapedProject + rest[slashIdx:]
+			}
+		}
+	}
+	return rawURL
 }
