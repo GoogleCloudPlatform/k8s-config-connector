@@ -21,7 +21,7 @@ First, read `.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`
    - Each newly scaffolded `<Kind>` has `reason: untriaged-bulk-generation` with `status: open`.
    - No `judgement_queue.yaml` entries for newly added resources were prematurely marked `status: resolved` or deleted.
 3. **Release Bundle Blocklist (`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`):**
-   - Verify that every newly generated `<Kind>` in the branch is added (in alphabetical order) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+   - Verify that every newly generated `<Kind>` in the branch is added (formatted with 4-space indentation and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
 4. **Compilation, `tests/apichecks`, `envtest`, & Operator Goldens:**
    - Run `go build` and `go test` across all touched `apis/<service>/...` and `pkg/controller/direct/<service>/...` packages.
    - Run `go test ./tests/apichecks/...` and confirm `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, and `tests/apichecks/testdata/exceptions/multi_version_crd_diff/` are untouched (`WRITE_GOLDEN_OUTPUT=1` in Step 1 may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt`).

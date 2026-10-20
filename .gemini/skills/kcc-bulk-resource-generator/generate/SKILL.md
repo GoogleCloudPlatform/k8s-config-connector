@@ -124,7 +124,7 @@ When generating across many services locally, avoid recompiling `controllerbuild
    done
    ```
 3. **Add all newly generated `<Kind>`s to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`, generate CRDs, and format once at the end:**
-   - Add each newly generated `<Kind>` (sorted alphabetically) to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+   - Add each newly generated `<Kind>` (formatted with 4 spaces and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
    ```bash
    ./dev/tasks/generate-crds
    make fmt
