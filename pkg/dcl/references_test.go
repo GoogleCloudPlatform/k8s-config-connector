@@ -147,6 +147,30 @@ func TestGetReferenceTypeConfigs(t *testing.T) {
 			},
 		},
 		{
+			name: "one non-parent type config with map[string]interface{}",
+			schema: &openapi.Schema{
+				Extension: map[string]interface{}{
+					"x-dcl-references": []interface{}{
+						map[string]interface{}{
+							"resource": "Test1/Foo",
+							"field":    "name",
+						},
+					},
+				},
+			},
+			typeConfigs: []corekccv1alpha1.TypeConfig{
+				{
+					TargetField: "name",
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Foo",
+					},
+					Key: "fooRef",
+				},
+			},
+		},
+		{
 			name: "one parent type config",
 			schema: &openapi.Schema{
 				Extension: map[string]interface{}{

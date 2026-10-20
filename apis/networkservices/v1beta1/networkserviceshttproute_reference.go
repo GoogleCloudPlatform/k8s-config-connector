@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -123,6 +124,13 @@ func (r *NetworkServicesHTTPRouteRef) Normalize(ctx context.Context, reader clie
 var _ refsv1beta1.Ref = &BackendServiceRef{}
 
 func (r *BackendServiceRef) GetGVK() schema.GroupVersionKind {
+	if r.Kind == "StorageBucket" {
+		return schema.GroupVersionKind{
+			Group:   "storage.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "StorageBucket",
+		}
+	}
 	return schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
@@ -145,6 +153,7 @@ func (r *BackendServiceRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
+	r.Kind = ""
 }
 
 func (r *BackendServiceRef) ValidateExternal(ref string) error {
@@ -153,11 +162,18 @@ func (r *BackendServiceRef) ValidateExternal(ref string) error {
 }
 
 func (r *BackendServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" && r.Name != "" {
-		return fmt.Errorf("cannot specify both name and external on %s reference", r.GetGVK().Kind)
+	if r.External != "" && (r.Name != "" || r.Kind != "") {
+		return fmt.Errorf("cannot specify both name/kind and external on %s reference", r.GetGVK().Kind)
 	}
 	fallback := func(u *unstructured.Unstructured) string {
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink == "" {
+			return ""
+		}
+		if r.Kind == "StorageBucket" {
+			parts := strings.Split(selfLink, "/")
+			return parts[len(parts)-1]
+		}
 		return selfLink
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)

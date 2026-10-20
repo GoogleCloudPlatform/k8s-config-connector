@@ -1554,7 +1554,7 @@ Content-Type: application/json
   "meshes": [
     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
   ],
-  "name": "projects/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
   "rules": [
     {
       "action": {

@@ -1,0 +1,90 @@
+256c256
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+279c279
+< POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes?alt=json&httpRouteId=httproute-storage-${uniqueId}
+---
+> POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes?%24alt=json%3Benum-encoding%3Dint&httpRouteId=httproute-storage-${uniqueId}
+291c291
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+335c335
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+370c370
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+395c395
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+418c418
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+443c443
+< PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json&updateMask=description%2Chostnames
+---
+> PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Chostnames
+457c457
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+471,473c471
+<           "headers": [],
+<           "prefixMatch": "/",
+<           "queryParameters": []
+---
+>           "prefixMatch": "/"
+503c501
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+540c538
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+566c564
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+591c589
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+616c614
+< DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json
+---
+> DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+642c640
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+668,690d665
+<   }
+< }
+< 
+< ---
+< 
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/global/httpRoutes/httproute-storage-${uniqueId}' was not found",
+<     "status": "NOT_FOUND"
