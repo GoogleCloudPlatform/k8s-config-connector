@@ -276,7 +276,7 @@ func EdgeCacheServiceQueryParameterMatch_FromProto(mapCtx *direct.MapContext, in
 }
 
 func EdgeCacheServiceHeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceHeaderAction) *pb.EdgeCacheServiceHeaderAction {
-	if in == nil || (len(in.RequestHeaderToAdd) == 0 && len(in.RequestHeaderToRemove) == 0 && len(in.ResponseHeaderToAdd) == 0 && len(in.ResponseHeaderToRemove) == 0) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceHeaderAction{}
@@ -380,7 +380,7 @@ func EdgeCacheServiceResponseHeaderToRemove_FromProto(mapCtx *direct.MapContext,
 }
 
 func EdgeCacheServiceRouteAction_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceRouteAction) *pb.EdgeCacheServiceRouteAction {
-	if in == nil || (in.CdnPolicy == nil && in.CompressionMode == nil && in.CorsPolicy == nil && in.UrlRewrite == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceRouteAction{}
@@ -404,7 +404,7 @@ func EdgeCacheServiceRouteAction_FromProto(mapCtx *direct.MapContext, in *pb.Edg
 }
 
 func EdgeCacheServiceCdnPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceCdnPolicy) *pb.EdgeCacheServiceCdnPolicy {
-	if in == nil || (in.CacheMode == nil && in.ClientTtl == nil && in.DefaultTtl == nil && in.MaxTtl == nil && in.NegativeCaching == nil && len(in.NegativeCachingPolicy) == 0 && in.SignedRequestMode == nil && in.SignedRequestKeyset == nil && in.SignedRequestMaximumExpirationTtl == nil && in.AddSignatures == nil && in.CacheKeyPolicy == nil && in.SignedTokenOptions == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceCdnPolicy{}
@@ -444,7 +444,7 @@ func EdgeCacheServiceCdnPolicy_FromProto(mapCtx *direct.MapContext, in *pb.EdgeC
 }
 
 func EdgeCacheServiceAddSignatures_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceAddSignatures) *pb.EdgeCacheServiceAddSignatures {
-	if in == nil || (len(in.Actions) == 0 && len(in.CopiedParameters) == 0 && in.Keyset == nil && in.TokenQueryParameter == nil && in.TokenTtl == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceAddSignatures{}
@@ -470,7 +470,7 @@ func EdgeCacheServiceAddSignatures_FromProto(mapCtx *direct.MapContext, in *pb.E
 }
 
 func EdgeCacheServiceCacheKeyPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceCacheKeyPolicy) *pb.EdgeCacheServiceCacheKeyPolicy {
-	if in == nil || (in.IncludeProtocol == nil && in.ExcludeHost == nil && in.ExcludeQueryString == nil && len(in.IncludedQueryParameters) == 0 && len(in.ExcludedQueryParameters) == 0 && len(in.IncludedHeaderNames) == 0 && len(in.IncludedCookieNames) == 0) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceCacheKeyPolicy{}
@@ -500,7 +500,7 @@ func EdgeCacheServiceCacheKeyPolicy_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 
 func EdgeCacheServiceSignedTokenOptions_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceSignedTokenOptions) *pb.EdgeCacheServiceSignedTokenOptions {
-	if in == nil || (len(in.AllowedSignatureAlgorithms) == 0 && in.TokenQueryParameter == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceSignedTokenOptions{}
@@ -520,7 +520,7 @@ func EdgeCacheServiceSignedTokenOptions_FromProto(mapCtx *direct.MapContext, in 
 }
 
 func EdgeCacheServiceCorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceCorsPolicy) *pb.EdgeCacheServiceCorsPolicy {
-	if in == nil || (in.MaxAge == "" && len(in.AllowOrigins) == 0 && len(in.AllowMethods) == 0 && len(in.AllowHeaders) == 0 && len(in.ExposeHeaders) == 0 && in.AllowCredentials == nil && in.Disabled == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceCorsPolicy{}
@@ -550,7 +550,7 @@ func EdgeCacheServiceCorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Edge
 }
 
 func EdgeCacheServiceUrlRewrite_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceUrlRewrite) *pb.EdgeCacheServiceUrlRewrite {
-	if in == nil || (in.HostRewrite == nil && in.PathPrefixRewrite == nil && in.PathTemplateRewrite == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceUrlRewrite{}
@@ -572,7 +572,7 @@ func EdgeCacheServiceUrlRewrite_FromProto(mapCtx *direct.MapContext, in *pb.Edge
 }
 
 func EdgeCacheServiceRouteMethods_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceRouteMethods) *pb.EdgeCacheServiceRouteMethods {
-	if in == nil || len(in.AllowedMethods) == 0 {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceRouteMethods{}
@@ -590,7 +590,7 @@ func EdgeCacheServiceRouteMethods_FromProto(mapCtx *direct.MapContext, in *pb.Ed
 }
 
 func EdgeCacheServiceUrlRedirect_ToProto(mapCtx *direct.MapContext, in *krm.EdgecacheserviceUrlRedirect) *pb.EdgeCacheServiceUrlRedirect {
-	if in == nil || (in.HostRedirect == nil && in.PathRedirect == nil && in.PrefixRedirect == nil && in.RedirectResponseCode == nil && in.HttpsRedirect == nil && in.StripQuery == nil) {
+	if in == nil {
 		return nil
 	}
 	out := &pb.EdgeCacheServiceUrlRedirect{}
