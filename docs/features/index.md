@@ -5,6 +5,7 @@ This page provides a guide to the most common configuration and management tasks
 ## Configuring Operational Modes
 
 *   **[Choose between Cluster and Namespace Mode](config-connector-mode.md)**: Understand the different ways to deploy and manage Config Connector in your cluster.
+*   **[Migrate from Managed to Standalone Installation](managed-to-manual-migration.md)**: Zero-downtime migration workflows from GKE Addon or Config Controller to Standalone Config Connector.
 *   **[Configure Identity for a Namespace](config-connector-mode.md#identity-and-authentication)**: Set up the Google Service Account (GSA) used by Config Connector for a specific namespace.
 *   **[Manage Billing and Quota](config-connector-mode.md#billing-and-quota)**: Control which Google Cloud project is billed for your resources and whose quota is consumed.
 
