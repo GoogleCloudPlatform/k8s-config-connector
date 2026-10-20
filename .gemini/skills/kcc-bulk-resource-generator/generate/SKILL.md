@@ -138,8 +138,9 @@ For each generated service `<svc>`, run `go build ./apis/<svc>/... ./pkg/control
 
 1. **Check for Category 3 (`Major Surgery Needed to Get PR Green`) first:**
    - Did `apis/<svc>/generate.sh` require multi-stage `types.generated.go` file renaming across multiple proto packages (e.g., `discoveryengine`, `networksecurity`)? $\rightarrow$ **Category 3**.
-   - Did `go build ./pkg/controller/direct/<svc>/...` fail with missing `*Request`/`*Metadata` mapper functions (`undefined: direct.<RequestOrMetadata>_FromProto`) or broken existing `v1beta1` controller callers after enabling `--multiversion` / plural acronym casing (`URIs`)? $\rightarrow$ Fix in `pkg/controller/direct/<svc>/` and classify as **Category 3**.
+   - Did `go build ./pkg/controller/direct/<svc>/...` fail with missing `*Request`/`*Metadata` mapper functions (`undefined: direct.<RequestOrMetadata>_FromProto`) or broken existing `v1beta1` controller callers after enabling `--multiversion` / plural acronym casing (`URIs`)? $\rightarrow$ Fix in `pkg/controller/direct/<svc>/` (naming any new helper file `<kind>_mapper.go` with a valid `<Kind>` prefix so `TestDirectResourceFileNaming` does not add it to `naming_violations.txt`) and classify as **Category 3**.
    - Did `go test ./tests/apichecks/...` fail on `<svc>`'s CRD with `TestCRDObjectTypes` (`field ... is an object with no properties` from an empty parameterless proto `oneof` branch struct, e.g., `message LlmAgent {}`)? $\rightarrow$ Add the CRD to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with the comment `// GCP known pattern: Empty oneof option (<field path>)` and classify as **Category 3**.
+   - Did `tests/apichecks` (`recursivetypes.txt`) or `envtest` (`pkg/cli/preview`) flag a recursive proto message cycle where `controller-gen` emits an empty `{}` object schema? $\rightarrow$ Add `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` (or `+kubebuilder:validation:items:XPreserveUnknownFields` for slice fields), and `+kubebuilder:validation:Type=object` on the cycle-edge field in `apis/<svc>/v1alpha1/<kind>_types.go`, re-run `./dev/tasks/generate-crds`, and classify as **Category 3**.
 2. **Otherwise, check for Category 2 (`Initial Setup — go.mod & Service Scaffolding`):**
    - Did `<svc>` require creating a brand-new `apis/<svc>/v1alpha1/doc.go` or `groupversion_info.go` package? $\rightarrow$ **Category 2**.
    - Did `go build ./pkg/controller/direct/<svc>/...` fail with `no required module provides package cloud.google.com/go/...`? $\rightarrow$ Run `go get <pkg>@latest && go mod tidy` and classify as **Category 2**.
@@ -175,8 +176,10 @@ To prevent untracked files from one category leaking into another category's bra
    # then regenerate CRDs, supportedgvks, and apichecks goldens for ONLY this category's services:
    ./dev/tasks/generate-crds
    # If generate-crds added a brand-new API group to config/installbundle/components/clusterroles/cnrm_{admin,viewer}.yaml,
-   # also run ./dev/tasks/generate-channels so 0-cnrm-system.yaml stays in sync.
+   # also run ./dev/tasks/generate-channels and update operator golden fixtures so 0-cnrm-system.yaml and _expected.yaml stay in sync:
+   # ./dev/tasks/generate-channels && WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...
    WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...
+   git checkout upstream/master -- tests/apichecks/testdata/exceptions/multi_version_crd_diff/
    git add -A && git commit -m "<category commit message>"
    ```
 3. Proceed to **Phase 2 (Isolated Subagent Verification)** in `.gemini/skills/kcc-bulk-resource-generator/SKILL.md`.

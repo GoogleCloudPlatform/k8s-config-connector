@@ -22,9 +22,10 @@ First, read `.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`
    - No `judgement_queue.yaml` entries for newly added resources were prematurely marked `status: resolved` or deleted.
 3. **Release Bundle Blocklist (`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`):**
    - Verify that every newly generated `<Kind>` in the branch is added (in alphabetical order) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
-4. **Compilation & `tests/apichecks`:**
+4. **Compilation, `tests/apichecks`, `envtest`, & Operator Goldens:**
    - Run `go build` and `go test` across all touched `apis/<service>/...` and `pkg/controller/direct/<service>/...` packages.
-   - Run `go test ./tests/apichecks/...` and confirm `tests/apichecks/testdata/exceptions/missingrefs.txt` is untouched.
+   - Run `go test ./tests/apichecks/...` and confirm `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, and `tests/apichecks/testdata/exceptions/multi_version_crd_diff/` are untouched (`WRITE_GOLDEN_OUTPUT=1` in Step 1 may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt`).
+   - Run `. dev/tasks/setup-envtest && go test ./pkg/cli/preview/... -run TestPreview` and `go test ./operator/pkg/controllers/configconnector/...` to verify `kube-apiserver` accepts all new CRD OpenAPI schemas and operator RBAC goldens (`_expected.yaml`) are in sync.
    - If `TestDirectResourceFileNaming` fails on a pre-existing unprefixed stub `<resource>_reference.go` file after `<service><resource>_types.go` is added, verify it was renamed to `<service><resource>_reference.go` and that `var <Kind>GVK = GroupVersion.WithKind("<Kind>")` lives in `<service><resource>_types.go`.
 
 ---
@@ -52,7 +53,7 @@ Verify that the branch has no untracked files (`git status --porcelain` is empty
 
 ### If Verifying a **Category 3 (`Major Surgery`)** Branch
 - **Explicit Surgery Inventory:**
-  - List every non-mechanical change in the branch (e.g., handwritten mapper helper files in `pkg/controller/direct/<service>/`, `--multiversion` controller caller updates, `TestCRDObjectTypes` empty `oneof` workarounds, or multi-stage `generate.sh` scripts).
+  - List every non-mechanical change in the branch (e.g., handwritten `<kind>_mapper.go` helper files in `pkg/controller/direct/<service>/`, `--multiversion` controller caller updates, `TestCRDObjectTypes` empty `oneof` workarounds, recursive proto `+kubebuilder:validation:Schemaless` markers, or multi-stage `generate.sh` scripts).
   - Verify that if any workaround was needed for `TestCRDObjectTypes` (`field ... is an object with no properties` on a parameterless proto `oneof` variant), the CRD entry in `knownInvalidCRDs` in `tests/apichecks/crds_test.go` carries the comment `// GCP known pattern: Empty oneof option (<field path>)` and that the underlying proto struct is genuinely an empty `oneof` option (not a broken/truncated struct generation).
 
 ---

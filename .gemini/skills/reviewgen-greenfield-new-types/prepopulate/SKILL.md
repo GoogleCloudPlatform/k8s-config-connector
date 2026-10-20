@@ -68,8 +68,8 @@ Please enforce all of the following review criteria and invariants.
         go test -v ./tests/apichecks/...
         ```
 *   **Exception Files**:
-    *   The **only** exception file that may be updated in Step 1 is `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` (via `WRITE_GOLDEN_OUTPUT=1` for deprecated top-level proto fields omitted by `--prepopulate-resource`), or `knownInvalidCRDs` in `tests/apichecks/crds_test.go` when `TestCRDObjectTypes` flags a genuine parameterless proto `oneof` variant struct (annotated with `// GCP known pattern: Empty oneof option (<field path>)`).
-    *   Strictly reject any modifications to `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file.
+    *   In Step 1 (`--prepopulate-resource`), running `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt`, or add genuine parameterless proto `oneof` variant structs to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` (annotated with `// GCP known pattern: Empty oneof option (<field path>)`).
+    *   Strictly reject any modifications to `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, or `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
 
 ---
 
