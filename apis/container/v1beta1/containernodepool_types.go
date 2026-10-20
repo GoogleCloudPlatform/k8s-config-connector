@@ -536,7 +536,7 @@ type RegistryHeader struct {
 type RegistryCA struct {
 	/* Reference to SecretManagerSecretVersion for the CA certificate. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.CA.gcp_secret_manager_secret_uri
-	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Client
@@ -552,14 +552,14 @@ type RegistryClient struct {
 type RegistryClientCert struct {
 	/* Reference to SecretManagerSecretVersion for the client certificate. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientCert.gcp_secret_manager_secret_uri
-	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientKey
 type RegistryClientKey struct {
 	/* Reference to SecretManagerSecretVersion for the client key. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientKey.gcp_secret_manager_secret_uri
-	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig
@@ -588,7 +588,7 @@ type CertificateAuthorityDomainConfig struct {
 type GCPSecretManagerCertificateConfig struct {
 	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig.secret_uri
-	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 func init() {

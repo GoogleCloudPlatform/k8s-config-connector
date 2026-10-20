@@ -1746,7 +1746,7 @@ func (in *GCPSecretManagerCertificateConfig) DeepCopyInto(out *GCPSecretManagerC
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 }
@@ -4073,7 +4073,7 @@ func (in *RegistryCA) DeepCopyInto(out *RegistryCA) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 }
@@ -4118,7 +4118,7 @@ func (in *RegistryClientCert) DeepCopyInto(out *RegistryClientCert) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 }
@@ -4138,7 +4138,7 @@ func (in *RegistryClientKey) DeepCopyInto(out *RegistryClientKey) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 }

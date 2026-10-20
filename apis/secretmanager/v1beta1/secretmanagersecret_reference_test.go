@@ -37,7 +37,7 @@ func TestSecretRefNormalize(t *testing.T) {
 	reader := fake.NewClientBuilder().WithLists(&unstructured.UnstructuredList{Items: []unstructured.Unstructured{*readySecret}}).Build()
 
 	t.Run("resolves by name", func(t *testing.T) {
-		ref := &SecretRef{
+		ref := &SecretManagerSecretRef{
 			Name:      "my-secret",
 			Namespace: "test-ns",
 		}
@@ -59,7 +59,7 @@ func TestSecretRefNormalize(t *testing.T) {
 	})
 
 	t.Run("resolves direct external", func(t *testing.T) {
-		ref := &SecretRef{
+		ref := &SecretManagerSecretRef{
 			External: "projects/test-project/secrets/my-secret",
 		}
 		if err := ref.Normalize(ctx, reader, "test-ns"); err != nil {

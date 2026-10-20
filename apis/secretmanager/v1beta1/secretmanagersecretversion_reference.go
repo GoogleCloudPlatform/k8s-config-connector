@@ -29,13 +29,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &SecretVersionRef{}
-var _ refsv1beta1.ExternalRef = &SecretVersionRef{}
-var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
+var _ refsv1beta1.Ref = &SecretManagerSecretVersionRef{}
 
-// SecretVersionRef is a reference to a SecretManagerSecretVersion.
+// SecretManagerSecretVersionRef is a reference to a SecretManagerSecretVersion.
 // +k8s:deepcopy-gen=true
-type SecretVersionRef struct {
+type SecretManagerSecretVersionRef struct {
 	// A reference to an externally managed SecretManagerSecretVersion resource.
 	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
 	External string `json:"external,omitempty"`
@@ -47,37 +45,44 @@ type SecretVersionRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// +k8s:deepcopy-gen=false
+// TODO(kcc): SecretVersionRef is deprecated; use SecretManagerSecretVersionRef instead. Kept for backward compatibility with existing callers.
+type SecretVersionRef = SecretManagerSecretVersionRef
+
+// TODO(kcc): Legacy check to ensure the deprecated SecretVersionRef continues to satisfy ExternalNormalizer for older callers.
+var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
+
 func init() {
-	refsv1beta1.Register(&SecretVersionRef{}, &SecretManagerSecretVersion{})
+	refsv1beta1.Register(&SecretManagerSecretVersionRef{}, &SecretManagerSecretVersion{})
 }
 
-func (r *SecretVersionRef) GetGVK() schema.GroupVersionKind {
+func (r *SecretManagerSecretVersionRef) GetGVK() schema.GroupVersionKind {
 	return SecretManagerSecretVersionGVK
 }
 
-func (r *SecretVersionRef) GetNamespacedName() types.NamespacedName {
+func (r *SecretManagerSecretVersionRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *SecretVersionRef) GetExternal() string {
+func (r *SecretManagerSecretVersionRef) GetExternal() string {
 	return r.External
 }
 
-func (r *SecretVersionRef) SetExternal(ref string) {
+func (r *SecretManagerSecretVersionRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *SecretVersionRef) ValidateExternal(ref string) error {
+func (r *SecretManagerSecretVersionRef) ValidateExternal(ref string) error {
 	_, err := ParseSecretVersionExternal(ref)
 	return err
 }
 
-func (r *SecretVersionRef) ParseExternalToIdentity() (identity.Identity, error) {
+func (r *SecretManagerSecretVersionRef) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &SecretVersionIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
@@ -85,7 +90,7 @@ func (r *SecretVersionRef) ParseExternalToIdentity() (identity.Identity, error) 
 	return id, nil
 }
 
-func (r *SecretVersionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *SecretManagerSecretVersionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
 		actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "name")
 		if err == nil {
@@ -99,7 +104,7 @@ func (r *SecretVersionRef) Normalize(ctx context.Context, reader client.Reader, 
 // NormalizedExternal provision the "External" value for other resource that depends on SecretManagerSecretVersion.
 // If the "External" is given in the other resource's spec.SecretVersionRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual SecretManagerSecretVersion object from the cluster.
-func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *SecretManagerSecretVersionRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", SecretManagerSecretVersionGVK.Kind)
 	}

@@ -63,7 +63,7 @@ func TestContainerNodePool_NormalizeReferences_SecretRef(t *testing.T) {
 								{
 									Fqdns: []string{"example.com"},
 									GCPSecretManagerCertificateConfig: &krm.GCPSecretManagerCertificateConfig{
-										SecretRef: &secretmanagerv1beta1.SecretVersionRef{
+										SecretRef: &secretmanagerv1beta1.SecretManagerSecretVersionRef{
 											Name: "test-secret-version",
 										},
 									},
@@ -102,7 +102,7 @@ func TestContainerNodePool_NormalizeReferences_SecretRef(t *testing.T) {
 								{
 									Fqdns: []string{"example.com"},
 									GCPSecretManagerCertificateConfig: &krm.GCPSecretManagerCertificateConfig{
-										SecretRef: &secretmanagerv1beta1.SecretVersionRef{
+										SecretRef: &secretmanagerv1beta1.SecretManagerSecretVersionRef{
 											External: externalURI,
 										},
 									},
