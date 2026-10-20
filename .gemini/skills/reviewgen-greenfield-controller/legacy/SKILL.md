@@ -28,8 +28,13 @@ Use this review guide **only** for in-flight PRs whose controller (`pkg/controll
 
 ## 6. General Controller Structure & Client Creation
 *   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library REST constructor (`NewFooRESTClient`) instead of `NewFooClient` (gRPC) or manually calling `grpc.Dial` with raw protobuf client interfaces (`pb.New...Client`), unless REST is unavailable or fails.
+*   **Reference Resolution Timing (CRITICAL)**: Verify that reference resolution is strictly performed on **line 1 of `Create()` and `Update()`**, NEVER in `AdapterForObject()`. `Delete()` must never attempt to resolve external references; resolving references in `AdapterForObject()` causes deletion deadlocks when referenced objects are deleted first (per PR #13573).
 *   **Do Not Change Default Controller**: Verify that the PR does NOT switch the default controller to `direct` in `pkg/controller/resourceconfig/static_config.go` if the resource already has an existing Terraform or DCL controller.
-*   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces and call `common.NormalizeReferences` in `AdapterForObject`.
+*   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
+
+## 7. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
 
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
@@ -37,7 +42,9 @@ When proposing changes or stating LGTM, format the review description as follows
 ```markdown
 ### KCC Auto-Review Results (Legacy In-Flight Controller)
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **Client Creation**: [Pass/Fail] - (List if raw pb/grpc.Dial is used instead of GAPIC go-client)
+* **Reference Resolution Timing**: [Pass/Fail] - (Verified references resolved in Create/Update, never in AdapterForObject)
 * **Default Reconciler Kept**: [Pass/Fail] - (Verify that the default controller is NOT switched to direct in static_config.go if there was an existing legacy controller)
 * **Proto Diffs & Update Mask**: [Pass/Fail] - (List any issues with diff calculation)
 * **Structured Reporting**: [Pass/Fail] - (List if structured reporting is missing)
