@@ -36,12 +36,35 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
   --resource FinancialServicesInstance:Instance
 
-${CONTROLLERBUILDER} generate-mapper \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.financialservices.v1 \
-  --api-version financialservices.cnrm.cloud.google.com/v1alpha1
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource FinancialServicesBacktestResult:BacktestResult \
+  --resource FinancialServicesDataset:Dataset \
+  --resource FinancialServicesEngineConfig:EngineConfig \
+  --resource FinancialServicesModel:Model \
+  --resource FinancialServicesPredictionResult:PredictionResult
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.financialservices.v1 \
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
+  --resource FinancialServicesBacktestResult:BacktestResult \
+  --resource FinancialServicesDataset:Dataset \
+  --resource FinancialServicesEngineConfig:EngineConfig \
+  --resource FinancialServicesModel:Model \
+  --resource FinancialServicesPredictionResult:PredictionResult
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.financialservices.v1,google.type \
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/financialservices" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/financialservices/
