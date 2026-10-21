@@ -14,7 +14,7 @@ This document provides an unbiased technical comparison between two competing ap
 | **CLI & Automated Extraction Wiring** | **Not wired.** Adds a standalone package `dev/tools/controllerbuilder/pkg/controllerprofile` (`extractor.go`, `profile.go`, `template.go`). `ProtoServiceSpec` and `KRMSpecInfo` are manually populated structs in unit tests; not connected to `.build/googleapis.pb`, `go/ast`, or `controllerbuilder generate-direct-reconciler` (listed as "Next Steps" in Section 7 of its design doc). | **Fully wired end-to-end.** Connected directly to `controllerbuilder generate-direct-reconciler` via `ExtractResourceAPI` (`.build/googleapis.pb` descriptor inspection), `InspectKRMPackage` (`apis/` + `pkg/controller/direct/` AST inspection), and `InspectGAPICClient` (`go.mod` GAPIC SDK AST inspection). |
 | **Empirical Validation ("94.6% Shadow Eval" vs. True E2E)** | **AST method-name check + 1 E2E test.** Its "94.6% across 371 controllers" in `shadow/evaluator.go` does **not** generate or compile 371 controllers—it only parses existing `_controller.go` files to check if 8 boilerplate method names (`HasRegisterModel`, `HasModelConstructor`, `HasClientConstructor`, `HasAdapterForObject`, `HasFind`, `HasCreate`, `HasUpdate`, `HasDelete`) exist in the AST. Only **1 controller** (`SecureSourceManagerInstance`, which is immutable / `UpdateStyleUnsupported`) was actually rendered and tested in MockGCP E2E. | **Full replacement, compilation, and E2E across all 189 Greenfield controllers.** Replaced all 189 Greenfield controllers on disk: **187 / 189 (98.9%)** compile cleanly into the E2E binary, and **148 / 155 (95.5%)** pass MockGCP + Real GCP (`E2E_GCP_TARGET=real`) E2E tests. |
 | **Diffing & Update Semantics** | **Broken for mutable resources.** Generates a per-controller `compare<Resource>` helper calling `mappers.OnlySpecFields` + `common.DiffForTopLevelFields`. See critical bugs detailed below. | **Shared, verified `CompareGreenfieldSpec` & `CompareGreenfieldSpecAndLabels`.** Handles server-default merging (`MergeUnsetFields`), `INPUT_ONLY` proto fields, write-only KRM secrets, `metadata.labels` vs. `spec.labels`, and deterministic sorted `updateMask`. |
-| **Domain Modeling of Template Inputs** | **Clean trait hierarchy.** Groups template inputs into 4 domain traits (`IdentityTrait`, `LifecycleTrait`, `ExecutionTrait`, `TransportTrait`) with typed enums (`IdentityStrategy`, `UpdateStyle`, `DeleteStyle`, `LabelDiffingStyle`). | **Flat struct.** Uses a single flat `ControllerArgs` struct with ~45 fields. |
+| **Domain Modeling & Template Representation** | **Leaky enum/trait hierarchy (`ControllerProfile`).** Tries to compress controller variations into mutually exclusive enums (`IdentityStrategy`, `UpdateStyle`, `DeleteStyle`), which breaks down when orthogonal GCP API quirks combine (see analysis below). | **Orthogonal Inspector Facts (`ResourceAPI` + `KRMPackageInfo`) + Flat Template View-Model (`ControllerArgs`).** Separates proto API facts from Go AST/GAPIC facts at the extraction layer and maps them directly to orthogonal template fields without intermediate translation boilerplate. |
 
 ### Critical Bugs Found in PR #14251's Generated Code (`template.go`)
 
@@ -31,15 +31,31 @@ Because PR #14251 only ran an E2E test on `SecureSourceManagerInstance` (an immu
 5. **REST vs. gRPC Selection Is Not Inspected from `go.mod`:**
    PR #14251 defaults `UseGRPCClient` to `false` unless manually overridden, without inspecting the GAPIC `cloud.google.com/go/...` package in `go.mod` to detect whether `New*RESTClient` exists or whether `Delete()` returns an LRO vs. `error`.
 
+### Why PR #14251's `ControllerProfile` Trait/Enum Abstraction Is Counterproductive in Practice
+
+PR #14251 introduces an intermediate `ControllerProfile` struct composed of 4 trait sub-structs (`IdentityTrait`, `LifecycleTrait`, `ExecutionTrait`, `TransportTrait`) and typed enums (`IdentityStrategy`, `UpdateStyle`, `DeleteStyle`, `LabelDiffingStyle`). While this looks tidy on paper for a single happy-path resource, it is less adept at representing the actual matrix of controller structures we already support across 189 resources:
+
+1. **Real GCP Proto/KRM Quirks Are Orthogonal Facts, Not Mutually Exclusive Enums:**
+   * PR #14251 defines `IdentityStrategy` as a 4-way mutually exclusive enum (`IdentityStandard`, `IdentityServerGenerated`, `IdentityParentOnly`, `IdentityCreateAssignsName`).
+   * Across the 189 Greenfield controllers, these dimensions **cross-cut** each other independently:
+     * Whether `Get` exists vs. `List`-based `Find()` (`UseListForFind`) is independent of whether the ID is server-generated (`ServerGeneratedID`) or a singleton (`IsSingleton`).
+     * Whether `name` is marked `OUTPUT_ONLY` in the proto (`NameIsOutputOnly`) is independent of whether `Create` takes a separate `<resource>_id` request field (`CreateHasIDField`) and whether `Identity` implements `FromExternal` (`IdentityHasFromExternal`).
+   * Even in PR #14251 (which only tested 1 controller), the enum abstraction immediately leaked: in `IdentityTrait` and `LifecycleTrait`, the author still had to bolt on 7 ad-hoc booleans (`CreateAcceptsID`, `CreateSetsName`, `UpdateHasTopLevelName`, `DeleteHasEtag`, `DeleteHasForce`, `DeleteHasAllowMissing`, `HasFromExternal`) alongside the enums because real proto RPC signatures do not fit into mutually exclusive buckets.
+2. **Unnecessary Double-Translation Boilerplate:**
+   * In PR #14224, our architecture already separates the two real source domains cleanly at the extraction layer:
+     1. **Proto API facts:** `protoapi.ResourceAPI` (what RPCs, request fields, and field behaviors exist in `.build/googleapis.pb`).
+     2. **KRM & GAPIC AST facts:** `scaffold.KRMPackageInfo` (what KRM structs, mappers, refs, Identity methods, and GAPIC clients exist in Go AST).
+   * `controller.ControllerArgs` is purely the flat view-model consumed by `text/template`. Keeping `ControllerArgs` as flat orthogonal fields makes `text/template` conditionals concise and typo-safe (`{{if .CreateHasIDField}}` rather than verbose string comparisons like `{{if eq .Lifecycle.UpdateStyle "Masked"}}`) and avoids touching an extra intermediate translation layer every time a new proto/KRM pattern is added.
+
 ---
 
 ## Part 2: Patterns & Lessons Learned Worth Adopting from PR #14251
 
-Despite its lack of end-to-end CLI/extractor wiring and `Update()` testing, PR #14251 introduces **4 genuinely valuable patterns** that we should adopt into PR #14224:
+There are **3 concrete behavioral improvements** in PR #14251's template that we should adopt into PR #14224:
 
 ### 1. Fail Loudly on Spec Drift for Immutable Resources (`!HasUpdate`)
 * **What PR #14251 does (`template.go`):**
-  When a resource has no `Update` RPC (`UpdateStyleUnsupported`), instead of making `Update()` a silent no-op that just refreshes `status.ObservedState`, it still runs the spec comparison (`CompareGreenfieldSpec`) in `Update()`. If `diff.HasDiff()` is true, it reports the diff and returns an explicit immutability error:
+  When a resource has no `Update` RPC (`!HasUpdate`), instead of making `Update()` a silent no-op that just refreshes `status.ObservedState`, it still runs the spec comparison (`CompareGreenfieldSpec`) in `Update()`. If `diff.HasDiff()` is true, it reports the diff and returns an explicit immutability error:
   ```go
   if diff.HasDiff() {
       structuredreporting.ReportDiff(ctx, diff)
@@ -66,12 +82,6 @@ Despite its lack of end-to-end CLI/extractor wiring and `Update()` testing, PR #
   ```
 * **Why we should adopt it:**
   Since our Canonical Standard 1 mandates REST clients (`New*RESTClient`) by default, guarding LRO `Delete()` against this known `google.protobuf.Empty` REST LRO unmarshaling quirk prevents false `Delete()` failures on services like `SecureSourceManager`.
-
-### 4. Organizing `ControllerArgs` into Domain Trait Sub-Structs
-* **What PR #14251 does (`profile.go`):**
-  Organizes the controller configuration into orthogonal sub-structs (`IdentityTrait`, `LifecycleTrait`, `ExecutionTrait`, `TransportTrait`) with explicit enum types (`UpdateStyle`, `DeleteStyle`, `LabelDiffingStyle`) rather than dozens of flat booleans.
-* **Why we should adopt it (optional cleanup):**
-  Our `ControllerArgs` has grown to ~45 flat fields across Passes 1–5. Grouping those fields into logical domain sub-structs makes the generator contract easier to read and maintain.
 
 ---
 
