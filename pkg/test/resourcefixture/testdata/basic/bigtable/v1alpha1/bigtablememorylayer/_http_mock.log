@@ -1,0 +1,453 @@
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
+
+{
+  "clusters": {
+    "cluster1-${uniqueId}": {
+      "defaultStorageType": "SSD",
+      "encryptionConfig": {},
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "serveNodes": 3
+    }
+  },
+  "instance": {
+    "displayName": "BigtableSampleML",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "type": "PRODUCTION"
+  },
+  "instanceId": "mldep${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster1-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 3
+        }
+      },
+      "instance": {
+        "displayName": "BigtableSampleML",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "mldep${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "clusters": {
+        "cluster1-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 3
+        }
+      },
+      "instance": {
+        "displayName": "BigtableSampleML",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "mldep${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "BigtableSampleML",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/instances/mldep${uniqueId}",
+    "state": "READY",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "BigtableSampleML",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/mldep${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/mldep${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "BigtableSampleML",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/mldep${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/mldep${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
+
+{
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+  "state": "DISABLED"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer
+
+{
+  "memoryLayer": {
+    "etag": "abcdef0123A=",
+    "memoryConfig": {},
+    "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+  },
+  "updateMask": "memoryConfig"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMemoryLayerMetadata",
+    "originalRequest": {
+      "memoryLayer": {
+        "etag": "abcdef0123A=",
+        "memoryConfig": {},
+        "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+      },
+      "updateMask": "memoryConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMemoryLayerMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "memoryLayer": {
+        "etag": "abcdef0123A=",
+        "memoryConfig": {},
+        "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+      },
+      "updateMask": "memoryConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
+    "etag": "abcdef0123A=",
+    "memoryConfig": {
+      "storageSizeGib": 1024
+    },
+    "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+    "state": "READY"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
+
+{
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A=",
+  "memoryConfig": {
+    "storageSizeGib": 1024
+  },
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+  "state": "READY"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
+
+{
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A=",
+  "memoryConfig": {
+    "storageSizeGib": 1024
+  },
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+  "state": "READY"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer
+
+{
+  "memoryLayer": {
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+  },
+  "updateMask": "memoryConfig"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMemoryLayerMetadata",
+    "originalRequest": {
+      "memoryLayer": {
+        "etag": "abcdef0123A=",
+        "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+      },
+      "updateMask": "memoryConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMemoryLayerMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "memoryLayer": {
+        "etag": "abcdef0123A=",
+        "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
+      },
+      "updateMask": "memoryConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+    "state": "DISABLED"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "BigtableSampleML",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/mldep${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/mldep${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
+
+{
+  "name": "projects/${projectId}/instances/mldep${uniqueId}"
+}
+
+OK
+
+{}
