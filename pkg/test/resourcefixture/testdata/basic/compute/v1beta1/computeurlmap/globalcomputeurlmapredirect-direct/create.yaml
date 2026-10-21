@@ -23,5 +23,5 @@ spec:
   description: "test global URLMap"
   defaultService:
     backendServiceRef:
-      name: computebackendservice-${uniqueId}
+      external: projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}
   location: global
