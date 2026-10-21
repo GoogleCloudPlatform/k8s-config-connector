@@ -63,7 +63,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-fuzzer",
 		Short: "Generate fuzzer tests for proto messages",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if opt.deterministic.enabled {
+			if opt.deterministic.isEnabled() {
 				return opt.validateDeterministic(cmd)
 			}
 			if err := validateLLMMode(cmd); err != nil {
@@ -80,7 +80,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
-			if opt.deterministic.enabled {
+			if opt.deterministic.isEnabled() {
 				return RunGenerateDeterministicFuzzers(ctx, opt)
 			}
 			if err := RunGenerateFuzzer(ctx, opt); err != nil {
