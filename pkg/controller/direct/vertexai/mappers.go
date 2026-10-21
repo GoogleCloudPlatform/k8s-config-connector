@@ -242,3 +242,33 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 	}
 	return out
 }
+
+// VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto maps a protobuf Feature to VertexAIFeaturestoreEntityTypeFeatureSpec.
+// Handcoded because ValueType is a required string in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is an enum (pb.Feature_ValueType) which requires converting between string and *string
+// for direct.Enum_FromProto and direct.Enum_ToProto.
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if v := direct.Enum_FromProto(mapCtx, in.GetValueType()); v != nil {
+		out.ValueType = *v
+	}
+	return out
+}
+
+// VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto maps a VertexAIFeaturestoreEntityTypeFeatureSpec to protobuf Feature.
+// Handcoded because ValueType is a required string in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is an enum (pb.Feature_ValueType) which requires converting between string and *string
+// for direct.Enum_FromProto and direct.Enum_ToProto.
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	out.Description = direct.ValueOf(in.Description)
+	out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, &in.ValueType)
+	return out
+}
