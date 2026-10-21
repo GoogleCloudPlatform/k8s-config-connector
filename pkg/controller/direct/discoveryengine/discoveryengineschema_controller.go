@@ -203,6 +203,8 @@ func (a *schemaAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	desired := proto.Clone(a.desired).(*pb.Schema)
 	desired.Name = a.id.String()
 
+	// pb.UpdateSchemaRequest does not have an UpdateMask field, so compare() is only used
+	// to check diffs.HasDiff() and report diffs via structuredreporting.ReportDiff.
 	diffs, _, err := a.compare(ctx, a.actual, desired)
 	if err != nil {
 		return err
@@ -246,6 +248,11 @@ func (a *schemaAdapter) compare(ctx context.Context, actual, desired *pb.Schema)
 
 	clonedDesired := proto.Clone(desired).(*pb.Schema)
 
+	// Perform semantic JSON comparison for jsonSchema: the GCP API returns jsonSchema as a compacted
+	// JSON string and non-deterministically reorders object keys across GET calls, whereas KRM manifests
+	// typically format jsonSchema as a multi-line indented string. Since common.DiffForTopLevelFields
+	// performs byte-for-byte string comparison on protoreflect.Value, unmarshaling both into any and
+	// checking reflect.DeepEqual prevents false diffs and infinite PATCH loops during re-reconciliation.
 	if actual.GetJsonSchema() != "" && desired.GetJsonSchema() != "" {
 		var actualObj, desiredObj any
 		if err := json.Unmarshal([]byte(actual.GetJsonSchema()), &actualObj); err == nil {
