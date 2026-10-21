@@ -53,9 +53,15 @@ func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
 }
 
 type ControllerBuilder struct {
-	rootPath string
-	service  string
-	proto    string
+	rootPath  string
+	service   string
+	proto     string
+	overwrite bool
+}
+
+func (c *ControllerBuilder) WithOverwrite(overwrite bool) *ControllerBuilder {
+	c.overwrite = overwrite
+	return c
 }
 
 func (c *ControllerBuilder) RegisterController() error {
@@ -87,7 +93,32 @@ func (c *ControllerBuilder) RegisterController() error {
 	return nil
 }
 
+// RenderController executes the unified ControllerTemplate with cArgs and formats
+// the resulting Go source code and imports.
+func RenderController(cArgs *ccTemplate.ControllerArgs) ([]byte, error) {
+	cArgs.EnsureDefaults()
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
+	if err != nil {
+		return nil, fmt.Errorf("parse controller template: %w", err)
+	}
+	controllerOutput := &bytes.Buffer{}
+	if err := tmpl.Execute(controllerOutput, cArgs); err != nil {
+		return nil, err
+	}
+	importOps := &imports.Options{
+		Comments:  true,
+		AllErrors: true,
+		Fragment:  true,
+	}
+	formattedOut, err := imports.Process(strings.ToLower(cArgs.Kind)+"_controller.go", controllerOutput.Bytes(), importOps)
+	if err != nil {
+		return nil, fmt.Errorf("format rendered controller for %s: %w", cArgs.Kind, err)
+	}
+	return formattedOut, nil
+}
+
 func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs) error {
+	cArgs.EnsureDefaults()
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %w", err)
@@ -102,28 +133,23 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(controllerFilePath); err == nil {
+	if _, err := os.Stat(controllerFilePath); err == nil && !c.overwrite {
 		klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
 		return nil
-	} else if !errors.Is(err, os.ErrNotExist) {
+	} else if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("unexpected controller file: %w", err)
 	}
 
-	// Write the generated controller.go to  pkg/controller/direct/<service>/<resource>_controller.go
+	// Write the generated controller.go to pkg/controller/direct/<service>/<resource>_controller.go
 	if err := WriteToFile(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
-	// Format and adjust the go imports in the generated controller file.
+	// Format and adjust the go imports in the generated controller file.
 	if err := FormatImports(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
 	color.HiGreen("New controller %s has been generated.", c.proto)
 	return nil
-}
-
-func (c *ControllerBuilder) getDirectPath() string {
-	seg := strings.Split(c.rootPath, currRelPath)
-	return filepath.Join(seg[0], directControllerRelPath)
 }
 
 func (c *ControllerBuilder) getControllerPath() (string, error) {
@@ -135,6 +161,11 @@ func (c *ControllerBuilder) getControllerPath() (string, error) {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
 	}
 	return filepath.Join(controllerDir, filename), nil
+}
+
+func (c *ControllerBuilder) getDirectPath() string {
+	seg := strings.Split(c.rootPath, currRelPath)
+	return filepath.Join(seg[0], directControllerRelPath)
 }
 
 func FormatImports(path string, out []byte) error {

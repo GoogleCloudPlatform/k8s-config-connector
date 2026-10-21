@@ -14,8 +14,13 @@
 
 package controller
 
+import (
+	"fmt"
+	"strings"
+)
+
 type ControllerArgs struct {
-	// The ConfigConnector Group without cnrm.google.com
+	// The ConfigConnector Group without .cnrm.cloud.google.com
 	KCCService string
 	// The ConfigConnector Version. Only allow v1alpha1 and v1beta1
 	KCCVersion string
@@ -25,10 +30,204 @@ type ControllerArgs struct {
 	ProtoResource string
 	// The GCP API version.
 	ProtoVersion string
+
+	// --- Pass 1-5 Deterministic Specialization Args ---
+
+	// Import paths and package aliases
+	GCPClientImportPath  string // e.g., "cloud.google.com/go/beyondcorp/appconnections/apiv1"
+	GCPClientType        string // e.g., "*gcp.Client" or "*gcp.KeyManagementClient"
+	GCPClientConstructor string // e.g., "gcp.NewRESTClient" or "gcp.NewKeyManagementRESTClient"
+	UseGRPCClient        bool   // true if GAPIC package uses GRPCClientOptions() and New<Service>Client
+	PBImportPath         string // e.g., "cloud.google.com/go/beyondcorp/appconnections/apiv1/appconnectionspb"
+	PBPackageAlias       string // e.g., "appconnectionspb"
+
+	// Method availability & names (Pass 1)
+	GetMethodName  string // e.g., "GetAppConnection"
+	GetRequestType string // e.g., "GetAppConnectionRequest"
+	GetNameField   string // Go struct field name on GetRequest, e.g., "Name"
+
+	HasCreate         bool
+	CreateMethodName  string // e.g., "CreateAppConnection"
+	CreateRequestType string // e.g., "CreateAppConnectionRequest"
+	CreateParentField string // e.g., "Parent" (empty if no parent field)
+	CreateBodyField   string // e.g., "AppConnection"
+	CreateIDField     string // e.g., "AppConnectionId" (empty if no ID query param)
+	CreateIsLRO       bool
+	CreateLROIsEmpty  bool // true if Create LRO response type is google.protobuf.Empty
+	CreateSyncIsEmpty bool // true if synchronous Create response type is google.protobuf.Empty
+
+	HasUpdate             bool
+	UpdateMethodName      string // e.g., "UpdateAppConnection"
+	UpdateRequestType     string // e.g., "UpdateAppConnectionRequest"
+	UpdateBodyField       string // e.g., "AppConnection" (empty if top-level or no body)
+	UpdateMaskField       string // e.g., "UpdateMask" (empty if Pass 3 Archetype F)
+	UpdateHasTopLevelName bool   // true if UpdateRequest has its own top-level Name field alongside BodyField
+	UpdateIsLRO           bool
+	UpdateLROIsEmpty      bool // true if Update LRO response type is google.protobuf.Empty
+	UpdateSyncIsEmpty     bool // true if synchronous Update response type is google.protobuf.Empty
+
+	HasDelete         bool
+	DeleteMethodName  string // e.g., "DeleteAppConnection"
+	DeleteRequestType string // e.g., "DeleteAppConnectionRequest"
+	DeleteNameField   string // e.g., "Name"
+	DeleteForceField  string // e.g., "Force" (empty if none)
+	DeleteIsLRO       bool
+	DeleteLROIsEmpty  bool // true if Delete LRO response type is google.protobuf.Empty
+	DeleteSyncIsEmpty bool // true if synchronous Delete response type is google.protobuf.Empty
+
+	// ID Strategy (Pass 2)
+	IsSingleton             bool // Archetype D: no Create, no Delete
+	IsServerGeneratedID     bool // Archetype C Variant 3B: Create has no ID param & Identity has HasIdentitySpecified()
+	SetResourceNameInCreate bool // Archetype C Variant 3A: Create has no ID param, so set resource.Name = a.id.String()
+
+	// Proto & KRM Traits (Pass 5)
+	ResourceNameField   string // Go field name on resource proto, e.g., "Name" (empty if resource proto has no name field)
+	HasLabels           bool   // Spec has Labels or proto has labels
+	HasReferences       bool   // Spec has *Ref fields -> emit common.NormalizeReferences
+	HasObservedState    bool   // Status has ObservedState
+	MapperVersionSuffix string // "" by default, or "_v1alpha1" / "_v1beta1" when multiversion mappers are used
+	RegionalEndpoint    string // "" (global), "prefix" ({loc}-{service}), or "rep" ({service}.{loc}.rep.googleapis.com)
+	ServiceHost         string // e.g., "cloudbuild.googleapis.com" from google.api.default_host
+	LocationExpr        string // e.g., "direct.ValueOf(obj.Spec.Location)" or "obj.Spec.Location"
+
+	// Identity expressions (inspected from apis/<service>/<version> AST)
+	IdentityType            string // e.g., "krm.BeyondCorpAppConnectionIdentity" or "krm.AppConnectionIdentity"
+	UseGetIdentity          bool   // true if (obj *Kind) GetIdentity(ctx, reader) exists
+	ParentStringExpr        string // e.g., "a.id.ParentString()" or "a.id.Parent().String()"
+	IDExpr                  string // e.g., "a.id.ID()" or "a.id.Instance()"
+	HasIdentityFromExternal bool   // true if Identity has FromExternal(string) error method
+
+	// Indicates whether deterministic passes have already been applied.
+	PassesApplied bool
 }
 
-const ControllerTemplate = `
-// Copyright 2025 Google LLC
+// NewBaseControllerArgs returns a ControllerArgs initialized with the Pass 1
+// standard placeholder defaults (full CRUD, LRO, UpdateMask, standard ID).
+func NewBaseControllerArgs(kccService, kccVersion, kind, protoResource, protoVersion string) *ControllerArgs {
+	args := &ControllerArgs{
+		KCCService:    kccService,
+		KCCVersion:    kccVersion,
+		Kind:          kind,
+		ProtoResource: protoResource,
+		ProtoVersion:  protoVersion,
+	}
+	args.EnsureDefaults()
+	return args
+}
+
+// EnsureDefaults populates Pass 1 base placeholder defaults on a ControllerArgs
+// if it has not yet been initialized by NewBaseControllerArgs or deterministic passes.
+func (a *ControllerArgs) EnsureDefaults() {
+	if a.GCPClientImportPath == "" {
+		a.GCPClientImportPath = fmt.Sprintf("cloud.google.com/go/%s/apiv1", a.KCCService)
+	}
+	if a.GCPClientType == "" {
+		a.GCPClientType = "*gcp.Client"
+	}
+	if a.GCPClientConstructor == "" {
+		a.GCPClientConstructor = "gcp.NewRESTClient"
+	}
+	if a.PBImportPath == "" {
+		a.PBImportPath = fmt.Sprintf("cloud.google.com/go/%s/%s/%spb", a.KCCService, a.ProtoVersion, a.KCCService)
+	}
+	if a.PBPackageAlias == "" {
+		a.PBPackageAlias = a.KCCService + "pb"
+	}
+	if a.GetMethodName == "" {
+		a.GetMethodName = "Get" + a.ProtoResource
+	}
+	if a.GetRequestType == "" {
+		a.GetRequestType = "Get" + a.ProtoResource + "Request"
+	}
+	if a.GetNameField == "" {
+		a.GetNameField = "Name"
+	}
+	if a.IdentityType == "" {
+		a.IdentityType = "krm." + a.ProtoResource + "Identity"
+	}
+	if a.ParentStringExpr == "" {
+		a.ParentStringExpr = "a.id.Parent().String()"
+	}
+	if a.IDExpr == "" {
+		a.IDExpr = "a.id.ID()"
+	}
+	if a.LocationExpr == "" {
+		a.LocationExpr = "obj.Spec.Location"
+	}
+	if !a.PassesApplied && !a.HasCreate && !a.HasUpdate && !a.HasDelete && !a.IsSingleton {
+		a.HasCreate = true
+		a.CreateMethodName = "Create" + a.ProtoResource
+		a.CreateRequestType = "Create" + a.ProtoResource + "Request"
+		a.CreateParentField = "Parent"
+		a.CreateBodyField = a.ProtoResource
+		a.CreateIDField = a.ProtoResource + "Id"
+		a.CreateIsLRO = true
+
+		a.HasUpdate = true
+		a.UpdateMethodName = "Update" + a.ProtoResource
+		a.UpdateRequestType = "Update" + a.ProtoResource + "Request"
+		a.UpdateBodyField = a.ProtoResource
+		a.UpdateMaskField = "UpdateMask"
+		a.UpdateIsLRO = true
+
+		a.HasDelete = true
+		a.DeleteMethodName = "Delete" + a.ProtoResource
+		a.DeleteRequestType = "Delete" + a.ProtoResource + "Request"
+		a.DeleteNameField = "Name"
+		a.DeleteIsLRO = true
+
+		a.ResourceNameField = "Name"
+		a.HasObservedState = true
+	}
+}
+
+// ServiceShortHost returns ServiceHost without the ".googleapis.com" suffix,
+// used when constructing REP regional endpoints.
+func (a *ControllerArgs) ServiceShortHost() string {
+	return strings.TrimSuffix(a.ServiceHost, ".googleapis.com")
+}
+
+// NeedsCreatedVar reports whether Create() uses the returned resource proto.
+func (a *ControllerArgs) NeedsCreatedVar() bool {
+	return (a.HasObservedState || (a.IsServerGeneratedID && a.ResourceNameField != "")) &&
+		!a.CreateLROIsEmpty && !a.CreateSyncIsEmpty
+}
+
+// NeedsSingletonCreatedVar reports whether singleton Create() uses the returned resource proto.
+func (a *ControllerArgs) NeedsSingletonCreatedVar() bool {
+	return a.HasObservedState && !a.UpdateLROIsEmpty && !a.UpdateSyncIsEmpty
+}
+
+// NeedsUpdatedVar reports whether Update() uses the returned resource proto.
+func (a *ControllerArgs) NeedsUpdatedVar() bool {
+	return a.HasObservedState && !a.UpdateLROIsEmpty && !a.UpdateSyncIsEmpty
+}
+
+// ClientOptionsMethod returns the ControllerConfig method used to construct client options.
+func (a *ControllerArgs) ClientOptionsMethod() string {
+	if a.UseGRPCClient {
+		return "GRPCClientOptions"
+	}
+	return "RESTClientOptions"
+}
+
+// UpdateCompareLHS returns the left-hand side variable tuple for CompareGreenfieldSpec in Update().
+func (a *ControllerArgs) UpdateCompareLHS() string {
+	if !a.HasUpdate {
+		return "_, report, updateMask, err"
+	}
+	resVar := "_"
+	if a.UpdateBodyField != "" || a.ResourceNameField != "" {
+		resVar = "resource"
+	}
+	maskVar := "_"
+	if a.UpdateMaskField != "" {
+		maskVar = "updateMask"
+	}
+	return fmt.Sprintf("%s, report, %s, err", resVar, maskVar)
+}
+
+const ControllerTemplate = `// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,31 +245,23 @@ package {{.KCCService}}
 
 import (
 	"context"
-	"reflect"
-	"time"
+	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.KCCService}}/{{.KCCVersion}}"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/{{.KCCService}}/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	{{.KCCService}}pb "cloud.google.com/go/{{.KCCService}}/{{.ProtoVersion}}/{{.KCCService}}pb"
+	gcp "{{.GCPClientImportPath}}"
+	{{.PBPackageAlias}} "{{.PBImportPath}}"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"google.golang.org/protobuf/types/known/timestamppb"
-	"github.com/googleapis/gax-go/v2/apierror"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -87,19 +278,6 @@ type model{{.ProtoResource}} struct {
 	config config.ControllerConfig
 }
 
-func (m *model{{.ProtoResource}}) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
-	}
-	return gcpClient, err
-}
-
 func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -108,20 +286,38 @@ func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *dire
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+{{- if .UseGetIdentity }}
+	i, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	id := i.(*{{.IdentityType}})
+{{- else }}
 	id, err := krm.New{{.ProtoResource}}Identity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
+{{- end }}
+{{- if .HasReferences }}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+{{- end }}
 
 	// Get {{.KCCService}} GCP client
+{{- if and .RegionalEndpoint .ServiceHost }}
+	gcpClient, err := m.client(ctx, {{.LocationExpr}})
+{{- else }}
 	gcpClient, err := m.client(ctx)
+{{- end }}
 	if err != nil {
 		return nil, err
 	}
 	return &{{.ProtoResource}}Adapter{
 		id:        id,
-		gcpClient:  gcpClient,
-		desired:    obj,
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
@@ -130,11 +326,58 @@ func (m *model{{.ProtoResource}}) AdapterForURL(ctx context.Context, url string)
 	return nil, nil
 }
 
+{{- if and (eq .RegionalEndpoint "prefix") .ServiceHost }}
+func (m *model{{.ProtoResource}}) client(ctx context.Context, location string) ({{.GCPClientType}}, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.{{.ClientOptionsMethod}}()
+	if err != nil {
+		return nil, err
+	}
+	if location != "" && location != "global" {
+		opts = append(opts, option.WithEndpoint(fmt.Sprintf("%s-{{.ServiceHost}}:443", location)))
+	}
+	gcpClient, err := {{.GCPClientConstructor}}(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
+	}
+	return gcpClient, err
+}
+{{- else if and (eq .RegionalEndpoint "rep") .ServiceHost }}
+func (m *model{{.ProtoResource}}) client(ctx context.Context, location string) ({{.GCPClientType}}, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.{{.ClientOptionsMethod}}()
+	if err != nil {
+		return nil, err
+	}
+	if location != "" && location != "global" {
+		opts = append(opts, option.WithEndpoint(fmt.Sprintf("https://{{.ServiceShortHost}}.%s.rep.googleapis.com", location)))
+	}
+	gcpClient, err := {{.GCPClientConstructor}}(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
+	}
+	return gcpClient, err
+}
+{{- else }}
+func (m *model{{.ProtoResource}}) client(ctx context.Context) ({{.GCPClientType}}, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.{{.ClientOptionsMethod}}()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := {{.GCPClientConstructor}}(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building {{.ProtoResource}} client: %w", err)
+	}
+	return gcpClient, err
+}
+{{- end }}
+
 type {{.ProtoResource}}Adapter struct {
-	id         *krm.{{.ProtoResource}}Identity
-	gcpClient  *gcp.Client
-	desired    *krm.{{.Kind}}
-	actual     *{{.KCCService}}pb.{{.ProtoResource}}
+	id        *{{.IdentityType}}
+	gcpClient {{.GCPClientType}}
+	desired   *krm.{{.Kind}}
+	actual    *{{.PBPackageAlias}}.{{.ProtoResource}}
 }
 
 var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
@@ -142,13 +385,21 @@ var _ directbase.Adapter = &{{.ProtoResource}}Adapter{}
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter ` + "`" + `Update` + "`" + ` call.
 // Return false means the object is not found. This triggers Adapter ` + "`" + `Create` + "`" + ` call.
-// Return a non-nil error requeues the requests. 
+// Return a non-nil error requeues the requests.
 func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Get{{.ProtoResource}}Request{Name: a.id.String()}
-	{{.ProtoResource | ToLower }}pb, err := a.gcpClient.Get{{.ProtoResource}}(ctx, req)
+{{- if .IsServerGeneratedID }}
+	if !a.id.HasIdentitySpecified() {
+		return false, nil
+	}
+{{- end }}
+
+	req := &{{.PBPackageAlias}}.{{.GetRequestType}}{
+		{{.GetNameField}}: a.id.String(),
+	}
+	{{.ProtoResource | ToLower}}pb, err := a.gcpClient.{{.GetMethodName}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -156,111 +407,268 @@ func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting {{.ProtoResource}} %q: %w", a.id, err)
 	}
 
-	a.actual = {{.ProtoResource | ToLower }}pb
+	a.actual = {{.ProtoResource | ToLower}}pb
 	return true, nil
 }
 
-// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.
 func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+{{- if .HasCreate }}
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
+	resource := {{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+{{- if and .SetResourceNameInCreate .ResourceNameField }}
+	resource.{{.ResourceNameField}} = a.id.String()
+{{- end }}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &{{.KCCService}}pb.Create{{.ProtoResource}}Request{
-		Parent: 						  a.id.Parent().String(),
-		{{.ProtoResource}}:               resource,
+	req := &{{.PBPackageAlias}}.{{.CreateRequestType}}{
+{{- if .CreateParentField }}
+		{{.CreateParentField}}: {{.ParentStringExpr}},
+{{- end }}
+{{- if .CreateIDField }}
+		{{.CreateIDField}}: {{.IDExpr}},
+{{- end }}
+{{- if .CreateBodyField }}
+		{{.CreateBodyField}}: resource,
+{{- end }}
 	}
-	op, err := a.gcpClient.Create{{.ProtoResource}}(ctx, req)
+{{- if .CreateIsLRO }}
+	op, err := a.gcpClient.{{.CreateMethodName}}(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
 	}
+{{- if .CreateLROIsEmpty }}
+	err = op.Wait(ctx)
+{{- else if .NeedsCreatedVar }}
 	created, err := op.Wait(ctx)
+{{- else }}
+	_, err = op.Wait(ctx)
+{{- end }}
 	if err != nil {
 		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id, err)
 	}
+{{- else if .CreateSyncIsEmpty }}
+	err := a.gcpClient.{{.CreateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- else if .NeedsCreatedVar }}
+	created, err := a.gcpClient.{{.CreateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- else }}
+	_, err := a.gcpClient.{{.CreateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- end }}
 	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id)
 
 	status := &krm.{{.Kind}}Status{}
-	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, created)
+{{- if and .HasObservedState (not .CreateLROIsEmpty) (not .CreateSyncIsEmpty) }}
+	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+{{- end }}
+{{- if and .IsServerGeneratedID .ResourceNameField (not .CreateLROIsEmpty) (not .CreateSyncIsEmpty) }}
+	status.ExternalRef = direct.LazyPtr(created.{{.ResourceNameField}})
+{{- else }}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+{{- end }}
+	return createOp.UpdateStatus(ctx, status, nil)
+{{- else if .IsSingleton }}
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating (updating singleton) {{.ProtoResource}}", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := {{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+{{- if .ResourceNameField }}
+	resource.{{.ResourceNameField}} = a.id.String()
+{{- end }}
+
+	req := &{{.PBPackageAlias}}.{{.UpdateRequestType}}{
+{{- if .UpdateBodyField }}
+		{{.UpdateBodyField}}: resource,
+{{- end }}
+	}
+{{- if .UpdateIsLRO }}
+	op, err := a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- if .UpdateLROIsEmpty }}
+	err = op.Wait(ctx)
+{{- else if .NeedsSingletonCreatedVar }}
+	created, err := op.Wait(ctx)
+{{- else }}
+	_, err = op.Wait(ctx)
+{{- end }}
+	if err != nil {
+		return fmt.Errorf("{{.ProtoResource}} %s waiting creation: %w", a.id, err)
+	}
+{{- else if .UpdateSyncIsEmpty }}
+	err := a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- else if .NeedsSingletonCreatedVar }}
+	created, err := a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- else }}
+	_, err := a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating {{.ProtoResource}} %s: %w", a.id, err)
+	}
+{{- end }}
+	log.V(2).Info("successfully created {{.ProtoResource}}", "name", a.id)
+
+	status := &krm.{{.Kind}}Status{}
+{{- if .NeedsSingletonCreatedVar }}
+	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+{{- end }}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
+{{- else }}
+	return fmt.Errorf("create not supported for %s", krm.{{.Kind}}GVK)
+{{- end }}
 }
 
-// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.  
+// Update updates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.
 func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := {{.Kind}}Spec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+{{- if .HasLabels }}
+	{{.UpdateCompareLHS}} := common.CompareGreenfieldSpecAndLabels(
+		ctx,
+		updateOp.GetUnstructured(),
+		&a.desired.Spec,
+		a.actual,
+		"labels",
+		{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
+		{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
+		nil,
+	)
+{{- else }}
+	{{.UpdateCompareLHS}} := common.CompareGreenfieldSpec(
+		ctx,
+		&a.desired.Spec,
+		a.actual,
+		{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
+		{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
+		nil,
+	)
+{{- end }}
+	if err != nil {
+		return err
 	}
 
-	paths := make(sets.Set[string])
-	// Option 1: This option is good for proto that has ` + "`" + `field_mask` + "`" + ` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Option 2: manually add all mutable fields. 
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = paths.Insert("display_name")
-		}
-	}
-
+{{- if .HasUpdate }}
+{{- if .NeedsUpdatedVar }}
 	updated := a.actual
-	if len(paths) == 0 {
+{{- end }}
+	if !report.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		updateMask := &fieldmaskpb.FieldMask{
-			Paths: sets.List(paths),
-		}
+		report.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, report)
 
-		// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-		req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
-			Name:       			a.id.String(),
-			UpdateMask:             updateMask,
-			{{.ProtoResource}}:     desiredPb,
+{{- if .ResourceNameField }}
+		resource.{{.ResourceNameField}} = a.id.String()
+{{- end }}
+		req := &{{.PBPackageAlias}}.{{.UpdateRequestType}}{
+{{- if .UpdateHasTopLevelName }}
+			Name: a.id.String(),
+{{- end }}
+{{- if .UpdateMaskField }}
+			{{.UpdateMaskField}}: updateMask,
+{{- end }}
+{{- if .UpdateBodyField }}
+			{{.UpdateBodyField}}: resource,
+{{- end }}
 		}
-		op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
+{{- if .UpdateIsLRO }}
+		op, err := a.gcpClient.{{.UpdateMethodName}}(ctx, req)
 		if err != nil {
 			return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
 		}
+{{- if .UpdateLROIsEmpty }}
+		err = op.Wait(ctx)
+{{- else if .NeedsUpdatedVar }}
 		updated, err = op.Wait(ctx)
+{{- else }}
+		_, err = op.Wait(ctx)
+{{- end }}
 		if err != nil {
 			return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id, err)
 		}
+{{- else if .UpdateSyncIsEmpty }}
+		err = a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
+		}
+{{- else if .NeedsUpdatedVar }}
+		updated, err = a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
+		}
+{{- else }}
+		_, err = a.gcpClient.{{.UpdateMethodName}}(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
+		}
+{{- end }}
 		log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id)
 	}
 
 	status := &krm.{{.Kind}}Status{}
-	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, updated)
+{{- if .NeedsUpdatedVar }}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+{{- end }}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+{{- else }}
+	if report.HasDiff() {
+		report.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, report)
+		return fmt.Errorf("updating {{.Kind}} is not supported, fields modified: %v", updateMask.Paths)
+	}
+
+	status := &krm.{{.Kind}}Status{}
+{{- if .HasObservedState }}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+{{- end }}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
+{{- end }}
 }
 
-// Export maps the GCP object to a Config Connector resource ` + "`" + `spec` + "`" + `. 
+// Export maps the GCP object to a Config Connector resource ` + "`" + `spec` + "`" + `.
 func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
@@ -269,31 +677,36 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 
 	obj := &krm.{{.Kind}}{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf({{.Kind}}Spec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf({{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location =  a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName({{.IDExpr}})
 	u.SetGroupVersionKind(krm.{{.Kind}}GVK)
 
 	u.Object = uObj
 	return u, nil
 }
 
-// Delete the resource from GCP service when the corresponding Config Connector resource is deleted. 
+// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+{{- if .HasDelete }}
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting {{.ProtoResource}}", "name", a.id)
 
-	req := &{{.KCCService}}pb.Delete{{.ProtoResource}}Request{Name: a.id.String()}
-	op, err := a.gcpClient.Delete{{.ProtoResource}}(ctx, req)
+	req := &{{.PBPackageAlias}}.{{.DeleteRequestType}}{
+		{{.DeleteNameField}}: a.id.String(),
+{{- if .DeleteForceField }}
+		{{.DeleteForceField}}: true,
+{{- end }}
+	}
+{{- if .DeleteIsLRO }}
+	op, err := a.gcpClient.{{.DeleteMethodName}}(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -304,10 +717,44 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	}
 	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id)
 
+{{- if .DeleteLROIsEmpty }}
 	err = op.Wait(ctx)
+{{- else }}
+	_, err = op.Wait(ctx)
+{{- end }}
 	if err != nil {
 		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	return true, nil
+{{- else if .DeleteSyncIsEmpty }}
+	err := a.gcpClient.{{.DeleteMethodName}}(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent {{.ProtoResource}}, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id)
+	return true, nil
+{{- else }}
+	_, err := a.gcpClient.{{.DeleteMethodName}}(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent {{.ProtoResource}}, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting {{.ProtoResource}} %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted {{.ProtoResource}}", "name", a.id)
+	return true, nil
+{{- end }}
+{{- else }}
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deletion not supported for {{.ProtoResource}}, removing finalizer without deleting GCP resource", "name", a.id)
+	return true, nil
+{{- end }}
 }
 `
