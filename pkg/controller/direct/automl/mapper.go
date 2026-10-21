@@ -120,3 +120,161 @@ func TextSentimentDatasetMetadata_ToProto(mapCtx *direct.MapContext, in *krm.Tex
 	out.SentimentMax = direct.ValueOf(in.SentimentMax)
 	return out
 }
+
+func ImageClassificationModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ImageClassificationModelMetadata) *krm.ImageClassificationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageClassificationModelMetadata{}
+	out.BaseModelID = direct.LazyPtr(in.GetBaseModelId())
+	out.TrainBudgetMilliNodeHours = direct.LazyPtr(in.GetTrainBudgetMilliNodeHours())
+	out.ModelType = direct.LazyPtr(in.GetModelType())
+	return out
+}
+
+func ImageClassificationModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ImageClassificationModelMetadata) *pb.ImageClassificationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageClassificationModelMetadata{}
+	out.BaseModelId = direct.ValueOf(in.BaseModelID)
+	out.TrainBudgetMilliNodeHours = direct.ValueOf(in.TrainBudgetMilliNodeHours)
+	out.ModelType = direct.ValueOf(in.ModelType)
+	return out
+}
+
+func ImageClassificationModelMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImageClassificationModelMetadata) *krm.ImageClassificationModelMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageClassificationModelMetadataObservedState{}
+	out.TrainCostMilliNodeHours = direct.LazyPtr(in.GetTrainCostMilliNodeHours())
+	out.StopReason = direct.LazyPtr(in.GetStopReason())
+	out.NodeQps = direct.LazyPtr(in.GetNodeQps())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	return out
+}
+
+func ImageClassificationModelMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ImageClassificationModelMetadataObservedState) *pb.ImageClassificationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageClassificationModelMetadata{}
+	out.TrainCostMilliNodeHours = direct.ValueOf(in.TrainCostMilliNodeHours)
+	out.StopReason = direct.ValueOf(in.StopReason)
+	out.NodeQps = direct.ValueOf(in.NodeQps)
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	return out
+}
+
+func ImageObjectDetectionModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ImageObjectDetectionModelMetadata) *krm.ImageObjectDetectionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageObjectDetectionModelMetadata{}
+	out.ModelType = direct.LazyPtr(in.GetModelType())
+	out.TrainBudgetMilliNodeHours = direct.LazyPtr(in.GetTrainBudgetMilliNodeHours())
+	return out
+}
+
+func ImageObjectDetectionModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ImageObjectDetectionModelMetadata) *pb.ImageObjectDetectionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageObjectDetectionModelMetadata{}
+	out.ModelType = direct.ValueOf(in.ModelType)
+	out.TrainBudgetMilliNodeHours = direct.ValueOf(in.TrainBudgetMilliNodeHours)
+	return out
+}
+
+func ImageObjectDetectionModelMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImageObjectDetectionModelMetadata) *krm.ImageObjectDetectionModelMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageObjectDetectionModelMetadataObservedState{}
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.NodeQps = direct.LazyPtr(in.GetNodeQps())
+	out.StopReason = direct.LazyPtr(in.GetStopReason())
+	out.TrainCostMilliNodeHours = direct.LazyPtr(in.GetTrainCostMilliNodeHours())
+	return out
+}
+
+func ImageObjectDetectionModelMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ImageObjectDetectionModelMetadataObservedState) *pb.ImageObjectDetectionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageObjectDetectionModelMetadata{}
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.NodeQps = direct.ValueOf(in.NodeQps)
+	out.StopReason = direct.ValueOf(in.StopReason)
+	out.TrainCostMilliNodeHours = direct.ValueOf(in.TrainCostMilliNodeHours)
+	return out
+}
+
+func TextClassificationModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.TextClassificationModelMetadata) *krm.TextClassificationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TextClassificationModelMetadata{}
+	out.ClassificationType = direct.Enum_FromProto(mapCtx, in.GetClassificationType())
+	return out
+}
+
+func TextClassificationModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.TextClassificationModelMetadata) *pb.TextClassificationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TextClassificationModelMetadata{}
+	out.ClassificationType = direct.Enum_ToProto[pb.ClassificationType](mapCtx, in.ClassificationType)
+	return out
+}
+
+func TextExtractionModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.TextExtractionModelMetadata) *krm.TextExtractionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.TextExtractionModelMetadata{}
+}
+
+func TextExtractionModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.TextExtractionModelMetadata) *pb.TextExtractionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.TextExtractionModelMetadata{}
+}
+
+func TextSentimentModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.TextSentimentModelMetadata) *krm.TextSentimentModelMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.TextSentimentModelMetadata{}
+}
+
+func TextSentimentModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.TextSentimentModelMetadata) *pb.TextSentimentModelMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.TextSentimentModelMetadata{}
+}
+
+func TranslationModelMetadata_FromProto(mapCtx *direct.MapContext, in *pb.TranslationModelMetadata) *krm.TranslationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslationModelMetadata{}
+	out.BaseModel = direct.LazyPtr(in.GetBaseModel())
+	out.SourceLanguageCode = direct.LazyPtr(in.GetSourceLanguageCode())
+	out.TargetLanguageCode = direct.LazyPtr(in.GetTargetLanguageCode())
+	return out
+}
+
+func TranslationModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.TranslationModelMetadata) *pb.TranslationModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TranslationModelMetadata{}
+	out.BaseModel = direct.ValueOf(in.BaseModel)
+	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
+	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
+	return out
+}

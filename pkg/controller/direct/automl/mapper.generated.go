@@ -97,3 +97,81 @@ func AutoMLDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoMLDatasetS
 	out.Labels = in.Labels
 	return out
 }
+func AutoMLModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AutoMLModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoMLModelObservedState{}
+	out.ImageClassificationModelMetadata = ImageClassificationModelMetadataObservedState_FromProto(mapCtx, in.GetImageClassificationModelMetadata())
+	out.ImageObjectDetectionModelMetadata = ImageObjectDetectionModelMetadataObservedState_FromProto(mapCtx, in.GetImageObjectDetectionModelMetadata())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func AutoMLModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutoMLModelObservedState) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	if oneof := ImageClassificationModelMetadataObservedState_ToProto(mapCtx, in.ImageClassificationModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_ImageClassificationModelMetadata{ImageClassificationModelMetadata: oneof}
+	}
+	if oneof := ImageObjectDetectionModelMetadataObservedState_ToProto(mapCtx, in.ImageObjectDetectionModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_ImageObjectDetectionModelMetadata{ImageObjectDetectionModelMetadata: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func AutoMLModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AutoMLModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoMLModelSpec{}
+	out.TranslationModelMetadata = TranslationModelMetadata_FromProto(mapCtx, in.GetTranslationModelMetadata())
+	out.ImageClassificationModelMetadata = ImageClassificationModelMetadata_FromProto(mapCtx, in.GetImageClassificationModelMetadata())
+	out.TextClassificationModelMetadata = TextClassificationModelMetadata_FromProto(mapCtx, in.GetTextClassificationModelMetadata())
+	out.ImageObjectDetectionModelMetadata = ImageObjectDetectionModelMetadata_FromProto(mapCtx, in.GetImageObjectDetectionModelMetadata())
+	out.TextExtractionModelMetadata = TextExtractionModelMetadata_FromProto(mapCtx, in.GetTextExtractionModelMetadata())
+	out.TextSentimentModelMetadata = TextSentimentModelMetadata_FromProto(mapCtx, in.GetTextSentimentModelMetadata())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.DeploymentState = direct.Enum_FromProto(mapCtx, in.GetDeploymentState())
+	out.Labels = in.Labels
+	return out
+}
+func AutoMLModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutoMLModelSpec) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	if oneof := TranslationModelMetadata_ToProto(mapCtx, in.TranslationModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_TranslationModelMetadata{TranslationModelMetadata: oneof}
+	}
+	if oneof := ImageClassificationModelMetadata_ToProto(mapCtx, in.ImageClassificationModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_ImageClassificationModelMetadata{ImageClassificationModelMetadata: oneof}
+	}
+	if oneof := TextClassificationModelMetadata_ToProto(mapCtx, in.TextClassificationModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_TextClassificationModelMetadata{TextClassificationModelMetadata: oneof}
+	}
+	if oneof := ImageObjectDetectionModelMetadata_ToProto(mapCtx, in.ImageObjectDetectionModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_ImageObjectDetectionModelMetadata{ImageObjectDetectionModelMetadata: oneof}
+	}
+	if oneof := TextExtractionModelMetadata_ToProto(mapCtx, in.TextExtractionModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_TextExtractionModelMetadata{TextExtractionModelMetadata: oneof}
+	}
+	if oneof := TextSentimentModelMetadata_ToProto(mapCtx, in.TextSentimentModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.Model_TextSentimentModelMetadata{TextSentimentModelMetadata: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.DeploymentState = direct.Enum_ToProto[pb.Model_DeploymentState](mapCtx, in.DeploymentState)
+	out.Labels = in.Labels
+	return out
+}
