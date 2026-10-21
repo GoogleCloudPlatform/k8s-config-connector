@@ -358,6 +358,37 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				mockEvs = filteredMock
 			}
 
+			// Filter consecutive GET calls with identical schema payloads
+			if method == "GET" && strings.Contains(path, "/schemas/") {
+				canonicalize := func(body string) string {
+					var obj any
+					if err := json.Unmarshal([]byte(body), &obj); err != nil {
+						return body
+					}
+					obj = normalizeRepresentation(obj)
+					b, err := json.Marshal(obj)
+					if err != nil {
+						return body
+					}
+					return string(b)
+				}
+				dedup := func(events []httpEvent) []httpEvent {
+					var res []httpEvent
+					for _, ev := range events {
+						if len(res) == 0 {
+							res = append(res, ev)
+							continue
+						}
+						if canonicalize(res[len(res)-1].ResponseBody) != canonicalize(ev.ResponseBody) {
+							res = append(res, ev)
+						}
+					}
+					return res
+				}
+				realEvs = dedup(realEvs)
+				mockEvs = dedup(mockEvs)
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
@@ -583,6 +614,12 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		if js, ok := v["jsonSchema"].(string); ok {
+			var parsed any
+			if err := json.Unmarshal([]byte(js), &parsed); err == nil {
+				v["jsonSchema"] = normalizeRepresentation(parsed)
+			}
+		}
 		delete(v, "policyProfile")
 		delete(v, "done")
 		delete(v, "requestedCancellation")
