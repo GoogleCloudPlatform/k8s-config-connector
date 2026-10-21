@@ -191,8 +191,9 @@ func (r *Resolver) links(ctx context.Context, in input) []Link {
 // from mockgcp/apis before compiling. Types generated from them follow the
 // KCC copy, so the link does too.
 var kccProtoOverrides = map[string]bool{
-	"google/cloud/config/v1/config.proto":    true,
-	"google/cloud/dataplex/v1/catalog.proto": true,
+	"google/cloud/config/v1/config.proto":       true,
+	"google/cloud/dataplex/v1/catalog.proto":    true,
+	"google/logging/v2/logging_config.proto":    true,
 }
 
 func (r *Resolver) protoLink(path string) Link {

@@ -43,13 +43,27 @@ ${CONTROLLERBUILDER} generate-types \
     --resource LoggingLogSink:LogSink \
     --resource LoggingLogMetric:LogMetric
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.logging.v2 \
+  --api-version "logging.cnrm.cloud.google.com/v1alpha1" \
+  --prepopulate-resource \
+  --resource LoggingLogScope:LogScope
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.logging.v2 \
+  --api-version "logging.cnrm.cloud.google.com/v1alpha1" \
+  --resource LoggingLogScope:LogScope
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
+    --skip-proto LogScope \
     --include-skipped-output
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/logging" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/logging/
