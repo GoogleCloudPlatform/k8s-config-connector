@@ -94,6 +94,7 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 			krmInfo: &KRMPackageInfo{
 				IdentityTypeName:  "BeyondCorpAppConnectionIdentity",
 				HasGetIdentity:    true,
+				HasFromExternal:   true,
 				ParentStringExpr:  "a.id.ParentString()",
 				IDExpr:            "a.id.ID()",
 				HasSpecLabels:     false,
@@ -104,12 +105,14 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 			wantContains: []string{
 				"i, err := obj.GetIdentity(ctx, reader)",
 				"id := i.(*krm.BeyondCorpAppConnectionIdentity)",
+				"if !strings.HasPrefix(url, \"//beyondcorp.googleapis.com/\") {",
+				"u.Object = uObj\n\tu.SetName(a.id.String())\n\tu.SetGroupVersionKind(krm.BeyondCorpAppConnectionGVK)",
 				"common.NormalizeReferences(ctx, reader, obj, nil)",
 				"Parent:          a.id.ParentString()",
 				"AppConnectionId: a.id.ID()",
 				"resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(",
 				"UpdateMask:    updateMask",
-				"err = op.Wait(ctx)",
+				`if direct.IsNotFound(err) || strings.Contains(err.Error(), "missing \"value\" field") {`,
 			},
 			wantNotContains: []string{
 				"common.CompareGreenfieldSpec(",
@@ -556,7 +559,6 @@ func TestApplyDeterministicPasses_RealGoogleapis(t *testing.T) {
 			wantContains: []string{
 				`gcp "cloud.google.com/go/beyondcorp/appconnections/apiv1"`,
 				`appconnectionspb "cloud.google.com/go/beyondcorp/appconnections/apiv1/appconnectionspb"`,
-				`gcpClient, err := gcp.NewRESTClient(ctx, opts...)`,
 				`resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(`,
 			},
 		},
@@ -587,16 +589,42 @@ func TestApplyDeterministicPasses_RealGoogleapis(t *testing.T) {
 				`deletion not supported for KeyHandle, removing finalizer without deleting GCP resource`,
 			},
 		},
+		{
+			service:   "pubsub",
+			version:   "v1beta1",
+			kind:      "PubSubSnapshot",
+			protoRes:  "Snapshot",
+			protoVer:  "v1",
+			fullProto: "google.pubsub.v1.Snapshot",
+			wantContains: []string{
+				"req := &pubsubpb.GetSnapshotRequest{\n\t\tSnapshot: a.id.String(),\n\t}",
+				"req := &pubsubpb.CreateSnapshotRequest{\n\t\tName: a.id.String(),\n\t}",
+				"req := &pubsubpb.DeleteSnapshotRequest{\n\t\tSnapshot: a.id.String(),\n\t}",
+			},
+		},
+		{
+			service:   "firestore",
+			version:   "v1alpha1",
+			kind:      "FirestoreDocument",
+			protoRes:  "Document",
+			protoVer:  "v1",
+			fullProto: "google.firestore.v1.Document",
+			wantContains: []string{
+				"req := &firestorepb.UpdateDocumentRequest{\n\t\t\tDocument: resource,\n\t\t}",
+			},
+		},
 	}
 
+	repoRoot := filepath.Join("..", "..", "..", "..")
 	for _, tc := range cases {
 		t.Run(tc.kind, func(t *testing.T) {
 			api, err := p.ResourceAPIByName(protoreflect.FullName(tc.fullProto))
 			if err != nil {
 				t.Fatalf("ResourceAPIByName(%q) failed: %v", tc.fullProto, err)
 			}
+			krmInfo := InspectKRMPackageForController(repoRoot, tc.service, tc.version, tc.kind, tc.protoRes)
 			args := ccTemplate.NewBaseControllerArgs(tc.service, tc.version, tc.kind, tc.protoRes, tc.protoVer)
-			ApplyDeterministicPasses(args, api, nil, "")
+			ApplyDeterministicPasses(args, api, krmInfo, "")
 			out, err := RenderController(args)
 			if err != nil {
 				t.Fatalf("RenderController(%s) failed: %v", tc.kind, err)
@@ -610,6 +638,134 @@ func TestApplyDeterministicPasses_RealGoogleapis(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("ServerGeneratedID_And_ClientSpecifiedBodyName_RealIdentities", func(t *testing.T) {
+		idCases := []struct {
+			service         string
+			version         string
+			kind            string
+			protoRes        string
+			protoVer        string
+			fullProto       string
+			wantContains    []string
+			wantNotContains []string
+		}{
+			{
+				service:   "assuredworkloads",
+				version:   "v1alpha1",
+				kind:      "AssuredWorkloadsWorkload",
+				protoRes:  "Workload",
+				protoVer:  "v1",
+				fullProto: "google.cloud.assuredworkloads.v1.Workload",
+				wantContains: []string{
+					`if a.id.Workload == "" {`,
+					`parsedID := &krm.AssuredWorkloadsWorkloadIdentity{}`,
+					`a.id.Workload = parsedID.Workload`,
+					`status.ExternalRef = direct.LazyPtr(a.id.String())`,
+				},
+				wantNotContains: []string{
+					`resource.Name = a.id.String()` + "\n\n\treq := &assuredworkloadspb.Create",
+				},
+			},
+			{
+				service:   "bigqueryconnection",
+				version:   "v1beta1",
+				kind:      "BigQueryConnectionConnection",
+				protoRes:  "Connection",
+				protoVer:  "v1",
+				fullProto: "google.cloud.bigquery.connection.v1.Connection",
+				wantContains: []string{
+					`if !a.id.HasIdentitySpecified() {`,
+					`ConnectionId: a.id.Connection,`,
+					`parsedID := &krm.BigQueryConnectionConnectionIdentity{}`,
+					`a.id.Connection = parsedID.Connection`,
+					`status.ExternalRef = direct.LazyPtr(a.id.String())`,
+				},
+			},
+			{
+				service:   "cloudtasks",
+				version:   "v1alpha1",
+				kind:      "TasksQueue",
+				protoRes:  "Queue",
+				protoVer:  "v2",
+				fullProto: "google.cloud.tasks.v2.Queue",
+				wantContains: []string{
+					"resource.Name = a.id.String()\n\n\treq := &cloudtaskspb.CreateQueueRequest{",
+					"status.ExternalRef = direct.LazyPtr(a.id.String())",
+				},
+			},
+		}
+		for _, tc := range idCases {
+			t.Run(tc.kind, func(t *testing.T) {
+				api, err := p.ResourceAPIByName(protoreflect.FullName(tc.fullProto))
+				if err != nil {
+					t.Fatalf("ResourceAPIByName(%q) failed: %v", tc.fullProto, err)
+				}
+				krmInfo := InspectKRMPackageForController(repoRoot, tc.service, tc.version, tc.kind, tc.protoRes)
+				args := ccTemplate.NewBaseControllerArgs(tc.service, tc.version, tc.kind, tc.protoRes, tc.protoVer)
+				ApplyDeterministicPasses(args, api, krmInfo, "")
+				out, err := RenderController(args)
+				if err != nil {
+					t.Fatalf("RenderController(%s) failed: %v", tc.kind, err)
+				}
+				mustParseGo(t, out)
+				code := string(out)
+				for _, want := range tc.wantContains {
+					if !strings.Contains(code, want) {
+						t.Errorf("expected generated %s controller to contain %q\n--- source ---\n%s", tc.kind, want, code)
+					}
+				}
+				for _, notWant := range tc.wantNotContains {
+					if strings.Contains(code, notWant) {
+						t.Errorf("expected generated %s controller NOT to contain %q\n--- source ---\n%s", tc.kind, notWant, code)
+					}
+				}
+			})
+		}
+	})
+}
+
+func TestLoadModVersionsForRoot(t *testing.T) {
+	tmpRoot1 := t.TempDir()
+	goMod1 := `module example.com/test1
+
+go 1.24.0
+
+require cloud.google.com/go/single v1.2.3
+
+require (
+	cloud.google.com/go/block v0.9.0 // indirect
+)
+`
+	if err := os.WriteFile(filepath.Join(tmpRoot1, "go.mod"), []byte(goMod1), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	tmpRoot2 := t.TempDir()
+	goMod2 := `module example.com/test2
+
+go 1.24.0
+
+require (
+	cloud.google.com/go/block v2.0.0
+)
+`
+	if err := os.WriteFile(filepath.Join(tmpRoot2, "go.mod"), []byte(goMod2), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	versions1 := loadModVersionsForRoot(tmpRoot1)
+	if got := versions1["cloud.google.com/go/single"]; got != "v1.2.3" {
+		t.Errorf("versions1[single] = %q, want v1.2.3", got)
+	}
+	if got := versions1["cloud.google.com/go/block"]; got != "v0.9.0" {
+		t.Errorf("versions1[block] = %q, want v0.9.0", got)
+	}
+
+	versions2 := loadModVersionsForRoot(tmpRoot2)
+	if got := versions2["cloud.google.com/go/block"]; got != "v2.0.0" {
+		t.Errorf("versions2[block] = %q, want v2.0.0 (per-rootPath cache isolation failed)", got)
+	}
 }
 
 func mustParseGo(t *testing.T, src []byte) {
@@ -619,4 +775,3 @@ func mustParseGo(t *testing.T, src []byte) {
 		t.Fatalf("generated controller failed to parse as valid Go:\n%v\n--- source ---\n%s", err, string(src))
 	}
 }
-

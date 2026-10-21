@@ -88,10 +88,13 @@ func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
 }
 
 func RunController(ctx context.Context, o *GenerateControllerOptions) error {
-	gv, _ := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
+	gv, err := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
+	if err != nil {
+		return fmt.Errorf("unable to parse --api-version: %w", err)
+	}
 	gcpTokens := strings.Split(o.ServiceName, ".")
 	version := gcpTokens[len(gcpTokens)-1]
-	if version[0] != 'v' {
+	if len(version) == 0 || version[0] != 'v' {
 		return fmt.Errorf("--service does not contain GCP version")
 	}
 	serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")

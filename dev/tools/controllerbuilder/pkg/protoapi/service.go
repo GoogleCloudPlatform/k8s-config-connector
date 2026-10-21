@@ -41,7 +41,7 @@ type ResourceAPI struct {
 	DefaultHost string
 
 	// Standard CRUD methods (each nil when Service has no such method).
-	Get, Create, Update, Delete *StandardMethod
+	Get, List, Create, Update, Delete *StandardMethod
 
 	// HasLabels reports whether the resource message has a map<string, string> labels field.
 	HasLabels bool
@@ -106,6 +106,7 @@ func (p *Proto) ResourceAPIFor(msg protoreflect.MessageDescriptor) *ResourceAPI 
 		api.Service = svc
 		api.DefaultHost, _ = proto.GetExtension(svc.Options(), annotations.E_DefaultHost).(string)
 		api.Get = newStandardMethod(methods.get, "Get", msg)
+		api.List = newStandardMethod(methods.list, "List", msg)
 		api.Create = newStandardMethod(methods.create, "Create", msg)
 		api.Update = newStandardMethod(methods.update, "Update", msg)
 		api.Delete = newStandardMethod(methods.delete, "Delete", msg)
@@ -128,7 +129,7 @@ func (p *Proto) servicesInPackage(pkg protoreflect.FullName) []protoreflect.Serv
 }
 
 type methodSet struct {
-	get, create, update, delete protoreflect.MethodDescriptor
+	get, list, create, update, delete protoreflect.MethodDescriptor
 }
 
 func pickService(services []protoreflect.ServiceDescriptor, msg protoreflect.MessageDescriptor) (protoreflect.ServiceDescriptor, methodSet) {
@@ -146,7 +147,7 @@ func pickService(services []protoreflect.ServiceDescriptor, msg protoreflect.Mes
 
 func (s methodSet) count() int {
 	n := 0
-	for _, m := range []protoreflect.MethodDescriptor{s.get, s.create, s.update, s.delete} {
+	for _, m := range []protoreflect.MethodDescriptor{s.get, s.list, s.create, s.update, s.delete} {
 		if m != nil {
 			n++
 		}
@@ -165,12 +166,31 @@ func aipMethods(svc protoreflect.ServiceDescriptor, msg protoreflect.MessageDesc
 	byName := func(verb string) protoreflect.MethodDescriptor {
 		return svc.Methods().ByName(protoreflect.Name(verb + string(msg.Name())))
 	}
+	var list protoreflect.MethodDescriptor
+	for i := 0; i < svc.Methods().Len(); i++ {
+		m := svc.Methods().Get(i)
+		if strings.HasPrefix(string(m.Name()), "List") && hasRepeatedFieldOfType(m.Output(), msg) {
+			list = m
+			break
+		}
+	}
 	return methodSet{
 		get:    byName("Get"),
+		list:   list,
 		create: byName("Create"),
 		update: byName("Update"),
 		delete: byName("Delete"),
 	}
+}
+
+func hasRepeatedFieldOfType(msg, target protoreflect.MessageDescriptor) bool {
+	for i := 0; i < msg.Fields().Len(); i++ {
+		fd := msg.Fields().Get(i)
+		if fd.IsList() && fd.Kind() == protoreflect.MessageKind && fd.Message().FullName() == target.FullName() {
+			return true
+		}
+	}
+	return false
 }
 
 func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource protoreflect.MessageDescriptor) *StandardMethod {
@@ -178,12 +198,19 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 		return nil
 	}
 	req := m.Input()
+	nameField := fieldIfPresent(req, "name")
+	if nameField == "" && (verb == "Get" || verb == "Delete") && resource != nil {
+		resField := protoreflect.Name(snakeCase(string(resource.Name())))
+		if f := req.Fields().ByName(resField); f != nil && f.Kind() == protoreflect.StringKind {
+			nameField = string(f.Name())
+		}
+	}
 	sm := &StandardMethod{
 		Descriptor:      m,
 		ParentField:     fieldIfPresent(req, "parent"),
-		NameField:       fieldIfPresent(req, "name"),
+		NameField:       nameField,
 		ResourceField:   fieldOfType(req, resource),
-		UpdateMaskField: fieldIfPresent(req, "update_mask"),
+		UpdateMaskField: updateMaskFieldIfPresent(req),
 		ForceField:      fieldIfPresent(req, "force"),
 		Response:        string(m.Output().FullName()),
 	}
@@ -197,6 +224,14 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 		}
 	}
 	return sm
+}
+
+func updateMaskFieldIfPresent(msg protoreflect.MessageDescriptor) string {
+	f := msg.Fields().ByName("update_mask")
+	if f == nil || f.Message() == nil || f.Message().FullName() != "google.protobuf.FieldMask" {
+		return ""
+	}
+	return "update_mask"
 }
 
 func fieldIfPresent(msg protoreflect.MessageDescriptor, name protoreflect.Name) string {

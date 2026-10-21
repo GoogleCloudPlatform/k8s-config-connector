@@ -42,14 +42,20 @@ type ControllerArgs struct {
 	PBPackageAlias       string // e.g., "appconnectionspb"
 
 	// Method availability & names (Pass 1)
-	GetMethodName  string // e.g., "GetAppConnection"
-	GetRequestType string // e.g., "GetAppConnectionRequest"
-	GetNameField   string // Go struct field name on GetRequest, e.g., "Name"
+	HasGet          bool   // true if standard Get RPC exists
+	GetMethodName   string // e.g., "GetAppConnection"
+	GetRequestType  string // e.g., "GetAppConnectionRequest"
+	GetNameField    string // Go struct field name on GetRequest, e.g., "Name"
+	FindUsesList    bool   // Archetype B: true if Get RPC is absent and Find() iterates via List RPC
+	ListMethodName  string // e.g., "ListAssignments"
+	ListRequestType string // e.g., "ListAssignmentsRequest"
+	ListParentField string // e.g., "Parent"
 
 	HasCreate         bool
 	CreateMethodName  string // e.g., "CreateAppConnection"
 	CreateRequestType string // e.g., "CreateAppConnectionRequest"
 	CreateParentField string // e.g., "Parent" (empty if no parent field)
+	CreateNameField   string // e.g., "Name" (when CreateRequest has top-level Name and no BodyField)
 	CreateBodyField   string // e.g., "AppConnection"
 	CreateIDField     string // e.g., "AppConnectionId" (empty if no ID query param)
 	CreateIsLRO       bool
@@ -76,22 +82,31 @@ type ControllerArgs struct {
 	DeleteSyncIsEmpty bool // true if synchronous Delete response type is google.protobuf.Empty
 
 	// ID Strategy (Pass 2)
-	IsSingleton             bool // Archetype D: no Create, no Delete
-	IsServerGeneratedID     bool // Archetype C Variant 3B: Create has no ID param & Identity has HasIdentitySpecified()
-	SetResourceNameInCreate bool // Archetype C Variant 3A: Create has no ID param, so set resource.Name = a.id.String()
+	IsSingleton                bool // Archetype D: no Create, no Delete
+	IsServerGeneratedID        bool // Archetype C Variant 3B: Server-generated resource ID
+	HasIdentitySpecifiedMethod bool // true if Identity defines HasIdentitySpecified()
+	ServerIDUsesEmptyIDGuard   bool // true if server-generated Identity leaves IDExpr empty before creation
+	SetResourceNameInCreate    bool // Archetype C Variant 3A: Create has no ID param, so set resource.Name = a.id.String()
 
 	// Proto & KRM Traits (Pass 5)
-	ResourceNameField   string // Go field name on resource proto, e.g., "Name" (empty if resource proto has no name field)
-	HasLabels           bool   // Spec has Labels or proto has labels
-	HasReferences       bool   // Spec has *Ref fields -> emit common.NormalizeReferences
-	HasObservedState    bool   // Status has ObservedState
-	MapperVersionSuffix string // "" by default, or "_v1alpha1" / "_v1beta1" when multiversion mappers are used
-	RegionalEndpoint    string // "" (global), "prefix" ({loc}-{service}), or "rep" ({service}.{loc}.rep.googleapis.com)
-	ServiceHost         string // e.g., "cloudbuild.googleapis.com" from google.api.default_host
-	LocationExpr        string // e.g., "direct.ValueOf(obj.Spec.Location)" or "obj.Spec.Location"
+	PackageName                    string // Go package name for the controller file (defaults to KCCService)
+	MapperPackageImport            string // Optional import path when controller is in a sub-package and mappers are in parent package
+	MapperPrefix                   string // Optional package qualifier (e.g. "apihub.") for mapper calls
+	ResourceNameField              string // Go field name on resource proto, e.g., "Name" (empty if resource proto has no name field)
+	HasLabels                      bool   // Spec has Labels or proto has labels
+	HasReferences                  bool   // Spec has *Ref fields -> emit common.NormalizeReferences
+	HasObservedState               bool   // Status has ObservedState
+	MapperVersionSuffix            string // "" by default, or "_v1alpha1" / "_v1beta1" when multiversion mappers are used
+	ObservedStateVersionSuffix     string // Optional override when ObservedState mapper version suffix differs from Spec mapper
+	HasExplicitObservedStateSuffix bool   // true if ObservedStateVersionSuffix was explicitly determined
+	RegionalEndpoint               string // "" (global), "prefix" ({loc}-{service}), or "rep" ({service}.{loc}.rep.googleapis.com)
+	ServiceHost                    string // e.g., "cloudbuild.googleapis.com" from google.api.default_host
+	LocationExpr                   string // e.g., "direct.ValueOf(obj.Spec.Location)" or "obj.Spec.Location"
 
 	// Identity expressions (inspected from apis/<service>/<version> AST)
+	IdentityImportPath      string // Optional extra import path if Identity is in apis/refs
 	IdentityType            string // e.g., "krm.BeyondCorpAppConnectionIdentity" or "krm.AppConnectionIdentity"
+	IdentityConstructorExpr string // e.g., "krm.NewAppConnectionIdentity(ctx, reader, obj)"
 	UseGetIdentity          bool   // true if (obj *Kind) GetIdentity(ctx, reader) exists
 	ParentStringExpr        string // e.g., "a.id.ParentString()" or "a.id.Parent().String()"
 	IDExpr                  string // e.g., "a.id.ID()" or "a.id.Instance()"
@@ -118,6 +133,9 @@ func NewBaseControllerArgs(kccService, kccVersion, kind, protoResource, protoVer
 // EnsureDefaults populates Pass 1 base placeholder defaults on a ControllerArgs
 // if it has not yet been initialized by NewBaseControllerArgs or deterministic passes.
 func (a *ControllerArgs) EnsureDefaults() {
+	if a.PackageName == "" {
+		a.PackageName = a.KCCService
+	}
 	if a.GCPClientImportPath == "" {
 		a.GCPClientImportPath = fmt.Sprintf("cloud.google.com/go/%s/apiv1", a.KCCService)
 	}
@@ -133,6 +151,9 @@ func (a *ControllerArgs) EnsureDefaults() {
 	if a.PBPackageAlias == "" {
 		a.PBPackageAlias = a.KCCService + "pb"
 	}
+	if !a.PassesApplied && !a.HasGet && !a.FindUsesList {
+		a.HasGet = true
+	}
 	if a.GetMethodName == "" {
 		a.GetMethodName = "Get" + a.ProtoResource
 	}
@@ -144,6 +165,9 @@ func (a *ControllerArgs) EnsureDefaults() {
 	}
 	if a.IdentityType == "" {
 		a.IdentityType = "krm." + a.ProtoResource + "Identity"
+	}
+	if a.IdentityConstructorExpr == "" {
+		a.IdentityConstructorExpr = fmt.Sprintf("krm.New%sIdentity(ctx, reader, obj)", a.ProtoResource)
 	}
 	if a.ParentStringExpr == "" {
 		a.ParentStringExpr = "a.id.Parent().String()"
@@ -227,6 +251,41 @@ func (a *ControllerArgs) UpdateCompareLHS() string {
 	return fmt.Sprintf("%s, report, %s, err", resVar, maskVar)
 }
 
+// ObservedStateSuffix returns the version suffix for <Kind>ObservedState*_FromProto.
+func (a *ControllerArgs) ObservedStateSuffix() string {
+	if a.HasExplicitObservedStateSuffix {
+		return a.ObservedStateVersionSuffix
+	}
+	return a.MapperVersionSuffix
+}
+
+// ServerIDFieldAssignable reports whether a server-generated ID can be assigned
+// back onto a.id.<Field> via FromExternal(created.<ResourceNameField>) so that
+// a.id.String() preserves canonical projectId while adopting the server-generated ID.
+func (a *ControllerArgs) ServerIDFieldAssignable() bool {
+	return a.IsServerGeneratedID &&
+		a.HasIdentityFromExternal &&
+		strings.HasPrefix(a.IDExpr, "a.id.") &&
+		!strings.HasSuffix(a.IDExpr, "()")
+}
+
+// IdentityStructFieldName returns the struct field name on a.id (e.g. "Connection" from "a.id.Connection").
+func (a *ControllerArgs) IdentityStructFieldName() string {
+	return strings.TrimPrefix(a.IDExpr, "a.id.")
+}
+
+// CanGenerateAdapterForURL reports whether AdapterForURL can be generated using
+// id.FromExternal(url) and m.client(ctx, ...).
+func (a *ControllerArgs) CanGenerateAdapterForURL() bool {
+	if !a.HasIdentityFromExternal {
+		return false
+	}
+	if a.RegionalEndpoint != "" && a.ServiceHost != "" {
+		return strings.HasPrefix(a.LocationExpr, "id.")
+	}
+	return true
+}
+
 const ControllerTemplate = `// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -241,15 +300,27 @@ const ControllerTemplate = `// Copyright 2025 Google LLC
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package {{.KCCService}}
+package {{.PackageName}}
 
 import (
 	"context"
+{{- if .FindUsesList }}
+	"errors"
+{{- end }}
 	"fmt"
+{{- if or (and .HasDelete .DeleteIsLRO) (and .CanGenerateAdapterForURL .ServiceHost) }}
+	"strings"
+{{- end }}
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.KCCService}}/{{.KCCVersion}}"
+{{- if .IdentityImportPath }}
+	"{{.IdentityImportPath}}"
+{{- end }}
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+{{- if .MapperPackageImport }}
+	"{{.MapperPackageImport}}"
+{{- end }}
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -257,6 +328,9 @@ import (
 
 	gcp "{{.GCPClientImportPath}}"
 	{{.PBPackageAlias}} "{{.PBImportPath}}"
+{{- if .FindUsesList }}
+	"google.golang.org/api/iterator"
+{{- end }}
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -293,7 +367,7 @@ func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *dire
 	}
 	id := i.(*{{.IdentityType}})
 {{- else }}
-	id, err := krm.New{{.ProtoResource}}Identity(ctx, reader, obj)
+	id, err := {{.IdentityConstructorExpr}}
 	if err != nil {
 		return nil, err
 	}
@@ -322,8 +396,32 @@ func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *dire
 }
 
 func (m *model{{.ProtoResource}}) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+{{- if .CanGenerateAdapterForURL }}
+{{- if .ServiceHost }}
+	if !strings.HasPrefix(url, "//{{.ServiceHost}}/") {
+		return nil, nil
+	}
+{{- end }}
+	id := &{{.IdentityType}}{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+{{- if and .RegionalEndpoint .ServiceHost }}
+	gcpClient, err := m.client(ctx, {{.LocationExpr}})
+{{- else }}
+	gcpClient, err := m.client(ctx)
+{{- end }}
+	if err != nil {
+		return nil, err
+	}
+	return &{{.ProtoResource}}Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
+{{- else }}
 	// TODO: Support URLs
 	return nil, nil
+{{- end }}
 }
 
 {{- if and (eq .RegionalEndpoint "prefix") .ServiceHost }}
@@ -391,24 +489,65 @@ func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting {{.ProtoResource}}", "name", a.id)
 
 {{- if .IsServerGeneratedID }}
+{{- if .HasIdentitySpecifiedMethod }}
 	if !a.id.HasIdentitySpecified() {
 		return false, nil
 	}
+{{- else if and .ServerIDUsesEmptyIDGuard .IDExpr }}
+	if {{.IDExpr}} == "" {
+		return false, nil
+	}
 {{- end }}
+{{- end }}
+{{- if .HasGet }}
 
 	req := &{{.PBPackageAlias}}.{{.GetRequestType}}{
 		{{.GetNameField}}: a.id.String(),
 	}
 	{{.ProtoResource | ToLower}}pb, err := a.gcpClient.{{.GetMethodName}}(ctx, req)
 	if err != nil {
+{{- if .IsServerGeneratedID }}
+		if direct.IsNotFound(err) || (a.desired.Status.ExternalRef == nil && direct.IsBadRequest(err)) {
+			return false, nil
+		}
+{{- else }}
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
+{{- end }}
 		return false, fmt.Errorf("getting {{.ProtoResource}} %q: %w", a.id, err)
 	}
 
 	a.actual = {{.ProtoResource | ToLower}}pb
 	return true, nil
+{{- else if .FindUsesList }}
+
+	req := &{{.PBPackageAlias}}.{{.ListRequestType}}{
+		{{.ListParentField}}: {{.ParentStringExpr}},
+	}
+	it := a.gcpClient.{{.ListMethodName}}(ctx, req)
+	for {
+		item, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			if direct.IsNotFound(err) {
+				return false, nil
+			}
+			return false, fmt.Errorf("listing {{.ProtoResource}} in %q: %w", {{.ParentStringExpr}}, err)
+		}
+{{- if .ResourceNameField }}
+		if item.{{.ResourceNameField}} == a.id.String() {
+			a.actual = item
+			return true, nil
+		}
+{{- end }}
+	}
+	return false, nil
+{{- else }}
+	return false, fmt.Errorf("find not supported for %s", krm.{{.Kind}}GVK)
+{{- end }}
 }
 
 // Create creates the resource in GCP based on ` + "`" + `spec` + "`" + ` and update the Config Connector object ` + "`" + `status` + "`" + ` based on the GCP response.
@@ -416,20 +555,27 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 {{- if .HasCreate }}
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating {{.ProtoResource}}", "name", a.id)
+{{- if or .CreateBodyField (and .HasObservedState (not .CreateLROIsEmpty) (not .CreateSyncIsEmpty)) }}
 	mapCtx := &direct.MapContext{}
+{{- end }}
+{{- if .CreateBodyField }}
 
 	desired := a.desired.DeepCopy()
-	resource := {{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
+	resource := {{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 {{- if and .SetResourceNameInCreate .ResourceNameField }}
 	resource.{{.ResourceNameField}} = a.id.String()
 {{- end }}
+{{- end }}
 
 	req := &{{.PBPackageAlias}}.{{.CreateRequestType}}{
 {{- if .CreateParentField }}
 		{{.CreateParentField}}: {{.ParentStringExpr}},
+{{- end }}
+{{- if .CreateNameField }}
+		{{.CreateNameField}}: a.id.String(),
 {{- end }}
 {{- if .CreateIDField }}
 		{{.CreateIDField}}: {{.IDExpr}},
@@ -473,13 +619,22 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 
 	status := &krm.{{.Kind}}Status{}
 {{- if and .HasObservedState (not .CreateLROIsEmpty) (not .CreateSyncIsEmpty) }}
-	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, created)
+	status.ObservedState = {{.MapperPrefix}}{{.Kind}}ObservedState{{.ObservedStateSuffix}}_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 {{- end }}
 {{- if and .IsServerGeneratedID .ResourceNameField (not .CreateLROIsEmpty) (not .CreateSyncIsEmpty) }}
+{{- if .ServerIDFieldAssignable }}
+	parsedID := &{{.IdentityType}}{}
+	if err := parsedID.FromExternal(created.{{.ResourceNameField}}); err != nil {
+		return err
+	}
+	{{.IDExpr}} = parsedID.{{.IdentityStructFieldName}}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+{{- else }}
 	status.ExternalRef = direct.LazyPtr(created.{{.ResourceNameField}})
+{{- end }}
 {{- else }}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 {{- end }}
@@ -490,7 +645,7 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := {{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
+	resource := {{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -538,7 +693,7 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 
 	status := &krm.{{.Kind}}Status{}
 {{- if .NeedsSingletonCreatedVar }}
-	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, created)
+	status.ObservedState = {{.MapperPrefix}}{{.Kind}}ObservedState{{.ObservedStateSuffix}}_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -562,8 +717,8 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 		&a.desired.Spec,
 		a.actual,
 		"labels",
-		{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
-		{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
+		{{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
+		{{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
 		nil,
 	)
 {{- else }}
@@ -571,8 +726,8 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 		ctx,
 		&a.desired.Spec,
 		a.actual,
-		{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
-		{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
+		{{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto,
+		{{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_ToProto,
 		nil,
 	)
 {{- end }}
@@ -641,7 +796,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	status := &krm.{{.Kind}}Status{}
 {{- if .NeedsUpdatedVar }}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, updated)
+	status.ObservedState = {{.MapperPrefix}}{{.Kind}}ObservedState{{.ObservedStateSuffix}}_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -658,7 +813,7 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	status := &krm.{{.Kind}}Status{}
 {{- if .HasObservedState }}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = {{.Kind}}ObservedState{{.MapperVersionSuffix}}_FromProto(mapCtx, a.actual)
+	status.ObservedState = {{.MapperPrefix}}{{.Kind}}ObservedState{{.ObservedStateSuffix}}_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -677,7 +832,7 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 
 	obj := &krm.{{.Kind}}{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf({{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf({{.MapperPrefix}}{{.Kind}}Spec{{.MapperVersionSuffix}}_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -686,10 +841,10 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 		return nil, err
 	}
 
-	u.SetName({{.IDExpr}})
+	u.Object = uObj
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.{{.Kind}}GVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
@@ -723,6 +878,9 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	_, err = op.Wait(ctx)
 {{- end }}
 	if err != nil {
+		if direct.IsNotFound(err) || strings.Contains(err.Error(), "missing \"value\" field") {
+			return true, nil
+		}
 		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id, err)
 	}
 	return true, nil
