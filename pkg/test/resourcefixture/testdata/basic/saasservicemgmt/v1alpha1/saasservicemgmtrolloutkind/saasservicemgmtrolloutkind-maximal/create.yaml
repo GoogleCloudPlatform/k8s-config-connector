@@ -1,0 +1,15 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtRolloutKind
+metadata:
+  name: saasservicemgmtrolloutkind-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  unitKind: "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
+  unitFilter: "unit.labels.tier == 'prod'"
+  rolloutOrchestrationStrategy: "Google.Cloud.Simple.AllAtOnce"
+  updateUnitKindStrategy: "UPDATE_UNIT_KIND_STRATEGY_ON_START"
+  errorBudget:
+    allowedCount: 5
+    allowedPercentage: 10

@@ -1,3 +1,11 @@
+### [2026-10-21] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtRolloutKind
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtRolloutKind`.
+- **Observations**:
+  - **SaasRolloutsClient**: `RolloutKind` methods (`CreateRolloutKind`, `GetRolloutKind`, `UpdateRolloutKind`, `DeleteRolloutKind`) are on `SaasRolloutsClient` (`NewSaasRolloutsRESTClient`), rather than `SaasDeploymentsClient`.
+  - **RolloutOrchestrationStrategy Validation**: The live GCP API requires `rolloutOrchestrationStrategy` to be specified during creation (e.g. `Google.Cloud.Simple.AllAtOnce` or `Google.Cloud.Simple.OneLocationAtATime`), otherwise failing with `400 Bad Request: rollout kind: ... has an invalid strategy: , supported strategies: [...]`.
+  - **Synchronous Operations**: Create, Update, and Delete on `SaasRolloutsClient` for RolloutKind are all synchronous calls that return the resource or error directly without using LROs.
+  - **Audit Probe**: `_audit_probe.log` captures the GET REST call and audit markers are emitted to Cloud Logging.
+
 ### [2026-10-09] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtUnit
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtUnit`.
 - **Observations**:
