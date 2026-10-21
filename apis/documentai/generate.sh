@@ -38,6 +38,12 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DocumentAIProcessor:Processor \
     --resource DocumentAIProcessorDefaultVersion:SetDefaultProcessorVersionRequest
 
+${CONTROLLERBUILDER} generate-identity \
+    --service google.cloud.documentai.v1 \
+    --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
+    --resource DocumentAIProcessorDefaultVersion:SetDefaultProcessorVersionRequest \
+    --pattern DocumentAIProcessorDefaultVersion=projects/{project}/locations/{location}/processors/{processor}
+
 
 
 # --- v1beta1 ---
