@@ -72,6 +72,9 @@ func (s *CloudBuildConnectionServer) CreateConnection(ctx context.Context, req *
 	s.populateDefaultsForConnection(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -159,6 +162,14 @@ func (s *CloudBuildConnectionServer) DeleteConnection(ctx context.Context, req *
 
 func (s *CloudBuildConnectionServer) ListConnections(ctx context.Context, req *pbv2.ListConnectionsRequest) (*pbv2.ListConnectionsResponse, error) {
 	parent := req.GetParent()
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[1] != "" && tokens[3] != "" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		parent = fmt.Sprintf("projects/%s/locations/%s", project.ID, tokens[3])
+	}
 
 	response := &pbv2.ListConnectionsResponse{}
 	connectionKind := (&pbv2.Connection{}).ProtoReflect().Descriptor()
@@ -207,7 +218,7 @@ func (n *connectionName) Parent() string {
 func (s *MockService) parseConnectionName(name string) (*connectionName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "connections" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "connections" && tokens[1] != "" && tokens[3] != "" && tokens[5] != "" {
 		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
