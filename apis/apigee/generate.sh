@@ -36,6 +36,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
   --resource ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct \
   --resource ApigeeSyncAuthorization:GoogleCloudApigeeV1SyncAuthorization \
+  --resource ApigeeNATAddress:GoogleCloudApigeeV1NatAddress \
+  --include-skipped-output \
   --prune-unused-types=false \
   --skip-scaffold-files
 
