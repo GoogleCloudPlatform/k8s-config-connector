@@ -33,6 +33,9 @@ func GetContainersForGVK(gvk k8sschema.GroupVersionKind, smLoader dclmetadata.Se
 		return nil, fmt.Errorf("ServiceMetadata for resource with GroupVersionKind %v not found", gvk)
 	}
 	if !r.SupportsContainerAnnotations {
+		if r.SupportsHierarchicalReferences {
+			return getContainersFromHierarchicalReferencesForGVK(gvk, smLoader, schemaLoader)
+		}
 		return nil, nil
 	}
 	stv, err := dclmetadata.ToServiceTypeVersion(gvk, smLoader)

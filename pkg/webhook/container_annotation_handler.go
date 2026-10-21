@@ -98,6 +98,14 @@ func handleContainerAnnotationsForDCLBasedResources(obj *unstructured.Unstructur
 		return admission.Errored(http.StatusInternalServerError,
 			fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err))
 	}
+	if len(containers) == 0 {
+		for _, c := range k8s.ContainerTypesFor(hierarchicalRefs) {
+			containers = append(containers, corekccv1alpha1.Container{
+				TFField: string(c),
+				Type:    c,
+			})
+		}
+	}
 	return setDefaultHierarchicalReference(obj, ns, hierarchicalRefs, containers)
 }
 

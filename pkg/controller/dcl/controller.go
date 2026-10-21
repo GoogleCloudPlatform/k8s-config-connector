@@ -519,6 +519,14 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	if err != nil {
 		return fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
+	if len(containers) == 0 {
+		for _, c := range k8s.ContainerTypesFor(hierarchicalRefs) {
+			containers = append(containers, corekccv1alpha1.Container{
+				TFField: string(c),
+				Type:    c,
+			})
+		}
+	}
 	if err := k8s.EnsureHierarchicalReference(ctx, &resource.Resource, hierarchicalRefs, containers, r.Client); err != nil {
 		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %w", k8s.GetNamespacedName(resource), err)
 	}
