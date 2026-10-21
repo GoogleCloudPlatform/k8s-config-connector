@@ -459,6 +459,10 @@ func canonicalizeWorkloadIdentityPoolNewState(c *Client, rawNew, rawDesired *Wor
 		rawNew.State = rawDesired.State
 	} else {
 	}
+	if dcl.IsEmptyValueIndirect(rawNew.Mode) && dcl.IsEmptyValueIndirect(rawDesired.Mode) {
+		rawNew.Mode = rawDesired.Mode
+	} else {
+	}
 
 	if dcl.IsEmptyValueIndirect(rawNew.Disabled) && dcl.IsEmptyValueIndirect(rawDesired.Disabled) {
 		rawNew.Disabled = rawDesired.Disabled
@@ -515,6 +519,12 @@ func diffWorkloadIdentityPool(c *Client, desired, actual *WorkloadIdentityPool, 
 	}
 
 	if ds, err := dcl.Diff(desired.State, actual.State, dcl.DiffInfo{OutputOnly: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("State")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -625,6 +635,9 @@ func expandWorkloadIdentityPool(c *Client, f *WorkloadIdentityPool) (map[string]
 	if v := f.Disabled; dcl.ValueShouldBeSent(v) {
 		m["disabled"] = v
 	}
+	if v := f.Mode; dcl.ValueShouldBeSent(v) {
+		m["mode"] = v
+	}
 	if v, err := dcl.EmptyValue(); err != nil {
 		return nil, fmt.Errorf("error expanding Project into project: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -655,6 +668,7 @@ func flattenWorkloadIdentityPool(c *Client, i interface{}, res *WorkloadIdentity
 	resultRes.DisplayName = dcl.FlattenString(m["displayName"])
 	resultRes.Description = dcl.FlattenString(m["description"])
 	resultRes.State = flattenWorkloadIdentityPoolStateEnum(m["state"])
+	resultRes.Mode = flattenWorkloadIdentityPoolModeEnum(m["mode"])
 	resultRes.Disabled = dcl.FlattenBool(m["disabled"])
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
@@ -700,6 +714,18 @@ func flattenWorkloadIdentityPoolStateEnumSlice(c *Client, i interface{}, res *Wo
 	}
 
 	return items
+}
+
+// flattenWorkloadIdentityPoolModeEnum asserts that an interface is a string, and returns a
+// pointer to a *WorkloadIdentityPoolModeEnum with the same value as that string.
+func flattenWorkloadIdentityPoolModeEnum(i interface{}) *WorkloadIdentityPoolModeEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	v := WorkloadIdentityPoolModeEnum(s)
+	return &v
 }
 
 // flattenWorkloadIdentityPoolStateEnum asserts that an interface is a string, and returns a
