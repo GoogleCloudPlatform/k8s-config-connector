@@ -46,11 +46,9 @@ type krmTypeInfo struct {
 	ProjectRefIsPtr  bool
 	HasOrgRef        bool
 	OrgRefIsPtr      bool
-	HasFolderRef           bool
-	FolderRefIsPtr         bool
-	HasBillingAccountRef   bool
-	BillingAccountRefIsPtr bool
-	HasLocation            bool
+	HasFolderRef     bool
+	FolderRefIsPtr   bool
+	HasLocation      bool
 	LocationGoName   string
 	LocationJSONName string
 	LocationIsPtr    bool
@@ -234,9 +232,6 @@ func populateSpecFieldFlags(kind string, info *krmTypeInfo, fset *token.FileSet,
 		case "FolderRef":
 			info.HasFolderRef = true
 			info.FolderRefIsPtr = sf.IsPointer
-		case "BillingAccountRef":
-			info.HasBillingAccountRef = true
-			info.BillingAccountRefIsPtr = sf.IsPointer
 		case "Location", "Region", "Zone":
 			if !info.HasLocation || sf.GoName == "Location" {
 				info.HasLocation = true
@@ -263,9 +258,6 @@ func (info *krmTypeInfo) rootRefCount() int {
 		count++
 	}
 	if info.HasOrgRef {
-		count++
-	}
-	if info.HasBillingAccountRef {
 		count++
 	}
 	return count
@@ -505,7 +497,7 @@ func isStandardRootAndLocationTuple(ancestorFields []IdentityField) bool {
 }
 
 func isRootCollection(col string) bool {
-	return col == "projects" || col == "organizations" || col == "folders" || col == "billingAccounts"
+	return col == "projects" || col == "organizations" || col == "folders"
 }
 
 func isLocationCollection(col string) bool {
@@ -539,17 +531,6 @@ func resolveSingleAncestor(af IdentityField, typeInfo *krmTypeInfo) (AncestorRes
 			}, true
 		}
 		return AncestorResolution{Field: af, Source: AncestorFolderRef}, true
-	case "billingAccounts":
-		if typeInfo.HasBillingAccountRef {
-			return AncestorResolution{
-				Field:         af,
-				Source:        AncestorBillingAccountRef,
-				SpecFieldName: "BillingAccountRef",
-				SpecJSONName:  "billingAccountRef",
-				IsPointer:     typeInfo.BillingAccountRefIsPtr,
-			}, true
-		}
-		return AncestorResolution{Field: af, Source: AncestorBillingAccountRef}, true
 	case "locations", "regions", "zones":
 		if !typeInfo.HasLocation {
 			return AncestorResolution{Field: af, Source: AncestorLocation}, false
