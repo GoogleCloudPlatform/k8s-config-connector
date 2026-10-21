@@ -1,4 +1,4 @@
-- caisURL: //compute.googleapis.com/locations/global/securityPolicies/computeorganizationsecuritypolicy${uniqueId}
+- caisURL: unknown
   group: compute.cnrm.cloud.google.com
   kind: ComputeOrganizationSecurityPolicy
   name: computeorganizationsecuritypolicy-${uniqueId}

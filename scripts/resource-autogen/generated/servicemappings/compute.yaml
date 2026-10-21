@@ -905,8 +905,7 @@ spec:
       idTemplate: "locations/global/securityPolicies/{{policy_id}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
-      metadataMapping:
-        name: policy_id
+      serverGeneratedIDField: policy_id
       resourceID:
         targetField: policy_id
     - name: google_compute_organization_security_policy_association
