@@ -2434,10 +2434,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		cluster.MonitoringConfig = expandMonitoringConfig(v)
 	}
 
-	if err := validateNodePoolAutoConfig(cluster); err != nil {
-		return err
-	}
-
 	if v, ok := d.GetOk("security_posture_config"); ok {
 		cluster.SecurityPostureConfig = expandSecurityPostureConfig(v)
 	}
@@ -6848,19 +6844,6 @@ func defaultComputeClassConfigDiffSuppress(k, old, new string, r *schema.Resourc
 	}
 
 	return false
-}
-
-func validateNodePoolAutoConfig(cluster *container.Cluster) error {
-	if cluster == nil || cluster.NodePoolAutoConfig == nil {
-		return nil
-	}
-	if cluster.NodePoolAutoConfig != nil && cluster.NodePoolAutoConfig.NetworkTags != nil && len(cluster.NodePoolAutoConfig.NetworkTags.Tags) > 0 {
-		if (cluster.Autopilot == nil || !cluster.Autopilot.Enabled) && (cluster.Autoscaling == nil || !cluster.Autoscaling.EnableNodeAutoprovisioning) {
-			return fmt.Errorf("node_pool_auto_config network tags can only be set if enable_autopilot or cluster_autoscaling is enabled")
-		}
-	}
-
-	return nil
 }
 
 func containerClusterSurgeSettingsCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
