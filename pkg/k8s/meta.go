@@ -93,7 +93,7 @@ func ToGVR(gvk schema.GroupVersionKind) schema.GroupVersionResource {
 	}
 }
 
-func GetProjectIDForNamespace(ctx context.Context, c client.Client, namespaceName string) (string, error) {
+func GetProjectIDForNamespace(ctx context.Context, c client.Reader, namespaceName string) (string, error) {
 	var ns corev1.Namespace
 	if err := c.Get(ctx, types.NamespacedName{Name: namespaceName}, &ns); err != nil {
 		return "", fmt.Errorf("error getting namespace '%v': %w", namespaceName, err)
