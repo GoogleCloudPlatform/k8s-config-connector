@@ -195,6 +195,92 @@ func TestDeprecatedResourceReasonMixedPackageServices(t *testing.T) {
 	}
 }
 
+func TestDeprecatedResourceReasonSharedServiceResourceRPCs(t *testing.T) {
+	// Simulate a shared active service (like google.cloud.edgenetwork.v1.EdgeNetwork)
+	// that manages both an active resource (Network) and a resource (Zone) whose
+	// resource-specific RPCs are marked `option deprecated = true;`.
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	zoneOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(zoneOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    "example.googleapis.com/Zone",
+		Pattern: []string{"projects/{project}/locations/{location}/zones/{zone}"},
+	})
+	networkOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(networkOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    "example.googleapis.com/Network",
+		Pattern: []string{"projects/{project}/locations/{location}/networks/{network}"},
+	})
+
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1/edgenetwork.proto"),
+		Package: proto.String("google.cloud.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name:    proto.String("Zone"),
+				Options: zoneOpts,
+				Field:   []*descriptorpb.FieldDescriptorProto{{Name: proto.String("name"), Number: proto.Int32(1), Type: str}},
+			},
+			{
+				Name:    proto.String("Network"),
+				Options: networkOpts,
+				Field:   []*descriptorpb.FieldDescriptorProto{{Name: proto.String("name"), Number: proto.Int32(1), Type: str}},
+			},
+		},
+		Service: []*descriptorpb.ServiceDescriptorProto{{
+			Name: proto.String("EdgeNetwork"),
+			Method: []*descriptorpb.MethodDescriptorProto{
+				{
+					Name:       proto.String("GetZone"),
+					InputType:  proto.String(".google.cloud.example.v1.Zone"),
+					OutputType: proto.String(".google.cloud.example.v1.Zone"),
+					Options:    &descriptorpb.MethodOptions{Deprecated: proto.Bool(true)},
+				},
+				{
+					Name:       proto.String("CreateNetwork"),
+					InputType:  proto.String(".google.cloud.example.v1.Network"),
+					OutputType: proto.String(".google.cloud.example.v1.Network"),
+				},
+				{
+					Name:       proto.String("GetNetwork"),
+					InputType:  proto.String(".google.cloud.example.v1.Network"),
+					OutputType: proto.String(".google.cloud.example.v1.Network"),
+				},
+			},
+		}},
+	}}}
+
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(t.TempDir(), "shared_service.pb")
+	writeFile(t, pbPath, string(b))
+
+	api, err := protoapi.LoadProto(pbPath, "")
+	if err != nil {
+		t.Fatalf("LoadProto: %v", err)
+	}
+
+	zoneDesc, err := api.Files().FindDescriptorByName("google.cloud.example.v1.Zone")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName Zone: %v", err)
+	}
+	if reason, deprecated := deprecatedResourceReason(api, zoneDesc.(protoreflect.MessageDescriptor)); !deprecated {
+		t.Errorf("expected Zone with all deprecated RPCs in shared service to be detected as deprecated, got false")
+	} else if !strings.Contains(reason, "RPCs managing Zone") {
+		t.Errorf("unexpected reason for Zone: %q", reason)
+	}
+
+	networkDesc, err := api.Files().FindDescriptorByName("google.cloud.example.v1.Network")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName Network: %v", err)
+	}
+	if reason, deprecated := deprecatedResourceReason(api, networkDesc.(protoreflect.MessageDescriptor)); deprecated {
+		t.Errorf("expected Network with active RPCs in shared service not to be deprecated, got reason: %q", reason)
+	}
+}
+
 func TestRunGenerateCRDRejectsNewDeprecatedResourceWithoutFlag(t *testing.T) {
 	apiDir := t.TempDir()
 	pbPath := writeDeprecatedTestProto(t, t.TempDir(), "google.cloud.example.v1", true, []bool{true, true, true, true})

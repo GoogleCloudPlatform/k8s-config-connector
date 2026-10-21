@@ -56,23 +56,25 @@ var knownDeprecatedProtoPackages = map[string]string{
 	"google.cloud.notebooks.v1": "AI Platform / Vertex AI Workbench v1 (google.cloud.notebooks.v1) is deprecated in favor of google.cloud.notebooks.v2",
 }
 
-// deprecatedResourceReason reports whether a resource proto message belongs to
-// a deprecated service:
+// deprecatedResourceReason reports whether a resource proto message is
+// deprecated:
 //  1. Its proto package is in knownDeprecatedProtoPackages (for retired GCP
 //     products whose .proto descriptors omit `option deprecated = true;`), or
-//  2. The proto service(s) managing the resource have `option deprecated = true;`
-//     at the service level, or have `option deprecated = true;` on ALL RPC
-//     methods in the service.
+//  2. The resource message itself has `option deprecated = true;`, or
+//  3. The proto service(s) managing the resource have `option deprecated = true;`
+//     at the service level (or on all RPC methods in the service), or
+//  4. All RPC methods managing this specific resource in a shared service have
+//     `option deprecated = true;`.
 func deprecatedResourceReason(api *protoapi.Proto, msg protoreflect.MessageDescriptor) (string, bool) {
-	if msg == nil {
+	if api == nil || msg == nil {
 		return "", false
 	}
 	pkg := msg.ParentFile().Package()
 	if reason, ok := knownDeprecatedProtoPackages[string(pkg)]; ok {
 		return reason, true
 	}
-	if api == nil {
-		return "", false
+	if opts, ok := msg.Options().(*descriptorpb.MessageOptions); ok && opts.GetDeprecated() {
+		return fmt.Sprintf("message %s is marked deprecated in proto", msg.FullName()), true
 	}
 
 	services := managingServicesForResource(api, msg)
@@ -80,17 +82,23 @@ func deprecatedResourceReason(api *protoapi.Proto, msg protoreflect.MessageDescr
 		return "", false
 	}
 
+	allServicesDeprecated := true
 	var firstReason string
 	for _, svc := range services {
 		reason, deprecated := deprecatedServiceReason(svc)
 		if !deprecated {
-			return "", false
+			allServicesDeprecated = false
+			break
 		}
 		if firstReason == "" {
 			firstReason = reason
 		}
 	}
-	return firstReason, true
+	if allServicesDeprecated {
+		return firstReason, true
+	}
+
+	return deprecatedResourceRPCsReason(api, msg)
 }
 
 // deprecatedServiceReason reports whether a proto service has
@@ -104,7 +112,7 @@ func deprecatedServiceReason(svc protoreflect.ServiceDescriptor) (string, bool) 
 	if n == 0 {
 		return "", false
 	}
-	for i := 0; i < n; i++ {
+	for i := range n {
 		m := svc.Methods().Get(i)
 		opts, ok := m.Options().(*descriptorpb.MethodOptions)
 		if !ok || !opts.GetDeprecated() {
@@ -112,6 +120,38 @@ func deprecatedServiceReason(svc protoreflect.ServiceDescriptor) (string, bool) 
 		}
 	}
 	return fmt.Sprintf("all %d RPCs in service %s are marked deprecated in proto", n, svc.FullName()), true
+}
+
+// deprecatedResourceRPCsReason checks whether all RPCs managing msg across its
+// proto package are marked deprecated (either on the RPC method itself or on
+// its enclosing service). This catches deprecated resources inside an otherwise
+// active shared service (such as google.cloud.edgenetwork.v1.Zone).
+func deprecatedResourceRPCsReason(api *protoapi.Proto, msg protoreflect.MessageDescriptor) (string, bool) {
+	pkg := msg.ParentFile().Package()
+	var matchedRPCs []protoreflect.MethodDescriptor
+	api.Files().RangeFilesByPackage(pkg, func(fd protoreflect.FileDescriptor) bool {
+		for i := range fd.Services().Len() {
+			svc := fd.Services().Get(i)
+			for j := range svc.Methods().Len() {
+				m := svc.Methods().Get(j)
+				if methodManagesResource(m, msg) {
+					matchedRPCs = append(matchedRPCs, m)
+				}
+			}
+		}
+		return true
+	})
+	if len(matchedRPCs) == 0 {
+		return "", false
+	}
+	for _, m := range matchedRPCs {
+		svcOpts, _ := m.Parent().(protoreflect.ServiceDescriptor).Options().(*descriptorpb.ServiceOptions)
+		mOpts, _ := m.Options().(*descriptorpb.MethodOptions)
+		if !svcOpts.GetDeprecated() && !mOpts.GetDeprecated() {
+			return "", false
+		}
+	}
+	return fmt.Sprintf("all %d RPCs managing %s in %s are marked deprecated in proto", len(matchedRPCs), msg.Name(), pkg), true
 }
 
 // managingServicesForResource returns the ServiceDescriptors in msg's proto
@@ -122,7 +162,7 @@ func managingServicesForResource(api *protoapi.Proto, msg protoreflect.MessageDe
 	pkg := msg.ParentFile().Package()
 	var matched []protoreflect.ServiceDescriptor
 	api.Files().RangeFilesByPackage(pkg, func(fd protoreflect.FileDescriptor) bool {
-		for i := 0; i < fd.Services().Len(); i++ {
+		for i := range fd.Services().Len() {
 			svc := fd.Services().Get(i)
 			if serviceManagesResource(svc, msg) {
 				matched = append(matched, svc)
@@ -134,34 +174,41 @@ func managingServicesForResource(api *protoapi.Proto, msg protoreflect.MessageDe
 		return matched
 	}
 	fd := msg.ParentFile()
-	for i := 0; i < fd.Services().Len(); i++ {
+	for i := range fd.Services().Len() {
 		matched = append(matched, fd.Services().Get(i))
 	}
 	return matched
 }
 
-// serviceManagesResource reports whether any RPC method in svc manages msg,
-// identified by standard CRUD method naming (`Create<Name>`, `Get<Name>`,
-// `Update<Name>`, `Delete<Name>`), taking or returning msg directly, or taking
-// a request message with a field of type msg (such as `Create<Name>Request`).
+// serviceManagesResource reports whether any RPC method in svc manages msg.
 func serviceManagesResource(svc protoreflect.ServiceDescriptor, msg protoreflect.MessageDescriptor) bool {
+	for i := range svc.Methods().Len() {
+		if methodManagesResource(svc.Methods().Get(i), msg) {
+			return true
+		}
+	}
+	return false
+}
+
+// methodManagesResource reports whether RPC method m manages msg, identified by
+// standard CRUD method naming (`Create<Name>`, `Get<Name>`, `Update<Name>`,
+// `Delete<Name>`), taking or returning msg directly, or taking a request
+// message with a field of type msg (such as `Create<Name>Request`).
+func methodManagesResource(m protoreflect.MethodDescriptor, msg protoreflect.MessageDescriptor) bool {
 	name := string(msg.Name())
 	fullName := msg.FullName()
-	for i := 0; i < svc.Methods().Len(); i++ {
-		m := svc.Methods().Get(i)
-		switch string(m.Name()) {
-		case "Create" + name, "Get" + name, "Update" + name, "Delete" + name:
+	switch string(m.Name()) {
+	case "Create" + name, "Get" + name, "Update" + name, "Delete" + name:
+		return true
+	}
+	if m.Input().FullName() == fullName || m.Output().FullName() == fullName {
+		return true
+	}
+	fields := m.Input().Fields()
+	for j := range fields.Len() {
+		f := fields.Get(j)
+		if f.Kind() == protoreflect.MessageKind && f.Message().FullName() == fullName {
 			return true
-		}
-		if m.Input().FullName() == fullName || m.Output().FullName() == fullName {
-			return true
-		}
-		fields := m.Input().Fields()
-		for j := 0; j < fields.Len(); j++ {
-			f := fields.Get(j)
-			if f.Kind() == protoreflect.MessageKind && f.Message().FullName() == fullName {
-				return true
-			}
 		}
 	}
 	return false
