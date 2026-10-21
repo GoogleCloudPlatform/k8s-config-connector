@@ -37,6 +37,11 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource AppEngineFirewallRule:FirewallRule
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.appengine.v1 \
+  --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource AppEngineFirewallRule:FirewallRule
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.appengine.v1 \
   --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
