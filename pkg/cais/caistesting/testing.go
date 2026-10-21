@@ -100,6 +100,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize ComputeOrganizationSecurityPolicy IDs: locations/global/securityPolicies/<securityPolicyId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/locations/global/securityPolicies/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize OSLoginSSHPublicKey IDs: users/.../sshPublicKeys/<fingerprint>
 		// Since it has a server-generated ID (fingerprint), we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/sshPublicKeys/"); idx != -1 {
