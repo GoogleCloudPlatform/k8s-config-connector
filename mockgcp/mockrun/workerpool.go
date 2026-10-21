@@ -56,6 +56,72 @@ func (s *workerPools) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolRe
 	return ret, nil
 }
 
+func (s *workerPools) populateWorkerPoolDefaults(name *workerPoolName, obj *pb.WorkerPool, isUpdate bool, templateChanged bool) {
+	if obj.LaunchStage == 0 {
+		obj.LaunchStage = 4 // LaunchStage_GA
+	}
+
+	if obj.Scaling == nil {
+		defaultCount := int32(1)
+		obj.Scaling = &pb.WorkerPoolScaling{
+			ManualInstanceCount: &defaultCount,
+		}
+	} else if obj.Scaling.ManualInstanceCount == nil {
+		defaultCount := int32(1)
+		obj.Scaling.ManualInstanceCount = &defaultCount
+	}
+
+	if len(obj.InstanceSplits) == 0 {
+		obj.InstanceSplits = []*pb.InstanceSplit{
+			{
+				Type:    pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
+				Percent: 100,
+			},
+		}
+	}
+	if len(obj.InstanceSplitStatuses) == 0 {
+		obj.InstanceSplitStatuses = []*pb.InstanceSplitStatus{
+			{
+				Type:    pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
+				Percent: 100,
+			},
+		}
+	}
+
+	obj.LastModifier = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
+	obj.ObservedGeneration = obj.Generation
+
+	if !isUpdate || obj.LatestCreatedRevision == "" {
+		revName := fmt.Sprintf("%s/revisions/%s-00001-abc", obj.Name, name.WorkerPool)
+		obj.LatestCreatedRevision = revName
+		obj.LatestReadyRevision = revName
+	} else if templateChanged {
+		revName := fmt.Sprintf("%s/revisions/%s-%05d-abc", obj.Name, name.WorkerPool, obj.Generation)
+		obj.LatestCreatedRevision = revName
+		obj.LatestReadyRevision = revName
+	}
+
+	if obj.Template != nil {
+		if obj.Template.ServiceAccount == "" {
+			obj.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+		}
+		for _, container := range obj.Template.Containers {
+			if container.Resources == nil {
+				container.Resources = &pb.ResourceRequirements{}
+			}
+			if container.Resources.Limits == nil {
+				container.Resources.Limits = make(map[string]string)
+			}
+			if _, ok := container.Resources.Limits["cpu"]; !ok {
+				container.Resources.Limits["cpu"] = "1000m"
+			}
+			if _, ok := container.Resources.Limits["memory"]; !ok {
+				container.Resources.Limits["memory"] = "512Mi"
+			}
+		}
+	}
+}
+
 func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorkerPoolRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/workerPools/" + req.WorkerPoolId
 	name, err := s.parseWorkerPoolName(reqName)
@@ -70,8 +136,8 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()
 	obj.Etag = fields.ComputeWeakEtag(obj)
-	obj.Creator = "test@google.com"
-	obj.LastModifier = "test@google.com"
+	obj.Creator = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
+	obj.LastModifier = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
 
 	obj.Uid = uuid.NewString()
 	obj.Generation = 1
@@ -89,10 +155,14 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 		}
 	}
 
+	s.populateWorkerPoolDefaults(name, obj, false, false)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return s.operations.StartLRO(ctx, req.Parent, obj, func() (proto.Message, error) {
+	meta := proto.CloneOf(obj)
+	meta.CustomAudiences = nil
+	return s.operations.StartLRO(ctx, req.Parent, meta, func() (proto.Message, error) {
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return ret, nil
@@ -115,9 +185,17 @@ func (s *workerPools) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorker
 		return nil, err
 	}
 
+	obj.DeleteTime = timestamppb.Now()
+	obj.ExpireTime = timestamppb.Now()
+	obj.Generation++
+
+	meta := proto.CloneOf(obj)
+	meta.CustomAudiences = nil
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
-		return obj, nil
+	return s.operations.StartLRO(ctx, lroPrefix, meta, func() (protoreflect.ProtoMessage, error) {
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
@@ -134,6 +212,7 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 		return nil, err
 	}
 
+	oldTemplate := proto.CloneOf(obj.Template)
 	updated := req.GetWorkerPool()
 
 	paths := req.GetUpdateMask().GetPaths()
@@ -151,6 +230,15 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 		if updated.Description != "" {
 			obj.Description = updated.Description
 		}
+		if updated.Scaling != nil {
+			obj.Scaling = updated.Scaling
+		}
+		if updated.LaunchStage != 0 {
+			obj.LaunchStage = updated.LaunchStage
+		}
+		if updated.CustomAudiences != nil {
+			obj.CustomAudiences = updated.CustomAudiences
+		}
 	} else {
 		if err := fields.UpdateByFieldMask(obj, updated, paths); err != nil {
 			return nil, status.Errorf(codes.Internal, "updating by field mask: %v", err)
@@ -160,12 +248,17 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 	obj.UpdateTime = timestamppb.Now()
 	obj.Generation++
 
+	templateChanged := !proto.Equal(oldTemplate, obj.Template)
+	s.populateWorkerPoolDefaults(name, obj, true, templateChanged)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
+	meta := proto.CloneOf(obj)
+	meta.CustomAudiences = nil
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, meta, func() (protoreflect.ProtoMessage, error) {
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return ret, nil

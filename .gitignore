@@ -164,7 +164,6 @@ log
 run-*-failed.log
 requests.log
 artifacts-*
-unit_tests_run.log
 
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers

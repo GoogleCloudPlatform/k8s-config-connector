@@ -323,8 +323,12 @@ func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool, mbur
 	// CustomAudiences is mutable-but-unreadable (missing from the GET response in real GCP).
 	// If the SHA-256 hash stored in the mutable-unreadable-fields-hash annotation matches desired state,
 	// the user hasn't changed customAudiences, so we copy desired.CustomAudiences into maskedActual to suppress false diffs.
-	if mburMatch && len(clonedDesired.CustomAudiences) > 0 && len(maskedActual.CustomAudiences) == 0 {
+	if mburMatch {
 		maskedActual.CustomAudiences = clonedDesired.CustomAudiences
+	} else if len(clonedDesired.CustomAudiences) == 0 {
+		// User cleared customAudiences (stored hash was non-empty, desired is now empty).
+		// Populate a placeholder in maskedActual so DiffForTopLevelFields detects the removal.
+		maskedActual.CustomAudiences = []string{"(unreadable)"}
 	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())

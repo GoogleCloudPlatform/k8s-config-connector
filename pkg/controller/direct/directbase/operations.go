@@ -65,9 +65,6 @@ type Operation interface {
 
 	// CompareMBUR compares the mutable-unreadable-fields-hash annotation on the object with the computed MBUR hash from the compute function.
 	CompareMBUR(computeMBUR func() (string, error)) (bool, error)
-
-	// SetAnnotation sets an annotation on the object and persists it to the API server if changed.
-	SetAnnotation(ctx context.Context, key, value string) error
 }
 
 // GetUnstructured returns the object being reconciled, in unstructured format.
@@ -301,23 +298,6 @@ func (o *operationBase) CompareMBUR(computeMBUR func() (string, error)) (bool, e
 		return storedHash == "", nil
 	}
 	return storedHash == hash, nil
-}
-
-func (o *operationBase) SetAnnotation(ctx context.Context, key, value string) error {
-	u := o.GetUnstructured()
-	annotations := u.GetAnnotations()
-	if annotations == nil {
-		annotations = make(map[string]string)
-	}
-	if annotations[key] == value {
-		return nil
-	}
-	annotations[key] = value
-	u.SetAnnotations(annotations)
-	if err := o.client.Update(ctx, u); err != nil {
-		return fmt.Errorf("updating object to set annotation %s: %w", key, err)
-	}
-	return nil
 }
 
 type statusWithConditions struct {

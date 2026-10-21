@@ -87,20 +87,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "1",
     "scaling": {
       "manualInstanceCount": 1
     },
@@ -122,7 +134,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -161,20 +174,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "1",
     "scaling": {
       "manualInstanceCount": 1
     },
@@ -196,7 +221,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -214,17 +240,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "1",
     "scaling": {
       "manualInstanceCount": 1
     },
@@ -246,7 +287,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -286,13 +328,28 @@ X-Xss-Protection: 0
   "description": "Maximal WorkerPool description",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
+  "instanceSplitStatuses": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "instanceSplits": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "test@google.com",
+  "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+  "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+  "observedGeneration": "1",
   "scaling": {
     "manualInstanceCount": 1
   },
@@ -314,7 +371,8 @@ X-Xss-Protection: 0
           }
         }
       }
-    ]
+    ],
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -392,20 +450,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "2",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -427,7 +497,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -466,20 +537,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "2",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -501,7 +584,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -519,17 +603,32 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "2",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -551,7 +650,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -591,13 +691,28 @@ X-Xss-Protection: 0
   "description": "Updated Maximal WorkerPool description",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
+  "instanceSplitStatuses": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "instanceSplits": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "test@google.com",
+  "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+  "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+  "observedGeneration": "2",
   "scaling": {
     "manualInstanceCount": 2
   },
@@ -619,7 +734,8 @@ X-Xss-Protection: 0
           }
         }
       }
-    ]
+    ],
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -656,20 +772,34 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "generation": "3",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": 1
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -691,7 +821,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -730,20 +861,34 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "generation": "3",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -765,7 +910,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
@@ -783,20 +929,34 @@ X-Xss-Protection: 0
     "client": "kcc",
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "generation": "3",
+    "instanceSplitStatuses": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
+    "instanceSplits": [
+      {
+        "percent": 100,
+        "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+      }
+    ],
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+    "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+    "observedGeneration": "2",
     "scaling": {
       "manualInstanceCount": 2
     },
@@ -818,7 +978,8 @@ X-Xss-Protection: 0
             }
           }
         }
-      ]
+      ],
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
