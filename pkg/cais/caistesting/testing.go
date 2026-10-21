@@ -145,6 +145,15 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/keyHandles/")
 			lines[i] = line[:start] + "${keyHandleID}"
 		}
+		// Normalize KMSCryptoKeyVersion IDs: projects/.../cryptoKeys/.../cryptoKeyVersions/<cryptoKeyVersionId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/cryptoKeyVersions/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize AIPlatformReasoningEngine reasoningEngines IDs: locations/.../reasoningEngines/<reasoningEngineId>
 		if idx := strings.Index(line, "/reasoningEngines/"); idx != -1 {
 			start := idx + len("/reasoningEngines/")

@@ -29,7 +29,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".cryptoKeyVersions[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".cryptoKeyVersions[].generateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".cryptoKeyVersions[].destroyTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".destroyTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".generateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
