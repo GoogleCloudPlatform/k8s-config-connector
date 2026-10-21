@@ -100,9 +100,10 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 
 *   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
     *   Verify `<Kind>` remains in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, it must be added—it should only be removed by the graduation step at the end of the pipeline).
-*   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync**:
+*   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync (Including Pre-Generated Controllers & Fuzzers)**:
     *   Verify `apis/<service>/generate.sh` includes `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
     *   Verify that `apis/<service>/v1alpha1/types.generated.go`, `pkg/controller/direct/<service>/mapper.generated.go`, `apis/<service>/v1alpha1/zz_generated.deepcopy.go`, and `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml` are updated and consistent with `<kind>_types.go`.
+    *   **If a bulk-generated controller (`pkg/controller/direct/<service>/<proto_lower>_controller.go` with `// +generated:controller`) and/or fuzzer (`pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` with `// +generated:fuzzer`) already exist for `<Kind>`:** Verify they were regenerated in lockstep with the triaged KRM types and identity (e.g., reflecting `ServerGeneratedIdentity` vs `IdentityV2`, commented-out empty `ObservedState`, and Spec/Status field movements) and that `pkg/controller/direct/<service>/...` compiles and passes `FuzzAllMappers`.
 *   **Exception Files**:
     *   Greenfield PRs must **not** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file, except:
         *   `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` (if required for alpha fields)
