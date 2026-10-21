@@ -45,6 +45,9 @@ type IdentityTrait struct {
 	IDExpr           string // e.g., "a.id.ID()" or "a.id.FeatureView"
 	NameField        string // Resource proto name field, usually "Name"
 	HasFromExternal  bool   // true if Identity supports FromExternal(string)
+	HasProjectRef    bool   // true if resource has Spec.ProjectRef
+	HasLocation      bool   // true if resource has Spec.Location
+	HasResourceID    bool   // true if resource has Spec.ResourceID
 }
 
 // IdentityStrategy specifies how the resource ID is passed on creation and tracked.
@@ -146,6 +149,7 @@ type TransportTrait struct {
 
 	// Schema & Reference Traits
 	LabelDiffing        LabelDiffingStyle
+	HasLabels           bool   // true if resource supports labels
 	HasReferences       bool   // Spec has *Ref fields -> emits common.NormalizeReferences
 	HasObservedState    bool   // Status has ObservedState field
 	MapperVersionSuffix string // e.g., "" or "_v1alpha1"

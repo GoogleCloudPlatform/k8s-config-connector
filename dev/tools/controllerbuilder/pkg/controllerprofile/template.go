@@ -40,18 +40,27 @@ package {{.KCCService}}
 import (
 	"context"
 	"fmt"
+	"strings"
 
+{{- if .Identity.HasProjectRef }}
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+{{- end }}
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.KCCService}}/{{.KCCVersion}}"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+{{- if .Transport.HasLabels }}
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+{{- end }}
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "{{.Transport.GCPClientImportPath}}"
 	{{.Transport.PBPackageAlias}} "{{.Transport.PBImportPath}}"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -111,7 +120,7 @@ func (m *model{{.ProtoResource}}) AdapterForURL(ctx context.Context, url string)
 {{- if .Identity.HasFromExternal }}
 	id := &{{.Identity.TypeName}}{}
 	if err := id.FromExternal(url); err != nil {
-		return nil, fmt.Errorf("parsing external URL %q: %w", url, err)
+		return nil, nil
 	}
 	gcpClient, err := m.client(ctx{{if .Transport.LocationExpr}}, id.Parent().Location{{end}})
 	if err != nil {
@@ -269,36 +278,28 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating {{.ProtoResource}}", "name", a.id)
 
-{{- if eq .Transport.LabelDiffing "metadata" }}
-	{{.UpdateCompareLHS}} := common.CompareGreenfieldSpecAndLabels(
-		updateOp.GetUnstructured(),
-		{{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_FromProto,
-		{{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_ToProto,
-		a.desired.DeepCopy(),
-		a.actual,
-	)
-{{- else }}
-	{{.UpdateCompareLHS}} := common.CompareGreenfieldSpec(
-		{{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_FromProto,
-		{{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_ToProto,
-		a.desired.DeepCopy(),
-		a.actual,
-	)
-{{- end }}
+	mapCtx := &direct.MapContext{}
+	desired := {{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	diffs, updateMask, err := compare{{.ProtoResource}}(ctx, a.actual, desired)
 	if err != nil {
 		return err
 	}
 
 {{- if eq .Lifecycle.UpdateStyle "unsupported" }}
-	if report.HasDiff() {
-		report.Object = updateOp.GetUnstructured()
-		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("updating {{.Kind}} is not supported, fields modified: %v", updateMask.Paths)
+	_ = updateMask
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("{{.Kind}} resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 	}
 
 	status := &krm.{{.Kind}}Status{}
 {{- if .Transport.HasObservedState }}
-	mapCtx := &direct.MapContext{}
+	mapCtx = &direct.MapContext{}
 	status.ObservedState = {{.Kind}}ObservedState{{.Transport.MapperVersionSuffix}}_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -307,15 +308,15 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 {{- else }}
-	if report.HasDiff() {
-		report.Object = updateOp.GetUnstructured()
-		structuredreporting.ReportDiff(ctx, report)
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &{{.Transport.PBPackageAlias}}.{{.Lifecycle.UpdateRequestType}}{
 {{- if .Lifecycle.UpdateHasTopLevelName }}
 			{{.Lifecycle.GetNameField}}: a.id.String(),
 {{- end }}
-			{{.Lifecycle.UpdateBodyField}}: resource,
+			{{.Lifecycle.UpdateBodyField}}: desired,
 {{- if eq .Lifecycle.UpdateStyle "mask" }}
 			{{.Lifecycle.UpdateMaskField}}: updateMask,
 {{- end }}
@@ -348,11 +349,11 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 
 		status := &krm.{{.Kind}}Status{}
 {{- if .Transport.HasObservedState }}
-		mapCtx := &direct.MapContext{}
+		mapCtx = &direct.MapContext{}
 		{{- if .NeedsUpdatedVar }}
 		status.ObservedState = {{.Kind}}ObservedState{{.Transport.MapperVersionSuffix}}_FromProto(mapCtx, updated)
 		{{- else }}
-		status.ObservedState = {{.Kind}}ObservedState{{.Transport.MapperVersionSuffix}}_FromProto(mapCtx, resource)
+		status.ObservedState = {{.Kind}}ObservedState{{.Transport.MapperVersionSuffix}}_FromProto(mapCtx, desired)
 		{{- end }}
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -364,6 +365,18 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 
 	return nil
 {{- end }}
+}
+
+func compare{{.ProtoResource}}(ctx context.Context, actual, desired *{{.Transport.PBPackageAlias}}.{{.ProtoResource}}) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, {{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_FromProto, {{.Kind}}Spec{{.Transport.MapperVersionSuffix}}_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -379,15 +392,27 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 		return nil, mapCtx.Err()
 	}
 
+{{- if .Identity.HasProjectRef }}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+{{- end }}
+{{- if .Identity.HasLocation }}
+	obj.Spec.Location = a.id.Location
+{{- end }}
+{{- if .Identity.HasResourceID }}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.{{.Identity.IDExpr}})
+{{- end }}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.{{.Identity.IDExpr}})
 	u.SetGroupVersionKind(krm.{{.Kind}}GVK)
-
-	u.Object = uObj
+{{- if .Transport.HasLabels }}
+	export.SetLabels(u, a.actual.Labels)
+{{- end }}
 	return u, nil
 }
 
@@ -423,7 +448,9 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	_, err = op.Wait(ctx)
 	{{- end }}
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id, err)
+		if !direct.IsNotFound(err) && !strings.Contains(err.Error(), "missing \"value\" field") {
+			return false, fmt.Errorf("waiting delete {{.ProtoResource}} %s: %w", a.id, err)
+		}
 	}
 	return true, nil
 {{- else }}

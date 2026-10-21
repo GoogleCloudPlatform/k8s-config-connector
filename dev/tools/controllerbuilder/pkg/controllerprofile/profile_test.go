@@ -116,7 +116,7 @@ func TestBuildProfile_StandardLROWithRegionalEndpoint(t *testing.T) {
 		"package aiplatform",
 		"gcp.NewFeatureOnlineStoreAdminClient(ctx, opts...)",
 		"common.NormalizeReferences(ctx, reader, obj, nil)",
-		"common.CompareGreenfieldSpecAndLabels(",
+		"compareFeatureView(ctx, a.actual, desired)",
 		"op, err := a.gcpClient.CreateFeatureView(ctx, req)",
 		"created, err := op.Wait(ctx)",
 		"op.Wait(ctx)",
@@ -252,8 +252,11 @@ func TestBuildProfile_FullReplacementUpdate(t *testing.T) {
 	}
 
 	srcStr := string(src)
-	if !strings.Contains(srcStr, "resource, report, _, err := common.CompareGreenfieldSpec(") {
-		t.Errorf("expected update comparison to omit updateMask receiver, got code: %s", srcStr)
+	if !strings.Contains(srcStr, "diffs, updateMask, err := compareChannelPartnerRepricingConfig(ctx, a.actual, desired)") {
+		t.Errorf("expected compareChannelPartnerRepricingConfig call, got code: %s", srcStr)
+	}
+	if strings.Contains(srcStr, "UpdateMask:") {
+		t.Errorf("expected full replacement to omit UpdateMask, got code: %s", srcStr)
 	}
 }
 

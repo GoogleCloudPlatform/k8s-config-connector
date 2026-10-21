@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package securesourcemanager
 import (
 	"context"
 	"fmt"
-	"strings"
-
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -29,11 +27,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"strings"
 
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -42,195 +40,182 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.SecureSourceManagerInstanceGVK, NewSecureSourceManagerInstanceModel)
+	registry.RegisterModel(krm.SecureSourceManagerInstanceGVK, NewInstanceModel)
 }
 
-func NewSecureSourceManagerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &secureSourceManagerInstanceModel{config: *config}, nil
+func NewInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelInstance{config: *config}, nil
 }
 
-var _ directbase.Model = &secureSourceManagerInstanceModel{}
+var _ directbase.Model = &modelInstance{}
 
-type secureSourceManagerInstanceModel struct {
+type modelInstance struct {
 	config config.ControllerConfig
 }
 
-func (m *secureSourceManagerInstanceModel) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building SecureSourceManager Instance client: %w", err)
-	}
-	return gcpClient, err
-}
-
-func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
 	obj := &krm.SecureSourceManagerInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-
+	i, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	id := i.(*krm.SecureSourceManagerInstanceIdentity)
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	id, err := obj.GetIdentity(ctx, reader)
-	if err != nil {
-		return nil, err
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	// Get securesourcemanager GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &secureSourceManagerInstanceAdapter{
-		id:        id.(*krm.SecureSourceManagerInstanceIdentity),
+	return &InstanceAdapter{
+		id:        id,
 		gcpClient: gcpClient,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
-func (m *secureSourceManagerInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
-	if !strings.HasPrefix(url, "//securesourcemanager.googleapis.com/") {
-		return nil, nil
-	}
-
-	trimmed := strings.TrimPrefix(url, "//")
+func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	id := &krm.SecureSourceManagerInstanceIdentity{}
-	if err := id.FromExternal(trimmed); err != nil {
-		// Not recognized
+	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
-
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &secureSourceManagerInstanceAdapter{
+	return &InstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
 	}, nil
 }
 
-type secureSourceManagerInstanceAdapter struct {
+func (m *modelInstance) client(ctx context.Context) (*gcp.Client, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building Instance client: %w", err)
+	}
+	return gcpClient, err
+}
+
+type InstanceAdapter struct {
 	id        *krm.SecureSourceManagerInstanceIdentity
 	gcpClient *gcp.Client
-	desired   *pb.Instance
+	desired   *krm.SecureSourceManagerInstance
 	actual    *pb.Instance
 }
 
-var _ directbase.Adapter = &secureSourceManagerInstanceAdapter{}
+var _ directbase.Adapter = &InstanceAdapter{}
 
-func (a *secureSourceManagerInstanceAdapter) Find(ctx context.Context) (bool, error) {
+func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting SecureSourceManagerInstance", "name", a.id.String())
+	log.V(2).Info("getting Instance", "name", a.id)
 
-	req := &pb.GetInstanceRequest{Name: a.id.String()}
-	instancepb, err := a.gcpClient.GetInstance(ctx, req)
+	req := &pb.GetInstanceRequest{
+		Name: a.id.String(),
+	}
+	resp, err := a.gcpClient.GetInstance(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting SecureSourceManagerInstance %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting Instance %q: %w", a.id, err)
 	}
 
-	a.actual = instancepb
+	a.actual = resp
 	return true, nil
 }
 
-func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Instance", "name", a.id.String())
-
-	instance := proto.CloneOf(a.desired)
-
-	req := &pb.CreateInstanceRequest{
-		Parent:     fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
-		Instance:   instance,
-		InstanceId: a.id.Instance,
-	}
-	op, err := a.gcpClient.CreateInstance(ctx, req)
-	if err != nil {
-		return fmt.Errorf("creating instance %q: %w", a.id.String(), err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting for creation of instance %q: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully created Instance", "name", a.id.String())
-
-	return a.updateStatus(ctx, createOp, created)
-}
-
-func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("updating SecureSourceManagerInstance", "name", a.id.String())
-
-	diffs, _, err := compareSecureSourceManagerInstance(ctx, a.actual, a.desired)
-	if err != nil {
-		return err
-	}
-
-	if !diffs.HasDiff() {
-		log.V(2).Info("no diff detected for SecureSourceManagerInstance", "name", a.id.String())
-		return a.updateStatus(ctx, updateOp, a.actual)
-	}
-
-	diffs.Object = updateOp.GetUnstructured()
-	structuredreporting.ReportDiff(ctx, diffs)
-
-	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
-}
-
-func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
+	log.V(2).Info("creating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
-	status := &krm.SecureSourceManagerInstanceStatus{}
-	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, latest)
+
+	desired := a.desired.DeepCopy()
+	resource := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	externalRef := a.id.String()
-	status.ExternalRef = &externalRef
-	return op.UpdateStatus(ctx, status, nil)
+
+	req := &pb.CreateInstanceRequest{
+		Parent:     a.id.ParentString(),
+		InstanceId: a.id.Instance,
+		Instance:   resource,
+	}
+	op, err := a.gcpClient.CreateInstance(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating Instance %s: %w", a.id, err)
+	}
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting create Instance %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully created Instance", "name", a.id)
+
+	status := &krm.SecureSourceManagerInstanceStatus{}
+	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func compareSecureSourceManagerInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Instance", "name", a.id)
+
+	mapCtx := &direct.MapContext{}
+	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	diffs, updateMask, err := compareInstance(ctx, a.actual, desired)
+	if err != nil {
+		return err
+	}
+	_ = updateMask
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
+	}
+
+	status := &krm.SecureSourceManagerInstanceStatus{}
+	mapCtx = &direct.MapContext{}
+	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func compareInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, SecureSourceManagerInstanceSpec_FromProto, SecureSourceManagerInstanceSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
-	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
-
-	clonedDesired := proto.CloneOf(desired)
-
-	populateDefaults := func(obj *pb.Instance) {
-		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
-	}
-	populateDefaults(maskedActual)
-	populateDefaults(clonedDesired)
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
 	return diffs, updateMask, nil
 }
 
-func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -250,31 +235,33 @@ func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstr
 	if err != nil {
 		return nil, err
 	}
+
 	u.Object = uObj
 	u.SetName(a.id.Instance)
 	u.SetGroupVersionKind(krm.SecureSourceManagerInstanceGVK)
-
 	export.SetLabels(u, a.actual.Labels)
-
 	return u, nil
 }
 
-// Delete implements the Adapter interface.
-func (a *secureSourceManagerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *InstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Instance", "name", a.id.String())
+	log.V(2).Info("deleting Instance", "name", a.id)
 
-	req := &pb.DeleteInstanceRequest{Name: a.id.String()}
+	req := &pb.DeleteInstanceRequest{
+		Name: a.id.String(),
+	}
 	op, err := a.gcpClient.DeleteInstance(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Instance %q: %w", a.id.String(), err)
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("deleting Instance %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Instance", "name", a.id.String())
-
+	log.V(2).Info("successfully deleted Instance", "name", a.id)
 	err = op.Wait(ctx)
 	if err != nil {
-		if !strings.Contains(err.Error(), "(line 15:3): missing \"value\" field") {
-			return false, fmt.Errorf("deleting Instance %s: %w", a.id.String(), err)
+		if !direct.IsNotFound(err) && !strings.Contains(err.Error(), "missing \"value\" field") {
+			return false, fmt.Errorf("waiting delete Instance %s: %w", a.id, err)
 		}
 	}
 	return true, nil
