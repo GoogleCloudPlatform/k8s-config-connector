@@ -166,10 +166,30 @@ spec:
               rolloutKindRef:
                 description: Optional. Immutable. Name of the RolloutKind this rollout
                   is stemming from and adhering to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: A reference to an externally managed SaaSServiceMgmtRolloutKind
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/rolloutKinds/{{rolloutKindID}}".
+                    type: string
+                  name:
+                    description: The name of a SaaSServiceMgmtRolloutKind resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SaaSServiceMgmtRolloutKind resource.
                     type: string
                 type: object
                 x-kubernetes-validations:
