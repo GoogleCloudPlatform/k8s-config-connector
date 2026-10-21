@@ -1,0 +1,122 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ refs.Ref = &ApigeeSyncAuthorizationRef{}
+
+// ApigeeSyncAuthorizationRef is a reference to a GCP ApigeeSyncAuthorization.
+type ApigeeSyncAuthorizationRef struct {
+	// A reference to an externally managed ApigeeSyncAuthorization resource.
+	// Should be in the format "organizations/{{organizationID}}/syncAuthorization".
+	External string `json:"external,omitempty"`
+
+	// The name of an ApigeeSyncAuthorization resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of an ApigeeSyncAuthorization resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ApigeeSyncAuthorizationRef{}, &ApigeeSyncAuthorization{})
+}
+
+func (r *ApigeeSyncAuthorizationRef) GetGVK() schema.GroupVersionKind {
+	return ApigeeSyncAuthorizationGVK
+}
+
+func (r *ApigeeSyncAuthorizationRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ApigeeSyncAuthorizationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ApigeeSyncAuthorizationRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ApigeeSyncAuthorizationRef) ValidateExternal(ref string) error {
+	id := &ApigeeSyncAuthorizationIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ApigeeSyncAuthorizationRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ApigeeSyncAuthorizationIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *ApigeeSyncAuthorizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		ready, err := isResourceReady(u)
+		if err != nil || !ready {
+			return ""
+		}
+		obj, err := common.ToStructuredType[*ApigeeSyncAuthorization](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromApigeeSyncAuthorizationSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+func isResourceReady(u *unstructured.Unstructured) (bool, error) {
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil {
+		return false, err
+	}
+	if !found {
+		return false, nil
+	}
+	for _, c := range conditions {
+		condition, ok := c.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if condition["type"] == "Ready" && condition["status"] == "True" {
+			return true, nil
+		}
+	}
+	return false, nil
+}

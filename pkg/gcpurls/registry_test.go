@@ -22,6 +22,7 @@ import (
 	"regexp"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/commerceproducer/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
@@ -61,6 +62,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 
 		// AlloyDB
+
+		// Apigee
+		"//apigee.googleapis.com/organizations/{}/syncAuthorization": true,
 
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
