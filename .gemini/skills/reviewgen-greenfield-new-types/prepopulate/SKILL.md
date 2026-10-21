@@ -59,17 +59,19 @@ Please enforce all of the following review criteria and invariants.
 ## 4. Release Bundle Blocklist, Compilation, & `apichecks` Verification
 
 *   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
-    *   Verify that each newly prepopulated `<Kind>` is added (in alphabetical order) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
-*   **Build & Test Verification**:
+    *   Verify that each newly prepopulated `<Kind>` is added (formatted with 4-space indentation and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+*   **Build, `apichecks`, `envtest`, & Operator Golden Verification**:
     *   Run:
         ```bash
         go build ./apis/<service>/... ./pkg/controller/direct/<service>/...
         go test -v ./apis/<service>/... ./pkg/controller/direct/<service>/...
         go test -v ./tests/apichecks/...
+        . dev/tasks/setup-envtest && go test ./pkg/cli/preview/... -run TestPreview
+        go test ./operator/pkg/controllers/configconnector/...
         ```
 *   **Exception Files**:
-    *   The **only** exception file that may be updated in Step 1 is `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` (via `WRITE_GOLDEN_OUTPUT=1` for deprecated top-level proto fields omitted by `--prepopulate-resource`), or `knownInvalidCRDs` in `tests/apichecks/crds_test.go` when `TestCRDObjectTypes` flags a genuine parameterless proto `oneof` variant struct (annotated with `// GCP known pattern: Empty oneof option (<field path>)`).
-    *   Strictly reject any modifications to `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file.
+    *   In Step 1 (`--prepopulate-resource`), running `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt`, or add genuine parameterless proto `oneof` variant structs to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` (annotated with `// GCP known pattern: Empty oneof option (<field path>)`).
+    *   Strictly reject any modifications to `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, or `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
 
 ---
 

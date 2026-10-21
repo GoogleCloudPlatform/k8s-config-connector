@@ -104,8 +104,8 @@ fi
    ./apis/<service_short>/generate.sh
    ```
 2. **Add `<Kind>` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
-   - Add `<Kind>` (in alphabetical order) to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. This prevents unverified Greenfield CRDs from being packaged into the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation agent removes `<Kind>` at the end of the generation pipeline.
-   - If `dev/tasks/generate-crds` added a brand-new API group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, run `./dev/tasks/generate-channels` so `operator/channels/packages/configconnector/0.0.0/0-cnrm-system.yaml` and `operator/autopilot-channels/packages/configconnector/0.0.0/0-cnrm-system.yaml` stay in sync.
+   - Add `<Kind>` formatted with 4-space indentation and double quotes (`    "<Kind>"`), sorted alphabetically into the existing `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` (without duplicating any pre-existing entry). This prevents unverified Greenfield CRDs from being packaged into the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation agent removes `<Kind>` at the end of the generation pipeline.
+   - If `dev/tasks/generate-crds` added a brand-new API group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, run `./dev/tasks/generate-channels` and `WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...` so `0-cnrm-system.yaml` and `operator/pkg/controllers/configconnector/testdata/golden/simple/_expected.yaml` stay in sync.
 3. Verify that `apis/<service_short>/judgement_queue.yaml` was generated and contains `reason: untriaged-bulk-generation` with `status: open` for `<Kind>`.
 4. Test compilation of both `apis/<service_short>/...` and `pkg/controller/direct/<service_short>/...`:
    ```bash
@@ -114,7 +114,7 @@ fi
 5. **If `pkg/controller/direct/<service_short>/...` fails to compile**, apply **only** the minimal fixes required for `mapper.generated.go` to build cleanly (without hand-editing `<kind>_types.go` or `judgement_queue.yaml`):
    - **Missing Go client library in `go.mod`**: Run `go get cloud.google.com/go/<service>/apiv1/<service>pb` and `go mod tidy`.
    - **Missing external proto mappers (e.g. `Money_FromProto`, `LatLng_FromProto`, `Expr_FromProto`)**: Append `,google.type` (or the relevant external proto package) to `--service` on `generate-mapper` in `apis/<service_short>/generate.sh` and re-run `./apis/<service_short>/generate.sh`.
-   - **Missing mapper helpers for `*Request` / `*Metadata` messages or wrapper types**: Add a minimal hand-written `<kind>_mappings.go` (or `mapper.go`) in `pkg/controller/direct/<service_short>/` implementing only the missing `*_FromProto` / `*_ToProto` helper functions.
+   - **Missing mapper helpers for `*Request` / `*Metadata` messages or wrapper types**: Add a minimal hand-written `<kind>_mapper.go` (using a valid `<Kind>` prefix so `TestDirectResourceFileNaming` does not flag `naming_violations.txt`, or `mapper.go`) in `pkg/controller/direct/<service_short>/` implementing only the missing `*_FromProto` / `*_ToProto` helper functions.
    - **Existing `v1beta1` controller callers when adding `--multiversion`**: Update existing callers in `pkg/controller/direct/<service_short>/` to call the versioned `*_v1beta1_FromProto` / `*_v1beta1_ToProto` functions (or updated `URIs` acronym casing).
 
 ### Phase 4: Idempotency & `apichecks` Verification
@@ -125,9 +125,7 @@ fi
    go test -v ./tests/apichecks/...
    ```
    - Because `<Kind>` has `untriaged-bulk-generation` with `status: open` in `apis/<service_short>/judgement_queue.yaml`, `TestMissingRefs`, `TestDescriptions`, `TestFieldNames`, `TestRequiredFields`, and `TestCRDBackwardCompatibility` automatically skip `<Kind>` until Step 2 (`judgement/SKILL.md`).
-   - If `TestAlphaMissingFields` fails (because `--prepopulate-resource` omits deprecated top-level proto fields from `<Kind>Spec`), update **only** `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`:
-     ```bash
-     WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestAlphaMissingFields
-     ```
+   - In Step 1 (`--prepopulate-resource`), running `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt` (revert any spurious `tests/apichecks/testdata/exceptions/multi_version_crd_diff/` formatting churn).
+   - If `recursivetypes.txt` or `envtest` (`pkg/cli/preview`) flags a recursive proto message cycle where `controller-gen` emits an empty `{}` object schema, add `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` (or `+kubebuilder:validation:items:XPreserveUnknownFields` for slice fields), and `+kubebuilder:validation:Type=object` on the cycle-edge field in `apis/<service_short>/v1alpha1/<kind>_types.go` and re-run `./dev/tasks/generate-crds`.
    - If `TestCRDObjectTypes` fails with `field ... is an object with no properties` on a genuine parameterless proto `oneof` variant struct (e.g., `message LlmAgent {}`), add the CRD plural to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with the comment `// GCP known pattern: Empty oneof option (<field path>)`.
-   - **Never** modify `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file.
+   - **Never** modify `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, or `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
