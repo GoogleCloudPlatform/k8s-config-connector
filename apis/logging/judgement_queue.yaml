@@ -48,5 +48,5 @@ entries:
     field: .spec.resourceNames
     reason: possible-reference-by-description-loose
     status: resolved
-    resolution: not-applicable
-    note: resourceNames contains heterogeneous polymorphic parent resources (projects/*) and views (projects/*/locations/*/buckets/*/views/*), kept as []string
+    resolution: edited
+    note: converted resourceNames to resourceRefs ([]LoggingLogScopeResourceRef) supporting references to either a Project (projectRef) or a LoggingLogView (logViewRef)

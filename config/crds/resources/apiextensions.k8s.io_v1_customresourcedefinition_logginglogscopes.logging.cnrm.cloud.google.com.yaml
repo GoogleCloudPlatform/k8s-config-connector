@@ -173,24 +173,93 @@ spec:
                 description: The LoggingLogScope name. If not given, the metadata.name
                   will be used.
                 type: string
-              resourceNames:
+              resourceRefs:
                 description: 'Required. Names of one or more parent resources: * `projects/[PROJECT_ID]`
                   May alternatively be one or more views: * `projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
                   A log scope can include a maximum of 50 projects and a maximum of
                   100 resources in total.'
                 items:
-                  type: string
+                  description: LoggingLogScopeResourceRef defines a reference to a
+                    parent resource (Project) or a LogView.
+                  properties:
+                    logViewRef:
+                      description: LogViewRef is a reference to a LoggingLogView resource
+                        (`projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`).
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed LoggingLogView
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/views/{{viewID}}".
+                          type: string
+                        name:
+                          description: The name of a LoggingLogView resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a LoggingLogView resource.
+                          type: string
+                      type: object
+                    projectRef:
+                      description: ProjectRef is a reference to a Project resource
+                        (`projects/[PROJECT_ID]`).
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
+                          type: string
+                        name:
+                          description: The `name` field of a `Project` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `Project` resource.
+                          type: string
+                      type: object
+                  type: object
+                  x-kubernetes-validations:
+                  - message: Exactly one of projectRef or logViewRef must be specified.
+                    rule: '(has(self.projectRef) ? 1 : 0) + (has(self.logViewRef)
+                      ? 1 : 0) == 1'
                 type: array
             required:
             - location
-            - resourceNames
+            - resourceRefs
             type: object
             x-kubernetes-validations:
-            - message: At most one of projectRef, folderRef, organizationRef, or billingAccountRef
+            - message: Exactly one of projectRef, folderRef, organizationRef, or billingAccountRef
                 must be specified.
               rule: '(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0)
                 + (has(self.organizationRef) ? 1 : 0) + (has(self.billingAccountRef)
-                ? 1 : 0) <= 1'
+                ? 1 : 0) == 1'
           status:
             description: LoggingLogScopeStatus defines the config connector machine
               state of LoggingLogScope

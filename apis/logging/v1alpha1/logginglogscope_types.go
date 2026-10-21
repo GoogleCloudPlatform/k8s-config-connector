@@ -21,6 +21,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -31,7 +32,7 @@ var LoggingLogScopeGVK = GroupVersion.WithKind("LoggingLogScope")
 // LoggingLogScopeSpec defines the desired state of LoggingLogScope
 // +kcc:spec:proto=google.logging.v2.LogScope
 // +kcc:required-from-proto
-// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.organizationRef) ? 1 : 0) + (has(self.billingAccountRef) ? 1 : 0) <= 1",message="At most one of projectRef, folderRef, organizationRef, or billingAccountRef must be specified."
+// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.organizationRef) ? 1 : 0) + (has(self.billingAccountRef) ? 1 : 0) == 1",message="Exactly one of projectRef, folderRef, organizationRef, or billingAccountRef must be specified."
 type LoggingLogScopeSpec struct {
 	// The project that this resource belongs to.
 	// +optional
@@ -65,7 +66,19 @@ type LoggingLogScopeSpec struct {
 	//  A log scope can include a maximum of 50 projects and a maximum of 100 resources in total.
 	// +kcc:proto:field=google.logging.v2.LogScope.resource_names
 	// +required
-	ResourceNames []string `json:"resourceNames,omitempty"`
+	ResourceRefs []LoggingLogScopeResourceRef `json:"resourceRefs,omitempty"`
+}
+
+// LoggingLogScopeResourceRef defines a reference to a parent resource (Project) or a LogView.
+// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.logViewRef) ? 1 : 0) == 1",message="Exactly one of projectRef or logViewRef must be specified."
+type LoggingLogScopeResourceRef struct {
+	// ProjectRef is a reference to a Project resource (`projects/[PROJECT_ID]`).
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// LogViewRef is a reference to a LoggingLogView resource (`projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`).
+	// +optional
+	LogViewRef *loggingv1beta1.LoggingLogViewRef `json:"logViewRef,omitempty"`
 }
 
 // LoggingLogScopeStatus defines the config connector machine state of LoggingLogScope

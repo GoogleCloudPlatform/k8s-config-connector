@@ -24,7 +24,7 @@
 - **Queue Resolutions & Rationale**:
   1. `untriaged-bulk-generation` (`LoggingLogScope`):
      - **Resolution**: `edited`
-     - **Rationale**: Modeled optional parent references (`ProjectRef`, `FolderRef`, `OrganizationRef`, `BillingAccountRef`) alongside `Location` on `LoggingLogScopeSpec`, added CEL mutual exclusion validation, generated multi-parent identity supporting all four parent scopes, and accepted polymorphic `resourceNames` as `[]string`.
+     - **Rationale**: Modeled optional parent references (`ProjectRef`, `FolderRef`, `OrganizationRef`, `BillingAccountRef`) alongside `Location` on `LoggingLogScopeSpec`, added CEL validation ensuring exactly one parent is specified, generated multi-parent identity supporting all four parent scopes, and modeled `resourceRefs` supporting polymorphic project and log view references.
   2. `identity-multi-pattern` (`LoggingLogScope`):
      - **Resolution**: `edited`
      - **Rationale**: The proto defines 4 resource patterns (`projects/{project}/...`, `organizations/{organization}/...`, `folders/{folder}/...`, `billingAccounts/{billing_account}/...`). Modeled optional `ProjectRef`, `FolderRef`, `OrganizationRef`, and `BillingAccountRef` on `LoggingLogScopeSpec` and handwrote multi-parent identity supporting project, folder, organization, and billing account scopes per Greenfield guidelines (leaving controllerbuilder changes to a separate PR).
@@ -32,10 +32,10 @@
      - **Resolution**: `accepted`
      - **Rationale**: Kept separate `Location *string` and parent references (`projectRef`, `folderRef`, `organizationRef`, `billingAccountRef`) because `LoggingLogScope` supports multiple root parent scopes and cannot embed `ProjectAndLocationRef` (which would force project-only scoping).
   4. `possible-reference-by-description-loose` (`.spec.resourceNames`):
-     - **Resolution**: `not-applicable`
-     - **Rationale**: The proto comment states `resourceNames` can contain heterogeneous polymorphic parent resources (`projects/[PROJECT_ID]`) or views (`projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`). Because it accepts multiple resource kinds and formats, a single typed reference cannot represent it; maintaining `ResourceNames []string` is appropriate.
+     - **Resolution**: `edited`
+     - **Rationale**: Replaced `resourceNames []string` with `resourceRefs []LoggingLogScopeResourceRef` to allow referencing either a Project (`projectRef`) or a LoggingLogView (`logViewRef`) with CEL validation ensuring exactly one reference kind per item.
 - **Outcome**:
-  - `apis/logging/generate.sh` and `dev/tasks/generate-crds` regenerated the CRD with multi-parent support and mutual exclusion CEL validation.
+  - `apis/logging/generate.sh` and `dev/tasks/generate-crds` regenerated the CRD with multi-parent support, exactly-one-parent CEL validation, and polymorphic `resourceRefs`.
   - Added comprehensive unit tests in `apis/logging/v1alpha1/logginglogscope_identity_test.go` verifying URL template formatting, external ref parsing, and spec identity extraction across all 4 parent scopes.
   - All apichecks (`go test -v ./tests/apichecks/...`), package tests (`go test -v ./apis/logging/...`), and e2e fixture presubmits (`./dev/ci/presubmits/tests-e2e-fixtures-logginglogscope`) pass cleanly.
 
