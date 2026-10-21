@@ -37,6 +37,9 @@ import (
 const (
 	currRelPath             = "dev/tools/controllerbuilder"
 	directControllerRelPath = "pkg/controller/direct"
+
+	// GeneratedControllerMarker marks controller files produced by generate-controller --prepopulate-resource.
+	GeneratedControllerMarker = "// +generated:controller"
 )
 
 var funcMap = template.FuncMap{
@@ -133,11 +136,12 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(controllerFilePath); err == nil && !c.overwrite {
-		klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
+	shouldSkip, err := c.shouldSkipControllerWrite(controllerFilePath, cArgs)
+	if err != nil {
+		return err
+	}
+	if shouldSkip {
 		return nil
-	} else if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("unexpected controller file: %w", err)
 	}
 
 	// Write the generated controller.go to pkg/controller/direct/<service>/<resource>_controller.go
@@ -150,6 +154,54 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	}
 	color.HiGreen("New controller %s has been generated.", c.proto)
 	return nil
+}
+
+func (c *ControllerBuilder) shouldSkipControllerWrite(controllerFilePath string, cArgs *ccTemplate.ControllerArgs) (bool, error) {
+	if c.overwrite {
+		return false, nil
+	}
+	existing, err := os.ReadFile(controllerFilePath)
+	if err == nil {
+		if cArgs.PassesApplied && bytes.Contains(existing, []byte(GeneratedControllerMarker)) {
+			return false, nil
+		}
+		klog.V(1).Infof("file %s already exists (handwritten), skipping\n", controllerFilePath)
+		return true, nil
+	}
+	if !errors.Is(err, os.ErrNotExist) {
+		return false, fmt.Errorf("unexpected controller file: %w", err)
+	}
+	if hasExistingHandwrittenController(filepath.Dir(controllerFilePath), cArgs.Kind) {
+		klog.V(1).Infof("handwritten controller for %s already exists in %s, skipping\n", cArgs.Kind, filepath.Dir(controllerFilePath))
+		return true, nil
+	}
+	return false, nil
+}
+
+func hasExistingHandwrittenController(serviceDir, kind string) bool {
+	if kind == "" {
+		return false
+	}
+	gvkToken := "." + kind + "GVK"
+	found := false
+	_ = filepath.WalkDir(serviceDir, func(p string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(d.Name(), ".go") || strings.HasSuffix(d.Name(), "_test.go") {
+			return nil
+		}
+		src, err := os.ReadFile(p)
+		if err != nil {
+			return nil
+		}
+		if bytes.Contains(src, []byte(GeneratedControllerMarker)) {
+			return nil
+		}
+		if bytes.Contains(src, []byte("RegisterModel(")) && bytes.Contains(src, []byte(gvkToken)) {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+	return found
 }
 
 func (c *ControllerBuilder) getControllerPath() (string, error) {

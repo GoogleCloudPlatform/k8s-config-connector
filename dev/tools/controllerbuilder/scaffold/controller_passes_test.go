@@ -768,6 +768,63 @@ require (
 	}
 }
 
+func TestShouldSkipControllerWrite(t *testing.T) {
+	serviceDir := t.TempDir()
+	builder := NewControllerBuilder(serviceDir, "example", "Widget")
+	cArgs := &ccTemplate.ControllerArgs{
+		Kind:          "ExampleWidget",
+		PassesApplied: true,
+	}
+
+	outFile := filepath.Join(serviceDir, "widget_controller.go")
+
+	// 1. No existing controller -> do not skip.
+	skip, err := builder.shouldSkipControllerWrite(outFile, cArgs)
+	if err != nil || skip {
+		t.Fatalf("expected skip=false, err=nil when no controller file exists; got skip=%v, err=%v", skip, err)
+	}
+
+	// 2. Existing handwritten controller at outFile -> skip when overwrite=false, allow when overwrite=true.
+	if err := os.WriteFile(outFile, []byte("package example\n// handwritten controller\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	skip, err = builder.WithOverwrite(false).shouldSkipControllerWrite(outFile, cArgs)
+	if err != nil || !skip {
+		t.Fatalf("expected skip=true when handwritten controller exists at outFile and overwrite=false; got skip=%v, err=%v", skip, err)
+	}
+	skip, err = builder.WithOverwrite(true).shouldSkipControllerWrite(outFile, cArgs)
+	if err != nil || skip {
+		t.Fatalf("expected skip=false when overwrite=true; got skip=%v, err=%v", skip, err)
+	}
+	builder.WithOverwrite(false)
+
+	// 3. Existing generated controller with // +generated:controller -> do not skip even when overwrite=false.
+	if err := os.WriteFile(outFile, []byte("// +generated:controller\npackage example\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	skip, err = builder.shouldSkipControllerWrite(outFile, cArgs)
+	if err != nil || skip {
+		t.Fatalf("expected skip=false when existing controller has // +generated:controller marker; got skip=%v, err=%v", skip, err)
+	}
+	if err := os.Remove(outFile); err != nil {
+		t.Fatal(err)
+	}
+
+	// 4. Existing handwritten controller in a subpackage registering ExampleWidgetGVK -> skip when overwrite=false.
+	subDir := filepath.Join(serviceDir, "widget")
+	if err := os.MkdirAll(subDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	subController := filepath.Join(subDir, "controller.go")
+	if err := os.WriteFile(subController, []byte("package widget\nfunc init() { registry.RegisterModel(krm.ExampleWidgetGVK, newModel) }\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	skip, err = builder.shouldSkipControllerWrite(outFile, cArgs)
+	if err != nil || !skip {
+		t.Fatalf("expected skip=true when handwritten controller in subpackage registers ExampleWidgetGVK; got skip=%v, err=%v", skip, err)
+	}
+}
+
 func mustParseGo(t *testing.T, src []byte) {
 	t.Helper()
 	fset := token.NewFileSet()
