@@ -51,6 +51,18 @@
 [not_representable] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.hadoopJob.mainJarFileURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.mainJarFileUri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].uri" reason=container-image-uri-not-a-storage-object
+[not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.entryFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.form.parameters[].advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.form.parameters[].fillBehavior.initialPromptFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.form.parameters[].fillBehavior.repromptEventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
@@ -79,6 +91,9 @@
 [not_representable] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.overlays[].image.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputURI" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.inputs[].uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.output.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.overlays[].image.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=translateglossaries.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.gcsSource.inputURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.baseOutputDirectory.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
@@ -104,4 +119,7 @@
 [not_representable] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskDefinition" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.trainingDatasetURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.validationDatasetURI" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.instancesSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.parametersSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=visionaiprocessors.visionai.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProcessorSourceInfo.modelSchema.predictionsSchema.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=visionreferenceimages.vision.cnrm.cloud.google.com version=v1alpha1: field ".spec.uri" reason=gcs-path-decomposable-as-bucketref-plus-path

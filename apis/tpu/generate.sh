@@ -31,13 +31,34 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.tpu.v2 \
+  --api-version tpu.cnrm.cloud.google.com/v1alpha1 \
+  --resource TPUVirtualMachine:Node
 
-${CONTROLLERBUILDER} generate-types     --service google.cloud.tpu.v2     --api-version tpu.cnrm.cloud.google.com/v1alpha1     --resource TPUVirtualMachine:Node
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.tpu.v2 \
+  --api-version tpu.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource TPUQueuedResource:QueuedResource
 
-${CONTROLLERBUILDER} generate-mapper     --service google.cloud.tpu.v2     --api-version tpu.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.tpu.v2 \
+  --api-version tpu.cnrm.cloud.google.com/v1alpha1 \
+  --resource TPUQueuedResource:QueuedResource
+
+sed -i 's|"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/tpu/v2"|"cloud.google.com/go/tpu/apiv2/tpupb"|g' "${REPO_ROOT}/pkg/controller/direct/tpu/mapper.generated.go" || true
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.tpu.v2,google.type \
+  --api-version tpu.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+sed -i 's|"cloud.google.com/go/tpu/apiv2/tpupb"|"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/tpu/v2"|g' "${REPO_ROOT}/pkg/controller/direct/tpu/mapper.generated.go" 
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/tpu" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/tpu/

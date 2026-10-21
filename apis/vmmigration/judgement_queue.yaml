@@ -1,0 +1,193 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/sources/{source}/datacenterConnectors/{datacenter_connector}" contains ancestor segment(s) sources/{source} with no matching reference or field on VMMigrationDatacenterConnectorSpec
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/sources/{source}, and no SourceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.sources.datacenterConnectors: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.sources.datacenterConnectors'
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/sources/{source}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.registrationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VMMigrationDatacenterConnector
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}" contains ancestor segment(s) sources/{source} with no matching reference or field on VMMigrationMigratingVMSpec
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/sources/{source}, and no SourceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.sources.migratingVms: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.sources.migratingVms'
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.computeEngineTargetDefaults.networkInterfaces[].network
+    reason: possible-reference-by-name
+    detail: ComputeNetworkRef
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.computeEngineTargetDefaults.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.computeEngineTargetDefaults.targetProject
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to vmmigration.googleapis.com/TargetProject (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.computeEngineTargetDefaults.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/sources/{source}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VMMigrationMigratingVM
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.sourceVMID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.sources: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.sources'
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.aws.accessKeyCreds.accessKeyID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.aws.accessKeyCreds.secretAccessKey
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: VMMigrationSource
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.vmware.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.targetProjects: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.targetProjects'
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: VMMigrationTargetProject
+    group: vmmigration.cnrm.cloud.google.com
+    field: .spec.project
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open

@@ -17,39 +17,941 @@
 // krm.group: vmmigration.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.vmmigration.v1
-// resource: VMMigrationGroup:Group
+// resource: VMMigrationDatacenterConnector:DatacenterConnector
+// resource: VMMigrationMigratingVM:MigratingVm
+// resource: VMMigrationSource:Source
+// resource: VMMigrationTargetProject:TargetProject
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.Group", skipping
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
 
-// +kcc:proto=google.cloud.vmmigration.v1.Group
-type Group struct {
+// +kcc:proto=google.cloud.vmmigration.v1.AdaptingOSStep
+type AdaptingOSStep struct {
+}
 
-	// User-provided description of the group.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Group.description
-	Description *string `json:"description,omitempty"`
+// +kcc:proto=google.cloud.vmmigration.v1.ApplianceVersion
+type ApplianceVersion struct {
+	// The appliance version.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ApplianceVersion.version
+	Version *string `json:"version,omitempty"`
 
-	// Display name is a user defined name for this group which can be updated.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Group.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	// A link for downloading the version.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ApplianceVersion.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Determine whether it's critical to upgrade the appliance to this version.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ApplianceVersion.critical
+	Critical *bool `json:"critical,omitempty"`
+
+	// Link to a page that contains the version release notes.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ApplianceVersion.release_notes_uri
+	ReleaseNotesURI *string `json:"releaseNotesURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AppliedLicense
+type AppliedLicense struct {
+	// The license type that was used in OS adaptation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AppliedLicense.type
+	Type *string `json:"type,omitempty"`
+
+	// The OS license returned from the adaptation module's report.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AppliedLicense.os_license
+	OSLicense *string `json:"osLicense,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AvailableUpdates
+type AvailableUpdates struct {
+	// The newest deployable version of the appliance.
+	//  The current appliance can't be updated into this version, and the owner
+	//  must manually deploy this OVA to a new appliance.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AvailableUpdates.new_deployable_appliance
+	NewDeployableAppliance *ApplianceVersion `json:"newDeployableAppliance,omitempty"`
+
+	// The latest version for in place update.
+	//  The current appliance can be updated to this version using the API or m4c
+	//  CLI.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AvailableUpdates.in_place_update
+	InPlaceUpdate *ApplianceVersion `json:"inPlaceUpdate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AwsSourceDetails
+type AwsSourceDetails struct {
+	// AWS Credentials using access key id and secret.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.access_key_creds
+	AccessKeyCreds *AwsSourceDetails_AccessKeyCredentials `json:"accessKeyCreds,omitempty"`
+
+	// Immutable. The AWS region that the source VMs will be migrated from.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.aws_region
+	AwsRegion *string `json:"awsRegion,omitempty"`
+
+	// AWS resource tags to limit the scope of the source inventory.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.inventory_tag_list
+	InventoryTagList []AwsSourceDetails_Tag `json:"inventoryTagList,omitempty"`
+
+	// AWS security group names to limit the scope of the source
+	//  inventory.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.inventory_security_group_names
+	InventorySecurityGroupNames []string `json:"inventorySecurityGroupNames,omitempty"`
+
+	// User specified tags to add to every M2VM generated resource in AWS.
+	//  These tags will be set in addition to the default tags that are set as part
+	//  of the migration process. The tags must not begin with the reserved prefix
+	//  `m2vm`.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.migration_resources_user_tags
+	MigrationResourcesUserTags map[string]string `json:"migrationResourcesUserTags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AwsSourceDetails.AccessKeyCredentials
+type AwsSourceDetails_AccessKeyCredentials struct {
+	// AWS access key ID.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.AccessKeyCredentials.access_key_id
+	AccessKeyID *string `json:"accessKeyID,omitempty"`
+
+	// Input only. AWS secret access key.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.AccessKeyCredentials.secret_access_key
+	SecretAccessKey *string `json:"secretAccessKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AwsSourceDetails.Tag
+type AwsSourceDetails_Tag struct {
+	// Key of tag.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.Tag.key
+	Key *string `json:"key,omitempty"`
+
+	// Value of tag.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.Tag.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.AwsSourceVmDetails
+type AwsSourceVMDetails struct {
+	// The firmware type of the source VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceVmDetails.firmware
+	Firmware *string `json:"firmware,omitempty"`
+
+	// The total size of the disks being migrated in bytes.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceVmDetails.committed_storage_bytes
+	CommittedStorageBytes *int64 `json:"committedStorageBytes,omitempty"`
+}
+
+/* unreachable type CloneJob
+// +kcc:proto=google.cloud.vmmigration.v1.CloneJob
+type CloneJob struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.Group", skipping
+// +kcc:proto=google.cloud.vmmigration.v1.CloneStep
+type CloneStep struct {
+	// Adapting OS step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneStep.adapting_os
+	AdaptingOS *AdaptingOSStep `json:"adaptingOS,omitempty"`
 
-// +kcc:observedstate:proto=google.cloud.vmmigration.v1.Group
-type GroupObservedState struct {
-	// Output only. The Group name.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Group.name
+	// Preparing VM disks step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneStep.preparing_vm_disks
+	PreparingVMDisks *PreparingVMDisksStep `json:"preparingVMDisks,omitempty"`
+
+	// Instantiating migrated VM step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneStep.instantiating_migrated_vm
+	InstantiatingMigratedVM *InstantiatingMigratedVMStep `json:"instantiatingMigratedVM,omitempty"`
+
+	// The time the step has started.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneStep.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The time the step has ended.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneStep.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults
+type ComputeEngineTargetDefaults struct {
+	// The name of the VM to create.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.vm_name
+	VMName *string `json:"vmName,omitempty"`
+
+	// The full path of the resource of type TargetProject which represents the
+	//  Compute Engine project in which to create this VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.target_project
+	TargetProject *string `json:"targetProject,omitempty"`
+
+	// The zone in which to create the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// The machine type series to create the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.machine_type_series
+	MachineTypeSeries *string `json:"machineTypeSeries,omitempty"`
+
+	// The machine type to create the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// A map of network tags to associate with the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.network_tags
+	NetworkTags []string `json:"networkTags,omitempty"`
+
+	// List of NICs connected to this VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.network_interfaces
+	NetworkInterfaces []NetworkInterface `json:"networkInterfaces,omitempty"`
+
+	// The service account to associate the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The disk type to use in the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// A map of labels to associate with the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The license type to use in OS adaptation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.license_type
+	LicenseType *string `json:"licenseType,omitempty"`
+
+	// Compute instance scheduling information (if empty default is used).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.compute_scheduling
+	ComputeScheduling *ComputeScheduling `json:"computeScheduling,omitempty"`
+
+	// Defines whether the instance has Secure Boot enabled.
+	//  This can be set to true only if the vm boot option is EFI.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.secure_boot
+	SecureBoot *bool `json:"secureBoot,omitempty"`
+
+	// The metadata key/value pairs to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Additional licenses to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.additional_licenses
+	AdditionalLicenses []string `json:"additionalLicenses,omitempty"`
+
+	// The hostname to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.hostname
+	Hostname *string `json:"hostname,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ComputeEngineTargetDetails
+type ComputeEngineTargetDetails struct {
+	// The name of the VM to create.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.vm_name
+	VMName *string `json:"vmName,omitempty"`
+
+	// The Google Cloud target project ID or project name.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.project
+	Project *string `json:"project,omitempty"`
+
+	// The zone in which to create the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// The machine type series to create the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.machine_type_series
+	MachineTypeSeries *string `json:"machineTypeSeries,omitempty"`
+
+	// The machine type to create the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// A map of network tags to associate with the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.network_tags
+	NetworkTags []string `json:"networkTags,omitempty"`
+
+	// List of NICs connected to this VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.network_interfaces
+	NetworkInterfaces []NetworkInterface `json:"networkInterfaces,omitempty"`
+
+	// The service account to associate the VM with.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The disk type to use in the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// A map of labels to associate with the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The license type to use in OS adaptation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.license_type
+	LicenseType *string `json:"licenseType,omitempty"`
+
+	// The OS license returned from the adaptation module report.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.applied_license
+	AppliedLicense *AppliedLicense `json:"appliedLicense,omitempty"`
+
+	// Compute instance scheduling information (if empty default is used).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.compute_scheduling
+	ComputeScheduling *ComputeScheduling `json:"computeScheduling,omitempty"`
+
+	// Defines whether the instance has Secure Boot enabled.
+	//  This can be set to true only if the vm boot option is EFI.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.secure_boot
+	SecureBoot *bool `json:"secureBoot,omitempty"`
+
+	// The VM Boot Option, as set in the source vm.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.boot_option
+	BootOption *string `json:"bootOption,omitempty"`
+
+	// The metadata key/value pairs to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Additional licenses to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.additional_licenses
+	AdditionalLicenses []string `json:"additionalLicenses,omitempty"`
+
+	// The hostname to assign to the VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDetails.hostname
+	Hostname *string `json:"hostname,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ComputeScheduling
+type ComputeScheduling struct {
+	// How the instance should behave when the host machine undergoes
+	//  maintenance that may temporarily impact instance performance.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeScheduling.on_host_maintenance
+	OnHostMaintenance *string `json:"onHostMaintenance,omitempty"`
+
+	// Whether the Instance should be automatically restarted whenever it is
+	//  terminated by Compute Engine (not terminated by user).
+	//  This configuration is identical to `automaticRestart` field in Compute
+	//  Engine create instance under scheduling.
+	//  It was changed to an enum (instead of a boolean) to match the default
+	//  value in Compute Engine which is automatic restart.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeScheduling.restart_type
+	RestartType *string `json:"restartType,omitempty"`
+
+	// A set of node affinity and anti-affinity configurations for sole tenant
+	//  nodes.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeScheduling.node_affinities
+	NodeAffinities []SchedulingNodeAffinity `json:"nodeAffinities,omitempty"`
+
+	// The minimum number of virtual CPUs this instance will consume when
+	//  running on a sole-tenant node. Ignored if no node_affinites are
+	//  configured.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeScheduling.min_node_cpus
+	MinNodeCPUs *int32 `json:"minNodeCPUs,omitempty"`
+}
+
+/* unreachable type CutoverJob
+// +kcc:proto=google.cloud.vmmigration.v1.CutoverJob
+type CutoverJob struct {
+}
+*/
+
+// +kcc:proto=google.cloud.vmmigration.v1.CutoverStep
+type CutoverStep struct {
+	// A replication cycle prior cutover step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.previous_replication_cycle
+	PreviousReplicationCycle *ReplicationCycle `json:"previousReplicationCycle,omitempty"`
+
+	// Shutting down VM step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.shutting_down_source_vm
+	ShuttingDownSourceVM *ShuttingDownSourceVMStep `json:"shuttingDownSourceVM,omitempty"`
+
+	// Final sync step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.final_sync
+	FinalSync *ReplicationCycle `json:"finalSync,omitempty"`
+
+	// Preparing VM disks step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.preparing_vm_disks
+	PreparingVMDisks *PreparingVMDisksStep `json:"preparingVMDisks,omitempty"`
+
+	// Instantiating migrated VM step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.instantiating_migrated_vm
+	InstantiatingMigratedVM *InstantiatingMigratedVMStep `json:"instantiatingMigratedVM,omitempty"`
+
+	// The time the step has started.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The time the step has ended.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverStep.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.CycleStep
+type CycleStep struct {
+	// Initializing replication step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CycleStep.initializing_replication
+	InitializingReplication *InitializingReplicationStep `json:"initializingReplication,omitempty"`
+
+	// Replicating step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CycleStep.replicating
+	Replicating *ReplicatingStep `json:"replicating,omitempty"`
+
+	// Post processing step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CycleStep.post_processing
+	PostProcessing *PostProcessingStep `json:"postProcessing,omitempty"`
+
+	// The time the cycle step has started.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CycleStep.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The time the cycle step has ended.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CycleStep.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.DatacenterConnector", skipping
+
+// +kcc:proto=google.cloud.vmmigration.v1.DatacenterConnector
+type DatacenterConnector struct {
+
+	// Immutable. A unique key for this connector. This key is internal to the OVA
+	//  connector and is supplied with its creation during the registration process
+	//  and can not be modified.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.registration_id
+	RegistrationID *string `json:"registrationID,omitempty"`
+
+	// The service account to use in the connector when communicating with the
+	//  cloud.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The version running in the DatacenterConnector. This is supplied by the OVA
+	//  connector during the registration process and can not be modified.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.version
+	Version *string `json:"version,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.vmmigration.v1.InitializingReplicationStep
+type InitializingReplicationStep struct {
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.InstantiatingMigratedVMStep
+type InstantiatingMigratedVMStep struct {
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.MigratingVm", skipping
+
+// +kcc:proto=google.cloud.vmmigration.v1.MigratingVm
+type MigratingVM struct {
+	// Details of the target VM in Compute Engine.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.compute_engine_target_defaults
+	ComputeEngineTargetDefaults *ComputeEngineTargetDefaults `json:"computeEngineTargetDefaults,omitempty"`
+
+	// The unique ID of the VM in the source.
+	//  The VM's name in vSphere can be changed, so this is not the VM's name but
+	//  rather its moRef id. This id is of the form vm-<num>.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.source_vm_id
+	SourceVMID *string `json:"sourceVMID,omitempty"`
+
+	// The display name attached to the MigratingVm by the user.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The description attached to the migrating VM by the user.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.description
+	Description *string `json:"description,omitempty"`
+
+	// The replication schedule policy.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.policy
+	Policy *SchedulePolicy `json:"policy,omitempty"`
+
+	// The labels of the migrating VM.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.vmmigration.v1.NetworkInterface
+type NetworkInterface struct {
+	// The network to connect the NIC to.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.NetworkInterface.network
+	Network *string `json:"network,omitempty"`
+
+	// The subnetwork to connect the NIC to.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.NetworkInterface.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+
+	// The internal IP to define in the NIC.
+	//  The formats accepted are: `ephemeral` \ ipv4 address \ a named address
+	//  resource full path.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.NetworkInterface.internal_ip
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	// The external IP to define in the NIC.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.NetworkInterface.external_ip
+	ExternalIP *string `json:"externalIP,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.PostProcessingStep
+type PostProcessingStep struct {
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.PreparingVMDisksStep
+type PreparingVMDisksStep struct {
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ReplicatingStep
+type ReplicatingStep struct {
+	// Total bytes to be handled in the step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicatingStep.total_bytes
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+
+	// Replicated bytes in the step.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicatingStep.replicated_bytes
+	ReplicatedBytes *int64 `json:"replicatedBytes,omitempty"`
+
+	// The source disks replication rate for the last 2 minutes in bytes per
+	//  second.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicatingStep.last_two_minutes_average_bytes_per_second
+	LastTwoMinutesAverageBytesPerSecond *int64 `json:"lastTwoMinutesAverageBytesPerSecond,omitempty"`
+
+	// The source disks replication rate for the last 30 minutes in bytes per
+	//  second.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicatingStep.last_thirty_minutes_average_bytes_per_second
+	LastThirtyMinutesAverageBytesPerSecond *int64 `json:"lastThirtyMinutesAverageBytesPerSecond,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ReplicationCycle
+type ReplicationCycle struct {
+	// The identifier of the ReplicationCycle.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.name
+	Name *string `json:"name,omitempty"`
+
+	// The cycle's ordinal number.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.cycle_number
+	CycleNumber *int32 `json:"cycleNumber,omitempty"`
+
+	// The time the replication cycle has started.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The time the replication cycle has ended.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// The accumulated duration the replication cycle was paused.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.total_pause_duration
+	TotalPauseDuration *string `json:"totalPauseDuration,omitempty"`
+
+	// The current progress in percentage of this cycle.
+	//  Was replaced by 'steps' field, which breaks down the cycle progression more
+	//  accurately.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.progress_percent
+	ProgressPercent *int32 `json:"progressPercent,omitempty"`
+
+	// The cycle's steps list representing its progress.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.steps
+	Steps []CycleStep `json:"steps,omitempty"`
+
+	// State of the ReplicationCycle.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.state
+	State *string `json:"state,omitempty"`
+
+	// Provides details on the state of the cycle in case of an error.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationCycle.error
+	Error *common.Status `json:"error,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ReplicationSync
+type ReplicationSync struct {
+	// The most updated snapshot created time in the source that finished
+	//  replication.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ReplicationSync.last_sync_time
+	LastSyncTime *string `json:"lastSyncTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.SchedulePolicy
+type SchedulePolicy struct {
+	// The idle duration between replication stages.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.SchedulePolicy.idle_duration
+	IdleDuration *string `json:"idleDuration,omitempty"`
+
+	// A flag to indicate whether to skip OS adaptation during the replication
+	//  sync. OS adaptation is a process where the VM's operating system undergoes
+	//  changes and adaptations to fully function on Compute Engine.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.SchedulePolicy.skip_os_adaptation
+	SkipOSAdaptation *bool `json:"skipOSAdaptation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.SchedulingNodeAffinity
+type SchedulingNodeAffinity struct {
+	// The label key of Node resource to reference.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.SchedulingNodeAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// The operator to use for the node resources specified in the `values`
+	//  parameter.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.SchedulingNodeAffinity.operator
+	Operator *string `json:"operator,omitempty"`
+
+	// Corresponds to the label values of Node resource.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.SchedulingNodeAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.ShuttingDownSourceVMStep
+type ShuttingDownSourceVMStep struct {
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.Source", skipping
+
+// +kcc:proto=google.cloud.vmmigration.v1.Source
+type Source struct {
+	// Vmware type source details.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.vmware
+	Vmware *VmwareSourceDetails `json:"vmware,omitempty"`
+
+	// AWS type source details.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.aws
+	Aws *AwsSourceDetails `json:"aws,omitempty"`
+
+	// The labels of the source.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// User-provided description of the source.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.TargetProject", skipping
+
+// +kcc:proto=google.cloud.vmmigration.v1.TargetProject
+type TargetProject struct {
+
+	// The target project ID (number) or project name.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.TargetProject.project
+	Project *string `json:"project,omitempty"`
+
+	// The target project's description.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.TargetProject.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.vmmigration.v1.UpgradeStatus
+type UpgradeStatus struct {
+	// The version to upgrade to.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.UpgradeStatus.version
+	Version *string `json:"version,omitempty"`
+
+	// The state of the upgradeAppliance operation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.UpgradeStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Provides details on the state of the upgrade operation in case of an error.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.UpgradeStatus.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// The time the operation was started.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.UpgradeStatus.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The version from which we upgraded.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.UpgradeStatus.previous_version
+	PreviousVersion *string `json:"previousVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmmigration.v1.VmwareSourceDetails
+type VmwareSourceDetails struct {
+	// The credentials username.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.VmwareSourceDetails.username
+	Username *string `json:"username,omitempty"`
+
+	// Input only. The credentials password. This is write only and can not be
+	//  read in a GET operation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.VmwareSourceDetails.password
+	Password *string `json:"password,omitempty"`
+
+	// The ip address of the vcenter this Source represents.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.VmwareSourceDetails.vcenter_ip
+	VcenterIP *string `json:"vcenterIP,omitempty"`
+
+	// The thumbprint representing the certificate for the vcenter.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.VmwareSourceDetails.thumbprint
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.AwsSourceDetails
+type AwsSourceDetailsObservedState struct {
+	// Output only. State of the source as determined by the health check.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Provides details on the state of the Source in case of an
+	//  error.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. The source's public IP. All communication initiated by this
+	//  source will originate from this IP.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.AwsSourceDetails.public_ip
+	PublicIP *string `json:"publicIP,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.CloneJob
+type CloneJobObservedState struct {
+	// Output only. Details of the target VM in Compute Engine.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.compute_engine_target_details
+	ComputeEngineTargetDetails *ComputeEngineTargetDetails `json:"computeEngineTargetDetails,omitempty"`
+
+	// Output only. The time the clone job was created (as an API call, not when
+	//  it was actually created in the target).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time the clone job was ended.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. The name of the clone.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. State of the clone job.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The time the state was last updated.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.state_time
+	StateTime *string `json:"stateTime,omitempty"`
+
+	// Output only. Provides details for the errors that led to the Clone Job's
+	//  state.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. The clone steps list representing its progress.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CloneJob.steps
+	Steps []CloneStep `json:"steps,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults
+type ComputeEngineTargetDefaultsObservedState struct {
+	// Output only. The OS license returned from the adaptation module report.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.applied_license
+	AppliedLicense *AppliedLicense `json:"appliedLicense,omitempty"`
+
+	// Output only. The VM Boot Option, as set in the source vm.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.ComputeEngineTargetDefaults.boot_option
+	BootOption *string `json:"bootOption,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.CutoverJob
+type CutoverJobObservedState struct {
+	// Output only. Details of the target VM in Compute Engine.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.compute_engine_target_details
+	ComputeEngineTargetDetails *ComputeEngineTargetDetails `json:"computeEngineTargetDetails,omitempty"`
+
+	// Output only. The time the cutover job was created (as an API call, not when
+	//  it was actually created in the target).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time the cutover job had finished.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. The name of the cutover job.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. State of the cutover job.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The time the state was last updated.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.state_time
+	StateTime *string `json:"stateTime,omitempty"`
+
+	// Output only. The current progress in percentage of the cutover job.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.progress_percent
+	ProgressPercent *int32 `json:"progressPercent,omitempty"`
+
+	// Output only. Provides details for the errors that led to the Cutover Job's
+	//  state.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. A message providing possible extra details about the current
+	//  state.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
+
+	// Output only. The cutover steps list representing its progress.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.CutoverJob.steps
+	Steps []CutoverStep `json:"steps,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.DatacenterConnector", skipping
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.DatacenterConnector
+type DatacenterConnectorObservedState struct {
+	// Output only. The time the connector was created (as an API call, not when
+	//  it was actually installed).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last time the connector was updated with an API call.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The connector's name.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The communication channel between the datacenter connector and
+	//  Google Cloud.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// Output only. State of the DatacenterConnector, as determined by the health
+	//  checks.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The time the state was last set.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.state_time
+	StateTime *string `json:"stateTime,omitempty"`
+
+	// Output only. Provides details on the state of the Datacenter Connector in
+	//  case of an error.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. Appliance OVA version.
+	//  This is the OVA which is manually installed by the user and contains the
+	//  infrastructure for the automatically updatable components on the appliance.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.appliance_infrastructure_version
+	ApplianceInfrastructureVersion *string `json:"applianceInfrastructureVersion,omitempty"`
+
+	// Output only. Appliance last installed update bundle version.
+	//  This is the version of the automatically updatable components on the
+	//  appliance.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.appliance_software_version
+	ApplianceSoftwareVersion *string `json:"applianceSoftwareVersion,omitempty"`
+
+	// Output only. The available versions for updating this appliance.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.available_versions
+	AvailableVersions *AvailableUpdates `json:"availableVersions,omitempty"`
+
+	// Output only. The status of the current / last upgradeAppliance operation.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.DatacenterConnector.upgrade_status
+	UpgradeStatus *UpgradeStatus `json:"upgradeStatus,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.MigratingVm", skipping
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.MigratingVm
+type MigratingVMObservedState struct {
+	// Details of the target VM in Compute Engine.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.compute_engine_target_defaults
+	ComputeEngineTargetDefaults *ComputeEngineTargetDefaultsObservedState `json:"computeEngineTargetDefaults,omitempty"`
+
+	// Output only. Details of the VM from an AWS source.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.aws_source_vm_details
+	AwsSourceVMDetails *AwsSourceVMDetails `json:"awsSourceVMDetails,omitempty"`
+
+	// Output only. The identifier of the MigratingVm.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time the migrating VM was created (this refers to this
+	//  resource and not to the time it was installed in the source).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last time the migrating VM resource was updated.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The most updated snapshot created time in the source that
+	//  finished replication.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.last_sync
+	LastSync *ReplicationSync `json:"lastSync,omitempty"`
+
+	// Output only. State of the MigratingVm.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The last time the migrating VM state was updated.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.state_time
+	StateTime *string `json:"stateTime,omitempty"`
+
+	// Output only. The percentage progress of the current running replication
+	//  cycle.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.current_sync_info
+	CurrentSyncInfo *ReplicationCycle `json:"currentSyncInfo,omitempty"`
+
+	// Output only. The group this migrating vm is included in, if any. The group
+	//  is represented by the full path of the appropriate
+	//  [Group][google.cloud.vmmigration.v1.Group] resource.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.group
+	Group *string `json:"group,omitempty"`
+
+	// Output only. The recent [clone jobs][google.cloud.vmmigration.v1.CloneJob]
+	//  performed on the migrating VM. This field holds the vm's last completed
+	//  clone job and the vm's running clone job, if one exists.
+	//  Note: To have this field populated you need to explicitly request it via
+	//  the "view" parameter of the Get/List request.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.recent_clone_jobs
+	RecentCloneJobs []CloneJobObservedState `json:"recentCloneJobs,omitempty"`
+
+	// Output only. Provides details on the state of the Migrating VM in case of
+	//  an error in replication.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. The recent cutover jobs performed on the migrating VM.
+	//  This field holds the vm's last completed cutover job and the vm's
+	//  running cutover job, if one exists.
+	//  Note: To have this field populated you need to explicitly request it via
+	//  the "view" parameter of the Get/List request.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.MigratingVm.recent_cutover_jobs
+	RecentCutoverJobs []CutoverJobObservedState `json:"recentCutoverJobs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.Source", skipping
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.Source
+type SourceObservedState struct {
+	// AWS type source details.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.aws
+	Aws *AwsSourceDetailsObservedState `json:"aws,omitempty"`
+
+	// Output only. The Source name.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.name
 	Name *string `json:"name,omitempty"`
 
 	// Output only. The create time timestamp.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Group.create_time
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The update time timestamp.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Group.update_time
+	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.vmmigration.v1.TargetProject", skipping
+
+// +kcc:observedstate:proto=google.cloud.vmmigration.v1.TargetProject
+type TargetProjectObservedState struct {
+	// Output only. The name of the target project.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.TargetProject.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time this target project resource was created (not related
+	//  to when the Compute Engine project it points to was created).
+	// +kcc:proto:field=google.cloud.vmmigration.v1.TargetProject.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last time the target project resource was updated.
+	// +kcc:proto:field=google.cloud.vmmigration.v1.TargetProject.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */

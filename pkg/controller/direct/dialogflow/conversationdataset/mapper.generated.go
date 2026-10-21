@@ -109,6 +109,60 @@ func DialogflowConversationDatasetSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func DialogflowConversationModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationModel) *krm.DialogflowConversationModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationModelObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SatisfiesPzi = in.SatisfiesPzi
+	return out
+}
+func DialogflowConversationModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationModelObservedState) *pb.ConversationModel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversationModel{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[pb.ConversationModel_State](mapCtx, in.State)
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SatisfiesPzi = in.SatisfiesPzi
+	return out
+}
+func DialogflowConversationModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConversationModel) *krm.DialogflowConversationModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationModelSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Datasets = direct.Slice_FromProto(mapCtx, in.Datasets, InputDataset_FromProto)
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.ArticleSuggestionModelMetadata = ArticleSuggestionModelMetadata_FromProto(mapCtx, in.GetArticleSuggestionModelMetadata())
+	out.SmartReplyModelMetadata = SmartReplyModelMetadata_FromProto(mapCtx, in.GetSmartReplyModelMetadata())
+	return out
+}
+func DialogflowConversationModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationModelSpec) *pb.ConversationModel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversationModel{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Datasets = direct.Slice_ToProto(mapCtx, in.Datasets, InputDataset_ToProto)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	if oneof := ArticleSuggestionModelMetadata_ToProto(mapCtx, in.ArticleSuggestionModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.ConversationModel_ArticleSuggestionModelMetadata{ArticleSuggestionModelMetadata: oneof}
+	}
+	if oneof := SmartReplyModelMetadata_ToProto(mapCtx, in.SmartReplyModelMetadata); oneof != nil {
+		out.ModelMetadata = &pb.ConversationModel_SmartReplyModelMetadata{SmartReplyModelMetadata: oneof}
+	}
+	return out
+}
 func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorObservedState {
 	if in == nil {
 		return nil
@@ -335,6 +389,22 @@ func InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.InputConfig) *pb.Inp
 	if oneof := GCSSources_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.Source = &pb.InputConfig_GcsSource{GcsSource: oneof}
 	}
+	return out
+}
+func InputDataset_FromProto(mapCtx *direct.MapContext, in *pb.InputDataset) *krm.InputDataset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputDataset{}
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	return out
+}
+func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *pb.InputDataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InputDataset{}
+	out.Dataset = direct.ValueOf(in.Dataset)
 	return out
 }
 func MessageEntry_FromProto(mapCtx *direct.MapContext, in *pb.MessageEntry) *krm.MessageEntry {

@@ -31,18 +31,35 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1beta1 \
+  --resource ComposerEnvironment:Environment
 
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.orchestration.airflow.service.v1 \
-    --api-version "composer.cnrm.cloud.google.com/v1beta1" \
-    --resource ComposerEnvironment:Environment
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ComposerUserWorkloadsConfigMap:UserWorkloadsConfigMap \
+  --resource ComposerUserWorkloadsSecret:UserWorkloadsSecret
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComposerUserWorkloadsConfigMap:UserWorkloadsConfigMap \
+  --resource ComposerUserWorkloadsSecret:UserWorkloadsSecret
 
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.orchestration.airflow.service.v1 \
-    --api-version "composer.cnrm.cloud.google.com/v1beta1"
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1beta1 \
+  --multiversion \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/composer" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/composer/

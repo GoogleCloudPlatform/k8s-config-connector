@@ -1127,6 +1127,14 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dialogflowplaybooks.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.handlers[].lifecycleHandler.fulfillment.messages[].knowledgeInfoCard)
 		"dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.messages[].knowledgeInfoCard)
 		"notebooksruntimes.notebooks.cnrm.cloud.google.com":                             true, // GCP known pattern: Empty oneof option (spec.virtualMachine.virtualMachineConfig.bootImage)
+		"datamigrationmappingrules.datamigration.cnrm.cloud.google.com":                 true, // GCP known pattern: Empty oneof option (spec.conditionalColumnSetValue.valueTransformation.applyHash.uuidFromBytes)
+		"dialogflowflows.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
+		"dialogflowpages.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
+		"gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com":                    true, // GCP known pattern: Empty oneof option (spec.addOns.gmail.contextualTriggers[].unconditional)
+		"retailcontrols.retail.cnrm.cloud.google.com":                                   true, // GCP known pattern: Empty oneof option (spec.rule.pinAction)
+		"tpuqueuedresources.tpu.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.spot)
+		"transcoderjobtemplates.transcoder.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.config.elementaryStreams[].videoStream.h264.sdr)
+		"vmmigrationmigratingvms.vmmigration.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (status.observedState.currentSyncInfo.steps[].initializingReplication)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

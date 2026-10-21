@@ -803,6 +803,8 @@ cloud.google.com/go/gsuiteaddons v1.6.2/go.mod h1:K65m9XSgs8hTF3X9nNTPi8IQueljSd
 cloud.google.com/go/gsuiteaddons v1.6.3/go.mod h1:sCFJkZoMrLZT3JTb8uJqgKPNshH2tfXeCwTFRebTq48=
 cloud.google.com/go/gsuiteaddons v1.6.4/go.mod h1:rxtstw7Fx22uLOXBpsvb9DUbC+fiXs7rF4U29KHM/pE=
 cloud.google.com/go/gsuiteaddons v1.6.5/go.mod h1:Lo4P2IvO8uZ9W+RaC6s1JVxo42vgy+TX5a6hfBZ0ubs=
+cloud.google.com/go/gsuiteaddons v1.12.0 h1:kz9DyBk84wZCda2Rdha1MOIf7/9x6R+N+LuH9B3zYFs=
+cloud.google.com/go/gsuiteaddons v1.12.0/go.mod h1:rm/XT7wmwOFGn7jmWtVV65QmZCakzTbHLSojIC4Hskg=
 cloud.google.com/go/hypercomputecluster v1.1.0 h1:IHWk/MfToCxdht2poItU8Bb7FgEJapd6bQbWTJqOl/Y=
 cloud.google.com/go/hypercomputecluster v1.1.0/go.mod h1:wH9UAcIpCfC7/HndxKKvsaPL3V8+sQX5BGinSnwirmI=
 cloud.google.com/go/iam v0.1.0/go.mod h1:vcUNEa0pEm0qRVpmWepWaFMIAI8/hjB9mO8rNCJtF6c=
@@ -1240,6 +1242,8 @@ cloud.google.com/go/retail v1.14.3/go.mod h1:Omz2akDHeSlfCq8ArPKiBxlnRpKEBjUH386
 cloud.google.com/go/retail v1.14.4/go.mod h1:l/N7cMtY78yRnJqp5JW8emy7MB1nz8E4t2yfOmklYfg=
 cloud.google.com/go/retail v1.15.1/go.mod h1:In9nSBOYhLbDGa87QvWlnE1XA14xBN2FpQRiRsUs9wU=
 cloud.google.com/go/retail v1.16.0/go.mod h1:LW7tllVveZo4ReWt68VnldZFWJRzsh9np+01J9dYWzE=
+cloud.google.com/go/retail v1.31.0 h1:nJnfVzX+GOIe+PwDNSYG080ydirDzoD53z+c3y7ZzpU=
+cloud.google.com/go/retail v1.31.0/go.mod h1:sfq/cT+gfSLuURf/mdVAw5n0pav3hxSP1rT8RfL7Qxk=
 cloud.google.com/go/run v0.2.0/go.mod h1:CNtKsTA1sDcnqqIFR3Pb5Tq0usWxJJvsWOCPldRU3Do=
 cloud.google.com/go/run v0.3.0/go.mod h1:TuyY1+taHxTjrD0ZFk2iAR+xyOXEA0ztb7U3UNA0zBo=
 cloud.google.com/go/run v0.8.0/go.mod h1:VniEnuBwqjigv0A7ONfQUaEItaiCRVujlMqerPPiktM=

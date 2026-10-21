@@ -1,0 +1,127 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment declares 2 resource name patterns (organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}, projects/{project}/locations/{location}/frameworkDeployments/{framework_deployment}); generated identity uses "organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}" (pass --pattern CloudSecurityComplianceFrameworkDeployment=<pattern> to override)
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//cloudsecuritycompliance.googleapis.com/organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/organizations.locations.frameworkDeployments: https://docs.cloud.google.com/security-command-center/docs/reference/rest/v1/organizations.locations.frameworkDeployments'
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.cloudControlRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CloudControlDetails in cloudsecuritycomplianceframework_types.go is also used by CloudSecurityComplianceFramework. +required on CloudControlDetails.CloudControlRef would apply there too. To enforce it for CloudSecurityComplianceFrameworkDeployment only, give CloudSecurityComplianceFrameworkDeployment its own copy of CloudControlDetails. CloudSecurityComplianceFrameworkDeployment is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.majorRevisionID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. CloudControlDetails in cloudsecuritycomplianceframework_types.go is also used by CloudSecurityComplianceFramework. +required on CloudControlDetails.MajorRevisionID would apply there too. To enforce it for CloudSecurityComplianceFrameworkDeployment only, give CloudSecurityComplianceFrameworkDeployment its own copy of CloudControlDetails. CloudSecurityComplianceFrameworkDeployment is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "“organizations/{organization}/locations/{location}/"
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.parameters[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. Parameter in cloudsecuritycompliancecloudcontrol_types.go is also used by CloudSecurityComplianceCloudControl, CloudSecurityComplianceFramework. +required on Parameter.Name would apply there too. To enforce it for CloudSecurityComplianceFrameworkDeployment only, give CloudSecurityComplianceFrameworkDeployment its own copy of Parameter. CloudSecurityComplianceFrameworkDeployment is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.parameters[].parameterValue
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. Parameter in cloudsecuritycompliancecloudcontrol_types.go is also used by CloudSecurityComplianceCloudControl, CloudSecurityComplianceFramework. +required on Parameter.ParameterValue would apply there too. To enforce it for CloudSecurityComplianceFrameworkDeployment only, give CloudSecurityComplianceFrameworkDeployment its own copy of Parameter. CloudSecurityComplianceFrameworkDeployment is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.cloudControlMetadata[].cloudControlDetails.parameters[].parameterValue.stringListValue.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ParamValue in cloudsecuritycompliancecloudcontrol_types.go is also used by CloudSecurityComplianceCloudControl, CloudSecurityComplianceFramework. To enforce it for CloudSecurityComplianceFrameworkDeployment only, give CloudSecurityComplianceFrameworkDeployment its own copy of ParamValue whose StringListValue field holds StringListWithRequired, and run generate.sh again. CloudSecurityComplianceFrameworkDeployment is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.framework.framework
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "organizations/{org}/locations/{location}/frameworks/{framework}"
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.framework.framework
+    reason: possible-reference-by-sibling
+    detail: the name matches CloudSecurityComplianceFramework, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.targetResourceConfig.existingTargetResource
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}"
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.targetResourceConfig.targetResourceCreationConfig.folderCreationConfig.parent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "organizations/{org}"
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.targetResourceConfig.targetResourceCreationConfig.projectCreationConfig.billingAccountID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: CloudSecurityComplianceFrameworkDeployment
+    group: cloudsecuritycompliance.cnrm.cloud.google.com
+    field: .spec.targetResourceConfig.targetResourceCreationConfig.projectCreationConfig.parent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "organizations/{org}"
+    status: open

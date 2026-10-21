@@ -19,3 +19,4 @@ crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: fi
 crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].serviceDirectory.genericWebService.password" is sensitive data, should use secretRef
 crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].serviceDirectory.genericWebService.secretVersionForUsernamePassword" is sensitive data, should use secretRef
 crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is sensitive data, should use secretRef
+crd=vmmigrationsources.vmmigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.vmware.password" is sensitive data, should use secretRef
