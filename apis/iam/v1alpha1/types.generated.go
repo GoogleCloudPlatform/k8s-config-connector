@@ -18,11 +18,22 @@
 // krm.version: v1alpha1
 // proto.service: google.iam.v2
 // proto.service: google.iam.v3
+// proto.service: google.iam.v1
 // resource: IAMDenyPolicy:Policy
 // resource: IAMAccessPolicy:AccessPolicy
 // resource: IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+// resource: IAMWorkloadIdentityPoolNamespace:WorkloadIdentityPoolNamespace
 
 package v1alpha1
+
+/* unreachable type OwnerService
+// +kcc:proto=google.iam.v1.OwnerService
+type OwnerService struct {
+	// Required. The service agent principal subject, e.g. "serviceAccount:service-1234@gcp-sa-gkehub.iam.gserviceaccount.com".
+	// +kcc:proto:field=google.iam.v1.OwnerService.principal_subject
+	PrincipalSubject *string `json:"principalSubject,omitempty"`
+}
+*/
 
 // +kcc:proto=google.iam.v2.DenyRule
 type DenyRule struct {
@@ -323,4 +334,11 @@ type Expr struct {
 	//  reporting, e.g. a file name and a position in the file.
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.iam.v1.OwnerService
+type OwnerServiceObservedState struct {
+	// Required. The service agent principal subject, e.g. "serviceAccount:service-1234@gcp-sa-gkehub.iam.gserviceaccount.com".
+	// +kcc:proto:field=google.iam.v1.OwnerService.principal_subject
+	PrincipalSubject *string `json:"principalSubject,omitempty"`
 }
