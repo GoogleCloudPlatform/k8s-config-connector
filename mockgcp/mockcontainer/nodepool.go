@@ -45,7 +45,6 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 		return nil, err
 	}
 	resp := proto.Clone(obj).(*pb.NodePool)
-	resp.InitialNodeCount = 0 // INPUT_ONLY in GKE API: not returned on GET
 	return resp, nil
 }
 
@@ -65,7 +64,6 @@ func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePo
 	var nodePools []*pb.NodePool
 	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
 		np := proto.Clone(msg.(*pb.NodePool)).(*pb.NodePool)
-		np.InitialNodeCount = 0 // INPUT_ONLY in GKE API
 		nodePools = append(nodePools, np)
 		return nil
 	}); err != nil {
@@ -104,13 +102,18 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 		return nil, err
 	}
 
-	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.InitialNodeCount); err != nil {
+	igmSize := obj.InitialNodeCount
+	if igmSize == 0 {
+		igmSize = 1
+	}
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, igmSize); err != nil {
 		klog.Errorf("failed to create mock IGM: %v", err)
 	}
 
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_NODE_POOL,
+		Status:        pb.Operation_PENDING,
 		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
@@ -124,14 +127,6 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.Version = cluster.CurrentNodeVersion
 	}
 
-	if len(obj.Locations) == 0 {
-		if len(cluster.Locations) > 0 {
-			obj.Locations = cluster.Locations
-		} else if cluster.Location != "" {
-			obj.Locations = []string{cluster.Location}
-		}
-	}
-
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
@@ -139,23 +134,64 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		return err
 	}
 
-	if obj.InitialNodeCount == 0 {
+	if obj.GetQueuedProvisioning().GetEnabled() && len(obj.Config.Taints) == 0 {
+		obj.Config.Taints = []*pb.NodeTaint{
+			{
+				Effect: pb.NodeTaint_NO_SCHEDULE,
+				Key:    "cloud.google.com/gke-queued",
+				Value:  "true",
+			},
+		}
+	}
+
+	if len(obj.Locations) == 0 {
+		if obj.Name != "default-pool" && !isZone(cluster.Location) && obj.Config.GetConfidentialNodes().GetEnabled() {
+			obj.Locations = []string{
+				cluster.Location + "-f",
+				cluster.Location + "-c",
+				cluster.Location + "-a",
+			}
+		} else if len(cluster.Locations) > 0 {
+			obj.Locations = cluster.Locations
+		} else if cluster.Location != "" {
+			obj.Locations = []string{cluster.Location}
+		}
+	}
+
+	if obj.InitialNodeCount == 0 && !obj.GetAutoscaling().GetEnabled() {
 		obj.InitialNodeCount = 1
 	}
 
 	if obj.InstanceGroupUrls == nil {
-		zone, err := locationToZone(cluster.Location)
-		if err != nil {
-			return err
-		}
-
-		if cluster.GetAutopilot().GetEnabled() {
-			obj.InstanceGroupUrls = []string{
-				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gk3-%s-%s-grp", project.ID, zone, cluster.Name, obj.Name),
+		if obj.Name != "default-pool" && !isZone(cluster.Location) && obj.Config.GetConfidentialNodes().GetEnabled() {
+			zones := []string{
+				cluster.Location + "-f",
+				cluster.Location + "-c",
+				cluster.Location + "-a",
+			}
+			for _, z := range zones {
+				obj.InstanceGroupUrls = append(obj.InstanceGroupUrls,
+					fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-12345678-grp", project.ID, z, obj.Name),
+				)
 			}
 		} else {
-			obj.InstanceGroupUrls = []string{
-				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+			zone, err := locationToZone(cluster.Location)
+			if err != nil {
+				return err
+			}
+
+			if cluster.GetAutopilot().GetEnabled() {
+				obj.InstanceGroupUrls = []string{
+					fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gk3-%s-%s-grp", project.ID, zone, cluster.Name, obj.Name),
+				}
+			} else if obj.Name == "default-pool" {
+				obj.InstanceGroupUrls = []string{
+					fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+				}
+			} else {
+				obj.InstanceGroupUrls = []string{
+					fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-12345678-grp", project.ID, zone, obj.Name),
+				}
 			}
 		}
 	}
@@ -465,11 +501,10 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	}
 
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
-	}
-	if req.GetKubeletConfig() != nil {
-		op.OperationType = pb.Operation_UPGRADE_NODES
+		Zone:          name.Location,
+		OperationType: pb.Operation_UPGRADE_NODES,
+		Status:        pb.Operation_PENDING,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -518,6 +553,7 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 		Zone:          name.Location,
 		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 		OperationType: pb.Operation_SET_NODE_POOL_SIZE,
+		Status:        pb.Operation_PENDING,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -570,6 +606,9 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_NODE_POOL,
 		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	if name.NodePool != "default-pool" {
+		op.Status = pb.Operation_PENDING
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -640,6 +679,11 @@ func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.
 		igmName := tokens[5]
 		zone := tokens[3]
 
+		instanceGroupURL := mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName))
+		if !strings.HasSuffix(igmName, "-default-pool-grp") {
+			instanceGroupURL = fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName)
+		}
+
 		igm := &computepb.InstanceGroupManager{
 			Name:             PtrTo(igmName),
 			BaseInstanceName: PtrTo(strings.TrimSuffix(igmName, "-grp")),
@@ -671,7 +715,7 @@ func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.
 				DefaultActionOnFailure: PtrTo("REPAIR"),
 				ForceUpdateOnRepair:    PtrTo("YES"),
 			},
-			InstanceGroup:    PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName))),
+			InstanceGroup:    PtrTo(instanceGroupURL),
 			InstanceTemplate: PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/instanceTemplates/%s", project.ID, strings.TrimSuffix(igmName, "-grp")))),
 		}
 

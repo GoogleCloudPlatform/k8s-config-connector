@@ -944,9 +944,53 @@ Content-Type: application/json
               "fqdns": [
                 "example.com"
               ],
-              "gcpSecretManagerCertificateConfig": {}
+              "gcpSecretManagerCertificateConfig": {
+                "secretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
+              }
             }
           ],
+          "enabled": true
+        },
+        "registryHosts": [
+          {
+            "hosts": [
+              {
+                "ca": [
+                  {
+                    "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
+                  }
+                ],
+                "capabilities": [
+                  1,
+                  2
+                ],
+                "client": [
+                  {
+                    "cert": {
+                      "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-client-cert/versions/1"
+                    },
+                    "key": {
+                      "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-client-key/versions/1"
+                    }
+                  }
+                ],
+                "dialTimeout": "10s",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": [
+                      "Bearer token123"
+                    ]
+                  }
+                ],
+                "host": "https://my-registry.example.com",
+                "overridePath": true
+              }
+            ],
+            "server": "my-registry.example.com"
+          }
+        ],
+        "writableCgroups": {
           "enabled": true
         }
       },
@@ -975,7 +1019,7 @@ X-Xss-Protection: 0
   "operationType": 7,
   "selfLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": 2,
+  "status": 1,
   "targetLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "zone": "us-central1-a"
 }
@@ -1008,7 +1052,9 @@ X-Xss-Protection: 0
             "fqdns": [
               "example.com"
             ],
-            "gcpSecretManagerCertificateConfig": {}
+            "gcpSecretManagerCertificateConfig": {
+              "secretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
+            }
           }
         ],
         "enabled": true
@@ -1038,8 +1084,9 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
+  "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp"
   ],
   "locations": [
     "us-central1-a"
@@ -1082,9 +1129,53 @@ Content-Type: application/json
             "example.com",
             "sub.example.com"
           ],
-          "gcpSecretManagerCertificateConfig": {}
+          "gcpSecretManagerCertificateConfig": {
+            "secretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
+          }
         }
       ],
+      "enabled": true
+    },
+    "registryHosts": [
+      {
+        "hosts": [
+          {
+            "ca": [
+              {
+                "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
+              }
+            ],
+            "capabilities": [
+              1,
+              2
+            ],
+            "client": [
+              {
+                "cert": {
+                  "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-client-cert/versions/2"
+                },
+                "key": {
+                  "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-client-key/versions/2"
+                }
+              }
+            ],
+            "dialTimeout": "15s",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": [
+                  "Bearer token456"
+                ]
+              }
+            ],
+            "host": "https://my-registry.example.com",
+            "overridePath": true
+          }
+        ],
+        "server": "my-registry.example.com"
+      }
+    ],
+    "writableCgroups": {
       "enabled": true
     }
   },
@@ -1103,9 +1194,10 @@ X-Xss-Protection: 0
 
 {
   "name": "${operationID}",
+  "operationType": 4,
   "selfLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": 2,
+  "status": 1,
   "targetLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "zone": "us-central1-a"
 }
@@ -1139,7 +1231,9 @@ X-Xss-Protection: 0
               "example.com",
               "sub.example.com"
             ],
-            "gcpSecretManagerCertificateConfig": {}
+            "gcpSecretManagerCertificateConfig": {
+              "secretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
+            }
           }
         ],
         "enabled": true
@@ -1169,8 +1263,9 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
+  "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp"
   ],
   "locations": [
     "us-central1-a"
@@ -1219,7 +1314,7 @@ X-Xss-Protection: 0
   "operationType": 8,
   "selfLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": 2,
+  "status": 1,
   "targetLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
   "zone": "us-central1-a"
 }

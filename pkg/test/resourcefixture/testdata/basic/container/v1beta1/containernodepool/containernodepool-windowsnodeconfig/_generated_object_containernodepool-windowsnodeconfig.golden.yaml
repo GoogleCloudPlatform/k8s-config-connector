@@ -36,9 +36,4 @@ status:
   - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
   observedGeneration: 1
   observedState:
-    nodeConfig:
-      taint:
-      - effect: NO_SCHEDULE
-        key: node.kubernetes.io/os
-        value: windows
     version: 1.30.5-gke.1014001
