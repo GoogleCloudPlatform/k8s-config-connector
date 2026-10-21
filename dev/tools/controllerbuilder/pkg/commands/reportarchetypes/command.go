@@ -39,23 +39,6 @@ type ReportArchetypesOptions struct {
 	Output string
 }
 
-// InitDefaults points APIsDir at the repository's apis directory.
-func (o *ReportArchetypesOptions) InitDefaults() error {
-	root, err := options.RepoRoot()
-	if err != nil {
-		return err
-	}
-	o.APIsDir = filepath.Join(root, "apis")
-	return nil
-}
-
-// BindFlags registers the command's own flags. The descriptor set comes from
-// the shared --proto-source-path flag.
-func (o *ReportArchetypesOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&o.APIsDir, "apis-dir", o.APIsDir, "directory holding the <service>/generate.sh scripts to scan")
-	cmd.Flags().StringVarP(&o.Output, "output", "o", o.Output, "file to write the TSV report to; stdout when empty")
-}
-
 // BuildCommand returns the report-archetypes command.
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	opt := &ReportArchetypesOptions{
@@ -89,6 +72,23 @@ against when that is not the default one.`,
 	opt.BindFlags(cmd)
 
 	return cmd
+}
+
+// InitDefaults points APIsDir at the repository's apis directory.
+func (o *ReportArchetypesOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
+	}
+	o.APIsDir = filepath.Join(root, "apis")
+	return nil
+}
+
+// BindFlags registers the command's own flags. The descriptor set comes from
+// the shared --proto-source-path flag.
+func (o *ReportArchetypesOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.APIsDir, "apis-dir", o.APIsDir, "directory holding the <service>/generate.sh scripts to scan")
+	cmd.Flags().StringVarP(&o.Output, "output", "o", o.Output, "file to write the TSV report to; stdout when empty")
 }
 
 // RunReportArchetypes writes the report and prints per-archetype counts to

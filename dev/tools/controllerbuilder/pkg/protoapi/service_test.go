@@ -804,145 +804,6 @@ func summarizeMethods(api *ResourceAPI) map[string]*methodSummary {
 	return out
 }
 
-// newTestProto builds a Proto from files, plus the well-known files they may
-// import: google/protobuf/empty.proto, google/protobuf/field_mask.proto and a
-// minimal google/longrunning/operations.proto.
-func newTestProto(t *testing.T, files ...*descriptorpb.FileDescriptorProto) *Proto {
-	t.Helper()
-	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{
-		protodesc.ToFileDescriptorProto(emptypb.File_google_protobuf_empty_proto),
-		protodesc.ToFileDescriptorProto(fieldmaskpb.File_google_protobuf_field_mask_proto),
-		{
-			Name:        proto.String("google/longrunning/operations.proto"),
-			Package:     proto.String("google.longrunning"),
-			Syntax:      proto.String("proto3"),
-			MessageType: []*descriptorpb.DescriptorProto{message("Operation", stringField("name"))},
-		},
-	}}
-	fds.File = append(fds.File, files...)
-	reg, err := protodesc.NewFiles(fds)
-	if err != nil {
-		t.Fatalf("protodesc.NewFiles: %v", err)
-	}
-	return &Proto{files: reg}
-}
-
-func mustResourceAPI(t *testing.T, p *Proto, name protoreflect.FullName) *ResourceAPI {
-	t.Helper()
-	api, err := p.ResourceAPIByName(name)
-	if err != nil {
-		t.Fatalf("ResourceAPIByName(%q): %v", name, err)
-	}
-	return api
-}
-
-// testFile returns a proto3 file in package pkg holding msgs. It imports the
-// files newTestProto provides.
-func testFile(name, pkg string, msgs ...*descriptorpb.DescriptorProto) *descriptorpb.FileDescriptorProto {
-	return &descriptorpb.FileDescriptorProto{
-		Name:        proto.String(name),
-		Package:     proto.String(pkg),
-		Syntax:      proto.String("proto3"),
-		Dependency:  []string{"google/protobuf/empty.proto", "google/protobuf/field_mask.proto", "google/longrunning/operations.proto"},
-		MessageType: msgs,
-	}
-}
-
-// message returns a message whose fields are numbered in order.
-func message(name string, fields ...*descriptorpb.FieldDescriptorProto) *descriptorpb.DescriptorProto {
-	for i, f := range fields {
-		f.Number = proto.Int32(int32(i + 1))
-	}
-	return &descriptorpb.DescriptorProto{Name: proto.String(name), Field: fields}
-}
-
-func scalarField(name string, typ descriptorpb.FieldDescriptorProto_Type) *descriptorpb.FieldDescriptorProto {
-	return &descriptorpb.FieldDescriptorProto{
-		Name:  proto.String(name),
-		Label: descriptorpb.FieldDescriptorProto_LABEL_OPTIONAL.Enum(),
-		Type:  typ.Enum(),
-	}
-}
-
-func stringField(name string) *descriptorpb.FieldDescriptorProto {
-	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_STRING)
-}
-
-func boolField(name string) *descriptorpb.FieldDescriptorProto {
-	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_BOOL)
-}
-
-func int64Field(name string) *descriptorpb.FieldDescriptorProto {
-	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_INT64)
-}
-
-func messageField(name, fullName string) *descriptorpb.FieldDescriptorProto {
-	f := scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
-	f.TypeName = proto.String("." + fullName)
-	return f
-}
-
-func repeatedField(name, fullName string) *descriptorpb.FieldDescriptorProto {
-	f := messageField(name, fullName)
-	f.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
-	return f
-}
-
-// addLabels adds a map<string, string> labels field to msg.
-func addLabels(msg *descriptorpb.DescriptorProto) {
-	entry := message("LabelsEntry", stringField("key"), stringField("value"))
-	entry.Options = &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)}
-	msg.NestedType = append(msg.NestedType, entry)
-	labels := &descriptorpb.FieldDescriptorProto{
-		Name:     proto.String("labels"),
-		Number:   proto.Int32(int32(len(msg.Field) + 1)),
-		Label:    descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum(),
-		Type:     descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum(),
-		TypeName: proto.String("." + testPkg + "." + msg.GetName() + ".LabelsEntry"),
-	}
-	msg.Field = append(msg.Field, labels)
-}
-
-// method returns a method. input is relative to testPkg unless it contains a
-// dot; output must be fully qualified.
-func method(name, input, output string, opts *descriptorpb.MethodOptions) *descriptorpb.MethodDescriptorProto {
-	return &descriptorpb.MethodDescriptorProto{
-		Name:       proto.String(name),
-		InputType:  proto.String("." + qualifyTypeName(testPkg, input)),
-		OutputType: proto.String("." + output),
-		Options:    opts,
-	}
-}
-
-func httpOptions(rule *annotations.HttpRule, signatures ...string) *descriptorpb.MethodOptions {
-	opts := &descriptorpb.MethodOptions{}
-	proto.SetExtension(opts, annotations.E_Http, rule)
-	if len(signatures) > 0 {
-		proto.SetExtension(opts, annotations.E_MethodSignature, signatures)
-	}
-	return opts
-}
-
-// withOperationInfo adds a google.longrunning.operation_info option to opts.
-// The extension is not registered in this module, so, like the loader, it is
-// stored as unknown bytes.
-func withOperationInfo(opts *descriptorpb.MethodOptions, responseType, metadataType string) *descriptorpb.MethodOptions {
-	var info []byte
-	if responseType != "" {
-		info = protowire.AppendTag(info, operationInfoResponseType, protowire.BytesType)
-		info = protowire.AppendString(info, responseType)
-	}
-	if metadataType != "" {
-		info = protowire.AppendTag(info, operationInfoMetadataType, protowire.BytesType)
-		info = protowire.AppendString(info, metadataType)
-	}
-	b := opts.ProtoReflect().GetUnknown()
-	b = protowire.AppendTag(b, operationInfoField, protowire.BytesType)
-	b = protowire.AppendBytes(b, info)
-	opts.ProtoReflect().SetUnknown(b)
-	return opts
-}
-
 // crud selects the standard methods, and request fields, that addAIPResource
 // declares for a synthetic resource.
 type crud struct {
@@ -1001,5 +862,144 @@ func addAIPMethods(svc *descriptorpb.ServiceDescriptorProto, resource string, c 
 	add(c.delete, "Delete", "google.protobuf.Empty")
 	if c.list {
 		svc.Method = append(svc.Method, method("List"+resource+"s", "List"+resource+"sRequest", testPkg+".List"+resource+"sResponse", nil))
+	}
+}
+
+// addLabels adds a map<string, string> labels field to msg.
+func addLabels(msg *descriptorpb.DescriptorProto) {
+	entry := message("LabelsEntry", stringField("key"), stringField("value"))
+	entry.Options = &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)}
+	msg.NestedType = append(msg.NestedType, entry)
+	labels := &descriptorpb.FieldDescriptorProto{
+		Name:     proto.String("labels"),
+		Number:   proto.Int32(int32(len(msg.Field) + 1)),
+		Label:    descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum(),
+		Type:     descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum(),
+		TypeName: proto.String("." + testPkg + "." + msg.GetName() + ".LabelsEntry"),
+	}
+	msg.Field = append(msg.Field, labels)
+}
+
+// newTestProto builds a Proto from files, plus the well-known files they may
+// import: google/protobuf/empty.proto, google/protobuf/field_mask.proto and a
+// minimal google/longrunning/operations.proto.
+func newTestProto(t *testing.T, files ...*descriptorpb.FileDescriptorProto) *Proto {
+	t.Helper()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{
+		protodesc.ToFileDescriptorProto(emptypb.File_google_protobuf_empty_proto),
+		protodesc.ToFileDescriptorProto(fieldmaskpb.File_google_protobuf_field_mask_proto),
+		{
+			Name:        proto.String("google/longrunning/operations.proto"),
+			Package:     proto.String("google.longrunning"),
+			Syntax:      proto.String("proto3"),
+			MessageType: []*descriptorpb.DescriptorProto{message("Operation", stringField("name"))},
+		},
+	}}
+	fds.File = append(fds.File, files...)
+	reg, err := protodesc.NewFiles(fds)
+	if err != nil {
+		t.Fatalf("protodesc.NewFiles: %v", err)
+	}
+	return &Proto{files: reg}
+}
+
+func mustResourceAPI(t *testing.T, p *Proto, name protoreflect.FullName) *ResourceAPI {
+	t.Helper()
+	api, err := p.ResourceAPIByName(name)
+	if err != nil {
+		t.Fatalf("ResourceAPIByName(%q): %v", name, err)
+	}
+	return api
+}
+
+// testFile returns a proto3 file in package pkg holding msgs. It imports the
+// files newTestProto provides.
+func testFile(name, pkg string, msgs ...*descriptorpb.DescriptorProto) *descriptorpb.FileDescriptorProto {
+	return &descriptorpb.FileDescriptorProto{
+		Name:        proto.String(name),
+		Package:     proto.String(pkg),
+		Syntax:      proto.String("proto3"),
+		Dependency:  []string{"google/protobuf/empty.proto", "google/protobuf/field_mask.proto", "google/longrunning/operations.proto"},
+		MessageType: msgs,
+	}
+}
+
+// method returns a method. input is relative to testPkg unless it contains a
+// dot; output must be fully qualified.
+func method(name, input, output string, opts *descriptorpb.MethodOptions) *descriptorpb.MethodDescriptorProto {
+	return &descriptorpb.MethodDescriptorProto{
+		Name:       proto.String(name),
+		InputType:  proto.String("." + qualifyTypeName(testPkg, input)),
+		OutputType: proto.String("." + output),
+		Options:    opts,
+	}
+}
+
+func httpOptions(rule *annotations.HttpRule, signatures ...string) *descriptorpb.MethodOptions {
+	opts := &descriptorpb.MethodOptions{}
+	proto.SetExtension(opts, annotations.E_Http, rule)
+	if len(signatures) > 0 {
+		proto.SetExtension(opts, annotations.E_MethodSignature, signatures)
+	}
+	return opts
+}
+
+// withOperationInfo adds a google.longrunning.operation_info option to opts.
+// The extension is not registered in this module, so, like the loader, it is
+// stored as unknown bytes.
+func withOperationInfo(opts *descriptorpb.MethodOptions, responseType, metadataType string) *descriptorpb.MethodOptions {
+	var info []byte
+	if responseType != "" {
+		info = protowire.AppendTag(info, operationInfoResponseType, protowire.BytesType)
+		info = protowire.AppendString(info, responseType)
+	}
+	if metadataType != "" {
+		info = protowire.AppendTag(info, operationInfoMetadataType, protowire.BytesType)
+		info = protowire.AppendString(info, metadataType)
+	}
+	b := opts.ProtoReflect().GetUnknown()
+	b = protowire.AppendTag(b, operationInfoField, protowire.BytesType)
+	b = protowire.AppendBytes(b, info)
+	opts.ProtoReflect().SetUnknown(b)
+	return opts
+}
+
+// message returns a message whose fields are numbered in order.
+func message(name string, fields ...*descriptorpb.FieldDescriptorProto) *descriptorpb.DescriptorProto {
+	for i, f := range fields {
+		f.Number = proto.Int32(int32(i + 1))
+	}
+	return &descriptorpb.DescriptorProto{Name: proto.String(name), Field: fields}
+}
+
+func repeatedField(name, fullName string) *descriptorpb.FieldDescriptorProto {
+	f := messageField(name, fullName)
+	f.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+	return f
+}
+
+func messageField(name, fullName string) *descriptorpb.FieldDescriptorProto {
+	f := scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	f.TypeName = proto.String("." + fullName)
+	return f
+}
+
+func stringField(name string) *descriptorpb.FieldDescriptorProto {
+	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_STRING)
+}
+
+func boolField(name string) *descriptorpb.FieldDescriptorProto {
+	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_BOOL)
+}
+
+func int64Field(name string) *descriptorpb.FieldDescriptorProto {
+	return scalarField(name, descriptorpb.FieldDescriptorProto_TYPE_INT64)
+}
+
+func scalarField(name string, typ descriptorpb.FieldDescriptorProto_Type) *descriptorpb.FieldDescriptorProto {
+	return &descriptorpb.FieldDescriptorProto{
+		Name:  proto.String(name),
+		Label: descriptorpb.FieldDescriptorProto_LABEL_OPTIONAL.Enum(),
+		Type:  typ.Enum(),
 	}
 }

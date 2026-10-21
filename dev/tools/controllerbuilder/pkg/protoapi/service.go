@@ -291,16 +291,6 @@ type methodSet struct {
 	get, create, update, delete, list protoreflect.MethodDescriptor
 }
 
-func (s methodSet) count() int {
-	n := 0
-	for _, m := range []protoreflect.MethodDescriptor{s.get, s.create, s.update, s.delete, s.list} {
-		if m != nil {
-			n++
-		}
-	}
-	return n
-}
-
 // pickService returns the service in which find finds the most standard
 // methods for msg, or nil when it finds none. A tie goes to the service with
 // the shorter name, so Autoscalers beats RegionAutoscalers, then to the one
@@ -318,6 +308,16 @@ func pickService(services []protoreflect.ServiceDescriptor, msg protoreflect.Mes
 		}
 	}
 	return best, bestMethods
+}
+
+func (s methodSet) count() int {
+	n := 0
+	for _, m := range []protoreflect.MethodDescriptor{s.get, s.create, s.update, s.delete, s.list} {
+		if m != nil {
+			n++
+		}
+	}
+	return n
 }
 
 // preferService reports whether a wins a tie against b: the shorter name
@@ -343,27 +343,6 @@ func aipMethods(svc protoreflect.ServiceDescriptor, msg protoreflect.MessageDesc
 		delete: byName("Delete"),
 		list:   aipListMethod(svc, msg),
 	}
-}
-
-// hasAIPRequest reports whether req, the request of the standard method verb
-// for resource, has the fields that code written for AIP-131 to AIP-135
-// relies on:
-//   - Get and Delete take the resource's name in a name field;
-//   - Create takes a parent field, or the resource in a field of its type,
-//     since a top-level resource such as a Project or a TagKey has no parent;
-//   - Update takes the resource in a field of its type.
-//
-// Any other verb, List included, passes.
-func hasAIPRequest(verb string, req, resource protoreflect.MessageDescriptor) bool {
-	switch verb {
-	case "Get", "Delete":
-		return req.Fields().ByName("name") != nil
-	case "Create":
-		return req.Fields().ByName("parent") != nil || fieldOfType(req, resource) != ""
-	case "Update":
-		return fieldOfType(req, resource) != ""
-	}
-	return true
 }
 
 // aipListMethod finds msg's List method in svc: a method named List<Plural>
@@ -486,6 +465,27 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 		}
 	}
 	return sm
+}
+
+// hasAIPRequest reports whether req, the request of the standard method verb
+// for resource, has the fields that code written for AIP-131 to AIP-135
+// relies on:
+//   - Get and Delete take the resource's name in a name field;
+//   - Create takes a parent field, or the resource in a field of its type,
+//     since a top-level resource such as a Project or a TagKey has no parent;
+//   - Update takes the resource in a field of its type.
+//
+// Any other verb, List included, passes.
+func hasAIPRequest(verb string, req, resource protoreflect.MessageDescriptor) bool {
+	switch verb {
+	case "Get", "Delete":
+		return req.Fields().ByName("name") != nil
+	case "Create":
+		return req.Fields().ByName("parent") != nil || fieldOfType(req, resource) != ""
+	case "Update":
+		return fieldOfType(req, resource) != ""
+	}
+	return true
 }
 
 func fieldIfPresent(msg protoreflect.MessageDescriptor, name protoreflect.Name) string {
