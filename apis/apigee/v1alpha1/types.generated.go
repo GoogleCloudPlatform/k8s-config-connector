@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: mockgcp.cloud.apigee.v1
 // resource: ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct
+// resource: ApigeeSyncAuthorization:GoogleCloudApigeeV1SyncAuthorization
 
 package v1alpha1
 
