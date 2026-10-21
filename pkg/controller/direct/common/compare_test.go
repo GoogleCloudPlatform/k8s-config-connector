@@ -1305,4 +1305,3 @@ func TestSpecDiffResult_RemovePathWithPrefix(t *testing.T) {
 		}
 	})
 }
-

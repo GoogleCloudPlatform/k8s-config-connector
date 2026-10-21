@@ -49,63 +49,63 @@ func TestCanonicalizeSubnetworkValue(t *testing.T) {
 			name:            "canonical relative path",
 			val:             "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 			parentProjectID: "other-project",
-			parentLocation:    "europe-west1",
+			parentLocation:  "europe-west1",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "full HTTPS URI compute.googleapis.com",
 			val:             "https://compute.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 			parentProjectID: "other-project",
-			parentLocation:    "europe-west1",
+			parentLocation:  "europe-west1",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "full HTTPS URI www.googleapis.com",
 			val:             "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 			parentProjectID: "other-project",
-			parentLocation:    "europe-west1",
+			parentLocation:  "europe-west1",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "short name with regional parent",
 			val:             "my-subnetwork",
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1",
+			parentLocation:  "us-central1",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "short name with zonal parent location",
 			val:             "my-subnetwork",
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1-a",
+			parentLocation:  "us-central1-a",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "project number in relative path resolved to project ID",
 			val:             "projects/12345/regions/us-central1/subnetworks/my-subnetwork",
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1",
+			parentLocation:  "us-central1",
 			want:            "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 		},
 		{
 			name:            "short name with missing parent region returns name as is",
 			val:             "my-subnetwork",
 			parentProjectID: "my-project",
-			parentLocation:    "",
+			parentLocation:  "",
 			want:            "my-subnetwork",
 		},
 		{
 			name:            "short name with missing parent project returns name as is",
 			val:             "my-subnetwork",
 			parentProjectID: "",
-			parentLocation:    "us-central1",
+			parentLocation:  "us-central1",
 			want:            "my-subnetwork",
 		},
 		{
 			name:            "invalid external with slashes returns error",
 			val:             "projects/invalid/format",
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1",
+			parentLocation:  "us-central1",
 			wantErr:         true,
 		},
 	}
@@ -140,7 +140,7 @@ func TestCanonicalizeAndNormalizeSubnetwork(t *testing.T) {
 		ref             *ComputeSubnetworkRef
 		unstructured    *unstructured.Unstructured
 		parentProjectID string
-		parentLocation    string
+		parentLocation  string
 		want            *ComputeSubnetworkRef
 	}{
 		{
@@ -154,7 +154,7 @@ func TestCanonicalizeAndNormalizeSubnetwork(t *testing.T) {
 				External: "default",
 			},
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1",
+			parentLocation:  "us-central1",
 			want: &ComputeSubnetworkRef{
 				External: "projects/my-project/regions/us-central1/subnetworks/default",
 			},
@@ -165,7 +165,7 @@ func TestCanonicalizeAndNormalizeSubnetwork(t *testing.T) {
 				External: "default",
 			},
 			parentProjectID: "my-project",
-			parentLocation:    "us-central1-b",
+			parentLocation:  "us-central1-b",
 			want: &ComputeSubnetworkRef{
 				External: "projects/my-project/regions/us-central1/subnetworks/default",
 			},
@@ -176,7 +176,7 @@ func TestCanonicalizeAndNormalizeSubnetwork(t *testing.T) {
 				External: "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 			},
 			parentProjectID: "other-project",
-			parentLocation:    "europe-west1",
+			parentLocation:  "europe-west1",
 			want: &ComputeSubnetworkRef{
 				External: "projects/my-project/regions/us-central1/subnetworks/my-subnetwork",
 			},
@@ -204,7 +204,7 @@ func TestCanonicalizeAndNormalizeSubnetwork(t *testing.T) {
 				},
 			},
 			parentProjectID: "other-project",
-			parentLocation:    "europe-west1",
+			parentLocation:  "europe-west1",
 			want: &ComputeSubnetworkRef{
 				External: "projects/p1/regions/us-central1/subnetworks/sn1",
 			},

@@ -846,38 +846,37 @@ func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool)
 }
 */
 
-/*
-found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", skipping
-
-	func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerNodePoolSpec) *pb.NodePool {
-		if in == nil {
-			return nil
-		}
-		out := &pb.NodePool{}
-		// MISSING: Name
-		// MISSING: Config
-		out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
-		// MISSING: Locations
-		out.NetworkConfig = NodeNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
-		// MISSING: SelfLink
-		out.Version = direct.ValueOf(in.Version)
-		// MISSING: InstanceGroupUrls
-		// MISSING: Status
-		// MISSING: StatusMessage
-		out.Autoscaling = NodePoolAutoscaling_ToProto(mapCtx, in.Autoscaling)
-		out.Management = NodePoolManagement_ToProto(mapCtx, in.Management)
-		// MISSING: MaxPodsConstraint
-		// MISSING: Conditions
-		// MISSING: PodIPV4CIDRSize
-		out.UpgradeSettings = NodePoolUpgradeSettings_ToProto(mapCtx, in.UpgradeSettings)
-		out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
-		// MISSING: UpdateInfo
-		// MISSING: Etag
-		out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
-		// MISSING: BestEffortProvisioning
-		return out
+/* found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", skipping
+func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerNodePoolSpec) *pb.NodePool {
+	if in == nil {
+		return nil
 	}
+	out := &pb.NodePool{}
+	// MISSING: Name
+	// MISSING: Config
+	out.InitialNodeCount = direct.ValueOf(in.InitialNodeCount)
+	// MISSING: Locations
+	out.NetworkConfig = NodeNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
+	// MISSING: SelfLink
+	out.Version = direct.ValueOf(in.Version)
+	// MISSING: InstanceGroupUrls
+	// MISSING: Status
+	// MISSING: StatusMessage
+	out.Autoscaling = NodePoolAutoscaling_ToProto(mapCtx, in.Autoscaling)
+	out.Management = NodePoolManagement_ToProto(mapCtx, in.Management)
+	// MISSING: MaxPodsConstraint
+	// MISSING: Conditions
+	// MISSING: PodIPV4CIDRSize
+	out.UpgradeSettings = NodePoolUpgradeSettings_ToProto(mapCtx, in.UpgradeSettings)
+	out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
+	// MISSING: UpdateInfo
+	// MISSING: Etag
+	out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
+	// MISSING: BestEffortProvisioning
+	return out
+}
 */
+
 /* found existing non-generated mapping function "ContainerdConfig_FromProto", skipping
 func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig) *krm.ContainerdConfig {
 	if in == nil {
@@ -888,15 +887,18 @@ func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConf
 	return out
 }
 */
-/* found existing non-generated mapping function "ContainerdConfig_ToProto", skipping
-func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
-	if in == nil {
-		return nil
+
+/*
+found existing non-generated mapping function "ContainerdConfig_ToProto", skipping
+
+	func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ContainerdConfig{}
+		out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
+		return out
 	}
-	out := &pb.ContainerdConfig{}
-	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
-	return out
-}
 */
 func ControlPlaneEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig) *krm.ControlPlaneEndpointsConfig {
 	if in == nil {
@@ -1189,6 +1191,7 @@ func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *
 	return out
 }
 */
+
 /* found existing non-generated mapping function "GCPSecretManagerCertificateConfig_ToProto", skipping
 func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.GCPSecretManagerCertificateConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig {
 	if in == nil {
@@ -1470,37 +1473,36 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 }
 */
 
-/*
-found existing non-generated mapping function "KubeletConfig_ToProto", skipping
-
-	func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb.NodeKubeletConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.NodeKubeletConfig{}
-		out.CpuManagerPolicy = direct.ValueOf(in.CPUManagerPolicy)
-		// MISSING: TopologyManager
-		// MISSING: MemoryManager
-		out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
-		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
-		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
-		// MISSING: InsecureKubeletReadonlyPortEnabled
-		out.ImageGcLowThresholdPercent = direct.ValueOf(in.ImageGcLowThresholdPercent)
-		out.ImageGcHighThresholdPercent = direct.ValueOf(in.ImageGcHighThresholdPercent)
-		out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
-		out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
-		// MISSING: ContainerLogMaxSize
-		// MISSING: ContainerLogMaxFiles
-		// MISSING: AllowedUnsafeSysctls
-		// MISSING: EvictionSoft
-		// MISSING: EvictionSoftGracePeriod
-		// MISSING: EvictionMinimumReclaim
-		// MISSING: EvictionMaxPodGracePeriodSeconds
-		// MISSING: MaxParallelImagePulls
-		// MISSING: SingleProcessOomKill
-		return out
+/* found existing non-generated mapping function "KubeletConfig_ToProto", skipping
+func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb.NodeKubeletConfig {
+	if in == nil {
+		return nil
 	}
+	out := &pb.NodeKubeletConfig{}
+	out.CpuManagerPolicy = direct.ValueOf(in.CPUManagerPolicy)
+	// MISSING: TopologyManager
+	// MISSING: MemoryManager
+	out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
+	out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
+	out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
+	// MISSING: InsecureKubeletReadonlyPortEnabled
+	out.ImageGcLowThresholdPercent = direct.ValueOf(in.ImageGcLowThresholdPercent)
+	out.ImageGcHighThresholdPercent = direct.ValueOf(in.ImageGcHighThresholdPercent)
+	out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
+	out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
+	// MISSING: ContainerLogMaxSize
+	// MISSING: ContainerLogMaxFiles
+	// MISSING: AllowedUnsafeSysctls
+	// MISSING: EvictionSoft
+	// MISSING: EvictionSoftGracePeriod
+	// MISSING: EvictionMinimumReclaim
+	// MISSING: EvictionMaxPodGracePeriodSeconds
+	// MISSING: MaxParallelImagePulls
+	// MISSING: SingleProcessOomKill
+	return out
+}
 */
+
 /* found existing non-generated mapping function "LinuxNodeConfig_FromProto", skipping
 func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig) *krm.LinuxNodeConfig {
 	if in == nil {
@@ -1515,19 +1517,22 @@ func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig
 	return out
 }
 */
-/* found existing non-generated mapping function "LinuxNodeConfig_ToProto", skipping
-func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
-	if in == nil {
-		return nil
+
+/*
+found existing non-generated mapping function "LinuxNodeConfig_ToProto", skipping
+
+	func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.LinuxNodeConfig{}
+		out.Sysctls = in.Sysctls
+		out.CgroupMode = direct.Enum_ToProto[pb.LinuxNodeConfig_CgroupMode](mapCtx, in.CgroupMode)
+		// MISSING: Hugepages
+		// MISSING: TransparentHugepageEnabled
+		// MISSING: TransparentHugepageDefrag
+		return out
 	}
-	out := &pb.LinuxNodeConfig{}
-	out.Sysctls = in.Sysctls
-	out.CgroupMode = direct.Enum_ToProto[pb.LinuxNodeConfig_CgroupMode](mapCtx, in.CgroupMode)
-	// MISSING: Hugepages
-	// MISSING: TransparentHugepageEnabled
-	// MISSING: TransparentHugepageDefrag
-	return out
-}
 */
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
@@ -1853,6 +1858,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
 	// MISSING: AdvancedMachineFeatures
 	// MISSING: Gvnic
+	// (near miss): "Gvnic" vs "GVNIC"
 	out.Spot = direct.LazyPtr(in.GetSpot())
 	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
 	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
@@ -1915,6 +1921,7 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
 		// MISSING: AdvancedMachineFeatures
 		// MISSING: Gvnic
+		// (near miss): "Gvnic" vs "GVNIC"
 		out.Spot = direct.ValueOf(in.Spot)
 		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
 		out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
@@ -2173,6 +2180,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
 	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
 	// MISSING: Gvnic
+	// (near miss): "Gvnic" vs "GVNIC"
 	out.Spot = direct.LazyPtr(in.GetSpot())
 	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
 	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
@@ -2235,6 +2243,7 @@ found existing non-generated mapping function "NodePoolNodeConfig_ToProto", skip
 		out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
 		out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
 		// MISSING: Gvnic
+		// (near miss): "Gvnic" vs "GVNIC"
 		out.Spot = direct.ValueOf(in.Spot)
 		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
 		out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)

@@ -277,6 +277,7 @@ func TestContainerNodePool_NormalizeReferences_NodeConfigRefs(t *testing.T) {
 func TestResolveNodeCount(t *testing.T) {
 	tests := []struct {
 		name                 string
+		opType               operationType
 		initialNodeCount     *int32
 		nodeCount            *int32
 		autoscaling          *krm.NodePoolAutoscaling
@@ -285,18 +286,32 @@ func TestResolveNodeCount(t *testing.T) {
 	}{
 		{
 			name:             "negative case: both non-zero initialNodeCount and nodeCount specified",
+			opType:           operationCreate,
 			initialNodeCount: direct.LazyPtr(int32(3)),
 			nodeCount:        direct.LazyPtr(int32(5)),
 			wantErr:          "cannot set both initialNodeCount and nodeCount",
 		},
 		{
 			name:                 "scale-from-zero: initialNodeCount 0 with nodeCount specified",
+			opType:               operationCreate,
 			initialNodeCount:     direct.LazyPtr(int32(0)),
 			nodeCount:            direct.LazyPtr(int32(2)),
 			expectedInitialCount: direct.LazyPtr(int32(2)),
 		},
 		{
-			name:             "autoscaling enabled: nodeCount is ignored when initialNodeCount is 0",
+			name:             "autoscaling enabled on create: nodeCount is used",
+			opType:           operationCreate,
+			initialNodeCount: nil,
+			nodeCount:        direct.LazyPtr(int32(2)),
+			autoscaling: &krm.NodePoolAutoscaling{
+				MinNodeCount: direct.LazyPtr(int32(1)),
+				MaxNodeCount: direct.LazyPtr(int32(3)),
+			},
+			expectedInitialCount: direct.LazyPtr(int32(2)),
+		},
+		{
+			name:             "autoscaling enabled on update: nodeCount is ignored when initialNodeCount is 0",
+			opType:           operationUpdate,
 			initialNodeCount: direct.LazyPtr(int32(0)),
 			nodeCount:        direct.LazyPtr(int32(2)),
 			autoscaling: &krm.NodePoolAutoscaling{
@@ -306,7 +321,8 @@ func TestResolveNodeCount(t *testing.T) {
 			expectedInitialCount: direct.LazyPtr(int32(0)),
 		},
 		{
-			name:             "autoscaling enabled: nodeCount is ignored when initialNodeCount is nil",
+			name:             "autoscaling enabled on update: nodeCount is ignored when initialNodeCount is nil",
+			opType:           operationUpdate,
 			initialNodeCount: nil,
 			nodeCount:        direct.LazyPtr(int32(2)),
 			autoscaling: &krm.NodePoolAutoscaling{
@@ -317,18 +333,21 @@ func TestResolveNodeCount(t *testing.T) {
 		},
 		{
 			name:                 "only nodeCount specified",
+			opType:               operationUpdate,
 			initialNodeCount:     nil,
 			nodeCount:            direct.LazyPtr(int32(4)),
 			expectedInitialCount: direct.LazyPtr(int32(4)),
 		},
 		{
 			name:                 "only initialNodeCount specified",
+			opType:               operationUpdate,
 			initialNodeCount:     direct.LazyPtr(int32(1)),
 			nodeCount:            nil,
 			expectedInitialCount: direct.LazyPtr(int32(1)),
 		},
 		{
 			name:                 "neither specified",
+			opType:               operationUpdate,
 			initialNodeCount:     nil,
 			nodeCount:            nil,
 			expectedInitialCount: nil,
@@ -346,7 +365,7 @@ func TestResolveNodeCount(t *testing.T) {
 			}
 			obj.SetName("test-pool")
 
-			err := resolveNodeCount(obj, nil)
+			err := resolveNodeCount(obj, nil, tc.opType)
 			if tc.wantErr != "" {
 				if err == nil {
 					t.Fatalf("expected error containing %q, got nil", tc.wantErr)
@@ -1028,7 +1047,3 @@ func TestContainerNodePool_Update_Gvnic(t *testing.T) {
 		t.Errorf("expected diffRes to be empty after removing updatePaths, got %v", diffRes.FieldMask.GetPaths())
 	}
 }
-
-
-
-
