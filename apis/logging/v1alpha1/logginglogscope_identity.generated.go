@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -37,39 +38,78 @@ var (
 	_ identity.Resource   = &LoggingLogScope{}
 )
 
-var LoggingLogScopeIdentityFormat = gcpurls.Template[LoggingLogScopeIdentity]("logging.googleapis.com", "projects/{project}/locations/{location}/logScopes/{logScope}")
+var (
+	ProjectLoggingLogScopeIdentityFormat        = gcpurls.Template[LoggingLogScopeIdentity]("logging.googleapis.com", "projects/{project}/locations/{location}/logScopes/{logScope}")
+	FolderLoggingLogScopeIdentityFormat         = gcpurls.Template[LoggingLogScopeIdentity]("logging.googleapis.com", "folders/{folder}/locations/{location}/logScopes/{logScope}")
+	OrganizationLoggingLogScopeIdentityFormat   = gcpurls.Template[LoggingLogScopeIdentity]("logging.googleapis.com", "organizations/{organization}/locations/{location}/logScopes/{logScope}")
+	BillingAccountLoggingLogScopeIdentityFormat = gcpurls.Template[LoggingLogScopeIdentity]("logging.googleapis.com", "billingAccounts/{billingAccount}/locations/{location}/logScopes/{logScope}")
+)
 
 // LoggingLogScopeIdentity is the identity of a GCP LoggingLogScope resource.
 // +k8s:deepcopy-gen=false
 type LoggingLogScopeIdentity struct {
-	Project  string
-	Location string
-	LogScope string
+	Project        string
+	Folder         string
+	Organization   string
+	BillingAccount string
+	Location       string
+	LogScope       string
 }
 
 func (i *LoggingLogScopeIdentity) String() string {
-	return LoggingLogScopeIdentityFormat.ToString(*i)
+	if i.Project != "" {
+		return ProjectLoggingLogScopeIdentityFormat.ToString(*i)
+	}
+	if i.Folder != "" {
+		return FolderLoggingLogScopeIdentityFormat.ToString(*i)
+	}
+	if i.Organization != "" {
+		return OrganizationLoggingLogScopeIdentityFormat.ToString(*i)
+	}
+	if i.BillingAccount != "" {
+		return BillingAccountLoggingLogScopeIdentityFormat.ToString(*i)
+	}
+	return ""
 }
 
 func (i *LoggingLogScopeIdentity) FromExternal(ref string) error {
-	parsed, match, err := LoggingLogScopeIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of LoggingLogScope external=%q was not known (use %s): %w", ref, LoggingLogScopeIdentityFormat.CanonicalForm(), err)
+	if parsed, match, _ := ProjectLoggingLogScopeIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	if !match {
-		return fmt.Errorf("format of LoggingLogScope external=%q was not known (use %s)", ref, LoggingLogScopeIdentityFormat.CanonicalForm())
+	if parsed, match, _ := FolderLoggingLogScopeIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-
-	*i = *parsed
-	return nil
+	if parsed, match, _ := OrganizationLoggingLogScopeIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	if parsed, match, _ := BillingAccountLoggingLogScopeIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of LoggingLogScope external=%q was not known (use %s)", ref, ProjectLoggingLogScopeIdentityFormat.CanonicalForm())
 }
 
 func (i *LoggingLogScopeIdentity) Host() string {
-	return LoggingLogScopeIdentityFormat.Host()
+	return ProjectLoggingLogScopeIdentityFormat.Host()
 }
 
 func (i *LoggingLogScopeIdentity) ParentString() string {
-	return "projects/" + i.Project + "/locations/" + i.Location
+	if i.Project != "" {
+		return "projects/" + i.Project + "/locations/" + i.Location
+	}
+	if i.Folder != "" {
+		return "folders/" + i.Folder + "/locations/" + i.Location
+	}
+	if i.Organization != "" {
+		return "organizations/" + i.Organization + "/locations/" + i.Location
+	}
+	if i.BillingAccount != "" {
+		return "billingAccounts/" + i.BillingAccount + "/locations/" + i.Location
+	}
+	return ""
 }
 
 func getIdentityFromLoggingLogScopeSpec(ctx context.Context, reader client.Reader, obj *LoggingLogScope) (*LoggingLogScopeIdentity, error) {
@@ -78,21 +118,69 @@ func getIdentityFromLoggingLogScopeSpec(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
-	}
-
 	location, err := refs.GetLocation(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
-	return &LoggingLogScopeIdentity{
-		Project:  projectID,
+	specIdentity := &LoggingLogScopeIdentity{
 		Location: location,
 		LogScope: resourceID,
-	}, nil
+	}
+
+	parentCount := 0
+	if obj.Spec.ProjectRef != nil {
+		parentCount++
+	}
+	if obj.Spec.FolderRef != nil {
+		parentCount++
+	}
+	if obj.Spec.OrganizationRef != nil {
+		parentCount++
+	}
+	if obj.Spec.BillingAccountRef != nil {
+		parentCount++
+	}
+	if parentCount > 1 {
+		return nil, fmt.Errorf("at most one of spec.projectRef, spec.folderRef, spec.organizationRef, spec.billingAccountRef can be set")
+	}
+
+	if obj.Spec.ProjectRef != nil {
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
+		specIdentity.Project = projectID
+	} else if obj.Spec.FolderRef != nil {
+		folder, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve folder: %w", err)
+		}
+		specIdentity.Folder = folder.FolderID
+	} else if obj.Spec.OrganizationRef != nil {
+		org, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve organization: %w", err)
+		}
+		specIdentity.Organization = org.OrganizationID
+	} else if obj.Spec.BillingAccountRef != nil {
+		if err := obj.Spec.BillingAccountRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("resolving spec.billingAccountRef: %w", err)
+		}
+		billingIdentity := &billingv1alpha1.BillingAccountIdentity{}
+		if err := billingIdentity.FromExternal(obj.Spec.BillingAccountRef.External); err != nil {
+			return nil, fmt.Errorf("parsing spec.billingAccountRef external=%q: %w", obj.Spec.BillingAccountRef.External, err)
+		}
+		specIdentity.BillingAccount = billingIdentity.BillingAccount
+	} else {
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
+		specIdentity.Project = projectID
+	}
+
+	return specIdentity, nil
 }
 
 func (obj *LoggingLogScope) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

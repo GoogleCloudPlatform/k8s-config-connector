@@ -82,13 +82,14 @@ type IdentityField struct {
 type AncestorSourceKind string
 
 const (
-	AncestorProjectRef      AncestorSourceKind = "projectRef"
-	AncestorOrganizationRef AncestorSourceKind = "organizationRef"
-	AncestorFolderRef       AncestorSourceKind = "folderRef"
-	AncestorLocation        AncestorSourceKind = "location"
-	AncestorSpecString      AncestorSourceKind = "specString"
-	AncestorParentRef       AncestorSourceKind = "parentRef"
-	AncestorUnknown         AncestorSourceKind = "unknown"
+	AncestorProjectRef        AncestorSourceKind = "projectRef"
+	AncestorOrganizationRef   AncestorSourceKind = "organizationRef"
+	AncestorFolderRef         AncestorSourceKind = "folderRef"
+	AncestorBillingAccountRef AncestorSourceKind = "billingAccountRef"
+	AncestorLocation          AncestorSourceKind = "location"
+	AncestorSpecString        AncestorSourceKind = "specString"
+	AncestorParentRef         AncestorSourceKind = "parentRef"
+	AncestorUnknown           AncestorSourceKind = "unknown"
 )
 
 // AncestorResolution records how a single ancestor variable segment is resolved.
@@ -464,6 +465,7 @@ func (g *IdentityGenerator) populateMultiParentVariants(plan *IdentityPlan, patt
 		{collection: "projects", prefix: "Project", fieldName: "ProjectRef", jsonName: "projectRef", isPtr: info.ProjectRefIsPtr, enabled: info.HasProjectRef},
 		{collection: "folders", prefix: "Folder", fieldName: "FolderRef", jsonName: "folderRef", isPtr: info.FolderRefIsPtr, enabled: info.HasFolderRef},
 		{collection: "organizations", prefix: "Organization", fieldName: "OrganizationRef", jsonName: "organizationRef", isPtr: info.OrgRefIsPtr, enabled: info.HasOrgRef},
+		{collection: "billingAccounts", prefix: "BillingAccount", fieldName: "BillingAccountRef", jsonName: "billingAccountRef", isPtr: info.BillingAccountRefIsPtr, enabled: info.HasBillingAccountRef},
 	}
 
 	var variants []RootVariant
@@ -605,7 +607,7 @@ func scoreRootSegment(segs []string, info *krmTypeInfo) int {
 		if info.HasProjectRef {
 			return 4
 		}
-		if !info.HasOrgRef && !info.HasFolderRef {
+		if !info.HasOrgRef && !info.HasFolderRef && !info.HasBillingAccountRef {
 			return 2
 		}
 	case "organizations":
@@ -615,6 +617,11 @@ func scoreRootSegment(segs []string, info *krmTypeInfo) int {
 		return -2
 	case "folders":
 		if info.HasFolderRef {
+			return 4
+		}
+		return -2
+	case "billingAccounts":
+		if info.HasBillingAccountRef {
 			return 4
 		}
 		return -2

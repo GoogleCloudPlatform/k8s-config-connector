@@ -406,6 +406,15 @@ func renderMultiParentBranchBody(w *bytes.Buffer, v RootVariant) {
 		w.WriteString("\t\t\treturn nil, fmt.Errorf(\"cannot resolve organization: %w\", err)\n")
 		w.WriteString("\t\t}\n")
 		fmt.Fprintf(w, "\t\tspecIdentity.%s = org.OrganizationID\n", v.RootField.StructField)
+	case "billingAccounts":
+		fmt.Fprintf(w, "\t\tif err := %s.Normalize(ctx, reader, obj.GetNamespace()); err != nil {\n", refExpr)
+		fmt.Fprintf(w, "\t\t\treturn nil, fmt.Errorf(\"resolving spec.%s: %%w\", err)\n", v.SpecJSONName)
+		w.WriteString("\t\t}\n")
+		w.WriteString("\t\tbillingIdentity := &billingv1alpha1.BillingAccountIdentity{}\n")
+		fmt.Fprintf(w, "\t\tif err := billingIdentity.FromExternal(%s.External); err != nil {\n", refExpr)
+		fmt.Fprintf(w, "\t\t\treturn nil, fmt.Errorf(\"parsing spec.%s external=%%q: %%w\", %s.External, err)\n", v.SpecJSONName, refExpr)
+		w.WriteString("\t\t}\n")
+		fmt.Fprintf(w, "\t\tspecIdentity.%s = billingIdentity.BillingAccount\n", v.RootField.StructField)
 	}
 }
 
@@ -491,6 +500,9 @@ func renderSingleAncestorLookup(w *bytes.Buffer, plan *IdentityPlan, anc Ancesto
 	case AncestorFolderRef:
 		varName = "folderID"
 		renderFolderAncestorLookup(w, anc)
+	case AncestorBillingAccountRef:
+		varName = "billingAccountID"
+		renderBillingAccountAncestorLookup(w, anc)
 	case AncestorLocation:
 		varName = "location"
 		renderLocationAncestorLookup(w, anc)
@@ -570,6 +582,23 @@ func renderFolderAncestorLookup(w *bytes.Buffer, anc AncestorResolution) {
 	w.WriteString("\t\t}\n")
 	w.WriteString("\t\tfolderID = folder.FolderID\n")
 	w.WriteString("\t}\n\n")
+}
+
+func renderBillingAccountAncestorLookup(w *bytes.Buffer, anc AncestorResolution) {
+	refExpr := "obj.Spec." + anc.SpecFieldName
+	if anc.IsPointer {
+		fmt.Fprintf(w, "\tif %s == nil {\n", refExpr)
+		fmt.Fprintf(w, "\t\treturn nil, fmt.Errorf(\"spec.%s is required\")\n", anc.SpecJSONName)
+		w.WriteString("\t}\n")
+	}
+	fmt.Fprintf(w, "\tif err := %s.Normalize(ctx, reader, obj.GetNamespace()); err != nil {\n", refExpr)
+	fmt.Fprintf(w, "\t\treturn nil, fmt.Errorf(\"resolving spec.%s: %%w\", err)\n", anc.SpecJSONName)
+	w.WriteString("\t}\n")
+	w.WriteString("\tbillingIdentity := &billingv1alpha1.BillingAccountIdentity{}\n")
+	fmt.Fprintf(w, "\tif err := billingIdentity.FromExternal(%s.External); err != nil {\n", refExpr)
+	fmt.Fprintf(w, "\t\treturn nil, fmt.Errorf(\"parsing spec.%s external=%%q: %%w\", %s.External, err)\n", anc.SpecJSONName, refExpr)
+	w.WriteString("\t}\n")
+	w.WriteString("\tbillingAccountID := billingIdentity.BillingAccount\n\n")
 }
 
 func renderLocationAncestorLookup(w *bytes.Buffer, anc AncestorResolution) {
@@ -762,6 +791,7 @@ var allCandidateImports = []candidateImport{
 	{path: "testing", token: "testing."},
 	{path: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common", token: "common."},
 	{path: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity", token: "identity."},
+	{alias: "billingv1alpha1", path: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1", token: "billingv1alpha1."},
 	{alias: "refs", path: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1", token: "refs."},
 	{path: "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls", token: "gcpurls."},
 	{path: "k8s.io/apimachinery/pkg/runtime/schema", token: "schema."},

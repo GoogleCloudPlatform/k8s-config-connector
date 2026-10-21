@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -30,9 +31,26 @@ var LoggingLogScopeGVK = GroupVersion.WithKind("LoggingLogScope")
 // LoggingLogScopeSpec defines the desired state of LoggingLogScope
 // +kcc:spec:proto=google.logging.v2.LogScope
 // +kcc:required-from-proto
+// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.organizationRef) ? 1 : 0) + (has(self.billingAccountRef) ? 1 : 0) <= 1",message="At most one of projectRef, folderRef, organizationRef, or billingAccountRef must be specified."
 type LoggingLogScopeSpec struct {
-	// Required. Defines the parent path of the resource.
-	*parent.ProjectAndLocationRef `json:",inline"`
+	// The project that this resource belongs to.
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The folder that this resource belongs to.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// The billing account that this resource belongs to.
+	// +optional
+	BillingAccountRef *billingv1alpha1.BillingAccountRef `json:"billingAccountRef,omitempty"`
+
+	// The location of this resource.
+	Location *string `json:"location"`
 
 	// The LoggingLogScope name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
