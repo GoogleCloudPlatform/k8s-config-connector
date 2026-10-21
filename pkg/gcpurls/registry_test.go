@@ -25,6 +25,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/commerceproducer/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/healthcare/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/yaml"
