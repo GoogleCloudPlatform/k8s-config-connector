@@ -25,20 +25,27 @@ entries:
     group: logging.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined parent.ProjectAndLocationRef into LoggingLogScopeSpec; accepted project-scoped identity pattern and polymorphic resourceNames list
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.logging.v2.LogScope declares 4 resource name patterns (projects/{project}/locations/{location}/logScopes/{log_scope}, organizations/{organization}/locations/{location}/logScopes/{log_scope}, folders/{folder}/locations/{location}/logScopes/{log_scope}, billingAccounts/{billing_account}/locations/{location}/logScopes/{log_scope}); generated identity uses "projects/{project}/locations/{location}/logScopes/{log_scope}" (pass --pattern LoggingLogScope=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced separate ProjectRef and Location fields by embedding *parent.ProjectAndLocationRef in LoggingLogScopeSpec per go/kcc-oneparent
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     field: .spec.resourceNames
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: resourceNames contains heterogeneous polymorphic parent resources (projects/*) and views (projects/*/locations/*/buckets/*/views/*), kept as []string
