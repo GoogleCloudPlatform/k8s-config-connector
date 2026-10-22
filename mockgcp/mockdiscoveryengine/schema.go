@@ -53,7 +53,7 @@ func (s *schemaService) GetSchema(ctx context.Context, req *pb.GetSchemaRequest)
 	obj := &pb.Schema{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Schema with name %q does not exist.", fqn)
+			return nil, status.Errorf(codes.NotFound, "Schema with name %s does not exist.", fqn)
 		}
 		return nil, err
 	}
@@ -83,13 +83,7 @@ func (s *schemaService) CreateSchema(ctx context.Context, req *pb.CreateSchemaRe
 	}
 
 	prefix := fqn
-	metadata := &pb.CreateSchemaMetadata{}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		now := time.Now()
-		metadata.CreateTime = timestamppb.New(now)
-		metadata.UpdateTime = timestamppb.New(now)
-		return obj, nil
-	})
+	return s.operations.DoneLRO(ctx, prefix, &pb.CreateSchemaMetadata{}, obj)
 }
 
 func (s *schemaService) UpdateSchema(ctx context.Context, req *pb.UpdateSchemaRequest) (*longrunningpb.Operation, error) {

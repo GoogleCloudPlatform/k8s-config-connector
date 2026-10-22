@@ -24,6 +24,6 @@ X-Audit-Probe: true
 X-Gfe-Server: ESF
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"properties\":{\"url\":{\"keyPropertyMapping\":\"uri\",\"type\":\"string\"},\"description\":{\"type\":\"string\",\"keyPropertyMapping\":\"description\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"description\":{\"keyPropertyMapping\":\"description\",\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"url\":{\"keyPropertyMapping\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/custom_schema"
 }

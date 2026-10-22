@@ -15,6 +15,7 @@
 package mockdiscoveryengine
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -52,6 +53,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			// For DataStores, the real log has createTime, naturalLanguageQueryUnderstandingConfig, solutionTypes
 			if m["createTime"] != nil {
 				m["createTime"] = mockgcpregistry.PlaceholderTimestamp
+			}
+		}
+
+		if js, ok := m["jsonSchema"].(string); ok && js != "" {
+			var parsed any
+			if err := json.Unmarshal([]byte(js), &parsed); err == nil {
+				if b, err := json.Marshal(parsed); err == nil {
+					m["jsonSchema"] = string(b)
+				}
 			}
 		}
 	}
