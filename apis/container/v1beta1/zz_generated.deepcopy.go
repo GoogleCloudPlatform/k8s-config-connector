@@ -2730,8 +2730,8 @@ func (in *NodeConfig) DeepCopyInto(out *NodeConfig) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.VirtualNic != nil {
-		in, out := &in.VirtualNic, &out.VirtualNic
+	if in.GVNIC != nil {
+		in, out := &in.GVNIC, &out.GVNIC
 		*out = new(VirtualNic)
 		(*in).DeepCopyInto(*out)
 	}
@@ -3332,8 +3332,8 @@ func (in *NodePoolNodeConfig) DeepCopyInto(out *NodePoolNodeConfig) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.VirtualNic != nil {
-		in, out := &in.VirtualNic, &out.VirtualNic
+	if in.GVNIC != nil {
+		in, out := &in.GVNIC, &out.GVNIC
 		*out = new(VirtualNic)
 		(*in).DeepCopyInto(*out)
 	}

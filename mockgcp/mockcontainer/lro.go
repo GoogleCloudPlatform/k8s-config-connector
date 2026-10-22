@@ -68,7 +68,9 @@ func (s *ClusterManagerV1) startLRO(ctx context.Context, project *projects.Proje
 	version := getAPIVersion(ctx)
 	op.SelfLink = "https://container.googleapis.com/" + version + "/" + AsZonalLink(fqn)
 
-	op.Status = pb.Operation_RUNNING
+	if op.Status == pb.Operation_STATUS_UNSPECIFIED {
+		op.Status = pb.Operation_RUNNING
+	}
 
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, err

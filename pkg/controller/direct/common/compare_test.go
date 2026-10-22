@@ -31,6 +31,7 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -1154,4 +1155,153 @@ func TestCompareBrownfieldSpecAndUserLabels(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSpecDiffResult_HasPathWithPrefix(t *testing.T) {
+	tests := []struct {
+		name     string
+		res      *SpecDiffResult[proto.Message]
+		prefix   string
+		expected bool
+	}{
+		{
+			name:     "nil receiver",
+			res:      nil,
+			prefix:   "foo",
+			expected: false,
+		},
+		{
+			name:     "nil fieldmask",
+			res:      &SpecDiffResult[proto.Message]{},
+			prefix:   "foo",
+			expected: false,
+		},
+		{
+			name: "exact match",
+			res: &SpecDiffResult[proto.Message]{
+				FieldMask: &fieldmaskpb.FieldMask{Paths: []string{"management"}},
+			},
+			prefix:   "management",
+			expected: true,
+		},
+		{
+			name: "subfield prefix match",
+			res: &SpecDiffResult[proto.Message]{
+				FieldMask: &fieldmaskpb.FieldMask{Paths: []string{"autoscaling.min_node_count"}},
+			},
+			prefix:   "autoscaling",
+			expected: true,
+		},
+		{
+			name: "nested subfield prefix match",
+			res: &SpecDiffResult[proto.Message]{
+				FieldMask: &fieldmaskpb.FieldMask{Paths: []string{"config.linux_node_config.swap_config.enabled"}},
+			},
+			prefix:   "config.linux_node_config",
+			expected: true,
+		},
+		{
+			name: "partial word match does not match without dot",
+			res: &SpecDiffResult[proto.Message]{
+				FieldMask: &fieldmaskpb.FieldMask{Paths: []string{"config.tags", "config.tag_keys"}},
+			},
+			prefix:   "config.tag",
+			expected: false,
+		},
+		{
+			name: "unrelated path does not match",
+			res: &SpecDiffResult[proto.Message]{
+				FieldMask: &fieldmaskpb.FieldMask{Paths: []string{"config.labels"}},
+			},
+			prefix:   "network_config",
+			expected: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.res.HasPathWithPrefix(tc.prefix)
+			if got != tc.expected {
+				t.Errorf("HasPathWithPrefix(%q) = %v, want %v", tc.prefix, got, tc.expected)
+			}
+		})
+	}
+}
+
+func TestSpecDiffResult_RemovePathWithPrefix(t *testing.T) {
+	t.Run("nil receiver does not panic", func(t *testing.T) {
+		var res *SpecDiffResult[proto.Message]
+		res.RemovePathWithPrefix("foo")
+	})
+
+	t.Run("nil fieldmask does not panic", func(t *testing.T) {
+		res := &SpecDiffResult[proto.Message]{}
+		res.RemovePathWithPrefix("foo")
+	})
+
+	t.Run("removes matching exact and subfield paths", func(t *testing.T) {
+		res := &SpecDiffResult[proto.Message]{
+			FieldMask: &fieldmaskpb.FieldMask{
+				Paths: []string{
+					"management",
+					"autoscaling.min_node_count",
+					"autoscaling.max_node_count",
+					"config.tags",
+					"config.taints",
+				},
+			},
+		}
+
+		res.RemovePathWithPrefix("autoscaling")
+		if res.HasPathWithPrefix("autoscaling") {
+			t.Errorf("expected autoscaling paths to be removed, remaining: %v", res.FieldMask.GetPaths())
+		}
+		if !res.HasPathWithPrefix("management") || !res.HasPathWithPrefix("config.tags") || !res.HasPathWithPrefix("config.taints") {
+			t.Errorf("unrelated paths should remain, got %v", res.FieldMask.GetPaths())
+		}
+	})
+
+	t.Run("does not remove partial word non-subfield match", func(t *testing.T) {
+		res := &SpecDiffResult[proto.Message]{
+			FieldMask: &fieldmaskpb.FieldMask{
+				Paths: []string{
+					"config.tags",
+					"config.tag_keys",
+				},
+			},
+		}
+
+		res.RemovePathWithPrefix("config.tag")
+		if len(res.FieldMask.GetPaths()) != 2 {
+			t.Errorf("expected no paths removed for partial word match, got %v", res.FieldMask.GetPaths())
+		}
+	})
+
+	t.Run("removes multiple prefixes and updates Empty", func(t *testing.T) {
+		res := &SpecDiffResult[proto.Message]{
+			FieldMask: &fieldmaskpb.FieldMask{
+				Paths: []string{
+					"config.tags",
+					"config.taints",
+					"config.labels",
+				},
+			},
+		}
+
+		res.RemovePathWithPrefix("config.tags", "config.taints")
+		if res.HasPathWithPrefix("config.tags") || res.HasPathWithPrefix("config.taints") {
+			t.Errorf("expected config.tags and config.taints removed, got %v", res.FieldMask.GetPaths())
+		}
+		if !res.HasPathWithPrefix("config.labels") {
+			t.Errorf("expected config.labels to remain")
+		}
+		if res.Empty() {
+			t.Errorf("expected res.Empty() == false")
+		}
+
+		res.RemovePathWithPrefix("config.labels")
+		if !res.Empty() {
+			t.Errorf("expected res.Empty() == true after removing all paths, got %v", res.FieldMask.GetPaths())
+		}
+	})
 }
