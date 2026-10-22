@@ -94,3 +94,21 @@ To ensure an objective benchmark, we replaced all **189** Greenfield GAPIC proto
 | **Tier 1 — Compilation** | **98.9%** | `187 / 189` | Only 2 non-standard multi-client/flattened-request outliers (`ApigeeEnvgroupAttachment`, `CloudBuildWorkerPool`). |
 | **Tier 2 — Standards-Adjusted E2E Pass Rate (MockGCP + Real GCP)** | **95.5%** | `148 / 155` | Verified on MockGCP (`144 / 155`) plus Real GCP (`E2E_GCP_TARGET=real` on `DataplexAspectType`, `TasksQueue`, `VertexAIFeaturestore`, and `BigQueryConnectionConnection`—all 4 passed 100% on Real GCP, confirming their MockGCP `updateMask` failures were MockGCP simulator limitations). |
 | **Projected Tier 2 with `AdapterForURL` + `Export()` Fix (Lesson #2 above)** | **96.1%** | `149 / 155` | Fixes `BillingAccount` (`_exported.yaml`), leaving only **6** genuinely bespoke controllers (`3.9%`) out of 155. |
+
+---
+
+## Part 3: Implemented Outcomes Across PRs #14222, #14224, #13561, and #14267
+
+All 3 behavioral improvements from Part 2—along with UUS (`spec-diff`) alignment, opt-in `--prepopulate-resource` protection, deterministic fuzzer generation, and workflow/skill updates—have been implemented and verified:
+
+1. **UUS Declared-Spec-Only (`spec-diff`) Comparison ([PR #14222](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14222)):**
+   * `CompareGreenfieldSpec[T any](ctx, desiredSpec, actualProto, specFromProto)` and `CompareGreenfieldSpecAndLabels` merge `desiredSpec` over `actualSpec` in KRM space without mutating or reordering the user's outgoing proto request.
+   * Omitted (`nil`) pointers, slices, and maps adopt `actualSpec` (ignoring server defaults for re-reconciliation while still surfacing them in `status.observedState`), whereas explicitly cleared empty slices/maps (`[]` / `{}`) and explicit `oneof` selections in `desired` are preserved.
+2. **Deterministic Controller Generation & Existing Controller Protection ([PR #14224](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14224)):**
+   * Adopts all 3 lessons from Part 2 (immutability drift error on `!HasUpdate`, working `AdapterForURL` + `Export()` map ordering fix, and `"missing \"value\" field"` REST LRO `Delete()` guard), dynamic `go.mod` version lookup, and lowerCamelCase ID fallback (`FieldNameToJSONName`).
+   * Adds `--prepopulate-resource` (default `false`) and repeatable `--resource <Kind>:<ProtoMessage>` to `generate-controller`, emits `// +generated:controller`, and protects existing handwritten controllers while regenerating `// +generated:controller` files in place.
+3. **Deterministic Fuzzer Generation ([PR #13561](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13561)):**
+   * Adds `--prepopulate-resource` (aliased with `--deterministic`) to `generate-fuzzer`, emitting `<kind>_fuzzer.generated.go` (`// +generated:fuzzer`) while skipping existing handwritten fuzzers.
+4. **Greenfield Skills & Workflow Integration ([PR #14267](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14267)):**
+   * Updates single-resource greenfield controller/reviewer skills (`generated/SKILL.md` vs. `legacy/SKILL.md` router so in-flight PRs are unaffected), adds `.gemini/skills/kcc-bulk-controller-generator/` (supporting both post-judgement and pre-judgement bulk generation), and adds `.gemini/skills/kcc-direct-greenfield-types-implementer/judgement-with-controller/SKILL.md`.
+
