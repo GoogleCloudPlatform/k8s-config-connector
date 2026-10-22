@@ -82,7 +82,8 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 		return err
 	}
 	opt := controller.Options{
-		SkipNameValidation: ptr.To(deps.SkipNameValidation),
+		SkipNameValidation:      ptr.To(deps.SkipNameValidation),
+		MaxConcurrentReconciles: deps.MaxConcurrentReconciles,
 	}
 	return add(mgr, reconciler, opt)
 }
