@@ -1,9 +1,7 @@
-POST https://compute.googleapis.com/compute/v1/locations/global/securityPolicies?alt=json&parentId=organizations%2F${organizationID}
+POST https://compute.googleapis.com/compute/v1/locations/global/securityPolicies?parentId=organizations%2F${organizationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "displayName": "tf-test${uniqueId}",
   "parent": "organizations/${organizationID}",
   "shortName": "tf-test${uniqueId}",
   "type": "CLOUD_ARMOR"
@@ -34,8 +32,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -65,9 +63,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -111,9 +108,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "Updated description",
@@ -147,8 +143,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -178,9 +174,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -225,9 +220,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -256,8 +250,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8

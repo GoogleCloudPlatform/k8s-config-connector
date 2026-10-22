@@ -60,6 +60,19 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 		return nil, err
 	}
 
+	if obj.DefaultSchemaId != "" {
+		defaultSchemaName := fmt.Sprintf("%s/schemas/%s", fqn, obj.DefaultSchemaId)
+		defaultSchema := &pb.Schema{
+			Name: defaultSchemaName,
+			Schema: &pb.Schema_JsonSchema{
+				JsonSchema: `{"type":"object","datetime_detection":true,"geolocation_detection":true,"$schema":"https://json-schema.org/draft/2020-12/schema"}`,
+			},
+		}
+		if err := s.storage.Create(ctx, defaultSchemaName, defaultSchema); err != nil {
+			return nil, err
+		}
+	}
+
 	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
 	// Returns with no createTime and no solutionTypes
 	lroRet := proto.CloneOf(obj)

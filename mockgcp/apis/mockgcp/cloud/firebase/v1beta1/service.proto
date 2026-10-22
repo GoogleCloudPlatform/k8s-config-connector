@@ -1,0 +1,914 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package mockgcp.cloud.firebase.v1beta1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/firebase/apiv1beta1/firebasepb;firebasepb";
+
+service AvailableProjectsServer {
+
+  // Lists each [Google Cloud `Project`](https://cloud.google.com/resource-manager/reference/rest/v1/projects) that can have Firebase resources added and Firebase services enabled. A Project will only be listed if: - The caller has sufficient [Google IAM](https://cloud.google.com/iam) permissions to call AddFirebase. - The Project is not already a FirebaseProject. - The Project is not in an Organization which has policies that prevent Firebase resources from being added. 
+  rpc ListAvailableProjects(ListAvailableProjectsRequest) returns (ListAvailableProjectsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/availableProjects"
+    };
+  };
+}
+
+service ProjectsServer {
+
+  // Adds Firebase resources and enables Firebase services in the specified existing [Google Cloud `Project`](https://cloud.google.com/resource-manager/reference/rest/v1/projects). Since a FirebaseProject is actually also a Google Cloud `Project`, a `FirebaseProject` has the same underlying Google Cloud identifiers (`projectNumber` and `projectId`). This allows for easy interop with Google APIs. The result of this call is an [`Operation`](../../v1beta1/operations). Poll the `Operation` to track the provisioning process by calling GetOperation until [`done`](../../v1beta1/operations#Operation.FIELDS.done) is `true`. When `done` is `true`, the `Operation` has either succeeded or failed. If the `Operation` succeeded, its [`response`](../../v1beta1/operations#Operation.FIELDS.response) is set to a FirebaseProject; if the `Operation` failed, its [`error`](../../v1beta1/operations#Operation.FIELDS.error) is set to a google.rpc.Status. The `Operation` is automatically deleted after completion, so there is no need to call DeleteOperation. This method does not modify any billing account information on the underlying Google Cloud `Project`. To call `AddFirebase`, a project member or service account must have the following permissions (the IAM roles of Editor and Owner contain these permissions): `firebase.projects.update`, `resourcemanager.projects.get`, `serviceusage.services.enable`, and `serviceusage.services.get`.
+  rpc AddFirebaseProject(AddFirebaseProjectRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*}:addFirebase"
+      body: "project"
+    };
+  };
+
+  // Links the specified FirebaseProject with an existing [Google Analytics account](http://www.google.com/analytics/). Using this call, you can either: - Specify an `analyticsAccountId` to provision a new Google Analytics property within the specified account and associate the new property with the `FirebaseProject`. - Specify an existing `analyticsPropertyId` to associate the property with the `FirebaseProject`. Note that when you call `AddGoogleAnalytics`: 1. The first check determines if any existing data streams in the Google Analytics property correspond to any existing Firebase Apps in the `FirebaseProject` (based on the `packageName` or `bundleId` associated with the data stream). Then, as applicable, the data streams and apps are linked. Note that this auto-linking only applies to `AndroidApps` and `IosApps`. 2. If no corresponding data streams are found for the Firebase Apps, new data streams are provisioned in the Google Analytics property for each of the Firebase Apps. Note that a new data stream is always provisioned for a Web App even if it was previously associated with a data stream in the Analytics property. Learn more about the hierarchy and structure of Google Analytics accounts in the [Analytics documentation](https://support.google.com/analytics/answer/9303323). The result of this call is an [`Operation`](../../v1beta1/operations). Poll the `Operation` to track the provisioning process by calling GetOperation until [`done`](../../v1beta1/operations#Operation.FIELDS.done) is `true`. When `done` is `true`, the `Operation` has either succeeded or failed. If the `Operation` succeeded, its [`response`](../../v1beta1/operations#Operation.FIELDS.response) is set to an AnalyticsDetails; if the `Operation` failed, its [`error`](../../v1beta1/operations#Operation.FIELDS.error) is set to a google.rpc.Status. To call `AddGoogleAnalytics`, a project member must be an Owner for the existing `FirebaseProject` and have the [`Edit` permission](https://support.google.com/analytics/answer/2884495) for the Google Analytics account. If the `FirebaseProject` already has Google Analytics enabled, and you call `AddGoogleAnalytics` using an `analyticsPropertyId` that's different from the currently associated property, then the call will fail. Analytics may have already been enabled in the Firebase console or by specifying `timeZone` and `regionCode` in the call to [`AddFirebase`](../../v1beta1/projects/addFirebase).
+  rpc AddGoogleAnalyticsProject(AddGoogleAnalyticsProjectRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}:addGoogleAnalytics"
+      body: "project"
+    };
+  };
+
+  // Gets the specified FirebaseProject.
+  rpc GetProject(GetProjectRequest) returns (FirebaseProject) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*}"
+    };
+  };
+
+  // Gets the configuration artifact associated with the specified FirebaseProject, which can be used by servers to simplify initialization. Typically, this configuration is used with the Firebase Admin SDK [initializeApp](https://firebase.google.com/docs/admin/setup#initialize_the_sdk) command.
+  rpc GetAdminSdkConfigProject(GetAdminSdkConfigProjectRequest) returns (AdminSdkConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/adminSdkConfig}"
+    };
+  };
+
+  // Gets the Google Analytics details currently associated with the specified FirebaseProject. If the `FirebaseProject` is not yet linked to Google Analytics, then the response to `GetAnalyticsDetails` is `NOT_FOUND`.
+  rpc GetAnalyticsDetailsProject(GetAnalyticsDetailsProjectRequest) returns (AnalyticsDetails) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/analyticsDetails}"
+    };
+  };
+
+  // Lists each FirebaseProject accessible to the caller. The elements are returned in no particular order, but they will be a consistent view of the Projects when additional requests are made with a `pageToken`. This method is eventually consistent with Project mutations, which means newly provisioned Projects and recent modifications to existing Projects might not be reflected in the set of Projects. The list will include only ACTIVE Projects. Use GetFirebaseProject for consistent reads as well as for additional Project details.
+  rpc ListProjects(ListProjectsRequest) returns (ListFirebaseProjectsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/projects"
+    };
+  };
+
+  // Updates the attributes of the specified FirebaseProject. All [query parameters](#query-parameters) are required.
+  rpc PatchProject(PatchProjectRequest) returns (FirebaseProject) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*}"
+      body: "project"
+    };
+  };
+
+  // Unlinks the specified FirebaseProject from its Google Analytics account. This call removes the association of the specified `FirebaseProject` with its current Google Analytics property. However, this call does not delete the Google Analytics resources, such as the Google Analytics property or any data streams. These resources may be re-associated later to the `FirebaseProject` by calling [`AddGoogleAnalytics`](../../v1beta1/projects/addGoogleAnalytics) and specifying the same `analyticsPropertyId`. For Android Apps and iOS Apps, this call re-links data streams with their corresponding apps. However, for Web Apps, this call provisions a *new* data stream for each Web App. To call `RemoveAnalytics`, a project member must be an Owner for the `FirebaseProject`.
+  rpc RemoveAnalyticsProject(RemoveAnalyticsProjectRequest) returns (Empty) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}:removeAnalytics"
+      body: "project"
+    };
+  };
+
+  // Lists all available Apps for the specified FirebaseProject. This is a convenience method. Typically, interaction with an App should be done using the platform-specific service, but some tool use-cases require a summary of all known Apps (such as for App selector interfaces).
+  rpc SearchAppsProject(SearchAppsProjectRequest) returns (SearchFirebaseAppsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}:searchApps"
+    };
+  };
+}
+
+service ProjectsAndroidAppsServer {
+
+  // Requests the creation of a new AndroidApp in the specified FirebaseProject. The result of this call is an `Operation` which can be used to track the provisioning process. The `Operation` is automatically deleted after completion, so there is no need to call `DeleteOperation`.
+  rpc CreateProjectsAndroidApp(CreateProjectsAndroidAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}/androidApps"
+      body: "projects_android_app"
+    };
+  };
+
+  // Gets the specified AndroidApp.
+  rpc GetProjectsAndroidApp(GetProjectsAndroidAppRequest) returns (AndroidApp) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/androidApps/*}"
+    };
+  };
+
+  // Gets the configuration artifact associated with the specified AndroidApp.
+  rpc GetConfigProjectsAndroidApp(GetConfigProjectsAndroidAppRequest) returns (AndroidAppConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/androidApps/*/config}"
+    };
+  };
+
+  // Lists each AndroidApp associated with the specified FirebaseProject. The elements are returned in no particular order, but will be a consistent view of the Apps when additional requests are made with a `pageToken`.
+  rpc ListProjectsAndroidApps(ListProjectsAndroidAppsRequest) returns (ListAndroidAppsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}/androidApps"
+    };
+  };
+
+  // Updates the attributes of the specified AndroidApp.
+  rpc PatchProjectsAndroidApp(PatchProjectsAndroidAppRequest) returns (AndroidApp) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/androidApps/*}"
+      body: "projects_android_app"
+    };
+  };
+
+  // Removes the specified AndroidApp from the FirebaseProject.
+  rpc DeleteProjectsAndroidApp(DeleteProjectsAndroidAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/androidApps/*}:remove"
+      body: "projects_android_app"
+    };
+  };
+
+  // Restores the specified AndroidApp to the FirebaseProject.
+  rpc UndeleteProjectsAndroidApp(UndeleteProjectsAndroidAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/androidApps/*}:undelete"
+      body: "projects_android_app"
+    };
+  };
+}
+
+service ProjectsAndroidAppsShaServer {
+
+  // Adds a ShaCertificate to the specified AndroidApp.
+  rpc CreateProjectsAndroidAppsSha(CreateProjectsAndroidAppsShaRequest) returns (ShaCertificate) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/androidApps/*}/sha"
+      body: "projects_android_apps_sha"
+    };
+  };
+
+  // Removes a ShaCertificate from the specified AndroidApp.
+  rpc DeleteProjectsAndroidAppsSha(DeleteProjectsAndroidAppsShaRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/androidApps/*/sha/*}"
+    };
+  };
+
+  // Lists the SHA-1 and SHA-256 certificates for the specified AndroidApp.
+  rpc ListProjectsAndroidAppsSha(ListProjectsAndroidAppsShaRequest) returns (ListShaCertificatesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/androidApps/*}/sha"
+    };
+  };
+}
+
+service ProjectsAvailableLocationsServer {
+
+  // **DECOMMISSIONED.** **If called, this endpoint will return a 404 error.** _Instead, use the applicable resource-specific REST API (or associated documentation, as needed) to determine valid locations for each resource used in your Project._ Lists the valid ["locations for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location) for the specified Project (including a FirebaseProject). One of these locations can be selected as the Project's location for default Google Cloud resources, which is the geographical location where the Project's resources associated with Google App Engine (such as the default Cloud Firestore instance) will be provisioned by default. However, if the location for default Google Cloud resources has already been set for the Project, then this setting cannot be changed. This call checks for any possible [location restrictions](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations) for the specified Project and, thus, might return a subset of all possible locations. To list all locations (regardless of any restrictions), call the endpoint without specifying a unique project identifier (that is, `/v1beta1/{parent=projects/-}/listAvailableLocations`). To call `ListAvailableLocations` with a specified project, a member must be at minimum a Viewer of the Project. Calls without a specified project do not require any specific project permissions.
+  rpc ListProjectsAvailableLocations(ListProjectsAvailableLocationsRequest) returns (ListAvailableLocationsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}/availableLocations"
+    };
+  };
+}
+
+service ProjectsDefaultLocationServer {
+
+  // **DECOMMISSIONED.** **If called, this endpoint will return a 404 error.** _Instead, use the applicable resource-specific REST API to set the location for each resource used in your Project._ Sets the ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location) for the specified FirebaseProject. This method creates a Google App Engine application with a [default Cloud Storage bucket](https://cloud.google.com/appengine/docs/standard/python/googlecloudstorageclient/setting-up-cloud-storage#activating_a_cloud_storage_bucket), located in the specified [`locationId`](#body.request_body.FIELDS.location_id). This location must be one of the available [App Engine locations](https://cloud.google.com/about/locations#region). After the location for default Google Cloud resources is finalized, or if it was already set, it cannot be changed. The location for default Google Cloud resources for the specified `FirebaseProject` might already be set because either the underlying Google Cloud `Project` already has an App Engine application or `FinalizeDefaultLocation` was previously called with a specified `locationId`. The result of this call is an [`Operation`](../../v1beta1/operations), which can be used to track the provisioning process. The [`response`](../../v1beta1/operations#Operation.FIELDS.response) type of the `Operation` is google.protobuf.Empty. The `Operation` can be polled by its `name` using GetOperation until `done` is true. When `done` is true, the `Operation` has either succeeded or failed. If the `Operation` has succeeded, its [`response`](../../v1beta1/operations#Operation.FIELDS.response) will be set to a google.protobuf.Empty; if the `Operation` has failed, its `error` will be set to a google.rpc.Status. The `Operation` is automatically deleted after completion, so there is no need to call DeleteOperation. All fields listed in the [request body](#request-body) are required. To call `FinalizeDefaultLocation`, a member must be an Owner of the Project.
+  rpc FinalizeProjectsDefaultLocation(FinalizeProjectsDefaultLocationRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}/defaultLocation:finalize"
+      body: "projects_default_location"
+    };
+  };
+}
+
+service ProjectsIosAppsServer {
+
+  // Requests the creation of a new IosApp in the specified FirebaseProject. The result of this call is an `Operation` which can be used to track the provisioning process. The `Operation` is automatically deleted after completion, so there is no need to call `DeleteOperation`.
+  rpc CreateProjectsIosApp(CreateProjectsIosAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}/iosApps"
+      body: "projects_ios_app"
+    };
+  };
+
+  // Gets the specified IosApp.
+  rpc GetProjectsIosApp(GetProjectsIosAppRequest) returns (IosApp) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/iosApps/*}"
+    };
+  };
+
+  // Gets the configuration artifact associated with the specified IosApp.
+  rpc GetConfigProjectsIosApp(GetConfigProjectsIosAppRequest) returns (IosAppConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/iosApps/*/config}"
+    };
+  };
+
+  // Lists each IosApp associated with the specified FirebaseProject. The elements are returned in no particular order, but will be a consistent view of the Apps when additional requests are made with a `pageToken`.
+  rpc ListProjectsIosApps(ListProjectsIosAppsRequest) returns (ListIosAppsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}/iosApps"
+    };
+  };
+
+  // Updates the attributes of the specified IosApp.
+  rpc PatchProjectsIosApp(PatchProjectsIosAppRequest) returns (IosApp) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/iosApps/*}"
+      body: "projects_ios_app"
+    };
+  };
+
+  // Removes the specified IosApp from the FirebaseProject.
+  rpc DeleteProjectsIosApp(DeleteProjectsIosAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/iosApps/*}:remove"
+      body: "projects_ios_app"
+    };
+  };
+
+  // Restores the specified IosApp to the FirebaseProject.
+  rpc UndeleteProjectsIosApp(UndeleteProjectsIosAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/iosApps/*}:undelete"
+      body: "projects_ios_app"
+    };
+  };
+}
+
+service ProjectsWebAppsServer {
+
+  // Requests the creation of a new WebApp in the specified FirebaseProject. The result of this call is an `Operation` which can be used to track the provisioning process. The `Operation` is automatically deleted after completion, so there is no need to call `DeleteOperation`.
+  rpc CreateProjectsWebApp(CreateProjectsWebAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}/webApps"
+      body: "projects_web_app"
+    };
+  };
+
+  // Gets the specified WebApp.
+  rpc GetProjectsWebApp(GetProjectsWebAppRequest) returns (WebApp) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/webApps/*}"
+    };
+  };
+
+  // Gets the configuration artifact associated with the specified WebApp.
+  rpc GetConfigProjectsWebApp(GetConfigProjectsWebAppRequest) returns (WebAppConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/webApps/*/config}"
+    };
+  };
+
+  // Lists each WebApp associated with the specified FirebaseProject. The elements are returned in no particular order, but will be a consistent view of the Apps when additional requests are made with a `pageToken`.
+  rpc ListProjectsWebApps(ListProjectsWebAppsRequest) returns (ListWebAppsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}/webApps"
+    };
+  };
+
+  // Updates the attributes of the specified WebApp.
+  rpc PatchProjectsWebApp(PatchProjectsWebAppRequest) returns (WebApp) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/webApps/*}"
+      body: "projects_web_app"
+    };
+  };
+
+  // Removes the specified WebApp from the FirebaseProject.
+  rpc DeleteProjectsWebApp(DeleteProjectsWebAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/webApps/*}:remove"
+      body: "projects_web_app"
+    };
+  };
+
+  // Restores the specified WebApp to the FirebaseProject.
+  rpc UndeleteProjectsWebApp(UndeleteProjectsWebAppRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/webApps/*}:undelete"
+      body: "projects_web_app"
+    };
+  };
+}
+
+// All fields are required.
+message AddFirebaseRequest {
+  // **DEPRECATED.** _Instead, use product-specific REST APIs to work with the location of each resource in a Project. This field may be ignored, especially for newly provisioned projects after October 30, 2024._ The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location), which are resources associated with Google App Engine. The location must be one of the available [Google App Engine locations](https://cloud.google.com/about/locations#region).
+  optional string location_id = 1 [json_name="locationId"];
+}
+
+message AddGoogleAnalyticsRequest {
+  // The ID for the existing [Google Analytics account](http://www.google.com/analytics/) that you want to link with the `FirebaseProject`. Specifying this field will provision a new Google Analytics property in your Google Analytics account and associate the new property with the `FirebaseProject`.
+  optional string analytics_account_id = 1 [json_name="analyticsAccountId"];
+  // The ID for the existing Google Analytics property that you want to associate with the `FirebaseProject`.
+  optional string analytics_property_id = 2 [json_name="analyticsPropertyId"];
+}
+
+message AdminSdkConfig {
+  // **DEPRECATED.** _Instead, find the URL of the default Realtime Database instance using the [list endpoint](https://firebase.google.com/docs/reference/rest/database/database-management/rest/v1beta/projects.locations.instances/list) within the Firebase Realtime Database REST API. If the default instance for the Project has not yet been provisioned, the return might not contain a default instance. Note that the config that's generated for the Firebase console or the Firebase CLI uses the Realtime Database endpoint to populate this value for that config._ The URL of the default Firebase Realtime Database instance.
+  optional string database_u_r_l = 1 [json_name="databaseURL"];
+  // **DEPRECATED.** _Instead, use product-specific REST APIs to find the location of each resource in a Project. This field may not be populated, especially for newly provisioned projects after October 30, 2024._ The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location), which are resources associated with Google App Engine. The location is one of the available [App Engine locations](https://cloud.google.com/about/locations#region). This field is omitted if the location for default Google Cloud resources has not been set.
+  optional string location_id = 2 [json_name="locationId"];
+  // Immutable. A user-assigned unique identifier for the `FirebaseProject`. This identifier may appear in URLs or names for some Firebase resources associated with the Project, but it should generally be treated as a convenience alias to reference the Project.
+  optional string project_id = 3 [json_name="projectId"];
+  // **DEPRECATED.** _Instead, find the name of the default Cloud Storage for Firebase bucket using the [list endpoint](https://firebase.google.com/docs/reference/rest/storage/rest/v1beta/projects.buckets/list) within the Cloud Storage for Firebase REST API. If the default bucket for the Project has not yet been provisioned, the return might not contain a default bucket. Note that the config that's generated for the Firebase console or the Firebase CLI uses the Cloud Storage for Firebase endpoint to populate this value for that config._ The name of the default Cloud Storage for Firebase bucket.
+  optional string storage_bucket = 4 [json_name="storageBucket"];
+}
+
+message AnalyticsDetails {
+  // The Analytics Property object associated with the specified `FirebaseProject`. This object contains the details of the Google Analytics property associated with the Project.
+  optional AnalyticsProperty analytics_property = 1 [json_name="analyticsProperty"];
+  //  - For `AndroidApps` and `IosApps`: a map of `app` to `streamId` for each Firebase App in the specified `FirebaseProject`. Each `app` and `streamId` appears only once. - For `WebApps`: a map of `app` to `streamId` and `measurementId` for each `WebApp` in the specified `FirebaseProject`. Each `app`, `streamId`, and `measurementId` appears only once.
+  repeated StreamMapping stream_mappings = 2 [json_name="streamMappings"];
+}
+
+// Details of a Google Analytics property
+message AnalyticsProperty {
+  // Output only. The ID of the [Google Analytics account](https://www.google.com/analytics/) for the Google Analytics property associated with the specified FirebaseProject.
+  optional string analytics_account_id = 1 [json_name="analyticsAccountId"];
+  // The display name of the Google Analytics property associated with the specified `FirebaseProject`.
+  optional string display_name = 2 [json_name="displayName"];
+  // The globally unique, Google-assigned identifier of the Google Analytics property associated with the specified `FirebaseProject`. If you called [`AddGoogleAnalytics`](../../v1beta1/projects/addGoogleAnalytics) to link the `FirebaseProject` with a Google Analytics account, the value in this `id` field is the same as the ID of the property either specified or provisioned with that call to `AddGoogleAnalytics`.
+  optional string id = 3 [json_name="id"];
+}
+
+// Details of a Firebase App for Android.
+message AndroidApp {
+  // The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the `AndroidApp`. Be aware that this value is the UID of the API key, _not_ the [`keyString`](https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key.FIELDS.key_string) of the API key. The `keyString` is the value that can be found in the App's [configuration artifact](../../rest/v1beta1/projects.androidApps/getConfig). If `api_key_id` is not set in requests to [`androidApps.Create`](../../rest/v1beta1/projects.androidApps/create), then Firebase automatically associates an `api_key_id` with the `AndroidApp`. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. In patch requests, `api_key_id` cannot be set to an empty value, and the new UID must have no restrictions or only have restrictions that are valid for the associated `AndroidApp`. We recommend using the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) to manage API keys.
+  optional string api_key_id = 1 [json_name="apiKeyId"];
+  // Output only. Immutable. The globally unique, Firebase-assigned identifier for the `AndroidApp`. This identifier should be treated as an opaque token, as the data format is not specified.
+  optional string app_id = 2 [json_name="appId"];
+  // The user-assigned display name for the `AndroidApp`.
+  optional string display_name = 3 [json_name="displayName"];
+  // This checksum is computed by the server based on the value of other fields, and it may be sent with update requests to ensure the client has an up-to-date value before proceeding. Learn more about `etag` in Google's [AIP-154 standard](https://google.aip.dev/154#declarative-friendly-resources). This etag is strongly validated.
+  optional string etag = 4 [json_name="etag"];
+  // Output only. If the App has been removed from the Project, this is the timestamp of when the App is considered expired and will be permanently deleted. After this time, the App cannot be undeleted (that is, restored to the Project). This value is only provided if the App is in the `DELETED` state.
+  optional .google.protobuf.Timestamp expire_time = 5 [json_name="expireTime"];
+  // The resource name of the AndroidApp, in the format: projects/ PROJECT_IDENTIFIER/androidApps/APP_ID * PROJECT_IDENTIFIER: the parent Project's [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). Note that the value for PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID: the globally unique, Firebase-assigned identifier for the App (see [`appId`](../projects.androidApps#AndroidApp.FIELDS.app_id)).
+  optional string name = 6 [json_name="name"];
+  // Immutable. The canonical package name of the Android app as would appear in the Google Play Developer Console.
+  optional string package_name = 7 [json_name="packageName"];
+  // Output only. Immutable. A user-assigned unique identifier of the parent FirebaseProject for the `AndroidApp`.
+  optional string project_id = 8 [json_name="projectId"];
+  // The SHA1 certificate hashes for the AndroidApp.
+  repeated string sha1_hashes = 9 [json_name="sha1Hashes"];
+  // The SHA256 certificate hashes for the AndroidApp.
+  repeated string sha256_hashes = 10 [json_name="sha256Hashes"];
+  // Output only. The lifecycle state of the App.
+  optional string state = 11 [json_name="state"];
+}
+
+// Configuration metadata of a single Firebase App for Android.
+message AndroidAppConfig {
+  // The contents of the JSON configuration file.
+  optional bytes config_file_contents = 1 [json_name="configFileContents"];
+  // The filename that the configuration artifact for the `AndroidApp` is typically saved as. For example: `google-services.json`
+  optional string config_filename = 2 [json_name="configFilename"];
+}
+
+// **DEPRECATED.** _Auto-provisioning of these resources is changing, so this object no longer reliably provides information about the resources within the Project. Instead, retrieve information about each resource directly from its resource-specific API._ The default auto-provisioned resources associated with the Project.
+message DefaultResources {
+  // Output only. **DEPRECATED.** _Instead, find the name of the default Firebase Hosting site using [ListSites](https://firebase.google.com/docs/reference/hosting/rest/v1beta1/projects.sites/list) within the Firebase Hosting REST API. If the default Hosting site for the Project has not yet been provisioned, the return might not contain a default site._ The name of the default Firebase Hosting site, in the format: PROJECT_ID Though rare, your `projectId` might already be used as the name for an existing Hosting site in another project (learn more about creating non-default, [additional sites](https://firebase.google.com/docs/hosting/multisites)). In these cases, your `projectId` is appended with a hyphen then five alphanumeric characters to create your default Hosting site name. For example, if your `projectId` is `myproject123`, your default Hosting site name might be: `myproject123-a5c16`
+  optional string hosting_site = 1 [json_name="hostingSite"];
+  // Output only. **DEPRECATED.** _Instead, use product-specific REST APIs to find the location of each resource in a Project. This field may not be populated, especially for newly provisioned projects after October 30, 2024._ The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location), which are resources associated with Google App Engine. The location is one of the available [Google App Engine locations](https://cloud.google.com/about/locations#region). This field is omitted if the location for default Google Cloud resources has not been set.
+  optional string location_id = 2 [json_name="locationId"];
+  // Output only. **DEPRECATED.** _Instead, find the name of the default Realtime Database instance using the [list endpoint](https://firebase.google.com/docs/reference/rest/database/database-management/rest/v1beta/projects.locations.instances/list) within the Firebase Realtime Database REST API. If the default Realtime Database instance for a Project has not yet been provisioned, the return might not contain a default instance._ The default Firebase Realtime Database instance name, in the format: PROJECT_ID Though rare, your `projectId` might already be used as the name for an existing Realtime Database instance in another project (learn more about [database sharding](https://firebase.google.com/docs/database/usage/sharding)). In these cases, your `projectId` is appended with a hyphen then five alphanumeric characters to create your default Realtime Database instance name. For example, if your `projectId` is `myproject123`, your default database instance name might be: `myproject123-a5c16`
+  optional string realtime_database_instance = 3 [json_name="realtimeDatabaseInstance"];
+  // Output only. **DEPRECATED.** _Instead, find the name of the default Cloud Storage for Firebase bucket using the [list endpoint](https://firebase.google.com/docs/reference/rest/storage/rest/v1beta/projects.buckets/list) within the Cloud Storage for Firebase REST API. If the default bucket for the Project has not yet been provisioned, the return might not contain a default bucket._ The name of the default Cloud Storage for Firebase bucket, in one of the following formats: * If provisioned _before_ October 30, 2024: PROJECT_ID.firebasestorage.app * If provisioned _on or after_ October 30, 2024: PROJECT_ID.firebasestorage.app
+  optional string storage_bucket = 4 [json_name="storageBucket"];
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+
+message FinalizeDefaultLocationRequest {
+  // **DEPRECATED** The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location), which are resources associated with Google App Engine. The location must be one of the available [Google App Engine locations](https://cloud.google.com/about/locations#region).
+  optional string location_id = 1 [json_name="locationId"];
+}
+
+// A high-level summary of an App.
+message FirebaseAppInfo {
+  // The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the App. Be aware that this value is the UID of the API key, _not_ the [`keyString`](https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key.FIELDS.key_string) of the API key. The `keyString` is the value that can be found in the App's configuration artifact ([`AndroidApp`](../../rest/v1beta1/projects.androidApps/getConfig) | [`IosApp`](../../rest/v1beta1/projects.iosApps/getConfig) | [`WebApp`](../../rest/v1beta1/projects.webApps/getConfig)). If `api_key_id` is not set in requests to create the App ([`AndroidApp`](../../rest/v1beta1/projects.androidApps/create) | [`IosApp`](../../rest/v1beta1/projects.iosApps/create) | [`WebApp`](../../rest/v1beta1/projects.webApps/create)), then Firebase automatically associates an `api_key_id` with the App. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned.
+  optional string api_key_id = 1 [json_name="apiKeyId"];
+  // Output only. Immutable. The globally unique, Firebase-assigned identifier for the `WebApp`. This identifier should be treated as an opaque token, as the data format is not specified.
+  optional string app_id = 2 [json_name="appId"];
+  // The user-assigned display name of the Firebase App.
+  optional string display_name = 3 [json_name="displayName"];
+  // Output only. If the App has been removed from the Project, this is the timestamp of when the App is considered expired and will be permanently deleted. After this time, the App cannot be undeleted (that is, restored to the Project). This value is only provided if the App is in the `DELETED` state.
+  optional .google.protobuf.Timestamp expire_time = 4 [json_name="expireTime"];
+  // The resource name of the Firebase App, in the format: projects/PROJECT_ID /iosApps/APP_ID or projects/PROJECT_ID/androidApps/APP_ID or projects/ PROJECT_ID/webApps/APP_ID
+  optional string name = 5 [json_name="name"];
+  // Output only. Immutable. The platform-specific identifier of the App. *Note:* For most use cases, use `appId`, which is the canonical, globally unique identifier for referencing an App. This string is derived from a native identifier for each platform: `packageName` for an `AndroidApp`, `bundleId` for an `IosApp`, and `webId` for a `WebApp`. Its contents should be treated as opaque, as the native identifier format may change as platforms evolve. This string is only unique within a `FirebaseProject` and its associated Apps.
+  optional string namespace = 6 [json_name="namespace"];
+  // The platform of the Firebase App.
+  optional string platform = 7 [json_name="platform"];
+  // Output only. The lifecycle state of the App.
+  optional string state = 8 [json_name="state"];
+}
+
+// A `FirebaseProject` is the top-level Firebase entity. It is the container for Firebase Apps, Firebase Hosting sites, storage systems (Firebase Realtime Database, Cloud Firestore, Cloud Storage buckets), and other Firebase and Google Cloud resources. You create a `FirebaseProject` by calling AddFirebase and specifying an *existing* [Google Cloud `Project`](https://cloud.google.com/resource-manager/reference/rest/v1/projects). This adds Firebase resources to the existing Google Cloud `Project`. Since a FirebaseProject is actually also a Google Cloud `Project`, a `FirebaseProject` has the same underlying Google Cloud identifiers (`projectNumber` and `projectId`). This allows for easy interop with Google APIs.
+message FirebaseProject {
+  // A set of user-defined annotations for the FirebaseProject. Learn more about annotations in Google's [AIP-128 standard](https://google.aip.dev/128#annotations). These annotations are intended solely for developers and client-side tools. Firebase services will not mutate this annotations set.
+  map<string, string> annotations = 1 [json_name="annotations"];
+  // The user-assigned display name of the Project.
+  optional string display_name = 2 [json_name="displayName"];
+  // This checksum is computed by the server based on the value of other fields, and it may be sent with update requests to ensure the client has an up-to-date value before proceeding. Learn more about `etag` in Google's [AIP-154 standard](https://google.aip.dev/154#declarative-friendly-resources). This etag is strongly validated.
+  optional string etag = 3 [json_name="etag"];
+  // The resource name of the Project, in the format: projects/PROJECT_IDENTIFIER PROJECT_IDENTIFIER: the Project's [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). Note that the value for PROJECT_IDENTIFIER in any response body will be the `ProjectId`.
+  optional string name = 4 [json_name="name"];
+  // Output only. Immutable. A user-assigned unique identifier for the Project. This identifier may appear in URLs or names for some Firebase resources associated with the Project, but it should generally be treated as a convenience alias to reference the Project.
+  optional string project_id = 5 [json_name="projectId"];
+  // Output only. Immutable. The globally unique, Google-assigned canonical identifier for the Project. Use this identifier when configuring integrations and/or making API calls to Firebase or third-party services.
+  optional int64 project_number = 6 [json_name="projectNumber"];
+  // Output only. **DEPRECATED.** _Auto-provisioning of these resources is changing, so this object no longer reliably provides information about the Project. Instead, retrieve information about each resource directly from its resource-specific API._ The default Firebase resources associated with the Project.
+  optional DefaultResources resources = 7 [json_name="resources"];
+  // Output only. The lifecycle state of the Project.
+  optional string state = 8 [json_name="state"];
+}
+
+// Details of a Firebase App for iOS.
+message IosApp {
+  // The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the `IosApp`. Be aware that this value is the UID of the API key, _not_ the [`keyString`](https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key.FIELDS.key_string) of the API key. The `keyString` is the value that can be found in the App's [configuration artifact](../../rest/v1beta1/projects.iosApps/getConfig). If `api_key_id` is not set in requests to [`iosApps.Create`](../../rest/v1beta1/projects.iosApps/create), then Firebase automatically associates an `api_key_id` with the `IosApp`. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. In patch requests, `api_key_id` cannot be set to an empty value, and the new UID must have no restrictions or only have restrictions that are valid for the associated `IosApp`. We recommend using the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) to manage API keys.
+  optional string api_key_id = 1 [json_name="apiKeyId"];
+  // Output only. Immutable. The globally unique, Firebase-assigned identifier for the `IosApp`. This identifier should be treated as an opaque token, as the data format is not specified.
+  optional string app_id = 2 [json_name="appId"];
+  // The automatically generated Apple ID assigned to the iOS app by Apple in the iOS App Store.
+  optional string app_store_id = 3 [json_name="appStoreId"];
+  // Immutable. The canonical bundle ID of the iOS app as it would appear in the iOS AppStore.
+  optional string bundle_id = 4 [json_name="bundleId"];
+  // The user-assigned display name for the `IosApp`.
+  optional string display_name = 5 [json_name="displayName"];
+  // This checksum is computed by the server based on the value of other fields, and it may be sent with update requests to ensure the client has an up-to-date value before proceeding. Learn more about `etag` in Google's [AIP-154 standard](https://google.aip.dev/154#declarative-friendly-resources). This etag is strongly validated.
+  optional string etag = 6 [json_name="etag"];
+  // Output only. If the App has been removed from the Project, this is the timestamp of when the App is considered expired and will be permanently deleted. After this time, the App cannot be undeleted (that is, restored to the Project). This value is only provided if the App is in the `DELETED` state.
+  optional .google.protobuf.Timestamp expire_time = 7 [json_name="expireTime"];
+  // The resource name of the IosApp, in the format: projects/PROJECT_IDENTIFIER /iosApps/APP_ID * PROJECT_IDENTIFIER: the parent Project's [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). Note that the value for PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID: the globally unique, Firebase-assigned identifier for the App (see [`appId`](../projects.iosApps#IosApp.FIELDS.app_id)).
+  optional string name = 8 [json_name="name"];
+  // Output only. Immutable. A user-assigned unique identifier of the parent FirebaseProject for the `IosApp`.
+  optional string project_id = 9 [json_name="projectId"];
+  // Output only. The lifecycle state of the App.
+  optional string state = 10 [json_name="state"];
+  // The Apple Developer Team ID associated with the App in the App Store.
+  optional string team_id = 11 [json_name="teamId"];
+}
+
+// Configuration metadata of a single Firebase App for iOS.
+message IosAppConfig {
+  // The content of the XML configuration file.
+  optional bytes config_file_contents = 1 [json_name="configFileContents"];
+  // The filename that the configuration artifact for the `IosApp` is typically saved as. For example: `GoogleService-Info.plist`
+  optional string config_filename = 2 [json_name="configFilename"];
+}
+
+message ListAndroidAppsResponse {
+  // List of each `AndroidApp` associated with the specified `FirebaseProject`.
+  repeated AndroidApp apps = 1 [json_name="apps"];
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results. This token can be used in a subsequent call to `ListAndroidApps` to find the next group of Apps. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+message ListAvailableLocationsResponse {
+  // One page of results from a call to `ListAvailableLocations`.
+  repeated Location locations = 1 [json_name="locations"];
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results and all available locations have been listed. This token can be used in a subsequent call to `ListAvailableLocations` to find more locations. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+message ListAvailableProjectsResponse {
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results. This token can be used in a subsequent calls to `ListAvailableProjects` to find the next group of Projects. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of Google Cloud `Projects` which can have Firebase resources added to them.
+  repeated ProjectInfo project_info = 2 [json_name="projectInfo"];
+}
+
+message ListFirebaseProjectsResponse {
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results. This token can be used in a subsequent calls to `ListFirebaseProjects` to find the next group of Projects. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // One page of the list of Projects that are accessible to the caller.
+  repeated FirebaseProject results = 2 [json_name="results"];
+}
+
+message ListIosAppsResponse {
+  // List of each `IosApp` associated with the specified `FirebaseProject`.
+  repeated IosApp apps = 1 [json_name="apps"];
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results. This token can be used in a subsequent call to `ListIosApps` to find the next group of Apps. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+message ListShaCertificatesResponse {
+  // The list of each `ShaCertificate` associated with the `AndroidApp`.
+  repeated ShaCertificate certificates = 1 [json_name="certificates"];
+}
+
+message ListWebAppsResponse {
+  // List of each `WebApp` associated with the specified `FirebaseProject`.
+  repeated WebApp apps = 1 [json_name="apps"];
+  // If the result list is too large to fit in a single response, then a token is returned. If the string is empty, then this response is the last page of results. This token can be used in a subsequent call to `ListWebApps` to find the next group of Apps. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// **DEPRECATED.** _This Location is no longer used to determine Firebase resource locations. Instead, consult product documentation to determine valid locations for each resource used in your Project._ A ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location) that can be selected for a FirebaseProject. These are resources associated with Google App Engine.
+message Location {
+  // Products and services that are available in the location for default Google Cloud resources.
+  repeated string features = 1 [json_name="features"];
+  // The ID of the Project's location for default Google Cloud resources. It will be one of the available [Google App Engine locations](https://cloud.google.com/about/locations#region).
+  optional string location_id = 2 [json_name="locationId"];
+  // Indicates whether the location for default Google Cloud resources is a [regional or multi-regional location](https://firebase.google.com/docs/projects/locations#types) for data replication.
+  optional string type = 3 [json_name="type"];
+}
+
+// This is proto2's version of MessageSet. DEPRECATED: DO NOT USE FOR NEW FIELDS. If you are using editions or proto2, please make your own extendable messages for your use case. If you are using proto3, please use `Any` instead. MessageSet was the implementation of extensions for proto1. When proto2 was introduced, extensions were implemented as a first-class feature. This schema for MessageSet was meant to be a "bridge" solution to migrate MessageSet-bearing messages from proto1 to proto2. This schema has been open-sourced only to facilitate the migration of Google products with MessageSet-bearing messages to open-source environments.
+message MessageSet {
+}
+
+// Describes the progress of an LRO. It is included in the `metadata` field of the `Operation`.
+message OperationMetadata {
+}
+
+// Metadata about a long-running Product operation.
+message ProductMetadata {
+  // List of warnings related to the associated operation.
+  repeated string warning_messages = 1 [json_name="warningMessages"];
+}
+
+// A reference to a Google Cloud `Project`.
+message ProjectInfo {
+  // The user-assigned display name of the Google Cloud `Project`, for example: `My App`.
+  optional string display_name = 1 [json_name="displayName"];
+  // **DEPRECATED** _Instead, use product-specific REST APIs to work with the location of each resource in a Project. This field may not be populated, especially for newly provisioned projects after October 30, 2024._ The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location). The location is one of the available [Google App Engine locations](https://cloud.google.com/about/locations#region). Not all Projects will have this field populated. If it is not populated, it means that the Project does not yet have a location for default Google Cloud resources.
+  optional string location_id = 2 [json_name="locationId"];
+  // The resource name of the Google Cloud `Project` to which Firebase resources can be added, in the format: projects/PROJECT_IDENTIFIER Refer to the `FirebaseProject` [`name`](../projects#FirebaseProject.FIELDS.name) field for details about PROJECT_IDENTIFIER values.
+  optional string project = 3 [json_name="project"];
+}
+
+message RemoveAnalyticsRequest {
+  // Optional. The ID of the Google Analytics property associated with the specified `FirebaseProject`. - If not set, then the Google Analytics property that is currently associated with the specified `FirebaseProject` is removed. - If set, and the specified `FirebaseProject` is currently associated with a *different* Google Analytics property, then the response is a `412 Precondition Failed` error. 
+  optional string analytics_property_id = 1 [json_name="analyticsPropertyId"];
+}
+
+message RemoveAndroidAppRequest {
+  // If set to true, and the App is not found, the request will succeed but no action will be taken on the server.
+  optional bool allow_missing = 1 [json_name="allowMissing"];
+  // Checksum provided in the AndroidApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 2 [json_name="etag"];
+  // Determines whether to _immediately_ delete the AndroidApp. If set to true, the App is immediately deleted from the Project and cannot be undeleted (that is, restored to the Project). If not set, defaults to false, which means the App will be set to expire in 30 days. Within the 30 days, the App may be restored to the Project using UndeleteAndroidApp.
+  optional bool immediate = 3 [json_name="immediate"];
+  // If set to true, the request is only validated. The App will _not_ be removed.
+  optional bool validate_only = 4 [json_name="validateOnly"];
+}
+
+message RemoveIosAppRequest {
+  // If set to true, and the App is not found, the request will succeed but no action will be taken on the server.
+  optional bool allow_missing = 1 [json_name="allowMissing"];
+  // Checksum provided in the IosApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 2 [json_name="etag"];
+  // Determines whether to _immediately_ delete the IosApp. If set to true, the App is immediately deleted from the Project and cannot be undeleted (that is, restored to the Project). If not set, defaults to false, which means the App will be set to expire in 30 days. Within the 30 days, the App may be restored to the Project using UndeleteIosApp
+  optional bool immediate = 3 [json_name="immediate"];
+  // If set to true, the request is only validated. The App will _not_ be removed.
+  optional bool validate_only = 4 [json_name="validateOnly"];
+}
+
+message RemoveWebAppRequest {
+  // If set to true, and the App is not found, the request will succeed but no action will be taken on the server.
+  optional bool allow_missing = 1 [json_name="allowMissing"];
+  // Checksum provided in the WebApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 2 [json_name="etag"];
+  // Determines whether to _immediately_ delete the WebApp. If set to true, the App is immediately deleted from the Project and cannot be undeleted (that is, restored to the Project). If not set, defaults to false, which means the App will be set to expire in 30 days. Within the 30 days, the App may be restored to the Project using UndeleteWebApp
+  optional bool immediate = 3 [json_name="immediate"];
+  // If set to true, the request is only validated. The App will _not_ be removed.
+  optional bool validate_only = 4 [json_name="validateOnly"];
+}
+
+message SearchFirebaseAppsResponse {
+  // One page of results from a call to `SearchFirebaseApps`.
+  repeated FirebaseAppInfo apps = 1 [json_name="apps"];
+  // If the result list is too large to fit in a single response, then a token is returned. This token can be used in a subsequent calls to `SearchFirebaseApps` to find the next group of Apps. Page tokens are short-lived and should not be persisted.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// A SHA-1 or SHA-256 certificate associated with the AndroidApp.
+message ShaCertificate {
+  // The type of SHA certificate encoded in the hash.
+  optional string cert_type = 1 [json_name="certType"];
+  // The resource name of the ShaCertificate for the AndroidApp, in the format: projects/PROJECT_IDENTIFIER/androidApps/APP_ID/sha/SHA_HASH * PROJECT_IDENTIFIER: the parent Project's [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). Note that the value for PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID: the globally unique, Firebase-assigned identifier for the App (see [`appId`](../projects.androidApps#AndroidApp.FIELDS.app_id)). * SHA_HASH: the certificate hash for the App (see [`shaHash`](../projects.androidApps.sha#ShaCertificate.FIELDS.sha_hash)).
+  optional string name = 2 [json_name="name"];
+  // The certificate hash for the `AndroidApp`.
+  optional string sha_hash = 3 [json_name="shaHash"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
+}
+
+// Wire-format for a Status object
+message StatusProto {
+  // copybara:strip_begin(b/383363683) copybara:strip_end_and_replace optional int32 canonical_code = 6;
+  optional int32 canonical_code = 1 [json_name="canonicalCode"];
+  // Numeric code drawn from the space specified below. Often, this is the canonical error space, and code is drawn from google3/util/task/codes.proto copybara:strip_begin(b/383363683) copybara:strip_end_and_replace optional int32 code = 1;
+  optional int32 code = 2 [json_name="code"];
+  // Detail message copybara:strip_begin(b/383363683) copybara:strip_end_and_replace optional string message = 3;
+  optional string message = 3 [json_name="message"];
+  // message_set associates an arbitrary proto message with the status. copybara:strip_begin(b/383363683) copybara:strip_end_and_replace optional proto2.bridge.MessageSet message_set = 5;
+  optional MessageSet message_set = 4 [json_name="messageSet"];
+  // copybara:strip_begin(b/383363683) Space to which this status belongs copybara:strip_end_and_replace optional string space = 2; // Space to which this status belongs
+  optional string space = 5 [json_name="space"];
+}
+
+// A mapping of a Firebase App to a Google Analytics data stream
+message StreamMapping {
+  // The resource name of the Firebase App associated with the Google Analytics data stream, in the format: projects/PROJECT_IDENTIFIER/androidApps/APP_ID or projects/PROJECT_IDENTIFIER/iosApps/APP_ID or projects/PROJECT_IDENTIFIER /webApps/APP_ID Refer to the `FirebaseProject` [`name`](../projects#FirebaseProject.FIELDS.name) field for details about PROJECT_IDENTIFIER values.
+  optional string app = 1 [json_name="app"];
+  // Applicable for Firebase Web Apps only. The unique Google-assigned identifier of the Google Analytics web stream associated with the Firebase Web App. Firebase SDKs use this ID to interact with Google Analytics APIs. Learn more about this ID and Google Analytics web streams in the [Analytics documentation](https://support.google.com/analytics/answer/9304153).
+  optional string measurement_id = 2 [json_name="measurementId"];
+  // The unique Google-assigned identifier of the Google Analytics data stream associated with the Firebase App. Learn more about Google Analytics data streams in the [Analytics documentation](https://support.google.com/analytics/answer/9303323).
+  optional int64 stream_id = 3 [json_name="streamId"];
+}
+
+message UndeleteAndroidAppRequest {
+  // Checksum provided in the AndroidApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 1 [json_name="etag"];
+  // If set to true, the request is only validated. The App will _not_ be undeleted.
+  optional bool validate_only = 2 [json_name="validateOnly"];
+}
+
+message UndeleteIosAppRequest {
+  // Checksum provided in the IosApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 1 [json_name="etag"];
+  // If set to true, the request is only validated. The App will _not_ be undeleted.
+  optional bool validate_only = 2 [json_name="validateOnly"];
+}
+
+message UndeleteWebAppRequest {
+  // Checksum provided in the WebApp resource. If provided, this checksum ensures that the client has an up-to-date value before proceeding.
+  optional string etag = 1 [json_name="etag"];
+  // If set to true, the request is only validated. The App will _not_ be undeleted.
+  optional bool validate_only = 2 [json_name="validateOnly"];
+}
+
+// Details of a Firebase App for the web.
+message WebApp {
+  // The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the `WebApp`. Be aware that this value is the UID of the API key, _not_ the [`keyString`](https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key.FIELDS.key_string) of the API key. The `keyString` is the value that can be found in the App's [configuration artifact](../../rest/v1beta1/projects.webApps/getConfig). If `api_key_id` is not set in requests to [`webApps.Create`](../../rest/v1beta1/projects.webApps/create), then Firebase automatically associates an `api_key_id` with the `WebApp`. This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. In patch requests, `api_key_id` cannot be set to an empty value, and the new UID must have no restrictions or only have restrictions that are valid for the associated `WebApp`. We recommend using the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) to manage API keys.
+  optional string api_key_id = 1 [json_name="apiKeyId"];
+  // Output only. Immutable. The globally unique, Firebase-assigned identifier for the `WebApp`. This identifier should be treated as an opaque token, as the data format is not specified.
+  optional string app_id = 2 [json_name="appId"];
+  // The URLs where the `WebApp` is hosted.
+  repeated string app_urls = 3 [json_name="appUrls"];
+  // The user-assigned display name for the `WebApp`.
+  optional string display_name = 4 [json_name="displayName"];
+  // This checksum is computed by the server based on the value of other fields, and it may be sent with update requests to ensure the client has an up-to-date value before proceeding. Learn more about `etag` in Google's [AIP-154 standard](https://google.aip.dev/154#declarative-friendly-resources). This etag is strongly validated.
+  optional string etag = 5 [json_name="etag"];
+  // Output only. If the App has been removed from the Project, this is the timestamp of when the App is considered expired and will be permanently deleted. After this time, the App cannot be undeleted (that is, restored to the Project). This value is only provided if the App is in the `DELETED` state.
+  optional .google.protobuf.Timestamp expire_time = 6 [json_name="expireTime"];
+  // The resource name of the WebApp, in the format: projects/PROJECT_IDENTIFIER /webApps/APP_ID * PROJECT_IDENTIFIER: the parent Project's [`ProjectNumber`](../projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](../projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510). Note that the value for PROJECT_IDENTIFIER in any response body will be the `ProjectId`. * APP_ID: the globally unique, Firebase-assigned identifier for the App (see [`appId`](../projects.webApps#WebApp.FIELDS.app_id)).
+  optional string name = 7 [json_name="name"];
+  // Output only. Immutable. A user-assigned unique identifier of the parent FirebaseProject for the `WebApp`.
+  optional string project_id = 8 [json_name="projectId"];
+  // Output only. The lifecycle state of the App.
+  optional string state = 9 [json_name="state"];
+  // Output only. Immutable. A unique, Firebase-assigned identifier for the `WebApp`. This identifier is only used to populate the `namespace` value for the `WebApp`. For most use cases, use `appId` to identify or reference the App. The `webId` value is only unique within a `FirebaseProject` and its associated Apps.
+  optional string web_id = 10 [json_name="webId"];
+}
+
+// Configuration metadata of a single Firebase App for the web.
+message WebAppConfig {
+  // The [`keyString`](https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key.FIELDS.key_string) of the API key associated with the `WebApp`. Note that this value is _not_ the [`apiKeyId`](../projects.webApps#WebApp.FIELDS.api_key_id) (the UID) of the API key associated with the `WebApp`.
+  optional string api_key = 1 [json_name="apiKey"];
+  // Immutable. The globally unique, Firebase-assigned identifier for the `WebApp`.
+  optional string app_id = 2 [json_name="appId"];
+  // The domain Firebase Auth configures for OAuth redirects, in the format: PROJECT_ID.firebaseapp.com
+  optional string auth_domain = 3 [json_name="authDomain"];
+  // **DEPRECATED.** _Instead, find the URL of the default Realtime Database instance using the [list endpoint](https://firebase.google.com/docs/reference/rest/database/database-management/rest/v1beta/projects.locations.instances/list) within the Firebase Realtime Database REST API. If the default instance for the Project has not yet been provisioned, the return might not contain a default instance. Note that the config that's generated for the Firebase console or the Firebase CLI uses the Realtime Database endpoint to populate this value for that config._ The URL of the default Firebase Realtime Database instance.
+  optional string database_u_r_l = 4 [json_name="databaseURL"];
+  // **DEPRECATED.** _Instead, use product-specific REST APIs to find the location of each resource in a Project. This field may not be populated, especially for newly provisioned projects after October 30, 2024._ The ID of the Project's ["location for default Google Cloud resources"](https://firebase.google.com/docs/projects/locations#default-cloud-location), which are resources associated with Google App Engine. The location is one of the available [App Engine locations](https://cloud.google.com/about/locations#region). This field is omitted if the location for default Google Cloud resources has not been set.
+  optional string location_id = 5 [json_name="locationId"];
+  // The unique Google-assigned identifier of the Google Analytics web stream associated with the `WebApp`. Firebase SDKs use this ID to interact with Google Analytics APIs. This field is only present if the `WebApp` is linked to a web stream in a Google Analytics App + Web property. Learn more about this ID and Google Analytics web streams in the [Analytics documentation](https://support.google.com/analytics/answer/9304153). To generate a `measurementId` and link the `WebApp` with a Google Analytics web stream, call [`AddGoogleAnalytics`](../../v1beta1/projects/addGoogleAnalytics). For apps using the Firebase JavaScript SDK v7.20.0 and later, Firebase dynamically fetches the `measurementId` when your app initializes Analytics. Having this ID in your config object is optional, but it does serve as a fallback in the rare case that the dynamic fetch fails.
+  optional string measurement_id = 6 [json_name="measurementId"];
+  // The sender ID for use with Firebase Cloud Messaging.
+  optional string messaging_sender_id = 7 [json_name="messagingSenderId"];
+  // Immutable. A user-assigned unique identifier for the `FirebaseProject`.
+  optional string project_id = 8 [json_name="projectId"];
+  // Output only. Immutable. The globally unique, Google-assigned canonical identifier for the Project. Use this identifier when configuring integrations and/or making API calls to Google Cloud or third-party services.
+  optional string project_number = 9 [json_name="projectNumber"];
+  // Optional. Duplicate field for the URL of the default Realtime Database instances (if the default instance has been provisioned). If the request asks for the V2 config format, this field will be populated instead of `realtime_database_instance_uri`.
+  optional string realtime_database_url = 10 [json_name="realtimeDatabaseUrl"];
+  // Optional. Recaptcha Enterprise site key associated with the Firebase App.
+  optional string recaptcha_site_key = 11 [json_name="recaptchaSiteKey"];
+  // **DEPRECATED.** _Instead, find the name of the default Cloud Storage for Firebase bucket using the [list endpoint](https://firebase.google.com/docs/reference/rest/storage/rest/v1beta/projects.buckets/list) within the Cloud Storage for Firebase REST API. If the default bucket for the Project has not yet been provisioned, the return might not contain a default bucket. Note that the config that's generated for the Firebase console or the Firebase CLI uses the Cloud Storage for Firebase endpoint to populate this value for that config._ The name of the default Cloud Storage for Firebase bucket.
+  optional string storage_bucket = 12 [json_name="storageBucket"];
+  // Version of the config specification.
+  optional string version = 13 [json_name="version"];
+}
+
+message ListAvailableProjectsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+}
+
+message AddFirebaseProjectRequest {
+  optional string name = 1;
+  optional AddFirebaseRequest project = 2;
+}
+
+message AddGoogleAnalyticsProjectRequest {
+  optional string parent = 1;
+  optional AddGoogleAnalyticsRequest project = 2;
+}
+
+message GetProjectRequest {
+  optional string name = 1;
+}
+
+message GetAdminSdkConfigProjectRequest {
+  optional string name = 1;
+}
+
+message GetAnalyticsDetailsProjectRequest {
+  optional string name = 1;
+}
+
+message ListProjectsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional bool show_deleted = 3;
+}
+
+message PatchProjectRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional FirebaseProject project = 3;
+}
+
+message RemoveAnalyticsProjectRequest {
+  optional string parent = 1;
+  optional RemoveAnalyticsRequest project = 2;
+}
+
+message SearchAppsProjectRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+  optional bool show_deleted = 5;
+}
+
+message CreateProjectsAndroidAppRequest {
+  optional string parent = 1;
+  optional AndroidApp projects_android_app = 2;
+}
+
+message GetProjectsAndroidAppRequest {
+  optional string name = 1;
+}
+
+message GetConfigProjectsAndroidAppRequest {
+  optional string name = 1;
+}
+
+message ListProjectsAndroidAppsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional bool show_deleted = 4;
+}
+
+message PatchProjectsAndroidAppRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional AndroidApp projects_android_app = 3;
+}
+
+message DeleteProjectsAndroidAppRequest {
+  optional string name = 1;
+  optional RemoveAndroidAppRequest projects_android_app = 2;
+}
+
+message UndeleteProjectsAndroidAppRequest {
+  optional string name = 1;
+  optional UndeleteAndroidAppRequest projects_android_app = 2;
+}
+
+message CreateProjectsAndroidAppsShaRequest {
+  optional string parent = 1;
+  optional ShaCertificate projects_android_apps_sha = 2;
+}
+
+message DeleteProjectsAndroidAppsShaRequest {
+  optional string name = 1;
+}
+
+message ListProjectsAndroidAppsShaRequest {
+  optional string parent = 1;
+}
+
+message ListProjectsAvailableLocationsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message FinalizeProjectsDefaultLocationRequest {
+  optional string parent = 1;
+  optional FinalizeDefaultLocationRequest projects_default_location = 2;
+}
+
+message CreateProjectsIosAppRequest {
+  optional string parent = 1;
+  optional IosApp projects_ios_app = 2;
+}
+
+message GetProjectsIosAppRequest {
+  optional string name = 1;
+}
+
+message GetConfigProjectsIosAppRequest {
+  optional string name = 1;
+}
+
+message ListProjectsIosAppsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional bool show_deleted = 4;
+}
+
+message PatchProjectsIosAppRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional IosApp projects_ios_app = 3;
+}
+
+message DeleteProjectsIosAppRequest {
+  optional string name = 1;
+  optional RemoveIosAppRequest projects_ios_app = 2;
+}
+
+message UndeleteProjectsIosAppRequest {
+  optional string name = 1;
+  optional UndeleteIosAppRequest projects_ios_app = 2;
+}
+
+message CreateProjectsWebAppRequest {
+  optional string parent = 1;
+  optional WebApp projects_web_app = 2;
+}
+
+message GetProjectsWebAppRequest {
+  optional string name = 1;
+}
+
+message GetConfigProjectsWebAppRequest {
+  optional string name = 1;
+}
+
+message ListProjectsWebAppsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional bool show_deleted = 4;
+}
+
+message PatchProjectsWebAppRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional WebApp projects_web_app = 3;
+}
+
+message DeleteProjectsWebAppRequest {
+  optional string name = 1;
+  optional RemoveWebAppRequest projects_web_app = 2;
+}
+
+message UndeleteProjectsWebAppRequest {
+  optional string name = 1;
+  optional UndeleteWebAppRequest projects_web_app = 2;
+}

@@ -54,7 +54,11 @@ Before writing any code or making any changes, you must diagnose the behavior ag
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
    ```
    *Note on `TEST_DEPENDENT_ORG_PROJECT_ID`:* If the fixture defines dependencies using `${TEST_DEPENDENT_ORG_PROJECT_ID}` (e.g., singleton resources like `ComputeProjectMetadata`), ensure `TEST_DEPENDENT_ORG_PROJECT_ID` is exported with a valid project ID (e.g. `TEST_DEPENDENT_ORG_PROJECT_ID=$GCP_PROJECT_ID`) if project creation permissions under the organization are not available to the test credentials.
+
    *Note on external dependencies:* If the fixture references external pre-existing GCP resources (e.g., secrets in Secret Manager or KMS keys via `external: projects/${projectId}/...`), verify that these dependencies exist in the target GCP project before running `./hack/record-gcp`.
+
+   *Note on Allowlist-Gated Services & Credential Restrictions:* If live GCP API calls fail because a service is allowlist-gated (e.g., Media CDN / Edge Cache returning `404 Method not found`), requires human end-user credentials (e.g., OS Login `403 End user credentials must match`), or requires unavailable project permissions, document the specific command, full error message, and root cause in the PR description and a journal file under `.gemini/skills/solve-migration-diff-issues/journal/<kind>.md`. Fall back to validating migration hermetically against MockGCP, and do not check in mock-generated migration logs as real GCP golden logs.
+
 2. Open the recorded structured diff file:
    `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<resource>/<fixture-name>/_migration_diffs.json`
 3. Look for blocks containing `"isNewObject": false`. Note that diffs may appear from legacy re-reconciliation (Phase 2), Direct takeover (Phase 3), or Direct re-reconciliation (Phase 4). Diffs occurring during **Phase 3** or **Phase 4** indicate mismatches or re-reconciliation bugs where the Direct controller attempts to modify fields on an unchanged resource.

@@ -1185,6 +1185,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSampleQuerySet"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineControl"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSitemap"}:
+			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSchema"}:
 
 			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSManagedZone"}:
 			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSPolicy"}:
@@ -1498,6 +1499,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamInput"}:
 
 			case schema.GroupKind{Group: "financialservices.cnrm.cloud.google.com", Kind: "FinancialServicesInstance"}:
+			case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseProject"}:
 			case schema.GroupKind{Group: "firebasehosting.cnrm.cloud.google.com", Kind: "FirebaseHostingSite"}:
 
 			default:
