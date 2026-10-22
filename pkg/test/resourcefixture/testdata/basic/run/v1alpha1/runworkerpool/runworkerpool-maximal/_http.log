@@ -39,8 +39,7 @@ X-Goog-Request-Params: location=us-central1
   ],
   "description": "Maximal WorkerPool description",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "foo": "bar"
   },
   "launchStage": 4,
   "scaling": {
@@ -98,8 +97,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "launchStage": 4,
@@ -171,6 +169,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -181,8 +180,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -237,6 +235,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -247,8 +246,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -321,6 +319,7 @@ X-Xss-Protection: 0
   "instanceSplitStatuses": [
     {
       "percent": 100,
+      "revision": "runworkerpool--00001-abc",
       "type": 1
     }
   ],
@@ -331,8 +330,7 @@ X-Xss-Protection: 0
     }
   ],
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "foo": "bar"
   },
   "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -375,7 +373,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cscaling%2Ctemplate
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Cscaling%2Ctemplate
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: location=us-central1
@@ -391,8 +389,7 @@ X-Goog-Request-Params: location=us-central1
   ],
   "description": "Updated Maximal WorkerPool description",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "foo": "bar-updated"
   },
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
@@ -447,6 +444,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": 1
       }
     ],
@@ -457,8 +455,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -535,6 +532,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00002-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -545,8 +543,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
@@ -601,6 +598,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00002-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -611,8 +609,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
@@ -685,6 +682,7 @@ X-Xss-Protection: 0
   "instanceSplitStatuses": [
     {
       "percent": 100,
+      "revision": "runworkerpool--00002-abc",
       "type": 1
     }
   ],
@@ -695,8 +693,7 @@ X-Xss-Protection: 0
     }
   ],
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "foo": "bar-updated"
   },
   "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
@@ -772,6 +769,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00002-abc",
         "type": 1
       }
     ],
@@ -782,8 +780,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
@@ -862,6 +859,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00002-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -872,8 +870,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
@@ -930,6 +927,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00002-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -940,8 +938,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "foo": "bar-updated"
     },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",

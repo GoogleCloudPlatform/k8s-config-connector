@@ -33,6 +33,7 @@ status:
     generation: 2
     instanceSplitStatuses:
     - percent: 100
+      revision: runworkerpool--00001-abc
       type: INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST
     lastModifier: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
     latestCreatedRevision: projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc

@@ -18,6 +18,7 @@ X-Gfe-Server: ESF
   "instanceSplitStatuses": [
     {
       "percent": 100,
+      "revision": "runworkerpool--00002-abc",
       "type": 1
     }
   ],
@@ -28,8 +29,7 @@ X-Gfe-Server: ESF
     }
   ],
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "foo": "bar-updated"
   },
   "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",

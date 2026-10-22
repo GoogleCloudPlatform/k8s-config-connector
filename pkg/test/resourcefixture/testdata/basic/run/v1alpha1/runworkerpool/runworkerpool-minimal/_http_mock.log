@@ -60,6 +60,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": 1
       }
     ],
@@ -131,6 +132,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -181,6 +183,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -249,6 +252,7 @@ X-Xss-Protection: 0
   "instanceSplitStatuses": [
     {
       "percent": 100,
+      "revision": "runworkerpool--00001-abc",
       "type": 1
     }
   ],
@@ -330,6 +334,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": 1
       }
     ],
@@ -401,6 +406,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -451,6 +457,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -519,6 +526,7 @@ X-Xss-Protection: 0
   "instanceSplitStatuses": [
     {
       "percent": 100,
+      "revision": "runworkerpool--00001-abc",
       "type": 1
     }
   ],
@@ -590,6 +598,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": 1
       }
     ],
@@ -663,6 +672,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
@@ -715,6 +725,7 @@ X-Xss-Protection: 0
     "instanceSplitStatuses": [
       {
         "percent": 100,
+        "revision": "runworkerpool--00001-abc",
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],

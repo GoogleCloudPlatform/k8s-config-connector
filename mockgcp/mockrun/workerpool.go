@@ -79,26 +79,38 @@ func (s *workerPools) populateWorkerPoolDefaults(name *workerPoolName, obj *pb.W
 			},
 		}
 	}
-	if len(obj.InstanceSplitStatuses) == 0 {
-		obj.InstanceSplitStatuses = []*pb.InstanceSplitStatus{
-			{
-				Type:    pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
-				Percent: 100,
-			},
-		}
-	}
 
 	obj.LastModifier = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
 	obj.ObservedGeneration = obj.Generation
 
+	revID := fmt.Sprintf("%s-00001-abc", name.WorkerPool)
+	if isUpdate && templateChanged {
+		revID = fmt.Sprintf("%s-%05d-abc", name.WorkerPool, obj.Generation)
+	}
+	revName := fmt.Sprintf("%s/revisions/%s", obj.Name, revID)
+
 	if !isUpdate || obj.LatestCreatedRevision == "" {
-		revName := fmt.Sprintf("%s/revisions/%s-00001-abc", obj.Name, name.WorkerPool)
 		obj.LatestCreatedRevision = revName
 		obj.LatestReadyRevision = revName
 	} else if templateChanged {
-		revName := fmt.Sprintf("%s/revisions/%s-%05d-abc", obj.Name, name.WorkerPool, obj.Generation)
 		obj.LatestCreatedRevision = revName
 		obj.LatestReadyRevision = revName
+	}
+
+	if len(obj.InstanceSplitStatuses) == 0 {
+		obj.InstanceSplitStatuses = []*pb.InstanceSplitStatus{
+			{
+				Type:     pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
+				Percent:  100,
+				Revision: revID,
+			},
+		}
+	} else {
+		for _, status := range obj.InstanceSplitStatuses {
+			if status.Type == pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST {
+				status.Revision = revID
+			}
+		}
 	}
 
 	if obj.Template != nil {
