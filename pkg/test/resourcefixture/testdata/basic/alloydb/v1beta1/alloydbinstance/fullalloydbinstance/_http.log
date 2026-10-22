@@ -902,6 +902,12 @@ X-Xss-Protection: 0
       "trackWaitEventTypes": true,
       "trackWaitEvents": true
     },
+    "observabilityInstanceInfo": {
+      "maxQueryStringLength": 10240,
+      "queryPlansPerMinute": 20,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
     "outboundPublicIpAddresses": [
       "6.6.6.6",
       "8.8.8.8"
@@ -912,6 +918,11 @@ X-Xss-Protection: 0
       "queryStringLength": 1024,
       "recordApplicationTags": false,
       "recordClientAddress": false
+    },
+    "queryInsightsInfo": {
+      "enabled": true,
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
     },
     "reconciling": false,
     "state": "READY",
@@ -991,6 +1002,12 @@ X-Xss-Protection: 0
     "trackWaitEventTypes": true,
     "trackWaitEvents": true
   },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
   "outboundPublicIpAddresses": [
     "6.6.6.6",
     "8.8.8.8"
@@ -1001,6 +1018,11 @@ X-Xss-Protection: 0
     "queryStringLength": 1024,
     "recordApplicationTags": false,
     "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
   },
   "reconciling": false,
   "state": 1,
@@ -1130,6 +1152,12 @@ X-Xss-Protection: 0
       "trackWaitEventTypes": true,
       "trackWaitEvents": true
     },
+    "observabilityInstanceInfo": {
+      "maxQueryStringLength": 10240,
+      "queryPlansPerMinute": 20,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
     "outboundPublicIpAddresses": [
       "6.6.6.6",
       "8.8.8.8"
@@ -1140,6 +1168,11 @@ X-Xss-Protection: 0
       "queryStringLength": 1024,
       "recordApplicationTags": false,
       "recordClientAddress": false
+    },
+    "queryInsightsInfo": {
+      "enabled": true,
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
     },
     "reconciling": false,
     "state": "READY",
@@ -1209,6 +1242,12 @@ X-Xss-Protection: 0
     "trackWaitEventTypes": true,
     "trackWaitEvents": true
   },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
   "outboundPublicIpAddresses": [
     "6.6.6.6",
     "8.8.8.8"
@@ -1219,6 +1258,11 @@ X-Xss-Protection: 0
     "queryStringLength": 1024,
     "recordApplicationTags": false,
     "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
   },
   "reconciling": false,
   "state": 1,
