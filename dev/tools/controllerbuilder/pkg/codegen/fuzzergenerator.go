@@ -33,6 +33,7 @@ import (
 	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
 )
@@ -295,15 +296,38 @@ func planFuzzer(in fuzzerPlanInput) (*FuzzerPlan, error) {
 }
 
 func statusCandidateTypeNames(kind, specKRMType string, specSide fuzzerSide) []string {
-	statusTypeNames := []string{kind + "ObservedState"}
+	obsName := kind + "ObservedState"
 	if st := specSide.pkg.structs[strings.TrimSuffix(specKRMType, "Spec")+"Status"]; st != nil {
 		if f := findStructField(st, "ObservedState"); f != nil {
-			if name := strings.TrimPrefix(f.Type, "*"); name != "" && name != statusTypeNames[0] {
-				statusTypeNames = append(statusTypeNames, name)
+			if name := strings.TrimPrefix(f.Type, "*"); name != "" {
+				obsName = name
 			}
 		}
 	}
+	statusTypeNames := []string{kind + "ObservedState"}
+	if obsName != statusTypeNames[0] {
+		statusTypeNames = append(statusTypeNames, obsName)
+	}
+	statusStruct := specSide.pkg.structs[kind+"Status"]
+	if hasDirectStatusFields(statusStruct) {
+		return append([]string{kind + "Status"}, statusTypeNames...)
+	}
 	return append(statusTypeNames, kind+"Status")
+}
+
+func hasDirectStatusFields(st *gocode.GoStruct) bool {
+	if st == nil {
+		return false
+	}
+	for _, f := range st.Fields {
+		switch f.Name {
+		case "", "CommonStatus", "Conditions", "ObservedGeneration", "ExternalRef", "ObservedState":
+			continue
+		default:
+			return true
+		}
+	}
+	return false
 }
 
 func (in fuzzerPlanInput) resolveStatusSide(status *fuzzerMapperPair, statusTypeNames []string, specSide fuzzerSide) (fuzzerSide, error) {
@@ -313,7 +337,8 @@ func (in fuzzerPlanInput) resolveStatusSide(status *fuzzerMapperPair, statusType
 	// Without ObservedState mappers the fuzzer is spec-only, and FuzzStatus never runs.
 	// The ObservedState struct, or the Status struct, still tells which fields are status fields.
 	for _, name := range statusTypeNames {
-		if st := specSide.pkg.structs[name]; st != nil {
+		if st := specSide.pkg.structs[name]; st != nil && len(st.Fields) > 0 {
+			st = unwrapObservedStateStruct(specSide.pkg, name, st)
 			return fuzzerSide{coverage: fuzzerCoveredStruct, goStruct: st, pkg: specSide.pkg}, nil
 		}
 	}
@@ -332,7 +357,28 @@ func (in fuzzerPlanInput) krmSide(pair *fuzzerMapperPair) (fuzzerSide, error) {
 	if st == nil {
 		return fuzzerSide{}, fmt.Errorf("%s returns %s.%s, but %s declares no such struct", pair.FromProto, pair.KRMGoPackage, pair.KRMType, pkg.importPath)
 	}
+	st = unwrapObservedStateStruct(pkg, pair.KRMType, st)
 	return fuzzerSide{coverage: fuzzerCoveredStruct, goStruct: st, pkg: pkg}, nil
+}
+
+func unwrapObservedStateStruct(pkg *fuzzerKRMPackage, typeName string, st *gocode.GoStruct) *gocode.GoStruct {
+	if !strings.HasSuffix(typeName, "Status") {
+		return st
+	}
+	f := findStructField(st, "ObservedState")
+	if f == nil {
+		return st
+	}
+	obs := pkg.structs[strings.TrimPrefix(f.Type, "*")]
+	if obs == nil || len(obs.Fields) == 0 {
+		return st
+	}
+	if !hasDirectStatusFields(st) {
+		return obs
+	}
+	merged := *st
+	merged.Fields = append(append([]*gocode.StructField(nil), st.Fields...), obs.Fields...)
+	return &merged
 }
 
 // fuzzerFuncName returns <lowerCamelKind>Fuzzer. A leading acronym is lowercased as a whole,
