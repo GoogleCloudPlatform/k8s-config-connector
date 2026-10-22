@@ -1,0 +1,6 @@
+- caisURL: //saasservicemgmt.googleapis.com/projects/${projectId}/locations/us-central1/rolloutKinds/saasservicemgmtrolloutkind-${uniqueId}
+  group: saasservicemgmt.cnrm.cloud.google.com
+  kind: SaaSServiceMgmtRolloutKind
+  name: saasservicemgmtrolloutkind-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
