@@ -21,12 +21,6 @@ import (
 
 var BigtableMemoryLayerGVK = GroupVersion.WithKind("BigtableMemoryLayer")
 
-type BigtableMemoryLayerParent struct {
-	// Immutable. The BigtableCluster whose memory layer this resource manages.
-	// +required
-	ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
-}
-
 // BigtableMemoryLayerSpec defines the desired state of BigtableMemoryLayer.
 //
 // A memory layer serves reads from memory without hitting the backing
@@ -39,7 +33,9 @@ type BigtableMemoryLayerSpec struct {
 	// format projects/<projectID>/instances/<instanceID>/clusters/<clusterID>/memoryLayer
 	// i.e., it doesnt have any unique ID of its own and relies on parent ID for uniqueness.
 
-	BigtableMemoryLayerParent `json:",inline"`
+	// Immutable. The BigtableCluster whose memory layer this resource manages.
+	// +required
+	ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
 }
 
 // BigtableMemoryLayerStatus defines the config connector machine state of BigtableMemoryLayer
