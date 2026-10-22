@@ -94,7 +94,7 @@ type ControllerArgs struct {
 	MapperPrefix                   string // Optional package qualifier (e.g. "apihub.") for mapper calls
 	ResourceNameField              string // Go field name on resource proto, e.g., "Name" (empty if resource proto has no name field)
 	HasLabels                      bool   // Spec has Labels or proto has labels
-	HasReferences                  bool   // Spec has *Ref fields -> emit common.NormalizeReferences
+	HasReferences                  bool   // Spec has *Ref fields -> emit common.NormalizeGreenfieldReferences
 	HasObservedState               bool   // Status has ObservedState
 	MapperVersionSuffix            string // "" by default, or "_v1alpha1" / "_v1beta1" when multiversion mappers are used
 	ObservedStateVersionSuffix     string // Optional override when ObservedState mapper version suffix differs from Spec mapper
@@ -381,7 +381,7 @@ func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *dire
 {{- end }}
 {{- if .HasReferences }}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 {{- end }}
@@ -1208,4 +1208,3 @@ func (a *{{.ProtoResource}}Adapter) Delete(ctx context.Context, deleteOp *direct
 	return true, nil
 }
 `
-

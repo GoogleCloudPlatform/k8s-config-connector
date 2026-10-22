@@ -107,7 +107,7 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 				"id := i.(*krm.BeyondCorpAppConnectionIdentity)",
 				"if !strings.HasPrefix(url, \"//beyondcorp.googleapis.com/\") {",
 				"u.Object = uObj\n\tu.SetName(a.id.String())\n\tu.SetGroupVersionKind(krm.BeyondCorpAppConnectionGVK)",
-				"common.NormalizeReferences(ctx, reader, obj, nil)",
+				"common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)",
 				"Parent:          a.id.ParentString()",
 				"AppConnectionId: a.id.ID()",
 				"resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(",
