@@ -16,7 +16,6 @@ package common
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -249,68 +248,5 @@ func TestNormalizeManagedComputeURIs(t *testing.T) {
 
 	if !cmp.Equal(pb.NatIps, want) {
 		t.Errorf("unexpected normalized URIs (-want +got):\n%s", cmp.Diff(want, pb.NatIps))
-	}
-}
-
-type mockLegacyExternalNormalizer struct {
-	Name      string
-	Namespace string
-	External  string
-	calls     int
-}
-
-var _ refs.ExternalNormalizer = &mockLegacyExternalNormalizer{}
-
-func (r *mockLegacyExternalNormalizer) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	r.calls++
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external")
-	}
-	if r.External == "" && r.Name != "" {
-		r.External = "projects/test-proj/locations/us-central1/items/" + r.Name
-	}
-	return r.External, nil
-}
-
-type testLegacyNormObj struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              struct {
-		ParentRef *mockLegacyExternalNormalizer
-		EmptyRef  *mockLegacyExternalNormalizer
-		SliceRefs []*mockLegacyExternalNormalizer
-	}
-}
-
-func (t *testLegacyNormObj) DeepCopyObject() runtime.Object {
-	return t
-}
-
-func TestNormalizeReferences_ExternalNormalizerIdempotent(t *testing.T) {
-	ctx := context.Background()
-	kube := fake.NewClientBuilder().WithScheme(runtime.NewScheme()).Build()
-
-	obj := &testLegacyNormObj{}
-	// Simulate New*Identity having already normalized ParentRef (setting External while leaving Name non-empty)
-	obj.Spec.ParentRef = &mockLegacyExternalNormalizer{
-		Name:     "my-parent",
-		External: "projects/test-proj/locations/us-central1/items/my-parent",
-	}
-	obj.Spec.EmptyRef = &mockLegacyExternalNormalizer{}
-	obj.Spec.SliceRefs = []*mockLegacyExternalNormalizer{
-		{Name: "item-1"},
-	}
-
-	if err := NormalizeReferences(ctx, kube, obj, nil); err != nil {
-		t.Fatalf("NormalizeReferences failed: %v", err)
-	}
-	if obj.Spec.ParentRef.calls != 0 {
-		t.Errorf("expected already-normalized ParentRef not to be called again, got %d calls", obj.Spec.ParentRef.calls)
-	}
-	if obj.Spec.EmptyRef.calls != 0 {
-		t.Errorf("expected zero-value EmptyRef not to be called, got %d calls", obj.Spec.EmptyRef.calls)
-	}
-	if obj.Spec.SliceRefs[0].calls != 1 || obj.Spec.SliceRefs[0].External == "" {
-		t.Errorf("expected SliceRefs[0] to be normalized once, got calls=%d external=%q", obj.Spec.SliceRefs[0].calls, obj.Spec.SliceRefs[0].External)
 	}
 }

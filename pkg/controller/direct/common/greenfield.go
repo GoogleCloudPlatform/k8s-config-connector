@@ -23,6 +23,7 @@ import (
 	"slices"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -32,6 +33,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // CompareGreenfieldSpec executes the 5-step greenfield spec comparison pipeline:
@@ -515,4 +517,86 @@ func setProtoLabels(msg proto.Message, labelsFieldName string, labels map[string
 	for k, v := range labels {
 		m.Set(protoreflect.ValueOfString(k).MapKey(), protoreflect.ValueOfString(v))
 	}
+}
+
+// NormalizeGreenfieldReferences resolves all KRM references on obj, including:
+//   - *refs.ProjectRef
+//   - refs.Ref
+//   - refs.ExternalNormalizer (clearing Name and Namespace once External is populated so subsequent NormalizedExternal calls are idempotent)
+func NormalizeGreenfieldReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, opts ...NormalizeOption) error {
+	base := &refNormalizer{
+		ctx:     ctx,
+		kube:    reader,
+		src:     obj,
+		project: projectRef,
+	}
+	for _, opt := range opts {
+		opt(base)
+	}
+	return VisitFields(obj, &greenfieldRefNormalizer{refNormalizer: base})
+}
+
+type greenfieldRefNormalizer struct {
+	*refNormalizer
+}
+
+func (r *greenfieldRefNormalizer) VisitField(path string, v any) error {
+	if r.skipPaths != nil {
+		if r.skipPaths[path] || r.skipPaths[strings.TrimPrefix(path, ".")] {
+			return nil
+		}
+	}
+
+	if _, ok := v.(*refs.ProjectRef); ok {
+		return r.refNormalizer.VisitField(path, v)
+	}
+
+	if _, ok := v.(refs.Ref); ok {
+		return r.refNormalizer.VisitField(path, v)
+	}
+
+	if extNorm, ok := v.(refs.ExternalNormalizer); ok {
+		if isNonEmptyExternalNormalizer(v) {
+			if _, err := extNorm.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	return nil
+}
+
+func isNonEmptyExternalNormalizer(v any) bool {
+	rv := reflect.ValueOf(v)
+	if !rv.IsValid() {
+		return false
+	}
+	if rv.Kind() == reflect.Ptr {
+		if rv.IsNil() {
+			return false
+		}
+		rv = rv.Elem()
+	}
+	if rv.Kind() != reflect.Struct {
+		return true
+	}
+	nameField := rv.FieldByName("Name")
+	extField := rv.FieldByName("External")
+	if nameField.IsValid() || extField.IsValid() {
+		if nameField.IsValid() && extField.IsValid() && !nameField.IsZero() && !extField.IsZero() {
+			// Legacy ExternalNormalizer implementations set r.External in-place without clearing r.Name,
+			// and return "cannot specify both name and external" if NormalizedExternal is called a second time
+			// (both when VisitFields visits the pointer and then its dereferenced struct, and when
+			// GetIdentity/New*Identity normalizes the parent ref before NormalizeGreenfieldReferences runs).
+			return false
+		}
+		return (nameField.IsValid() && !nameField.IsZero()) || (extField.IsValid() && !extField.IsZero())
+	}
+	for i := 0; i < rv.NumField(); i++ {
+		if !rv.Field(i).IsZero() {
+			return true
+		}
+	}
+	return false
 }

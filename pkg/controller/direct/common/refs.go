@@ -93,59 +93,15 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		} else if ref != nil {
 			*projectRef = *ref
 		}
-		return nil
 	}
 
 	if ref, ok := v.(refs.Ref); ok {
 		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
 		}
-		return nil
-	}
-
-	if extNorm, ok := v.(refs.ExternalNormalizer); ok {
-		if isNonEmptyExternalNormalizer(v) {
-			if _, err := extNorm.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
-				return err
-			}
-		}
-		return nil
 	}
 
 	return nil
-}
-
-func isNonEmptyExternalNormalizer(v any) bool {
-	rv := reflect.ValueOf(v)
-	if !rv.IsValid() {
-		return false
-	}
-	if rv.Kind() == reflect.Ptr {
-		if rv.IsNil() {
-			return false
-		}
-		rv = rv.Elem()
-	}
-	if rv.Kind() != reflect.Struct {
-		return true
-	}
-	nameField := rv.FieldByName("Name")
-	extField := rv.FieldByName("External")
-	if nameField.IsValid() || extField.IsValid() {
-		if nameField.IsValid() && extField.IsValid() && !nameField.IsZero() && !extField.IsZero() {
-			// Legacy ExternalNormalizer implementations set r.External in-place without clearing r.Name,
-			// and return "cannot specify both name and external" if NormalizedExternal is called a second time
-			// (e.g. when GetIdentity/New*Identity normalizes the parent ref before NormalizeReferences runs).
-			return false
-		}
-		return (nameField.IsValid() && !nameField.IsZero()) || (extField.IsValid() && !extField.IsZero())
-	}
-	for i := 0; i < rv.NumField(); i++ {
-		if !rv.Field(i).IsZero() {
-			return true
-		}
-	}
-	return false
 }
 
 // NormalizeManagedComputeURIs converts a proto message to its KRM representation,
