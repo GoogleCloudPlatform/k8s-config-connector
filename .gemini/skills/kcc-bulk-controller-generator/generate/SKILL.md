@@ -18,6 +18,7 @@ For each target service (`apis/<service>/`):
 2. **Existing Controller & Fuzzer Protection (Automatic + Pre-Check)**:
    - Both `generate-controller --prepopulate-resource` (without `--overwrite`) and `generate-fuzzer --prepopulate-resource` automatically skip any resource that already has a handwritten controller (`RegisterModel` for `<Kind>GVK` without `// +generated:controller`) or handwritten fuzzer.
    - However, only pass the target greenfield `--resource <Kind>:<ProtoMessage>` flags to `generate-controller` and `generate-fuzzer` in `apis/<service>/generate.sh`.
+   - **AIP-122 Resource Check:** Ensure each target `<ProtoMessage>` declares a `(google.api.resource)` option in the service's descriptor set and is not a legacy `tf2crd`/`dcl2crd` CRD; non-AIP-122 messages without `(google.api.resource)` (such as `DataprocJob`) require a handwritten controller.
 
 ---
 
@@ -41,7 +42,7 @@ ${CONTROLLERBUILDER} generate-fuzzer \
   --resource <KindB>:<ProtoB>
 ```
 
-- **Pinned Proto Descriptor Sets:** If `apis/<service>/generate.sh` passes `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb` to `generate-types`, pass the exact same `--proto-source-path` flag to `generate-controller` and `generate-fuzzer`.
+- **Pinned Proto Descriptor Sets:** If `apis/<service>/generate.sh` passes `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb` (or defines `PROTO_SHA` / `PROTO_SOURCE_PATH`) to `generate-types`, pass the exact same `--proto-source-path` flag to `generate-controller` and `generate-fuzzer`, and restore `.build/googleapis.pb` to the repo-pinned SHA in `apis/git.versions` if a service script checks out a custom `googleapis` commit.
 - **Single Binary Compilation:** Build `bin/controllerbuilder` once at the start of the batch (`go build -o bin/controllerbuilder ./dev/tools/controllerbuilder`) so every `apis/<service>/generate.sh` reuses the compiled binary.
 
 ---
@@ -60,6 +61,7 @@ For each target service:
    go test -v ./pkg/fuzztesting/fuzztests -run="FuzzAllMappers" -fuzztime=1s
    go test -v ./tests/apichecks -run TestDirectResourceFileNaming
    ```
+   - **MockGCP E2E Testing Note (When Applicable):** If running `tests/e2e` against `E2E_GCP_TARGET=mock`, set `KUBEBUILDER_ASSETS="${REPO_ROOT}/.build/envtest-bin"` and run one fixture per `go test` invocation (rather than batching multiple fixtures in a single `-run` regex), because a single failing fixture polls for 2 minutes before failing and can time out a multi-fixture batch before `go test` emits `--- PASS:` lines for sibling subtests.
 
 ---
 
