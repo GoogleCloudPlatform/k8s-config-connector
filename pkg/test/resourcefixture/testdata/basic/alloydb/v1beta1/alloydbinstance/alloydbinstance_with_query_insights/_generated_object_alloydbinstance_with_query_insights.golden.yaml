@@ -34,6 +34,18 @@ status:
   ipAddress: 10.1.2.3
   name: projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
   observedGeneration: 2
+  observedState:
+    observabilityInstanceInfo:
+      maxQueryStringLength: 10240
+      queryPlansPerMinute: 20
+      trackWaitEventTypes: true
+      trackWaitEvents: true
+    queryInsightsInfo:
+      enabled: true
+      queryPlansPerMinute: 10
+      queryStringLength: 1025
+      recordApplicationTags: true
+      recordClientAddress: true
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"
