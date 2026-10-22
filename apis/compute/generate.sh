@@ -44,7 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
   --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
-  --resource ComputeOrganizationSecurityPolicyAssociation:google.cloud.compute.v1beta.SecurityPolicyAssociation \
+  --resource ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
@@ -107,7 +107,7 @@ ${CONTROLLERBUILDER} generate-types \
 
 ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
-  --service google.cloud.compute.v1,google.cloud.compute.v1beta \
+  --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

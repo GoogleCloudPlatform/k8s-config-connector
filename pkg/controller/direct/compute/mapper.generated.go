@@ -20,7 +20,6 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
-// proto.service: google.cloud.compute.v1beta
 
 package compute
 
@@ -3995,7 +3994,7 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 }
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto", skipping
-func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *computepb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
 	if in == nil {
 		return nil
 	}
@@ -4012,11 +4011,11 @@ func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx 
 */
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto", skipping
-func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *computepb.SecurityPolicyAssociation {
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
 	if in == nil {
 		return nil
 	}
-	out := &computepb.SecurityPolicyAssociation{}
+	out := &pb.SecurityPolicyAssociation{}
 	out.AttachmentId = in.AttachmentID
 	// MISSING: DisplayName
 	// MISSING: ExcludedFolders
@@ -4029,7 +4028,7 @@ func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *d
 */
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto", skipping
-func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *computepb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
 	if in == nil {
 		return nil
 	}
@@ -4046,11 +4045,11 @@ func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCt
 */
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto", skipping
-func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *computepb.SecurityPolicyAssociation {
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
 	if in == nil {
 		return nil
 	}
-	out := &computepb.SecurityPolicyAssociation{}
+	out := &pb.SecurityPolicyAssociation{}
 	// MISSING: AttachmentID
 	out.DisplayName = in.DisplayName
 	// MISSING: ExcludedFolders

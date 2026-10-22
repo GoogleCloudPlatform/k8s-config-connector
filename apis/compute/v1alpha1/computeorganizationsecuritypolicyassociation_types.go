@@ -21,7 +21,7 @@ import (
 
 var ComputeOrganizationSecurityPolicyAssociationGVK = GroupVersion.WithKind("ComputeOrganizationSecurityPolicyAssociation")
 
-// +kcc:spec:proto=google.cloud.compute.v1beta.SecurityPolicyAssociation
+// +kcc:spec:proto=google.cloud.compute.v1.SecurityPolicyAssociation
 type ComputeOrganizationSecurityPolicyAssociationSpec struct {
 	/* Immutable. The resource that the security policy is attached to. */
 	AttachmentID string `json:"attachmentId"`
@@ -34,7 +34,7 @@ type ComputeOrganizationSecurityPolicyAssociationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// +kcc:status:proto=google.cloud.compute.v1beta.SecurityPolicyAssociation
+// +kcc:status:proto=google.cloud.compute.v1.SecurityPolicyAssociation
 type ComputeOrganizationSecurityPolicyAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeOrganizationSecurityPolicyAssociation's current state. */
