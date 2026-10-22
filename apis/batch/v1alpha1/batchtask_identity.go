@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -68,7 +67,7 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 	location := obj.Spec.Location
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	resourceID := ptr.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -77,7 +76,7 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 	}
 
 	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	externalRef := ptr.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
 		actualParent, actualResourceID, err := ParseTaskExternal(externalRef)
@@ -87,8 +86,8 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != direct.ValueOf(location) {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, direct.ValueOf(location))
+		if actualParent.Location != ptr.ValueOf(location) {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, ptr.ValueOf(location))
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -98,7 +97,7 @@ func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *BatchTask) 
 	return &TaskIdentity{
 		parent: &TaskParent{
 			ProjectID: projectID,
-			Location:  direct.ValueOf(location),
+			Location:  ptr.ValueOf(location),
 		},
 		id: resourceID,
 	}, nil

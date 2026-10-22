@@ -40,6 +40,7 @@ COPY dev/tasks/      dev/tasks/
 COPY dev/metadata/   dev/metadata/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
+COPY ptr/ ptr/
 COPY third_party/ third_party/
 COPY version/ version/
 COPY config/ config/

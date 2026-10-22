@@ -18,7 +18,7 @@ import (
 	"context"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -46,17 +46,17 @@ func (r *AccessLevelRef) GetGVK() schema.GroupVersionKind {
 
 func (r *AccessLevelRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
-		Name:      direct.ValueOf(r.Name),
-		Namespace: direct.ValueOf(r.Namespace),
+		Name:      ptr.ValueOf(r.Name),
+		Namespace: ptr.ValueOf(r.Namespace),
 	}
 }
 
 func (r *AccessLevelRef) GetExternal() string {
-	return direct.ValueOf(r.External)
+	return ptr.ValueOf(r.External)
 }
 
 func (r *AccessLevelRef) SetExternal(ref string) {
-	r.External = direct.LazyPtr(ref)
+	r.External = ptr.LazyPtr(ref)
 	r.Name = nil
 	r.Namespace = nil
 }
