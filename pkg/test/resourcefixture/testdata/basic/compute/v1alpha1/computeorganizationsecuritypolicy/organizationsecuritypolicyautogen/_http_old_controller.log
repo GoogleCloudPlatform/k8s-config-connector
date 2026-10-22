@@ -1,0 +1,278 @@
+POST https://compute.googleapis.com/compute/v1/locations/global/securityPolicies?alt=json&parentId=organizations%2F${organizationID}
+Content-Type: application/json
+
+{
+  "displayName": "tf-test${uniqueId}",
+  "parent": "organizations/${organizationID}",
+  "shortName": "tf-test${uniqueId}",
+  "type": "CLOUD_ARMOR"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263706812965e64d7a8365d06ca236493a8828a",
+  "operationType": "createOrganizationSecurityPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263706812965e64d7a8365d06ca236493a8828a",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263706812965e64d7a8365d06ca236493a8828a",
+  "operationType": "createOrganizationSecurityPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263706812965e64d7a8365d06ca236493a8828a",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${securityPolicyID}",
+  "parent": "organizations/${organizationID}",
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "default rule",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": false,
+      "priority": 2147483647
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "shortName": "tf-test${uniqueId}",
+  "type": "CLOUD_ARMOR"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+Content-Type: application/json
+
+{
+  "description": "Updated description",
+  "fingerprint": "abcdef0123A="
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263709239965e64d91a89c31ec3b1d42538d15f",
+  "operationType": "patchOrganizationSecurityPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263709239965e64d91a89c31ec3b1d42538d15f",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263709239965e64d91a89c31ec3b1d42538d15f",
+  "operationType": "patchOrganizationSecurityPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263709239965e64d91a89c31ec3b1d42538d15f",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${securityPolicyID}",
+  "parent": "organizations/${organizationID}",
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "default rule",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": false,
+      "priority": 2147483647
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "shortName": "tf-test${uniqueId}",
+  "type": "CLOUD_ARMOR"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263710753365e64da0176313e2e750cdfbd02ef",
+  "operationType": "deleteOrganizationSecurityPolicy",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263710753365e64da0176313e2e750cdfbd02ef",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "org-${organizationID}-179263710753365e64da0176313e2e750cdfbd02ef",
+  "operationType": "deleteOrganizationSecurityPolicy",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263710753365e64da0176313e2e750cdfbd02ef",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}

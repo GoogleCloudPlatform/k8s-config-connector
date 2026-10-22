@@ -1,9 +1,7 @@
-POST https://compute.googleapis.com/compute/v1/locations/global/securityPolicies?alt=json&parentId=organizations%2F${organizationID}
+POST https://compute.googleapis.com/compute/v1/locations/global/securityPolicies?parentId=organizations%2F${organizationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "displayName": "tf-test${uniqueId}",
   "parent": "organizations/${organizationID}",
   "shortName": "tf-test${uniqueId}",
   "type": "CLOUD_ARMOR"
@@ -23,10 +21,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255060063865e50b5caff7e40da7d3319d21586",
+  "name": "org-${organizationID}-179263700987965e64d42f6307f351d2e9ca90dc5a",
   "operationType": "createOrganizationSecurityPolicy",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255060063865e50b5caff7e40da7d3319d21586",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263700987965e64d42f6307f351d2e9ca90dc5a",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "user": "user@example.com"
@@ -34,8 +32,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -52,10 +50,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255060063865e50b5caff7e40da7d3319d21586",
+  "name": "org-${organizationID}-179263700987965e64d42f6307f351d2e9ca90dc5a",
   "operationType": "createOrganizationSecurityPolicy",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255060063865e50b5caff7e40da7d3319d21586",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263700987965e64d42f6307f351d2e9ca90dc5a",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${securityPolicyID}",
@@ -65,9 +63,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -111,9 +108,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Updated description",
@@ -134,10 +130,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255062464265e50b739466e4e0e8b3fd66ac8f6",
+  "name": "org-${organizationID}-179263703813865e64d5de929757c22e4181b7598b",
   "operationType": "patchOrganizationSecurityPolicy",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255062464265e50b739466e4e0e8b3fd66ac8f6",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263703813865e64d5de929757c22e4181b7598b",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${securityPolicyID}",
@@ -147,8 +143,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -165,10 +161,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255062464265e50b739466e4e0e8b3fd66ac8f6",
+  "name": "org-${organizationID}-179263703813865e64d5de929757c22e4181b7598b",
   "operationType": "patchOrganizationSecurityPolicy",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255062464265e50b739466e4e0e8b3fd66ac8f6",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263703813865e64d5de929757c22e4181b7598b",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${securityPolicyID}",
@@ -178,9 +174,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -225,9 +220,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/${securityPolicyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -243,10 +237,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255063973265e50b81f86842d4a1ef07570a73e",
+  "name": "org-${organizationID}-179263704985965e64d6916e4aa3cf6a54d48da443",
   "operationType": "deleteOrganizationSecurityPolicy",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255063973265e50b81f86842d4a1ef07570a73e",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263704985965e64d6916e4aa3cf6a54d48da443",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${securityPolicyID}",
@@ -256,8 +250,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -274,10 +268,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
-  "name": "org-${organizationID}-179255063973265e50b81f86842d4a1ef07570a73e",
+  "name": "org-${organizationID}-179263704985965e64d6916e4aa3cf6a54d48da443",
   "operationType": "deleteOrganizationSecurityPolicy",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179255063973265e50b81f86842d4a1ef07570a73e",
+  "selfLink": "https://www.googleapis.com/compute/v1/locations/global/operations/org-${organizationID}-179263704985965e64d6916e4aa3cf6a54d48da443",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${securityPolicyID}",

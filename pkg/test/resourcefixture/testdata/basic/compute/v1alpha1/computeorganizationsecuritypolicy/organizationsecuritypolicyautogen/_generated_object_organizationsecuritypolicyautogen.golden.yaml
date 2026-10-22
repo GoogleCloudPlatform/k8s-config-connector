@@ -3,11 +3,10 @@ kind: ComputeOrganizationSecurityPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: computeorganizationsecuritypolicy-${uniqueId}
@@ -16,7 +15,6 @@ spec:
   description: Updated description
   displayName: tf-test${uniqueId}
   parent: organizations/${organizationID}
-  resourceID: ${securityPolicyID}
   type: CLOUD_ARMOR
 status:
   conditions:
@@ -26,5 +24,5 @@ status:
     status: "True"
     type: Ready
   fingerprint: abcdef0123A=
-  observedGeneration: 3
+  observedGeneration: 2
   policyId: ${securityPolicyID}
