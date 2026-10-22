@@ -892,6 +892,8 @@ func TestReconcile_BackoffMaxDelay_Positive(t *testing.T) {
 	}
 
 	expectedDelays := []time.Duration{
+		250 * time.Millisecond,
+		500 * time.Millisecond,
 		1 * time.Second,
 		2 * time.Second,
 		4 * time.Second,
@@ -1035,16 +1037,16 @@ func TestReconcile_BackoffMaxDelay_SuccessReset(t *testing.T) {
 		},
 	}
 
-	// 1st failure: 1s
+	// 1st failure: 250ms
 	res, err := r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected 1s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected 250ms backoff, got err: %v, res: %+v", err, res)
 	}
 
-	// 2nd failure: 2s
+	// 2nd failure: 500ms
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 2*time.Second {
-		t.Fatalf("expected 2s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 500*time.Millisecond {
+		t.Fatalf("expected 500ms backoff, got err: %v, res: %+v", err, res)
 	}
 
 	// Succeeded reconcile
@@ -1054,11 +1056,11 @@ func TestReconcile_BackoffMaxDelay_SuccessReset(t *testing.T) {
 		t.Fatalf("expected successful reconcile, got err: %v", err)
 	}
 
-	// Subsequent failure should reset back to base delay (1s)
+	// Subsequent failure should reset back to base delay (250ms)
 	adapter.createErr = fmt.Errorf("transient error again")
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected reset to 1s backoff after success, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected reset to 250ms backoff after success, got err: %v, res: %+v", err, res)
 	}
 }
 
@@ -1172,16 +1174,16 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		},
 	}
 
-	// 1st failure: 1s
+	// 1st failure: 250ms
 	res, err := r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected 1s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected 250ms backoff, got err: %v, res: %+v", err, res)
 	}
 
-	// 2nd failure: 2s
+	// 2nd failure: 500ms
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 2*time.Second {
-		t.Fatalf("expected 2s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 500*time.Millisecond {
+		t.Fatalf("expected 500ms backoff, got err: %v, res: %+v", err, res)
 	}
 
 	// Remove finalizers and delete the object from k8s to trigger NotFound
@@ -1202,7 +1204,7 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		t.Fatalf("expected clean exit on NotFound, got err: %v, res: %+v", err, res)
 	}
 
-	// Re-create the object and fail: delay should start back at base delay (1s)
+	// Re-create the object and fail: delay should start back at base delay (250ms)
 	uRecreated := &unstructured.Unstructured{}
 	uRecreated.SetGroupVersionKind(testGVK)
 	uRecreated.SetName("test-resource")
@@ -1214,7 +1216,7 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		t.Fatalf("failed to re-create object in fake client: %v", err)
 	}
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected reset to 1s backoff after NotFound cleanup, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected reset to 250ms backoff after NotFound cleanup, got err: %v, res: %+v", err, res)
 	}
 }
