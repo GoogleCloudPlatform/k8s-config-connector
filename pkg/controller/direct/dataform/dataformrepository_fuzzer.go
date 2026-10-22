@@ -39,6 +39,8 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".internal_metadata")
 	fuzzer.UnimplementedFields.Insert(".team_folder_name")
 	fuzzer.UnimplementedFields.Insert(".containing_folder")
+	fuzzer.Unimplemented_NotYetTriaged(".git_remote_settings.effective_default_branch")
+	fuzzer.Unimplemented_NotYetTriaged(".git_remote_settings.git_repository_link")
 
 	return fuzzer
 }
