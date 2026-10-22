@@ -20,8 +20,6 @@ package documentai
 
 import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -45,22 +43,4 @@ func documentAIProcessorDefaultVersionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".processor")
 
 	return f
-}
-
-func DocumentAIProcessorDefaultVersionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SetDefaultProcessorVersionRequest) *krmv1alpha1.DocumentAIProcessorDefaultVersionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.DocumentAIProcessorDefaultVersionSpec{}
-	out.Version = in.GetDefaultProcessorVersion()
-	return out
-}
-
-func DocumentAIProcessorDefaultVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DocumentAIProcessorDefaultVersionSpec) *pb.SetDefaultProcessorVersionRequest {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SetDefaultProcessorVersionRequest{}
-	out.DefaultProcessorVersion = in.Version
-	return out
 }

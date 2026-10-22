@@ -11,7 +11,7 @@ Implemented round-trip KRM fuzzer for `DocumentAIProcessorDefaultVersion` (`docu
 - Furthermore, field names between KRM and Proto do not match directly:
   - KRM `spec.version` maps to proto `.default_processor_version`.
   - KRM `spec.resourceID` represents the processor identity.
-- Therefore, handwritten `DocumentAIProcessorDefaultVersionSpec_v1alpha1_FromProto` and `DocumentAIProcessorDefaultVersionSpec_v1alpha1_ToProto` functions were implemented directly in the fuzzer file, following patterns established in other request-based fuzzers (such as `ComputeDiskResourcePolicyAttachment`).
+- Therefore, handwritten `DocumentAIProcessorDefaultVersionSpec_v1alpha1_FromProto` and `DocumentAIProcessorDefaultVersionSpec_v1alpha1_ToProto` functions were implemented in a dedicated mapper file `documentaiprocessordefaultversion_mapper.go` rather than inside the fuzzer file.
 
 ### 2. Spec-Only Fuzzing with `NewKRMTypedSpecFuzzer`
 - `DocumentAIProcessorDefaultVersion` is a brownfield Terraform-migrated resource whose KRM Status contains only `conditions` and `observedGeneration`, with no `observedState` sub-struct.

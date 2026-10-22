@@ -45,7 +45,7 @@ This skill guides an automated agent through the process of implementing a round
      - The Status ObservedState ToProto mapper
    - **Spec-Only Resources (No ObservedState or RPC Request Messages):**
      - If the resource does not have an `ObservedState` in its Status (e.g., resources that only have `conditions` and `observedGeneration`, or resources that map to RPC request messages such as `SetDefaultProcessorVersionRequest` or `AddResourcePoliciesDiskRequest`):
-       - Note that `controllerbuilder generate-mapper` skips messages ending in `*Request`, so `Spec_FromProto` and `Spec_ToProto` should be implemented manually in the fuzzer file (or mapping file).
+       - Note that `controllerbuilder generate-mapper` skips messages ending in `*Request`, so `Spec_FromProto` and `Spec_ToProto` should be implemented manually in a dedicated `<kind>_mapper.go` file (e.g., `pkg/controller/direct/<service>/<kind>_mapper.go`) rather than inside the fuzzer file.
        - Instantiate using `fuzztesting.NewKRMTypedSpecFuzzer`, passing the zero-value proto and the Spec FromProto/ToProto mappers.
        - Register the fuzzer using `fuzztesting.RegisterKRMSpecFuzzer` instead of `RegisterKRMFuzzer`.
    - Ensure the direct package is registered in `pkg/controller/direct/register/register.go` by adding an anonymous import in alphabetical order (e.g., `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"`), otherwise its `init()` function will not be executed by the fuzz test suite.
