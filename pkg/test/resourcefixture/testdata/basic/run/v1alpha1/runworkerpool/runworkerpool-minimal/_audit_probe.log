@@ -7,7 +7,7 @@ X-Gfe-Server: ESF
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
-  "description": "Updated Minimal WorkerPool description",
+  "description": "Minimal WorkerPool description",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "instanceSplitStatuses": [
@@ -28,7 +28,7 @@ X-Gfe-Server: ESF
   "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
-  "observedGeneration": "2",
+  "observedGeneration": "1",
   "scaling": {
     "manualInstanceCount": 1
   },

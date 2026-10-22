@@ -258,9 +258,11 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 	}
 
 	obj.UpdateTime = timestamppb.Now()
-	obj.Generation++
-
 	templateChanged := !proto.Equal(oldTemplate, obj.Template)
+	if templateChanged {
+		obj.Generation++
+	}
+
 	s.populateWorkerPoolDefaults(name, obj, true, templateChanged)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -270,6 +272,11 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 	meta := proto.CloneOf(obj)
 	meta.CustomAudiences = nil
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	if !templateChanged {
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return s.operations.DoneLRO(ctx, lroPrefix, meta, ret)
+	}
 	return s.operations.StartLRO(ctx, lroPrefix, meta, func() (protoreflect.ProtoMessage, error) {
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil

@@ -6,7 +6,9 @@ spec:
   location: "us-central1"
   projectRef:
     external: "${projectId}"
-  description: "Updated Minimal WorkerPool description"
+  description: "Minimal WorkerPool description"
+  customAudiences:
+  - "https://example.com"
   template:
     containers:
     - image: "us-docker.pkg.dev/cloudrun/container/hello"
