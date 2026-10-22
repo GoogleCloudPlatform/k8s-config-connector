@@ -87,13 +87,16 @@ There are **3 concrete behavioral improvements** in PR #14251's template that we
 
 ## Appendix: Empirical A/B Evaluation Summary for PR #14222 + PR #14224
 
-To ensure an objective benchmark, we replaced all **189** Greenfield GAPIC proto-backed controllers on disk using our deterministic generator (`PR #14222` + `PR #14224`) and ran the full compilation and E2E test suite (`155` resources with basic E2E fixtures):
+To ensure an objective benchmark, we evaluated our deterministic generator (`PR #14222` + `PR #14224`) both on the initial 188-controller Greenfield cohort and on the expanded **215-controller** Greenfield cohort on current `master` (including 26 per-service `PROTO_SHA` descriptor resources and newly added `generate.sh` mappings from `#14125`):
 
-| Metric | Pass Rate | Count | Notes |
-| :--- | :---: | :---: | :--- |
-| **Tier 1 — Compilation** | **98.9%** | `187 / 189` | Only 2 non-standard multi-client/flattened-request outliers (`ApigeeEnvgroupAttachment`, `CloudBuildWorkerPool`). |
-| **Tier 2 — Standards-Adjusted E2E Pass Rate (MockGCP + Real GCP)** | **95.5%** | `148 / 155` | Verified on MockGCP (`144 / 155`) plus Real GCP (`E2E_GCP_TARGET=real` on `DataplexAspectType`, `TasksQueue`, `VertexAIFeaturestore`, and `BigQueryConnectionConnection`—all 4 passed 100% on Real GCP, confirming their MockGCP `updateMask` failures were MockGCP simulator limitations). |
-| **Projected Tier 2 with `AdapterForURL` + `Export()` Fix (Lesson #2 above)** | **96.1%** | `149 / 155` | Fixes `BillingAccount` (`_exported.yaml`), leaving only **6** genuinely bespoke controllers (`3.9%`) out of 155. |
+| Metric | Initial Baseline (188 Cohort) | Final Post-Implementation (185 Original Cohort) | Final Post-Implementation (215 Expanded Cohort) | Notes |
+| :--- | :---: | :---: | :---: | :--- |
+| **Tier 1 — Compilation** | **97.9%** (`184 / 188`) | **99.5%** (`184 / 185`) | **99.5%** (`214 / 215`) | Only **1** non-compiling controller (`PrivilegedAccessManagerEntitlement`, whose handwritten `Spec_ToProto` takes 3 arguments). |
+| **Tier 1 — Static Grade `A + B` (`>= 80/100`)** | **85.6%** (`161 / 188`) | **89.2%** (`165 / 185`) | **85.1%** (`183 / 215`) | `86 Grade A (40.0%)`, `97 Grade B (45.1%)`, `31 Grade C (14.4%)`, `1 Grade F (0.5%)` across the 215 cohort. |
+| **Tier 2 — Level 2a Full CRUD Lifecycle Pass (`Create + Update + Delete -> Ready`)** | **75.2%** (`115 / 153`) | **82.3%** (`130 / 158`) | **82.2%** (`152 / 185`) | **+7.1 percentage points** improvement on MockGCP full CRUD lifecycle after UUS `CompareGreenfieldSpec` (`#14222`) + Part 2 fixes (`#14224`). |
+| **Tier 2 — Level 2b KRM Golden Object Pass (`_generated_object_*.golden.yaml`)** | **69.9%** (`107 / 153`) | **76.6%** (`121 / 158`) | **77.3%** (`143 / 185`) | **+7.4 percentage points** improvement in exact KRM `Spec` + `Status.ObservedState` golden object fidelity. |
+| **Tier 2 — Level 2c Strict Raw Wire `_http.log` Pass (`PASS_ALL`)** | **15.7%** (`24 / 153`) | **21.5%** (`34 / 158`) | **19.5%** (`36 / 185`) | **+12 `PASS_ALL` fixtures** (up from 24 to 36), including **`BillingAccount`** (`_exported.yaml` now passes `PASS_ALL` via generated `AdapterForURL` + `Export()`). |
+| **Tier 2 — Level 2c* Standards-Adjusted Wire Parity** | **65.4%** (`100 / 153`) | **74.7%** (`118 / 158`) | **75.7%** (`140 / 185`) | Accounts for intentional Canonical Standards improvements (`New*RESTClient` vs. legacy gRPC logs in `21` fixtures, and UUS `CompareGreenfieldSpec` / sorted `updateMask` / pre-Delete `Get` in `83` fixtures). |
 
 ---
 
@@ -109,6 +112,22 @@ All 3 behavioral improvements from Part 2—along with UUS (`spec-diff`) alignme
    * Adds `--prepopulate-resource` (default `false`) and repeatable `--resource <Kind>:<ProtoMessage>` to `generate-controller`, emits `// +generated:controller`, and protects existing handwritten controllers while regenerating `// +generated:controller` files in place.
 3. **Deterministic Fuzzer Generation ([PR #13561](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13561)):**
    * Adds `--prepopulate-resource` (aliased with `--deterministic`) to `generate-fuzzer`, emitting `<kind>_fuzzer.generated.go` (`// +generated:fuzzer`) while skipping existing handwritten fuzzers.
+   * Unwraps `ObservedState` inside `<Kind>Status` mappers and prioritizes `<Kind>Status` when direct proto-mapped status fields exist on `<Kind>Status`.
 4. **Greenfield Skills & Workflow Integration ([PR #14267](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14267)):**
    * Updates single-resource greenfield controller/reviewer skills (`generated/SKILL.md` vs. `legacy/SKILL.md` router so in-flight PRs are unaffected), adds `.gemini/skills/kcc-bulk-controller-generator/` (supporting both post-judgement and pre-judgement bulk generation), and adds `.gemini/skills/kcc-direct-greenfield-types-implementer/judgement-with-controller/SKILL.md`.
+
+---
+
+## Part 4: Live Deterministic Fuzzer Benchmark ([PR #13561](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13561))
+
+In addition to static field-classification agreement (`TestFuzzerAgreement`), we executed a **live round-trip fuzzing benchmark** (`FuzzSpec` + `FuzzStatus`, 20 random seeds per fuzzer) replacing all **352** comparable `// +tool:fuzz-gen` fuzzers on `master` with deterministic fuzzers generated by `FuzzerGenerator.Generate`:
+
+| Metric | Result | Count | Notes |
+| :--- | :---: | :---: | :--- |
+| **Static Field Classification Agreement (`Agreed or Stricter`)** | **95.0%** | `7,136 / 7,511` fields | `6,289 / 7,511` (`83.7%`) exact match with LLM fuzzers + `847 / 7,511` (`11.3%`) **stricter** (where bulk LLM fuzzers from `#14125` left mapped Spec/Status subtrees as `Unimplemented_NotYetTriaged`, whereas the deterministic classifier classifies their leaf fields as `SpecField` / `StatusField`). Exceeds the `90%` target (`TestFuzzerAgreement` passes). |
+| **Compilation Rate (Against Generated Mappers)** | **99.7%** | `351 / 352` | Only 1 resource (`AIPlatformModel`) fails to compile when replacing an existing `_fuzzer.go` file because a sibling file in `pkg/controller/direct/aiplatform/` calls a private helper that was co-located inside `model_fuzzer.go`. (4 other legacy `_fuzzer.go` files defined bespoke 2-arg mapper wrapper functions inline inside `_fuzzer.go` itself.) |
+| **Zero-Touch Live Round-Trip Pass (`PASS_BOTH` on Existing Mappers)** | **65.1%** | `229 / 352` | Passes both `FuzzSpec` and `FuzzStatus` with 0 lines of handwritten code or filter hooks. |
+| **Passes with `<funcName>FilterSpec` / `<funcName>FilterStatus` Hook** | **+9.7%** | `34 / 352` | Resources whose existing fuzzer required a custom `f.FilterSpec` / `f.FilterStatus` hook for value-domain normalization (e.g., RFC3339 string parsing, URL self-link formatting); `FuzzerGenerator` automatically wires `<funcName>FilterSpec` and `<funcName>FilterStatus` when present in the package. |
+| **Exposes Real Mapper Gaps Hidden by LLM `UnimplementedFields`** | **+11.4%** | `40 / 352` | Resources where the deterministic fuzzer is **stricter** than the LLM fuzzer—testing fields that exist in both the proto and KRM struct, which the LLM fuzzer had masked in `UnimplementedFields` to hide missing handwritten mapper wiring. |
+| **Remaining Brownfield/Compute Structural Outliers** | **10.5%** | `37 / 352` | Primarily legacy `Compute*` / brownfield resources with custom `Identity` or non-standard KRM struct layouts (plus `7` unregistered / `5` inline-wrapper files). |
 
