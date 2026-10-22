@@ -483,8 +483,8 @@ func buildFuzzerNode(prefix string, fd protoreflect.FieldDescriptor, spec, statu
 	n := &fuzzerNode{
 		path:   prefix + "." + string(fd.Name()),
 		field:  fd,
-		spec:   pairFuzzerField(fd, spec),
-		status: pairFuzzerField(fd, status),
+		spec:   pairFuzzerField(fd, spec, depth, onPath),
+		status: pairFuzzerField(fd, status, depth, onPath),
 	}
 	if depth < fuzzerMaxDepth && (n.spec.coverage == fuzzerCoveredStruct || n.status.coverage == fuzzerCoveredStruct) {
 		key := fuzzerPathKey{message: fd.Message().FullName(), spec: n.spec.goStruct, status: n.status.goStruct}
@@ -522,7 +522,7 @@ func computeNodeClasses(n *fuzzerNode) fuzzerClass {
 	}
 }
 
-func pairFuzzerField(fd protoreflect.FieldDescriptor, parent fuzzerSide) fuzzerSide {
+func pairFuzzerField(fd protoreflect.FieldDescriptor, parent fuzzerSide, depth int, onPath map[fuzzerPathKey]bool) fuzzerSide {
 	if parent.coverage == fuzzerNotCovered {
 		return fuzzerSide{}
 	}
@@ -557,6 +557,31 @@ func pairFuzzerField(fd protoreflect.FieldDescriptor, parent fuzzerSide) fuzzerS
 		if !fd.IsMap() {
 			if st, _ := parent.pkg.lookupStruct(krmField, typeName); st != nil && findStructField(st, goFieldName(fd)) == nil {
 				return fuzzerSide{}
+			}
+		} else if fd.MapValue().Kind() == protoreflect.MessageKind && !isOpaqueFuzzerMessage(fd.MapValue().Message()) {
+			if idx := strings.Index(krmField.Type, "]"); idx >= 0 {
+				valType := strings.TrimLeft(krmField.Type[idx+1:], "*")
+				if st, stPkg := parent.pkg.lookupStruct(krmField, valType); st != nil {
+					valKey := fuzzerPathKey{message: fd.MapValue().Message().FullName(), spec: st}
+					if depth >= fuzzerMaxDepth || onPath[valKey] {
+						return fuzzerSide{}
+					}
+					var valMapper *fuzzerMapperCoverage
+					if parent.direct != nil {
+						if pair := parent.direct.findStructMapperPair(protoNameForType(fd.MapValue().Message()), parent.version, st.Name); pair != nil {
+							valMapper = parent.direct.inspectMapperPair(pair)
+						}
+					}
+					valSide := fuzzerSide{coverage: fuzzerCoveredStruct, goStruct: st, pkg: stPkg, direct: parent.direct, version: parent.version, mapper: valMapper}
+					onPath[valKey] = true
+					children := buildFuzzerNodes("", fd.MapValue().Message(), valSide, fuzzerSide{}, depth+1, onPath)
+					delete(onPath, valKey)
+					for _, child := range children {
+						if child.classes&fuzzerClassUnimplemented != 0 {
+							return fuzzerSide{}
+						}
+					}
+				}
 			}
 		}
 		return fuzzerSide{coverage: fuzzerCoveredOpaque, hint: hint}

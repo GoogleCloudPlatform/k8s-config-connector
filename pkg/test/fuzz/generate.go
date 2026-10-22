@@ -230,6 +230,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randStream.Int31()
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "int64->string":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randStream.Int63()
+					v := randomString(randStream)
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
 
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
@@ -504,7 +511,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 
 					return true
 				})
-			case "string->bytes":
+			case "string->bytes", "int64->string":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {

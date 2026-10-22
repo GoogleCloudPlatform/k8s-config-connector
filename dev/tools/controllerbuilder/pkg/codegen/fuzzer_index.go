@@ -348,7 +348,7 @@ func (idx *goPackageIndex) inspectMapperPair(pair *fuzzerMapperPair) *fuzzerMapp
 		conditionalGuard: make(map[string]bool),
 	}
 	fromAlloc := cov.inspectFromProtoBody(from)
-	toAlloc := cov.inspectToProtoBody(to)
+	toAlloc := cov.inspectToProtoBody(to, idx)
 	cov.isStub = !fromAlloc && !toAlloc && len(cov.fromReads) == 0 && len(cov.toWrites) == 0
 	return cov
 }
@@ -386,7 +386,7 @@ func (c *fuzzerMapperCoverage) recordGuardedProtoReads(node ast.Node, file *goIn
 	})
 }
 
-func (c *fuzzerMapperCoverage) inspectToProtoBody(to *goIndexedFunc) (hasAlloc bool) {
+func (c *fuzzerMapperCoverage) inspectToProtoBody(to *goIndexedFunc, idx *goPackageIndex) (hasAlloc bool) {
 	ast.Inspect(to.decl.Body, func(n ast.Node) bool {
 		switch s := n.(type) {
 		case *ast.AssignStmt:
@@ -394,13 +394,13 @@ func (c *fuzzerMapperCoverage) inspectToProtoBody(to *goIndexedFunc) (hasAlloc b
 				hasAlloc = true
 			}
 			for i, lhs := range s.Lhs {
-				if sel, ok := lhs.(*ast.SelectorExpr); ok && (i >= len(s.Rhs) || !isNilIdent(s.Rhs[i])) {
+				if sel, ok := lhs.(*ast.SelectorExpr); ok && (i >= len(s.Rhs) || !idx.isNilOrStubCallExpr(s.Rhs[i])) {
 					c.toWrites[normProtoIdent(sel.Sel.Name)] = true
 				}
 			}
 		case *ast.CompositeLit:
 			for _, elt := range s.Elts {
-				if kv, ok := elt.(*ast.KeyValueExpr); ok && !isNilIdent(kv.Value) {
+				if kv, ok := elt.(*ast.KeyValueExpr); ok && !idx.isNilOrStubCallExpr(kv.Value) {
 					if key, ok := kv.Key.(*ast.Ident); ok {
 						c.toWrites[normProtoIdent(key.Name)] = true
 					}
@@ -410,6 +410,36 @@ func (c *fuzzerMapperCoverage) inspectToProtoBody(to *goIndexedFunc) (hasAlloc b
 		return true
 	})
 	return hasAlloc
+}
+
+func (idx *goPackageIndex) isNilOrStubCallExpr(expr ast.Expr) bool {
+	if isNilIdent(expr) {
+		return true
+	}
+	call, ok := expr.(*ast.CallExpr)
+	if !ok || idx == nil {
+		return false
+	}
+	id, ok := call.Fun.(*ast.Ident)
+	if !ok {
+		return false
+	}
+	fn := idx.funcs[id.Name]
+	if fn == nil || fn.decl.Body == nil {
+		return false
+	}
+	hasNonNilReturn := false
+	ast.Inspect(fn.decl.Body, func(n ast.Node) bool {
+		if ret, ok := n.(*ast.ReturnStmt); ok {
+			for _, r := range ret.Results {
+				if !isNilIdent(r) {
+					hasNonNilReturn = true
+				}
+			}
+		}
+		return true
+	})
+	return !hasNonNilReturn
 }
 
 func assignsIdent(s *ast.AssignStmt, name string) bool {
