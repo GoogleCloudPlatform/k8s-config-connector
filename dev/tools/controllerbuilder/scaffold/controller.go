@@ -56,14 +56,20 @@ func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
 }
 
 type ControllerBuilder struct {
-	rootPath  string
-	service   string
-	proto     string
-	overwrite bool
+	rootPath            string
+	service             string
+	proto               string
+	overwrite           bool
+	prepopulateResource bool
 }
 
 func (c *ControllerBuilder) WithOverwrite(overwrite bool) *ControllerBuilder {
 	c.overwrite = overwrite
+	return c
+}
+
+func (c *ControllerBuilder) WithPrepopulateResource(prepopulate bool) *ControllerBuilder {
+	c.prepopulateResource = prepopulate
 	return c
 }
 
@@ -121,8 +127,13 @@ func RenderController(cArgs *ccTemplate.ControllerArgs) ([]byte, error) {
 }
 
 func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs) error {
-	cArgs.EnsureDefaults()
-	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
+	usePrepopulate := c.prepopulateResource || cArgs.PassesApplied
+	tmplText := ccTemplate.LegacyControllerTemplate
+	if usePrepopulate {
+		cArgs.EnsureDefaults()
+		tmplText = ccTemplate.ControllerTemplate
+	}
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(tmplText)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %w", err)
 	}
@@ -136,12 +147,21 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	if err != nil {
 		return err
 	}
-	shouldSkip, err := c.shouldSkipControllerWrite(controllerFilePath, cArgs)
-	if err != nil {
-		return err
-	}
-	if shouldSkip {
-		return nil
+	if usePrepopulate {
+		shouldSkip, err := c.shouldSkipControllerWrite(controllerFilePath, cArgs)
+		if err != nil {
+			return err
+		}
+		if shouldSkip {
+			return nil
+		}
+	} else if !c.overwrite {
+		if _, err := os.Stat(controllerFilePath); err == nil {
+			klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
+			return nil
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("unexpected controller file: %w", err)
+		}
 	}
 
 	// Write the generated controller.go to pkg/controller/direct/<service>/<resource>_controller.go
@@ -162,7 +182,7 @@ func (c *ControllerBuilder) shouldSkipControllerWrite(controllerFilePath string,
 	}
 	existing, err := os.ReadFile(controllerFilePath)
 	if err == nil {
-		if cArgs.PassesApplied && bytes.Contains(existing, []byte(GeneratedControllerMarker)) {
+		if (c.prepopulateResource || cArgs.PassesApplied) && bytes.Contains(existing, []byte(GeneratedControllerMarker)) {
 			return false, nil
 		}
 		klog.V(1).Infof("file %s already exists (handwritten), skipping\n", controllerFilePath)

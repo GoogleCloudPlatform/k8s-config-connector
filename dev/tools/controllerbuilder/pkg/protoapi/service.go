@@ -206,13 +206,15 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 		}
 	}
 	sm := &StandardMethod{
-		Descriptor:      m,
-		ParentField:     fieldIfPresent(req, "parent"),
-		NameField:       nameField,
-		ResourceField:   fieldOfType(req, resource),
-		UpdateMaskField: updateMaskFieldIfPresent(req),
-		ForceField:      fieldIfPresent(req, "force"),
-		Response:        string(m.Output().FullName()),
+		Descriptor:    m,
+		ParentField:   fieldIfPresent(req, "parent"),
+		NameField:     nameField,
+		ResourceField: fieldOfType(req, resource),
+		ForceField:    fieldIfPresent(req, "force"),
+		Response:      string(m.Output().FullName()),
+	}
+	if verb == "Update" {
+		sm.UpdateMaskField = updateMaskFieldIfPresent(req)
 	}
 	if verb == "Create" {
 		sm.IDField = clientIDField(req, resource)
@@ -227,11 +229,21 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 }
 
 func updateMaskFieldIfPresent(msg protoreflect.MessageDescriptor) string {
-	f := msg.Fields().ByName("update_mask")
-	if f == nil || f.Message() == nil || f.Message().FullName() != "google.protobuf.FieldMask" {
-		return ""
+	if f := msg.Fields().ByName("update_mask"); isFieldMask(f) {
+		return "update_mask"
 	}
-	return "update_mask"
+	fields := msg.Fields()
+	for i := 0; i < fields.Len(); i++ {
+		f := fields.Get(i)
+		if isFieldMask(f) && !strings.Contains(string(f.Name()), "read") {
+			return string(f.Name())
+		}
+	}
+	return ""
+}
+
+func isFieldMask(f protoreflect.FieldDescriptor) bool {
+	return f != nil && !f.IsList() && f.Message() != nil && f.Message().FullName() == "google.protobuf.FieldMask"
 }
 
 func fieldIfPresent(msg protoreflect.MessageDescriptor, name protoreflect.Name) string {

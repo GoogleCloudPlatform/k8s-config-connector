@@ -825,6 +825,41 @@ func TestShouldSkipControllerWrite(t *testing.T) {
 	}
 }
 
+func TestGenerateController_PrepopulateFlagGating(t *testing.T) {
+	tmpRoot := t.TempDir()
+	cArgs := ccTemplate.NewBaseControllerArgs("example", "v1alpha1", "ExampleWidget", "Widget", "apiv1")
+
+	legacyBuilder := NewControllerBuilder(tmpRoot, "example", "Widget").WithPrepopulateResource(false)
+	if err := legacyBuilder.GenerateController(cArgs); err != nil {
+		t.Fatalf("GenerateController(prepopulate=false): %v", err)
+	}
+	controllerPath, err := legacyBuilder.getControllerPath()
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacyBytes, err := os.ReadFile(controllerPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(legacyBytes), "common.CompareProtoMessage") {
+		t.Errorf("expected LegacyControllerTemplate output when prepopulate=false, got:\n%s", string(legacyBytes))
+	}
+
+	prepopBuilder := NewControllerBuilder(tmpRoot, "example", "Widget").
+		WithOverwrite(true).
+		WithPrepopulateResource(true)
+	if err := prepopBuilder.GenerateController(cArgs); err != nil {
+		t.Fatalf("GenerateController(prepopulate=true): %v", err)
+	}
+	prepopBytes, err := os.ReadFile(controllerPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(prepopBytes), "common.CompareGreenfieldSpec") {
+		t.Errorf("expected ControllerTemplate output when prepopulate=true, got:\n%s", string(prepopBytes))
+	}
+}
+
 func mustParseGo(t *testing.T, src []byte) {
 	t.Helper()
 	fset := token.NewFileSet()

@@ -100,6 +100,33 @@ func TestResourceAPIFor_ClientIDFieldSuffixFallback(t *testing.T) {
 	}
 }
 
+func TestResourceAPIFor_UpdateMaskFieldFallback(t *testing.T) {
+	file := testFile("google/spanner/admin/instance/v1/spanner_instance_admin.proto", "google.spanner.admin.instance.v1")
+	addAIPResource(file, "Instance", "spanner.googleapis.com/Instance",
+		"projects/{project}/instances/{instance}")
+	file.MessageType = append(file.MessageType,
+		message("UpdateInstanceRequest",
+			messageField("instance", 1, ".google.spanner.admin.instance.v1.Instance"),
+			messageField("response_read_mask", 2, ".google.protobuf.FieldMask"),
+			messageField("field_mask", 3, ".google.protobuf.FieldMask"),
+		),
+	)
+	file.Service = []*descriptorpb.ServiceDescriptorProto{{
+		Name: proto.String("InstanceAdmin"),
+		Method: []*descriptorpb.MethodDescriptorProto{
+			method("UpdateInstance",
+				".google.spanner.admin.instance.v1.UpdateInstanceRequest",
+				".google.spanner.admin.instance.v1.Instance", nil),
+		},
+	}}
+
+	p := newTestProto(t, file)
+	api := mustResourceAPI(t, p, "google.spanner.admin.instance.v1.Instance")
+	if api.Update == nil || api.Update.UpdateMaskField != "field_mask" {
+		t.Fatalf("Update.UpdateMaskField = %q, want field_mask", api.Update.UpdateMaskField)
+	}
+}
+
 func TestResourceAPIByName_Errors(t *testing.T) {
 	file := testFile("acme/v1/widget.proto", "acme.v1")
 	file.EnumType = []*descriptorpb.EnumDescriptorProto{{

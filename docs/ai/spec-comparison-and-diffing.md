@@ -52,4 +52,4 @@ During the design review for deterministic controller generation (`KCC-DETGEN` P
 
 To ensure zero regressions for existing brownfield controllers that already call `CompareBrownfieldSpec` / `CompareBrownfieldSpecAndLabels` (and may rely on global slice sorting or the 3-value return signature), we:
 1. Kept `CompareBrownfieldSpec` and `CompareBrownfieldSpecAndLabels` unchanged.
-2. Added `CompareGreenfieldSpec`, `CompareGreenfieldSpecAndLabels`, and `DiffForTopLevelFieldsGreenfield` in [`pkg/controller/direct/common/compare.go`](../../pkg/controller/direct/common/compare.go) for generated and greenfield direct controllers.
+2. Added `CompareGreenfieldSpec`, `CompareGreenfieldSpecAndLabels`, and `DiffForTopLevelFieldsGreenfield` in [`pkg/controller/direct/common/greenfield.go`](../../pkg/controller/direct/common/greenfield.go) for generated and greenfield direct controllers.

@@ -160,7 +160,8 @@ func runControllerForResource(
 		return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(resource), err)
 	}
 
-	if o.PrepopulateResource && !o.PlaceholderOnly {
+	prepopulate := o.PrepopulateResource && !o.PlaceholderOnly
+	if prepopulate {
 		krmInfo := scaffold.InspectKRMPackageForController(
 			root,
 			serviceName,
@@ -172,7 +173,9 @@ func runControllerForResource(
 		scaffold.ApplyDeterministicPasses(cArgs, resAPI, krmInfo, o.RegionalEndpoint)
 	}
 
-	c := scaffold.NewControllerBuilder(root, serviceName, resource.Kind).WithOverwrite(o.Overwrite)
+	c := scaffold.NewControllerBuilder(root, serviceName, resource.Kind).
+		WithOverwrite(o.Overwrite).
+		WithPrepopulateResource(prepopulate)
 	var err error
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
