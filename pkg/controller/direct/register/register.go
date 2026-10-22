@@ -111,6 +111,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkemulticloud"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/grafeas"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/healthcare"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/hypercomputecluster"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam/iamdenypolicy"
