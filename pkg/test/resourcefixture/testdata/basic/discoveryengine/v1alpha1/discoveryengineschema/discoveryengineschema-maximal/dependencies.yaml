@@ -23,5 +23,6 @@ spec:
   collection: default_collection
   displayName: "DataStore for Schema Maximal ${uniqueId}"
   industryVertical: GENERIC
+  skipDefaultSchemaCreation: true
 status:
   externalRef: projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}

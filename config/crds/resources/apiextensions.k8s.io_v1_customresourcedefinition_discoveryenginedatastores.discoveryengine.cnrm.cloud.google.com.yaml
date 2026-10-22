@@ -126,6 +126,16 @@ spec:
                 description: The DiscoveryEngineDataStore name. If not given, the
                   metadata.name will be used.
                 type: string
+              skipDefaultSchemaCreation:
+                description: Immutable. A boolean flag indicating whether to skip
+                  the default schema creation for the data store. Only enable this
+                  flag if you are certain that the default schema is incompatible
+                  with your use case. If set to true, you must manually create a schema
+                  for the data store before any documents can be ingested.
+                type: boolean
+                x-kubernetes-validations:
+                - message: SkipDefaultSchemaCreation field is immutable
+                  rule: self == oldSelf
               solutionTypes:
                 description: |-
                   The solutions that the data store enrolls. Available solutions for each

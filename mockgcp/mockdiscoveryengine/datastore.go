@@ -48,7 +48,9 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	obj := proto.CloneOf(req.GetDataStore())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.DefaultSchemaId = "default_schema"
+	if !req.GetSkipDefaultSchemaCreation() {
+		obj.DefaultSchemaId = "default_schema"
+	}
 	obj.NaturalLanguageQueryUnderstandingConfig = &pb.NaturalLanguageQueryUnderstandingConfig{
 		Mode: pb.NaturalLanguageQueryUnderstandingConfig_Mode(2),
 	}
