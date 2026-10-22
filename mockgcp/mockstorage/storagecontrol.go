@@ -71,6 +71,10 @@ func (s *StorageControlService) CreateAnywhereCache(ctx context.Context, req *pb
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = anywhereCacheStateCreating
 
+	if obj.AdmissionPolicy == "admit-on-second-miss" || obj.AdmissionPolicy == "" {
+		obj.AdmissionPolicy = "admit-on-first-miss"
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -102,7 +106,11 @@ func (s *StorageControlService) UpdateAnywhereCache(ctx context.Context, req *pb
 
 	if patch := req.GetAnywhereCache(); patch != nil {
 		if patch.AdmissionPolicy != "" {
-			obj.AdmissionPolicy = patch.AdmissionPolicy
+			if patch.AdmissionPolicy == "admit-on-second-miss" {
+				obj.AdmissionPolicy = "admit-on-first-miss"
+			} else {
+				obj.AdmissionPolicy = patch.AdmissionPolicy
+			}
 		}
 		if patch.Ttl != nil {
 			obj.Ttl = patch.Ttl
@@ -145,22 +153,7 @@ func (s *StorageControlService) ListAnywhereCaches(ctx context.Context, req *pb.
 }
 
 func (s *StorageControlService) PauseAnywhereCache(ctx context.Context, req *pb.PauseAnywhereCacheRequest) (*pb.AnywhereCache, error) {
-	fqn := req.GetName()
-
-	obj := &pb.AnywhereCache{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	now := time.Now()
-	obj.UpdateTime = timestamppb.New(now)
-	obj.State = anywhereCacheStatePaused
-
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	return obj, nil
+	return nil, status.Errorf(codes.Unimplemented, "The Cache Pause feature has been deprecated and is no longer supported.")
 }
 
 func (s *StorageControlService) ResumeAnywhereCache(ctx context.Context, req *pb.ResumeAnywhereCacheRequest) (*pb.AnywhereCache, error) {
