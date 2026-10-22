@@ -36,6 +36,9 @@ go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto 
   };
 EOF
 
+sed -i 's/{project=projects\/\*}:addFirebase/{name=projects\/\*}:addFirebase/' ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/firebase/v1beta1/service.proto
+
+
 # SQL patches
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message BackupConfiguration --mode append <<EOF
