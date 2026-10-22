@@ -19,7 +19,7 @@ metadata:
 spec:
   dataStoreRef:
     name: datastore-${uniqueId}
-  resourceID: default_schema
+  resourceID: custom_schema
   jsonSchema: |
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",

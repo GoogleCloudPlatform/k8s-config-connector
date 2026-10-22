@@ -31,7 +31,7 @@ spec:
         }
       }
     }
-  resourceID: default_schema
+  resourceID: custom_schema
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -39,5 +39,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema
+  externalRef: projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/custom_schema
   observedGeneration: 2

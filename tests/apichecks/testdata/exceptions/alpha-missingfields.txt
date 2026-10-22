@@ -4013,6 +4013,7 @@
 [missing_field] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].userInput.context.activeDocument" is not set in unstructured objects
 [missing_field] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].userInput.context.contextDocuments[]" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.contentConfig" is not set in unstructured objects
+[missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.skipDefaultSchemaCreation" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.solutionTypes[]" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.dasherCustomerID" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.superAdminEmailAddress" is not set in unstructured objects
