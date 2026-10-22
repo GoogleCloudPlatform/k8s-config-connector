@@ -56,9 +56,10 @@ type ControllerArgs struct {
 	CreateRequestType string // e.g., "CreateAppConnectionRequest"
 	CreateParentField string // e.g., "Parent" (empty if no parent field)
 	CreateNameField   string // e.g., "Name" (when CreateRequest has top-level Name and no BodyField)
-	CreateBodyField   string // e.g., "AppConnection"
-	CreateIDField     string // e.g., "AppConnectionId" (empty if no ID query param)
-	CreateIsLRO       bool
+	CreateBodyField        string // e.g., "AppConnection"
+	CreateIDField          string // e.g., "AppConnectionId" (empty if no ID query param)
+	CreateIDFieldIsPointer bool   // true if CreateIDField is proto3 optional (*string in Go)
+	CreateIsLRO            bool
 	CreateLROIsEmpty  bool // true if Create LRO response type is google.protobuf.Empty
 	CreateSyncIsEmpty bool // true if synchronous Create response type is google.protobuf.Empty
 
@@ -585,7 +586,11 @@ func (a *{{.ProtoResource}}Adapter) Create(ctx context.Context, createOp *direct
 		{{.CreateNameField}}: a.id.String(),
 {{- end }}
 {{- if .CreateIDField }}
+{{- if .CreateIDFieldIsPointer }}
+		{{.CreateIDField}}: direct.LazyPtr({{.IDExpr}}),
+{{- else }}
 		{{.CreateIDField}}: {{.IDExpr}},
+{{- end }}
 {{- end }}
 {{- if .CreateBodyField }}
 		{{.CreateBodyField}}: resource,

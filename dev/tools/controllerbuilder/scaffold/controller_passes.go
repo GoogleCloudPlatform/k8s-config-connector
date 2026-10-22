@@ -220,6 +220,12 @@ func applyCreateMethod(args *ccTemplate.ControllerArgs, create *protoapi.Standar
 		args.CreateNameField = ""
 	}
 	args.CreateIDField = protoFieldNameToGoName(create.IDField, "")
+	args.CreateIDFieldIsPointer = false
+	if create.Descriptor != nil && create.IDField != "" {
+		if fd := create.Descriptor.Input().Fields().ByName(protoreflect.Name(create.IDField)); fd != nil && fd.HasOptionalKeyword() {
+			args.CreateIDFieldIsPointer = true
+		}
+	}
 }
 
 func applyUpdateMethod(args *ccTemplate.ControllerArgs, update *protoapi.StandardMethod) {
