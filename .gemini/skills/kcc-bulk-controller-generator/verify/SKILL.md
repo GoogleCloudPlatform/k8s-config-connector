@@ -21,8 +21,8 @@ Run `git status` and `git diff origin/master...HEAD --name-status`:
 Inspect every generated `pkg/controller/direct/<service>/<proto_lower>_controller.go` in the branch diff:
 1. **`// +generated:controller` Marker:** Present at the top of the file.
 2. **GAPIC Client Construction:** Uses `gcp.New<Service>RESTClient(ctx, opts...)` with `m.config.RESTClientOptions()` (or `New<Service>Client` with `m.config.GRPCClientOptions()` only when the GAPIC package has no REST constructor).
-3. **`common.NormalizeReferences`:** Called at the start of `AdapterForObject`.
-4. **Declared-Spec-Only Diffing (`common.CompareGreenfieldSpec`):** `Update` calls `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` and reports diffs via `structuredreporting.ReportDiff(ctx, report)`.
+3. **`common.NormalizeGreenfieldReferences`:** Called at the start of `AdapterForObject` (`common.NormalizeGreenfieldReferences(ctx, reader, obj)`).
+4. **Declared-Spec-Only Diffing (`common.CompareGreenfieldSpec` / `common.CompareGreenfieldSpecAndLabels`):** `Update` calls `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when top-level proto `labels` are reconciled via `metadata.labels`) and reports diffs via `structuredreporting.ReportDiff(ctx, report)`.
 5. **Status & ExternalRef Updates:** `setStatus(u, resolved)` is called at the end of `Create` and on both no-op and mutating `Update` paths, setting `status.ExternalRef = direct.LazyPtr(a.id.String())`.
 
 ### 3. `generate.sh` Idempotency

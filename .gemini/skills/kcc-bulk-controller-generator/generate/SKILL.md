@@ -61,6 +61,7 @@ For each target service:
    go test -v ./pkg/fuzztesting/fuzztests -run="FuzzAllMappers" -fuzztime=1s
    go test -v ./tests/apichecks -run TestDirectResourceFileNaming
    ```
+   - **Consuming Fuzzer Diagnostic Hints (`// HINT:` & `<hint_for_agent>`):** If `FuzzAllMappers` fails on a resource, inspect both any inline `// HINT:` comments in `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` and the `<hint_for_agent>...</hint_for_agent>` block emitted in the test output (which diagnoses oneof branch clobbering, empty sub-message collapse, optional zero-value loss, or value-dependent `if` guards in mappers).
    - **MockGCP E2E Testing Note (When Applicable):** If running `tests/e2e` against `E2E_GCP_TARGET=mock`, set `KUBEBUILDER_ASSETS="${REPO_ROOT}/.build/envtest-bin"` and run one fixture per `go test` invocation (rather than batching multiple fixtures in a single `-run` regex), because a single failing fixture polls for 2 minutes before failing and can time out a multi-fixture batch before `go test` emits `--- PASS:` lines for sibling subtests.
 
 ---
