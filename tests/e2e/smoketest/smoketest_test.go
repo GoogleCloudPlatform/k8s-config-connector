@@ -22,6 +22,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -254,6 +255,8 @@ func setupSmoketestCluster(t *testing.T, clusterPrefix string) (context.Context,
 		buildCmd.Env = append(os.Environ(),
 			"IMAGE_TAG="+imageTag,
 			"IMAGE_PREFIX="+imagePrefix,
+			fmt.Sprintf("PLATFORM=linux/%s", runtime.GOARCH),
+			"OUTPUT_TYPE=type=docker",
 		)
 		buildCmd.Stdout = os.Stdout
 		buildCmd.Stderr = os.Stderr
