@@ -62,6 +62,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfinancialservices"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirebasehosting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgeminidataanalytics"
