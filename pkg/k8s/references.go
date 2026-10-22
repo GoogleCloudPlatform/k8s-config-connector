@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -72,7 +73,7 @@ func GetReferencedResourceAsUnstruct(resourceRef *corekccv1alpha1.ResourceRefere
 	u.SetGroupVersionKind(gvk)
 	if err := kubeClient.Get(context.TODO(), nn, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, NewReferenceNotFoundError(gvk, nn)
+			return nil, refs.NewReferenceNotFoundError(gvk, nn)
 		}
 		return nil, fmt.Errorf("error getting referenced resource %v with GroupVersionKind %v from API server: %w", nn, gvk, err)
 	}

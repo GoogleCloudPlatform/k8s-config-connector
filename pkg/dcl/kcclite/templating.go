@@ -20,6 +20,7 @@ import (
 	"regexp"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
@@ -225,10 +226,10 @@ func resolveParentFieldFromContainerAnnotation(field string, resource *k8s.Resou
 }
 
 func decorateErrorForResolvingReferenceField(err error, field string, refResource *k8s.Resource) error {
-	if unwrappedErr, ok := k8s.AsReferenceNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotFoundError(err); ok {
 		return k8s.NewTransitiveDependencyNotFoundError(unwrappedErr.RefResourceGVK, unwrappedErr.RefResource)
 	}
-	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotReadyError(err); ok {
 		return k8s.NewTransitiveDependencyNotReadyError(unwrappedErr.RefResourceGVK, unwrappedErr.RefResource)
 	}
 	return fmt.Errorf("error getting value for DCL field %v in referenced resource %v with GroupVersionKind %v: %w",

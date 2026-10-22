@@ -21,7 +21,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm_memorystore "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	krm_redis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -396,7 +395,7 @@ func ResolveMemorystoreInstanceServiceAttachment(ctx context.Context, reader cli
 	u.SetGroupVersionKind(krm_memorystore.MemorystoreInstanceGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return nil, refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
 	}
@@ -448,7 +447,7 @@ func ResolveRedisClusterServiceAttachment(ctx context.Context, reader client.Rea
 	u.SetGroupVersionKind(krm_redis.RedisClusterGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return nil, refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
 	}

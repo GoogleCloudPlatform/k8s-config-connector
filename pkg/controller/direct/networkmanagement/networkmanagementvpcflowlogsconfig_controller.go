@@ -43,7 +43,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -324,14 +323,14 @@ func resolveComputeVPNTunnelRef(ctx context.Context, reader client.Reader, defau
 	})
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced ComputeVPNTunnel %v: %w", key, err)
 	}
 
 	selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		return refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 	}
 
 	externalRef := refs.TrimComputeURIPrefix(selfLink)
@@ -365,14 +364,14 @@ func resolveComputeInterconnectAttachmentRef(ctx context.Context, reader client.
 	})
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced ComputeInterconnectAttachment %v: %w", key, err)
 	}
 
 	selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		return refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 	}
 
 	externalRef := refs.TrimComputeURIPrefix(selfLink)

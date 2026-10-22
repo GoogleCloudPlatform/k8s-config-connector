@@ -20,6 +20,7 @@ import (
 	"reflect"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
@@ -274,7 +275,7 @@ func (d *DCLIAMClient) getDCLResource(ctx context.Context, resourceRef v1beta1.R
 	}
 	if err := d.kubeClient.Get(ctx, nn, u); err != nil {
 		if errors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(gvk, nn)
+			return nil, refs.NewReferenceNotFoundError(gvk, nn)
 		}
 		return nil, fmt.Errorf("error retrieving resource '%v' with GroupVersionKind '%v': %w", nn, gvk, err)
 	}

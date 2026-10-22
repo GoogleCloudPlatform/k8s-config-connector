@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -67,7 +66,7 @@ func (r *FirewallPolicyRuleRef) NormalizedExternal(ctx context.Context, reader c
 	u.SetGroupVersionKind(ComputeFirewallPolicyRuleGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return "", refsv1beta1.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeFirewallPolicyRuleGVK, key, err)
 	}

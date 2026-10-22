@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -180,7 +181,7 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 
 	refResource, err := GetReferencedResource(r, typeConfig, resourceRef, kubeClient, smLoader)
 	if err != nil {
-		if k8s.IsReferenceNotFoundError(err) {
+		if refs.IsReferenceNotFoundError(err) {
 			if deleting {
 				return nil, nil
 			}

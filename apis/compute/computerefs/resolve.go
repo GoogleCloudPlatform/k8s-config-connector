@@ -23,8 +23,8 @@ import (
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -143,7 +143,7 @@ func (r *ComputeAddressResolver) ResolveComputeAddressIP(ctx context.Context, re
 		computeAddress.SetGroupVersionKind(gvk)
 		if err := reader.Get(ctx, key, computeAddress); err != nil {
 			if apierrors.IsNotFound(err) {
-				return "", k8s.NewReferenceNotFoundError(gvk, key)
+				return "", refs.NewReferenceNotFoundError(gvk, key)
 			}
 			return "", fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
 		}
@@ -156,7 +156,7 @@ func (r *ComputeAddressResolver) ResolveComputeAddressIP(ctx context.Context, re
 		if err != nil || address == "" {
 			address, _, err = unstructured.NestedString(computeAddress.Object, "status", "observedState", "address")
 			if err != nil || address == "" {
-				return "", k8s.NewReferenceNotReadyError(gvk, key)
+				return "", refs.NewReferenceNotReadyError(gvk, key)
 			}
 		}
 		return address, nil

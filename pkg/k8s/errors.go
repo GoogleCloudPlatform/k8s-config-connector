@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 )
@@ -31,112 +32,21 @@ func (e ErrorWithReason) Error() string {
 	return fmt.Sprintf("%v: %v", e.Reason, e.Message)
 }
 
-type ReferenceNotReadyError struct {
-	RefResourceGVK schema.GroupVersionKind
-	RefResource    types.NamespacedName
-}
-
-func (e *ReferenceNotReadyError) Error() string {
-	return fmt.Sprintf("reference %v %v is not ready", e.RefResourceGVK.Kind, e.RefResource)
-}
-
-func NewReferenceNotReadyError(refResourceGVK schema.GroupVersionKind, refResource types.NamespacedName) *ReferenceNotReadyError {
-	return &ReferenceNotReadyError{refResourceGVK, refResource}
-}
-
-func NewReferenceNotReadyErrorForResource(r *Resource) *ReferenceNotReadyError {
-	return &ReferenceNotReadyError{
+func NewReferenceNotReadyErrorForResource(r *Resource) *refs.ReferenceNotReadyError {
+	return refs.NewReferenceNotReadyError(
 		r.GroupVersionKind(),
 		types.NamespacedName{Namespace: r.GetNamespace(), Name: r.GetName()},
-	}
+	)
 }
 
-func AsReferenceNotReadyError(err error) (unwrappedErr *ReferenceNotReadyError, ok bool) {
-	ok = errors.As(err, &unwrappedErr)
-	return unwrappedErr, ok
-}
-
-func IsReferenceNotReadyError(err error) bool {
-	_, ok := AsReferenceNotReadyError(err)
-	return ok
-}
-
-type ReferenceNotFoundError struct {
-	RefResourceGVK schema.GroupVersionKind
-	RefResource    types.NamespacedName
-}
-
-func (e *ReferenceNotFoundError) Error() string {
-	return fmt.Sprintf("reference %v %v is not found", e.RefResourceGVK.Kind, e.RefResource)
-}
-
-func NewReferenceNotFoundError(refResourceGVK schema.GroupVersionKind, refResource types.NamespacedName) *ReferenceNotFoundError {
-	return &ReferenceNotFoundError{refResourceGVK, refResource}
-}
-
-func NewReferenceNotFoundErrorForResource(r *Resource) *ReferenceNotFoundError {
-	return &ReferenceNotFoundError{
+func NewReferenceNotFoundErrorForResource(r *Resource) *refs.ReferenceNotFoundError {
+	return refs.NewReferenceNotFoundError(
 		r.GroupVersionKind(),
 		types.NamespacedName{Namespace: r.GetNamespace(), Name: r.GetName()},
-	}
-}
-
-func AsReferenceNotFoundError(err error) (unwrappedErr *ReferenceNotFoundError, ok bool) {
-	ok = errors.As(err, &unwrappedErr)
-	return unwrappedErr, ok
-}
-
-func IsReferenceNotFoundError(err error) bool {
-	_, ok := AsReferenceNotFoundError(err)
-	return ok
+	)
 }
 
 var ErrIAMNotFound = fmt.Errorf("IAM resource does not exist")
-
-type SecretNotFoundError struct {
-	Secret types.NamespacedName
-}
-
-func (e *SecretNotFoundError) Error() string {
-	return fmt.Sprintf("Secret %v was not found", e.Secret)
-}
-
-func NewSecretNotFoundError(secret types.NamespacedName) *SecretNotFoundError {
-	return &SecretNotFoundError{secret}
-}
-
-func AsSecretNotFoundError(err error) (unwrappedErr *SecretNotFoundError, ok bool) {
-	ok = errors.As(err, &unwrappedErr)
-	return unwrappedErr, ok
-}
-
-func IsSecretNotFoundError(err error) bool {
-	_, ok := AsSecretNotFoundError(err)
-	return ok
-}
-
-type KeyInSecretNotFoundError struct {
-	key    string
-	secret types.NamespacedName
-}
-
-func (e *KeyInSecretNotFoundError) Error() string {
-	return fmt.Sprintf("key '%v' was not found in Secret %v", e.key, e.secret)
-}
-
-func NewKeyInSecretNotFoundError(key string, secret types.NamespacedName) *KeyInSecretNotFoundError {
-	return &KeyInSecretNotFoundError{key, secret}
-}
-
-func AsKeyInSecretNotFoundError(err error) (unwrappedErr *KeyInSecretNotFoundError, ok bool) {
-	ok = errors.As(err, &unwrappedErr)
-	return unwrappedErr, ok
-}
-
-func IsKeyInSecretNotFoundError(err error) bool {
-	_, ok := AsKeyInSecretNotFoundError(err)
-	return ok
-}
 
 type TransitiveDependencyNotFoundError struct {
 	ResourceGVK schema.GroupVersionKind

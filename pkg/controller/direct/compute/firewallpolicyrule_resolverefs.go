@@ -22,8 +22,6 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -132,7 +130,7 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 	resource.SetGroupVersionKind(gvk)
 	if err := reader.Get(ctx, key, resource); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
+			return nil, refs.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
 	}

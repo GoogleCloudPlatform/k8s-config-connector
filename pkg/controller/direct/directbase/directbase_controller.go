@@ -21,6 +21,7 @@ import (
 	"strings"
 	"time"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -465,7 +466,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(u))
 		deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
 		if _, err := adapter.Delete(ctx, deleteOp); err != nil {
-			if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
+			if !errors.Is(err, k8s.ErrIAMNotFound) && !refs.IsReferenceNotFoundError(err) {
 				if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 					logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 					resource, err := toK8sResource(u)

@@ -85,7 +85,7 @@ func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.
 		masterInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
 		if err := kube.Get(ctx, key, masterInstance); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+				return refs.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
 			}
 			return fmt.Errorf("error reading referenced master instance %v: %w", key, err)
 		}
@@ -128,7 +128,7 @@ func resolveReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm
 		secret := &corev1.Secret{}
 		if err := kube.Get(ctx, key, secret); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewSecretNotFoundError(key)
+				return refs.NewSecretNotFoundError(key)
 			}
 			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
 		}
@@ -162,7 +162,7 @@ func resolveRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQ
 		secret := &corev1.Secret{}
 		if err := kube.Get(ctx, key, secret); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewSecretNotFoundError(key)
+				return refs.NewSecretNotFoundError(key)
 			}
 			return fmt.Errorf("error reading referenced Secret %v: %w", key, err)
 		}
@@ -237,7 +237,7 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 		sqlInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
 		if err := kube.Get(ctx, key, sqlInstance); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+				return refs.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
 			}
 			return fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
 		}
@@ -282,7 +282,7 @@ func resolveFailoverDRReplicaRef(ctx context.Context, kube client.Reader, obj *k
 		replicaInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
 		if err := kube.Get(ctx, key, replicaInstance); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
+				return refs.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
 			}
 			return fmt.Errorf("error reading referenced replica instance %v: %w", key, err)
 		}

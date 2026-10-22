@@ -19,6 +19,7 @@ import (
 	"errors"
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -186,7 +187,7 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 	}{
 		{
 			name:    "reference not ready",
-			err:     &k8s.ReferenceNotReadyError{},
+			err:     &refs.ReferenceNotReadyError{},
 			want:    k8s.DependencyNotReady,
 			wantErr: false,
 		},
@@ -204,13 +205,13 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 		},
 		{
 			name:    "reference not found",
-			err:     &k8s.ReferenceNotFoundError{},
+			err:     &refs.ReferenceNotFoundError{},
 			want:    k8s.DependencyNotFound,
 			wantErr: false,
 		},
 		{
 			name:    "secret not found",
-			err:     &k8s.SecretNotFoundError{},
+			err:     &refs.SecretNotFoundError{},
 			want:    k8s.DependencyNotFound,
 			wantErr: false,
 		},
@@ -228,7 +229,7 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 		},
 		{
 			name:    "key in secret not found",
-			err:     &k8s.KeyInSecretNotFoundError{},
+			err:     &refs.KeyInSecretNotFoundError{},
 			want:    k8s.DependencyInvalid,
 			wantErr: false,
 		},

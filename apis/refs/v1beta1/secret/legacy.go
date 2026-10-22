@@ -24,7 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 // +kubebuilder:object:generate:=true
@@ -114,7 +114,7 @@ func (r *LegacyValueFromSecretKeyRef) ReadSecretValue(ctx context.Context, reade
 	}
 	if err := reader.Get(ctx, nn, secret); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewSecretNotFoundError(nn)
+			return nil, refs.NewSecretNotFoundError(nn)
 		}
 		return nil, fmt.Errorf("error reading referenced Secret %v: %w", nn, err)
 	}
