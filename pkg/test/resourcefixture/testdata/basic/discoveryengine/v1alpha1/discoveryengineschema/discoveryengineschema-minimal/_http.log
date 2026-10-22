@@ -80,7 +80,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"datetime_detection\":true,\"geolocation_detection\":true,\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"datetime_detection\":true,\"geolocation_detection\":true,\"type\":\"object\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -93,7 +93,7 @@ X-Goog-Request-Params: schema.name=projects%2F${projectId}%2Flocations%2Fglobal%
 X-Goog-User-Project: ${projectId}
 
 {
-  "jsonSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"title\"\n    }\n  }\n}\n",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
   "name": "projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -142,7 +142,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
-    "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}}}",
+    "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
   }
 }
@@ -166,30 +166,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jsonSchema": "{\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -202,7 +179,7 @@ X-Goog-Request-Params: schema.name=projects%2F${projectId}%2Flocations%2Fglobal%
 X-Goog-User-Project: ${projectId}
 
 {
-  "jsonSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"title\"\n    },\n    \"description\": {\n      \"type\": \"string\"\n    }\n  }\n}\n",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
   "name": "projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -251,7 +228,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
-    "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+    "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
   }
 }
@@ -275,53 +252,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"description\":{\"type\":\"string\"}}}",
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
