@@ -2,7 +2,7 @@ apiVersion: run.cnrm.cloud.google.com/v1alpha1
 kind: RunWorkerPool
 metadata:
   annotations:
-    cnrm.cloud.google.com/mutable-unreadable-fields-hash: 83ed2926ca5241d82092dbb968ebb941d0668e7127d42025378c776e3adb5b9c
+    cnrm.cloud.google.com/mutable-but-unreadable-fields-hash: 83ed2926ca5241d82092dbb968ebb941d0668e7127d42025378c776e3adb5b9c
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender

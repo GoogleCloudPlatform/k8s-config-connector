@@ -30,10 +30,6 @@ X-Goog-Request-Params: location=us-central1
 
 {
   "description": "Minimal WorkerPool description",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "template": {
     "containers": [
       {
@@ -73,10 +69,6 @@ X-Xss-Protection: 0
         "type": 1
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -148,10 +140,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -202,10 +190,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -274,10 +258,6 @@ X-Xss-Protection: 0
       "type": 1
     }
   ],
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
   "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -319,10 +299,6 @@ X-Goog-Request-Params: location=us-central1
 
 {
   "description": "Updated Minimal WorkerPool description",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
   "template": {
     "containers": [
@@ -363,10 +339,6 @@ X-Xss-Protection: 0
         "type": 1
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -438,10 +410,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -492,10 +460,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -564,10 +528,6 @@ X-Xss-Protection: 0
       "type": 1
     }
   ],
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
   "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -639,10 +599,6 @@ X-Xss-Protection: 0
         "type": 1
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -716,10 +672,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
@@ -772,10 +724,6 @@ X-Xss-Protection: 0
         "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
     "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",

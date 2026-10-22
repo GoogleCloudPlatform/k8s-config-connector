@@ -38,7 +38,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -97,8 +96,6 @@ func (m *modelWorkerPool) AdapterForObject(ctx context.Context, op *directbase.A
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -182,14 +179,15 @@ func (a *WorkerPoolAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 	log.V(2).Info("successfully created WorkerPool", "name", a.id.String())
 
-	latest, err := a.gcpClient.GetWorkerPool(ctx, &pb.GetWorkerPoolRequest{Name: created.GetName()})
-	if err == nil {
-		created = latest
-	}
-
 	if err := createOp.SetMBUR(ctx, a.computeMBUR); err != nil {
 		return fmt.Errorf("setting MBUR: %w", err)
 	}
+
+	latest, err := a.gcpClient.GetWorkerPool(ctx, &pb.GetWorkerPoolRequest{Name: created.GetName()})
+	if err != nil {
+		return fmt.Errorf("getting WorkerPool %q: %w", a.id.String(), err)
+	}
+	created = latest
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -229,14 +227,15 @@ func (a *WorkerPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		log.V(2).Info("successfully updated WorkerPool", "name", a.id.String())
 		latest = updated
 
-		latestGet, err := a.gcpClient.GetWorkerPool(ctx, &pb.GetWorkerPoolRequest{Name: latest.GetName()})
-		if err == nil {
-			latest = latestGet
-		}
-
 		if err := updateOp.SetMBUR(ctx, a.computeMBUR); err != nil {
 			return fmt.Errorf("setting MBUR: %w", err)
 		}
+
+		latestGet, err := a.gcpClient.GetWorkerPool(ctx, &pb.GetWorkerPoolRequest{Name: latest.GetName()})
+		if err != nil {
+			return fmt.Errorf("getting WorkerPool %q: %w", a.id.String(), err)
+		}
+		latest = latestGet
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
@@ -321,7 +320,7 @@ func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool, mbur
 	}
 
 	// CustomAudiences is mutable-but-unreadable (missing from the GET response in real GCP).
-	// If the SHA-256 hash stored in the mutable-unreadable-fields-hash annotation matches desired state,
+	// If the SHA-256 hash stored in the mutable-but-unreadable-fields-hash annotation matches desired state,
 	// the user hasn't changed customAudiences, so we copy desired.CustomAudiences into maskedActual to suppress false diffs.
 	if mburMatch {
 		maskedActual.CustomAudiences = clonedDesired.CustomAudiences

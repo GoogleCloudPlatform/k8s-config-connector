@@ -1231,7 +1231,7 @@ func TestCompareMBUR(t *testing.T) {
 	}{
 		{
 			name:        "nil computeMBUR func",
-			annotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "somehash"},
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "somehash"},
 			computeMBUR: nil,
 			wantMatch:   false,
 		},
@@ -1252,7 +1252,7 @@ func TestCompareMBUR(t *testing.T) {
 		},
 		{
 			name:        "annotation exists but desired empty",
-			annotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "somehash"},
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "somehash"},
 			computeMBUR: func() (string, error) {
 				return "", nil
 			},
@@ -1260,7 +1260,7 @@ func TestCompareMBUR(t *testing.T) {
 		},
 		{
 			name:        "matching hashes",
-			annotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "hash123"},
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
 			computeMBUR: func() (string, error) {
 				return "hash123", nil
 			},
@@ -1268,7 +1268,7 @@ func TestCompareMBUR(t *testing.T) {
 		},
 		{
 			name:        "different hashes",
-			annotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "hash123"},
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
 			computeMBUR: func() (string, error) {
 				return "hash456", nil
 			},
@@ -1337,7 +1337,7 @@ func TestSetMBUR(t *testing.T) {
 		},
 		{
 			name:            "update existing hash",
-			initAnnotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "oldhash"},
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "oldhash"},
 			computeMBUR: func() (string, error) {
 				return "newhash", nil
 			},
@@ -1346,7 +1346,7 @@ func TestSetMBUR(t *testing.T) {
 		},
 		{
 			name:            "same hash is no-op",
-			initAnnotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "samehash"},
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "samehash"},
 			computeMBUR: func() (string, error) {
 				return "samehash", nil
 			},
@@ -1355,7 +1355,7 @@ func TestSetMBUR(t *testing.T) {
 		},
 		{
 			name:            "clear hash when desired is empty",
-			initAnnotations: map[string]string{k8s.MutableUnreadableFieldsHashAnnotation: "hash123"},
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
 			computeMBUR: func() (string, error) {
 				return "", nil
 			},
@@ -1404,7 +1404,7 @@ func TestSetMBUR(t *testing.T) {
 				t.Fatalf("failed to fetch updated object: %v", err)
 			}
 
-			val, exists := gotObj.GetAnnotations()[k8s.MutableUnreadableFieldsHashAnnotation]
+			val, exists := gotObj.GetAnnotations()[k8s.MutableButUnreadableFieldsHashAnnotation]
 			if exists != tc.wantExist {
 				t.Fatalf("annotation exists = %v, wantExist = %v", exists, tc.wantExist)
 			}
