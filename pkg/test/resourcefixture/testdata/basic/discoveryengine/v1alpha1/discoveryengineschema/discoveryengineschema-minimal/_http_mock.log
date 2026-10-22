@@ -302,7 +302,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultSchemaId": "default_schema",
   "displayName": "DataStore for Schema Minimal ${uniqueId}",
   "industryVertical": 1,
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",

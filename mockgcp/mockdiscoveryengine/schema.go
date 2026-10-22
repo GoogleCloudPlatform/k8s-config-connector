@@ -61,6 +61,24 @@ func (s *schemaService) GetSchema(ctx context.Context, req *pb.GetSchemaRequest)
 }
 
 func (s *schemaService) CreateSchema(ctx context.Context, req *pb.CreateSchemaRequest) (*longrunningpb.Operation, error) {
+	parent, err := s.parseDataStoreParent(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	var schemaExists bool
+	prefix := fmt.Sprintf("%s/schemas/", parent.String())
+	findKind := (&pb.Schema{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		schemaExists = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	if schemaExists {
+		return nil, status.Errorf(codes.AlreadyExists, "Active schema already exists for data store %s", parent.String())
+	}
+
 	reqName := fmt.Sprintf("%s/schemas/%s", req.GetParent(), req.GetSchemaId())
 	name, err := s.parseSchemaName(reqName)
 	if err != nil {
@@ -82,8 +100,8 @@ func (s *schemaService) CreateSchema(ctx context.Context, req *pb.CreateSchemaRe
 		return nil, err
 	}
 
-	prefix := fqn
-	return s.operations.DoneLRO(ctx, prefix, &pb.CreateSchemaMetadata{}, obj)
+	prefixLRO := fqn
+	return s.operations.DoneLRO(ctx, prefixLRO, &pb.CreateSchemaMetadata{}, obj)
 }
 
 func (s *schemaService) UpdateSchema(ctx context.Context, req *pb.UpdateSchemaRequest) (*longrunningpb.Operation, error) {
@@ -144,6 +162,17 @@ func (s *schemaService) DeleteSchema(ctx context.Context, req *pb.DeleteSchemaRe
 	oldObj := &pb.Schema{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
+	}
+
+	dataStoreFQN := fmt.Sprintf("projects/%d/locations/%s/collections/%s/dataStores/%s", name.Project.Number, name.Location, name.Collection, name.DataStore)
+	dataStore := &pb.DataStore{}
+	if err := s.storage.Get(ctx, dataStoreFQN, dataStore); err == nil {
+		if dataStore.DefaultSchemaId == name.Schema {
+			dataStore.DefaultSchemaId = ""
+			if err := s.storage.Update(ctx, dataStoreFQN, dataStore); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	prefix := fqn
