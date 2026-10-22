@@ -149,15 +149,17 @@ func runControllerForResource(
 		gcpVersion,
 	)
 
-	if scaffolder.RefsFileExist(resource) {
-		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(resource))
-	} else if err := scaffolder.AddRefsFile(resource); err != nil {
-		return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(resource), err)
-	}
-	if scaffolder.IdentityFileExist(resource) {
-		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(resource))
-	} else if err := scaffolder.AddIdentityFile(resource); err != nil {
-		return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(resource), err)
+	if !o.PrepopulateResource && !o.PlaceholderOnly {
+		if scaffolder.RefsFileExist(resource) {
+			klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(resource))
+		} else if err := scaffolder.AddRefsFile(resource); err != nil {
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(resource), err)
+		}
+		if scaffolder.IdentityFileExist(resource) {
+			klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(resource))
+		} else if err := scaffolder.AddIdentityFile(resource); err != nil {
+			return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(resource), err)
+		}
 	}
 
 	prepopulate := o.PrepopulateResource && !o.PlaceholderOnly
