@@ -1,3 +1,4 @@
+crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.userPasswordConfig.password" is sensitive data, should use secretRef
 crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.password" is sensitive data, should use secretRef
 crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.rootPassword" is sensitive data, should use secretRef
 crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.password" is sensitive data, should use secretRef
