@@ -70,12 +70,6 @@ ${CONTROLLERBUILDER} generate-mapper \
   --include-skipped-output \
   --prepopulate-resource
 
-${CONTROLLERBUILDER} generate-fuzzer \
-  --deterministic \
-  --service mockgcp.cloud.networkconnectivity.v1 \
-  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-  --resource NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
-
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds
