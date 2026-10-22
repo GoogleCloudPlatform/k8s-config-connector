@@ -82,10 +82,6 @@ func (m *nodePoolModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("converting unstructured to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, err
-	}
-
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -112,20 +108,12 @@ const (
 	operationUpdate
 )
 
-func (a *nodePoolAdapter) prepareForCreate(ctx context.Context) error {
-	if err := resolveNodeCount(a.desiredKRM, a.id, operationCreate); err != nil {
+func (a *nodePoolAdapter) prepare(ctx context.Context, opType operationType) error {
+	if err := resolveNodeCount(a.desiredKRM, a.id, opType); err != nil {
 		return err
 	}
-	if err := common.NormalizeReferences(ctx, a.reader, a.desiredKRM, nil); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
-	return nil
-}
-
-func (a *nodePoolAdapter) prepareForUpdate(ctx context.Context) error {
-	if err := resolveNodeCount(a.desiredKRM, a.id, operationUpdate); err != nil {
-		return err
-	}
+	// Normalize references in Create/Update rather than AdapterForObject so that
+	// already-deleted non-parent references do not block resource deletion.
 	if err := common.NormalizeReferences(ctx, a.reader, a.desiredKRM, nil); err != nil {
 		return fmt.Errorf("normalizing references: %w", err)
 	}
@@ -245,7 +233,7 @@ func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ContainerNodePool", "name", a.id.String())
 
-	if err := a.prepareForCreate(ctx); err != nil {
+	if err := a.prepare(ctx, operationCreate); err != nil {
 		return err
 	}
 
@@ -341,7 +329,7 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return fmt.Errorf("actual is nil in Update")
 	}
 
-	if err := a.prepareForUpdate(ctx); err != nil {
+	if err := a.prepare(ctx, operationUpdate); err != nil {
 		return err
 	}
 
@@ -370,9 +358,20 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	structuredreporting.ReportDiff(ctx, diffRes.Diff)
 
 	mergedDesired := diffRes.MergedDesired
+	updateAutoscaling := diffRes.HasPathWithPrefix("autoscaling")
+	updateManagement := diffRes.HasPathWithPrefix("management")
+	updateNodeCount := diffRes.HasPathWithPrefix("initial_node_count")
+	updateNodePoolRequest, updatePaths := a.buildUpdateNodePoolRequest(diffRes)
+	updateNodePool := len(updatePaths) > 0
+
+	diffRes.RemovePathWithPrefix("autoscaling", "management", "initial_node_count")
+	diffRes.RemovePathWithPrefix(updatePaths...)
+	if !diffRes.Empty() {
+		return k8s.NewImmutableFieldsMutationError(diffRes.FieldMask.GetPaths())
+	}
 
 	// 1. Update Autoscaling via UpdateCluster if changed
-	if diffRes.HasPathWithPrefix("autoscaling") {
+	if updateAutoscaling {
 		op, err := a.client.UpdateCluster(ctx, &pb.UpdateClusterRequest{
 			Name: a.id.ParentString(),
 			Update: &pb.ClusterUpdate{
@@ -386,11 +385,10 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		if err := a.waitForOperation(ctx, op); err != nil {
 			return fmt.Errorf("waiting for autoscaling update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
-		diffRes.RemovePathWithPrefix("autoscaling")
 	}
 
 	// 2. Update Management if changed
-	if diffRes.HasPathWithPrefix("management") {
+	if updateManagement {
 		op, err := a.client.SetNodePoolManagement(ctx, &pb.SetNodePoolManagementRequest{
 			Name:       a.id.String(),
 			Management: mergedDesired.GetManagement(),
@@ -401,11 +399,10 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		if err := a.waitForOperation(ctx, op); err != nil {
 			return fmt.Errorf("waiting for management update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
-		diffRes.RemovePathWithPrefix("management")
 	}
 
 	// 3. Update Node Pool Size if node count changed
-	if diffRes.HasPathWithPrefix("initial_node_count") {
+	if updateNodeCount {
 		op, err := a.client.SetNodePoolSize(ctx, &pb.SetNodePoolSizeRequest{
 			Name:      a.id.String(),
 			NodeCount: mergedDesired.GetInitialNodeCount(),
@@ -416,24 +413,17 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		if err := a.waitForOperation(ctx, op); err != nil {
 			return fmt.Errorf("waiting for size update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
-		diffRes.RemovePathWithPrefix("initial_node_count")
 	}
 
 	// 4. Update NodePool fields via UpdateNodePool
-	updateReq, updatePaths := a.buildUpdateNodePoolRequest(diffRes)
-	if len(updatePaths) > 0 {
-		op, err := a.client.UpdateNodePool(ctx, updateReq)
+	if updateNodePool {
+		op, err := a.client.UpdateNodePool(ctx, updateNodePoolRequest)
 		if err != nil {
 			return fmt.Errorf("updating ContainerNodePool %q: %w", a.id.String(), err)
 		}
 		if err := a.waitForOperation(ctx, op); err != nil {
 			return fmt.Errorf("waiting for update of ContainerNodePool %q: %w", a.id.String(), err)
 		}
-		diffRes.RemovePathWithPrefix(updatePaths...)
-	}
-
-	if !diffRes.Empty() {
-		return k8s.NewImmutableFieldsMutationError(diffRes.FieldMask.GetPaths())
 	}
 
 	updated, err := a.client.GetNodePool(ctx, &pb.GetNodePoolRequest{Name: a.id.String()})

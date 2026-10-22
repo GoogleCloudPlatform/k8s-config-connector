@@ -251,6 +251,9 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 			return false
 		}
 	case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerNodePool"}:
+		// MockGCP's generated container proto is missing WritableCgroups and RegistryHosts
+		// on ContainerdConfig, so MockGCP drops those fields when storing the node pool and
+		// causes a diff during re-reconciliation against mockgcp.
 		if testName == "containernodepool-containerdconfig" {
 			return false
 		}
