@@ -522,7 +522,7 @@ func setProtoLabels(msg proto.Message, labelsFieldName string, labels map[string
 // NormalizeGreenfieldReferences resolves all KRM references on obj, including:
 //   - *refs.ProjectRef
 //   - refs.Ref
-//   - refs.ExternalNormalizer (clearing Name and Namespace once External is populated so subsequent NormalizedExternal calls are idempotent)
+//   - refs.ExternalNormalizer (skipping already-normalized and zero-value references so NormalizedExternal calls are idempotent)
 func NormalizeGreenfieldReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, opts ...NormalizeOption) error {
 	base := &refNormalizer{
 		ctx:     ctx,
