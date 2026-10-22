@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -40,22 +41,29 @@ type CanonicalResourceSettings struct {
 
 // CanonicalCCConfig is hashed to produce "cnrm.cloud.google.com/cc-config-hash".
 type CanonicalCCConfig struct {
-	ResourceSettings *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings     *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ConcurrencyOverrides map[string]int             `json:"concurrencyOverrides,omitempty"`
 }
 
 // CanonicalCCCConfig is hashed to produce "cnrm.cloud.google.com/ccc-config-hash".
 type CanonicalCCCConfig struct {
-	ResourceSettings *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings     *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ControllerOverrides  map[string]string          `json:"controllerOverrides,omitempty"`
+	ConcurrencyOverrides map[string]int             `json:"concurrencyOverrides,omitempty"`
 }
 
 // ComputeCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
 // configuration of a ConfigConnector object. Returns "" if no hashed configuration is present.
 func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
-	if cc == nil || cc.Spec.Experiments == nil || cc.Spec.Experiments.ResourceSettings == nil {
+	if cc == nil || cc.Spec.Experiments == nil {
 		return ""
 	}
 	cfg := CanonicalCCConfig{
-		ResourceSettings: canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
+		ResourceSettings:     canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
+		ConcurrencyOverrides: canonicalizeConcurrencyOverrides(cc.Spec.Experiments.ConcurrencyOverrides),
+	}
+	if cfg.ResourceSettings == nil && len(cfg.ConcurrencyOverrides) == 0 {
+		return ""
 	}
 	data, err := json.Marshal(cfg)
 	if err != nil {
@@ -68,11 +76,16 @@ func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
 // ComputeCCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
 // configuration of a ConfigConnectorContext object. Returns "" if no hashed configuration is present.
 func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
-	if ccc == nil || ccc.Spec.Experiments == nil || ccc.Spec.Experiments.ResourceSettings == nil {
+	if ccc == nil || ccc.Spec.Experiments == nil {
 		return ""
 	}
 	cfg := CanonicalCCCConfig{
-		ResourceSettings: canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
+		ResourceSettings:     canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
+		ControllerOverrides:  canonicalizeControllerOverrides(ccc.Spec.Experiments.ControllerOverrides),
+		ConcurrencyOverrides: canonicalizeConcurrencyOverrides(ccc.Spec.Experiments.ConcurrencyOverrides),
+	}
+	if cfg.ResourceSettings == nil && len(cfg.ControllerOverrides) == 0 && len(cfg.ConcurrencyOverrides) == 0 {
+		return ""
 	}
 	data, err := json.Marshal(cfg)
 	if err != nil {
@@ -80,6 +93,38 @@ func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
 	}
 	sum := sha256.Sum256(data)
 	return hex.EncodeToString(sum[:])
+}
+
+func canonicalizeControllerOverrides(overrides map[string]k8scontrollertype.ReconcilerType) map[string]string {
+	if len(overrides) == 0 {
+		return nil
+	}
+	out := make(map[string]string, len(overrides))
+	for k, v := range overrides {
+		if k != "" && v != "" {
+			out[k] = string(v)
+		}
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
+}
+
+func canonicalizeConcurrencyOverrides(overrides map[string]int) map[string]int {
+	if len(overrides) == 0 {
+		return nil
+	}
+	out := make(map[string]int, len(overrides))
+	for k, v := range overrides {
+		if k != "" && v > 0 {
+			out[k] = v
+		}
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
 }
 
 func canonicalizeResourceSettings(rs *corev1beta1.ResourceSettings) *CanonicalResourceSettings {
