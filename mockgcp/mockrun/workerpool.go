@@ -47,6 +47,9 @@ func (s *workerPools) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolRe
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 
@@ -172,9 +175,25 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	meta := proto.CloneOf(obj)
-	meta.CustomAudiences = nil
-	return s.operations.StartLRO(ctx, req.Parent, meta, func() (proto.Message, error) {
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.InstanceSplitStatuses = nil
+	initialMeta.LatestCreatedRevision = ""
+	initialMeta.LatestReadyRevision = ""
+	initialMeta.ObservedGeneration = 0
+	initialMeta.TerminalCondition = &pb.Condition{
+		State: pb.Condition_CONDITION_PENDING,
+	}
+
+	return s.operations.StartLRO(ctx, req.Parent, initialMeta, func() (proto.Message, error) {
+		initialMeta.Reconciling = false
+		initialMeta.InstanceSplitStatuses = obj.InstanceSplitStatuses
+		initialMeta.LatestCreatedRevision = obj.LatestCreatedRevision
+		initialMeta.LatestReadyRevision = obj.LatestReadyRevision
+		initialMeta.ObservedGeneration = obj.ObservedGeneration
+		initialMeta.TerminalCondition = obj.TerminalCondition
+
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return ret, nil
@@ -191,20 +210,41 @@ func (s *workerPools) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorker
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 	if err := s.storage.Delete(ctx, fqn, &pb.WorkerPool{}); err != nil {
 		return nil, err
 	}
 
+	oldObservedGeneration := obj.ObservedGeneration
 	obj.DeleteTime = timestamppb.Now()
 	obj.ExpireTime = timestamppb.Now()
 	obj.Generation++
+	obj.ObservedGeneration = obj.Generation
 
-	meta := proto.CloneOf(obj)
-	meta.CustomAudiences = nil
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.ObservedGeneration = oldObservedGeneration
+	initialMeta.TerminalCondition = &pb.Condition{
+		LastTransitionTime: timestamppb.Now(),
+		State:              pb.Condition_CONDITION_PENDING,
+		Type:               "Ready",
+	}
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, meta, func() (protoreflect.ProtoMessage, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, initialMeta, func() (protoreflect.ProtoMessage, error) {
+		initialMeta.Reconciling = false
+		initialMeta.ObservedGeneration = obj.Generation
+		initialMeta.TerminalCondition = &pb.Condition{
+			LastTransitionTime: timestamppb.Now(),
+			State:              pb.Condition_CONDITION_SUCCEEDED,
+			Type:               "Ready",
+		}
+
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return ret, nil
@@ -221,10 +261,20 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 
 	oldTemplate := proto.CloneOf(obj.Template)
+	oldLatestCreatedRevision := obj.LatestCreatedRevision
+	oldLatestReadyRevision := obj.LatestReadyRevision
+	oldObservedGeneration := obj.ObservedGeneration
+	var oldInstanceSplitStatuses []*pb.InstanceSplitStatus
+	for _, status := range obj.InstanceSplitStatuses {
+		oldInstanceSplitStatuses = append(oldInstanceSplitStatuses, proto.Clone(status).(*pb.InstanceSplitStatus))
+	}
 	updated := req.GetWorkerPool()
 
 	paths := req.GetUpdateMask().GetPaths()
@@ -269,15 +319,40 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 		return nil, err
 	}
 
-	meta := proto.CloneOf(obj)
-	meta.CustomAudiences = nil
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	if !templateChanged {
+		meta := proto.CloneOf(obj)
+		meta.CustomAudiences = nil
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return s.operations.DoneLRO(ctx, lroPrefix, meta, ret)
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, meta, func() (protoreflect.ProtoMessage, error) {
+
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.ObservedGeneration = oldObservedGeneration
+	initialMeta.LatestCreatedRevision = oldLatestCreatedRevision
+	initialMeta.LatestReadyRevision = oldLatestReadyRevision
+	initialMeta.InstanceSplitStatuses = oldInstanceSplitStatuses
+	initialMeta.TerminalCondition = &pb.Condition{
+		LastTransitionTime: timestamppb.Now(),
+		State:              pb.Condition_CONDITION_PENDING,
+		Type:               "Ready",
+	}
+
+	return s.operations.StartLRO(ctx, lroPrefix, initialMeta, func() (protoreflect.ProtoMessage, error) {
+		initialMeta.Reconciling = false
+		initialMeta.ObservedGeneration = obj.ObservedGeneration
+		initialMeta.LatestCreatedRevision = obj.LatestCreatedRevision
+		initialMeta.LatestReadyRevision = obj.LatestReadyRevision
+		initialMeta.InstanceSplitStatuses = obj.InstanceSplitStatuses
+		initialMeta.TerminalCondition = &pb.Condition{
+			LastTransitionTime: timestamppb.Now(),
+			State:              pb.Condition_CONDITION_SUCCEEDED,
+			Type:               "Ready",
+		}
+
 		ret := proto.CloneOf(obj)
 		ret.CustomAudiences = nil
 		return ret, nil
