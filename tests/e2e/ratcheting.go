@@ -70,7 +70,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaAdjusterSettings"}:
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaPreference"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineDomainMapping"}:
-	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineFirewallRule"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineFlexibleAppVersion"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineServiceSplitTraffic"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineStandardAppVersion"}:
