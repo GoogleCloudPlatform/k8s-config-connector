@@ -148,6 +148,8 @@ cloud.google.com/go/monitoring v1.29.0 h1:AHhDsFaSax1/4k+qlIDX/SDGe6hggnfXJ9dkgD
 cloud.google.com/go/monitoring v1.29.0/go.mod h1:72NOVjJXHY/HBfoLT0+qlCZBT059+9VXLeAnL2PeeVM=
 cloud.google.com/go/netapp v1.12.0 h1:xzzDJuCZvP2FKXIzsM70ghTT+VcCg+nN/PgfRQKvT9M=
 cloud.google.com/go/netapp v1.12.0/go.mod h1:EW3GS7OsHiZBPPAWAzKszuS7AQNfA+evQSSopiJPa+U=
+cloud.google.com/go/netapp v1.16.0 h1:fE/Jhz2JJa683b7wQaM1gIu+LGiqUn8r7BjDxpgWhxA=
+cloud.google.com/go/netapp v1.16.0/go.mod h1:YYZVJtytmtfdGbbTnJTr+NBEc/IOwvK0S34IPdtxGdE=
 cloud.google.com/go/networkmanagement v1.28.0 h1:x4U4osf+1qmq7/FRIfjM781mJSeXhmjoDWrbhB4f3Mo=
 cloud.google.com/go/networkmanagement v1.28.0/go.mod h1:2YogSU3sD7LvtmWntUAuGARbFQmy3A0En3LrJr69jkU=
 cloud.google.com/go/networksecurity v0.17.0 h1:6rH2+St9F9n6r49bZ0u7X0Bp7tmWkE0ZguYCWU69xKc=
