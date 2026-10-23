@@ -4667,9 +4667,6 @@
 [missing_field] crd=gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com version=v1alpha1: field ".spec.addOns.slides.onFileScopeGrantedTrigger.runFunction" is not set in unstructured objects
 [missing_field] crd=gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com version=v1alpha1: field ".spec.oauthScopes[]" is not set in unstructured objects
 [missing_field] crd=gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
-[missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultConsentTtl" is not set in unstructured objects
-[missing_field] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableConsentCreateOnUpdate" is not set in unstructured objects
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationConfig.pubsubTopic" is not set in unstructured objects
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.tableUri" is not set in unstructured objects

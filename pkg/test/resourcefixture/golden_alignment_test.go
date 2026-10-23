@@ -1122,6 +1122,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${certificateID}"}
 	case "CertificateManagerDNSAuthorization":
 		return []string{"${dnsAuthorizationID}"}
+	case "HealthcareDataset":
+		return []string{"${datasetID}"}
 	}
 	return nil
 }
