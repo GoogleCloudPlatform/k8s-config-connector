@@ -4044,19 +4044,91 @@ func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCt
 }
 */
 
-/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto", skipping
-func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+/*
+found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto", skipping
+
+	func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SecurityPolicyAssociation{}
+		// MISSING: AttachmentID
+		out.DisplayName = in.DisplayName
+		// MISSING: ExcludedFolders
+		// MISSING: ExcludedProjects
+		// MISSING: Name
+		// MISSING: SecurityPolicyID
+		// MISSING: ShortName
+		return out
+	}
+*/
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SecurityPolicyAssociation{}
-	// MISSING: AttachmentID
-	out.DisplayName = in.DisplayName
-	// MISSING: ExcludedFolders
-	// MISSING: ExcludedProjects
-	// MISSING: Name
-	// MISSING: SecurityPolicyID
-	// MISSING: ShortName
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState{}
+	// MISSING: HeaderAction
+	// MISSING: Kind
+	// MISSING: NetworkMatch
+	// MISSING: PreconfiguredWafConfig
+	// MISSING: Priority
+	// MISSING: RateLimitOptions
+	// MISSING: RedirectOptions
+	return out
+}
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState) *pb.SecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRule{}
+	// MISSING: HeaderAction
+	// MISSING: Kind
+	// MISSING: NetworkMatch
+	// MISSING: PreconfiguredWafConfig
+	// MISSING: Priority
+	// MISSING: RateLimitOptions
+	// MISSING: RedirectOptions
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
+	out.Action = in.Action
+	out.Description = in.Description
+	// MISSING: HeaderAction
+	// MISSING: Kind
+	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_FromProto(mapCtx, in.GetMatch())
+	// MISSING: NetworkMatch
+	// MISSING: PreconfiguredWafConfig
+	out.Preview = in.Preview
+	// MISSING: Priority
+	// MISSING: RateLimitOptions
+	// MISSING: RedirectOptions
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.SecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRule{}
+	out.Action = in.Action
+	out.Description = in.Description
+	// MISSING: HeaderAction
+	// MISSING: Kind
+	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_ToProto(mapCtx, in.Match)
+	// MISSING: NetworkMatch
+	// MISSING: PreconfiguredWafConfig
+	out.Preview = in.Preview
+	// MISSING: Priority
+	// MISSING: RateLimitOptions
+	// MISSING: RedirectOptions
 	return out
 }
 */
