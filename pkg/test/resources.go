@@ -78,6 +78,11 @@ func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 			Version: "v1beta1",
 			Kind:    "TestKindWithObservedState",
 		}),
+		CRDForGVK(schema.GroupVersionKind{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputeAddress",
+		}),
 	}
 }
 
