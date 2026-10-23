@@ -27,6 +27,7 @@
 // resource: VertexAITensorboard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
 // resource: VertexAIFeaturestoreEntityTypeFeature:Feature
+// resource: VertexAIFeaturestoreEntityType:EntityType
 
 package v1alpha1
 
@@ -451,7 +452,6 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
 
-/* unreachable type FeaturestoreMonitoringConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig
 type FeaturestoreMonitoringConfig struct {
 	// The config for Snapshot Analysis Based Feature Monitoring.
@@ -478,9 +478,7 @@ type FeaturestoreMonitoringConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.categorical_threshold_config
 	CategoricalThresholdConfig *FeaturestoreMonitoringConfig_ThresholdConfig `json:"categoricalThresholdConfig,omitempty"`
 }
-*/
 
-/* unreachable type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis
 type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis struct {
 	// Whether to enable / disable / inherite default hebavior for import
@@ -493,63 +491,6 @@ type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis.anomaly_detection_baseline
 	AnomalyDetectionBaseline *string `json:"anomalyDetectionBaseline,omitempty"`
 }
-*/
-
-/* unreachable type FeaturestoreMonitoringConfig_SnapshotAnalysis
-// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis
-type FeaturestoreMonitoringConfig_SnapshotAnalysis struct {
-	// The monitoring schedule for snapshot analysis.
-	//  For EntityType-level config:
-	//    unset / disabled = true indicates disabled by
-	//    default for Features under it; otherwise by default enable snapshot
-	//    analysis monitoring with monitoring_interval for Features under it.
-	//  Feature-level config:
-	//    disabled = true indicates disabled regardless of the EntityType-level
-	//    config; unset monitoring_interval indicates going with EntityType-level
-	//    config; otherwise run snapshot analysis monitoring with
-	//    monitoring_interval regardless of the EntityType-level config.
-	//  Explicitly Disable the snapshot analysis based monitoring.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.disabled
-	Disabled *bool `json:"disabled,omitempty"`
-
-	// Configuration of the snapshot analysis based monitoring pipeline running
-	//  interval. The value is rolled up to full day.
-	//  If both
-	//  [monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days]
-	//  and the deprecated `monitoring_interval` field
-	//  are set when creating/updating EntityTypes/Features,
-	//  [monitoring_interval_days][google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days]
-	//  will be used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval
-	MonitoringInterval *string `json:"monitoringInterval,omitempty"`
-
-	// Configuration of the snapshot analysis based monitoring pipeline
-	//  running interval. The value indicates number of days.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days
-	MonitoringIntervalDays *int32 `json:"monitoringIntervalDays,omitempty"`
-
-	// Customized export features time window for snapshot analysis. Unit is one
-	//  day. Default value is 3 weeks. Minimum value is 1 day. Maximum value is
-	//  4000 days.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.SnapshotAnalysis.staleness_days
-	StalenessDays *int32 `json:"stalenessDays,omitempty"`
-}
-*/
-
-/* unreachable type FeaturestoreMonitoringConfig_ThresholdConfig
-// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ThresholdConfig
-type FeaturestoreMonitoringConfig_ThresholdConfig struct {
-	// Specify a threshold value that can trigger the alert.
-	//  1. For categorical feature, the distribution distance is calculated by
-	//  L-inifinity norm.
-	//  2. For numerical feature, the distribution distance is calculated by
-	//  Jensen–Shannon divergence. Each feature must have a non-zero threshold
-	//  if they need to be monitored. Otherwise no alert will be triggered for
-	//  that feature.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ThresholdConfig.value
-	Value *float64 `json:"value,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
 type FlexStart struct {
