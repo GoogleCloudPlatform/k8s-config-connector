@@ -785,14 +785,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
-				delete(containerdConfig, "registryHosts")
-				delete(containerdConfig, "writableCgroups")
 				delete(containerdConfig, "privateRegistryAccessConfig")
 			}
 		}
 		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
-			delete(containerdConfig, "registryHosts")
-			delete(containerdConfig, "writableCgroups")
 			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
@@ -829,10 +825,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
 				delete(cfg, "taints")
-				if cc, ok := cfg["containerdConfig"].(map[string]interface{}); ok {
-					delete(cc, "registryHosts")
-					delete(cc, "writableCgroups")
-				}
 			}
 			if nc, ok := v["networkConfig"].(map[string]interface{}); ok {
 				delete(nc, "networkTierConfig")
