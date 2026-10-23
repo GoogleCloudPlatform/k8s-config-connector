@@ -173,6 +173,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
 
 		// Oracle Database
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/autonomousDatabaseBackups/{}": true,
 
 		// OSLogin
 
@@ -184,6 +185,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
 		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,
+
+		// Translate
+		"//translate.googleapis.com/projects/{}/locations/{}/adaptiveMtDatasets/{}": true,
 
 		// Vision
 
