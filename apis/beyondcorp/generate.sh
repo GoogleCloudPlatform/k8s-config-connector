@@ -31,12 +31,13 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.beyondcorp.clientconnectorservices.v1 \
+  --service google.cloud.beyondcorp.clientconnectorservices.v1,google.cloud.beyondcorp.appconnectors.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
-  --resource BeyondCorpClientConnectorService:ClientConnectorService
-
-mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientconnectorservice_types.generated.go" || true
+  --include-skipped-output \
+  --resource BeyondCorpClientConnectorService:ClientConnectorService \
+  --resource BeyondCorpAppConnector:AppConnector
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
