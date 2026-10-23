@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.appengine.v1
 // resource: AppEngineFirewallRule:FirewallRule
+// resource: AppEngineFlexibleAppVersion:Version
 // resource: AppEngineServiceSplitTraffic:Service
 // resource: AppEngineStandardAppVersion:Version
 
