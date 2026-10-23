@@ -31,13 +31,26 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-
+# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --config ${REPO_ROOT}/apis/accesscontextmanager/v1beta1/generatetypes.yaml
+    --service google.identity.accesscontextmanager.v1 \
+    --api-version "accesscontextmanager.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --resource AccessContextManagerGCPUserAccessBinding:GcpUserAccessBinding
+
+# --- v1beta1 ---
+${CONTROLLERBUILDER} generate-types \
+    --service google.identity.accesscontextmanager.v1 \
+    --api-version "accesscontextmanager.cnrm.cloud.google.com/v1beta1" \
+    --include-skipped-output \
+    --resource AccessContextManagerAccessPolicy:AccessPolicy \
+    --resource AccessContextManagerAccessLevel:AccessLevel
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.identity.accesscontextmanager.v1 \
-    --api-version accesscontextmanager.cnrm.cloud.google.com/v1beta1
+    --api-version "accesscontextmanager.cnrm.cloud.google.com/v1beta1" \
+    --include-skipped-output \
+    --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
