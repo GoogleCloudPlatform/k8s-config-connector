@@ -34,9 +34,18 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --resource BeyondCorpClientConnectorService:ClientConnectorService
 
 mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientconnectorservice_types.generated.go" || true
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.beyondcorp.appgateways.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BeyondCorpAppGateway:AppGateway
+
+mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appgateway_types.generated.go" || true
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
