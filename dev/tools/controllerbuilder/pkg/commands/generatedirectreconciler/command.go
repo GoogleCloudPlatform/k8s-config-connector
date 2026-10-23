@@ -123,7 +123,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 	}
 	controllerOps := &generatecontroller.GenerateControllerOptions{
 		GenerateOptions: o.GenerateOptions,
-		Resource:        o.Resource,
+		Resources:       options.ResourceList{o.Resource},
 		ServiceName:     o.ServiceName,
 	}
 	if err := generatecontroller.RunController(ctx, controllerOps); err != nil {
