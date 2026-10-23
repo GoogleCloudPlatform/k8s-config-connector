@@ -44,7 +44,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAICustomJob:CustomJob \
     --resource VertexAITensorboard:Tensorboard \
     --resource VertexAITensorboardExperiment:TensorboardExperiment \
-    --resource VertexAIFeaturestoreEntityTypeFeature:Feature
+    --resource VertexAIFeaturestoreEntityTypeFeature:Feature \
+    --resource VertexAIFeaturestoreEntityType:EntityType
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
