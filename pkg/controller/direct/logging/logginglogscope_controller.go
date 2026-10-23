@@ -19,7 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -95,8 +97,20 @@ func (m *modelLoggingLogScope) AdapterForObject(ctx context.Context, op *directb
 }
 
 func (m *modelLoggingLogScope) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.LoggingLogScopeIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+
+	service, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoggingLogScopeAdapter{
+		id:      id,
+		service: service,
+	}, nil
 }
 
 type LoggingLogScopeAdapter struct {
@@ -267,13 +281,26 @@ func (a *LoggingLogScopeAdapter) Export(ctx context.Context) (*unstructured.Unst
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.LogScope)
+
+	if a.id.Project != "" {
+		obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+	} else if a.id.Folder != "" {
+		obj.Spec.FolderRef = &refsv1beta1.FolderRef{External: a.id.Folder}
+	} else if a.id.Organization != "" {
+		obj.Spec.OrganizationRef = &refsv1beta1.OrganizationRef{External: a.id.Organization}
+	} else if a.id.BillingAccount != "" {
+		obj.Spec.BillingAccountRef = &billingv1alpha1.BillingAccountRef{External: a.id.BillingAccount}
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.LogScope)
 	u.SetGroupVersionKind(krm.LoggingLogScopeGVK)
 	return u, nil
 }
