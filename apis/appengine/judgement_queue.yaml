@@ -26,3 +26,8 @@ entries:
     reason: identity-root-unknown
     detail: pattern "apps/{app}/firewall/ingressRules/{ingress_rule}" contains ancestor segment(s) apps/{app} with no matching reference or field on AppEngineFirewallRuleSpec
     status: open
+  - kind: AppEngineServiceSplitTraffic
+    group: appengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "apps/{app}/services/{service}" contains ancestor segment(s) apps/{app} with no matching reference or field on AppEngineServiceSplitTrafficSpec
+    status: open

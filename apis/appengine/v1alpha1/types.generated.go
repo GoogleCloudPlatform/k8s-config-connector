@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.appengine.v1
 // resource: AppEngineFirewallRule:FirewallRule
+// resource: AppEngineServiceSplitTraffic:Service
 
 package v1alpha1
 
@@ -56,5 +57,72 @@ type FirewallRule struct {
 	//  This field has a maximum length of 100 characters.
 	// +kcc:proto:field=google.appengine.v1.FirewallRule.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* unreachable type NetworkSettings
+// +kcc:proto=google.appengine.v1.NetworkSettings
+type NetworkSettings struct {
+	// The ingress settings for version or service.
+	// +kcc:proto:field=google.appengine.v1.NetworkSettings.ingress_traffic_allowed
+	IngressTrafficAllowed *string `json:"ingressTrafficAllowed,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.Service", skipping
+
+// +kcc:proto=google.appengine.v1.Service
+type Service struct {
+	// Full path to the Service resource in the API.
+	//  Example: `apps/myapp/services/default`.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// Relative name of the service within the application.
+	//  Example: `default`.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Service.id
+	ID *string `json:"id,omitempty"`
+
+	// Mapping that defines fractional HTTP traffic diversion to
+	//  different versions within the service.
+	// +kcc:proto:field=google.appengine.v1.Service.split
+	Split *TrafficSplit `json:"split,omitempty"`
+
+	// A set of labels to apply to this service. Labels are key/value pairs that
+	//  describe the service and all resources that belong to it (e.g.,
+	//  versions). The labels can be used to search and group resources, and are
+	//  propagated to the usage and billing reports, enabling fine-grain analysis
+	//  of costs. An example of using labels is to tag resources belonging to
+	//  different environments (e.g., "env=prod", "env=qa").
+	//
+	//  <p>Label keys and values can be no longer than 63 characters and can only
+	//  contain lowercase letters, numeric characters, underscores, dashes, and
+	//  international characters. Label keys must start with a lowercase letter
+	//  or an international character. Each service can have at most 32 labels.
+	// +kcc:proto:field=google.appengine.v1.Service.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Ingress settings for this service. Will apply to all versions.
+	// +kcc:proto:field=google.appengine.v1.Service.network_settings
+	NetworkSettings *NetworkSettings `json:"networkSettings,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.TrafficSplit", skipping
+
+// +kcc:proto=google.appengine.v1.TrafficSplit
+type TrafficSplit struct {
+	// Mechanism used to determine which version a request is sent to.
+	//  The traffic selection algorithm will
+	//  be stable for either type until allocations are changed.
+	// +kcc:proto:field=google.appengine.v1.TrafficSplit.shard_by
+	ShardBy *string `json:"shardBy,omitempty"`
+
+	// TODO: unsupported map type with key string and value double
+
 }
 */

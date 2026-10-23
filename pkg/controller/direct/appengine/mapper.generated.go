@@ -60,16 +60,90 @@ func AppEngineFirewallRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 }
 */
 
-/* found existing non-generated mapping function "AppEngineFirewallRuleSpec_v1alpha1_ToProto", skipping
-func AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFirewallRuleSpec) *pb.FirewallRule {
+/*
+found existing non-generated mapping function "AppEngineFirewallRuleSpec_v1alpha1_ToProto", skipping
+
+	func AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFirewallRuleSpec) *pb.FirewallRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallRule{}
+		// MISSING: Priority
+		out.Action = direct.Enum_ToProto[pb.FirewallRule_Action](mapCtx, in.Action)
+		out.SourceRange = AppEngineFirewallRuleSpec_SourceRange_ToProto(mapCtx, in.SourceRange)
+		out.Description = direct.ValueOf(in.Description)
+		return out
+	}
+*/
+func AppEngineServiceSplitTrafficObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmappenginev1alpha1.AppEngineServiceSplitTrafficObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirewallRule{}
-	// MISSING: Priority
-	out.Action = direct.Enum_ToProto[pb.FirewallRule_Action](mapCtx, in.Action)
-	out.SourceRange = AppEngineFirewallRuleSpec_SourceRange_ToProto(mapCtx, in.SourceRange)
-	out.Description = direct.ValueOf(in.Description)
+	out := &krmappenginev1alpha1.AppEngineServiceSplitTrafficObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Labels
+	// MISSING: NetworkSettings
+	return out
+}
+func AppEngineServiceSplitTrafficObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineServiceSplitTrafficObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Labels
+	// MISSING: NetworkSettings
+	return out
+}
+
+/* found existing non-generated mapping function "AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto", skipping
+func AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	out.Split = AppEngineServiceSplitTrafficSplit_v1alpha1_FromProto(mapCtx, in.GetSplit())
+	// MISSING: Labels
+	// MISSING: NetworkSettings
 	return out
 }
 */
+
+/*
+found existing non-generated mapping function "AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto", skipping
+
+	func AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec) *pb.Service {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Service{}
+		// MISSING: Name
+		// MISSING: ID
+		out.Split = AppEngineServiceSplitTrafficSplit_v1alpha1_ToProto(mapCtx, in.Split)
+		// MISSING: Labels
+		// MISSING: NetworkSettings
+		return out
+	}
+*/
+func AppEngineServiceSplitTrafficSplit_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrafficSplit) *krmappenginev1alpha1.AppEngineServiceSplitTrafficSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineServiceSplitTrafficSplit{}
+	out.ShardBy = direct.Enum_FromProto(mapCtx, in.GetShardBy())
+	out.Allocations = Allocations_FromProto(mapCtx, in.Allocations)
+	return out
+}
+func AppEngineServiceSplitTrafficSplit_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineServiceSplitTrafficSplit) *pb.TrafficSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrafficSplit{}
+	out.ShardBy = direct.Enum_ToProto[pb.TrafficSplit_ShardBy](mapCtx, in.ShardBy)
+	out.Allocations = Allocations_ToProto(mapCtx, in.Allocations)
+	return out
+}
