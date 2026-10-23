@@ -29,7 +29,12 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# We need a newer googleapis to get google.cloud.aiplatform.v1beta1.OnlineEvaluator
+PROTO_SHA="e7513c828b8db536fa12fc5493d541f323aedf90"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
@@ -43,10 +48,14 @@ ${CONTROLLERBUILDER} generate-types \
   --resource VertexAIStudy:Study \
   --resource VertexAITrainingPipeline:TrainingPipeline \
   --resource VertexAISchedule:Schedule \
-  --resource AIPlatformReasoningEngine:ReasoningEngine
+  --resource AIPlatformReasoningEngine:ReasoningEngine \
+  --resource AIPlatformOnlineEvaluator:google.cloud.aiplatform.v1beta1.OnlineEvaluator \
+  --proto-source-path ${PROTO_OUT}
+
+# Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
 ${CONTROLLERBUILDER} generate-types \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
@@ -54,16 +63,17 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 ${CONTROLLERBUILDER} generate-identity \
-  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
+  --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --proto-source-path ${PROTO_OUT} \
   --prepopulate-resource
 
 cd ${REPO_ROOT}

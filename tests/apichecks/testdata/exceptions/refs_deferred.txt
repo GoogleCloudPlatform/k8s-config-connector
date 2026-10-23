@@ -12,4 +12,7 @@
 # Format:
 #   [refs] crd=<crd> version=v1alpha1: field ".spec.foo" reason=<why>
 #
+[refs] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.llmBasedMetricSpec.judgeAutoraterConfig.autoraterModel" reason=no endpoint or publisher model ref type available
 [refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.conversationProfile" reason=target DialogflowConversationProfile has no KCC resource or Ref type yet
+[refs] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.evaluationConfig.autoraterConfig.autoraterModel" reason=no endpoint or publisher model ref type available
+[refs] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.evaluationConfig.metrics[].llmBasedMetricSpec.judgeAutoraterConfig.autoraterModel" reason=no endpoint or publisher model ref type available
