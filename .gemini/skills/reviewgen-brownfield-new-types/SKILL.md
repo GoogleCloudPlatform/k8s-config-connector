@@ -27,7 +27,7 @@ Please respect the following review criteria and invariants when reviewing.
 *   If a resource is a child of another GCP resource, this relationship must be explicitly denoted in the code.
 *   Compare the implementation against the provided reference files in https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7894 and https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7907/
 
-## 5. Schema Compatibility (No Breaking Changes)
+## 5. Schema Compatibility & 100% Field Parity (No Breaking Changes)
 *   **Strict Rule:** No changes to the schema (fields added, removed, or type changes) are allowed compared to the existing CRD in the `master` branch.
     * **Exception:** Removing the following top level `status` block located at the end of the CRD yaml file is fine and should not be flagged in the review:
       ```yaml
@@ -38,6 +38,7 @@ Please respect the following review criteria and invariants when reviewing.
         conditions: []
         storedVersions: []
       ```  
+*   **100% Field Parity Invariant**: Every single field in the existing legacy CRD must be supported. Dropping any field causes KCC to wipe configuration from GCP upon upgrade.
 *   The generated CRD must match the existing one exactly, except for minor differences like descriptions.
 *   **Action:** Run `./dev/tasks/diff-crds --base master` from the repository root. If the output shows any added or removed fields under `spec` or `status` (excluding comments or description text updates), fail the review.
 
@@ -51,15 +52,20 @@ Please respect the following review criteria and invariants when reviewing.
     *   [Kubernetes Resource Management Design Proposal](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md)
     *   [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/main/contributors/devel/sig-architecture/api-conventions.md)
 
+## 7. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
 * **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found)
-* **Schema Compatibility**: [Pass/Fail] - (List any diff-crds issues)
+* **Schema Compatibility & 100% Field Parity**: [Pass/Fail] - (List any diff-crds issues)
 * **References/Identity**: [Pass/Fail] - (List any missing resource references)
 
 #### Detailed Findings / Actions Required:
