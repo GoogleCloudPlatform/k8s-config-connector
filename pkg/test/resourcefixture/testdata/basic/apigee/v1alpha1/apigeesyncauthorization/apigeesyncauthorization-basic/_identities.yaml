@@ -1,0 +1,6 @@
+- caisURL: //apigee.googleapis.com/organizations/${projectId}/syncAuthorization
+  group: apigee.cnrm.cloud.google.com
+  kind: ApigeeSyncAuthorization
+  name: ${projectId}
+  namespace: ${uniqueId}
+  version: v1alpha1
