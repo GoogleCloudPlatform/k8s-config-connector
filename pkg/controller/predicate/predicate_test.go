@@ -203,3 +203,153 @@ func TestUnderlyingResourceOutOfSyncPredicate_BackoffMaxDelayAnnotation(t *testi
 		t.Fatalf("expected Update to return true when BackoffMaxDelayInSecondsAnnotation is removed")
 	}
 }
+
+func TestUnderlyingResourceOutOfSyncPredicate_UpdateOtherTriggers(t *testing.T) {
+	pred := UnderlyingResourceOutOfSyncPredicate{}
+
+	tests := []struct {
+		name     string
+		oldObj   *unstructured.Unstructured
+		newObj   *unstructured.Unstructured
+		expected bool
+	}{
+		{
+			name: "no changes",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "generation changed",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(2),
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "unrelated annotation changed",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"annotations": map[string]interface{}{
+							"example.com/some-annotation": "val1",
+						},
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"annotations": map[string]interface{}{
+							"example.com/some-annotation": "val2",
+						},
+					},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "deletion defender finalizer removed",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"finalizers": []interface{}{k8s.DeletionDefenderFinalizerName},
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"finalizers": []interface{}{},
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "labels changed",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"labels": map[string]interface{}{
+							"env": "dev",
+						},
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"labels": map[string]interface{}{
+							"env": "prod",
+						},
+					},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "force reconcile annotation changed",
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"metadata": map[string]interface{}{
+						"generation": int64(1),
+						"annotations": map[string]interface{}{
+							k8s.InternalForceReconcileAnnotation: "1",
+						},
+					},
+				},
+			},
+			expected: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			evt := event.UpdateEvent{
+				ObjectOld: tc.oldObj,
+				ObjectNew: tc.newObj,
+			}
+			got := pred.Update(evt)
+			if got != tc.expected {
+				t.Errorf("predicate.Update() = %v, want %v", got, tc.expected)
+			}
+		})
+	}
+}
