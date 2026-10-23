@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -318,6 +319,14 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Obj
 	}
 
 	if projectID := u.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+		return projectID, nil
+	}
+
+	if u.GetNamespace() != "" {
+		projectID, err := k8s.GetProjectIDForNamespace(ctx, reader, u.GetNamespace())
+		if err != nil {
+			return "", fmt.Errorf("cannot resolve project id for %v %v/%v from namespace: %w", u.GetKind(), u.GetNamespace(), u.GetName(), err)
+		}
 		return projectID, nil
 	}
 
