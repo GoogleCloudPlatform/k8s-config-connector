@@ -45,6 +45,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --resource ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation \
+  --resource ComputeOrganizationSecurityPolicyRule:SecurityPolicyRule \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
