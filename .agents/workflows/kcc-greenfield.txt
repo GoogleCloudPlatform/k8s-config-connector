@@ -221,7 +221,7 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 *   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md` or `judgement-with-controller/SKILL.md` if a generated controller/fuzzer is already present) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {kind}.
 
     Validate your changes locally by:
