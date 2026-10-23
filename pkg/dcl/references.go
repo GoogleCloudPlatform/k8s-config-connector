@@ -183,8 +183,16 @@ func getDCLReferenceExtensionElems(schema *openapi.Schema) ([]dclReferenceExtens
 	}
 	res := make([]dclReferenceExtensionElem, 0)
 	for _, elem := range extensionAsList {
-		elemAsMap, ok := elem.(map[interface{}]interface{})
-		if !ok {
+		var elemAsMap map[interface{}]interface{}
+		switch m := elem.(type) {
+		case map[interface{}]interface{}:
+			elemAsMap = m
+		case map[string]interface{}:
+			elemAsMap = make(map[interface{}]interface{}, len(m))
+			for k, v := range m {
+				elemAsMap[k] = v
+			}
+		default:
 			return nil, fmt.Errorf("wrong type for element in 'x-dcl-references' extension %T, expect to have map[interface{}]interface{}", elem)
 		}
 		e, err := toDCLReferenceExtensionElem(elemAsMap)

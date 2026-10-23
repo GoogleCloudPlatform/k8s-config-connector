@@ -92,6 +92,7 @@ rules:
     destinations:
     - serviceRef:
         external: string
+        kind: string
         name: string
         namespace: string
       weight: integer
@@ -121,6 +122,7 @@ rules:
       destination:
         serviceRef:
           external: string
+          kind: string
           name: string
           namespace: string
         weight: integer
@@ -567,7 +569,21 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeBackendService resource.</p>
+            <p>The URL of a BackendService to route traffic to.
+
+Allowed values:
+* The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+* The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.destinations[].serviceRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Kind of the referent. Allowed values: ComputeBackendService,StorageBucket</p>
         </td>
     </tr>
     <tr>
@@ -577,7 +593,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ComputeBackendService resource.</p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
         </td>
     </tr>
     <tr>
@@ -587,7 +603,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ComputeBackendService resource.</p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
         </td>
     </tr>
     <tr>
@@ -837,7 +853,21 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeBackendService resource.</p>
+            <p>The URL of a BackendService to route traffic to.
+
+Allowed values:
+* The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+* The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.requestMirrorPolicy.destination.serviceRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Kind of the referent. Allowed values: ComputeBackendService,StorageBucket</p>
         </td>
     </tr>
     <tr>
@@ -847,7 +877,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a ComputeBackendService resource.</p>
+            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
         </td>
     </tr>
     <tr>
@@ -857,7 +887,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The namespace of a ComputeBackendService resource.</p>
+            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
         </td>
     </tr>
     <tr>
