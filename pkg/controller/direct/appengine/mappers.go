@@ -61,3 +61,62 @@ func AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	return out
 }
+
+// AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto converts protobuf Service to KRM AppEngineServiceSplitTrafficSpec.
+// This is handcoded because Service.id maps to KRM ResourceID, and migrateTraffic / project are KRM-specific fields.
+func AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec{}
+	out.Split = AppEngineServiceSplitTrafficSplit_v1alpha1_FromProto(mapCtx, in.GetSplit())
+	if in.GetId() != "" {
+		out.ResourceID = direct.LazyPtr(in.GetId())
+	}
+	return out
+}
+
+// AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto converts KRM AppEngineServiceSplitTrafficSpec to protobuf Service.
+// This is handcoded because ResourceID maps to Service.id, and migrateTraffic / project are KRM-specific fields.
+func AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	out.Split = AppEngineServiceSplitTrafficSplit_v1alpha1_ToProto(mapCtx, in.Split)
+	if in.ResourceID != nil {
+		out.Id = *in.ResourceID
+	}
+	return out
+}
+
+// Allocations_FromProto converts protobuf float64 traffic allocations to KRM string representations.
+// This is handcoded because in protobuf allocations is map[string]double whereas in the existing CRD it is map[string]string.
+func Allocations_FromProto(mapCtx *direct.MapContext, in map[string]float64) map[string]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]string, len(in))
+	for k, v := range in {
+		out[k] = strconv.FormatFloat(v, 'f', -1, 64)
+	}
+	return out
+}
+
+// Allocations_ToProto converts KRM string traffic allocations to protobuf float64 representations.
+// This is handcoded because in protobuf allocations is map[string]double whereas in the existing CRD it is map[string]string.
+func Allocations_ToProto(mapCtx *direct.MapContext, in map[string]string) map[string]float64 {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]float64, len(in))
+	for k, v := range in {
+		val, err := strconv.ParseFloat(v, 64)
+		if err != nil {
+			mapCtx.Errorf("cannot parse allocation %q for version %q as float64: %v", v, k, err)
+			continue
+		}
+		out[k] = val
+	}
+	return out
+}

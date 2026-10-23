@@ -89,3 +89,85 @@ func TestAppEngineFirewallRuleSpecMapping(t *testing.T) {
 		})
 	}
 }
+
+func TestAppEngineServiceSplitTrafficSpecMapping(t *testing.T) {
+	tests := []struct {
+		name         string
+		protoService *pb.Service
+		krmSpec      *krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec
+	}{
+		{
+			name:         "nil",
+			protoService: nil,
+			krmSpec:      nil,
+		},
+		{
+			name: "full fields IP shard",
+			protoService: &pb.Service{
+				Id: "default",
+				Split: &pb.TrafficSplit{
+					ShardBy: pb.TrafficSplit_IP,
+					Allocations: map[string]float64{
+						"v1": 0.5,
+						"v2": 0.5,
+					},
+				},
+			},
+			krmSpec: &krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec{
+				ResourceID: ptr.To("default"),
+				Split: &krmappenginev1alpha1.AppEngineServiceSplitTrafficSplit{
+					ShardBy: ptr.To("IP"),
+					Allocations: map[string]string{
+						"v1": "0.5",
+						"v2": "0.5",
+					},
+				},
+			},
+		},
+		{
+			name: "cookie shard with 3 decimal precision",
+			protoService: &pb.Service{
+				Id: "backend",
+				Split: &pb.TrafficSplit{
+					ShardBy: pb.TrafficSplit_COOKIE,
+					Allocations: map[string]float64{
+						"v1": 0.8,
+						"v2": 0.2,
+					},
+				},
+			},
+			krmSpec: &krmappenginev1alpha1.AppEngineServiceSplitTrafficSpec{
+				ResourceID: ptr.To("backend"),
+				Split: &krmappenginev1alpha1.AppEngineServiceSplitTrafficSplit{
+					ShardBy: ptr.To("COOKIE"),
+					Allocations: map[string]string{
+						"v1": "0.8",
+						"v2": "0.2",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &direct.MapContext{}
+			krm := AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto(mapCtx, tc.protoService)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in FromProto: %v", err)
+			}
+			if !reflect.DeepEqual(krm, tc.krmSpec) {
+				t.Fatalf("FromProto mismatch: got %+v, want %+v", krm, tc.krmSpec)
+			}
+
+			mapCtx = &direct.MapContext{}
+			proto := AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto(mapCtx, tc.krmSpec)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in ToProto: %v", err)
+			}
+			if !reflect.DeepEqual(proto, tc.protoService) {
+				t.Fatalf("ToProto mismatch: got %+v, want %+v", proto, tc.protoService)
+			}
+		})
+	}
+}
