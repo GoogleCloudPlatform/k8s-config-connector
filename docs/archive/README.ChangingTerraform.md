@@ -1,5 +1,9 @@
 # Overview
 
+> [!WARNING]
+> **DEPRECATED**: This document is archived and no longer maintained.
+> Please refer to the updated canonical guide: **[Terraform-Based Field and Resource Playbook](../develop-resources/scenarios/terraform-field-and-resource.md)**.
+
 This README provides guidance on modifying the Config Connector's [local copy](third_party/github.com/hashicorp/terraform-provider-google-beta) of the [Terraform Provider Google (TPG) Beta](https://github.com/hashicorp/terraform-provider-google-beta) library, maintained as a [Git Subtree](https://www.atlassian.com/git/tutorials/git-subtree).
 
 Approximately 75% of Config Connector resources leverage Terraform. To verify if a Config Connector resource leverages Terraform, search for the presence of `cnrm.cloud.google.com/tf2crd: "true"` within its CRD schema. Config Connector has historically implemented numerous custom modifications (patches) on top of the standard TPG Beta library. These customizations are accessible through the Git Subtree's [commit history](https://github.com/GoogleCloudPlatform/k8s-config-connector/commits/master/third_party/github.com/hashicorp/terraform-provider-google-beta). Alternatively, if you're solely interested in tracking modifications for a specific file, you can use the following command and focus on commits made after  `Remove legacy third_party dir`:
