@@ -149,6 +149,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	if u.GroupVersionKind().Group == "kms.cnrm.cloud.google.com" && u.GroupVersionKind().Kind == "KMSCryptoKeyVersion" {
+		visitor.replacePaths[".status.generateTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
 
 	// Specific to ArtifactRegistry
 	if u.GroupVersionKind().Group == "artifactregistry.cnrm.cloud.google.com" {
