@@ -79,6 +79,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// BigLake
 
+		// BigQuery
+		"//bigquery.googleapis.com/projects/{}/datasets/{}/access/{}": true,
+
 		// Bigtable
 		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
 
