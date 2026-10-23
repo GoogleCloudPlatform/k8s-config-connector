@@ -465,8 +465,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUVirtualMachine"}:
 	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIDataset"}:
 	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIEndpoint"}:
-	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestoreEntityTypeFeature"}:
-	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestoreEntityType"}:
 	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
 	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIIndexEndpoint"}:
 	case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIIndex"}:

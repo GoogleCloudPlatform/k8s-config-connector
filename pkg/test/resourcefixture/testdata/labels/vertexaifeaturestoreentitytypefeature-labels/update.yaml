@@ -1,0 +1,11 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestoreEntityTypeFeature
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: feature${uniqueId}
+spec:
+  description: A test feature
+  entitytype: projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}
+  valueType: INT64
