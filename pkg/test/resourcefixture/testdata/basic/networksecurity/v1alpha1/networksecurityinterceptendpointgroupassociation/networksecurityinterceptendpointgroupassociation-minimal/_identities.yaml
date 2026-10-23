@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/consumer-net-min-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: consumer-net-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/global/interceptEndpointGroupAssociations/interceptega-min-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityInterceptEndpointGroupAssociation
+  name: interceptega-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
