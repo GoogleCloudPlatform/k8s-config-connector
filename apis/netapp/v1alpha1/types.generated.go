@@ -17,6 +17,7 @@
 // krm.group: netapp.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.netapp.v1
+// resource: NetAppStoragePool:StoragePool
 // resource: NetappQuotaRule:QuotaRule
 // resource: NetappReplication:Replication
 
@@ -118,6 +119,124 @@ type Replication struct {
 	// Optional. Location of the user cluster.
 	// +kcc:proto:field=google.cloud.netapp.v1.Replication.cluster_location
 	ClusterLocation *string `json:"clusterLocation,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.StoragePool", skipping
+
+// +kcc:proto=google.cloud.netapp.v1.StoragePool
+type StoragePool struct {
+	// Identifier. Name of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Service level of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.service_level
+	ServiceLevel *string `json:"serviceLevel,omitempty"`
+
+	// Required. Capacity in GIB of the pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.capacity_gib
+	CapacityGib *int64 `json:"capacityGib,omitempty"`
+
+	// Optional. Description of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels as key value pairs
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. VPC Network name.
+	//  Format: projects/{project}/global/networks/{network}
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.network
+	Network *string `json:"network,omitempty"`
+
+	// Optional. Specifies the Active Directory to be used for creating a SMB
+	//  volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.active_directory
+	ActiveDirectory *string `json:"activeDirectory,omitempty"`
+
+	// Optional. Specifies the KMS config to be used for volume encryption.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.kms_config
+	KMSConfig *string `json:"kmsConfig,omitempty"`
+
+	// Optional. Flag indicating if the pool is NFS LDAP enabled or not.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.ldap_enabled
+	LdapEnabled *bool `json:"ldapEnabled,omitempty"`
+
+	// Optional. This field is not implemented. The values provided in this field
+	//  are ignored.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.psa_range
+	PsaRange *string `json:"psaRange,omitempty"`
+
+	// Deprecated. Used to allow SO pool to access AD or DNS server from other
+	//  regions.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.global_access_allowed
+	GlobalAccessAllowed *bool `json:"globalAccessAllowed,omitempty"`
+
+	// Optional. True if the storage pool supports Auto Tiering enabled volumes.
+	//  Default is false. Auto-tiering can be enabled after storage pool creation
+	//  but it can't be disabled once enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.allow_auto_tiering
+	AllowAutoTiering *bool `json:"allowAutoTiering,omitempty"`
+
+	// Optional. Specifies the replica zone for regional storagePool.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.replica_zone
+	ReplicaZone *string `json:"replicaZone,omitempty"`
+
+	// Optional. Specifies the active zone for regional storagePool.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// Optional. True if using Independent Scaling of capacity and performance
+	//  (Hyperdisk) By default set to false
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.custom_performance_enabled
+	CustomPerformanceEnabled *bool `json:"customPerformanceEnabled,omitempty"`
+
+	// Optional. Custom Performance Total Throughput of the pool (in MiBps)
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.total_throughput_mibps
+	TotalThroughputMibps *int64 `json:"totalThroughputMibps,omitempty"`
+
+	// Optional. Custom Performance Total IOPS of the pool
+	//  if not provided, it will be calculated based on the total_throughput_mibps
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.total_iops
+	TotalIops *int64 `json:"totalIops,omitempty"`
+
+	// Optional. Total hot tier capacity for the Storage Pool. It is applicable
+	//  only to Flex service level. It should be less than the minimum storage pool
+	//  size and cannot be more than the current storage pool size. It cannot be
+	//  decreased once set.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.hot_tier_size_gib
+	HotTierSizeGib *int64 `json:"hotTierSizeGib,omitempty"`
+
+	// Optional. Flag indicating that the hot-tier threshold will be
+	//  auto-increased by 10% of the hot-tier when it hits 100%. Default is true.
+	//  The increment will kick in only if the new size after increment is
+	//  still less than or equal to storage pool size.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.enable_hot_tier_auto_resize
+	EnableHotTierAutoResize *bool `json:"enableHotTierAutoResize,omitempty"`
+
+	// Optional. QoS (Quality of Service) Type of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.qos_type
+	QosType *string `json:"qosType,omitempty"`
+
+	// Optional. Type of the storage pool. This field is used to control whether
+	//  the pool supports `FILE` based volumes only or `UNIFIED` (both `FILE` and
+	//  `BLOCK`) volumes. If not specified during creation, it defaults to `FILE`.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Mode of the storage pool. This field is used to control whether
+	//  the user can perform the ONTAP operations on the storage pool using the
+	//  GCNV ONTAP Mode APIs. If not specified during creation, it defaults to
+	//  `DEFAULT`.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The scale type of the storage pool. Defaults to
+	//  `SCALE_TYPE_DEFAULT` if not specified.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.scale_type
+	ScaleType *string `json:"scaleType,omitempty"`
 }
 */
 
@@ -295,6 +414,58 @@ type ReplicationObservedState struct {
 	//  cluster by the customer.
 	// +kcc:proto:field=google.cloud.netapp.v1.Replication.hybrid_replication_user_commands
 	HybridReplicationUserCommands *UserCommandsObservedState `json:"hybridReplicationUserCommands,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.StoragePool", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.StoragePool
+type StoragePoolObservedState struct {
+	// Output only. Allocated size of all volumes in GIB in the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.volume_capacity_gib
+	VolumeCapacityGib *int64 `json:"volumeCapacityGib,omitempty"`
+
+	// Output only. Volume count of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.volume_count
+	VolumeCount *int32 `json:"volumeCount,omitempty"`
+
+	// Output only. State of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. State details of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// Output only. Create time of the storage pool
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Specifies the current pool encryption key source.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. Reserved for future use
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// Output only. Available throughput of the storage pool (in MiB/s).
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.available_throughput_mibps
+	AvailableThroughputMibps *float64 `json:"availableThroughputMibps,omitempty"`
+
+	// Output only. Total cold tier data rounded down to the nearest GiB used by
+	//  the storage pool.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.cold_tier_size_used_gib
+	ColdTierSizeUsedGib *int64 `json:"coldTierSizeUsedGib,omitempty"`
+
+	// Output only. Total hot tier data rounded down to the nearest GiB used by
+	//  the storage pool.
+	// +kcc:proto:field=google.cloud.netapp.v1.StoragePool.hot_tier_size_used_gib
+	HotTierSizeUsedGib *int64 `json:"hotTierSizeUsedGib,omitempty"`
 }
 */
 
