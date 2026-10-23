@@ -416,15 +416,9 @@ func (a *{{.ProtoResource}}Adapter) Find(ctx context.Context) (bool, error) {
 	}
 	{{.ProtoResource | ToLower}}pb, err := a.gcpClient.{{.GetMethodName}}(ctx, req)
 	if err != nil {
-{{- if .IsServerGeneratedID }}
-		if direct.IsNotFound(err) || (a.desired != nil && a.desired.Status.ExternalRef == nil && direct.IsBadRequest(err)) {
-			return false, nil
-		}
-{{- else }}
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-{{- end }}
 		return false, fmt.Errorf("getting {{.ProtoResource}} %q: %w", a.id, err)
 	}
 

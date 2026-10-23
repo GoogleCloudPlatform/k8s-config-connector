@@ -248,11 +248,12 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 			},
 			wantContains: []string{
 				"if !a.id.HasIdentitySpecified() {\n\t\treturn false, nil\n\t}",
-				"if direct.IsNotFound(err) || (a.desired != nil && a.desired.Status.ExternalRef == nil && direct.IsBadRequest(err)) {",
+				"if direct.IsNotFound(err) {",
 				"status.ExternalRef = direct.LazyPtr(created.Name)",
 			},
 			wantNotContains: []string{
 				"CompanyId:",
+				"direct.IsBadRequest(err)",
 			},
 		},
 		{
