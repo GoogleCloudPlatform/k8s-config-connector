@@ -213,7 +213,7 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
 
 Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or after Step 1a merges):
 *   *Compatibility check for legacy in-flight workflows:* If `apis/<service>/v1alpha1/{kind_lowercase}_types.go` is already on `master` from a legacy Step 1 PR and `apis/<service>/judgement_queue.yaml` does not have an `open` `untriaged-bulk-generation` entry for `{kind}`, mark Step 1b as `Skipped (Legacy Step 1)` and proceed directly to **Step 2**.
-*   Otherwise, open a GitHub issue to triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files for `{kind}`.
+*   Otherwise, open a GitHub issue to triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files (plus the generated controller and fuzzer if already present on `master`) for `{kind}`.
 
 **GitHub Issue Details for Step 1b (Judgement Triage):**
 *   **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types and identity for {kind}`
@@ -221,7 +221,7 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 *   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1b: `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {kind}.
 
     Validate your changes locally by:
@@ -241,7 +241,7 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 
 ### Step 2: Direct Controller, E2E fixtures and Fuzzer
 
-Open a GitHub issue to coordinate the implementation of the direct controller and E2E fixtures for a specific Kubernetes resource.
+Open a GitHub issue to coordinate the autogeneration/verification of the direct controller and fuzzer (`generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource`) and E2E fixture recording for `{kind}`.
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
@@ -249,7 +249,7 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 *   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {kind}.
 
     If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 

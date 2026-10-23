@@ -100,13 +100,19 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 
 *   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
     *   Verify `<Kind>` remains in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, it must be added—it should only be removed by the graduation step at the end of the pipeline).
-*   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync**:
-    *   Verify `apis/<service>/generate.sh` includes `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
-    *   Verify that `apis/<service>/v1alpha1/types.generated.go`, `pkg/controller/direct/<service>/mapper.generated.go`, `apis/<service>/v1alpha1/zz_generated.deepcopy.go`, and `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml` are updated and consistent with `<kind>_types.go`.
+*   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync (Including Pre-Generated Controllers & Fuzzers)**:
+    *   Verify `apis/<service>/generate.sh` includes `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`, or `--proto-source-path ${PROTO_OUT}` if the service pins a custom proto SHA). *(If `pkg/controller/direct/<service>/mapper.generated.go` cannot be regenerated via `generate-mapper` because the package contains legacy/mockgcp or multi-service mappers, verify `<Kind>`'s mappers are cleanly isolated in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` matching `TestDirectResourceFileNaming`.)*
+    *   Verify that `apis/<service>/v1alpha1/types.generated.go`, `pkg/controller/direct/<service>/mapper.generated.go` (or `<kind_lower>_mapper.go`), `apis/<service>/v1alpha1/zz_generated.deepcopy.go`, and `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml` are updated and consistent with `<kind>_types.go`.
+    *   **Top-Level `Spec.Labels` Removal (`TestVerifyLabelsTestCasesExist`)**: Verify top-level proto `labels` are removed from `<Kind>Spec` (reconciled via `metadata.labels` instead) so `TestVerifyLabelsTestCasesExist` does not fail when a controller is registered.
+    *   **MANDATORY GATE — Pre-Existing Controller & Fuzzer Must Compile and Pass Tests**:
+        *   Check if `pkg/controller/direct/<service>/*_controller.go` and/or `pkg/controller/direct/<service>/<kind_lower>_fuzzer*.go` already exist for `<Kind>`.
+        *   Closing `judgement_queue.yaml` items frequently mutates `<kind>_types.go`, `<kind>_identity*.go`, and `mapper.generated.go` (e.g., converting strings to `*Ref` structs, moving fields between `Spec` and `ObservedState`, commenting out an empty `ObservedState`, or switching `IdentityV2` $\leftrightarrow$ `ServerGeneratedIdentity`).
+        *   **Strict Rule**: After all judgement queue items are closed, the existing controller and fuzzer for `<Kind>` **MUST** still compile (`go build ./pkg/controller/direct/<service>/...`) and pass round-trip fuzzing (`FOCUS=<Kind> go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`).
+        *   **Action if Broken or Out of Sync**: Reject the PR (`[Fail]`) and explicitly instruct the implementing agent to regenerate the controller (`controllerbuilder generate-controller --prepopulate-resource`) and fuzzer (`controllerbuilder generate-fuzzer --prepopulate-resource`), update any custom mapper/controller helpers, and fix all compile or fuzzer failures in `pkg/controller/direct/<service>/...` before the PR can be approved.
 *   **Exception Files**:
     *   Greenfield PRs must **not** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file, except:
         *   `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` (if required for alpha fields)
-        *   `pkg/gcpurls/registry_test.go` (if needed for verified resource URL templates absent from `cloudassetinventory_names.jsonl`)
+        *   `pkg/gcpurls/registry_test.go` (if needed for verified resource URL templates absent from `cloudassetinventory_names.jsonl` when `TestRegisteredTemplatesMatchCAI` runs)
         *   `testdata/exceptions/naming_violations.txt` (when introducing external-only `<targetkind>_identity.go` / `<targetkind>_reference.go` files for unmodelled referenced resources)
 
 ---
@@ -119,11 +125,12 @@ When proposing changes or stating LGTM, format the review description as follows
 ### KCC Greenfield Step 2 (Judgement Queue) Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
 * **Judgement Queue Completeness**: [Pass/Fail] - (Confirm `untriaged-bulk-generation` and all actionable entries for `<Kind>` are `resolved`, no entries were deleted, and no `+kcc:guess` comments remain in handwritten files)
-* **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` left in Spec, or doc comments stripped to evade `TestMissingRefs`)
+* **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` or top-level `labels` left in Spec, or doc comments stripped to evade `TestMissingRefs`)
 * **Parent, Identity & References**: [Pass/Fail] - (Verify `*parent.ProjectAndLocationRef` / `<Parent>Ref` per `go/kcc-oneparent`, `generate-identity` usage, singleton/multi-pattern template accuracy, `ServerGeneratedIdentity` vs `IdentityV2`, and `refs.Normalize`)
 * **Unflagged Proto-vs-KRM Audit & Struct Isolation**: [Pass/Fail] - (List any subtle unflagged references, missing `+kcc:proto=` on handwritten nested structs, shared structs mutated in-place instead of forked, non-pointer primitives, or empty `ObservedState`)
-* **Generated Files, `BLOCKED_KINDS`, & Exception Files**: [Pass/Fail] - (Confirm CRD/mapper/deepcopy are in sync, `<Kind>` is in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`, and `missingrefs.txt` was not modified)
+* **Generated Files, Pre-Existing Controller/Fuzzer Sync, & `BLOCKED_KINDS`**: [Pass/Fail] - (Confirm CRD/mapper/deepcopy are in sync, any pre-existing controller and fuzzer for `<Kind>` were regenerated/updated to compile and pass `TestFocusedMappers`, `<Kind>` is in `BLOCKED_KINDS`, and `missingrefs.txt` was not modified)
 
 #### Detailed Findings / Actions Required:
-1. [Specify file, line number, and exact issue]
+1. [Specify file, line number, and exact issue — if a pre-existing controller or fuzzer in `pkg/controller/direct/<service>/` fails to compile or fails fuzzing after type/identity changes, instruct the agent to regenerate and fix them]
 ```
+
