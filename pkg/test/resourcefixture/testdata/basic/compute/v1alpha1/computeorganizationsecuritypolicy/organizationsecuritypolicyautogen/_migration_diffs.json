@@ -1,0 +1,34 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeOrganizationSecurityPolicy/computeorganizationsecuritypolicy-${uniqueId}",
+    "fields": [
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "tf-test${uniqueId}"
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent",
+        "old": "",
+        "new": "organizations/128653134652"
+      },
+      {
+        "id": "policy_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "CLOUD_ARMOR"
+      }
+    ]
+  }
+]
