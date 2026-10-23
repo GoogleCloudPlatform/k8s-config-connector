@@ -384,6 +384,9 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	newState, err := dclunstruct.Apply(ctx, dclConfig, dclResource, lifecycleParams...)
 	if err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", resource.GetNamespacedName())
+		if dcl.IsMethodNotFoundError(err) {
+			return false, r.HandleUpdateFailedWithReason(ctx, &resource.Resource, k8s.ServiceEndpointUnavailable, fmt.Errorf("error applying desired state: %w", err))
+		}
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error applying desired state: %w", err))
 	}
 	// update k8s api server with the new state

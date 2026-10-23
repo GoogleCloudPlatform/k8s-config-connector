@@ -18,6 +18,7 @@ import (
 	"errors"
 
 	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 )
 
 func IsNoSuchMethodError(err error) bool {
@@ -26,4 +27,16 @@ func IsNoSuchMethodError(err error) bool {
 	}
 
 	return errors.Is(err, dclunstruct.ErrNoSuchMethod)
+}
+
+// IsMethodNotFoundError checks if the error is a 404 Method not found, either from GCP API
+// or from DCL client library unstructured ErrNoSuchMethod.
+func IsMethodNotFoundError(err error) bool {
+	if err == nil {
+		return false
+	}
+	if IsNoSuchMethodError(err) {
+		return true
+	}
+	return gcp.IsMethodNotFoundError(err)
 }
