@@ -9,11 +9,13 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ---
 
-## 1. Deterministic `generate.sh` Invocation (`generate-controller` / `generate-direct-reconciler` & `generate-fuzzer`)
+## 1. Post-Judgement Prerequisite, Deterministic `generate.sh`, & `static_config.go`
+*   **Post-Judgement Check (`apis/<service>/judgement_queue.yaml`)**: Verify that `<Kind>`'s `untriaged-bulk-generation` and all actionable entries in `apis/<service>/judgement_queue.yaml` are `status: resolved` (and top-level `Labels` is not left in `<Kind>Spec`).
 *   Verify that `apis/<service>/generate.sh` invokes both:
     *   `${CONTROLLERBUILDER} generate-controller` (or `generate-direct-reconciler`) `--service <proto.service> --api-version <group>/<version> --prepopulate-resource --resource <Kind>:<ProtoMessage>`
     *   `${CONTROLLERBUILDER} generate-fuzzer --prepopulate-resource --service <proto.service> --api-version <group>/<version> --resource <Kind>:<ProtoMessage>`
-*   Verify that `pkg/controller/direct/<service>/<proto_lower>_controller.go` carries the `// +generated:controller` header marker and `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` carries the `// +generated:fuzzer` header marker.
+*   Verify that `pkg/controller/direct/<service>/<proto_lower>_controller.go` carries the `// +generated:controller` header marker, `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` carries the `// +generated:fuzzer` header marker, and `pkg/controller/resourceconfig/static_config.go` has been updated via `python3 dev/tasks/generate_static_config.py`.
+*   Verify `TestGenerateScripts`, `TestDirectResourceFileNaming`, `TestRegisteredTemplatesMatchCAI`, and `TestVerifyLabelsTestCasesExist` pass.
 
 ## 2. Canonical Greenfield Controller Invariants (The 5 Standards)
 1.  **GAPIC REST Client Preference**:
@@ -28,10 +30,10 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
     *   Verify `structuredreporting.ReportDiff(ctx, report)` is called when `len(paths) != 0` before sending the `Update<Resource>Request`.
 5.  **LRO Waiting, Post-LRO `Get<Resource>`, & Mandatory `setStatus`**:
     *   Verify `Create`, `Update`, and `Delete` wait on any returned LRO (`op.Wait(ctx)`).
-    *   Verify `setStatus(u, resolved)` is called at the end of `Create` and on **all** `Update` paths (both when `len(paths) == 0` and after an update RPC completes).
+    *   Verify `setStatus(u, resolved)` is called at the end of `Create` and on **all** `Update` paths (both when `len(paths) == 0` and after an update RPC completes, or unconditionally on immutable resources without an `Update*` RPC).
 
 ## 3. Round-Trip Fuzzer (`<kind_lower>_fuzzer.generated.go`)
-*   Verify `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` is present, registers the fuzzer in `init()`, and passes `dev/ci/presubmits/fuzz-roundtrippers`.
+*   Verify `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` is present, registers the fuzzer in `init()`, and passes `FOCUS=<Kind> go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers` and `dev/ci/presubmits/fuzz-roundtrippers`.
 
 ## 4. Real-GCP E2E Fixtures & Ratcheting Opt-In
 *   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp).
@@ -42,7 +44,7 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 ```markdown
 ### KCC Greenfield Controller Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
-* **Deterministic `generate.sh` (`generate-controller` & `generate-fuzzer`)**: [Pass/Fail] - (Confirm `generate.sh` invokes both with `--prepopulate-resource` and files have `+generated:controller` / `+generated:fuzzer`)
+* **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` invokes `generate-controller` & `generate-fuzzer` with `--prepopulate-resource`, files have `+generated:controller` / `+generated:fuzzer`, and `static_config.go` is updated)
 * **Client Creation & Reference Normalization**: [Pass/Fail] - (Confirm GAPIC REST client and `common.NormalizeGreenfieldReferences` in `AdapterForObject`)
 * **CompareGreenfieldSpec & Structured Reporting**: [Pass/Fail] - (Confirm `common.CompareGreenfieldSpec` / `CompareGreenfieldSpecAndLabels` and `structuredreporting.ReportDiff` are used in `Update`)
 * **LRO Wait & Mandatory Status Updates**: [Pass/Fail] - (Confirm `op.Wait(ctx)` and `setStatus` on both no-op and mutating paths)
@@ -51,3 +53,4 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
 ```
+

@@ -7,6 +7,9 @@ description: Entry point for implementing Phase 2 (direct controller, fuzzer, an
 
 This skill is the entry point for **Greenfield Step 2 (Direct Controller, Fuzzer, and E2E Fixtures)**. It routes to either the deterministic generator workflow (`generated/SKILL.md`) or the legacy handwritten workflow (`legacy/SKILL.md`) so in-flight PRs written in the old style are not disrupted.
 
+> [!IMPORTANT]
+> **Hard Prerequisite — Post-Judgement Only:** For systemic per-resource workflows, Step 1b (`apis/<service>/judgement_queue.yaml` triage) **must** already be completed (`untriaged-bulk-generation` and all actionable entries for `<Kind>` marked `status: resolved`) before running Phase 2. Pre-judgement controller generation is strictly reserved for ad-hoc bulk campaigns (`kcc-bulk-controller-generator`).
+
 ## Detect Mode and Route
 
 Check whether an in-flight handwritten controller (without `// +generated:controller`) already exists on the current branch for `<Kind>`:
@@ -19,3 +22,4 @@ grep -rn "RegisterModel(.*<Kind>GVK" pkg/controller/direct/<service>/ 2>/dev/nul
   - Read and follow **[`.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/generated/SKILL.md`](generated/SKILL.md)** using `view_file`.
 - **If a controller file for `<Kind>` already exists on the branch and does NOT contain `// +generated:controller` (In-Flight Legacy Handwritten Controller PR)**:
   - Read and follow **[`.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/legacy/SKILL.md`](legacy/SKILL.md)** using `view_file`.
+

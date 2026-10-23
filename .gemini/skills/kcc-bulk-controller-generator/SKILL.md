@@ -11,14 +11,14 @@ This skill orchestrates the two-phase workflow for bulk-generating deterministic
 
 ## Supported Pipeline Modes
 
-You can run this workflow at either of two points in the greenfield pipeline:
-
-1. **Mode A — Post-Judgement (After Step 1a + Step 1b Complete)**:
+1. **Standard Mode — Post-Judgement (After Step 1a + Step 1b Complete)**:
    - Target resources whose `untriaged-bulk-generation` entry in `apis/<service>/judgement_queue.yaml` is `status: resolved` (or finalized greenfield types without open queue entries) and that do not yet have a direct controller/fuzzer.
-   - KRM types, identities, references, and mappers are already finalized, so the generated controllers and fuzzers reflect the final triaged schema.
-2. **Mode B — Pre-Judgement (Immediately After Step 1a, Before Step 1b)**:
-   - Target resources that have been bulk-prepopulated in Step 1a (`untriaged-bulk-generation` is `status: open` in `apis/<service>/judgement_queue.yaml`) to unblock controller and fuzzer generation immediately.
-   - Later, when Step 1b (`step/types-judgement`) runs on each resource, `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` automatically routes to `judgement-with-controller/SKILL.md`, which updates both the CRD/KRM types and regenerates the controller (`// +generated:controller`) and fuzzer (`// +generated:fuzzer`) in place.
+   - KRM types, identities, references, top-level `labels` removal, and mappers are already finalized, so the generated controllers and fuzzers reflect the final triaged schema.
+2. **Ad-Hoc Campaign Mode Only — Pre-Judgement (Immediately After Step 1a, Before Step 1b)**:
+   - **Strictly for ad-hoc human-invoked bulk generation campaigns — NEVER for systemic per-resource automated workflows.**
+   - Targets resources that were bulk-prepopulated in Step 1a (`untriaged-bulk-generation` is `status: open` in `apis/<service>/judgement_queue.yaml`) when doing a one-off repository-wide bulk generation pass.
+   - Later, when Step 1b (`step/types-judgement`) runs on each resource, [`.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/SKILL.md`](../kcc-direct-greenfield-types-implementer/judgement/SKILL.md) updates the CRD/KRM types and regenerates the controller (`// +generated:controller`) and fuzzer (`// +generated:fuzzer`) in lockstep.
+
 
 ---
 

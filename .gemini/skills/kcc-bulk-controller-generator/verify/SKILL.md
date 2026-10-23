@@ -25,16 +25,21 @@ Inspect every generated `pkg/controller/direct/<service>/<proto_lower>_controlle
 4. **Declared-Spec-Only Diffing (`common.CompareGreenfieldSpec` / `common.CompareGreenfieldSpecAndLabels`):** `Update` calls `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when top-level proto `labels` are reconciled via `metadata.labels`) and reports diffs via `structuredreporting.ReportDiff(ctx, report)`.
 5. **Status & ExternalRef Updates:** `setStatus(u, resolved)` is called at the end of `Create` and on both no-op and mutating `Update` paths, setting `status.ExternalRef = direct.LazyPtr(a.id.String())`.
 
-### 3. `generate.sh` Idempotency
-Re-run `SKIP_GENERATE_CRDS=1 ./apis/<service>/generate.sh` for the services in the branch and verify `git diff` is completely empty (confirming `// +generated:controller` and `// +generated:fuzzer` files regenerate idempotently in place).
+### 3. `generate.sh` Idempotency & `static_config.go` Sync
+- Re-run `SKIP_GENERATE_CRDS=1 ./apis/<service>/generate.sh` for the services in the branch and verify `git diff` is completely empty (confirming `// +generated:controller` and `// +generated:fuzzer` files regenerate idempotently in place).
+- Re-run `python3 dev/tasks/generate_static_config.py` and verify `git diff pkg/controller/resourceconfig/static_config.go` is empty.
+- If `go.mod` was modified, verify `go mod tidy && (cd mockgcp && go mod tidy)` produces zero diff.
 
-### 4. Build, Fuzzer Round-Trip, & Naming Tests
+### 4. Build, 200-Seed Fuzzer Round-Trip, & Repo Unit Tests
 Run the following commands and verify they pass with zero errors:
 ```bash
 go build ./pkg/controller/direct/...
 go test -v ./pkg/fuzztesting/fuzztests -run="FuzzAllMappers"
-go test -v ./tests/apichecks -run "TestDirectResourceFileNaming"
+go test -v ./tests/apichecks -run "TestGenerateScripts|TestDirectResourceFileNaming"
+go test -v ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
 ```
+*(Ensure every new fuzzer is tested across at least 200 seeds via `FuzzSpec` and `FuzzStatus`.)*
+
 
 ---
 

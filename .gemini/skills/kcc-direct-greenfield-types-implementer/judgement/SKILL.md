@@ -39,7 +39,13 @@ You **must** also apply the baseline KRM standards in:
 
 ### Phase 1: Inventory, `generate-mapper` Check, & Proto Discovery
 1. Read `apis/<service>/judgement_queue.yaml` (locating `<Kind>`'s contiguous block), `apis/<service>/generate.sh`, and `apis/<service>/v1alpha1/<kind>_types.go`.
-2. Verify that `apis/<service>/generate.sh` runs all `generate-types` and `generate-identity` invocations **before** `${CONTROLLERBUILDER} generate-mapper` (with `--prepopulate-resource`, and `--multiversion` if the service has both `v1alpha1` and `v1beta1`), followed by `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports`. If the resource came from an earlier batch PR that omitted `generate-mapper` or placed `generate-types` after `generate-mapper`, fix the ordering and add `generate-mapper --prepopulate-resource` plus any needed `go.mod` or stub mapper helpers so `pkg/controller/direct/<service>/...` compiles cleanly.
+2. Verify that `apis/<service>/generate.sh` runs in the canonical order:
+   - `generate-types --prepopulate-resource`
+   - `generate-identity`
+   - `generate-mapper --prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`, and `--proto-source-path ${PROTO_OUT}` if `generate.sh` pins a custom `PROTO_SHA`)
+   - `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` (if a pre-generated controller/fuzzer already exists for `<Kind>`)
+   - `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports`.
+   *(Note for multi-service or legacy packages such as `dialogflow`, `iam`, `mapmanagement`, `networkconnectivity`, or `bigqueryanalyticshub`: if running `generate-mapper` in `generate.sh` would overwrite existing mockgcp/legacy or multi-service mappers in `pkg/controller/direct/<service>/mapper.generated.go`, keep `<Kind>`'s mapper functions isolated in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` using the exact lowercase `<kind_lower>_` prefix required by `TestDirectResourceFileNaming`.)*
 3. Locate the proto definition in `.build/third_party/googleapis/google/...` matching `+kcc:spec:proto=<full_proto_name>` (run `./dev/tools/controllerbuilder/generate-proto.sh` if `.build/third_party/googleapis` is missing). Inspect the resource message, `option (google.api.resource)`, and `Create<Resource>Request`.
 
 ### Phase 2: Resolve Queue Entries by `reason`
@@ -65,15 +71,28 @@ You **must** also apply the baseline KRM standards in:
 
 ### Phase 3: Holistic Proto-vs-KRM Audit (Before Closing `untriaged-bulk-generation`)
 1. **Unflagged Subtle References**: Scan every remaining `*string` / `[]string` field in `<Kind>Spec` and reachable structs in `types.generated.go` for unflagged GCP resource references (e.g., `sourceProjectID`, `defaultDatabase`, `kmsKey`, `serviceAccount`, `network`, `repository`) and convert them to `*Ref` fields.
-2. **Nested `Etag` / Output-Only Fields & Empty `ObservedState`**: Check nested Spec structs for unannotated `Etag` or output-only fields; if `<Kind>ObservedState` ends up empty, comment out `ObservedState` in `<Kind>Status` and `type <Kind>ObservedState struct`.
-3. **Close `untriaged-bulk-generation`**: Mark `<Kind>`'s `untriaged-bulk-generation` entry `status: resolved` (`edited` or `accepted` with a summary `note`).
+2. **Top-Level `Spec.Labels` Removal (`TestVerifyLabelsTestCasesExist`)**: Ensure top-level `Labels map[string]string` is removed from `<Kind>Spec` (top-level proto `labels` are reconciled via `metadata.labels`); leaving `Labels` in `<Kind>Spec` causes `TestVerifyLabelsTestCasesExist` to fail when a controller is registered.
+3. **Nested `Etag` / Output-Only Fields & Empty `ObservedState`**: Check nested Spec structs for unannotated `Etag` or output-only fields; if `<Kind>ObservedState` ends up empty, comment out `ObservedState` in `<Kind>Status` and `type <Kind>ObservedState struct`.
+4. **Close `untriaged-bulk-generation`**: Mark `<Kind>`'s `untriaged-bulk-generation` entry `status: resolved` (`edited` or `accepted` with a summary `note`).
 
-### Phase 4: Regeneration & Verification
+### Phase 4: Regeneration, Lockstep Controller/Fuzzer Sync, & Verification
 1. Run `./apis/<service>/generate.sh` and confirm `git diff apis/<service>/judgement_queue.yaml` shows no newly opened entries for `<Kind>`.
-2. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as a separate graduation step removes it at the end of the pipeline).
-3. Run verification tests (including `TestCRDBackwardCompatibility` and `TestHandWrittenProtoStructAnnotationsAndNaming`):
+2. **If a Pre-Generated Controller (`*_controller.go`) or Fuzzer (`<kind_lower>_fuzzer.generated.go`) Exists in `pkg/controller/direct/<service>/` (MANDATORY)**:
+   - Because closing `judgement_queue.yaml` entries changes KRM fields, `*Ref` types, `ObservedState` presence, or `IdentityV2` vs `ServerGeneratedIdentity`, you **must** regenerate and fix the controller, mapper, and fuzzer in lockstep:
+     - Ensure `apis/<service>/generate.sh` (or direct `controllerbuilder generate-controller --prepopulate-resource` / `generate-fuzzer --prepopulate-resource` calls) updates `pkg/controller/direct/<service>/<proto_lower>_controller.go` and `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go`.
+     - If `ambiguous-proto-name` changed `<ProtoMessage>`, remove any stale `<old_proto_lower>_controller.go` file and run `python3 dev/tasks/generate_static_config.py`.
+     - Verify that `pkg/controller/direct/<service>/...` compiles cleanly and passes 200-seed round-trip fuzzing:
+       ```bash
+       go build ./pkg/controller/direct/<service>/...
+       FOCUS=<Kind> go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers
+       ```
+3. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as a separate graduation step removes it at the end of the pipeline).
+4. If `go.mod` was updated, run `go mod tidy && (cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
+5. Run verification tests (including `TestCRDBackwardCompatibility`, `TestHandWrittenProtoStructAnnotationsAndNaming`, `TestGenerateScripts`, `TestDirectResourceFileNaming`, and `TestRegisteredTemplatesMatchCAI`):
    ```bash
-   go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming"
+   go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming|TestGenerateScripts|TestDirectResourceFileNaming"
+   go test -v ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
    go test -v ./apis/<service>/... ./pkg/controller/direct/<service>/...
    ```
-4. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
+6. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
+
