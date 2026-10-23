@@ -17,9 +17,41 @@
 // krm.group: appengine.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.appengine.v1
+// resource: AppEngineDomainMapping:DomainMapping
 // resource: AppEngineFirewallRule:FirewallRule
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.DomainMapping", skipping
+
+// +kcc:proto=google.appengine.v1.DomainMapping
+type DomainMapping struct {
+	// Full path to the `DomainMapping` resource in the API. Example:
+	//  `apps/myapp/domainMapping/example.com`.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.DomainMapping.name
+	Name *string `json:"name,omitempty"`
+
+	// Relative name of the domain serving the application. Example:
+	//  `example.com`.
+	// +kcc:proto:field=google.appengine.v1.DomainMapping.id
+	ID *string `json:"id,omitempty"`
+
+	// SSL configuration for this domain. If unconfigured, this domain will not
+	//  serve with SSL.
+	// +kcc:proto:field=google.appengine.v1.DomainMapping.ssl_settings
+	SSLSettings *SSLSettings `json:"sslSettings,omitempty"`
+
+	// The resource records required to configure this domain mapping. These
+	//  records must be added to the domain's DNS configuration in order to
+	//  serve the application via this domain mapping.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.DomainMapping.resource_records
+	ResourceRecords []ResourceRecord `json:"resourceRecords,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.appengine.v1.FirewallRule", skipping
 
@@ -56,5 +88,61 @@ type FirewallRule struct {
 	//  This field has a maximum length of 100 characters.
 	// +kcc:proto:field=google.appengine.v1.FirewallRule.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.ResourceRecord", skipping
+
+// +kcc:proto=google.appengine.v1.ResourceRecord
+type ResourceRecord struct {
+	// Relative name of the object affected by this record. Only applicable for
+	//  `CNAME` records. Example: 'www'.
+	// +kcc:proto:field=google.appengine.v1.ResourceRecord.name
+	Name *string `json:"name,omitempty"`
+
+	// Data for this record. Values vary by record type, as defined in RFC 1035
+	//  (section 5) and RFC 1034 (section 3.6.1).
+	// +kcc:proto:field=google.appengine.v1.ResourceRecord.rrdata
+	Rrdata *string `json:"rrdata,omitempty"`
+
+	// Resource record type. Example: `AAAA`.
+	// +kcc:proto:field=google.appengine.v1.ResourceRecord.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.SslSettings", skipping
+
+// +kcc:proto=google.appengine.v1.SslSettings
+type SSLSettings struct {
+	// ID of the `AuthorizedCertificate` resource configuring SSL for the
+	//  application. Clearing this field will remove SSL support.
+	//
+	//  By default, a managed certificate is automatically created for every
+	//  domain mapping. To omit SSL support or to configure SSL manually, specify
+	//  `SslManagementType.MANUAL` on a `CREATE` or `UPDATE` request. You must
+	//  be authorized to administer the `AuthorizedCertificate` resource to
+	//  manually map it to a `DomainMapping` resource.
+	//  Example: `12345`.
+	// +kcc:proto:field=google.appengine.v1.SslSettings.certificate_id
+	CertificateID *string `json:"certificateID,omitempty"`
+
+	// SSL management type for this domain. If `AUTOMATIC`, a managed certificate
+	//  is automatically provisioned. If `MANUAL`, `certificate_id` must be
+	//  manually specified in order to configure SSL for this domain.
+	// +kcc:proto:field=google.appengine.v1.SslSettings.ssl_management_type
+	SSLManagementType *string `json:"sslManagementType,omitempty"`
+
+	// ID of the managed `AuthorizedCertificate` resource currently being
+	//  provisioned, if applicable. Until the new managed certificate has been
+	//  successfully provisioned, the previous SSL state will be preserved. Once
+	//  the provisioning process completes, the `certificate_id` field will reflect
+	//  the new managed certificate and this field will be left empty. To remove
+	//  SSL support while there is still a pending managed certificate, clear the
+	//  `certificate_id` field with an `UpdateDomainMappingRequest`.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.SslSettings.pending_managed_certificate_id
+	PendingManagedCertificateID *string `json:"pendingManagedCertificateID,omitempty"`
 }
 */
