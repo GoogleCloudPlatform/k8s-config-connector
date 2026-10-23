@@ -173,6 +173,11 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	if err != nil {
 		return nil, nil, fmt.Errorf("error running resource custom resolver: %w", err)
 	}
+	if IsPSCForwardingRule(r, config) {
+		if v, ok := config["load_balancing_scheme"]; !ok || v == nil {
+			config["load_balancing_scheme"] = ""
+		}
+	}
 	return MapToResourceConfig(r.TFResource, config), secretVersions, nil
 }
 

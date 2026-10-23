@@ -80,11 +80,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 	}
 	id := i.(*krm.ComputeForwardingRuleIdentity)
 
-	// Handle TF default values
-	if obj.Spec.LoadBalancingScheme == nil {
-		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
-	}
-
 	// resolveForwardingRuleRefs is required because certain spec fields on ComputeForwardingRule (like ipAddress, target, etc.)
 	// reference other GCP resources where we need to retrieve custom values (such as status.observedState.address
 	// or status.selfLink) that are not automatically mapped by standard reference normalization.
@@ -92,6 +87,11 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 	// MemorystoreInstanceRef into ServiceAttachmentRef).
 	if err := resolveForwardingRuleRefs(ctx, reader, obj); err != nil {
 		return nil, fmt.Errorf("resolving remaining references: %w", err)
+	}
+
+	// Handle TF default values (omit for Private Service Connect forwarding rules)
+	if !isPSCForwardingRule(obj) && obj.Spec.LoadBalancingScheme == nil {
+		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
 	}
 
 	// Normalize standard KCC references.
@@ -545,4 +545,13 @@ func mapsEqual(a, b map[string]string) bool {
 		return true
 	}
 	return reflect.DeepEqual(a, b)
+}
+
+func isPSCForwardingRule(obj *krm.ComputeForwardingRule) bool {
+	if obj.Spec.Target == nil {
+		return false
+	}
+	return obj.Spec.Target.ServiceAttachmentRef != nil ||
+		obj.Spec.Target.MemorystoreInstanceServiceAttachment != nil ||
+		obj.Spec.Target.RedisClusterServiceAttachment != nil
 }
