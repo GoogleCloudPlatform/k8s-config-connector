@@ -280,7 +280,9 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			fieldDescriptor := field.Enum()
 			n := fieldDescriptor.Values().Len()
 			val := fieldDescriptor.Values().Get(randStream.Intn(n))
-			msg.Set(field, protoreflect.ValueOf(val.Number()))
+			if val.Number() != 0 {
+				msg.Set(field, protoreflect.ValueOf(val.Number()))
+			}
 		default:
 			t.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
 		}

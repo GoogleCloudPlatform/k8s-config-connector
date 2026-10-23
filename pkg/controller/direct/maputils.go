@@ -121,6 +121,14 @@ func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {
 	return 0
 }
 
+func EnumPtr_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) *U {
+	if in == nil {
+		return nil
+	}
+	v := Enum_ToProto[U](mapCtx, in)
+	return &v
+}
+
 func EnumSlice_ToProto[U ProtoEnum](mapCtx *MapContext, in []string) []U {
 	if in == nil {
 		return nil
