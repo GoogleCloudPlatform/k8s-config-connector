@@ -25,20 +25,28 @@ entries:
     group: logging.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled optional parent references (projectRef, folderRef, organizationRef, billingAccountRef) alongside location on LoggingLogScopeSpec; generated multi-parent identity supporting all four parent scopes; accepted polymorphic resourceNames list
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.logging.v2.LogScope declares 4 resource name patterns (projects/{project}/locations/{location}/logScopes/{log_scope}, organizations/{organization}/locations/{location}/logScopes/{log_scope}, folders/{folder}/locations/{location}/logScopes/{log_scope}, billingAccounts/{billing_account}/locations/{location}/logScopes/{log_scope}); generated identity uses "projects/{project}/locations/{location}/logScopes/{log_scope}" (pass --pattern LoggingLogScope=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled optional projectRef, folderRef, organizationRef, and billingAccountRef on LoggingLogScopeSpec and generated multi-parent identity supporting project, folder, organization, and billing account scopes
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept separate location and parent references (projectRef, folderRef, organizationRef, billingAccountRef) because LoggingLogScope supports multiple root parent scopes and cannot embed ProjectAndLocationRef
   - kind: LoggingLogScope
     group: logging.cnrm.cloud.google.com
     field: .spec.resourceNames
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted resourceNames to resourceRefs ([]LoggingLogScopeResourceRef) supporting references to either a Project (projectRef) or a LoggingLogView (logViewRef)
