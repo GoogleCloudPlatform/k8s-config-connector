@@ -882,3 +882,29 @@ func AppEngineFlexibleAppVersionStatus_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Name = direct.ValueOf(in.Name)
 	return out
 }
+
+// DomainmappingSslSettings_v1alpha1_FromProto converts the protobuf SslSettings to the KRM DomainmappingSslSettings.
+// This is handcoded because SSLManagementType is represented as an enum in protobuf but as a required non-pointer string in KRM.
+func DomainmappingSslSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslSettings) *krmappenginev1alpha1.DomainmappingSslSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.DomainmappingSslSettings{}
+	out.CertificateID = direct.LazyPtr(in.GetCertificateId())
+	out.SSLManagementType = direct.ValueOf(direct.Enum_FromProto(mapCtx, in.GetSslManagementType()))
+	out.PendingManagedCertificateID = direct.LazyPtr(in.GetPendingManagedCertificateId())
+	return out
+}
+
+// DomainmappingSslSettings_v1alpha1_ToProto converts the KRM DomainmappingSslSettings to the protobuf SslSettings.
+// This is handcoded because SSLManagementType is represented as an enum in protobuf but as a required non-pointer string in KRM.
+func DomainmappingSslSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.DomainmappingSslSettings) *pb.SslSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslSettings{}
+	out.CertificateId = direct.ValueOf(in.CertificateID)
+	out.SslManagementType = direct.Enum_ToProto[pb.SslSettings_SslManagementType](mapCtx, &in.SSLManagementType)
+	out.PendingManagedCertificateId = direct.ValueOf(in.PendingManagedCertificateID)
+	return out
+}

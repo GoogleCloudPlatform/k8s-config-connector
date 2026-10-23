@@ -414,7 +414,6 @@
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.certificateId" is not set in unstructured objects
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.pendingManagedCertificateId" is not set in unstructured objects
-[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.sslManagementType" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig.authFailAction" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig.login" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig.script" is not set in unstructured objects
