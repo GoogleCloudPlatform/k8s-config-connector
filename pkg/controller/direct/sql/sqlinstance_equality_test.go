@@ -21,6 +21,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/changecookies"
 	api "google.golang.org/api/sqladmin/v1beta4"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 )
 
 func TestDiffInstances_StrictPointersMatch(t *testing.T) {
@@ -274,24 +276,32 @@ func TestDiffInstances_ServerCa_NoDiff(t *testing.T) {
 
 func TestDiffInstances_ServerCa_DefaultNoDiff(t *testing.T) {
 	t.Parallel()
-	// Unset serverCaMode in desired should match default GOOGLE_MANAGED_INTERNAL_CA in actual
-	desired := &api.DatabaseInstance{
-		Settings: &api.Settings{
-			IpConfiguration: &api.IpConfiguration{
-				ServerCaMode: "",
-			},
-		},
-	}
-
+	// Unset serverCaMode in KRM should adopt the live value from actual and produce no diff.
 	actual := &api.DatabaseInstance{
 		Settings: &api.Settings{
+			BackupConfiguration: &api.BackupConfiguration{},
 			IpConfiguration: &api.IpConfiguration{
+				Ipv4Enabled:  true,
+				SslMode:      "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
 				ServerCaMode: "GOOGLE_MANAGED_INTERNAL_CA",
 			},
 		},
 	}
 
-	diff := DiffInstances(desired, actual)
+	krmObj := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			Settings: krm.InstanceSettings{
+				IpConfiguration: &krm.InstanceIpConfiguration{},
+			},
+		},
+	}
+
+	desired, err := SQLInstanceKRMToGCP(krmObj, actual, nil)
+	if err != nil {
+		t.Fatalf("SQLInstanceKRMToGCP() failed: %v", err)
+	}
+
+	diff := DiffIpConfiguration(desired.Settings.IpConfiguration, actual.Settings.IpConfiguration)
 
 	if diff.HasDiff() {
 		t.Errorf("DiffInstances() expected no diffs for default GOOGLE_MANAGED_INTERNAL_CA, but got: %v", diff.Fields)
