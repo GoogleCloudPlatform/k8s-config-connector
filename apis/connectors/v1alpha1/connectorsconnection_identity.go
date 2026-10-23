@@ -60,6 +60,10 @@ func (i *ConnectorsConnectionIdentity) Host() string {
 	return ConnectorsConnectionIdentityFormat.Host()
 }
 
+func (i *ConnectorsConnectionIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromConnectorsConnectionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ConnectorsConnectionIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

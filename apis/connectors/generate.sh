@@ -37,9 +37,9 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version connectors.cnrm.cloud.google.com/v1alpha1 \
   --resource ConnectorsConnection:Connection
 
-# ${CONTROLLERBUILDER} generate-mapper \
-#   --service google.cloud.connectors.v1 \
-#   --api-version connectors.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.connectors.v1 \
+  --api-version connectors.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
