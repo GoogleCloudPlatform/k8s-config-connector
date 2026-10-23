@@ -18,6 +18,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -31,8 +32,27 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".cryptoKeyVersions[].generateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".cryptoKeyVersions[].destroyTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".destroyTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".generateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".importJobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".importJobs[].expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".importJobs[].generateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.TransformObject(".publicKey", func(m map[string]any) {
+		delete(m, "data")
+	})
+	replacements.TransformObject(".importJobs[].publicKey", func(m map[string]any) {
+		delete(m, "data")
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "cloudkms.googleapis.com") {
+		return
+	}
+	if entry, ok := event.(*test.LogEntry); ok {
+		entry.Request.RemoveHeader("X-Allowed-Locations")
+	}
 }
