@@ -26,6 +26,7 @@
 // resource: ComputeBackendServiceSignedURLKey:SignedUrlKey
 // resource: ComputeRegionAutoscaler:Autoscaler
 // resource: ComputeOrganizationSecurityPolicy:SecurityPolicy
+// resource: ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation
 // resource: ComputeNetworkEndpoint:NetworkEndpoint
 // resource: ComputeMachineImage:MachineImage
 // resource: ComputeRegionSSLPolicy:SslPolicy
@@ -1902,6 +1903,40 @@ type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
 	// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig.content_types
 	ContentTypes []string `json:"contentTypes,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecurityPolicyAssociation", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAssociation
+type SecurityPolicyAssociation struct {
+	// The resource that the security policy is attached to.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.attachment_id
+	AttachmentID *string `json:"attachmentID,omitempty"`
+
+	// Output only. [Output Only] The display name of the security policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A list of folders to exclude from the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.excluded_folders
+	ExcludedFolders []string `json:"excludedFolders,omitempty"`
+
+	// A list of projects to exclude from the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.excluded_projects
+	ExcludedProjects []string `json:"excludedProjects,omitempty"`
+
+	// The name for an association.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] The security policy ID of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.security_policy_id
+	SecurityPolicyID *string `json:"securityPolicyID,omitempty"`
+
+	// Output only. [Output Only] The short name of the security policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAssociation.short_name
+	ShortName *string `json:"shortName,omitempty"`
 }
 */
 

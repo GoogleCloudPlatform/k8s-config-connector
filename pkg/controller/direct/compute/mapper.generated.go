@@ -3993,6 +3993,74 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec{}
+	out.AttachmentID = in.AttachmentId
+	// MISSING: DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	out.AttachmentId = in.AttachmentID
+	// MISSING: DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus{}
+	// MISSING: AttachmentID
+	out.DisplayName = in.DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	// MISSING: AttachmentID
+	out.DisplayName = in.DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto", skipping
 func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec {
 	if in == nil {

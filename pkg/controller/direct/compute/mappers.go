@@ -91,6 +91,62 @@ func ComputeOrganizationSecurityPolicyStatus_v1alpha1_ToProto(mapCtx *direct.Map
 	return out
 }
 
+// ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto maps a GCP proto SecurityPolicyAssociation to a KRM spec.
+// We hand-code this function because AttachmentID and PolicyID are string fields in KRM but *string in proto,
+// and PolicyID maps to SecurityPolicyId in the proto message, while ResourceID maps to Name.
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec{}
+	out.AttachmentID = in.GetAttachmentId()
+	out.PolicyID = in.GetSecurityPolicyId()
+	if in.GetName() != "" {
+		out.ResourceID = direct.LazyPtr(in.GetName())
+	}
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto SecurityPolicyAssociation.
+// We hand-code this function because AttachmentID and PolicyID are string fields in KRM but *string in proto,
+// and PolicyID maps to SecurityPolicyId in the proto message, while ResourceID maps to Name.
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	if in.AttachmentID != "" {
+		out.AttachmentId = direct.LazyPtr(in.AttachmentID)
+	}
+	if in.PolicyID != "" {
+		out.SecurityPolicyId = direct.LazyPtr(in.PolicyID)
+	}
+	if in.ResourceID != nil {
+		out.Name = in.ResourceID
+	}
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto maps a GCP proto SecurityPolicyAssociation to a KRM status.
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus{}
+	out.DisplayName = in.DisplayName
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto maps a KRM status to a GCP proto SecurityPolicyAssociation.
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	out.DisplayName = in.DisplayName
+	return out
+}
+
 // ComputeExternalVPNGatewayInterface_v1beta1_FromProto maps a pb.ExternalVpnGatewayInterface to a krm.ComputeExternalVPNGatewayInterface.
 // It is handcoded here because of type mismatches: KRM ID is *int64, while Proto ID is *uint32.
 func ComputeExternalVPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGatewayInterface) *krm.ComputeExternalVPNGatewayInterface {

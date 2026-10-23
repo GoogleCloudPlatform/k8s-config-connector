@@ -127,6 +127,36 @@ message OpsAnalyticsQuery {
 }
 EOF
 
+# Patch compute v1 compute.proto to include SecurityPolicyAssociation (which exists in apiv1/computepb) if missing
+if ! grep -q "message SecurityPolicyAssociation" google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// The SecurityPolicyAssociation message
+message SecurityPolicyAssociation {
+  // The resource that the security policy is attached to.
+  optional string attachment_id = 103768503;
+
+  // Output only. [Output Only] The display name of the security policy of the association.
+  optional string display_name = 4473832;
+
+  // A list of folders to exclude from the security policy.
+  repeated string excluded_folders = 310611024;
+
+  // A list of projects to exclude from the security policy.
+  repeated string excluded_projects = 283070287;
+
+  // The name for an association.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] The security policy ID of the association.
+  optional string security_policy_id = 203671817;
+
+  // Output only. [Output Only] The short name of the security policy of the association.
+  optional string short_name = 492051566;
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
