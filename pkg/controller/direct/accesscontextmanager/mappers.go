@@ -18,7 +18,7 @@
 package accesscontextmanager
 
 import (
-	//pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
+	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
 	"google.golang.org/genproto/googleapis/type/expr"
 
 	acm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
@@ -26,7 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.AccessLevelExpr {
+// AccessContextManagerGCPUserAccessBindingSpec_GroupKey_ToProto maps the required non-pointer string GroupKey field.
+// Handcoded because GroupKey is a required string in KRM but generate-mapper expects *string for auto-conversion.
+func AccessContextManagerGCPUserAccessBindingSpec_GroupKey_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
+}
+
+func AccessLevelExpr_v1beta1_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.AccessLevelExpr {
 	out := acm.AccessLevelExpr{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Expression = direct.LazyPtr(in.GetExpression())
@@ -35,13 +41,21 @@ func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.Acc
 	return out
 }
 
-func AccessLevelExpr_ToProto(mapCtx *direct.MapContext, in acm.AccessLevelExpr) *expr.Expr {
+func AccessLevelExpr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) acm.AccessLevelExpr {
+	return AccessLevelExpr_v1beta1_FromProto(mapCtx, in)
+}
+
+func AccessLevelExpr_v1beta1_ToProto(mapCtx *direct.MapContext, in acm.AccessLevelExpr) *expr.Expr {
 	out := &expr.Expr{}
 	out.Description = direct.ValueOf(in.Description)
 	out.Expression = direct.ValueOf(in.Expression)
 	out.Location = direct.ValueOf(in.Location)
 	out.Title = direct.ValueOf(in.Title)
 	return out
+}
+
+func AccessLevelExpr_ToProto(mapCtx *direct.MapContext, in acm.AccessLevelExpr) *expr.Expr {
+	return AccessLevelExpr_v1beta1_ToProto(mapCtx, in)
 }
 
 func Condition_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input []string) []acm.AccessLevelRef {
@@ -122,4 +136,37 @@ func Condition_Members_ToProto(mapCtx *direct.MapContext, in []acm.Member) []str
 		out[index] = element
 	}
 	return out
+}
+
+// Unversioned forwarders for backward compatibility with existing direct controller/fuzzer logic.
+func AccessContextManagerAccessLevelSpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *acm.AccessContextManagerAccessLevelSpec {
+	return AccessContextManagerAccessLevelSpec_v1beta1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelSpec_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerAccessLevelSpec) *pb.AccessLevel {
+	return AccessContextManagerAccessLevelSpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *acm.AccessContextManagerAccessLevelObservedState {
+	return AccessContextManagerAccessLevelObservedState_v1beta1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessLevelObservedState_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerAccessLevelObservedState) *pb.AccessLevel {
+	return AccessContextManagerAccessLevelObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *acm.AccessContextManagerAccessPolicySpec {
+	return AccessContextManagerAccessPolicySpec_v1beta1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
+	return AccessContextManagerAccessPolicySpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *acm.AccessContextManagerAccessPolicyObservedState {
+	return AccessContextManagerAccessPolicyObservedState_v1beta1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
+	return AccessContextManagerAccessPolicyObservedState_v1beta1_ToProto(mapCtx, in)
 }

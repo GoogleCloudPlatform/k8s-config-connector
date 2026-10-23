@@ -225,6 +225,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/grafeas/v1/*.proto
     ${VERSION_DIR}/google/iam/v3/*.proto
+    ${VERSION_DIR}/google/identity/*/*/*.proto
 )
 # Disable nullglob shell option to restore the default shell globbing behavior
 shopt -u nullglob
