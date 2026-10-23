@@ -110,12 +110,12 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 				"common.NormalizeGreenfieldReferences(ctx, reader, obj, nil)",
 				"Parent:          a.id.ParentString()",
 				"AppConnectionId: a.id.ID()",
-				"resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(",
+				"resource, report, updateMask, err := common.CompareGreenfieldSpec(",
 				"UpdateMask:    updateMask",
 				`if direct.IsNotFound(err) || strings.Contains(err.Error(), "missing \"value\" field") {`,
 			},
 			wantNotContains: []string{
-				"common.CompareGreenfieldSpec(",
+				"common.CompareGreenfieldSpecAndLabels(",
 				"resource.Name = a.id.String()\n\n\treq := &beyondcorppb.Create",
 			},
 		},
@@ -147,10 +147,10 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 				"created, err := a.gcpClient.CreateRepository(ctx, req)",
 				"updated, err = a.gcpClient.UpdateRepository(ctx, req)",
 				"err := a.gcpClient.DeleteRepository(ctx, req)",
-				"Force: true",
 			},
 			wantNotContains: []string{
 				"op.Wait(ctx)",
+				"Force:",
 			},
 		},
 		{
@@ -248,6 +248,7 @@ func TestApplyDeterministicPasses_Archetypes(t *testing.T) {
 			},
 			wantContains: []string{
 				"if !a.id.HasIdentitySpecified() {\n\t\treturn false, nil\n\t}",
+				"if direct.IsNotFound(err) || (a.desired != nil && a.desired.Status.ExternalRef == nil && direct.IsBadRequest(err)) {",
 				"status.ExternalRef = direct.LazyPtr(created.Name)",
 			},
 			wantNotContains: []string{
@@ -559,7 +560,7 @@ func TestApplyDeterministicPasses_RealGoogleapis(t *testing.T) {
 			wantContains: []string{
 				`gcp "cloud.google.com/go/beyondcorp/appconnections/apiv1"`,
 				`appconnectionspb "cloud.google.com/go/beyondcorp/appconnections/apiv1/appconnectionspb"`,
-				`resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(`,
+				`resource, report, updateMask, err := common.CompareGreenfieldSpec(`,
 			},
 		},
 		{

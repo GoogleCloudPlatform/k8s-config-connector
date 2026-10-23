@@ -102,11 +102,11 @@ func (c *ControllerBuilder) RegisterController() error {
 	return nil
 }
 
-// RenderController executes the unified ControllerTemplate with cArgs and formats
+// RenderController executes the GreenfieldControllerTemplate with cArgs and formats
 // the resulting Go source code and imports.
 func RenderController(cArgs *ccTemplate.ControllerArgs) ([]byte, error) {
 	cArgs.EnsureDefaults()
-	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.GreenfieldControllerTemplate)
 	if err != nil {
 		return nil, fmt.Errorf("parse controller template: %w", err)
 	}
@@ -128,10 +128,10 @@ func RenderController(cArgs *ccTemplate.ControllerArgs) ([]byte, error) {
 
 func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs) error {
 	usePrepopulate := c.prepopulateResource || cArgs.PassesApplied
-	tmplText := ccTemplate.LegacyControllerTemplate
+	tmplText := ccTemplate.ControllerTemplate
 	if usePrepopulate {
 		cArgs.EnsureDefaults()
-		tmplText = ccTemplate.ControllerTemplate
+		tmplText = ccTemplate.GreenfieldControllerTemplate
 	}
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(tmplText)
 	if err != nil {

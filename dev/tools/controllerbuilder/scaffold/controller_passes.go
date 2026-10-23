@@ -152,10 +152,6 @@ func ApplyProtoAndServiceTraitsPass(
 		}
 	}
 
-	hasProtoLabels := api != nil && (api.HasLabels || (api.Message != nil && api.Message.Fields().ByName("labels") != nil))
-	hasKRMLabels := krmInfo != nil && krmInfo.HasSpecLabels
-	args.HasLabels = hasProtoLabels && !hasKRMLabels
-
 	applyKRMServiceTraits(args, krmInfo)
 	resolveGAPICClientFromModCache(args, krmInfo)
 
@@ -253,7 +249,6 @@ func applyDeleteMethod(args *ccTemplate.ControllerArgs, del *protoapi.StandardMe
 		args.DeleteMethodName = ""
 		args.DeleteRequestType = ""
 		args.DeleteNameField = ""
-		args.DeleteForceField = ""
 		args.DeleteIsLRO = false
 		return
 	}
@@ -262,7 +257,6 @@ func applyDeleteMethod(args *ccTemplate.ControllerArgs, del *protoapi.StandardMe
 		args.DeleteRequestType = string(del.Descriptor.Input().Name())
 	}
 	args.DeleteNameField = protoFieldNameToGoName(del.NameField, "Name")
-	args.DeleteForceField = protoFieldNameToGoName(del.ForceField, "")
 }
 
 // --- Pass 2 Helpers (Footnotes) ---
