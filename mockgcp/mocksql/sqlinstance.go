@@ -872,12 +872,15 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		// 	}
 	}
 
+	if isSqlServer(obj) || settings.IpConfiguration.GetServerCaMode() != "" {
+		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		}
+	}
+
 	if isSqlServer(obj) {
 		if settings.BackupConfiguration.BackupTier == nil {
 			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
-		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
-			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
 		}
 		if settings.ReplicationLagMaxSeconds == nil {
 			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))

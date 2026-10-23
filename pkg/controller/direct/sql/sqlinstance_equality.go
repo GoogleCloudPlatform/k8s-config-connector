@@ -525,15 +525,7 @@ func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfigurati
 	if desired.RequireSsl != actual.RequireSsl {
 		diff.AddField(".settings.ipConfiguration.requireSsl", actual.RequireSsl, desired.RequireSsl)
 	}
-	desiredServerCaMode := desired.ServerCaMode
-	actualServerCaMode := actual.ServerCaMode
-	if desiredServerCaMode == "" {
-		desiredServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
-	}
-	if actualServerCaMode == "" {
-		actualServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
-	}
-	if desiredServerCaMode != actualServerCaMode {
+	if desired.ServerCaMode != actual.ServerCaMode {
 		diff.AddField(".settings.ipConfiguration.serverCaMode", actual.ServerCaMode, desired.ServerCaMode)
 	}
 	if normalizeCaPool(desired.ServerCaPool) != normalizeCaPool(actual.ServerCaPool) {

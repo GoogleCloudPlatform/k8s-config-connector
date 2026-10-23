@@ -1065,6 +1065,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": true,
       "requireSsl": false,
       "serverCaPool": "projects/${projectId}/locations/europe-north2/caPools/privatecacapool-dep-${uniqueId}",
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1209,6 +1210,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": true,
       "requireSsl": false,
       "serverCaPool": "projects/${projectId}/locations/europe-north2/caPools/privatecacapool-dep-${uniqueId}",
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1433,6 +1435,7 @@ X-Xss-Protection: 0
       "ipv4Enabled": true,
       "requireSsl": false,
       "serverCaPool": "projects/${projectId}/locations/europe-north2/caPools/privatecacapool-dep2-${uniqueId}",
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
