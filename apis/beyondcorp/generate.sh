@@ -34,13 +34,23 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --resource BeyondCorpClientConnectorService:ClientConnectorService
 
 mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientconnectorservice_types.generated.go" || true
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BeyondCorpAppConnection:AppConnection
+
+mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appconnection_types.generated.go" || true
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice"
 
 mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go" || true
