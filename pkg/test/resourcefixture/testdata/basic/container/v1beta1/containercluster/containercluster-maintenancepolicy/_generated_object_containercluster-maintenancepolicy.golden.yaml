@@ -22,9 +22,9 @@ spec:
     dailyMaintenanceWindow:
       startTime: "04:00"
     maintenanceExclusion:
-    - endTime: "2026-01-05T00:00:00Z"
-      exclusionName: new-no-maintenance-for-holidays
+    - exclusionName: new-no-maintenance-for-holidays
       exclusionOptions:
+        endTimeBehavior: UNTIL_END_OF_SUPPORT
         scope: NO_MINOR_UPGRADES
       startTime: "2025-12-23T00:00:00Z"
     recurringWindow:

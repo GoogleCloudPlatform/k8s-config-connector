@@ -29,9 +29,6 @@ spec:
     maintenanceExclusion:
       - exclusionName: "new-no-maintenance-for-holidays"
         startTime: "2025-12-23T00:00:00Z"
-        # MaintenancePolicy.maintenanceExclusions[\"new-no-maintenance-for-holidays\"].endTime
-        # needs to be before minor version 1.32 end of life: (2026-4-11). See release schedule
-        # at https://cloud.google.com/kubernetes-engine/docs/release-schedule.
-        endTime: "2026-01-05T00:00:00Z"
         exclusionOptions:
           scope: "NO_MINOR_UPGRADES"
+          endTimeBehavior: "UNTIL_END_OF_SUPPORT"

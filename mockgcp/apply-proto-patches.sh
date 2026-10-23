@@ -422,6 +422,22 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1b
   repeated RegistryHostConfig registry_hosts = 3;
 EOF
 
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message MaintenanceExclusionOptions --mode append <<'EOF'
+
+  // EndTimeBehavior specifies the behavior of the exclusion end time.
+  enum EndTimeBehavior {
+    // END_TIME_BEHAVIOR_UNSPECIFIED is the default behavior, which is fixed
+    // end time.
+    END_TIME_BEHAVIOR_UNSPECIFIED = 0;
+
+    // UNTIL_END_OF_SUPPORT means the exclusion will be in effect until the
+    // end of the support of the cluster's current version.
+    UNTIL_END_OF_SUPPORT = 1;
+  }
+
+  EndTimeBehavior end_time_behavior = 2;
+EOF
+
 
 
 # ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2

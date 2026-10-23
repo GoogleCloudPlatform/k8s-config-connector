@@ -403,6 +403,11 @@ type MaintenanceExclusionOptions struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.MaintenancePolicy.MaintenanceExclusion.MaintenanceExclusionOptions.scope
 	Scope *string `json:"scope,omitempty"`
+
+	/* The behavior of the exclusion end time. Valid value: UNTIL_END_OF_SUPPORT. */
+	// +optional
+	// +kcc:proto:field=google.container.v1.MaintenancePolicy.MaintenanceExclusion.MaintenanceExclusionOptions.end_time_behavior
+	EndTimeBehavior *string `json:"endTimeBehavior,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.FastSocket
@@ -759,8 +764,8 @@ type LoggingConfig struct {
 
 // +kcc:proto=google.container.v1.MaintenancePolicy.MaintenanceExclusion
 type MaintenanceExclusion struct {
+	// +optional
 	// +kcc:proto:field=google.container.v1.MaintenancePolicy.MaintenanceExclusion.end_time
-	// +required
 	EndTime *string `json:"endTime,omitempty"`
 
 	// +kcc:proto:field=google.container.v1.MaintenancePolicy.MaintenanceExclusion.exclusion_name

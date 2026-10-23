@@ -2436,8 +2436,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "maintenanceExclusions": {
         "new-no-maintenance-for-holidays": {
-          "endTime": "2026-01-05T00:00:00Z",
           "maintenanceExclusionOptions": {
+            "endTimeBehavior": "UNTIL_END_OF_SUPPORT",
             "scope": "NO_MINOR_UPGRADES"
           },
           "startTime": "2025-12-23T00:00:00Z"
@@ -2620,8 +2620,8 @@ X-Xss-Protection: 0
       },
       "maintenanceExclusions": {
         "new-no-maintenance-for-holidays": {
-          "endTime": "2026-01-05T00:00:00Z",
           "maintenanceExclusionOptions": {
+            "endTimeBehavior": "UNTIL_END_OF_SUPPORT",
             "scope": "NO_MINOR_UPGRADES"
           },
           "startTime": "2025-12-23T00:00:00Z"
@@ -3000,8 +3000,8 @@ X-Xss-Protection: 0
       },
       "maintenanceExclusions": {
         "new-no-maintenance-for-holidays": {
-          "endTime": "2026-01-05T00:00:00Z",
           "maintenanceExclusionOptions": {
+            "endTimeBehavior": "UNTIL_END_OF_SUPPORT",
             "scope": "NO_MINOR_UPGRADES"
           },
           "startTime": "2025-12-23T00:00:00Z"
@@ -3380,8 +3380,8 @@ X-Xss-Protection: 0
       },
       "maintenanceExclusions": {
         "new-no-maintenance-for-holidays": {
-          "endTime": "2026-01-05T00:00:00Z",
           "maintenanceExclusionOptions": {
+            "endTimeBehavior": "UNTIL_END_OF_SUPPORT",
             "scope": "NO_MINOR_UPGRADES"
           },
           "startTime": "2025-12-23T00:00:00Z"
