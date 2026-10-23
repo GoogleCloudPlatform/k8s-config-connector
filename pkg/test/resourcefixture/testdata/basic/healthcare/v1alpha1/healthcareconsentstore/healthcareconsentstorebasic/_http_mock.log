@@ -1,6 +1,5 @@
 GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -31,7 +30,6 @@ X-Xss-Protection: 0
 
 POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json&datasetId=${datasetID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "name": "healthcareconsentstore${uniqueId}"
@@ -60,7 +58,6 @@ X-Xss-Protection: 0
 
 GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -78,9 +75,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -109,9 +104,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores?alt=json&consentStoreId=healthcareconsentstore-${uniqueId}
+POST https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores?alt=json&consentStoreId=healthcareconsentstore-${uniqueId}&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "defaultConsentTtl": "90000s",
@@ -144,9 +138,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -170,16 +162,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&updateMask=defaultConsentTtl%2CenableConsentCreateOnUpdate
+PATCH https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false&updateMask=defaultConsentTtl%2CenableConsentCreateOnUpdate
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "defaultConsentTtl": "100000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  "defaultConsentTtl": "100000s"
 }
 
 200 OK
@@ -203,9 +190,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -228,9 +213,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+DELETE https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -248,7 +231,6 @@ X-Xss-Protection: 0
 
 GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -268,7 +250,6 @@ X-Xss-Protection: 0
 
 DELETE https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
