@@ -35,6 +35,14 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newProjectMetricsService(ctx context.Context) (*api.ProjectsMetricsService, error) {
+	service, err := m.newLoggingService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return api.NewProjectsMetricsService(service), nil
+}
+
+func (m *gcpClient) newLoggingService(ctx context.Context) (*api.Service, error) {
 	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
@@ -45,5 +53,5 @@ func (m *gcpClient) newProjectMetricsService(ctx context.Context) (*api.Projects
 		return nil, fmt.Errorf("building service for logging: %w", err)
 	}
 
-	return api.NewProjectsMetricsService(service), nil
+	return service, nil
 }

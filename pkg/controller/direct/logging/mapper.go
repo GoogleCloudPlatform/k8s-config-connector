@@ -20,10 +20,13 @@ import (
 
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	api "google.golang.org/api/logging/v2"
 
 	apipb "google.golang.org/genproto/googleapis/api"
 	distributionpb "google.golang.org/genproto/googleapis/api/distribution"
@@ -448,5 +451,96 @@ func LogmetricMetricDescriptorStatus_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.MonitoredResourceTypes = in.MonitoredResourceTypes
 	out.Name = direct.ValueOf(in.Name)
 	out.Type = direct.ValueOf(in.Type)
+	return out
+}
+
+func LoggingLogScopeSpec_FromAPI(mapCtx *direct.MapContext, in *api.LogScope) *krmv1alpha1.LoggingLogScopeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LoggingLogScopeSpec{}
+	out.Description = direct.LazyPtr(in.Description)
+	for _, rn := range in.ResourceNames {
+		if rn == "" {
+			continue
+		}
+		ref := LoggingLogScopeResourceRef_FromExternal(rn)
+		out.ResourceRefs = append(out.ResourceRefs, ref)
+	}
+	return out
+}
+
+func LoggingLogScopeSpec_ToAPI(mapCtx *direct.MapContext, in *krmv1alpha1.LoggingLogScopeSpec) *api.LogScope {
+	if in == nil {
+		return nil
+	}
+	out := &api.LogScope{}
+	out.Description = direct.ValueOf(in.Description)
+	for _, ref := range in.ResourceRefs {
+		rn := LoggingLogScopeResourceRef_ToExternal(&ref)
+		if rn != "" {
+			out.ResourceNames = append(out.ResourceNames, rn)
+		}
+	}
+	return out
+}
+
+func LoggingLogScopeResourceRef_FromExternal(rn string) krmv1alpha1.LoggingLogScopeResourceRef {
+	if strings.Contains(rn, "/buckets/") && strings.Contains(rn, "/views/") {
+		return krmv1alpha1.LoggingLogScopeResourceRef{
+			LogViewRef: &krm.LoggingLogViewRef{
+				External: rn,
+			},
+		}
+	}
+	// Defaults to projectRef
+	return krmv1alpha1.LoggingLogScopeResourceRef{
+		ProjectRef: &refs.ProjectRef{
+			External: rn,
+		},
+	}
+}
+
+func LoggingLogScopeResourceRef_ToExternal(ref *krmv1alpha1.LoggingLogScopeResourceRef) string {
+	if ref == nil {
+		return ""
+	}
+	if ref.LogViewRef != nil {
+		return ref.LogViewRef.External
+	}
+	if ref.ProjectRef != nil {
+		// If ProjectRef.External is just a project ID/number without "projects/", format as "projects/{project}"
+		external := ref.ProjectRef.External
+		if external != "" && !strings.HasPrefix(external, "projects/") {
+			return "projects/" + external
+		}
+		return external
+	}
+	return ""
+}
+
+func LoggingLogScopeStatus_FromAPI(mapCtx *direct.MapContext, in *api.LogScope) *krmv1alpha1.LoggingLogScopeStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LoggingLogScopeStatus{}
+	out.ExternalRef = direct.LazyPtr(in.Name)
+	out.ObservedState = &krmv1alpha1.LoggingLogScopeObservedState{
+		CreateTime: direct.LazyPtr(in.CreateTime),
+		UpdateTime: direct.LazyPtr(in.UpdateTime),
+	}
+	return out
+}
+
+func LoggingLogScopeStatus_ToAPI(mapCtx *direct.MapContext, in *krmv1alpha1.LoggingLogScopeStatus) *api.LogScope {
+	if in == nil {
+		return nil
+	}
+	out := &api.LogScope{}
+	out.Name = direct.ValueOf(in.ExternalRef)
+	if in.ObservedState != nil {
+		out.CreateTime = direct.ValueOf(in.ObservedState.CreateTime)
+		out.UpdateTime = direct.ValueOf(in.ObservedState.UpdateTime)
+	}
 	return out
 }
