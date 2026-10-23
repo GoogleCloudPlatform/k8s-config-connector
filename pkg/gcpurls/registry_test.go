@@ -154,6 +154,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// License Manager
 		"//licensemanager.googleapis.com/projects/{}/locations/{}/configurations/{}": true,
 
+		// Logging
+		"//logging.googleapis.com/billingAccounts/{}/locations/{}/logScopes/{}": true,
+
 		// Monitoring
 		"//monitoring.googleapis.com/projects/{}/services/{}": true,
 
