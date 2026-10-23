@@ -65,6 +65,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// AlloyDB
 
 		// Apigee
+		"//apigee.googleapis.com/organizations/{}/addonsConfig":      true,
 		"//apigee.googleapis.com/organizations/{}/syncAuthorization": true,
 
 		// Apigee Registry
