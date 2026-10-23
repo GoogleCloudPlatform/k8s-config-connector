@@ -391,6 +391,110 @@ func NetAppKMSConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSCon
 	// MISSING: Labels
 	return out
 }
+func NetAppStoragePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krm.NetAppStoragePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppStoragePoolObservedState{}
+	// MISSING: Name
+	out.VolumeCapacityGib = direct.LazyPtr(in.GetVolumeCapacityGib())
+	out.VolumeCount = direct.LazyPtr(in.GetVolumeCount())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	// MISSING: GlobalAccessAllowed
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.AvailableThroughputMibps = direct.LazyPtr(in.GetAvailableThroughputMibps())
+	out.ColdTierSizeUsedGib = direct.LazyPtr(in.GetColdTierSizeUsedGib())
+	out.HotTierSizeUsedGib = direct.LazyPtr(in.GetHotTierSizeUsedGib())
+	return out
+}
+func NetAppStoragePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppStoragePoolObservedState) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	// MISSING: Name
+	out.VolumeCapacityGib = direct.ValueOf(in.VolumeCapacityGib)
+	out.VolumeCount = direct.ValueOf(in.VolumeCount)
+	out.State = direct.Enum_ToProto[pb.StoragePool_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionType](mapCtx, in.EncryptionType)
+	// MISSING: GlobalAccessAllowed
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.AvailableThroughputMibps = direct.ValueOf(in.AvailableThroughputMibps)
+	out.ColdTierSizeUsedGib = direct.ValueOf(in.ColdTierSizeUsedGib)
+	out.HotTierSizeUsedGib = direct.ValueOf(in.HotTierSizeUsedGib)
+	return out
+}
+func NetAppStoragePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krm.NetAppStoragePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppStoragePoolSpec{}
+	// MISSING: Name
+	out.ServiceLevel = direct.Enum_FromProto(mapCtx, in.GetServiceLevel())
+	out.CapacityGib = direct.LazyPtr(in.GetCapacityGib())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ActiveDirectory = direct.LazyPtr(in.GetActiveDirectory())
+	out.KMSConfig = direct.LazyPtr(in.GetKmsConfig())
+	out.LdapEnabled = direct.LazyPtr(in.GetLdapEnabled())
+	out.PsaRange = direct.LazyPtr(in.GetPsaRange())
+	// MISSING: GlobalAccessAllowed
+	out.AllowAutoTiering = direct.LazyPtr(in.GetAllowAutoTiering())
+	out.ReplicaZone = direct.LazyPtr(in.GetReplicaZone())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.CustomPerformanceEnabled = direct.LazyPtr(in.GetCustomPerformanceEnabled())
+	out.TotalThroughputMibps = direct.LazyPtr(in.GetTotalThroughputMibps())
+	out.TotalIops = direct.LazyPtr(in.GetTotalIops())
+	out.HotTierSizeGib = direct.LazyPtr(in.GetHotTierSizeGib())
+	out.EnableHotTierAutoResize = in.EnableHotTierAutoResize
+	out.QosType = direct.Enum_FromProto(mapCtx, in.GetQosType())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.ScaleType = direct.Enum_FromProto(mapCtx, in.GetScaleType())
+	return out
+}
+func NetAppStoragePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppStoragePoolSpec) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	// MISSING: Name
+	out.ServiceLevel = direct.Enum_ToProto[pb.ServiceLevel](mapCtx, in.ServiceLevel)
+	out.CapacityGib = direct.ValueOf(in.CapacityGib)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Network = direct.ValueOf(in.Network)
+	out.ActiveDirectory = direct.ValueOf(in.ActiveDirectory)
+	out.KmsConfig = direct.ValueOf(in.KMSConfig)
+	out.LdapEnabled = direct.ValueOf(in.LdapEnabled)
+	out.PsaRange = direct.ValueOf(in.PsaRange)
+	// MISSING: GlobalAccessAllowed
+	out.AllowAutoTiering = direct.ValueOf(in.AllowAutoTiering)
+	out.ReplicaZone = direct.ValueOf(in.ReplicaZone)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.CustomPerformanceEnabled = direct.ValueOf(in.CustomPerformanceEnabled)
+	out.TotalThroughputMibps = direct.ValueOf(in.TotalThroughputMibps)
+	out.TotalIops = direct.ValueOf(in.TotalIops)
+	out.HotTierSizeGib = direct.ValueOf(in.HotTierSizeGib)
+	out.EnableHotTierAutoResize = in.EnableHotTierAutoResize
+	out.QosType = direct.Enum_ToProto[pb.QosType](mapCtx, in.QosType)
+	if oneof := NetAppStoragePoolSpec_Type_ToProto(mapCtx, in.Type); oneof != nil {
+		out.Type = oneof
+	}
+	if oneof := NetAppStoragePoolSpec_Mode_ToProto(mapCtx, in.Mode); oneof != nil {
+		out.Mode = oneof
+	}
+	out.ScaleType = direct.Enum_ToProto[pb.ScaleType](mapCtx, in.ScaleType)
+	return out
+}
 func NetappQuotaRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaRule) *krm.NetappQuotaRuleObservedState {
 	if in == nil {
 		return nil
