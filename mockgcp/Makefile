@@ -53,6 +53,7 @@ gen-proto-no-fixup:
 		./apis/google/cloud/numberregistry/v1alpha/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
+		./apis/mockgcp/cloud/healthcare/v1/*.proto \
 		./apis/mockgcp/cloud/firebase/v1beta1/*.proto \
 		./apis/mockgcp/cloud/firebasehosting/v1beta1/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -174,6 +175,10 @@ generate-protos-from-openapi:
 	wget -O temp/ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
 	mkdir -p apis/mockgcp/cloud/ids/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.ids.v1 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+
+	wget -O temp/healthcare-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/healthcare/v1/healthcare-api.json
+	mkdir -p apis/mockgcp/cloud/healthcare/v1/
+	cd tools/gapic; go run . --proto-package mockgcp.cloud.healthcare.v1 ../../temp/healthcare-v1.json > ../../apis/mockgcp/cloud/healthcare/v1/service.proto
 
 	wget -O temp/firebasehosting-v1beta1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/firebasehosting/v1beta1/firebasehosting-api.json
 	mkdir -p apis/mockgcp/cloud/firebasehosting/v1beta1/

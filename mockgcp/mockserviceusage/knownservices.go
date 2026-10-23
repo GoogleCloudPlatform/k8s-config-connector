@@ -24,6 +24,7 @@ var allServices = []string{
 	"dataflow.googleapis.com",
 	"firebase.googleapis.com",
 	"firebasehosting.googleapis.com",
+	"healthcare.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
