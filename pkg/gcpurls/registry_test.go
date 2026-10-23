@@ -67,6 +67,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Apigee
 		"//apigee.googleapis.com/organizations/{}/syncAuthorization": true,
 
+		// Apigee
+		"//apigee.googleapis.com/organizations/{}/apiproducts/{}": true,
+
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,

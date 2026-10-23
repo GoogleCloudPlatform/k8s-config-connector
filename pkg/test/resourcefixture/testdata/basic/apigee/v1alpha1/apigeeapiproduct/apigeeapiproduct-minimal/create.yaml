@@ -1,0 +1,9 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeAPIProduct
+metadata:
+  name: apigeeapiproduct-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${projectId}
+  approvalType: auto
+  displayName: "Minimal API Product"

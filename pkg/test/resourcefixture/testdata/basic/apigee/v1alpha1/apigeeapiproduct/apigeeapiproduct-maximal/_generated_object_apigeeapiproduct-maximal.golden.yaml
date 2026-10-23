@@ -1,0 +1,68 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeAPIProduct
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: apigeeapiproduct-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  approvalType: auto
+  attributes:
+  - name: env
+    value: prod
+  - name: team
+    value: platform
+  description: A complete and maximal API product test with updates
+  displayName: Maximal API Product Updated
+  operationGroup:
+    operationConfigType: proxy
+    operationConfigs:
+    - apiSource: my-api-source
+      operations:
+      - methods:
+        - GET
+        - POST
+        resource: /v1/users
+      quota:
+        interval: "1"
+        limit: "50"
+        timeUnit: minute
+  organizationRef:
+    external: organizations/${organizationID}
+  quota: "200"
+  quotaCounterScope: PROXY
+  quotaInterval: "1"
+  quotaTimeUnit: hour
+  scopes:
+  - read
+  - write
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error creating: creating ApigeeAPIProduct organizations/${organizationID}/apiproducts/apigeeapiproduct-${uniqueId}: googleapi: Error 400: no connections available from the Apigee connect agent(s): refer documentation to triage further
+      Details:
+      [
+        {
+          "@type": "type.googleapis.com/google.rpc.PreconditionFailure",
+          "violations": [
+            {
+              "description": "generic::failed_precondition: no connections available from the Apigee connect agent(s): verify available streams via API mentioned in the test installation steps in https://cloud.google.com/apigee/docs/hybrid/v1/apigee-connect?hl=en#testinstallation: failed precondition",
+              "subject": "[2002:a05:6698:a09a:b0:14f:acd4:141c]:4004:55688027b8d3dbd6-15404a25b5d.borgtask.google.com:9801:3553088:39636352",
+              "type": "gaambo.request.connection.failed"
+            }
+          ]
+        },
+        {
+          "@type": "type.googleapis.com/google.rpc.RequestInfo",
+          "requestId": "12157203452089459236"
+        }
+      ]
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
