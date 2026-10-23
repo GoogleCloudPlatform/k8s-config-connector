@@ -2,6 +2,11 @@
 
 This page provides a guide to the most common configuration and management tasks in Config Connector.
 
+## Core Concepts & Architecture
+
+*   **[Core Principles Guide](../guides/core-principles.md)**: Deep dive into the reconciliation loop, managing annotations, handling drift, and dependency management.
+*   **[Practical Complex Examples](../guides/practical-examples.md)**: Practical, commented YAML examples covering advanced configurations, optional field interplay, and complex enterprise scenarios.
+
 ## Configuring Operational Modes
 
 *   **[Choose between Cluster and Namespace Mode](config-connector-mode.md)**: Understand the different ways to deploy and manage Config Connector in your cluster.
