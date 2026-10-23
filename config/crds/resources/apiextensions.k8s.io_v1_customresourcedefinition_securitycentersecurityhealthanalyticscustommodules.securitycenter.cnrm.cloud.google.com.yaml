@@ -169,6 +169,38 @@ spec:
               enablementState:
                 description: The enablement state of the custom module.
                 type: string
+              folderRef:
+                description: The folder that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
               organizationRef:
                 description: The organization that this resource belongs to.
                 properties:
@@ -179,13 +211,51 @@ spec:
                 required:
                 - external
                 type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: The SecuritycenterSecurityHealthAnalyticsCustomModule
-                  name. If not given, the metadata.name will be used.
+                description: 'The SecuritycenterSecurityHealthAnalyticsCustomModule
+                  ID (which is server-generated). This field is acquire-only: if not
+                  given, a new custom module is created with a server-assigned ID;
+                  if given, Config Connector will acquire the existing custom module
+                  with this ID.'
                 type: string
-            required:
-            - organizationRef
             type: object
+            x-kubernetes-validations:
+            - message: At most one of projectRef, folderRef or organizationRef must
+                be specified.
+              rule: '(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0)
+                + (has(self.organizationRef) ? 1 : 0) <= 1'
           status:
             description: SecuritycenterSecurityHealthAnalyticsCustomModuleStatus defines
               the config connector machine state of SecuritycenterSecurityHealthAnalyticsCustomModule

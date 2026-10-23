@@ -30,11 +30,21 @@ var SecuritycenterSecurityHealthAnalyticsCustomModuleGVK = GroupVersion.WithKind
 // SecuritycenterSecurityHealthAnalyticsCustomModuleSpec defines the desired state of SecuritycenterSecurityHealthAnalyticsCustomModule
 // +kcc:spec:proto=google.cloud.securitycenter.v1.SecurityHealthAnalyticsCustomModule
 // +kcc:required-from-proto
+// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.organizationRef) ? 1 : 0) <= 1",message="At most one of projectRef, folderRef or organizationRef must be specified."
 type SecuritycenterSecurityHealthAnalyticsCustomModuleSpec struct {
-	// The organization that this resource belongs to.
-	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef"`
+	// The project that this resource belongs to.
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
-	// The SecuritycenterSecurityHealthAnalyticsCustomModule name. If not given, the metadata.name will be used.
+	// The folder that this resource belongs to.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// The SecuritycenterSecurityHealthAnalyticsCustomModule ID (which is server-generated). This field is acquire-only: if not given, a new custom module is created with a server-assigned ID; if given, Config Connector will acquire the existing custom module with this ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The display name of the Security Health Analytics custom module. This
 	//  display name becomes the finding category for all findings that are

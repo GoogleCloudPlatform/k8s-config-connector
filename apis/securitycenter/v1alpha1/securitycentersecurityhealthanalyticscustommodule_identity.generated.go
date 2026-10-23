@@ -37,11 +37,17 @@ var (
 	_ identity.Resource                = &SecuritycenterSecurityHealthAnalyticsCustomModule{}
 )
 
-var SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat = gcpurls.Template[SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity]("securitycenter.googleapis.com", "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}")
+var (
+	ProjectSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat      = gcpurls.Template[SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity]("securitycenter.googleapis.com", "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}")
+	FolderSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat       = gcpurls.Template[SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity]("securitycenter.googleapis.com", "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}")
+	OrganizationSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat = gcpurls.Template[SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity]("securitycenter.googleapis.com", "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}")
+)
 
 // SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity is the identity of a GCP SecuritycenterSecurityHealthAnalyticsCustomModule resource.
 // +k8s:deepcopy-gen=false
 type SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity struct {
+	Project      string
+	Folder       string
 	Organization string
 	CustomModule string
 }
@@ -51,52 +57,99 @@ func (i *SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity) HasIdentityS
 }
 
 func (i *SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity) String() string {
-	return SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.ToString(*i)
+	if i.Project != "" {
+		return ProjectSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.ToString(*i)
+	}
+	if i.Folder != "" {
+		return FolderSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.ToString(*i)
+	}
+	if i.Organization != "" {
+		return OrganizationSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.ToString(*i)
+	}
+	return ""
 }
 
 func (i *SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity) FromExternal(ref string) error {
-	parsed, match, err := SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of SecuritycenterSecurityHealthAnalyticsCustomModule external=%q was not known (use %s): %w", ref, SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.CanonicalForm(), err)
+	if parsed, match, _ := ProjectSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-	if !match {
-		return fmt.Errorf("format of SecuritycenterSecurityHealthAnalyticsCustomModule external=%q was not known (use %s)", ref, SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.CanonicalForm())
+	if parsed, match, _ := FolderSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
 	}
-
-	*i = *parsed
-	return nil
+	if parsed, match, _ := OrganizationSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of SecuritycenterSecurityHealthAnalyticsCustomModule external=%q was not known (use %s)", ref, ProjectSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.CanonicalForm())
 }
 
 func (i *SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity) Host() string {
-	return SecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Host()
+	return ProjectSecuritycenterSecurityHealthAnalyticsCustomModuleIdentityFormat.Host()
 }
 
 func (i *SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity) ParentString() string {
-	return "organizations/" + i.Organization + "/securityHealthAnalyticsSettings"
+	if i.Project != "" {
+		return "projects/" + i.Project + "/securityHealthAnalyticsSettings"
+	}
+	if i.Folder != "" {
+		return "folders/" + i.Folder + "/securityHealthAnalyticsSettings"
+	}
+	if i.Organization != "" {
+		return "organizations/" + i.Organization + "/securityHealthAnalyticsSettings"
+	}
+	return ""
 }
 
 func getIdentityFromSecuritycenterSecurityHealthAnalyticsCustomModuleSpec(ctx context.Context, reader client.Reader, obj *SecuritycenterSecurityHealthAnalyticsCustomModule) (*SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	var organizationID string
+	specIdentity := &SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity{
+		CustomModule: resourceID,
+	}
+
+	parentCount := 0
+	if obj.Spec.ProjectRef != nil {
+		parentCount++
+	}
+	if obj.Spec.FolderRef != nil {
+		parentCount++
+	}
 	if obj.Spec.OrganizationRef != nil {
+		parentCount++
+	}
+	if parentCount > 1 {
+		return nil, fmt.Errorf("at most one of spec.projectRef, spec.folderRef, spec.organizationRef can be set")
+	}
+
+	if obj.Spec.ProjectRef != nil {
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
+		specIdentity.Project = projectID
+	} else if obj.Spec.FolderRef != nil {
+		folder, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve folder: %w", err)
+		}
+		specIdentity.Folder = folder.FolderID
+	} else if obj.Spec.OrganizationRef != nil {
 		org, err := refs.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
 		if err != nil {
 			return nil, fmt.Errorf("cannot resolve organization: %w", err)
 		}
-		organizationID = org.OrganizationID
+		specIdentity.Organization = org.OrganizationID
 	} else {
-		org, err := refs.ResolveOrganizationFromAnnotation(ctx, reader, obj)
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 		if err != nil {
-			return nil, fmt.Errorf("cannot resolve organization: %w", err)
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
 		}
-		organizationID = org.OrganizationID
+		specIdentity.Project = projectID
 	}
 
-	return &SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity{
-		Organization: organizationID,
-		CustomModule: resourceID,
-	}, nil
+	return specIdentity, nil
 }
 
 func (obj *SecuritycenterSecurityHealthAnalyticsCustomModule) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
