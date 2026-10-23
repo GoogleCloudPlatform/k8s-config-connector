@@ -67,6 +67,9 @@ spec:
                 description: Autoscaler configuration for this NodePool. Autoscaler
                   is enabled only if a valid configuration is present.
                 properties:
+                  enabled:
+                    description: Is autoscaling enabled for this node pool.
+                    type: boolean
                   locationPolicy:
                     description: Location policy used when scaling up a nodepool.
                     type: string
