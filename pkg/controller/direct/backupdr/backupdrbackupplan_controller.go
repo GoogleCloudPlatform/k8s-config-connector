@@ -210,6 +210,10 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		report.AddField("labels", a.actual.Labels, a.desired.Labels)
 		paths = append(paths, "labels")
 	}
+	if !reflect.DeepEqual(a.desired.LogRetentionDays, a.actual.LogRetentionDays) {
+		report.AddField("log_retention_days", a.actual.LogRetentionDays, a.desired.LogRetentionDays)
+		paths = append(paths, "log_retention_days")
+	}
 
 	if len(paths) != 0 {
 		structuredreporting.ReportDiff(ctx, report)
