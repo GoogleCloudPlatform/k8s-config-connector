@@ -27,6 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -68,6 +69,7 @@ func getRESTConfig(opts *Options) (*rest.Config, error) {
 type serverContext struct {
 	dynamicClient   dynamic.Interface
 	discoveryClient discovery.DiscoveryInterface
+	kubeClient      kubernetes.Interface
 
 	mu             sync.RWMutex
 	gvrCache       map[string]schema.GroupVersionResource
@@ -98,9 +100,15 @@ func RunMCP(ctx context.Context, opts *Options) error {
 		return fmt.Errorf("error building discovery client: %w", err)
 	}
 
+	kubeClient, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("error building kube client: %w", err)
+	}
+
 	sc := &serverContext{
 		dynamicClient:   dynamicClient,
 		discoveryClient: discoveryClient,
+		kubeClient:      kubeClient,
 		gvrCache:        make(map[string]schema.GroupVersionResource),
 		gvkCache:        make(map[schema.GroupVersionKind]schema.GroupVersionResource),
 		kindToGVRCache:  make(map[string]schema.GroupVersionResource),
@@ -160,6 +168,28 @@ func RunMCP(ctx context.Context, opts *Options) error {
 	s.AddTool(mcp.NewTool("list_kcc_kinds",
 		mcp.WithDescription("List all available KCC CRD kinds"),
 	), sc.handleListKCCKinds)
+
+	// Tool 8: get_kcc_logs
+	s.AddTool(mcp.NewTool("get_kcc_logs",
+		mcp.WithDescription("Get the reconciliation logs for a specific KCC resource"),
+		mcp.WithString("kind", mcp.Required(), mcp.Description("The KRM kind (e.g. StorageBucket)")),
+		mcp.WithString("namespace", mcp.Required(), mcp.Description("The namespace of the resource")),
+		mcp.WithString("name", mcp.Required(), mcp.Description("The name of the resource")),
+		mcp.WithNumber("lines", mcp.Description("Number of log lines to return (default: 50)")),
+	), sc.handleGetKCCLogs)
+
+	// Tool 9: diagnose_kcc_system
+	s.AddTool(mcp.NewTool("diagnose_kcc_system",
+		mcp.WithDescription("Check the health of the in-cluster KCC components (Manager, Webhook, Deletion Defender)"),
+	), sc.handleDiagnoseKCCSystem)
+
+	// Tool 10: list_kcc_events
+	s.AddTool(mcp.NewTool("list_kcc_events",
+		mcp.WithDescription("Get the Kubernetes events for a specific KCC resource"),
+		mcp.WithString("kind", mcp.Required(), mcp.Description("The KRM kind (e.g. StorageBucket)")),
+		mcp.WithString("namespace", mcp.Required(), mcp.Description("The namespace of the resource")),
+		mcp.WithString("name", mcp.Required(), mcp.Description("The name of the resource")),
+	), sc.handleListKCCEvents)
 
 	log.Printf("Starting MCP server for KCC on stdio...")
 	if err := server.ServeStdio(s); err != nil {
