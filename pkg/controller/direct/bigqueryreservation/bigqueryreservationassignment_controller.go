@@ -30,6 +30,7 @@ import (
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -232,10 +233,15 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.actual.GetName()
 
 	paths := []string{}
-	// TODO
-	// The current proto file doesn't have mutable fields
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
+	if !proto.Equal(desiredPb.GetSchedulingPolicy(), a.actual.GetSchedulingPolicy()) {
+		paths = append(paths, "scheduling_policy")
+		report.AddField("scheduling_policy", a.actual.GetSchedulingPolicy(), desiredPb.GetSchedulingPolicy())
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
@@ -244,13 +250,10 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
+		status.ExternalRef = direct.LazyPtr(a.actual.GetName())
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for _, path := range paths {
-		report.AddField(path, nil, nil)
-	}
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
@@ -272,6 +275,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(updated.GetName())
 
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
