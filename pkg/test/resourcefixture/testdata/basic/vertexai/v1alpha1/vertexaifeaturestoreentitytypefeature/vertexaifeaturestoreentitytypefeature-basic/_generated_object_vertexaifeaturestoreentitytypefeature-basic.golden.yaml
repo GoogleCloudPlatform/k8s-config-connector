@@ -3,11 +3,10 @@ kind: VertexAIFeaturestoreEntityTypeFeature
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-two
@@ -16,7 +15,6 @@ metadata:
 spec:
   description: An updated test feature
   entitytype: projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}
-  resourceID: feature${uniqueId}
   valueType: INT64
 status:
   conditions:
@@ -26,6 +24,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 3
+  etag: abcdef123456
+  observedGeneration: 2
   region: us-central1
   updateTime: "1970-01-01T00:00:00Z"
