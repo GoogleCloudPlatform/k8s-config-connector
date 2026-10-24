@@ -157,6 +157,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securesourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter/bigqueryexport"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter/muteconfig"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycenter/securityhealthanalyticscustommodule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securitycentermanagement"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/servicedirectory"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/servicenetworking"

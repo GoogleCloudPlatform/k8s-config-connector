@@ -166,6 +166,9 @@ spec:
                   between 1 and 128 characters, start with a lowercase letter, and
                   contain alphanumeric characters or underscores only.
                 type: string
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               enablementState:
                 description: The enablement state of the custom module.
                 type: string

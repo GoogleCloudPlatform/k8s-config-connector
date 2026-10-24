@@ -5751,22 +5751,6 @@
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubsubTopic" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamingConfig.filter" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.customOutput.properties[].name" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.customOutput.properties[].valueExpression.description" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.customOutput.properties[].valueExpression.expression" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.customOutput.properties[].valueExpression.location" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.customOutput.properties[].valueExpression.title" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.description" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.predicate.description" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.predicate.expression" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.predicate.location" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.predicate.title" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.recommendation" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.resourceSelector.resourceTypes[]" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.customConfig.severity" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.enablementState" is not set in unstructured objects
-[missing_field] crd=securitycentersecurityhealthanalyticscustommodules.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
