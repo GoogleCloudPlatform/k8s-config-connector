@@ -11,7 +11,6 @@
    - The deterministic identity matches the CAI format: `projects/{project}/locations/{location}/workloadIdentityPools/{workloadIdentityPool}/namespaces/{workloadIdentityPoolNamespace}`.
    - Mechanical Step 1a constraints were preserved: no manual edits were made to generated types, and entries in `apis/iam/judgement_queue.yaml` remain `status: open` for Step 1b triage.
 
-3. **Release Bundle & Presubmit**:
+3. **Release Bundle**:
    - Added `IAMWorkloadIdentityPoolNamespace` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` to prevent packaging incomplete alpha CRDs.
-   - Created the per-service/kind presubmit test script `dev/ci/presubmits/tests-e2e-fixtures-iamworkloadidentitypoolnamespace`.
    - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`.
