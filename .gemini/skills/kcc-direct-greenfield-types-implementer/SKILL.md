@@ -12,6 +12,12 @@ You **must** always apply the baseline KRM standards in:
 - [`.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-base-types-implementer/SKILL.md)
 - [`.gemini/skills/kcc-identity-reference/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-identity-reference/SKILL.md)
 
+## Reference Documentation
+For background architecture and guides, see:
+- [`docs/designs/deterministic-generation-and-judgement-queue.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/docs/designs/deterministic-generation-and-judgement-queue.md)
+- [`docs/ai/greenfield-step1-workflow.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/docs/ai/greenfield-step1-workflow.md)
+- [`docs/ai/refs-decision-guide.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/docs/ai/refs-decision-guide.md)
+
 ## Detect Mode and Route
 
 Check whether `<Kind>` already has an entry in `apis/<service>/judgement_queue.yaml` and `apis/<service>/<version>/<kind_lowercase>_types.go` on `master` (or if the issue is labeled `step/types-judgement`):
