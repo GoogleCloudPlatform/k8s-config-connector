@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
@@ -100,7 +100,7 @@ func TestMapManagementMapConfig_GetIdentity(t *testing.T) {
 			obj: &MapManagementMapConfig{
 				Spec: MapManagementMapConfigSpec{
 					ProjectRef: &refs.ProjectRef{External: "test-project"},
-					ResourceID: direct.PtrTo("existing-map-config-id"),
+					ResourceID: ptr.PtrTo("existing-map-config-id"),
 				},
 			},
 			want: &MapManagementMapConfigIdentity{
@@ -115,7 +115,7 @@ func TestMapManagementMapConfig_GetIdentity(t *testing.T) {
 					ProjectRef: &refs.ProjectRef{External: "test-project"},
 				},
 				Status: MapManagementMapConfigStatus{
-					ExternalRef: direct.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
+					ExternalRef: ptr.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
 				},
 			},
 			want: &MapManagementMapConfigIdentity{
@@ -128,10 +128,10 @@ func TestMapManagementMapConfig_GetIdentity(t *testing.T) {
 			obj: &MapManagementMapConfig{
 				Spec: MapManagementMapConfigSpec{
 					ProjectRef: &refs.ProjectRef{External: "test-project"},
-					ResourceID: direct.PtrTo("server-assigned-12345"),
+					ResourceID: ptr.PtrTo("server-assigned-12345"),
 				},
 				Status: MapManagementMapConfigStatus{
-					ExternalRef: direct.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
+					ExternalRef: ptr.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
 				},
 			},
 			want: &MapManagementMapConfigIdentity{
@@ -144,10 +144,10 @@ func TestMapManagementMapConfig_GetIdentity(t *testing.T) {
 			obj: &MapManagementMapConfig{
 				Spec: MapManagementMapConfigSpec{
 					ProjectRef: &refs.ProjectRef{External: "test-project"},
-					ResourceID: direct.PtrTo("different-id"),
+					ResourceID: ptr.PtrTo("different-id"),
 				},
 				Status: MapManagementMapConfigStatus{
-					ExternalRef: direct.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
+					ExternalRef: ptr.PtrTo("projects/test-project/mapConfigs/server-assigned-12345"),
 				},
 			},
 			wantErr: true,
@@ -159,7 +159,7 @@ func TestMapManagementMapConfig_GetIdentity(t *testing.T) {
 					ProjectRef: &refs.ProjectRef{External: "project-b"},
 				},
 				Status: MapManagementMapConfigStatus{
-					ExternalRef: direct.PtrTo("projects/project-a/mapConfigs/server-assigned-12345"),
+					ExternalRef: ptr.PtrTo("projects/project-a/mapConfigs/server-assigned-12345"),
 				},
 			},
 			wantErr: true,

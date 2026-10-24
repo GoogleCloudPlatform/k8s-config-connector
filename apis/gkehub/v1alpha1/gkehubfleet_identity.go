@@ -20,8 +20,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -106,12 +106,12 @@ func (obj *GKEHubFleet) GetIdentity(ctx context.Context, reader client.Reader) (
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	resourceID := ptr.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
 
-	location := direct.ValueOf(obj.Spec.Location)
+	location := ptr.ValueOf(obj.Spec.Location)
 	if location == "" {
 		location = "global"
 	}
