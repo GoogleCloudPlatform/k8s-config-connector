@@ -1,43 +1,43 @@
-72,73c72
+71,72c71
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-102c101
+101c100
 < POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies?alt=json
 ---
 > POST https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies?alt=json&prettyPrint=false
-140,141c139
+139,140c138
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-168c166
+167c165
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 ---
 > PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-172a171
+171a170
 >   "id": "000000000000000000000",
-177c176,177
+176c175,176
 <   ]
 ---
 >   ],
 >   "responsePolicyName": "dnsresponsepolicy-test-${uniqueId}"
-207,208c207
+206,207c206
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-235c234
+234c233
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 ---
 > PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-239c238,239
+238c237,238
 <   "networks": null
 ---
 >   "id": "000000000000000000000",
 >   "networks": []
-262,263c262
+261,262c261
 < DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---

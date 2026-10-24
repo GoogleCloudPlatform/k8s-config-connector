@@ -275,7 +275,7 @@ func (s *NetworkEndpointGroupsV1) ListNetworkEndpoints(ctx context.Context, req 
 	err = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
 		endpoint := obj.(*pb.NetworkEndpoint)
 		if endpoint.Instance != nil {
-			inst := ExpandComputeLink(ctx, *endpoint.Instance)
+			inst := lastComponent(*endpoint.Instance)
 			endpoint.Instance = &inst
 		} else {
 			endpoint.Instance = PtrTo("")

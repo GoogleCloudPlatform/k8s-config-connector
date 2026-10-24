@@ -1,9 +1,9 @@
-883c883,884
+882c882,883
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-911,956c912
+910,955c911
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -52,18 +52,18 @@
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
-960,961d915
+959,960d914
 <   "canIpForward": false,
 <   "deletionProtection": false,
-964a919
+963a918
 >       "autoDelete": false,
-966d920
+965d919
 <       "mode": "READ_WRITE",
-970c924
+969c923
 <       "mode": "READ_WRITE",
 ---
 >       "boot": false,
-974,979c928
+973,978c927
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
@@ -72,69 +72,69 @@
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
 ---
 >   "machineType": "n1-standard-1",
-983,986d931
+982,985d930
 <         "key": "bar",
 <         "value": "baz"
 <       },
 <       {
-991,992c936,937
+990,991c935,936
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
 ---
 >         "key": "bar",
 >         "value": "baz"
-1001c946,947
+1000c945,946
 <           "natIP": "8.8.8.8",
 ---
 >           "name": "External NAT",
 >           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1006c952
+1005c951
 <       "networkIP": "8.8.8.8"
 ---
 >       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1009d954
+1008d953
 <   "params": {},
-1012,1015d956
+1011,1014d955
 <     "instanceTerminationAction": "",
 <     "nodeAffinities": [
 <       null
 <     ],
-1017,1018c958
+1016,1017c957
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-1024c964
+1023c963
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1028c968
+1027c967
 <   "tags": {}
 ---
 >   "zone": "us-west1-a"
-1059c999,1000
+1058c998,999
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1090c1031,1032
+1089c1030,1031
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1103d1044
+1102d1043
 <   "canIpForward": false,
-1105d1045
+1104d1044
 <   "deletionProtection": false,
-1108a1049
+1107a1048
 >       "autoDelete": false,
-1110d1050
+1109d1049
 <       "mode": "READ_WRITE",
-1114c1054
+1113c1053
 <       "mode": "READ_WRITE",
 ---
 >       "boot": false,
-1121,1126c1061
+1120,1125c1060
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
@@ -143,12 +143,12 @@
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
 ---
 >   "machineType": "n1-standard-1",
-1130,1133d1064
+1129,1132d1063
 <         "key": "bar",
 <         "value": "baz"
 <       },
 <       {
-1138,1252d1068
+1137,1251d1067
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
 <       }
@@ -264,7 +264,7 @@
 <   "metadata": {
 <     "items": [
 <       {
-1255,1262d1070
+1254,1261d1069
 <       },
 <       {
 <         "key": "foo",
@@ -273,31 +273,31 @@
 <       {
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
-1271c1079,1080
+1270c1078,1079
 <           "natIP": "8.8.8.8",
 ---
 >           "name": "External NAT",
 >           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1276c1085
+1275c1084
 <       "networkIP": "8.8.8.8"
 ---
 >       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1279d1087
+1278d1086
 <   "params": {},
-1282d1089
+1281d1088
 <     "instanceTerminationAction": "",
-1284,1285c1091
+1283,1284c1090
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-1292c1098
+1291c1097
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1297d1102
+1296d1101
 <   "tags": {},
-1303,1336c1108,1109
+1302,1335c1107,1108
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -335,7 +335,7 @@
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop
 > Content-Type: application/json
-1349,1363d1121
+1348,1362d1120
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "deletionProtection": false,
@@ -351,7 +351,7 @@
 <       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
 <     }
 <   ],
-1365,1418c1123,1129
+1364,1417c1122,1128
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -414,22 +414,22 @@
 >   "progress": 0,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
-1420c1131,1133
+1419c1130,1132
 <   "tags": {},
 ---
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1426c1139,1140
+1425c1138,1139
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1439c1153
+1438c1152
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-1441,1453c1155,1165
+1440,1452c1154,1164
 <   "kind": "compute#disk",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -455,24 +455,24 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-1459c1171,1172
+1458c1170,1171
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-1472d1184
+1471d1183
 <   "canIpForward": false,
-1474d1185
+1473d1184
 <   "deletionProtection": false,
-1477a1189
+1476a1188
 >       "autoDelete": false,
-1479d1190
+1478d1189
 <       "mode": "READ_WRITE",
-1483c1194
+1482c1193
 <       "mode": "READ_WRITE",
 ---
 >       "boot": false,
-1490,1495c1201
+1489,1494c1200
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
@@ -481,49 +481,49 @@
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
 ---
 >   "machineType": "n1-standard-1",
-1499,1502d1204
+1498,1501d1203
 <         "key": "bar",
 <         "value": "baz"
 <       },
 <       {
-1507,1508c1209,1210
+1506,1507c1208,1209
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
 ---
 >         "key": "bar",
 >         "value": "baz"
-1517c1219,1220
+1516c1218,1219
 <           "natIP": "8.8.8.8",
 ---
 >           "name": "External NAT",
 >           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-1522c1225
+1521c1224
 <       "networkIP": "8.8.8.8"
 ---
 >       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-1525d1227
+1524d1226
 <   "params": {},
-1528d1229
+1527d1228
 <     "instanceTerminationAction": "",
-1530,1531c1231
+1529,1530c1230
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-1538c1238
+1537c1237
 <         "https://www.googleapis.com/auth/cloud-platform"
 ---
 >         "cloud-platform"
-1542,1543c1242
+1541,1542c1241
 <   "status": "RUNNING",
 <   "tags": {},
 ---
 >   "status": "TERMINATED",
-1549c1248
+1548c1247
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
-1553,1558c1252
+1552,1557c1251
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -532,20 +532,20 @@
 <   }
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
-1576c1270
+1575c1269
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-1589c1283,1284
+1588c1282,1283
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1607c1302
+1606c1301
 <   "operationType": "setLabels",
 ---
 >   "operationType": "setMachineType",
-1620c1315,1323
+1619c1314,1322
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setServiceAccount
@@ -557,24 +557,24 @@
 >     "compute-ro"
 >   ]
 > }
-1637c1340
+1636c1339
 <   "operationType": "stop",
 ---
 >   "operationType": "setServiceAccount",
-1650c1353,1354
+1649c1352,1353
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1668c1372
+1667c1371
 <   "operationType": "stop",
 ---
 >   "operationType": "setServiceAccount",
-1681c1385
+1680c1384
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMetadata
-1685c1389,1398
+1684c1388,1397
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
 ---
 >   "items": [
@@ -587,24 +587,24 @@
 >       "value": "baz"
 >     }
 >   ]
-1703c1416
+1702c1415
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setMetadata",
-1716c1429,1430
+1715c1428,1429
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1734c1448
+1733c1447
 <   "operationType": "setMachineType",
 ---
 >   "operationType": "setMetadata",
-1747c1461
+1746c1460
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setServiceAccount?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setScheduling
-1751,1754c1465,1467
+1750,1753c1464,1466
 <   "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 <   "scopes": [
 <     "https://www.googleapis.com/auth/compute.readonly"
@@ -613,20 +613,20 @@
 >   "automaticRestart": false,
 >   "onHostMaintenance": "TERMINATE",
 >   "preemptible": true
-1772c1485
+1771c1484
 <   "operationType": "setServiceAccount",
 ---
 >   "operationType": "setScheduling",
-1785c1498,1499
+1784c1497,1498
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1803c1517
+1802c1516
 <   "operationType": "setServiceAccount",
 ---
 >   "operationType": "setScheduling",
-1816,1826c1530,1531
+1815,1825c1529,1530
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -641,7 +641,7 @@
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
 > Content-Type: application/json
-1829,1845d1533
+1828,1844d1532
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "deletionProtection": false,
@@ -659,7 +659,7 @@
 <   ],
 <   "id": "000000000000000000000",
 <   "kind": "compute#instance",
-1849,1901c1537,1538
+1848,1900c1536,1537
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
@@ -716,30 +716,30 @@
 ---
 >     "label-one": "value-two"
 >   }
-1904,1907d1540
+1903,1906d1539
 < ---
 < 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start?alt=json&prettyPrint=false
 < 
-1923c1556
+1922c1555
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1936c1569,1570
+1935c1568,1569
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-1954c1588
+1953c1587
 <   "operationType": "start",
 ---
 >   "operationType": "setLabels",
-1967c1601,1602
+1966c1600,1601
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start
 > Content-Type: application/json
-1980,1994d1614
+1979,1993d1613
 <   "canIpForward": false,
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "deletionProtection": false,
@@ -755,7 +755,7 @@
 <       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
 <     }
 <   ],
-1996,2049c1616,1622
+1995,2048c1615,1621
 <   "kind": "compute#instance",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -818,22 +818,22 @@
 >   "progress": 0,
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
 >   "startTime": "2024-04-01T12:34:56.123456Z",
-2051c1624,1626
+2050c1623,1625
 <   "tags": {},
 ---
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-2057c1632,1633
+2056c1631,1632
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
 > Content-Type: application/json
-2070c1646
+2069c1645
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 ---
 >   "endTime": "2024-04-01T12:34:56.123456Z",
-2072,2084c1648,1658
+2071,2083c1647,1657
 <   "kind": "compute#disk",
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
@@ -859,68 +859,68 @@
 >   "targetId": "${instanceID}",
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
 >   "user": "user@example.com",
-2090c1664,1665
+2089c1663,1664
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-2103d1677
+2102d1676
 <   "canIpForward": false,
-2105d1678
+2104d1677
 <   "deletionProtection": false,
-2108a1682
+2107a1681
 >       "autoDelete": false,
-2110d1683
+2109d1682
 <       "mode": "READ_WRITE",
-2114c1687
+2113c1686
 <       "mode": "READ_WRITE",
 ---
 >       "boot": false,
-2123,2124c1696
+2122,2123c1695
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 ---
 >     "label-one": "value-two"
-2126c1698
+2125c1697
 <   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
 ---
 >   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
-2130,2133d1701
+2129,2132d1700
 <         "key": "bar",
 <         "value": "baz"
 <       },
 <       {
-2138,2139c1706,1707
+2137,2138c1705,1706
 <         "key": "startup-script",
 <         "value": "echo hi \u003e /test.txt"
 ---
 >         "key": "bar",
 >         "value": "baz"
-2148c1716,1717
+2147c1715,1716
 <           "natIP": "8.8.8.8",
 ---
 >           "name": "External NAT",
 >           "natIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}",
-2153c1722
+2152c1721
 <       "networkIP": "8.8.8.8"
 ---
 >       "networkIP": "projects/${projectId}/regions/us-west1/addresses/${addressID}"
-2156d1724
+2155d1723
 <   "params": {},
-2159d1726
+2158d1725
 <     "instanceTerminationAction": "",
-2161,2162c1728
+2160,2161c1727
 <     "preemptible": true,
 <     "provisioningModel": ""
 ---
 >     "preemptible": true
-2169c1735
+2168c1734
 <         "https://www.googleapis.com/auth/compute.readonly"
 ---
 >         "compute-ro"
-2174d1739
+2173d1738
 <   "tags": {},
-2180,2213c1745,1746
+2179,2212c1744,1745
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -958,7 +958,7 @@
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
 > Content-Type: application/json
-2243c1776,1777
+2242c1775,1776
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}

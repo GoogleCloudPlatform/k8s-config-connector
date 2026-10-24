@@ -13,7 +13,9 @@ metadata:
   name: computenetworkendpoint-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  ipAddress: 10.128.0.10
+  instanceRef:
+    name: ${instanceID}
+  ipAddress: 10.0.0.2
   networkEndpointGroupRef:
     name: ${networkEndpointGroupID}
   projectRef:

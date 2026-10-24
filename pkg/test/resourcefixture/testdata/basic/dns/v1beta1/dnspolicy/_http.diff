@@ -1,57 +1,57 @@
-72,73c72
+71,72c71
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-102c101
+101c100
 < POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies?alt=json
 ---
 > POST https://dns.googleapis.com/dns/v1/projects/${projectId}/policies?alt=json&prettyPrint=false
-106d104
+105d103
 <   "description": "Managed by Config Connector",
-126d123
+125d122
 <   "description": "Managed by Config Connector",
-140,141c137
+139,140c136
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-154d149
+153d148
 <   "description": "Managed by Config Connector",
-168c163
+167c162
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 ---
 > PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-179,181c174,175
+178,180c173,174
 <   "description": "Managed by Config Connector",
 <   "enableInboundForwarding": false,
 <   "enableLogging": false,
 ---
 >   "id": "000000000000000000000",
 >   "name": "dnspolicy-test-${uniqueId}",
-210,212d203
+209,211d202
 <     "description": "Managed by Config Connector",
 <     "enableInboundForwarding": false,
 <     "enableLogging": false,
-227,228c218
+226,227c217
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-250,252d239
+249,251d238
 <   "description": "Managed by Config Connector",
 <   "enableInboundForwarding": false,
 <   "enableLogging": false,
-266c253
+265c252
 < PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 ---
 > PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json&prettyPrint=false
-270c257,258
+269c256,257
 <   "networks": null
 ---
 >   "id": "000000000000000000000",
 >   "networks": []
-293,294c281
+292,293c280
 < DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
 < Content-Type: application/json
 ---

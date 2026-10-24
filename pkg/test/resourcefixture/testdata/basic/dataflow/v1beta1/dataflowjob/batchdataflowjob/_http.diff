@@ -1,4 +1,4 @@
-573,589c573
+572,588c572
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -18,7 +18,7 @@
 < POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?alt=json&prettyPrint=false
 ---
 > POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?%24alt=json%3Benum-encoding%3Dint
-597,602c581
+596,601c580
 <     "additionalUserLabels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
@@ -27,14 +27,14 @@
 <     "ipConfiguration": "WORKER_IP_PUBLIC",
 ---
 >     "ipConfiguration": 1,
-605,606c584
+604,605c583
 <     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >     "network": "projects/${projectId}/global/networks/${subnetworkID}",
-612a591
+611a590
 >   "location": "us-central1",
-616,654d594
+615,653d593
 <   }
 < }
 < 
@@ -74,7 +74,7 @@
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
-656,660c596
+655,659c595
 <   "location": "us-central1",
 <   "name": "dataflowjob-${uniqueId}",
 <   "projectId": "${projectId}",
@@ -82,7 +82,7 @@
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "projectId": "${projectId}"
-663,718d598
+662,717d597
 < ---
 < 
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
@@ -139,23 +139,23 @@
 < 
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 < 
-731c611
+730c610
 <   "currentState": "JOB_STATE_RUNNING",
 ---
 >   "currentState": 2,
-742,743c622,623
+741,742c621,622
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-751,755d630
+750,754d629
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-760,812c635
+759,811c634
 <   "type": "JOB_TYPE_BATCH"
 < }
 < 
@@ -211,7 +211,7 @@
 <   ]
 ---
 >   "type": 1
-817,917c640,641
+816,916c639,640
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 < 
 < 200 OK
@@ -316,45 +316,45 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-931c655
+930c654
 <   "currentState": "JOB_STATE_RUNNING",
 ---
 >   "currentState": 2,
-942,943c666,667
+941,942c665,666
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-951,955d674
+950,954d673
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-960c679
+959c678
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "type": 1
-965c684
+964c683
 < PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
 ---
 > PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-969c688
+968c687
 <   "requestedState": "JOB_STATE_CANCELLED"
 ---
 >   "requestedState": 5
-983c702
+982c701
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-987,988c706,707
+986,987c705,706
 <   "requestedState": "JOB_STATE_CANCELLED",
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "requestedState": 5,
 >   "type": 1
-993,1046c712,713
+992,1045c711,712
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -412,31 +412,31 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1060c727
+1059c726
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-1071,1072c738,739
+1070,1071c737,738
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1080,1084d746
+1079,1083d745
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1088c750
+1087c749
 <   "requestedState": "JOB_STATE_CANCELLED",
 ---
 >   "requestedState": 5,
-1090c752
+1089c751
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "type": 1
-1095,1111c757,758
+1094,1110c756,757
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -457,23 +457,23 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1125c772
+1124c771
 <   "currentState": "JOB_STATE_CANCELLED",
 ---
 >   "currentState": 5,
-1136,1137c783,784
+1135,1136c782,783
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1145,1149d791
+1144,1148d790
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1154c796
+1153c795
 <   "type": "JOB_TYPE_BATCH"
 ---
 >   "type": 1

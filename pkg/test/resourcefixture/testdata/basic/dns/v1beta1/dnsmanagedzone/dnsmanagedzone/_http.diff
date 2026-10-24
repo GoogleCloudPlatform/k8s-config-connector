@@ -1,39 +1,39 @@
-72,73c72
+71,72c71
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
-102c101
+101c100
 < POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones?alt=json
 ---
 > POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones?alt=json&prettyPrint=false
-167,168c166
+166,167c165
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
-213c211
+212c210
 < PUT https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 ---
 > PUT https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
-217,218d214
+216,217d213
 <   "cloudLoggingConfig": {},
 <   "creationTime": "2024-04-01T12:34:56.123456Z",
-221d216
+220d215
 <   "id": "000000000000000000000",
-228,233d222
+227,232d221
 <   "nameServers": [
 <     "ns-cloud-a1.googledomains.com.",
 <     "ns-cloud-a2.googledomains.com.",
 <     "ns-cloud-a3.googledomains.com.",
 <     "ns-cloud-a4.googledomains.com."
 <   ],
-327,328c316
+326,327c315
 < GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 < Content-Type: application/json
 ---
 > GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json&prettyPrint=false
-373,374c361
+372,373c360
 < DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
 < Content-Type: application/json
 ---

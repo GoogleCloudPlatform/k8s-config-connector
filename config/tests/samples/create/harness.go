@@ -957,6 +957,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if strings.Contains(testKey, "networkservicesedgecacheoriginautogen") || strings.Contains(testKey, "networkservicesedgecachekeysetautogen") {
 				t.Skip("fixture does not have golden logs recorded against real GCP")
 			}
+			if strings.HasSuffix(testKey, "basic/compute/v1beta1/computenetworkendpointgroup") {
+				t.Skip("skipping computenetworkendpointgroup fixture as it is not part of this test suite")
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":

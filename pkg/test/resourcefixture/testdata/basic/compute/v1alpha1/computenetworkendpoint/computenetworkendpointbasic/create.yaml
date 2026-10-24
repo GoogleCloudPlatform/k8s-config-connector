@@ -22,5 +22,7 @@ spec:
   zone: us-central1-a
   networkEndpointGroupRef:
     name: computenetworkendpointgroup-${uniqueId}
-  ipAddress: 10.128.0.10
+  instanceRef:
+    name: computenetworkendpoint-instance-${uniqueId}
+  ipAddress: 10.0.0.2
   resourceID: "90"

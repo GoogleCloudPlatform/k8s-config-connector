@@ -15,17 +15,53 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetworkendpoint-network-${uniqueId}
 spec:
+  autoCreateSubnetworks: false
   description: Network for ComputeNetworkEndpoint test
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetworkendpoint-subnetwork-${uniqueId}
+spec:
+  ipCidrRange: 10.0.0.0/24
+  region: us-central1
+  networkRef:
+    name: computenetworkendpoint-network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetworkendpoint-instance-${uniqueId}
+spec:
+  zone: us-central1-a
+  machineType: e2-medium
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        external: debian-cloud/debian-12
+  networkInterface:
+  - subnetworkRef:
+      name: computenetworkendpoint-subnetwork-${uniqueId}
+    networkIp: 10.0.0.2
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetworkEndpointGroup
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetworkendpointgroup-${uniqueId}
 spec:
+  location: us-central1-a
   networkRef:
     name: computenetworkendpoint-network-${uniqueId}
-  location: us-central1-a
+  subnetworkRef:
+    name: computenetworkendpoint-subnetwork-${uniqueId}
   defaultPort: 90
-  networkEndpointType: NON_GCP_PRIVATE_IP_PORT
