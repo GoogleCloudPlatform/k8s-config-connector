@@ -1,0 +1,621 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: storagebuckets.storage.cnrm.cloud.google.com
+spec:
+  group: storage.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: StorageBucket
+    listKind: StorageBucketList
+    plural: storagebuckets
+    shortNames:
+    - gcpstoragebucket
+    - gcpstoragebuckets
+    singular: storagebucket
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: StorageBucket is the Schema for the StorageBucket API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: StorageBucketSpec defines the desired state of StorageBucket
+            properties:
+              acl:
+                description: Access controls on the bucket.
+                items:
+                  properties:
+                    bucket:
+                      description: The name of the bucket.
+                      type: string
+                    domain:
+                      description: The domain associated with the entity, if any.
+                      type: string
+                    email:
+                      description: The email address associated with the entity, if
+                        any.
+                      type: string
+                    entity:
+                      description: 'The entity holding the permission, in one of the
+                        following forms: * `user-{userid}` * `user-{email}` * `group-{groupid}`
+                        * `group-{email}` * `domain-{domain}` * `project-{team-projectid}`
+                        * `allUsers` * `allAuthenticatedUsers` Examples: * The user
+                        `liz@example.com` would be `user-liz@example.com`. * The group
+                        `example@googlegroups.com` would be `group-example@googlegroups.com`
+                        * All members of the Google Apps for Business domain `example.com`
+                        would be `domain-example.com`'
+                      type: string
+                    entityID:
+                      description: The ID for the entity, if any.
+                      type: string
+                    etag:
+                      description: HTTP 1.1 ["https://tools.ietf.org/html/rfc7232#section-2.3][Entity
+                        tag] for the access-control entry.
+                      type: string
+                    id:
+                      description: The ID of the access-control entry.
+                      type: string
+                    projectTeam:
+                      description: The project team associated with the entity, if
+                        any.
+                      properties:
+                        projectNumber:
+                          description: The project number.
+                          type: string
+                        team:
+                          description: The team.
+                          type: string
+                      type: object
+                    role:
+                      description: The access permission for the entity.
+                      type: string
+                  type: object
+                type: array
+              autoclass:
+                description: The bucket's autoclass configuration. If there is no
+                  configuration, the Autoclass feature will be disabled and have no
+                  effect on the bucket.
+                properties:
+                  enabled:
+                    description: Enables Autoclass.
+                    type: boolean
+                  toggleTime:
+                    description: Latest instant at which the `enabled` bit was flipped.
+                    type: string
+                type: object
+              billing:
+                description: The bucket's billing configuration.
+                properties:
+                  requesterPays:
+                    description: When set to true, Requester Pays is enabled for this
+                      bucket.
+                    type: boolean
+                type: object
+              cors:
+                description: The bucket's [https://www.w3.org/TR/cors/][Cross-Origin
+                  Resource Sharing] (CORS) configuration.
+                items:
+                  properties:
+                    maxAgeSeconds:
+                      description: The value, in seconds, to return in the [https://www.w3.org/TR/cors/#access-control-max-age-response-header][Access-Control-Max-Age
+                        header] used in preflight responses.
+                      format: int32
+                      type: integer
+                    method:
+                      description: 'The list of HTTP methods on which to include CORS
+                        response headers, (`GET`, `OPTIONS`, `POST`, etc) Note: "*"
+                        is permitted in the list of methods, and means "any method".'
+                      items:
+                        type: string
+                      type: array
+                    origin:
+                      description: 'The list of Origins eligible to receive CORS response
+                        headers. See [https://tools.ietf.org/html/rfc6454][RFC 6454]
+                        for more on origins. Note: "*" is permitted in the list of
+                        origins, and means "any Origin".'
+                      items:
+                        type: string
+                      type: array
+                    responseHeader:
+                      description: The list of HTTP headers other than the [https://www.w3.org/TR/cors/#simple-response-header][simple
+                        response headers] to give permission for the user-agent to
+                        share across domains.
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              defaultEventBasedHold:
+                description: The default value for event-based hold on newly created
+                  objects in this bucket.  Event-based hold is a way to retain objects
+                  indefinitely until an event occurs, signified by the hold's release.
+                  After being released, such objects will be subject to bucket-level
+                  retention (if any).  One sample use case of this flag is for banks
+                  to hold loan documents for at least 3 years after loan is paid in
+                  full. Here, bucket-level retention is 3 years and the event is loan
+                  being paid in full. In this example, these objects will be held
+                  intact for any number of years until the event has occurred (event-based
+                  hold on the object is released) and then 3 more years after that.
+                  That means retention duration of the objects begins from the moment
+                  event-based hold transitioned from true to false.  Objects under
+                  event-based hold cannot be deleted, overwritten or archived until
+                  the hold is removed.
+                type: boolean
+              defaultObjectAcl:
+                description: Default access controls to apply to new objects when
+                  no ACL is provided.
+                items:
+                  properties:
+                    bucket:
+                      description: The name of the bucket.
+                      type: string
+                    domain:
+                      description: The domain associated with the entity, if any.
+                      type: string
+                    email:
+                      description: The email address associated with the entity, if
+                        any.
+                      type: string
+                    entity:
+                      description: 'The entity holding the permission, in one of the
+                        following forms: * `user-{userid}` * `user-{email}` * `group-{groupid}`
+                        * `group-{email}` * `domain-{domain}` * `project-{team-projectid}`
+                        * `allUsers` * `allAuthenticatedUsers` Examples: * The user
+                        `liz@example.com` would be `user-liz@example.com`. * The group
+                        `example@googlegroups.com` would be `group-example@googlegroups.com`.
+                        * All members of the Google Apps for Business domain `example.com`
+                        would be `domain-example.com`.'
+                      type: string
+                    entityID:
+                      description: The ID for the entity, if any.
+                      type: string
+                    etag:
+                      description: HTTP 1.1 Entity tag for the access-control entry.
+                        See [https://tools.ietf.org/html/rfc7232#section-2.3][RFC
+                        7232 §2.3].
+                      type: string
+                    generation:
+                      description: The content generation of the object, if applied
+                        to an object.
+                      format: int64
+                      type: integer
+                    id:
+                      description: The ID of the access-control entry.
+                      type: string
+                    object:
+                      description: The name of the object, if applied to an object.
+                      type: string
+                    projectTeam:
+                      description: The project team associated with the entity, if
+                        any.
+                      properties:
+                        projectNumber:
+                          description: The project number.
+                          type: string
+                        team:
+                          description: The team.
+                          type: string
+                      type: object
+                    role:
+                      description: The access permission for the entity.
+                      type: string
+                  type: object
+                type: array
+              encryption:
+                description: Encryption configuration for a bucket.
+                properties:
+                  defaultKMSKeyName:
+                    description: A Cloud KMS key that will be used to encrypt objects
+                      inserted into this bucket, if no encryption method is specified.
+                    type: string
+                type: object
+              etag:
+                description: HTTP 1.1 [https://tools.ietf.org/html/rfc7232#section-2.3"]Entity
+                  tag] for the bucket. Attempting to set or update this field will
+                  result in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                type: string
+              iamConfiguration:
+                description: The bucket's IAM configuration.
+                properties:
+                  publicAccessPrevention:
+                    description: Whether IAM will enforce public access prevention.
+                    type: string
+                  uniformBucketLevelAccess:
+                    properties:
+                      enabled:
+                        description: If set, access checks only use bucket-level IAM
+                          policies or above.
+                        type: boolean
+                      lockedTime:
+                        description: The deadline time for changing <code>iamConfiguration.uniformBucketLevelAccess.enabled</code>
+                          from true to false in [https://tools.ietf.org/html/rfc3339][RFC
+                          3339]. After the deadline is passed the field is immutable.
+                        type: string
+                    type: object
+                type: object
+              id:
+                description: The ID of the bucket. For buckets, the `id` and `name`
+                  properties are the same. Attempting to update this field after the
+                  bucket is created will result in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: User-provided labels, in key/value pairs.
+                type: object
+              lifecycle:
+                description: The bucket's lifecycle configuration. See [https://developers.google.com/storage/docs/lifecycle]Lifecycle
+                  Management] for more information.
+                properties:
+                  rule:
+                    description: A lifecycle management rule, which is made of an
+                      action to take and the condition(s) under which the action will
+                      be taken.
+                    items:
+                      properties:
+                        action:
+                          description: The action to take.
+                          properties:
+                            storageClass:
+                              description: Target storage class. Required iff the
+                                type of the action is SetStorageClass.
+                              type: string
+                            type:
+                              description: Type of the action. Currently, only `Delete`,
+                                `SetStorageClass`, and `AbortIncompleteMultipartUpload`
+                                are supported.
+                              type: string
+                          type: object
+                        condition:
+                          description: The condition(s) under which the action will
+                            be taken.
+                          properties:
+                            age:
+                              description: Age of an object (in days). This condition
+                                is satisfied when an object reaches the specified
+                                age.
+                              format: int32
+                              type: integer
+                            createdBefore:
+                              description: 'A date in [RFC 3339][1] format with only
+                                the date part (for instance, "2013-01-15"). This condition
+                                is satisfied when an object is created before midnight
+                                of the specified date in UTC. [1]: https://tools.ietf.org/html/rfc3339'
+                              type: string
+                            customTimeBefore:
+                              description: An object matches this condition if the
+                                custom timestamp set on the object is before this
+                                timestamp.
+                              type: string
+                            daysSinceCustomTime:
+                              description: Number of days that has elapsed since the
+                                custom timestamp set on an object.
+                              format: int32
+                              type: integer
+                            daysSinceNoncurrentTime:
+                              description: This condition is relevant only for versioned
+                                objects. An object version satisfies this condition
+                                only if these many days have been passed since it
+                                became noncurrent. The value of the field must be
+                                a nonnegative integer. If it's zero, the object version
+                                will become eligible for Lifecycle action as soon
+                                as it becomes noncurrent.
+                              format: int32
+                              type: integer
+                            isLive:
+                              description: Relevant only for versioned objects. If
+                                the value is `true`, this condition matches live objects;
+                                if the value is `false`, it matches archived objects.
+                              type: boolean
+                            matchesPattern:
+                              description: 'A regular expression that satisfies the
+                                RE2 syntax. This condition is satisfied when the name
+                                of the object matches the RE2 pattern.  Note: This
+                                feature is currently in the "Early Access" launch
+                                stage and is only available to an allowlisted set
+                                of users; that means that this feature may be changed
+                                in backward-incompatible ways and that it is not guaranteed
+                                to be released.'
+                              type: string
+                            matchesPrefix:
+                              description: List of object name prefixes. If any prefix
+                                exactly matches the beginning of the object name,
+                                the condition evaluates to true.
+                              items:
+                                type: string
+                              type: array
+                            matchesStorageClass:
+                              description: Objects having any of the storage classes
+                                specified by this condition will be matched. Values
+                                include `MULTI_REGIONAL`, `REGIONAL`, `NEARLINE`,
+                                `COLDLINE`, `STANDARD`, and `DURABLE_REDUCED_AVAILABILITY`.
+                              items:
+                                type: string
+                              type: array
+                            matchesSuffix:
+                              description: List of object name suffixes. If any suffix
+                                exactly matches the end of the object name, the condition
+                                evaluates to true.
+                              items:
+                                type: string
+                              type: array
+                            noncurrentTimeBefore:
+                              description: This condition is relevant only for versioned
+                                objects. An object version satisfies this condition
+                                only if it became noncurrent before the specified
+                                timestamp.
+                              type: string
+                            numNewerVersions:
+                              description: Relevant only for versioned objects. If
+                                the value is N, this condition is satisfied when there
+                                are at least N versions (including the live version)
+                                newer than this version of the object.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              location:
+                description: The location of the bucket. Object data for objects in
+                  the bucket resides in physical storage within this region.  Defaults
+                  to `US`. See the [https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"][developer's
+                  guide] for the authoritative list. Attempting to update this field
+                  after the bucket is created will result in an error.
+                type: string
+              locationType:
+                description: The location type of the bucket (region, dual-region,
+                  multi-region, etc).
+                type: string
+              logging:
+                description: The bucket's logging configuration, which defines the
+                  destination bucket and optional name prefix for the current bucket's
+                  logs.
+                properties:
+                  logBucket:
+                    description: The destination bucket where the current bucket's
+                      logs should be placed.
+                    type: string
+                  logObjectPrefix:
+                    description: A prefix for log object names.
+                    type: string
+                type: object
+              metageneration:
+                description: The metadata generation of this bucket. Attempting to
+                  set or update this field will result in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                format: int64
+                type: integer
+              owner:
+                description: The owner of the bucket. This is always the project team's
+                  owner group.
+                properties:
+                  entity:
+                    description: The entity, in the form `user-`*userId*.
+                    type: string
+                  entityID:
+                    description: The ID for the entity.
+                    type: string
+                type: object
+              projectNumber:
+                description: The project number of the project the bucket belongs
+                  to. Attempting to set or update this field will result in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                format: int64
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The StorageBucket name. If not given, the metadata.name
+                  will be used.
+                type: string
+              retentionPolicy:
+                description: The bucket's retention policy. The retention policy enforces
+                  a minimum retention time for all objects contained in the bucket,
+                  based on their creation time. Any attempt to overwrite or delete
+                  objects younger than the retention period will result in a PERMISSION_DENIED
+                  error.  An unlocked retention policy can be modified or removed
+                  from the bucket via a storage.buckets.update operation. A locked
+                  retention policy cannot be removed or shortened in duration for
+                  the lifetime of the bucket. Attempting to remove or decrease period
+                  of a locked retention policy will result in a PERMISSION_DENIED
+                  error.
+                properties:
+                  effectiveTime:
+                    description: Server-determined value that indicates the time from
+                      which policy was enforced and effective. This value is in [https://tools.ietf.org/html/rfc3339][RFC
+                      3339] format.
+                    type: string
+                  isLocked:
+                    description: Once locked, an object retention policy cannot be
+                      modified.
+                    type: boolean
+                  retentionPeriod:
+                    description: The duration in seconds that objects need to be retained.
+                      Retention duration must be greater than zero and less than 100
+                      years. Note that enforcement of retention periods less than
+                      a day is not guaranteed. Such periods should only be used for
+                      testing purposes.
+                    format: int64
+                    type: integer
+                type: object
+              satisfiesPzs:
+                description: Reserved for future use.
+                type: boolean
+              storageClass:
+                description: The bucket's default storage class, used whenever no
+                  storageClass is specified for a newly-created object. This defines
+                  how objects in the bucket are stored and determines the SLA and
+                  the cost of storage. If this value is not specified when the bucket
+                  is created, it will default to `STANDARD`. For more information,
+                  see https://developers.google.com/storage/docs/storage-classes.
+                type: string
+              timeCreated:
+                description: The creation time of the bucket in [https://tools.ietf.org/html/rfc3339][RFC
+                  3339] format. Attempting to set or update this field will result
+                  in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                type: string
+              updated:
+                description: The modification time of the bucket. Attempting to set
+                  or update this field will result in a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+                type: string
+              versioning:
+                description: The bucket's versioning configuration.
+                properties:
+                  enabled:
+                    description: While set to true, versioning is fully enabled for
+                      this bucket.
+                    type: boolean
+                type: object
+              website:
+                description: The bucket's website configuration, controlling how the
+                  service behaves when accessing bucket contents as a web site. See
+                  the [https://cloud.google.com/storage/docs/static-website][Static
+                  Website Examples] for more information.
+                properties:
+                  mainPageSuffix:
+                    description: If the requested object path is missing, the service
+                      will ensure the path has a trailing '/', append this suffix,
+                      and attempt to retrieve the resulting object. This allows the
+                      creation of `index.html` objects to represent directory pages.
+                    type: string
+                  notFoundPage:
+                    description: If the requested object path is missing, and any
+                      `mainPageSuffix` object is missing, if applicable, the service
+                      will return the named object from this bucket as the content
+                      for a [https://tools.ietf.org/html/rfc7231#section-6.5.4][404
+                      Not Found] result.
+                    type: string
+                type: object
+              zoneAffinity:
+                description: The zone or zones from which the bucket is intended to
+                  use zonal quota. Requests for data from outside the specified affinities
+                  are still allowed but won't be able to use zonal quota. The values
+                  are case-insensitive. Attempting to update this field after bucket
+                  is created will result in an error.
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: StorageBucketStatus defines the config connector machine
+              state of StorageBucket
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the StorageBucket resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

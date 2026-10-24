@@ -1,0 +1,596 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
+spec:
+  group: pubsub.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: PubSubSubscription
+    listKind: PubSubSubscriptionList
+    plural: pubsubsubscriptions
+    shortNames:
+    - gcppubsubsubscription
+    - gcppubsubsubscriptions
+    singular: pubsubsubscription
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: PubSubSubscription is the Schema for the PubSubSubscription API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PubSubSubscriptionSpec defines the desired state of PubSubSubscription
+            properties:
+              ackDeadlineSeconds:
+                description: |-
+                  Optional. The approximate amount of time (on a best-effort basis) Pub/Sub
+                   waits for the subscriber to acknowledge receipt before resending the
+                   message. In the interval after the message is delivered and before it is
+                   acknowledged, it is considered to be _outstanding_. During that time
+                   period, the message will not be redelivered (on a best-effort basis).
+
+                   For pull subscriptions, this value is used as the initial value for the ack
+                   deadline. To override this value for a given message, call
+                   `ModifyAckDeadline` with the corresponding `ack_id` if using
+                   non-streaming pull or send the `ack_id` in a
+                   `StreamingModifyAckDeadlineRequest` if using streaming pull.
+                   The minimum custom deadline you can specify is 10 seconds.
+                   The maximum custom deadline you can specify is 600 seconds (10 minutes).
+                   If this parameter is 0, a default value of 10 seconds is used.
+
+                   For push delivery, this value is also used to set the request timeout for
+                   the call to the push endpoint.
+
+                   If the subscriber never acknowledges the message, the Pub/Sub
+                   system will eventually redeliver the message.
+                format: int32
+                type: integer
+              bigqueryConfig:
+                description: Optional. If delivery to BigQuery is used with this subscription,
+                  this field is used to configure it.
+                properties:
+                  dropUnknownFields:
+                    description: Optional. When true and use_topic_schema is true,
+                      any fields that are a part of the topic schema that are not
+                      part of the BigQuery table schema are dropped when writing to
+                      BigQuery. Otherwise, the schemas must be kept in sync and any
+                      messages with extra fields are not written and remain in the
+                      subscription's backlog.
+                    type: boolean
+                  serviceAccountEmail:
+                    description: Optional. The service account to use to write to
+                      BigQuery. The subscription creator or updater that specifies
+                      this field must have `iam.serviceAccounts.actAs` permission
+                      on the service account. If not specified, the Pub/Sub [service
+                      agent](https://cloud.google.com/iam/docs/service-agents), service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
+                      is used.
+                    type: string
+                  table:
+                    description: Optional. The name of the table to which to write
+                      data, of the form {projectId}.{datasetId}.{tableId}
+                    type: string
+                  useTableSchema:
+                    description: Optional. When true, use the BigQuery table's schema
+                      as the columns to write to in BigQuery. `use_table_schema` and
+                      `use_topic_schema` cannot be enabled at the same time.
+                    type: boolean
+                  useTopicSchema:
+                    description: Optional. When true, use the topic's schema as the
+                      columns to write to in BigQuery, if it exists. `use_topic_schema`
+                      and `use_table_schema` cannot be enabled at the same time.
+                    type: boolean
+                  writeMetadata:
+                    description: Optional. When true, write the subscription name,
+                      message_id, publish_time, attributes, and ordering_key to additional
+                      columns in the table. The subscription name, message_id, and
+                      publish_time fields are put in their own columns while all other
+                      message properties (other than data) are written to a JSON object
+                      in the attributes column.
+                    type: boolean
+                type: object
+              cloudStorageConfig:
+                description: Optional. If delivery to Google Cloud Storage is used
+                  with this subscription, this field is used to configure it.
+                properties:
+                  avroConfig:
+                    description: Optional. If set, message data will be written to
+                      Cloud Storage in Avro format.
+                    properties:
+                      useTopicSchema:
+                        description: Optional. When true, the output Cloud Storage
+                          file will be serialized using the topic schema, if it exists.
+                        type: boolean
+                      writeMetadata:
+                        description: Optional. When true, write the subscription name,
+                          message_id, publish_time, attributes, and ordering_key as
+                          additional fields in the output. The subscription name,
+                          message_id, and publish_time fields are put in their own
+                          fields while all other message properties other than data
+                          (for example, an ordering_key, if present) are added as
+                          entries in the attributes map.
+                        type: boolean
+                    type: object
+                  bucket:
+                    description: Required. User-provided name for the Cloud Storage
+                      bucket. The bucket must be created by the user. The bucket name
+                      must be without any prefix like "gs://". See the [bucket naming
+                      requirements] (https://cloud.google.com/storage/docs/buckets#naming).
+                    type: string
+                  filenameDatetimeFormat:
+                    description: Optional. User-provided format string specifying
+                      how to represent datetimes in Cloud Storage filenames. See the
+                      [datetime format guidance](https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names).
+                    type: string
+                  filenamePrefix:
+                    description: Optional. User-provided prefix for Cloud Storage
+                      filename. See the [object naming requirements](https://cloud.google.com/storage/docs/objects#naming).
+                    type: string
+                  filenameSuffix:
+                    description: Optional. User-provided suffix for Cloud Storage
+                      filename. See the [object naming requirements](https://cloud.google.com/storage/docs/objects#naming).
+                      Must not end in "/".
+                    type: string
+                  maxBytes:
+                    description: Optional. The maximum bytes that can be written to
+                      a Cloud Storage file before a new file is created. Min 1 KB,
+                      max 10 GiB. The max_bytes limit may be exceeded in cases where
+                      messages are larger than the limit.
+                    format: int64
+                    type: integer
+                  maxDuration:
+                    description: Optional. The maximum duration that can elapse before
+                      a new Cloud Storage file is created. Min 1 minute, max 10 minutes,
+                      default 5 minutes. May not exceed the subscription's acknowledgment
+                      deadline.
+                    type: string
+                  maxMessages:
+                    description: Optional. The maximum number of messages that can
+                      be written to a Cloud Storage file before a new file is created.
+                      Min 1000 messages.
+                    format: int64
+                    type: integer
+                  serviceAccountEmail:
+                    description: Optional. The service account to use to write to
+                      Cloud Storage. The subscription creator or updater that specifies
+                      this field must have `iam.serviceAccounts.actAs` permission
+                      on the service account. If not specified, the Pub/Sub [service
+                      agent](https://cloud.google.com/iam/docs/service-agents), service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
+                      is used.
+                    type: string
+                  textConfig:
+                    description: Optional. If set, message data will be written to
+                      Cloud Storage in text format.
+                    type: object
+                type: object
+              deadLetterPolicy:
+                description: |-
+                  Optional. A policy that specifies the conditions for dead lettering
+                   messages in this subscription. If dead_letter_policy is not set, dead
+                   lettering is disabled.
+
+                   The Pub/Sub service account associated with this subscriptions's
+                   parent project (i.e.,
+                   service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
+                   permission to Acknowledge() messages on this subscription.
+                properties:
+                  deadLetterTopic:
+                    description: |-
+                      Optional. The name of the topic to which dead letter messages should be
+                       published. Format is `projects/{project}/topics/{topic}`.The Pub/Sub
+                       service account associated with the enclosing subscription's parent project
+                       (i.e., service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must
+                       have permission to Publish() to this topic.
+
+                       The operation will fail if the topic does not exist.
+                       Users should ensure that there is a subscription attached to this topic
+                       since messages published to a topic with no subscriptions are lost.
+                    type: string
+                  maxDeliveryAttempts:
+                    description: |-
+                      Optional. The maximum number of delivery attempts for any message. The
+                       value must be between 5 and 100.
+
+                       The number of delivery attempts is defined as 1 + (the sum of number of
+                       NACKs and number of times the acknowledgment deadline has been exceeded
+                       for the message).
+
+                       A NACK is any call to ModifyAckDeadline with a 0 deadline. Note that
+                       client libraries may automatically extend ack_deadlines.
+
+                       This field will be honored on a best effort basis.
+
+                       If this parameter is 0, a default value of 5 is used.
+                    format: int32
+                    type: integer
+                type: object
+              detached:
+                description: Optional. Indicates whether the subscription is detached
+                  from its topic. Detached subscriptions don't receive messages from
+                  their topic and don't retain any backlog. `Pull` and `StreamingPull`
+                  requests will return FAILED_PRECONDITION. If the subscription is
+                  a push subscription, pushes to the endpoint will not be made.
+                type: boolean
+              enableExactlyOnceDelivery:
+                description: |-
+                  Optional. If true, Pub/Sub provides the following guarantees for the
+                   delivery of a message with a given value of `message_id` on this
+                   subscription:
+
+                   * The message sent to a subscriber is guaranteed not to be resent
+                   before the message's acknowledgment deadline expires.
+                   * An acknowledged message will not be resent to a subscriber.
+
+                   Note that subscribers may still receive multiple copies of a message
+                   when `enable_exactly_once_delivery` is true if the message was published
+                   multiple times by a publisher client. These copies are  considered distinct
+                   by Pub/Sub and have distinct `message_id` values.
+                type: boolean
+              enableMessageOrdering:
+                description: Optional. If true, messages published with the same `ordering_key`
+                  in `PubsubMessage` will be delivered to the subscribers in the order
+                  in which they are received by the Pub/Sub system. Otherwise, they
+                  may be delivered in any order.
+                type: boolean
+              expirationPolicy:
+                description: Optional. A policy that specifies the conditions for
+                  this subscription's expiration. A subscription is considered active
+                  as long as any connected subscriber is successfully consuming messages
+                  from the subscription or is issuing operations on the subscription.
+                  If `expiration_policy` is not set, a *default policy* with `ttl`
+                  of 31 days will be used. The minimum allowed value for `expiration_policy.ttl`
+                  is 1 day. If `expiration_policy` is set, but `expiration_policy.ttl`
+                  is not set, the subscription never expires.
+                properties:
+                  ttl:
+                    description: Optional. Specifies the "time-to-live" duration for
+                      an associated resource. The resource expires if it is not active
+                      for a period of `ttl`. The definition of "activity" depends
+                      on the type of the associated resource. The minimum and maximum
+                      allowed values for `ttl` depend on the type of the associated
+                      resource, as well. If `ttl` is not set, the associated resource
+                      never expires.
+                    type: string
+                type: object
+              filter:
+                description: Optional. An expression written in the Pub/Sub [filter
+                  language](https://cloud.google.com/pubsub/docs/filtering). If non-empty,
+                  then only `PubsubMessage`s whose `attributes` field matches the
+                  filter are delivered on this subscription. If empty, then no messages
+                  are filtered out.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. See [Creating and managing labels](https://cloud.google.com/pubsub/docs/labels).
+                type: object
+              messageRetentionDuration:
+                description: Optional. How long to retain unacknowledged messages
+                  in the subscription's backlog, from the moment a message is published.
+                  If `retain_acked_messages` is true, then this also configures the
+                  retention of acknowledged messages, and thus configures how far
+                  back in time a `Seek` can be done. Defaults to 7 days. Cannot be
+                  more than 31 days or less than 10 minutes.
+                type: string
+              messageTransforms:
+                description: Optional. Transforms to be applied to messages before
+                  they are delivered to subscribers. Transforms are applied in the
+                  order specified.
+                items:
+                  properties:
+                    disabled:
+                      description: Optional. If true, the transform is disabled and
+                        will not be applied to messages. Defaults to `false`.
+                      type: boolean
+                    enabled:
+                      description: Optional. This field is deprecated, use the `disabled`
+                        field to disable transforms.
+                      type: boolean
+                    javascriptUdf:
+                      description: Optional. JavaScript User Defined Function. If
+                        multiple JavaScriptUDF's are specified on a resource, each
+                        must have a unique `function_name`.
+                      properties:
+                        code:
+                          description: |-
+                            Required. JavaScript code that contains a function `function_name` with the
+                             below signature:
+
+                             ```
+                               /**
+                               * Transforms a Pub/Sub message.
+
+                               * @return {(Object<string, (string | Object<string, string>)>|null)} - To
+                               * filter a message, return `null`. To transform a message return a map
+                               * with the following keys:
+                               *   - (required) 'data' : {string}
+                               *   - (optional) 'attributes' : {Object<string, string>}
+                               * Returning empty `attributes` will remove all attributes from the
+                               * message.
+                               *
+                               * @param  {(Object<string, (string | Object<string, string>)>} Pub/Sub
+                               * message. Keys:
+                               *   - (required) 'data' : {string}
+                               *   - (required) 'attributes' : {Object<string, string>}
+                               *
+                               * @param  {Object<string, any>} metadata - Pub/Sub message metadata.
+                               * Keys:
+                               *   - (optional) 'message_id'  : {string}
+                               *   - (optional) 'publish_time': {string} YYYY-MM-DDTHH:MM:SSZ format
+                               *   - (optional) 'ordering_key': {string}
+                               */
+
+                               function <function_name>(message, metadata) {
+                               }
+                             ```
+                          type: string
+                        functionName:
+                          description: Required. Name of the JavasScript function
+                            that should applied to Pub/Sub messages.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pushConfig:
+                description: Optional. If push delivery is used with this subscription,
+                  this field is used to configure it.
+                properties:
+                  attributes:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Optional. Endpoint configuration attributes that can be used to control
+                       different aspects of the message delivery.
+
+                       The only currently supported attribute is `x-goog-version`, which you can
+                       use to change the format of the pushed message. This attribute
+                       indicates the version of the data expected by the endpoint. This
+                       controls the shape of the pushed message (i.e., its fields and metadata).
+
+                       If not present during the `CreateSubscription` call, it will default to
+                       the version of the Pub/Sub API used to make such call. If not present in a
+                       `ModifyPushConfig` call, its value will not be changed. `GetSubscription`
+                       calls will always return a valid version, even if the subscription was
+                       created without this attribute.
+
+                       The only supported values for the `x-goog-version` attribute are:
+
+                       * `v1beta1`: uses the push format defined in the v1beta1 Pub/Sub API.
+                       * `v1` or `v1beta2`: uses the push format defined in the v1 Pub/Sub API.
+
+                       For example:
+                       `attributes { "x-goog-version": "v1" }`
+                    type: object
+                  noWrapper:
+                    description: Optional. When set, the payload to the push endpoint
+                      is not wrapped.
+                    properties:
+                      writeMetadata:
+                        description: Optional. When true, writes the Pub/Sub message
+                          metadata to `x-goog-pubsub-<KEY>:<VAL>` headers of the HTTP
+                          request. Writes the Pub/Sub message attributes to `<KEY>:<VAL>`
+                          headers of the HTTP request.
+                        type: boolean
+                    type: object
+                  oidcToken:
+                    description: Optional. If specified, Pub/Sub will generate and
+                      attach an OIDC JWT token as an `Authorization` header in the
+                      HTTP request for every pushed message.
+                    properties:
+                      audience:
+                        description: 'Optional. Audience to be used when generating
+                          OIDC token. The audience claim identifies the recipients
+                          that the JWT is intended for. The audience value is a single
+                          case-sensitive string. Having multiple values (array) for
+                          the audience field is not supported. More info about the
+                          OIDC JWT token audience here: https://tools.ietf.org/html/rfc7519#section-4.1.3
+                          Note: if not specified, the Push endpoint URL will be used.'
+                        type: string
+                      serviceAccountEmail:
+                        description: Optional. [Service account email](https://cloud.google.com/iam/docs/service-accounts)
+                          used for generating the OIDC token. For more information
+                          on setting up authentication, see [Push subscriptions](https://cloud.google.com/pubsub/docs/push).
+                        type: string
+                    type: object
+                  pubsubWrapper:
+                    description: Optional. When set, the payload to the push endpoint
+                      is in the form of the JSON representation of a PubsubMessage
+                      (https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage).
+                    type: object
+                  pushEndpoint:
+                    description: Optional. A URL locating the endpoint to which messages
+                      should be pushed. For example, a Webhook endpoint might use
+                      `https://example.com/push`.
+                    type: string
+                type: object
+              resourceID:
+                description: The PubSubSubscription name. If not given, the metadata.name
+                  will be used.
+                type: string
+              retainAckedMessages:
+                description: Optional. Indicates whether to retain acknowledged messages.
+                  If true, then messages are not expunged from the subscription's
+                  backlog, even if they are acknowledged, until they fall out of the
+                  `message_retention_duration` window. This must be true if you would
+                  like to [`Seek` to a timestamp] (https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time)
+                  in the past to replay previously-acknowledged messages.
+                type: boolean
+              retryPolicy:
+                description: |-
+                  Optional. A policy that specifies how Pub/Sub retries message delivery for
+                   this subscription.
+
+                   If not set, the default retry policy is applied. This generally implies
+                   that messages will be retried as soon as possible for healthy subscribers.
+                   RetryPolicy will be triggered on NACKs or acknowledgment deadline exceeded
+                   events for a given message.
+                properties:
+                  maximumBackoff:
+                    description: Optional. The maximum delay between consecutive deliveries
+                      of a given message. Value should be between 0 and 600 seconds.
+                      Defaults to 600 seconds.
+                    type: string
+                  minimumBackoff:
+                    description: Optional. The minimum delay between consecutive deliveries
+                      of a given message. Value should be between 0 and 600 seconds.
+                      Defaults to 10 seconds.
+                    type: string
+                type: object
+              topic:
+                description: Required. The name of the topic from which this subscription
+                  is receiving messages. Format is `projects/{project}/topics/{topic}`.
+                  The value of this field will be `_deleted-topic_` if the topic has
+                  been deleted.
+                type: string
+            type: object
+          status:
+            description: PubSubSubscriptionStatus defines the config connector machine
+              state of PubSubSubscription
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the PubSubSubscription resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  analyticsHubSubscriptionInfo:
+                    description: Output only. Information about the associated Analytics
+                      Hub subscription. Only set if the subscritpion is created by
+                      Analytics Hub.
+                    properties:
+                      listing:
+                        description: 'Optional. The name of the associated Analytics
+                          Hub listing resource. Pattern: "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/listings/{listing}"'
+                        type: string
+                      subscription:
+                        description: 'Optional. The name of the associated Analytics
+                          Hub subscription resource. Pattern: "projects/{project}/locations/{location}/subscriptions/{subscription}"'
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. An output-only field indicating whether
+                      or not the subscription can receive messages.
+                    type: string
+                  topicMessageRetentionDuration:
+                    description: Output only. Indicates the minimum duration for which
+                      a message is retained after it is published to the subscription's
+                      topic. If this field is set, messages published to the subscription's
+                      topic in the last `topic_message_retention_duration` are always
+                      available to subscribers. See the `message_retention_duration`
+                      field in `Topic`. This field is set only in responses from the
+                      server; it is ignored if it is set in any requests.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
