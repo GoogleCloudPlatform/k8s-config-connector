@@ -14,6 +14,9 @@
 [not_representable] crd=apihubexternalapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[].values.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=apihubspecs.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.specType.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.accreditation.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.compliance.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.lifecycle.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.imageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=biglakedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveOptions.locationURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=biglaketables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveOptions.storageDescriptor.locationURI" reason=gcs-path-decomposable-as-bucketref-plus-path
