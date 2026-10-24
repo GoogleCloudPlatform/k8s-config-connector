@@ -16,6 +16,7 @@ package mocksql
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -31,6 +32,18 @@ import (
 
 type operations struct {
 	storage storage.Storage
+}
+
+// operationFailure can be returned by an LRO callback to make the operation finish
+// with status DONE and the given error, which is how Cloud SQL reports asynchronous
+// failures (for example ERROR_STOCKOUT).
+type operationFailure struct {
+	Code    string
+	Message string
+}
+
+func (e *operationFailure) Error() string {
+	return e.Code + ": " + e.Message
 }
 
 func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
@@ -104,7 +117,21 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		finished.EndTime = timestamppb.New(time.Now())
 
 		if err != nil {
-			klog.Warningf("TODO: handle LRO error %v", err)
+			var failure *operationFailure
+			if errors.As(err, &failure) {
+				finished.Error = &pb.OperationErrors{
+					Kind: "sql#operationErrors",
+					Errors: []*pb.OperationError{
+						{
+							Kind:    "sql#operationError",
+							Code:    failure.Code,
+							Message: failure.Message,
+						},
+					},
+				}
+			} else {
+				klog.Warningf("TODO: handle LRO error %v", err)
+			}
 		}
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
