@@ -76,7 +76,7 @@ require (
 	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/managedkafka v0.8.1
-	cloud.google.com/go/maps v1.39.0
+	cloud.google.com/go/maps v1.43.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/metastore v1.19.0
 	cloud.google.com/go/migrationcenter v1.6.0
@@ -231,8 +231,13 @@ require (
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/bigtable v1.58.0
+	cloud.google.com/go/ces v1.0.0
+	cloud.google.com/go/cloudcontrolspartner v1.4.0
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/longrunning v1.2.0
+	cloud.google.com/go/networkconnectivity v1.27.0
+	cloud.google.com/go/parallelstore v1.2.0
+	cloud.google.com/go/securityposture v1.2.0
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect; indsirect
