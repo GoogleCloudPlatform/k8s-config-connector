@@ -1,0 +1,28 @@
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A test feature",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "monitoringConfig": {},
+  "name": "projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueType": "INT64"
+}

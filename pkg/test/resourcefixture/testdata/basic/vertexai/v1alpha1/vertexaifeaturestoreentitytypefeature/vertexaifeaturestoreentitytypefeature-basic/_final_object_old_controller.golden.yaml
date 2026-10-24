@@ -1,0 +1,31 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestoreEntityTypeFeature
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-two
+  name: feature${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated test feature
+  entitytype: projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}
+  resourceID: feature${uniqueId}
+  valueType: INT64
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  observedGeneration: 3
+  region: us-central1
+  updateTime: "1970-01-01T00:00:00Z"
