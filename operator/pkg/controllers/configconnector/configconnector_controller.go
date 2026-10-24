@@ -945,16 +945,18 @@ func (r *Reconciler) applyControllerReconcilerCR(ctx context.Context, cr *custom
 
 func (r *Reconciler) handleApplyControllerReconcilerSucceeded(ctx context.Context, cr *customizev1beta1.ControllerReconciler) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
+		Healthy:            true,
+		Errors:             []string{},
+		ObservedGeneration: cr.Generation,
 	})
 	return r.updateControllerReconcilerStatus(ctx, cr)
 }
 
 func (r *Reconciler) handleApplyControllerReconcilerFailed(ctx context.Context, cr *customizev1beta1.ControllerReconciler, errMsg string) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{errMsg},
+		Healthy:            false,
+		Errors:             []string{errMsg},
+		ObservedGeneration: cr.Generation,
 	})
 	return r.updateControllerReconcilerStatus(ctx, cr)
 }
