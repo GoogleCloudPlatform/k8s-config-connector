@@ -95,10 +95,10 @@ type Experiments struct {
 	// +optional
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 
-	// ConcurrencyOverrides allows specifying the maximum number of concurrent reconciles
+	// MaxConcurrentReconcilesOverrides allows specifying the maximum number of concurrent reconciles
 	// for a given resource kind in this namespace. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
 	// +optional
-	ConcurrencyOverrides map[string]int `json:"concurrencyOverrides,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int `json:"maxConcurrentReconcilesOverrides,omitempty"`
 
 	// ResourceSettings allows specifying which resources to enable or disable in this namespace.
 	// Validation likely enforces uniqueness, but if duplicates exist, behavior is undefined.

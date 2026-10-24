@@ -22,8 +22,8 @@ func (in *CCExperiments) DeepCopyInto(out *CCExperiments) {
 		*out = new(ResourceSettings)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ConcurrencyOverrides != nil {
-		in, out := &in.ConcurrencyOverrides, &out.ConcurrencyOverrides
+	if in.MaxConcurrentReconcilesOverrides != nil {
+		in, out := &in.MaxConcurrentReconcilesOverrides, &out.MaxConcurrentReconcilesOverrides
 		*out = make(map[string]int, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
@@ -252,8 +252,8 @@ func (in *Experiments) DeepCopyInto(out *Experiments) {
 			(*out)[key] = val
 		}
 	}
-	if in.ConcurrencyOverrides != nil {
-		in, out := &in.ConcurrencyOverrides, &out.ConcurrencyOverrides
+	if in.MaxConcurrentReconcilesOverrides != nil {
+		in, out := &in.MaxConcurrentReconcilesOverrides, &out.MaxConcurrentReconcilesOverrides
 		*out = make(map[string]int, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val

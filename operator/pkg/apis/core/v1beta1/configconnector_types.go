@@ -80,10 +80,10 @@ type CCExperiments struct {
 	// +optional
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
 
-	// ConcurrencyOverrides allows specifying the maximum number of concurrent reconciles
+	// MaxConcurrentReconcilesOverrides allows specifying the maximum number of concurrent reconciles
 	// for a given resource kind. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
 	// +optional
-	ConcurrencyOverrides map[string]int `json:"concurrencyOverrides,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int `json:"maxConcurrentReconcilesOverrides,omitempty"`
 }
 
 type ResourceSettingsMode string
