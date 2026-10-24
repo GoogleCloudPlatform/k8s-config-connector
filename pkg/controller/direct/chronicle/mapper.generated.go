@@ -20,6 +20,7 @@
 // krm.group: chronicle.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.chronicle.v1
+// proto.service: google.type
 
 package chronicle
 
@@ -27,8 +28,99 @@ import (
 	pb "cloud.google.com/go/chronicle/apiv1/chroniclepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/chronicle/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	intervalpb "google.golang.org/genproto/googleapis/type/interval"
 )
 
+func AdvancedFilterConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedFilterConfig) *krm.AdvancedFilterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedFilterConfig{}
+	out.Token = direct.LazyPtr(in.GetToken())
+	out.Prefix = direct.LazyPtr(in.GetPrefix())
+	out.Suffix = direct.LazyPtr(in.GetSuffix())
+	out.Separator = direct.LazyPtr(in.GetSeparator())
+	out.MultipleAllowed = direct.LazyPtr(in.GetMultipleAllowed())
+	out.DefaultValues = in.DefaultValues
+	out.SkipDefaultAffixes = direct.LazyPtr(in.GetSkipDefaultAffixes())
+	out.ValueSource = AdvancedFilterConfig_ValueSource_FromProto(mapCtx, in.GetValueSource())
+	return out
+}
+func AdvancedFilterConfig_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedFilterConfig) *pb.AdvancedFilterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedFilterConfig{}
+	out.Token = direct.ValueOf(in.Token)
+	out.Prefix = direct.ValueOf(in.Prefix)
+	out.Suffix = direct.ValueOf(in.Suffix)
+	out.Separator = direct.ValueOf(in.Separator)
+	out.MultipleAllowed = direct.ValueOf(in.MultipleAllowed)
+	out.DefaultValues = in.DefaultValues
+	out.SkipDefaultAffixes = direct.ValueOf(in.SkipDefaultAffixes)
+	out.ValueSource = AdvancedFilterConfig_ValueSource_ToProto(mapCtx, in.ValueSource)
+	return out
+}
+func AdvancedFilterConfig_ManualOptions_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedFilterConfig_ManualOptions) *krm.AdvancedFilterConfig_ManualOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedFilterConfig_ManualOptions{}
+	out.Options = in.Options
+	return out
+}
+func AdvancedFilterConfig_ManualOptions_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedFilterConfig_ManualOptions) *pb.AdvancedFilterConfig_ManualOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedFilterConfig_ManualOptions{}
+	out.Options = in.Options
+	return out
+}
+func AdvancedFilterConfig_QueryOptions_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedFilterConfig_QueryOptions) *krm.AdvancedFilterConfig_QueryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedFilterConfig_QueryOptions{}
+	out.Query = direct.LazyPtr(in.GetQuery())
+	out.Column = direct.LazyPtr(in.GetColumn())
+	out.GlobalTimeFilterEnabled = direct.LazyPtr(in.GetGlobalTimeFilterEnabled())
+	out.Input = DashboardQuery_Input_FromProto(mapCtx, in.GetInput())
+	return out
+}
+func AdvancedFilterConfig_QueryOptions_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedFilterConfig_QueryOptions) *pb.AdvancedFilterConfig_QueryOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedFilterConfig_QueryOptions{}
+	out.Query = direct.ValueOf(in.Query)
+	out.Column = direct.ValueOf(in.Column)
+	out.GlobalTimeFilterEnabled = direct.ValueOf(in.GlobalTimeFilterEnabled)
+	out.Input = DashboardQuery_Input_ToProto(mapCtx, in.Input)
+	return out
+}
+func AdvancedFilterConfig_ValueSource_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedFilterConfig_ValueSource) *krm.AdvancedFilterConfig_ValueSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedFilterConfig_ValueSource{}
+	out.ManualOptions = AdvancedFilterConfig_ManualOptions_FromProto(mapCtx, in.GetManualOptions())
+	out.QueryOptions = AdvancedFilterConfig_QueryOptions_FromProto(mapCtx, in.GetQueryOptions())
+	return out
+}
+func AdvancedFilterConfig_ValueSource_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedFilterConfig_ValueSource) *pb.AdvancedFilterConfig_ValueSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedFilterConfig_ValueSource{}
+	if oneof := AdvancedFilterConfig_ManualOptions_ToProto(mapCtx, in.ManualOptions); oneof != nil {
+		out.Source = &pb.AdvancedFilterConfig_ValueSource_ManualOptions{ManualOptions: oneof}
+	}
+	if oneof := AdvancedFilterConfig_QueryOptions_ToProto(mapCtx, in.QueryOptions); oneof != nil {
+		out.Source = &pb.AdvancedFilterConfig_ValueSource_QueryOptions{QueryOptions: oneof}
+	}
+	return out
+}
 func ChronicleDataAccessLabelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAccessLabel) *krm.ChronicleDataAccessLabelObservedState {
 	if in == nil {
 		return nil
@@ -135,6 +227,164 @@ func ChronicleDataAccessScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Chr
 	out.DeniedDataAccessLabels = direct.Slice_ToProto(mapCtx, in.DeniedDataAccessLabels, DataAccessLabelReference_ToProto)
 	out.Description = direct.ValueOf(in.Description)
 	out.AllowAll = direct.ValueOf(in.AllowAll)
+	return out
+}
+func ChronicleDataTableObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataTable) *krm.ChronicleDataTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleDataTableObservedState{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DataTableUuid = direct.LazyPtr(in.GetDataTableUuid())
+	out.Rules = in.Rules
+	out.RuleAssociationsCount = direct.LazyPtr(in.GetRuleAssociationsCount())
+	out.ApproximateRowCount = direct.LazyPtr(in.GetApproximateRowCount())
+	out.UpdateSource = direct.Enum_FromProto(mapCtx, in.GetUpdateSource())
+	out.RowTimeToLiveUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRowTimeToLiveUpdateTime())
+	return out
+}
+func ChronicleDataTableObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleDataTableObservedState) *pb.DataTable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTable{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DataTableUuid = direct.ValueOf(in.DataTableUuid)
+	out.Rules = in.Rules
+	out.RuleAssociationsCount = direct.ValueOf(in.RuleAssociationsCount)
+	out.ApproximateRowCount = direct.ValueOf(in.ApproximateRowCount)
+	out.UpdateSource = direct.Enum_ToProto[pb.DataTableUpdateSource](mapCtx, in.UpdateSource)
+	out.RowTimeToLiveUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.RowTimeToLiveUpdateTime)
+	return out
+}
+func ChronicleDataTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataTable) *krm.ChronicleDataTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleDataTableSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ColumnInfo = direct.Slice_FromProto(mapCtx, in.ColumnInfo, DataTableColumnInfo_FromProto)
+	out.RowTimeToLive = direct.LazyPtr(in.GetRowTimeToLive())
+	out.ScopeInfo = DataTableScopeInfo_FromProto(mapCtx, in.GetScopeInfo())
+	return out
+}
+func ChronicleDataTableSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleDataTableSpec) *pb.DataTable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTable{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.ColumnInfo = direct.Slice_ToProto(mapCtx, in.ColumnInfo, DataTableColumnInfo_ToProto)
+	out.RowTimeToLive = direct.ValueOf(in.RowTimeToLive)
+	out.ScopeInfo = DataTableScopeInfo_ToProto(mapCtx, in.ScopeInfo)
+	return out
+}
+func ChronicleFindingsRefinementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FindingsRefinement) *krm.ChronicleFindingsRefinementObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleFindingsRefinementObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func ChronicleFindingsRefinementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleFindingsRefinementObservedState) *pb.FindingsRefinement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FindingsRefinement{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func ChronicleFindingsRefinementSpec_FromProto(mapCtx *direct.MapContext, in *pb.FindingsRefinement) *krm.ChronicleFindingsRefinementSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleFindingsRefinementSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Query = direct.LazyPtr(in.GetQuery())
+	out.OutcomeFilters = direct.Slice_FromProto(mapCtx, in.OutcomeFilters, OutcomeFilter_FromProto)
+	return out
+}
+func ChronicleFindingsRefinementSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleFindingsRefinementSpec) *pb.FindingsRefinement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FindingsRefinement{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Type = direct.Enum_ToProto[pb.FindingsRefinementType](mapCtx, in.Type)
+	out.Query = direct.ValueOf(in.Query)
+	out.OutcomeFilters = direct.Slice_ToProto(mapCtx, in.OutcomeFilters, OutcomeFilter_ToProto)
+	return out
+}
+func ChronicleNativeDashboardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NativeDashboard) *krm.ChronicleNativeDashboardObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleNativeDashboardObservedState{}
+	// MISSING: Name
+	out.Definition = DashboardDefinitionObservedState_FromProto(mapCtx, in.GetDefinition())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CreateUserID = direct.LazyPtr(in.GetCreateUserId())
+	out.UpdateUserID = direct.LazyPtr(in.GetUpdateUserId())
+	out.DashboardUserData = DashboardUserData_FromProto(mapCtx, in.GetDashboardUserData())
+	out.Access = direct.Enum_FromProto(mapCtx, in.GetAccess())
+	return out
+}
+func ChronicleNativeDashboardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleNativeDashboardObservedState) *pb.NativeDashboard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NativeDashboard{}
+	// MISSING: Name
+	out.Definition = DashboardDefinitionObservedState_ToProto(mapCtx, in.Definition)
+	out.Type = direct.Enum_ToProto[pb.DashboardType](mapCtx, in.Type)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CreateUserId = direct.ValueOf(in.CreateUserID)
+	out.UpdateUserId = direct.ValueOf(in.UpdateUserID)
+	out.DashboardUserData = DashboardUserData_ToProto(mapCtx, in.DashboardUserData)
+	out.Access = direct.Enum_ToProto[pb.DashboardAccess](mapCtx, in.Access)
+	return out
+}
+func ChronicleNativeDashboardSpec_FromProto(mapCtx *direct.MapContext, in *pb.NativeDashboard) *krm.ChronicleNativeDashboardSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleNativeDashboardSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Definition = DashboardDefinition_FromProto(mapCtx, in.GetDefinition())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func ChronicleNativeDashboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleNativeDashboardSpec) *pb.NativeDashboard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NativeDashboard{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Definition = DashboardDefinition_ToProto(mapCtx, in.Definition)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func ChronicleReferenceListObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceList) *krm.ChronicleReferenceListObservedState {
@@ -343,6 +593,200 @@ func CompilationPositionObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.EndColumn = direct.ValueOf(in.EndColumn)
 	return out
 }
+func DashboardDefinition_FromProto(mapCtx *direct.MapContext, in *pb.DashboardDefinition) *krm.DashboardDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardDefinition{}
+	out.Filters = direct.Slice_FromProto(mapCtx, in.Filters, DashboardFilter_FromProto)
+	out.Fingerprint = direct.LazyPtr(in.GetFingerprint())
+	out.Charts = direct.Slice_FromProto(mapCtx, in.Charts, DashboardDefinition_ChartConfig_FromProto)
+	return out
+}
+func DashboardDefinition_ToProto(mapCtx *direct.MapContext, in *krm.DashboardDefinition) *pb.DashboardDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardDefinition{}
+	out.Filters = direct.Slice_ToProto(mapCtx, in.Filters, DashboardFilter_ToProto)
+	out.Fingerprint = direct.ValueOf(in.Fingerprint)
+	out.Charts = direct.Slice_ToProto(mapCtx, in.Charts, DashboardDefinition_ChartConfig_ToProto)
+	return out
+}
+func DashboardDefinitionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DashboardDefinition) *krm.DashboardDefinitionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardDefinitionObservedState{}
+	// MISSING: Filters
+	// MISSING: Fingerprint
+	out.Charts = direct.Slice_FromProto(mapCtx, in.Charts, DashboardDefinition_ChartConfigObservedState_FromProto)
+	return out
+}
+func DashboardDefinitionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DashboardDefinitionObservedState) *pb.DashboardDefinition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardDefinition{}
+	// MISSING: Filters
+	// MISSING: Fingerprint
+	out.Charts = direct.Slice_ToProto(mapCtx, in.Charts, DashboardDefinition_ChartConfigObservedState_ToProto)
+	return out
+}
+func DashboardDefinition_ChartConfig_FromProto(mapCtx *direct.MapContext, in *pb.DashboardDefinition_ChartConfig) *krm.DashboardDefinition_ChartConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardDefinition_ChartConfig{}
+	// MISSING: DashboardChart
+	out.ChartLayout = DashboardDefinition_ChartConfig_ChartLayout_FromProto(mapCtx, in.GetChartLayout())
+	out.FiltersIDs = in.FiltersIds
+	return out
+}
+func DashboardDefinition_ChartConfig_ToProto(mapCtx *direct.MapContext, in *krm.DashboardDefinition_ChartConfig) *pb.DashboardDefinition_ChartConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardDefinition_ChartConfig{}
+	// MISSING: DashboardChart
+	out.ChartLayout = DashboardDefinition_ChartConfig_ChartLayout_ToProto(mapCtx, in.ChartLayout)
+	out.FiltersIds = in.FiltersIDs
+	return out
+}
+func DashboardDefinition_ChartConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DashboardDefinition_ChartConfig) *krm.DashboardDefinition_ChartConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardDefinition_ChartConfigObservedState{}
+	out.DashboardChart = direct.LazyPtr(in.GetDashboardChart())
+	// MISSING: ChartLayout
+	// MISSING: FiltersIds
+	return out
+}
+func DashboardDefinition_ChartConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DashboardDefinition_ChartConfigObservedState) *pb.DashboardDefinition_ChartConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardDefinition_ChartConfig{}
+	out.DashboardChart = direct.ValueOf(in.DashboardChart)
+	// MISSING: ChartLayout
+	// MISSING: FiltersIds
+	return out
+}
+func DashboardDefinition_ChartConfig_ChartLayout_FromProto(mapCtx *direct.MapContext, in *pb.DashboardDefinition_ChartConfig_ChartLayout) *krm.DashboardDefinition_ChartConfig_ChartLayout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardDefinition_ChartConfig_ChartLayout{}
+	out.StartX = in.StartX
+	out.SpanX = direct.LazyPtr(in.GetSpanX())
+	out.StartY = in.StartY
+	out.SpanY = direct.LazyPtr(in.GetSpanY())
+	return out
+}
+func DashboardDefinition_ChartConfig_ChartLayout_ToProto(mapCtx *direct.MapContext, in *krm.DashboardDefinition_ChartConfig_ChartLayout) *pb.DashboardDefinition_ChartConfig_ChartLayout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardDefinition_ChartConfig_ChartLayout{}
+	out.StartX = in.StartX
+	out.SpanX = direct.ValueOf(in.SpanX)
+	out.StartY = in.StartY
+	out.SpanY = direct.ValueOf(in.SpanY)
+	return out
+}
+func DashboardFilter_FromProto(mapCtx *direct.MapContext, in *pb.DashboardFilter) *krm.DashboardFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardFilter{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DataSource = direct.Enum_FromProto(mapCtx, in.GetDataSource())
+	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
+	out.FilterOperatorAndFieldValues = direct.Slice_FromProto(mapCtx, in.FilterOperatorAndFieldValues, FilterOperatorAndValues_FromProto)
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ChartIDs = in.ChartIds
+	out.IsStandardTimeRangeFilter = direct.LazyPtr(in.GetIsStandardTimeRangeFilter())
+	out.IsMandatory = direct.LazyPtr(in.GetIsMandatory())
+	out.IsStandardTimeRangeFilterEnabled = in.IsStandardTimeRangeFilterEnabled
+	out.AdvancedFilterConfig = AdvancedFilterConfig_FromProto(mapCtx, in.GetAdvancedFilterConfig())
+	return out
+}
+func DashboardFilter_ToProto(mapCtx *direct.MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardFilter{}
+	out.Id = direct.ValueOf(in.ID)
+	out.DataSource = direct.Enum_ToProto[pb.DataSource](mapCtx, in.DataSource)
+	out.FieldPath = direct.ValueOf(in.FieldPath)
+	out.FilterOperatorAndFieldValues = direct.Slice_ToProto(mapCtx, in.FilterOperatorAndFieldValues, FilterOperatorAndValues_ToProto)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ChartIds = in.ChartIDs
+	out.IsStandardTimeRangeFilter = direct.ValueOf(in.IsStandardTimeRangeFilter)
+	out.IsMandatory = direct.ValueOf(in.IsMandatory)
+	out.IsStandardTimeRangeFilterEnabled = in.IsStandardTimeRangeFilterEnabled
+	out.AdvancedFilterConfig = AdvancedFilterConfig_ToProto(mapCtx, in.AdvancedFilterConfig)
+	return out
+}
+func DashboardQuery_Input_FromProto(mapCtx *direct.MapContext, in *pb.DashboardQuery_Input) *krm.DashboardQuery_Input {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardQuery_Input{}
+	out.TimeWindow = Interval_FromProto(mapCtx, in.GetTimeWindow())
+	out.RelativeTime = DashboardQuery_Input_RelativeTime_FromProto(mapCtx, in.GetRelativeTime())
+	return out
+}
+func DashboardQuery_Input_ToProto(mapCtx *direct.MapContext, in *krm.DashboardQuery_Input) *pb.DashboardQuery_Input {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardQuery_Input{}
+	if oneof := Interval_ToProto(mapCtx, in.TimeWindow); oneof != nil {
+		out.TimeInput = &pb.DashboardQuery_Input_TimeWindow{TimeWindow: oneof}
+	}
+	if oneof := DashboardQuery_Input_RelativeTime_ToProto(mapCtx, in.RelativeTime); oneof != nil {
+		out.TimeInput = &pb.DashboardQuery_Input_RelativeTime_{RelativeTime: oneof}
+	}
+	return out
+}
+func DashboardQuery_Input_RelativeTime_FromProto(mapCtx *direct.MapContext, in *pb.DashboardQuery_Input_RelativeTime) *krm.DashboardQuery_Input_RelativeTime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardQuery_Input_RelativeTime{}
+	out.TimeUnit = direct.Enum_FromProto(mapCtx, in.GetTimeUnit())
+	out.StartTimeVal = direct.LazyPtr(in.GetStartTimeVal())
+	return out
+}
+func DashboardQuery_Input_RelativeTime_ToProto(mapCtx *direct.MapContext, in *krm.DashboardQuery_Input_RelativeTime) *pb.DashboardQuery_Input_RelativeTime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardQuery_Input_RelativeTime{}
+	out.TimeUnit = direct.Enum_ToProto[pb.TimeUnit](mapCtx, in.TimeUnit)
+	out.StartTimeVal = direct.ValueOf(in.StartTimeVal)
+	return out
+}
+func DashboardUserData_FromProto(mapCtx *direct.MapContext, in *pb.DashboardUserData) *krm.DashboardUserData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardUserData{}
+	out.LastViewedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastViewedTime())
+	out.IsPinned = direct.LazyPtr(in.GetIsPinned())
+	return out
+}
+func DashboardUserData_ToProto(mapCtx *direct.MapContext, in *krm.DashboardUserData) *pb.DashboardUserData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardUserData{}
+	out.LastViewedTime = direct.StringTimestamp_ToProto(mapCtx, in.LastViewedTime)
+	out.IsPinned = direct.ValueOf(in.IsPinned)
+	return out
+}
 func DataAccessLabelReference_FromProto(mapCtx *direct.MapContext, in *pb.DataAccessLabelReference) *krm.DataAccessLabelReference {
 	if in == nil {
 		return nil
@@ -417,6 +861,82 @@ func DataAccessLabelReferenceObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
+func DataTableColumnInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataTableColumnInfo) *krm.DataTableColumnInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataTableColumnInfo{}
+	out.MappedColumnPath = direct.LazyPtr(in.GetMappedColumnPath())
+	out.ColumnType = direct.Enum_FromProto(mapCtx, in.GetColumnType())
+	out.ColumnIndex = direct.LazyPtr(in.GetColumnIndex())
+	out.OriginalColumn = direct.LazyPtr(in.GetOriginalColumn())
+	out.KeyColumn = direct.LazyPtr(in.GetKeyColumn())
+	out.RepeatedValues = direct.LazyPtr(in.GetRepeatedValues())
+	return out
+}
+func DataTableColumnInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataTableColumnInfo) *pb.DataTableColumnInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTableColumnInfo{}
+	if oneof := DataTableColumnInfo_MappedColumnPath_ToProto(mapCtx, in.MappedColumnPath); oneof != nil {
+		out.PathOrType = oneof
+	}
+	if oneof := DataTableColumnInfo_ColumnType_ToProto(mapCtx, in.ColumnType); oneof != nil {
+		out.PathOrType = oneof
+	}
+	out.ColumnIndex = direct.ValueOf(in.ColumnIndex)
+	out.OriginalColumn = direct.ValueOf(in.OriginalColumn)
+	out.KeyColumn = direct.ValueOf(in.KeyColumn)
+	out.RepeatedValues = direct.ValueOf(in.RepeatedValues)
+	return out
+}
+func DataTableColumnInfo_MappedColumnPath_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataTableColumnInfo_MappedColumnPath {
+	if in == nil {
+		return nil
+	}
+	return &pb.DataTableColumnInfo_MappedColumnPath{MappedColumnPath: *in}
+}
+func DataTableColumnInfo_ColumnType_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataTableColumnInfo_ColumnType {
+	if in == nil {
+		return nil
+	}
+	return &pb.DataTableColumnInfo_ColumnType{ColumnType: direct.Enum_ToProto[pb.DataTableColumnInfo_DataTableColumnType](mapCtx, in)}
+}
+func DataTableScopeInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataTableScopeInfo) *krm.DataTableScopeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataTableScopeInfo{}
+	out.DataAccessScopes = in.DataAccessScopes
+	return out
+}
+func DataTableScopeInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataTableScopeInfo) *pb.DataTableScopeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataTableScopeInfo{}
+	out.DataAccessScopes = in.DataAccessScopes
+	return out
+}
+func FilterOperatorAndValues_FromProto(mapCtx *direct.MapContext, in *pb.FilterOperatorAndValues) *krm.FilterOperatorAndValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FilterOperatorAndValues{}
+	out.FilterOperator = direct.Enum_FromProto(mapCtx, in.GetFilterOperator())
+	out.FieldValues = in.FieldValues
+	return out
+}
+func FilterOperatorAndValues_ToProto(mapCtx *direct.MapContext, in *krm.FilterOperatorAndValues) *pb.FilterOperatorAndValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FilterOperatorAndValues{}
+	out.FilterOperator = direct.Enum_ToProto[pb.FilterOperator](mapCtx, in.FilterOperator)
+	out.FieldValues = in.FieldValues
+	return out
+}
 func IngestionLabel_FromProto(mapCtx *direct.MapContext, in *pb.IngestionLabel) *krm.IngestionLabel {
 	if in == nil {
 		return nil
@@ -453,6 +973,44 @@ func InputsUsed_ToProto(mapCtx *direct.MapContext, in *krm.InputsUsed) *pb.Input
 	out.UsesUdm = direct.ValueOf(in.UsesUdm)
 	out.UsesEntity = direct.ValueOf(in.UsesEntity)
 	out.UsesDetection = direct.ValueOf(in.UsesDetection)
+	return out
+}
+func Interval_FromProto(mapCtx *direct.MapContext, in *intervalpb.Interval) *krm.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Interval{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *intervalpb.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &intervalpb.Interval{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func OutcomeFilter_FromProto(mapCtx *direct.MapContext, in *pb.OutcomeFilter) *krm.OutcomeFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OutcomeFilter{}
+	out.OutcomeVariable = direct.LazyPtr(in.GetOutcomeVariable())
+	out.OutcomeValue = direct.LazyPtr(in.GetOutcomeValue())
+	out.OutcomeFilterOperator = direct.Enum_FromProto(mapCtx, in.GetOutcomeFilterOperator())
+	return out
+}
+func OutcomeFilter_ToProto(mapCtx *direct.MapContext, in *krm.OutcomeFilter) *pb.OutcomeFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OutcomeFilter{}
+	out.OutcomeVariable = direct.ValueOf(in.OutcomeVariable)
+	out.OutcomeValue = direct.ValueOf(in.OutcomeValue)
+	out.OutcomeFilterOperator = direct.Enum_ToProto[pb.OutcomeFilter_Operator](mapCtx, in.OutcomeFilterOperator)
 	return out
 }
 func ReferenceListEntry_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceListEntry) *krm.ReferenceListEntry {

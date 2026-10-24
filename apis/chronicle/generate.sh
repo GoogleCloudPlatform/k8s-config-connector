@@ -62,7 +62,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ChronicleRule:Rule
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.chronicle.v1 \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.chronicle.v1,google.type \
   --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource
 
