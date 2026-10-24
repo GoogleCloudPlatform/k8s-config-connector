@@ -69,6 +69,13 @@ spec:
               experiments:
                 description: ConfigConnector specific experiments
                 properties:
+                  concurrencyOverrides:
+                    additionalProperties:
+                      type: integer
+                    description: |-
+                      ConcurrencyOverrides allows specifying the maximum number of concurrent reconciles
+                      for a given resource kind. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
+                    type: object
                   multiClusterLease:
                     description: MultiClusterLease defines configuration specific
                       to multi-cluster leader election.

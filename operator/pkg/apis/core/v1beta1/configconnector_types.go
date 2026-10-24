@@ -79,6 +79,11 @@ type CCExperiments struct {
 	// ResourceSettings allows specifying which resources to enable or disable.
 	// +optional
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
+
+	// ConcurrencyOverrides allows specifying the maximum number of concurrent reconciles
+	// for a given resource kind. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
+	// +optional
+	ConcurrencyOverrides map[string]int `json:"concurrencyOverrides,omitempty"`
 }
 
 type ResourceSettingsMode string

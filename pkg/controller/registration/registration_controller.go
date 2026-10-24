@@ -85,6 +85,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
 	// resources at runtime will not be reflected until the manager process is restarted.
 	var cccSettings *operatorv1beta1.ResourceSettings
+	var cccConcurrencyOverrides map[string]int
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
@@ -94,6 +95,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
 		} else if ccc.Spec.Experiments != nil {
 			cccSettings = ccc.Spec.Experiments.ResourceSettings
+			cccConcurrencyOverrides = ccc.Spec.Experiments.ConcurrencyOverrides
 			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
 		}
 	} else {
@@ -101,6 +103,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	}
 
 	var ccSettings *operatorv1beta1.ResourceSettings
+	var ccConcurrencyOverrides map[string]int
 	cc := &operatorv1beta1.ConfigConnector{}
 	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
 		if !errors.IsNotFound(err) {
@@ -108,6 +111,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		}
 	} else if cc.Spec.Experiments != nil {
 		ccSettings = cc.Spec.Experiments.ResourceSettings
+		ccConcurrencyOverrides = cc.Spec.Experiments.ConcurrencyOverrides
 	}
 
 	if ccSettings != nil && cccSettings != nil {
@@ -123,7 +127,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	}
 
 	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
+		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings, mergeConcurrencyOverrides(ccConcurrencyOverrides, cccConcurrencyOverrides)), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -303,13 +307,13 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings, concurrencyOverrides map[string]int) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
+		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings, concurrencyOverrides)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings, concurrencyOverrides map[string]int) (k8s.SchemaReferenceUpdater, error) {
 	logger := log.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
@@ -321,6 +325,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		return nil, nil
 	}
 
+	maxConcurrentReconciles := concurrencyOverrides[gvk.GroupKind().String()]
+
 	cds := controller.Deps{
 		TFProvider:   r.provider,
 		TFLoader:     r.smLoader,
@@ -329,7 +335,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 		//DependencyTracker: r.dependencyTracker,
-		SkipNameValidation: r.SkipNameValidation,
+		SkipNameValidation:      r.SkipNameValidation,
+		MaxConcurrentReconciles: maxConcurrentReconciles,
 	}
 
 	// todo acpana house in KCC mgr flag
@@ -420,7 +427,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			}
 			r.reconcilers[gvk] = reconcilers
 			opt := crcontroller.Options{
-				SkipNameValidation: ptr.To(r.SkipNameValidation),
+				SkipNameValidation:      ptr.To(r.SkipNameValidation),
+				MaxConcurrentReconciles: maxConcurrentReconciles,
 			}
 			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
@@ -428,6 +436,21 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		}
 	}
 	return schemaUpdater, nil
+}
+
+func mergeConcurrencyOverrides(ccOverrides, cccOverrides map[string]int) map[string]int {
+	if len(ccOverrides) == 0 && len(cccOverrides) == 0 {
+		return nil
+	}
+	merged := make(map[string]int, len(ccOverrides)+len(cccOverrides))
+	for _, overrides := range []map[string]int{ccOverrides, cccOverrides} {
+		for k, v := range overrides {
+			if v > 0 {
+				merged[k] = v
+			}
+		}
+	}
+	return merged
 }
 
 func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {

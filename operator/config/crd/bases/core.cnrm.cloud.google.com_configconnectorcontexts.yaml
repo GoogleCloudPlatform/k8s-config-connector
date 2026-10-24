@@ -65,6 +65,13 @@ spec:
                 type: string
               experiments:
                 properties:
+                  concurrencyOverrides:
+                    additionalProperties:
+                      type: integer
+                    description: |-
+                      ConcurrencyOverrides allows specifying the maximum number of concurrent reconciles
+                      for a given resource kind in this namespace. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
+                    type: object
                   controllerOverrides:
                     additionalProperties:
                       description: ReconcilerType describes the type of reconciler
