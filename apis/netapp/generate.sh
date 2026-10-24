@@ -69,6 +69,20 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-controller \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetAppKMSConfig:KmsConfig
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetAppKMSConfig:KmsConfig
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
