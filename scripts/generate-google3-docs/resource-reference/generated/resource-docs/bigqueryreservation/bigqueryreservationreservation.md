@@ -69,6 +69,10 @@ projectRef:
   kind: string
   name: string
   namespace: string
+reservationGroupRef:
+  external: string
+  name: string
+  namespace: string
 resourceID: string
 slotCapacity: integer
 ```
@@ -216,6 +220,46 @@ Immutable.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>The `namespace` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The reservation group that this reservation belongs to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed BigQueryReservationReservationGroup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a BigQueryReservationReservationGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a BigQueryReservationReservationGroup resource.</p>
         </td>
     </tr>
     <tr>

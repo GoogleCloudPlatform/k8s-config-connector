@@ -156,6 +156,37 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              reservationGroupRef:
+                description: Optional. The reservation group that this reservation
+                  belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigQueryReservationReservationGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".
+                    type: string
+                  name:
+                    description: The name of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                type: object
               resourceID:
                 description: 'Immutable. Optional. The BigQuery Reservation ID used
                   for resource creation or acquisition. It must only contain lower
@@ -397,6 +428,37 @@ spec:
                     type: string
                   namespace:
                     description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              reservationGroupRef:
+                description: Optional. The reservation group that this reservation
+                  belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigQueryReservationReservationGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".
+                    type: string
+                  name:
+                    description: The name of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigQueryReservationReservationGroup
+                      resource.
                     type: string
                 type: object
               resourceID:
