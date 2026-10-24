@@ -38,7 +38,9 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
 	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
 	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
-	f.UnimplementedFields.Insert(".labels")
+	// Blocked on upstream googleapis / cloud.google.com/go/redis/cluster/apiv1/clusterpb
+	// exporting field 51 (map<string, string> labels) on google.cloud.redis.cluster.v1.Cluster (#13689).
+	f.Unimplemented_NotYetTriaged(".labels")
 	f.UnimplementedFields.Insert(".rotate_server_certificate")
 	f.UnimplementedFields.Insert(".server_ca_mode")
 	f.UnimplementedFields.Insert(".server_ca_pool")
