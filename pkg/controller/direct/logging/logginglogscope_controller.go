@@ -245,6 +245,9 @@ func (a *LoggingLogScopeAdapter) Update(ctx context.Context, updateOp *directbas
 				updateMaskParts = append(updateMaskParts, "resource_names")
 			case "description", "Description":
 				updateMaskParts = append(updateMaskParts, "description")
+				if a.desired.Description == "" {
+					a.desired.ForceSendFields = append(a.desired.ForceSendFields, "Description")
+				}
 			}
 		}
 		updateMask := strings.Join(updateMaskParts, ",")
