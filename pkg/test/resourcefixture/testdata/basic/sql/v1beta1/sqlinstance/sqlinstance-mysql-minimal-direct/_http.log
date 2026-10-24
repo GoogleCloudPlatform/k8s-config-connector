@@ -142,9 +142,10 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": true,
+    "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -153,7 +154,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -179,6 +180,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -190,10 +192,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -202,6 +206,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -284,6 +289,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -377,9 +422,10 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": true,
+    "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -388,7 +434,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -414,6 +460,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -425,10 +472,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -437,6 +486,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -519,6 +569,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -605,7 +695,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-mysql-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_0_41",
+  "databaseInstalledVersion": "MYSQL_8_0_45",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -615,6 +705,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -623,7 +714,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_41.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_0_45.R20260726.00_05",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -649,6 +740,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -660,10 +752,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -672,6 +766,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -685,76 +780,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
-    {
-      "displayName": "MySQL 8.0.18",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_18"
-    },
-    {
-      "displayName": "MySQL 8.0.26",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_26"
-    },
-    {
-      "displayName": "MySQL 8.0.27",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_27"
-    },
-    {
-      "displayName": "MySQL 8.0.28",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_28"
-    },
-    {
-      "displayName": "MySQL 8.0.29",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_29"
-    },
-    {
-      "displayName": "MySQL 8.0.30",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
-    },
-    {
-      "displayName": "MySQL 8.0.32",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_32"
-    },
-    {
-      "displayName": "MySQL 8.0.33",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_33"
-    },
-    {
-      "displayName": "MySQL 8.0.34",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_34"
-    },
-    {
-      "displayName": "MySQL 8.0.35",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_35"
-    },
-    {
-      "displayName": "MySQL 8.0.36",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_36"
-    },
-    {
-      "displayName": "MySQL 8.0.37",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_37"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -831,6 +856,11 @@ X-Xss-Protection: 0
       "name": "MYSQL_8_0_40"
     },
     {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
       "displayName": "MySQL 8.0.42",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_42"
@@ -839,6 +869,16 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.43",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     },
     {
       "displayName": "MySQL 8.4",
@@ -858,7 +898,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "MYSQL_8_0",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_41.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_0_45.R20260726.00_05",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -869,6 +909,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
@@ -971,7 +1012,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-mysql-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_0_41",
+  "databaseInstalledVersion": "MYSQL_8_0_45",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -981,6 +1022,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -989,7 +1031,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_41.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_0_45.R20260726.00_05",
   "name": "sqlinstance-mysql-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -1015,6 +1057,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -1026,10 +1069,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1038,6 +1083,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -1051,76 +1097,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
-    {
-      "displayName": "MySQL 8.0.18",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_18"
-    },
-    {
-      "displayName": "MySQL 8.0.26",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_26"
-    },
-    {
-      "displayName": "MySQL 8.0.27",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_27"
-    },
-    {
-      "displayName": "MySQL 8.0.28",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_28"
-    },
-    {
-      "displayName": "MySQL 8.0.29",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_29"
-    },
-    {
-      "displayName": "MySQL 8.0.30",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
-    },
-    {
-      "displayName": "MySQL 8.0.32",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_32"
-    },
-    {
-      "displayName": "MySQL 8.0.33",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_33"
-    },
-    {
-      "displayName": "MySQL 8.0.34",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_34"
-    },
-    {
-      "displayName": "MySQL 8.0.35",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_35"
-    },
-    {
-      "displayName": "MySQL 8.0.36",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_36"
-    },
-    {
-      "displayName": "MySQL 8.0.37",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_37"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -1197,6 +1173,11 @@ X-Xss-Protection: 0
       "name": "MYSQL_8_0_40"
     },
     {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
       "displayName": "MySQL 8.0.42",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_42"
@@ -1205,6 +1186,16 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.43",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     },
     {
       "displayName": "MySQL 8.4",
