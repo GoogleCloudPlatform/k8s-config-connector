@@ -35,11 +35,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.config.v1 \
   --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
-  --resource ConfigDeploymentGroup:DeploymentGroup
+  --resource ConfigDeploymentGroup:DeploymentGroup \
+  --resource ConfigDeployment:Deployment \
+  --emit-message-maps
 
-go run . generate-mapper \
-  --service google.cloud.config.v1 \
-  --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1"
+# ${CONTROLLERBUILDER} generate-mapper \
+#   --service google.cloud.config.v1 \
+#   --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

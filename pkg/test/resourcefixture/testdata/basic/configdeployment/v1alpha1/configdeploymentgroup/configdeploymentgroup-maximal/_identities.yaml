@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //config.googleapis.com/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}
   group: configdeployment.cnrm.cloud.google.com
   kind: ConfigDeploymentGroup
   name: configdeploymentgroup-${uniqueId}
