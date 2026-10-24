@@ -101,6 +101,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/cloudruncomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/portmapcomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/privateserviceconnectioncomputeregionnetworkendpointgroup
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/acquirereservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/basicreservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/fullreservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/sharereservation-add-project
