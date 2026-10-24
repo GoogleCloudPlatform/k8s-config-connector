@@ -1,0 +1,6 @@
+- caisURL: //documentai.googleapis.com/projects/${projectNumber}/locations/us/processors/2591e9369e934b5
+  group: documentai.cnrm.cloud.google.com
+  kind: DocumentAIProcessorDefaultVersion
+  name: documentaiprocessordefaultversion-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
