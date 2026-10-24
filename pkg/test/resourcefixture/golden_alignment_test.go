@@ -686,6 +686,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+		if act, ok := v["action"]; ok {
+			if f, ok := act.(float64); ok {
+				switch f {
+				case 1:
+					v["action"] = "ALLOW"
+				case 2:
+					v["action"] = "DENY"
+				}
+			}
+		}
 		if qp, ok := v["queryParameters"].([]interface{}); ok && len(qp) == 0 {
 			delete(v, "queryParameters")
 		}
