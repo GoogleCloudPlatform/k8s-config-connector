@@ -203,6 +203,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	options := []declarative.ReconcilerOption{
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
+		declarative.WithApplier(controllers.NewApplier()),
 		declarative.WithObjectTransform(r.checkResourceSettingsMode()),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
 	}
