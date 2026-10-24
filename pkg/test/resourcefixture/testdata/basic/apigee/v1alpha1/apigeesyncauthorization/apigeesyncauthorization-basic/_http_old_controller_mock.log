@@ -1,0 +1,188 @@
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json
+Content-Type: application/json
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json
+Content-Type: application/json
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com",
+    "serviceAccount:test-sa2@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com",
+    "serviceAccount:test-sa2@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com",
+    "serviceAccount:test-sa2@${projectId}.iam.gserviceaccount.com"
+  ]
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "identities": [
+    "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com",
+    "serviceAccount:test-sa2@${projectId}.iam.gserviceaccount.com"
+  ]
+}

@@ -1,0 +1,79 @@
+1c1
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json&prettyPrint=false
+3a4,5
+> {}
+> 
+20c22
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json&prettyPrint=false
+49,71c51
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "etag": "abcdef0123A=",
+<   "identities": [
+<     "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+<   ]
+< }
+< 
+< ---
+< 
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json&prettyPrint=false
+74,94c54
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "etag": "abcdef0123A=",
+<   "identities": [
+<     "serviceAccount:test-sa@${projectId}.iam.gserviceaccount.com"
+<   ]
+< }
+< 
+< ---
+< 
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+< Content-Type: application/json
+---
+> {}
+115c75
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:setSyncAuthorization?alt=json&prettyPrint=false
+146c106
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json&prettyPrint=false
+148a109,110
+> {}
+> 
+169c131
+< POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json
+---
+> POST https://apigee.googleapis.com/v1/organizations/${projectId}:getSyncAuthorization?alt=json&prettyPrint=false
+170a133,134
+> 
+> {}
