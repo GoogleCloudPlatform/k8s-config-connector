@@ -21,6 +21,7 @@ package v1beta1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -1225,6 +1226,21 @@ func (in *InstanceIpConfiguration) DeepCopyInto(out *InstanceIpConfiguration) {
 	if in.SslMode != nil {
 		in, out := &in.SslMode, &out.SslMode
 		*out = new(string)
+		**out = **in
+	}
+	if in.CustomSubjectAlternativeNames != nil {
+		in, out := &in.CustomSubjectAlternativeNames, &out.CustomSubjectAlternativeNames
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
+	if in.ServerCAMode != nil {
+		in, out := &in.ServerCAMode, &out.ServerCAMode
+		*out = new(string)
+		**out = **in
+	}
+	if in.ServerCAPoolRef != nil {
+		in, out := &in.ServerCAPoolRef, &out.ServerCAPoolRef
+		*out = new(privatecarefs.PrivateCACAPoolRef)
 		**out = **in
 	}
 }

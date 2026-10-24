@@ -123,6 +123,18 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 			}
 		}
 	}
+	if actual != nil && actual.Settings != nil && actual.Settings.IpConfiguration != nil {
+		// Preserve live server CA settings when unset in KRM.
+		if in.Spec.Settings.IpConfiguration == nil || in.Spec.Settings.IpConfiguration.ServerCAMode == nil {
+			out.Settings.IpConfiguration.ServerCaMode = actual.Settings.IpConfiguration.ServerCaMode
+		}
+		if in.Spec.Settings.IpConfiguration == nil || in.Spec.Settings.IpConfiguration.ServerCAPoolRef == nil {
+			out.Settings.IpConfiguration.ServerCaPool = actual.Settings.IpConfiguration.ServerCaPool
+		}
+		if in.Spec.Settings.IpConfiguration == nil || in.Spec.Settings.IpConfiguration.CustomSubjectAlternativeNames == nil {
+			out.Settings.IpConfiguration.CustomSubjectAlternativeNames = actual.Settings.IpConfiguration.CustomSubjectAlternativeNames
+		}
+	}
 	if in.Spec.Settings.LocationPreference == nil && actual != nil {
 		// Use GCP specified locationPreference.
 		out.Settings.LocationPreference = actual.Settings.LocationPreference
