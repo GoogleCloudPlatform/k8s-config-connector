@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.billing.budgets.v1beta1.BudgetService
-// proto.message: google.cloud.billing.budgets.v1beta1.Budget
+// proto.service: google.cloud.billing.budgets.v1.BudgetService
+// proto.message: google.cloud.billing.budgets.v1.Budget
 
 package mockbillingbudgets
 
@@ -31,7 +31,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 )
 
 func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBudgetRequest) (*pb.Budget, error) {
@@ -144,7 +144,7 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		case path == "allUpdatesRule" || path == "all_updates_rule" || path == "notificationsRule" || path == "notifications_rule" ||
 			strings.HasPrefix(path, "allUpdatesRule.") || strings.HasPrefix(path, "all_updates_rule.") ||
 			strings.HasPrefix(path, "notificationsRule.") || strings.HasPrefix(path, "notifications_rule."):
-			obj.AllUpdatesRule = req.GetBudget().GetAllUpdatesRule()
+			obj.NotificationsRule = req.GetBudget().GetNotificationsRule()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "unhandled path %q in mockgcp UpdateBudget", path)
 		}
