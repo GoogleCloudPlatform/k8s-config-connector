@@ -17,10 +17,150 @@
 // krm.group: netapp.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.netapp.v1
+// resource: NetAppVolume:Volume
 // resource: NetappQuotaRule:QuotaRule
 // resource: NetappReplication:Replication
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfig struct {
+	// Optional. When specified, schedule backups will be created based on the
+	//  policy configuration.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_policies
+	BackupPolicies []string `json:"backupPolicies,omitempty"`
+
+	// Optional. Name of backup vault.
+	//  Format:
+	//  projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_vault
+	BackupVault *string `json:"backupVault,omitempty"`
+
+	// Optional. When set to true, scheduled backup is enabled on the volume.
+	//  This field should be nil when there's no backup policy attached.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.scheduled_backup_enabled
+	ScheduledBackupEnabled *bool `json:"scheduledBackupEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.BlockDevice
+type BlockDevice struct {
+	// Optional. User-defined name for the block device, unique within the volume.
+	//  In case no user input is provided, name will be auto-generated in the
+	//  backend. The name must meet the following requirements:
+	//  *   Be between 1 and 255 characters long.
+	//  *   Contain only uppercase or lowercase letters (A-Z, a-z), numbers (0-9),
+	//      and the following special characters: "-", "_", "}", "{", ".".
+	//  *   Spaces are not allowed.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A list of host groups that identify hosts that can mount the
+	//  block volume. Format:
+	//  `projects/{project_id}/locations/{location}/hostGroups/{host_group_id}`
+	//  This field can be updated after the block device is created.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.host_groups
+	HostGroups []string `json:"hostGroups,omitempty"`
+
+	// Optional. The size of the block device in GiB.
+	//  Any value provided for the `size_gib` field during volume creation is
+	//  ignored. The block device's size is system-managed and will be set to match
+	//  the parent Volume's `capacity_gib`.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.size_gib
+	SizeGib *int64 `json:"sizeGib,omitempty"`
+
+	// Required. Immutable. The OS type of the volume.
+	//  This field can't be changed after the block device is created.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.os_type
+	// +required
+	OSType *string `json:"osType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.CacheConfig
+type CacheConfig struct {
+	// Optional. Pre-populate cache volume with data from the origin volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheConfig.cache_pre_populate
+	CachePrePopulate *CachePrePopulate `json:"cachePrePopulate,omitempty"`
+
+	// Optional. Flag indicating whether writeback is enabled for the FlexCache
+	//  volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheConfig.writeback_enabled
+	WritebackEnabled *bool `json:"writebackEnabled,omitempty"`
+
+	// Optional. Flag indicating whether a CIFS change notification is enabled for
+	//  the FlexCache volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheConfig.cifs_change_notify_enabled
+	CifsChangeNotifyEnabled *bool `json:"cifsChangeNotifyEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.CacheParameters
+type CacheParameters struct {
+	// Required. Name of the origin volume for the cache volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.peer_volume_name
+	// +required
+	PeerVolumeName *string `json:"peerVolumeName,omitempty"`
+
+	// Required. Name of the origin volume's ONTAP cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.peer_cluster_name
+	// +required
+	PeerClusterName *string `json:"peerClusterName,omitempty"`
+
+	// Required. Name of the origin volume's SVM.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.peer_svm_name
+	// +required
+	PeerSvmName *string `json:"peerSvmName,omitempty"`
+
+	// Required. List of IC LIF addresses of the origin volume's ONTAP cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.peer_ip_addresses
+	// +required
+	PeerIPAddresses []string `json:"peerIPAddresses,omitempty"`
+
+	// Optional. Indicates whether the cache volume has global file lock enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.enable_global_file_lock
+	EnableGlobalFileLock *bool `json:"enableGlobalFileLock,omitempty"`
+
+	// Optional. Configuration of the cache volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.cache_config
+	CacheConfig *CacheConfig `json:"cacheConfig,omitempty"`
+
+	// Optional. Expiration time for the peering command to be executed on user's
+	//  ONTAP.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.peering_command_expiry_time
+	PeeringCommandExpiryTime *string `json:"peeringCommandExpiryTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.CachePrePopulate
+type CachePrePopulate struct {
+	// Optional. List of directory-paths to be pre-populated for the FlexCache
+	//  volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CachePrePopulate.path_list
+	PathList []string `json:"pathList,omitempty"`
+
+	// Optional. List of directory-paths to be excluded for pre-population for the
+	//  FlexCache volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CachePrePopulate.exclude_path_list
+	ExcludePathList []string `json:"excludePathList,omitempty"`
+
+	// Optional. Flag indicating whether the directories listed with the
+	//  `path_list` need to be recursively pre-populated.
+	// +kcc:proto:field=google.cloud.netapp.v1.CachePrePopulate.recursion
+	Recursion *bool `json:"recursion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.DailySchedule
+type DailySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
+
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
+}
 
 // +kcc:proto=google.cloud.netapp.v1.DestinationVolumeParameters
 type DestinationVolumeParameters struct {
@@ -50,9 +190,135 @@ type DestinationVolumeParameters struct {
 	TieringPolicy *TieringPolicy `json:"tieringPolicy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.netapp.v1.ExportPolicy
+type ExportPolicy struct {
+	// Required. List of export policy rules
+	// +kcc:proto:field=google.cloud.netapp.v1.ExportPolicy.rules
+	// +required
+	Rules []SimpleExportPolicyRule `json:"rules,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.HourlySchedule
+type HourlySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.HourlySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
+
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.HourlySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+}
+
 /* unreachable type HybridPeeringDetails
 // +kcc:proto=google.cloud.netapp.v1.HybridPeeringDetails
 type HybridPeeringDetails struct {
+}
+*/
+
+// +kcc:proto=google.cloud.netapp.v1.HybridReplicationParameters
+type HybridReplicationParameters struct {
+	// Required. Desired name for the replication of this volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.replication
+	// +required
+	Replication *string `json:"replication,omitempty"`
+
+	// Required. Name of the user's local source volume to be peered with the
+	//  destination volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_volume_name
+	// +required
+	PeerVolumeName *string `json:"peerVolumeName,omitempty"`
+
+	// Required. Name of the user's local source cluster to be peered with the
+	//  destination cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_cluster_name
+	// +required
+	PeerClusterName *string `json:"peerClusterName,omitempty"`
+
+	// Required. Name of the user's local source vserver svm to be peered with the
+	//  destination vserver svm.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_svm_name
+	// +required
+	PeerSvmName *string `json:"peerSvmName,omitempty"`
+
+	// Required. List of node ip addresses to be peered with.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_ip_addresses
+	// +required
+	PeerIPAddresses []string `json:"peerIPAddresses,omitempty"`
+
+	// Optional. Name of source cluster location associated with the Hybrid
+	//  replication. This is a free-form field for the display purpose only.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.cluster_location
+	ClusterLocation *string `json:"clusterLocation,omitempty"`
+
+	// Optional. Description of the replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels to be added to the replication as the key value pairs.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Replication Schedule for the replication created.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.replication_schedule
+	ReplicationSchedule *string `json:"replicationSchedule,omitempty"`
+
+	// Optional. Type of the hybrid replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.hybrid_replication_type
+	HybridReplicationType *string `json:"hybridReplicationType,omitempty"`
+
+	// Optional. Constituent volume count for large volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.large_volume_constituent_count
+	LargeVolumeConstituentCount *int32 `json:"largeVolumeConstituentCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.LargeCapacityConfig
+type LargeCapacityConfig struct {
+	// Optional. The number of internal constituents (e.g., FlexVols) for this
+	//  large volume. The minimum number of constituents is 2.
+	// +kcc:proto:field=google.cloud.netapp.v1.LargeCapacityConfig.constituent_count
+	ConstituentCount *int32 `json:"constituentCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.MonthlySchedule
+type MonthlySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
+
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
+
+	// Set the day or days of the month to make a snapshot (1-31). Accepts a
+	//  comma separated number of days. Defaults to '1'.
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.days_of_month
+	DaysOfMonth *string `json:"daysOfMonth,omitempty"`
+}
+
+/* unreachable type MountOption
+// +kcc:proto=google.cloud.netapp.v1.MountOption
+type MountOption struct {
+	// Export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export
+	Export *string `json:"export,omitempty"`
+
+	// Full export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export_full
+	ExportFull *string `json:"exportFull,omitempty"`
+
+	// Protocol to mount with.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.protocol
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Instructions for mounting
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.instructions
+	Instructions *string `json:"instructions,omitempty"`
 }
 */
 
@@ -121,6 +387,120 @@ type Replication struct {
 }
 */
 
+// +kcc:proto=google.cloud.netapp.v1.RestoreParameters
+type RestoreParameters struct {
+	// Full name of the snapshot resource.
+	//  Format:
+	//  projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// Full name of the backup resource.
+	//  Format for standard backup:
+	//  projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+	//  Format for BackupDR backup:
+	//  projects/{project}/locations/{location}/backupVaults/{backup_vault}/dataSources/{data_source}/backups/{backup}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_backup
+	SourceBackup *string `json:"sourceBackup,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.SimpleExportPolicyRule
+type SimpleExportPolicyRule struct {
+	// Comma separated list of allowed clients IP addresses
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.allowed_clients
+	AllowedClients *string `json:"allowedClients,omitempty"`
+
+	// Whether Unix root access will be granted.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.has_root_access
+	HasRootAccess *string `json:"hasRootAccess,omitempty"`
+
+	// Access type (ReadWrite, ReadOnly, None)
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.access_type
+	AccessType *string `json:"accessType,omitempty"`
+
+	// NFS V3 protocol.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.nfsv3
+	Nfsv3 *bool `json:"nfsv3,omitempty"`
+
+	// NFS V4 protocol.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.nfsv4
+	Nfsv4 *bool `json:"nfsv4,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'authentication' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5_read_only
+	Kerberos5ReadOnly *bool `json:"kerberos5ReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'authentication' kerberos security mode. The
+	//  'kerberos5ReadOnly' value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5_read_write
+	Kerberos5ReadWrite *bool `json:"kerberos5ReadWrite,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'integrity' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5i_read_only
+	Kerberos5iReadOnly *bool `json:"kerberos5iReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'integrity' kerberos security mode. The 'kerberos5iReadOnly'
+	//  value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5i_read_write
+	Kerberos5iReadWrite *bool `json:"kerberos5iReadWrite,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'privacy' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5p_read_only
+	Kerberos5pReadOnly *bool `json:"kerberos5pReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'privacy' kerberos security mode. The 'kerberos5pReadOnly'
+	//  value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5p_read_write
+	Kerberos5pReadWrite *bool `json:"kerberos5pReadWrite,omitempty"`
+
+	// Optional. Defines how user identity squashing is applied for this export
+	//  rule. This field is the preferred way to configure squashing behavior and
+	//  takes precedence over `has_root_access` if both are provided.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.squash_mode
+	SquashMode *string `json:"squashMode,omitempty"`
+
+	// Optional. An integer representing the anonymous user ID. Range is 0 to
+	//  `4294967295`. Required when `squash_mode` is `ROOT_SQUASH` or `ALL_SQUASH`.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.anon_uid
+	AnonUid *int64 `json:"anonUid,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.SnapshotPolicy
+type SnapshotPolicy struct {
+	// If enabled, make snapshots automatically according to the schedules.
+	//  Default is false.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Hourly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.hourly_schedule
+	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+
+	// Daily schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.daily_schedule
+	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
+
+	// Weekly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.weekly_schedule
+	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
+
+	// Monthly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.monthly_schedule
+	MonthlySchedule *MonthlySchedule `json:"monthlySchedule,omitempty"`
+}
+
 // +kcc:proto=google.cloud.netapp.v1.TieringPolicy
 type TieringPolicy struct {
 	// Optional. Flag indicating if the volume has tiering policy enable/pause.
@@ -182,6 +562,207 @@ type UserCommands struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.Volume", skipping
+
+// +kcc:proto=google.cloud.netapp.v1.Volume
+type Volume struct {
+	// Identifier. Name of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Share name of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.share_name
+	ShareName *string `json:"shareName,omitempty"`
+
+	// Required. StoragePool name of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.storage_pool
+	StoragePool *string `json:"storagePool,omitempty"`
+
+	// Required. Capacity in GIB of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.capacity_gib
+	CapacityGib *int64 `json:"capacityGib,omitempty"`
+
+	// Optional. Export policy of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.export_policy
+	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
+
+	// Required. Protocols required for the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.protocols
+	Protocols []string `json:"protocols,omitempty"`
+
+	// Optional. SMB share settings for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.smb_settings
+	SmbSettings []string `json:"smbSettings,omitempty"`
+
+	// Optional. Default unix style permission (e.g. 777) the mount point will be
+	//  created with. Applicable for NFS protocol types only.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.unix_permissions
+	UnixPermissions *string `json:"unixPermissions,omitempty"`
+
+	// Optional. Labels as key value pairs
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. SnapshotPolicy for a volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.snapshot_policy
+	SnapshotPolicy *SnapshotPolicy `json:"snapshotPolicy,omitempty"`
+
+	// Optional. Snap_reserve specifies percentage of volume storage reserved for
+	//  snapshot storage. Default is 0 percent.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.snap_reserve
+	SnapReserve *float64 `json:"snapReserve,omitempty"`
+
+	// Optional. Snapshot_directory if enabled (true) the volume will contain a
+	//  read-only .snapshot directory which provides access to each of the volume's
+	//  snapshots.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.snapshot_directory
+	SnapshotDirectory *bool `json:"snapshotDirectory,omitempty"`
+
+	// Optional. Security Style of the Volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.security_style
+	SecurityStyle *string `json:"securityStyle,omitempty"`
+
+	// Optional. Flag indicating if the volume is a kerberos volume or not, export
+	//  policy rules control kerberos security modes (krb5, krb5i, krb5p).
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.kerberos_enabled
+	KerberosEnabled *bool `json:"kerberosEnabled,omitempty"`
+
+	// Optional. Specifies the source of the volume to be created from.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.restore_parameters
+	RestoreParameters *RestoreParameters `json:"restoreParameters,omitempty"`
+
+	// BackupConfig of the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.backup_config
+	BackupConfig *BackupConfig `json:"backupConfig,omitempty"`
+
+	// Optional. List of actions that are restricted on this volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.restricted_actions
+	RestrictedActions []string `json:"restrictedActions,omitempty"`
+
+	// Optional. Flag indicating if the volume will be a large capacity volume or
+	//  a regular volume. This field is used for legacy FILE pools. For Unified
+	//  pools, use the `large_capacity_config` field instead. This field and
+	//  `large_capacity_config` are mutually exclusive.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.large_capacity
+	LargeCapacity *bool `json:"largeCapacity,omitempty"`
+
+	// Optional. Flag indicating if the volume will have an IP address per node
+	//  for volumes supporting multiple IP endpoints. Only the volume with
+	//  large_capacity will be allowed to have multiple endpoints.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.multiple_endpoints
+	MultipleEndpoints *bool `json:"multipleEndpoints,omitempty"`
+
+	// Tiering policy for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.tiering_policy
+	TieringPolicy *TieringPolicy `json:"tieringPolicy,omitempty"`
+
+	// Optional. The Hybrid Replication parameters for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.hybrid_replication_parameters
+	HybridReplicationParameters *HybridReplicationParameters `json:"hybridReplicationParameters,omitempty"`
+
+	// Optional. Throughput of the volume (in MiB/s)
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.throughput_mibps
+	ThroughputMibps *float64 `json:"throughputMibps,omitempty"`
+
+	// Optional. Cache parameters for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.cache_parameters
+	CacheParameters *CacheParameters `json:"cacheParameters,omitempty"`
+
+	// Optional. Block devices for the volume.
+	//  Currently, only one block device is permitted per Volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.block_devices
+	BlockDevices []BlockDevice `json:"blockDevices,omitempty"`
+
+	// Optional. Large capacity config for the volume.
+	//  Enables and configures large capacity for volumes in Unified pools with
+	//  File protocols. Not applicable for Block protocols in Unified pools.
+	//  This field and the legacy `large_capacity` boolean field
+	//  are mutually exclusive.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.large_capacity_config
+	LargeCapacityConfig *LargeCapacityConfig `json:"largeCapacityConfig,omitempty"`
+}
+*/
+
+/* unreachable type Volume_CloneDetails
+// +kcc:proto=google.cloud.netapp.v1.Volume.CloneDetails
+type Volume_CloneDetails struct {
+}
+*/
+
+// +kcc:proto=google.cloud.netapp.v1.WeeklySchedule
+type WeeklySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
+
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
+
+	// Set the day or days of the week to make a snapshot. Accepts a comma
+	//  separated days of the week. Defaults to 'Sunday'.
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.day
+	Day *string `json:"day,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfigObservedState struct {
+	// Output only. Total size of all backups in a chain in bytes = baseline
+	//  backup size + sum(incremental backup size).
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_chain_bytes
+	BackupChainBytes *int64 `json:"backupChainBytes,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BlockDevice
+type BlockDeviceObservedState struct {
+	// Output only. Device identifier of the block volume. This represents
+	//  `lun_serial_number` for iSCSI volumes.
+	// +kcc:proto:field=google.cloud.netapp.v1.BlockDevice.identifier
+	Identifier *string `json:"identifier,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.CacheConfig
+type CacheConfigObservedState struct {
+	// Output only. State of the prepopulation job indicating how the
+	//  prepopulation is progressing.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheConfig.cache_pre_populate_state
+	CachePrePopulateState *string `json:"cachePrePopulateState,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.CacheParameters
+type CacheParametersObservedState struct {
+	// Optional. Configuration of the cache volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.cache_config
+	CacheConfig *CacheConfigObservedState `json:"cacheConfig,omitempty"`
+
+	// Output only. State of the cache volume indicating the peering status.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.cache_state
+	CacheState *string `json:"cacheState,omitempty"`
+
+	// Output only. Copy-paste-able commands to be used on user's ONTAP to accept
+	//  peering requests.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.command
+	Command *string `json:"command,omitempty"`
+
+	// Output only. Temporary passphrase generated to accept cluster peering
+	//  command.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.passphrase
+	Passphrase *string `json:"passphrase,omitempty"`
+
+	// Output only. Detailed description of the current cache state.
+	// +kcc:proto:field=google.cloud.netapp.v1.CacheParameters.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.netapp.v1.HybridPeeringDetails
 type HybridPeeringDetailsObservedState struct {
 	// Output only. IP address of the subnet.
@@ -217,6 +798,29 @@ type HybridPeeringDetailsObservedState struct {
 	//  the destination vserver svm.
 	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.peer_svm_name
 	PeerSvmName *string `json:"peerSvmName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.MountOption
+type MountOptionObservedState struct {
+	// Export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export
+	Export *string `json:"export,omitempty"`
+
+	// Full export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export_full
+	ExportFull *string `json:"exportFull,omitempty"`
+
+	// Protocol to mount with.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.protocol
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Instructions for mounting
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.instructions
+	Instructions *string `json:"instructions,omitempty"`
+
+	// Output only. IP Address.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.netapp.v1.QuotaRule", skipping
@@ -303,4 +907,122 @@ type UserCommandsObservedState struct {
 	// Output only. List of commands to be executed by the customer.
 	// +kcc:proto:field=google.cloud.netapp.v1.UserCommands.commands
 	Commands []string `json:"commands,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.Volume", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.Volume
+type VolumeObservedState struct {
+	// Output only. State of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. State details of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// Output only. Create time of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. This field is not implemented. The values provided in this
+	//  field are ignored.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.psa_range
+	PsaRange *string `json:"psaRange,omitempty"`
+
+	// Output only. VPC Network name.
+	//  Format: projects/{project}/global/networks/{network}
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.network
+	Network *string `json:"network,omitempty"`
+
+	// Output only. Service level of the volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.service_level
+	ServiceLevel *string `json:"serviceLevel,omitempty"`
+
+	// Output only. Mount options of this volume
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.mount_options
+	MountOptions []MountOptionObservedState `json:"mountOptions,omitempty"`
+
+	// Output only. Used capacity in GIB of the volume. This is computed
+	//  periodically and it does not represent the realtime usage.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.used_gib
+	UsedGib *int64 `json:"usedGib,omitempty"`
+
+	// Output only. Flag indicating if the volume is NFS LDAP enabled or not.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.ldap_enabled
+	LdapEnabled *bool `json:"ldapEnabled,omitempty"`
+
+	// Output only. Specifies the ActiveDirectory name of a SMB volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.active_directory
+	ActiveDirectory *string `json:"activeDirectory,omitempty"`
+
+	// Output only. Specifies the KMS config to be used for volume encryption.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.kms_config
+	KMSConfig *string `json:"kmsConfig,omitempty"`
+
+	// Output only. Specified the current volume encryption key source.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. Indicates whether the volume is part of a replication
+	//  relationship.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.has_replication
+	HasReplication *bool `json:"hasReplication,omitempty"`
+
+	// BackupConfig of the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.backup_config
+	BackupConfig *BackupConfigObservedState `json:"backupConfig,omitempty"`
+
+	// Output only. Specifies the replica zone for regional volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.replica_zone
+	ReplicaZone *string `json:"replicaZone,omitempty"`
+
+	// Output only. Specifies the active zone for regional volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// Output only. Size of the volume cold tier data rounded down to the nearest
+	//  GiB.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.cold_tier_size_gib
+	ColdTierSizeGib *int64 `json:"coldTierSizeGib,omitempty"`
+
+	// Optional. Cache parameters for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.cache_parameters
+	CacheParameters *CacheParametersObservedState `json:"cacheParameters,omitempty"`
+
+	// Output only. Total hot tier data rounded down to the nearest GiB used by
+	//  the Volume. This field is only used for flex Service Level
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.hot_tier_size_used_gib
+	HotTierSizeUsedGib *int64 `json:"hotTierSizeUsedGib,omitempty"`
+
+	// Optional. Block devices for the volume.
+	//  Currently, only one block device is permitted per Volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.block_devices
+	BlockDevices []BlockDeviceObservedState `json:"blockDevices,omitempty"`
+
+	// Output only. If this volume is a clone, this field contains details about
+	//  the clone.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.clone_details
+	CloneDetails *Volume_CloneDetailsObservedState `json:"cloneDetails,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.Volume.CloneDetails
+type Volume_CloneDetailsObservedState struct {
+	// Output only. Specifies the full resource name of the source snapshot from
+	//  which this volume was cloned. Format:
+	//  projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.CloneDetails.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
+
+	// Output only. Full name of the source volume resource.
+	//  Format:
+	//  projects/{project}/locations/{location}/volumes/{volume}
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.CloneDetails.source_volume
+	SourceVolume *string `json:"sourceVolume,omitempty"`
+
+	// Output only. Shared space in GiB. Determined at volume creation time
+	//  based on size of source snapshot.
+	// +kcc:proto:field=google.cloud.netapp.v1.Volume.CloneDetails.shared_space_gib
+	SharedSpaceGib *int64 `json:"sharedSpaceGib,omitempty"`
 }
