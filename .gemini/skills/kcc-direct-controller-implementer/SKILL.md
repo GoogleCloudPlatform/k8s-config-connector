@@ -124,9 +124,9 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
 7.  **Validation & Last-Mile Tests**:
-    Run the following tests to ensure CI compliance:
+    Run the following tests to ensure CI compliance (do NOT create individual CI presubmit scripts):
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
-    - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
+    - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-suite <service>`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
     - **API Field Coverage**: `go test ./tests/apichecks/...`. 
       - If `TestCRDFieldPresenceInTestsForAlpha` fails, you may need to regenerate the exceptions file by running it with `WRITE_GOLDEN_OUTPUT=1`.

@@ -106,6 +106,7 @@ fi
 2. **Add `<Kind>` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
    - Add `<Kind>` formatted with 4-space indentation and double quotes (`    "<Kind>"`), sorted alphabetically into the existing `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` (without duplicating any pre-existing entry). This prevents unverified Greenfield CRDs from being packaged into the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation agent removes `<Kind>` at the end of the generation pipeline.
    - If `dev/tasks/generate-crds` added a brand-new API group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, run `./dev/tasks/generate-channels` and `WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...` so `0-cnrm-system.yaml` and `operator/pkg/controllers/configconnector/testdata/golden/simple/_expected.yaml` stay in sync.
+   - **Do NOT add individual CI presubmit files**: Do NOT create scripts in `dev/ci/presubmits/` (such as `tests-e2e-fixtures-<kind>`). E2E fixture tests in CI are executed automatically via matrix suites (e.g. `dev/ci/presubmits/tests-e2e-fixtures-suite`).
 3. Verify that `apis/<service_short>/judgement_queue.yaml` was generated and contains `reason: untriaged-bulk-generation` with `status: open` for `<Kind>`.
 4. Test compilation of both `apis/<service_short>/...` and `pkg/controller/direct/<service_short>/...`:
    ```bash

@@ -60,6 +60,8 @@ Please enforce all of the following review criteria and invariants.
 
 *   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
     *   Verify that each newly prepopulated `<Kind>` is added (formatted with 4-space indentation and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+*   **No Individual CI Presubmit Files**:
+    *   Verify that no new individual CI presubmit scripts were created under `dev/ci/presubmits/` (e.g., `tests-e2e-fixtures-<kind>`). E2E fixture testing in CI is handled by existing matrix suite runners.
 *   **Build, `apichecks`, `envtest`, & Operator Golden Verification**:
     *   Run:
         ```bash
@@ -86,6 +88,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **Judgement Queue Open Check**: [Pass/Fail] - (Confirm `apis/<service>/judgement_queue.yaml` has `untriaged-bulk-generation` with `status: open` and no premature manual resolutions)
 * **Mechanical Output & Idempotency**: [Pass/Fail] - (Confirm `./apis/<service>/generate.sh` produces zero diff and `<kind>_types.go` was not hand-edited)
 * **Release Bundle Blocklist (`BLOCKED_KINDS`)**: [Pass/Fail] - (Confirm `<Kind>` is added in alphabetical order to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`)
+* **No Individual CI Files Check**: [Pass/Fail] - (Confirm no individual `dev/ci/presubmits/tests-e2e-fixtures-*` script was created)
 * **Mapper Compilation & `apichecks`**: [Pass/Fail] - (Confirm `apis/<service>/...` and `pkg/controller/direct/<service>/...` build and `tests/apichecks/...` passes without unauthorized exception edits)
 
 #### Detailed Findings / Actions Required:

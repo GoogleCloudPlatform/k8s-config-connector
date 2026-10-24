@@ -19,14 +19,14 @@ This skill guides an automated agent through the process of opting a resource (o
    - Because strict testing enables server-side apply, the expected requests and generated objects will change in the tests. You must regenerate the golden test output (`_generated_object_*.golden.yaml` and `_http.log`).
    - Run the relevant presubmit script for the service with the `WRITE_GOLDEN_OUTPUT=1` environment variable.
      For example:
-     `WRITE_GOLDEN_OUTPUT=1 dev/ci/presubmits/tests-e2e-fixtures-<servicename>`
+     `WRITE_GOLDEN_OUTPUT=1 dev/ci/presubmits/tests-e2e-fixtures-suite <servicename>`
    - Alternatively, you can use the `hack/compare-mock` or `run-e2e` scripts if you are targeting specific tests.
 
 3. **Verify the Tests Pass**
    - After regenerating the golden files, verify that the tests actually pass.
    - Run the tests again without `WRITE_GOLDEN_OUTPUT=1`.
      For example:
-     `dev/ci/presubmits/tests-e2e-fixtures-<servicename>`
+     `dev/ci/presubmits/tests-e2e-fixtures-suite <servicename>`
    - If a test fails during the `TestRereconciliation` phase, the controller might have a bug in differencing detection.
 
 4. **Investigate Re-reconciliation Bugs (If Any)**

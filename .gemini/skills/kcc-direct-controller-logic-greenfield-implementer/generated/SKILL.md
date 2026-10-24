@@ -105,10 +105,10 @@ RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 
 ## Step 5: Validation & PR Readiness
 
-1. Run validation checks (without re-running `hack/record-gcp`):
+1. Run validation checks (without re-running `hack/record-gcp`; do NOT create individual CI presubmit scripts):
    ```bash
    dev/ci/presubmits/fuzz-roundtrippers
-   dev/ci/presubmits/tests-e2e-fixtures-direct
+   dev/ci/presubmits/tests-e2e-fixtures-suite <service>
    WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
    ```
 2. Run `make ready-pr` and commit all changes.
