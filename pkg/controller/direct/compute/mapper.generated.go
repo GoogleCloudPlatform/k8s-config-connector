@@ -835,28 +835,72 @@ func ComputeAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_ToProto", skipping
-func ComputeAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeAutoscalerSpec) *pb.Autoscaler {
+/*
+found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_ToProto", skipping
+
+	func ComputeAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeAutoscalerSpec) *pb.Autoscaler {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Autoscaler{}
+		out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: RecommendedSize
+		// MISSING: Region
+		// MISSING: ScalingScheduleStatus
+		// MISSING: SelfLink
+		// MISSING: Status
+		// MISSING: StatusDetails
+		if in.TargetRef != nil {
+			out.Target = &in.TargetRef.External
+		}
+		out.Zone = in.Zone
+		return out
+	}
+*/
+func ComputeBackendBucketSignedURLKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendBucketSignedURLKey {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Autoscaler{}
-	out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
-	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: RecommendedSize
-	// MISSING: Region
-	// MISSING: ScalingScheduleStatus
-	// MISSING: SelfLink
-	// MISSING: Status
-	// MISSING: StatusDetails
-	if in.TargetRef != nil {
-		out.Target = &in.TargetRef.External
+	out := &krmcomputev1alpha1.ComputeBackendBucketSignedURLKey{}
+	// MISSING: KeyName
+	// MISSING: KeyValue
+	return out
+}
+func ComputeBackendBucketSignedURLKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendBucketSignedURLKey) *pb.SignedUrlKey {
+	if in == nil {
+		return nil
 	}
-	out.Zone = in.Zone
+	out := &pb.SignedUrlKey{}
+	// MISSING: KeyName
+	// MISSING: KeyValue
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeBackendBucketSignedURLKeySpec_v1alpha1_FromProto", skipping
+func ComputeBackendBucketSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeBackendBucketSignedURLKeySpec_v1alpha1_ToProto", skipping
+func ComputeBackendBucketSignedURLKeySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendBucketSignedURLKeySpec) *pb.SignedUrlKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SignedUrlKey{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
 	return out
 }
 */

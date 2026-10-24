@@ -57,8 +57,7 @@ type BackendbucketsignedurlkeyValueFrom struct {
 type ComputeBackendBucketSignedURLKeySpec struct {
 	BackendBucketRef v1alpha1.ResourceRef `json:"backendBucketRef"`
 
-	/* Immutable. 128-bit key value used for signing the URL. The key value must be a
-	valid RFC 4648 Section 5 base64url encoded string. */
+	/* Immutable. 128-bit key value used for signing the URL. The key value must be a valid RFC 4648 Section 5 base64url encoded string. */
 	KeyValue BackendbucketsignedurlkeyKeyValue `json:"keyValue"`
 
 	/* The project that this resource belongs to. */

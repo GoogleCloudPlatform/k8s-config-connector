@@ -409,7 +409,7 @@ oneOf:
 - required: [healthCheckRef]
 - required: [httpHealthCheckRef]
 `
-		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "KMSSecretCiphertext" || kind == "ComputeSSLCertificate" || kind == "ComputeBackendService") {
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "ComputeBackendBucketSignedURLKey" || kind == "KMSSecretCiphertext" || kind == "ComputeSSLCertificate" || kind == "ComputeBackendService") {
 			ruleYAML = legacyRefRule
 		} else {
 			if strings.HasPrefix(signature, "external,") {
