@@ -28,6 +28,7 @@ import (
 
 	pb "cloud.google.com/go/visionai/apiv1/visionaipb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type applicationServer struct {
@@ -54,6 +55,22 @@ func (s *applicationServer) GetApplication(ctx context.Context, req *pb.GetAppli
 	return proto.Clone(obj).(*pb.Application), nil
 }
 
+func (s *applicationServer) ListApplications(ctx context.Context, req *pb.ListApplicationsRequest) (*pb.ListApplicationsResponse, error) {
+	response := &pb.ListApplicationsResponse{}
+	findPrefix := req.GetParent() + "/applications/"
+	applicationKind := (&pb.Application{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, applicationKind, storage.ListOptions{
+		Prefix: findPrefix,
+	}, func(obj proto.Message) error {
+		app := obj.(*pb.Application)
+		response.Applications = append(response.Applications, app)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (s *applicationServer) CreateApplication(ctx context.Context, req *pb.CreateApplicationRequest) (*longrunning.Operation, error) {
 	reqName := fmt.Sprintf("%s/applications/%s", req.GetParent(), req.GetApplicationId())
 	name, err := s.parseApplicationName(reqName)
@@ -75,6 +92,9 @@ func (s *applicationServer) CreateApplication(ctx context.Context, req *pb.Creat
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -169,6 +189,9 @@ func (s *applicationServer) DeleteApplication(ctx context.Context, req *pb.Delet
 
 	deleted := &pb.Application{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
