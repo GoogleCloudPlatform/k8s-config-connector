@@ -58,6 +58,7 @@ require (
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/financialservices v1.2.0
 	cloud.google.com/go/firestore v1.22.0
+	cloud.google.com/go/ftp v0.3.1
 	cloud.google.com/go/geminidataanalytics v1.6.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/hypercomputecluster v1.1.0
@@ -73,7 +74,7 @@ require (
 	cloud.google.com/go/memorystore v1.9.0
 	cloud.google.com/go/modelarmor v1.0.0
 	cloud.google.com/go/monitoring v1.30.0
-	cloud.google.com/go/netapp v1.12.0
+	cloud.google.com/go/netapp v1.16.0
 	cloud.google.com/go/networkmanagement v1.28.0
 	cloud.google.com/go/networksecurity v0.17.0
 	cloud.google.com/go/networkservices v0.6.0
@@ -132,7 +133,6 @@ require (
 	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
-	cloud.google.com/go/ftp v0.3.1 // indirect
 	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
 	cloud.google.com/go/resourcemanager v1.15.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
