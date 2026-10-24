@@ -148,42 +148,113 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespac
 		return fmt.Errorf("unexpected status from %v: %v", u, response.Status)
 	}
 
-	// TODO: Implement true streaming parsing (likely with https://github.com/golang/go/issues/71497)
-	b, err := io.ReadAll(response.Body)
+	return c.decodeJSONResponse(ctx, response.Body, typeInfo, listener, u)
+}
+
+func (c *StreamingClient) decodeJSONResponse(ctx context.Context, body io.Reader, typeInfo *typeInfo, listener ListListener, u *url.URL) error {
+	dec := json.NewDecoder(body)
+
+	token, err := dec.Token()
 	if err != nil {
-		return fmt.Errorf("reading response body from %v: %w", u, err)
+		return fmt.Errorf("decoding list begin from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != '{' {
+		return fmt.Errorf("expected JSON object start '{' from %v, got %v", u, token)
 	}
 
-	type listT struct {
-		APIVersion string `json:"apiVersion"`
-		Kind       string `json:"kind"`
-		Metadata   struct {
-			ResourceVersion string `json:"resourceVersion"`
-		} `json:"metadata"`
-		Items []json.RawMessage `json:"items"`
-	}
-	var list listT
-	if err := json.Unmarshal(b, &list); err != nil {
-		return fmt.Errorf("decoding response body from %v: %w", u, err)
-	}
+	var metadata ListMetadata
 
-	listener.OnListBegin(ListMetadata{
-		APIVersion:      list.APIVersion,
-		Kind:            list.Kind,
-		ResourceVersion: list.Metadata.ResourceVersion,
-	})
-
-	for _, item := range list.Items {
-		t := typeInfo.factory()
-		if err := json.Unmarshal(item, &t); err != nil {
-			return fmt.Errorf("decoding %T from %v: %w", t, u, err)
+	for dec.More() {
+		token, err := dec.Token()
+		if err != nil {
+			return fmt.Errorf("decoding field key from %v: %w", u, err)
 		}
-		if err := listener.OnListObject(ctx, t); err != nil {
+		key, ok := token.(string)
+		if !ok {
+			return fmt.Errorf("expected string field key from %v, got %v", u, token)
+		}
+
+		switch key {
+		case "apiVersion":
+			var val string
+			if err := dec.Decode(&val); err != nil {
+				return fmt.Errorf("decoding apiVersion from %v: %w", u, err)
+			}
+			metadata.APIVersion = val
+
+		case "kind":
+			var val string
+			if err := dec.Decode(&val); err != nil {
+				return fmt.Errorf("decoding kind from %v: %w", u, err)
+			}
+			metadata.Kind = val
+
+		case "metadata":
+			type metaT struct {
+				ResourceVersion string `json:"resourceVersion"`
+			}
+			var m metaT
+			if err := dec.Decode(&m); err != nil {
+				return fmt.Errorf("decoding metadata from %v: %w", u, err)
+			}
+			metadata.ResourceVersion = m.ResourceVersion
+
+		case "items":
+			if err := c.decodeListItems(ctx, dec, typeInfo, metadata, listener, u); err != nil {
+				return err
+			}
+
+		default:
+			// Skip unknown fields to avoid buffering them in RAM
+			var raw json.RawMessage
+			if err := dec.Decode(&raw); err != nil {
+				return fmt.Errorf("skipping unknown field %q from %v: %w", key, u, err)
+			}
+		}
+	}
+
+	token, err = dec.Token()
+	if err != nil {
+		return fmt.Errorf("decoding list end from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != '}' {
+		return fmt.Errorf("expected JSON object end '}' from %v, got %v", u, token)
+	}
+
+	listener.OnListEnd()
+
+	return nil
+}
+
+func (c *StreamingClient) decodeListItems(ctx context.Context, dec *json.Decoder, typeInfo *typeInfo, metadata ListMetadata, listener ListListener, u *url.URL) error {
+	token, err := dec.Token()
+	if err != nil {
+		return fmt.Errorf("items field error starting from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != '[' {
+		return fmt.Errorf("expected JSON array start '[' from %v, got %v", u, token)
+	}
+
+	// We call OnListBegin here because apiVersion, kind, and metadata are serialized before the items array in standard Kubernetes responses, allowing us to build the complete ListMetadata first.
+	listener.OnListBegin(metadata)
+
+	for dec.More() {
+		itemObj := typeInfo.factory()
+		if err := dec.Decode(&itemObj); err != nil {
+			return fmt.Errorf("streaming list item decode from %v: %w", u, err)
+		}
+		if err := listener.OnListObject(ctx, itemObj); err != nil {
 			return err
 		}
 	}
 
-	listener.OnListEnd()
+	token, err = dec.Token()
+	if err != nil {
+		return fmt.Errorf("items field error ending from %v: %w", u, err)
+	}
+	if delim, ok := token.(json.Delim); !ok || delim != ']' {
+		return fmt.Errorf("expected JSON array end ']' from %v, got %v", u, token)
+	}
 
 	return nil
 }
