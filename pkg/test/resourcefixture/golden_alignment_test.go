@@ -631,6 +631,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "parent")
 		}
 
+		// SaaSServiceMgmtUnit specific fields to normalize alignment differences
+		delete(v, "flagConfigName")
+		if _, ok := v["unitKind"]; ok {
+			delete(v, "conditions")
+			delete(v, "state")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
