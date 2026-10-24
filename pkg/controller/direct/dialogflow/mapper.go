@@ -15,6 +15,7 @@
 package dialogflow
 
 import (
+	dialogflowpb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -68,4 +69,40 @@ func ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto(mapCtx *direc
 		return nil
 	}
 	return &pb.ResponseMessage_MixedAudio_Segment_Audio{Audio: in}
+}
+
+func ArticleSuggestionModelMetadata_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ArticleSuggestionModelMetadata) *krm.ArticleSuggestionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArticleSuggestionModelMetadata{}
+	out.TrainingModelType = direct.Enum_FromProto(mapCtx, in.GetTrainingModelType())
+	return out
+}
+
+func ArticleSuggestionModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ArticleSuggestionModelMetadata) *dialogflowpb.ArticleSuggestionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ArticleSuggestionModelMetadata{}
+	out.TrainingModelType = direct.Enum_ToProto[dialogflowpb.ConversationModel_ModelType](mapCtx, in.TrainingModelType)
+	return out
+}
+
+func SmartReplyModelMetadata_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SmartReplyModelMetadata) *krm.SmartReplyModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SmartReplyModelMetadata{}
+	out.TrainingModelType = direct.Enum_FromProto(mapCtx, in.GetTrainingModelType())
+	return out
+}
+
+func SmartReplyModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.SmartReplyModelMetadata) *dialogflowpb.SmartReplyModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SmartReplyModelMetadata{}
+	out.TrainingModelType = direct.Enum_ToProto[dialogflowpb.ConversationModel_ModelType](mapCtx, in.TrainingModelType)
+	return out
 }
