@@ -35,7 +35,10 @@ import (
 // projects/projectID
 // folders/folderNumber
 // organizations/orgNumber
-func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, parent, bucketName, objectName string) error {
+//
+// quotaProjectID is the project that is charged for the export request (it is sent in the X-Goog-User-Project
+// header). If it is empty, the default project of the local environment is used.
+func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, parent, bucketName, objectName, quotaProjectID string) error {
 	gcsDestination := fmt.Sprintf("gs://%v/%v", bucketName, objectName)
 	exportAssetsRequest := cloudasset.ExportAssetsRequest{
 		OutputConfig: &cloudasset.OutputConfig{
@@ -48,7 +51,7 @@ func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, pare
 	if err != nil {
 		return fmt.Errorf("error creating asset client: %w", err)
 	}
-	projectNum, err := getDefaultProjectNumber(ctx, httpClient)
+	projectNum, err := getProjectNumber(ctx, httpClient, quotaProjectID)
 	if err != nil {
 		return fmt.Errorf("error getting project number: %w", err)
 	}
@@ -65,14 +68,18 @@ func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, pare
 	return nil
 }
 
-func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Client) (string, string, error) {
+// NewTemporaryBucketAndObjectName creates a temporary bucket in projectID and returns its name together with a new
+// object name. If projectID is empty, the bucket is created in the default project of the local environment.
+func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Client, projectID string) (string, string, error) {
 	storageClient, err := newStorageClient(ctx, httpClient)
 	if err != nil {
 		return "", "", fmt.Errorf("error creating storage client: %w", err)
 	}
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		return "", "", fmt.Errorf("error getting project id: %w", err)
+	if projectID == "" {
+		projectID, err = gcp.GetDefaultProjectID()
+		if err != nil {
+			return "", "", fmt.Errorf("error getting project id: %w", err)
+		}
 	}
 	bucketName := fmt.Sprintf("export-%v", randomid.New().String())
 	bucket := &storage.Bucket{
@@ -128,20 +135,24 @@ func newStorageClient(ctx context.Context, httpClient *http.Client) (*storage.Se
 	return client, nil
 }
 
-func getDefaultProjectNumber(ctx context.Context, httpClient *http.Client) (int64, error) {
+// getProjectNumber returns the project number of projectID. If projectID is empty, the default project of the local
+// environment is used.
+func getProjectNumber(ctx context.Context, httpClient *http.Client, projectID string) (int64, error) {
 	client, err := serviceclient.NewResourceManagerClient(ctx, httpClient)
 	if err != nil {
 		return 0, err
 	}
-	// get the default project id by shelling out to gcloud, this is questionable but *OK* because it is only reading
-	// local configuration files
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		return 0, fmt.Errorf("error getting default gcloud sdk project id: %w", err)
+	if projectID == "" {
+		// get the default project id by shelling out to gcloud, this is questionable but *OK* because it is only reading
+		// local configuration files
+		projectID, err = gcp.GetDefaultProjectID()
+		if err != nil {
+			return 0, fmt.Errorf("error getting default gcloud sdk project id: %w", err)
+		}
 	}
 	project, err := client.Projects.Get(projectID).Do()
 	if err != nil {
-		return 0, fmt.Errorf("error getting default project '%v': %w", projectID, err)
+		return 0, fmt.Errorf("error getting project '%v': %w", projectID, err)
 	}
 	return project.ProjectNumber, nil
 }

@@ -59,7 +59,9 @@ func newStorageObjectStream(params *parameters.Parameters) (*asset.Stream, error
 		log.Verbose("Creating temporary bucket for export...")
 		ctx, cancel := newRequestContext()
 		defer cancel()
-		bucketName, objectName, err = export.NewTemporaryBucketAndObjectName(ctx, httpClient)
+		// For a project export, create the temporary bucket in that project. For folder and organization exports
+		// params.ProjectID is empty and the default project is used.
+		bucketName, objectName, err = export.NewTemporaryBucketAndObjectName(ctx, httpClient, params.ProjectID)
 		if err != nil {
 			return nil, fmt.Errorf("error creating temporary bucket and prefix: %w", err)
 		}
@@ -82,7 +84,7 @@ func newStorageObjectStream(params *parameters.Parameters) (*asset.Stream, error
 	exportCtx, cancel := context.WithTimeout(context.Background(), exportTimeout)
 	defer cancel()
 	log.Verbose("Creating asset inventory export at %v", storage.GetFullURI(bucketName, objectName))
-	if err := export.ForParentToStorageObject(exportCtx, httpClient, parent, bucketName, objectName); err != nil {
+	if err := export.ForParentToStorageObject(exportCtx, httpClient, parent, bucketName, objectName, params.ProjectID); err != nil {
 		return nil, fmt.Errorf("error exporting asset inventory: %w", err)
 	}
 	defer deleteExport(httpClient, bucketName, objectName)
