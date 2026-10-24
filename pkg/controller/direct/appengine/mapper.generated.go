@@ -29,6 +29,50 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AppEngineDomainMappingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DomainMapping) *krmappenginev1alpha1.AppEngineDomainMappingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineDomainMappingSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	out.SSLSettings = DomainmappingSslSettings_v1alpha1_FromProto(mapCtx, in.GetSslSettings())
+	// MISSING: ResourceRecords
+	return out
+}
+func AppEngineDomainMappingSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineDomainMappingSpec) *pb.DomainMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DomainMapping{}
+	// MISSING: Name
+	// MISSING: ID
+	out.SslSettings = DomainmappingSslSettings_v1alpha1_ToProto(mapCtx, in.SSLSettings)
+	// MISSING: ResourceRecords
+	return out
+}
+func AppEngineDomainMappingStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DomainMapping) *krmappenginev1alpha1.AppEngineDomainMappingStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineDomainMappingStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: ID
+	// MISSING: SSLSettings
+	out.ResourceRecords = direct.Slice_FromProto(mapCtx, in.ResourceRecords, DomainmappingResourceRecords_v1alpha1_FromProto)
+	return out
+}
+func AppEngineDomainMappingStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineDomainMappingStatus) *pb.DomainMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DomainMapping{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: ID
+	// MISSING: SSLSettings
+	out.ResourceRecords = direct.Slice_ToProto(mapCtx, in.ResourceRecords, DomainmappingResourceRecords_v1alpha1_ToProto)
+	return out
+}
 func AppEngineFirewallRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallRule) *krmappenginev1alpha1.AppEngineFirewallRuleObservedState {
 	if in == nil {
 		return nil
@@ -60,16 +104,64 @@ func AppEngineFirewallRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 }
 */
 
-/* found existing non-generated mapping function "AppEngineFirewallRuleSpec_v1alpha1_ToProto", skipping
-func AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFirewallRuleSpec) *pb.FirewallRule {
+/*
+found existing non-generated mapping function "AppEngineFirewallRuleSpec_v1alpha1_ToProto", skipping
+
+	func AppEngineFirewallRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFirewallRuleSpec) *pb.FirewallRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallRule{}
+		// MISSING: Priority
+		out.Action = direct.Enum_ToProto[pb.FirewallRule_Action](mapCtx, in.Action)
+		out.SourceRange = AppEngineFirewallRuleSpec_SourceRange_ToProto(mapCtx, in.SourceRange)
+		out.Description = direct.ValueOf(in.Description)
+		return out
+	}
+*/
+func DomainmappingResourceRecords_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRecord) *krmappenginev1alpha1.DomainmappingResourceRecords {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirewallRule{}
-	// MISSING: Priority
-	out.Action = direct.Enum_ToProto[pb.FirewallRule_Action](mapCtx, in.Action)
-	out.SourceRange = AppEngineFirewallRuleSpec_SourceRange_ToProto(mapCtx, in.SourceRange)
-	out.Description = direct.ValueOf(in.Description)
+	out := &krmappenginev1alpha1.DomainmappingResourceRecords{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Rrdata = direct.LazyPtr(in.GetRrdata())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func DomainmappingResourceRecords_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.DomainmappingResourceRecords) *pb.ResourceRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRecord{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Rrdata = direct.ValueOf(in.Rrdata)
+	out.Type = direct.Enum_ToProto[pb.ResourceRecord_RecordType](mapCtx, in.Type)
+	return out
+}
+
+/* found existing non-generated mapping function "DomainmappingSslSettings_v1alpha1_FromProto", skipping
+func DomainmappingSslSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslSettings) *krmappenginev1alpha1.DomainmappingSslSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.DomainmappingSslSettings{}
+	out.CertificateID = direct.LazyPtr(in.GetCertificateId())
+	out.SSLManagementType = direct.Enum_FromProto(mapCtx, in.GetSslManagementType())
+	out.PendingManagedCertificateID = direct.LazyPtr(in.GetPendingManagedCertificateId())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "DomainmappingSslSettings_v1alpha1_ToProto", skipping
+func DomainmappingSslSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.DomainmappingSslSettings) *pb.SslSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslSettings{}
+	out.CertificateId = direct.ValueOf(in.CertificateID)
+	out.SslManagementType = direct.Enum_ToProto[pb.SslSettings_SslManagementType](mapCtx, in.SSLManagementType)
+	out.PendingManagedCertificateId = direct.ValueOf(in.PendingManagedCertificateID)
 	return out
 }
 */

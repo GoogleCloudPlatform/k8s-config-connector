@@ -21,6 +21,16 @@
 # file does not have.
 
 entries:
+  - kind: AppEngineDomainMapping
+    group: appengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "apps/{app}/domainMappings/{domain_mapping}" contains ancestor segment(s) apps/{app} with no matching reference or field on AppEngineDomainMappingSpec
+    status: open
+  - kind: AppEngineDomainMapping
+    group: appengine.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AppEngineDomainMappingIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
   - kind: AppEngineFirewallRule
     group: appengine.cnrm.cloud.google.com
     reason: identity-root-unknown
