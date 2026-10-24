@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
@@ -79,6 +80,13 @@ type CCExperiments struct {
 	// ResourceSettings allows specifying which resources to enable or disable.
 	// +optional
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
+
+	// ControllerOverrides allows specifying which controller to use for a given
+	// resource kind globally, overriding the system default.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+	// +optional
+	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
 
 type ResourceSettingsMode string
