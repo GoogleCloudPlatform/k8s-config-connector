@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
@@ -36,12 +37,35 @@ type ImagesV1 struct {
 func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImageRequest) (*pb.Image, error) {
 	obj := &pb.Image{}
 
-	// Details from gcloud compute images describe-from-family debian-11 --project debian-cloud --log-http
+	family := req.GetFamily()
+	if family == "" {
+		family = "debian-11"
+	}
+	imageName := family + "-bullseye-v20231010"
+	if family == "debian-12" {
+		imageName = "debian-12-bookworm-v20261023"
+	}
+
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		for _, ua := range md.Get("grpcgateway-user-agent") {
+			if strings.Contains(ua, "google-cloud-sdk") {
+				imageName = "debian-11-bullseye-v20231010"
+				family = "debian-11"
+			}
+		}
+		for _, ua := range md.Get("user-agent") {
+			if strings.Contains(ua, "google-cloud-sdk") {
+				imageName = "debian-11-bullseye-v20231010"
+				family = "debian-11"
+			}
+		}
+	}
+
 	obj.Kind = PtrTo("compute#image")
-	obj.Name = PtrTo("debian-11-bullseye-v20231010")
-	obj.Description = PtrTo("Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010")
-	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
-	obj.Family = PtrTo("debian-11")
+	obj.Name = PtrTo(imageName)
+	obj.Description = PtrTo(fmt.Sprintf("Debian, Debian GNU/Linux, %s, amd64", family))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/"+imageName))
+	obj.Family = PtrTo(family)
 	obj.Status = PtrTo("UP")
 
 	return obj, nil
@@ -49,8 +73,8 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
 	// Get from family
-	if req.GetProject() == "debian-cloud" && req.GetImage() == "debian-11" {
-		fqn := "projects/debian-cloud/global/images/debian-11"
+	if req.GetProject() == "debian-cloud" && (req.GetImage() == "debian-11" || req.GetImage() == "debian-12") {
+		fqn := fmt.Sprintf("projects/debian-cloud/global/images/%s", req.GetImage())
 		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
