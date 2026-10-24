@@ -1516,6 +1516,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "visionai.cnrm.cloud.google.com", Kind: "VisionAIApplication"}:
 
+			case schema.GroupKind{Group: "connectors.cnrm.cloud.google.com", Kind: "ConnectorsConnection"}:
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}
