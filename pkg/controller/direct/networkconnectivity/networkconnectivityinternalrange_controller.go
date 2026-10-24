@@ -196,11 +196,9 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
-	// Only mutable fields supported by GCP InternalRange Patch are included in updateMask.
-	// Other fields (ipCIDRRange, targetCIDRRange, networkRef, usage, peering)
-	// are immutable / create-only parameters and cannot be modified in-place via Patch.
-	// prefixLength can be updated to resize the range size in IPv4 reservations.
-	// allocationOptions (e.g. firstAvailableRangesLookupSize for RANDOM_FIRST_N_AVAILABLE) can be updated.
+	// All fields in spec (both mutable and immutable) are compared and included in updateMask.
+	// This ensures that user-initiated edits to immutable fields are passed to GCP API,
+	// allowing GCP to evaluate the change and return an explicit unsupported update error.
 	paths := []string{}
 	if desired.Spec.Description != nil && resource.Description != a.actual.Description {
 		report.AddField("description", a.actual.Description, resource.Description)
@@ -221,6 +219,30 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	if desired.Spec.Overlaps != nil && !reflect.DeepEqual(resource.Overlaps, a.actual.Overlaps) {
 		report.AddField("overlaps", a.actual.Overlaps, resource.Overlaps)
 		paths = append(paths, "overlaps")
+	}
+	if desired.Spec.IPCIDRRange != nil && resource.IpCidrRange != a.actual.IpCidrRange {
+		report.AddField("ip_cidr_range", a.actual.IpCidrRange, resource.IpCidrRange)
+		paths = append(paths, "ipCidrRange")
+	}
+	if desired.Spec.Migration != nil && !proto.Equal(resource.Migration, a.actual.Migration) {
+		report.AddField("migration", a.actual.Migration, resource.Migration)
+		paths = append(paths, "migration")
+	}
+	if desired.Spec.NetworkRef != nil && normalizeGCPPath(resource.Network) != normalizeGCPPath(a.actual.Network) {
+		report.AddField("network", a.actual.Network, resource.Network)
+		paths = append(paths, "network")
+	}
+	if desired.Spec.Peering != nil && normalizeGCPPath(resource.Peering) != normalizeGCPPath(a.actual.Peering) {
+		report.AddField("peering", a.actual.Peering, resource.Peering)
+		paths = append(paths, "peering")
+	}
+	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
+		report.AddField("target_cidr_range", a.actual.TargetCidrRange, resource.TargetCidrRange)
+		paths = append(paths, "targetCidrRange")
+	}
+	if desired.Spec.Usage != nil && resource.Usage != a.actual.Usage {
+		report.AddField("usage", a.actual.Usage, resource.Usage)
+		paths = append(paths, "usage")
 	}
 
 	if len(paths) > 0 {
@@ -322,4 +344,15 @@ func (a *internalRangeAdapter) waitForOperation(ctx context.Context, op *api.Goo
 
 		time.Sleep(2 * time.Second)
 	}
+}
+
+func normalizeGCPPath(path string) string {
+	if path == "" {
+		return ""
+	}
+	path = strings.TrimPrefix(path, "https://www.googleapis.com/compute/v1/")
+	path = strings.TrimPrefix(path, "https://compute.googleapis.com/compute/v1/")
+	path = strings.TrimPrefix(path, "https://compute.googleapis.com/compute/beta/")
+	path = strings.TrimPrefix(path, "https://www.googleapis.com/compute/beta/")
+	return path
 }
