@@ -235,6 +235,7 @@ BLOCKED_KINDS=(
     "GSuiteAddonsDeployment"
     "HypercomputeClusterCluster"
     "IAMAccessPolicy"
+    "IAMPolicyBinding"
     "IAMPrincipalAccessBoundaryPolicy"
     "IAPTunnelDestGroup"
     "InfraManagerDeploymentGroup"

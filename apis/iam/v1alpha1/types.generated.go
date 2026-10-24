@@ -21,6 +21,7 @@
 // resource: IAMDenyPolicy:Policy
 // resource: IAMAccessPolicy:AccessPolicy
 // resource: IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+// resource: IAMPolicyBinding:PolicyBinding
 
 package v1alpha1
 
@@ -252,6 +253,49 @@ type AccessPolicyRule_Operation struct {
 	//  `permissions`.
 	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.Operation.excluded_permissions
 	ExcludedPermissions []string `json:"excludedPermissions,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.PolicyBinding.Target
+type PolicyBinding_Target struct {
+	// Immutable. The full resource name that's used for principal access
+	//  boundary policy bindings. The principal set must be directly parented
+	//  by the policy binding's parent or same as the parent if the target is a
+	//  project, folder, or organization.
+	//
+	//  Examples:
+	//
+	//  * For bindings parented by an organization:
+	//      * Organization:
+	//      `//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID`
+	//      * Workforce Identity:
+	//      `//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID`
+	//      * Workspace Identity:
+	//      `//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID`
+	//  * For bindings parented by a folder:
+	//      * Folder:
+	//        `//cloudresourcemanager.googleapis.com/folders/FOLDER_ID`
+	//  * For bindings parented by a project:
+	//      * Project:
+	//          * `//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER`
+	//          * `//cloudresourcemanager.googleapis.com/projects/PROJECT_ID`
+	//      * Workload Identity Pool:
+	//      `//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID`
+	// +kcc:proto:field=google.iam.v3.PolicyBinding.Target.principal_set
+	PrincipalSet *string `json:"principalSet,omitempty"`
+
+	// Immutable. The full resource name that's used for access policy
+	//  bindings.
+	//
+	//  Examples:
+	//
+	//  * Organization:
+	//  `//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID`
+	//  * Folder: `//cloudresourcemanager.googleapis.com/folders/FOLDER_ID`
+	//  * Project:
+	//      * `//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER`
+	//      * `//cloudresourcemanager.googleapis.com/projects/PROJECT_ID`
+	// +kcc:proto:field=google.iam.v3.PolicyBinding.Target.resource
+	Resource *string `json:"resource,omitempty"`
 }
 
 // +kcc:proto=google.iam.v3.PrincipalAccessBoundaryPolicyDetails
