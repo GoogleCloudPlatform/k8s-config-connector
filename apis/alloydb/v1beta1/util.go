@@ -15,11 +15,11 @@
 package v1beta1
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -41,10 +41,13 @@ func getReadyCondition(u *unstructured.Unstructured) (condition v1alpha1.Conditi
 	if conditionsRaw == nil {
 		return v1alpha1.Condition{}, false, nil
 	}
-	if conditions, err := k8s.MarshalAsConditionsSlice(conditionsRaw); err == nil {
-		for _, condition := range conditions {
-			if condition.Type == k8sv1alpha1.ReadyConditionType {
-				return condition, true, nil
+	if bytes, err := json.Marshal(conditionsRaw); err == nil {
+		var conditions []v1alpha1.Condition
+		if err := json.Unmarshal(bytes, &conditions); err == nil {
+			for _, condition := range conditions {
+				if condition.Type == k8sv1alpha1.ReadyConditionType {
+					return condition, true, nil
+				}
 			}
 		}
 	}

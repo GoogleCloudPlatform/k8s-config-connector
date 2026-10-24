@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/externalonlygvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -604,7 +605,7 @@ func (t *TFIAMClient) getResource(ctx context.Context, gvk schema.GroupVersionKi
 	u.SetGroupVersionKind(gvk)
 	if err := t.kubeClient.Get(ctx, nn, u); err != nil {
 		if errors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(gvk, nn)
+			return nil, refs.NewReferenceNotFoundError(gvk, nn)
 		}
 		return nil, fmt.Errorf("error retrieving resource '%v' with GroupVersionKind '%v': %w", nn, gvk, err)
 	}

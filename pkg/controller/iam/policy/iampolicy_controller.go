@@ -21,6 +21,7 @@ import (
 	"time"
 
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -272,7 +273,7 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 		}
 		if !k8s.HasAbandonAnnotation(policy) {
 			if err := r.Reconciler.iamClient.DeletePolicy(r.Ctx, policy); err != nil {
-				if !errors.Is(err, kcciamclient.ErrNotFound) && !k8s.IsReferenceNotFoundError(err) {
+				if !errors.Is(err, kcciamclient.ErrNotFound) && !refs.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
 						resource, err := toK8sResource(policy)

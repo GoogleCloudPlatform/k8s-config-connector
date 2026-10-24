@@ -18,6 +18,7 @@ import (
 	"reflect"
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -699,14 +700,14 @@ func TestResource_GetImportID(t *testing.T) {
 }
 
 func assertIsReferenceNotFoundError(t *testing.T, err error) {
-	if _, ok := k8s.AsReferenceNotFoundError(err); !ok {
-		t.Fatalf("expected error that can be unwrapped as '%v', but got: '%v'", reflect.TypeOf(&k8s.ReferenceNotFoundError{}), err)
+	if _, ok := refs.AsReferenceNotFoundError(err); !ok {
+		t.Fatalf("expected error that can be unwrapped as '%v', but got: '%v'", reflect.TypeOf(&refs.ReferenceNotFoundError{}), err)
 	}
 }
 
 func assertIsReferenceNotReadyError(t *testing.T, err error) {
-	if _, ok := k8s.AsReferenceNotReadyError(err); !ok {
-		t.Fatalf("expected error that can be unwrapped as '%v', but got: '%v'", reflect.TypeOf(&k8s.ReferenceNotReadyError{}), err)
+	if _, ok := refs.AsReferenceNotReadyError(err); !ok {
+		t.Fatalf("expected error that can be unwrapped as '%v', but got: '%v'", reflect.TypeOf(&refs.ReferenceNotReadyError{}), err)
 	}
 }
 

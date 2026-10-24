@@ -30,6 +30,7 @@ import (
 	"time"
 
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
@@ -305,7 +306,7 @@ func testResolveMemberIdentity(ctx context.Context, t *testing.T, iamClient *kcc
 		},
 	}
 	_, err = kcciamclient.ResolveMemberIdentity(ctx, "", memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
-	if err == nil || !k8s.IsReferenceNotFoundError(err) {
+	if err == nil || !refs.IsReferenceNotFoundError(err) {
 		t.Fatalf("resolving member identity with non-existent memberFrom reference: got error: %v, want ReferenceNotFoundError", err)
 	}
 
@@ -343,15 +344,15 @@ func TestGetSetDeletePolicyReferenceNotFound(t *testing.T) {
 
 func testGetSetDeletePolicyReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, newPolicy *iamv1beta1.IAMPolicy) {
 	_, err := iamClient.GetPolicy(ctx, newPolicy)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("getting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	_, err = iamClient.SetPolicy(ctx, newPolicy)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("setting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	err = iamClient.DeletePolicy(ctx, newPolicy)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }
@@ -595,15 +596,15 @@ func TestGetSetDeletePolicyMemberReferenceNotFound(t *testing.T) {
 
 func testGetSetDeletePolicyMemberReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember) {
 	_, err := iamClient.GetPolicyMember(ctx, policyMember)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("getting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	_, err = iamClient.SetPolicyMember(ctx, policyMember)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("setting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	err = iamClient.DeletePolicyMember(ctx, policyMember)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }
@@ -708,15 +709,15 @@ func TestGetSetDeleteAuditConfigReferenceNotFound(t *testing.T) {
 
 func testGetSetDeleteAuditConfigReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.TFIAMClient, auditConfig *iamv1beta1.IAMAuditConfig) {
 	_, err := iamClient.GetAuditConfig(ctx, auditConfig)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("getting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	_, err = iamClient.SetAuditConfig(ctx, auditConfig)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("setting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 	err = iamClient.DeleteAuditConfig(ctx, auditConfig)
-	if !k8s.IsReferenceNotFoundError(err) {
+	if !refs.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }

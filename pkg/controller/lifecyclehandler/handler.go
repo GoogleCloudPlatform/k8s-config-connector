@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -146,10 +147,10 @@ func removeSystemLabels(u *unstructured.Unstructured) {
 // is related to an unready or non-existent resource reference. Note that
 // KeyInSecretNotFoundError is not included in this list.
 func CausedByUnreadyOrNonexistentResourceRefs(err error) (refGVK schema.GroupVersionKind, refNN types.NamespacedName, ok bool) {
-	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotReadyError(err); ok {
 		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
 	}
-	if unwrappedErr, ok := k8s.AsReferenceNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotFoundError(err); ok {
 		return unwrappedErr.RefResourceGVK, unwrappedErr.RefResource, true
 	}
 	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotFoundError(err); ok {
@@ -158,23 +159,23 @@ func CausedByUnreadyOrNonexistentResourceRefs(err error) (refGVK schema.GroupVer
 	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotReadyError(err); ok {
 		return unwrappedErr.ResourceGVK, unwrappedErr.Resource, true
 	}
-	if unwrappedErr, ok := k8s.AsSecretNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsSecretNotFoundError(err); ok {
 		return schema.GroupVersionKind{Version: "v1", Kind: "Secret"}, unwrappedErr.Secret, true
 	}
 	return schema.GroupVersionKind{}, types.NamespacedName{}, false
 }
 
 func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolint:revive
-	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotReadyError(err); ok {
 		return unwrappedErr, true
 	}
-	if unwrappedErr, ok := k8s.AsReferenceNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsReferenceNotFoundError(err); ok {
 		return unwrappedErr, true
 	}
-	if unwrappedErr, ok := k8s.AsSecretNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsSecretNotFoundError(err); ok {
 		return unwrappedErr, true
 	}
-	if unwrappedErr, ok := k8s.AsKeyInSecretNotFoundError(err); ok {
+	if unwrappedErr, ok := refs.AsKeyInSecretNotFoundError(err); ok {
 		return unwrappedErr, true
 	}
 	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotFoundError(err); ok {
@@ -188,11 +189,11 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolin
 
 func reasonForUnresolvableDeps(err error) (string, error) {
 	switch {
-	case k8s.IsReferenceNotReadyError(err) || k8s.IsTransitiveDependencyNotReadyError(err):
+	case refs.IsReferenceNotReadyError(err) || k8s.IsTransitiveDependencyNotReadyError(err):
 		return k8s.DependencyNotReady, nil
-	case k8s.IsReferenceNotFoundError(err) || k8s.IsSecretNotFoundError(err) || k8s.IsTransitiveDependencyNotFoundError(err):
+	case refs.IsReferenceNotFoundError(err) || refs.IsSecretNotFoundError(err) || k8s.IsTransitiveDependencyNotFoundError(err):
 		return k8s.DependencyNotFound, nil
-	case k8s.IsKeyInSecretNotFoundError(err):
+	case refs.IsKeyInSecretNotFoundError(err):
 		return k8s.DependencyInvalid, nil
 	default:
 		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %w", err)
@@ -421,7 +422,7 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 		}
 		parent, err := k8s.GetReferencedResource(resourceRef, refConfig.GVK, resource.GetNamespace(), kubeClient)
 		if err != nil {
-			if k8s.IsReferenceNotFoundError(err) {
+			if refs.IsReferenceNotFoundError(err) {
 				return true, nil, nil
 			}
 			return false, nil, fmt.Errorf("error getting parent reference 'spec.%v': %w", refConfig.Key, err)

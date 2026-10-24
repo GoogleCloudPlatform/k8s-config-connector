@@ -20,7 +20,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -122,7 +121,7 @@ func (r *kmsCryptoKeyRef) normalizedExternal(ctx context.Context, reader client.
 	u.SetGroupVersionKind(KMSCryptoKeyGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return "", refs.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", KMSCryptoKeyGVK, key, err)
 	}
@@ -144,7 +143,7 @@ func (r *kmsCryptoKeyRef) normalizedExternal(ctx context.Context, reader client.
 		return "", fmt.Errorf("reading status.selfLink: %w", err)
 	}
 	if selfLink == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		return "", refs.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	return selfLink, nil
 }
