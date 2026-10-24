@@ -164,8 +164,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The DocumentAIProcessorVersion name. If not given, the
-                  metadata.name will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - processorRef
@@ -632,8 +633,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The DocumentAIProcessorVersion name. If not given, the
-                  metadata.name will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - processorRef
