@@ -1655,6 +1655,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".importJobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".importJobs[].expireTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".importJobs[].generateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.removePaths.Insert(".publicKey.data")
+		visitor.removePaths.Insert(".importJobs[].publicKey.data")
 	}
 
 	// Network Management

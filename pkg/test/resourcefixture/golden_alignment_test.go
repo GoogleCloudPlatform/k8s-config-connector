@@ -631,6 +631,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "parent")
 		}
 
+		// Cloud KMS ImportJob specific fields (HSM attestation and wrapping public key are dynamically generated per job)
+		if _, ok := v["importMethod"]; ok {
+			delete(v, "attestation")
+			delete(v, "publicKey")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
