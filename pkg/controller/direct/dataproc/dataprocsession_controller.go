@@ -27,6 +27,7 @@ import (
 	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -193,20 +194,90 @@ func (a *sessionAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataproc session", "name", a.id)
 
-	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	var maskedActual *pb.Session
+	{
+		mapCtx := &direct.MapContext{}
+		spec := DataprocSessionSpec_v1alpha1_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		maskedActual = DataprocSessionSpec_v1alpha1_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+	}
+	maskedActual.Name = a.desired.Name
+	maskedActual.Labels = a.actual.Labels
+
+	clonedDesired := proto.Clone(a.desired).(*pb.Session)
+
+	// Since DataprocSession is immutable, we only check if the user-specified fields have been changed.
+	// We populate any unspecified fields in the desired spec with their actual values/defaults from the server.
+	populateDefaults := func(obj *pb.Session) {
+		if obj.EnvironmentConfig == nil {
+			obj.EnvironmentConfig = proto.Clone(maskedActual.EnvironmentConfig).(*pb.EnvironmentConfig)
+		} else {
+			if obj.EnvironmentConfig.ExecutionConfig == nil {
+				obj.EnvironmentConfig.ExecutionConfig = proto.Clone(maskedActual.GetEnvironmentConfig().GetExecutionConfig()).(*pb.ExecutionConfig)
+			} else {
+				if obj.EnvironmentConfig.ExecutionConfig.IdleTtl == nil {
+					obj.EnvironmentConfig.ExecutionConfig.IdleTtl = maskedActual.GetEnvironmentConfig().GetExecutionConfig().GetIdleTtl()
+				}
+				if obj.EnvironmentConfig.ExecutionConfig.Ttl == nil {
+					obj.EnvironmentConfig.ExecutionConfig.Ttl = maskedActual.GetEnvironmentConfig().GetExecutionConfig().GetTtl()
+				}
+				if obj.EnvironmentConfig.ExecutionConfig.ServiceAccount == "" {
+					obj.EnvironmentConfig.ExecutionConfig.ServiceAccount = maskedActual.GetEnvironmentConfig().GetExecutionConfig().GetServiceAccount()
+				}
+			}
+			if obj.EnvironmentConfig.PeripheralsConfig == nil {
+				obj.EnvironmentConfig.PeripheralsConfig = proto.Clone(maskedActual.GetEnvironmentConfig().GetPeripheralsConfig()).(*pb.PeripheralsConfig)
+			} else {
+				if obj.EnvironmentConfig.PeripheralsConfig.SparkHistoryServerConfig == nil {
+					obj.EnvironmentConfig.PeripheralsConfig.SparkHistoryServerConfig = proto.Clone(maskedActual.GetEnvironmentConfig().GetPeripheralsConfig().GetSparkHistoryServerConfig()).(*pb.SparkHistoryServerConfig)
+				}
+			}
+		}
+
+		if obj.RuntimeConfig == nil {
+			obj.RuntimeConfig = proto.Clone(maskedActual.RuntimeConfig).(*pb.RuntimeConfig)
+		} else {
+			if obj.RuntimeConfig.Version == "" {
+				obj.RuntimeConfig.Version = maskedActual.GetRuntimeConfig().GetVersion()
+			}
+			if obj.RuntimeConfig.Properties == nil {
+				obj.RuntimeConfig.Properties = make(map[string]string)
+			}
+			for k, v := range maskedActual.GetRuntimeConfig().GetProperties() {
+				if _, exists := obj.RuntimeConfig.Properties[k]; !exists {
+					obj.RuntimeConfig.Properties[k] = v
+				}
+			}
+		}
+
+		// Labels on GCP include system labels like goog-dataproc-*. Align desired labels with actual labels
+		// to prevent false diff triggers for server-supplied labels.
+		obj.Labels = maskedActual.Labels
+	}
+
+	populateDefaults(clonedDesired)
+	populateDefaults(maskedActual)
+
+	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return err
 	}
-	if len(paths) != 0 {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for path := range paths {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("DataprocSession is immutable and cannot be updated")
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
-	return a.updateStatus(ctx, updateOp, a.actual)
+	u := updateOp.GetUnstructured()
+	diffs.Object = u
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	return fmt.Errorf("DataprocSession is immutable and cannot be updated")
 }
 
 func (a *sessionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
