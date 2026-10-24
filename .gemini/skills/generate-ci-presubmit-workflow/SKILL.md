@@ -5,7 +5,10 @@ description: Guides through creating per-service CI presubmit test scripts and r
 
 # Generate CI Presubmit Workflow
 
-This skill guides an automated agent through adding per-service E2E test presubmits and regenerating `.github/workflows/ci-presubmit.yaml`.
+> [!NOTE]
+> **Consolidated CI Matrix**: Matrix presubmits are consolidated into generic scripts (`dev/ci/presubmits/tests-e2e-fixtures-suite`, `dev/ci/presubmits/tests-e2e-samples-suite`, and `dev/ci/presubmits/tests-scenarios-suite`). Individual per-service or per-resource CI presubmit files in `dev/ci/presubmits/` (such as `tests-e2e-fixtures-<service>` or `tests-e2e-fixtures-<kind>`) are **no longer required or supported**. CI automatically discovers services and runs tests via the matrix suites.
+
+This skill is retained for historical reference and maintenance of the GitHub Actions workflow generator.
 
 ## Overview
 

@@ -62,6 +62,17 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource IAMAccessPolicy:AccessPolicy \
   --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.iam.v1 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource IAMWorkloadIdentityPoolNamespace:WorkloadIdentityPoolNamespace
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.iam.v1 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --resource IAMWorkloadIdentityPoolNamespace:WorkloadIdentityPoolNamespace
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.iam.admin.v1,google.iam.v2 \
   --api-version "iam.cnrm.cloud.google.com/v1beta1" \

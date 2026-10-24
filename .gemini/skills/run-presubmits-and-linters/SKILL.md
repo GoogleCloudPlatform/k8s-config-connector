@@ -9,7 +9,7 @@ This skill guides an automated agent through running and debugging Config Connec
 
 ## Presubmit Scripts Overview
 
-All presubmits run in GitHub Actions, generated from `dev/ci/presubmits/`. Each script in `dev/ci/presubmits/` maps 1:1 to a CI job.
+All presubmits run in GitHub Actions. Matrix presubmits are consolidated into generic runner scripts (e.g. `dev/ci/presubmits/tests-e2e-fixtures-suite <service>`). **Do not add individual CI presubmit scripts** (such as `dev/ci/presubmits/tests-e2e-fixtures-<service>` or `tests-e2e-fixtures-<kind>`).
 
 If a specific CI presubmit fails, run the corresponding script locally to diagnose and fix the failure.
 
@@ -19,14 +19,14 @@ If a specific CI presubmit fails, run the corresponding script locally to diagno
 
 - **`./dev/ci/presubmits/unit-tests`**: Runs unit tests and verifies golden log alignment across packages.
 - **`./dev/ci/presubmits/validate-generated-files`**: Validates CRDs and generated mapper/types files (`dev/tasks/generate-types-and-mappers`).
-- **`./dev/ci/presubmits/tests-e2e-fixtures-<service>`**: Runs E2E fixture tests against mock GCP for the specified service.
-- **`./dev/ci/presubmits/tests-e2e-samples-<service>`**: Runs sample tests for the specified service.
+- **`./dev/ci/presubmits/tests-e2e-fixtures-suite <service>`**: Runs E2E fixture tests against mock GCP for the specified service.
+- **`./dev/ci/presubmits/tests-e2e-samples-suite <service>`**: Runs sample tests for the specified service.
 
 ### Fixing Out-of-Date Golden Output
 
 When golden logs or YAML fixtures are out of date, run the failing presubmit script with `WRITE_GOLDEN_OUTPUT=1`:
 ```bash
-WRITE_GOLDEN_OUTPUT=1 ./dev/ci/presubmits/tests-e2e-fixtures-<service>
+WRITE_GOLDEN_OUTPUT=1 ./dev/ci/presubmits/tests-e2e-fixtures-suite <service>
 ```
 Review the resulting git diff to verify that changes match expected GCP API behavior.
 
