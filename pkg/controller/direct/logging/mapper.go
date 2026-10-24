@@ -506,11 +506,11 @@ func LoggingLogScopeResourceRef_ToExternal(ref *krmv1alpha1.LoggingLogScopeResou
 		return ""
 	}
 	if ref.LogViewRef != nil {
-		return ref.LogViewRef.External
+		return strings.TrimPrefix(ref.LogViewRef.External, "//logging.googleapis.com/")
 	}
 	if ref.ProjectRef != nil {
 		// If ProjectRef.External is just a project ID/number without "projects/", format as "projects/{project}"
-		external := ref.ProjectRef.External
+		external := strings.TrimPrefix(ref.ProjectRef.External, "//cloudresourcemanager.googleapis.com/")
 		if external != "" && !strings.HasPrefix(external, "projects/") {
 			return "projects/" + external
 		}
