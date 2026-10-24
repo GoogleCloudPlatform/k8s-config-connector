@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: bigquerymigration.cnrm.cloud.google.com
+  kind: BigQueryMigrationMigrationWorkflow
+  name: migrationworkflow-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
