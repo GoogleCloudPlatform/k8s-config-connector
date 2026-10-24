@@ -15,84 +15,106 @@
 package registration
 
 import (
+	"context"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func TestMergeConcurrencyOverrides(t *testing.T) {
-	testGK := "ComputeForwardingRule.compute.cnrm.cloud.google.com"
+func TestMaxConcurrentReconcilesOverrides(t *testing.T) {
+	testGVK := schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeForwardingRule",
+	}
+	testGK := testGVK.GroupKind().String()
 	otherGK := "BigQueryDataset.bigquery.cnrm.cloud.google.com"
 
 	tests := []struct {
-		name                    string
-		ccConcurrencyOverrides  map[string]int
-		cccConcurrencyOverrides map[string]int
-		want                    int
+		name         string
+		ccOverrides  map[string]int
+		cccOverrides map[string]int
+		want         int
 	}{
 		{
-			name: "no overrides: returns 0 (defaulted by controller)",
-			want: 0,
+			name: "no overrides: returns default ControllerMaxConcurrentReconciles (20)",
+			want: k8s.ControllerMaxConcurrentReconciles,
 		},
 		{
 			name: "CC override only (cluster mode or global default): returns CC value",
-			ccConcurrencyOverrides: map[string]int{
+			ccOverrides: map[string]int{
 				testGK: 5,
 			},
 			want: 5,
 		},
 		{
 			name: "CCC override only: returns CCC value",
-			cccConcurrencyOverrides: map[string]int{
+			cccOverrides: map[string]int{
 				testGK: 8,
 			},
 			want: 8,
 		},
 		{
 			name: "CCC overrides another GK: falls back to global CC value for target GK",
-			ccConcurrencyOverrides: map[string]int{
+			ccOverrides: map[string]int{
 				testGK: 4,
 			},
-			cccConcurrencyOverrides: map[string]int{
+			cccOverrides: map[string]int{
 				otherGK: 12,
 			},
 			want: 4,
 		},
 		{
 			name: "both CCC and CC override same GK: CCC takes precedence",
-			ccConcurrencyOverrides: map[string]int{
+			ccOverrides: map[string]int{
 				testGK: 3,
 			},
-			cccConcurrencyOverrides: map[string]int{
+			cccOverrides: map[string]int{
 				testGK: 15,
 			},
 			want: 15,
 		},
 		{
 			name: "non-positive value in CCC falls back to CC override",
-			ccConcurrencyOverrides: map[string]int{
+			ccOverrides: map[string]int{
 				testGK: 7,
 			},
-			cccConcurrencyOverrides: map[string]int{
+			cccOverrides: map[string]int{
 				testGK: 0,
 			},
 			want: 7,
 		},
 		{
-			name: "non-positive values in both are ignored",
-			ccConcurrencyOverrides: map[string]int{
+			name: "non-positive values in both fall back to default (20)",
+			ccOverrides: map[string]int{
 				testGK: -1,
 			},
-			cccConcurrencyOverrides: map[string]int{
+			cccOverrides: map[string]int{
 				testGK: 0,
 			},
-			want: 0,
+			want: k8s.ControllerMaxConcurrentReconciles,
+		},
+		{
+			name: "unrecognized GroupKind is ignored",
+			ccOverrides: map[string]int{
+				"UnknownKind.unknown.cnrm.cloud.google.com": 50,
+			},
+			want: k8s.ControllerMaxConcurrentReconciles,
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			merged := mergeConcurrencyOverrides(tc.ccConcurrencyOverrides, tc.cccConcurrencyOverrides)
-			if got := merged[testGK]; got != tc.want {
-				t.Errorf("mergeConcurrencyOverrides()[%q] = %d, want %d", testGK, got, tc.want)
+			ctx := context.Background()
+			opts := &defaultControllerOptions{
+				maxConcurrentReconcilesOverrides: mergeMaxConcurrentReconcilesOverrides(ctx, tc.ccOverrides, tc.cccOverrides),
+			}
+			if got := opts.maxConcurrentReconcilesForGVK(testGVK); got != tc.want {
+				t.Errorf("maxConcurrentReconcilesForGVK(%v) = %d, want %d", testGVK, got, tc.want)
+			}
+			if _, exists := opts.maxConcurrentReconcilesOverrides[schema.ParseGroupKind("UnknownKind.unknown.cnrm.cloud.google.com")]; exists {
+				t.Errorf("expected unrecognized GroupKind to be ignored")
 			}
 		})
 	}
