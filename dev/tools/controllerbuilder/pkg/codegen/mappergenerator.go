@@ -1062,11 +1062,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
-					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+					functionName = "direct.EnumPtr_ToProto"
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if oneof != nil && !protoField.HasOptionalKeyword() {
 					// These are very rare and irregular; just require a custom method
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 
