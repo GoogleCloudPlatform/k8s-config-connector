@@ -82,6 +82,17 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 		opt.RateLimiter = ratelimiter.NewRateLimiter()
 	}
 
+	maxWorkers := int64(opt.MaxConcurrentReconciles)
+	if reconcilers.TF != nil {
+		reconcilers.TF.ReconcilerMetrics.MaxConcurrentReconciles = maxWorkers
+	}
+	if reconcilers.DCL != nil {
+		reconcilers.DCL.ReconcilerMetrics.MaxConcurrentReconciles = maxWorkers
+	}
+	if reconcilers.Direct != nil {
+		reconcilers.Direct.ReconcilerMetrics.MaxConcurrentReconciles = maxWorkers
+	}
+
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)

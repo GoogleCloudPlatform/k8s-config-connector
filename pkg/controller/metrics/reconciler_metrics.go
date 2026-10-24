@@ -32,14 +32,19 @@ var ResourceNameLabel bool
 
 type ReconcilerMetrics struct {
 	// atomic counter for occupied workers
-	occupiedWorkers   int64
-	ResourceNameLabel bool
+	occupiedWorkers         int64
+	MaxConcurrentReconciles int64
+	ResourceNameLabel       bool
 }
 
 func (r *ReconcilerMetrics) RecordReconcileWorkers(ctx context.Context, gvk schema.GroupVersionKind) {
 	atomic.AddInt64(&r.occupiedWorkers, 1)
 	openCensusContext, _ := tag.New(ctx, tag.Insert(metrics.KindTag, gvk.GroupKind().String()))
-	stats.Record(openCensusContext, metrics.MReconcileTotalWorkers.M(k8s.ControllerMaxConcurrentReconciles))
+	totalWorkers := r.MaxConcurrentReconciles
+	if totalWorkers <= 0 {
+		totalWorkers = k8s.ControllerMaxConcurrentReconciles
+	}
+	stats.Record(openCensusContext, metrics.MReconcileTotalWorkers.M(totalWorkers))
 	stats.Record(openCensusContext, metrics.MReconcileOccupiedWorkers.M(atomic.LoadInt64(&r.occupiedWorkers)))
 }
 

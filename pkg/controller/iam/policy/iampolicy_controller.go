@@ -117,6 +117,7 @@ func add(mgr manager.Manager, r *ReconcileIAMPolicy, opt controller.Options) err
 	if opt.MaxConcurrentReconciles == 0 {
 		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
 	}
+	r.ReconcilerMetrics.MaxConcurrentReconciles = int64(opt.MaxConcurrentReconciles)
 	if opt.RateLimiter == nil {
 		opt.RateLimiter = ratelimiter.NewRateLimiter()
 	}
