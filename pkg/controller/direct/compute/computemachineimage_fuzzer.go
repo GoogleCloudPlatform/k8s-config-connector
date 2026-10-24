@@ -33,19 +33,55 @@ func computeMachineImageFuzzer() fuzztesting.KRMFuzzer {
 		ComputeMachineImageStatus_v1alpha1_FromProto, ComputeMachineImageStatus_v1alpha1_ToProto,
 	)
 
+	// Detailed Comparison of KRM Fields with Proto Fields:
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+	// | KRM Spec Field            | Proto Field                       | Fuzzer/Mapping Status                                                |
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+	// | description               | description                       | SpecField (".description")                                           |
+	// | guestFlush                | guest_flush                       | SpecField (".guest_flush")                                           |
+	// | machineImageEncryptionKey | machine_image_encryption_key      | SpecField (".machine_image_encryption_key")                          |
+	// |   kmsKeyName              |   kms_key_name                    | SpecField (".machine_image_encryption_key.kms_key_name")             |
+	// |   kmsKeyServiceAccount    |   kms_key_service_account         | SpecField (".machine_image_encryption_key.kms_key_service_account") |
+	// |   rawKey                  |   raw_key                         | SpecField (".machine_image_encryption_key.raw_key")                 |
+	// |   sha256                  |   sha256                          | SpecField (".machine_image_encryption_key.sha256")                  |
+	// | projectRef                | N/A                               | Part of resource URI/identity                                        |
+	// | resourceID                | name                              | Identity/name field (Unimplemented_Identity)                         |
+	// | sourceInstanceRef         | source_instance                   | SpecField (".source_instance")                                       |
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+	//
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+	// | KRM Status Field          | Proto Field                       | Fuzzer/Mapping Status                                                |
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+	// | conditions                | N/A                               | KCC status conditions                                                |
+	// | observedGeneration        | N/A                               | KCC observed generation                                              |
+	// | selfLink                  | self_link                         | StatusField (".self_link")                                           |
+	// | storageLocations          | storage_locations                 | StatusField (".storage_locations")                                   |
+	// +---------------------------+-----------------------------------+----------------------------------------------------------------------+
+
+	// Spec fields
 	f.SpecField(".description")
 	f.SpecField(".guest_flush")
 	f.SpecField(".machine_image_encryption_key")
+	f.SpecField(".machine_image_encryption_key.kms_key_name")
+	f.SpecField(".machine_image_encryption_key.kms_key_service_account")
+	f.SpecField(".machine_image_encryption_key.raw_key")
+	f.SpecField(".machine_image_encryption_key.sha256")
 	f.SpecField(".source_instance")
 
+	// Status fields
 	f.StatusField(".self_link")
 	f.StatusField(".storage_locations")
 
+	// Identity fields
 	f.Unimplemented_Identity(".name")
+
+	// Labels / Annotations
 	f.Unimplemented_LabelsAnnotations(".labels")
 
+	// Internal fields
 	f.Unimplemented_Internal(".kind")
 
+	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".creation_timestamp")
 	f.Unimplemented_NotYetTriaged(".id")
 	f.Unimplemented_NotYetTriaged(".instance_properties")
