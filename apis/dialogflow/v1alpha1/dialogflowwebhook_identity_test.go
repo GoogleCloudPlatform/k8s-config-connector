@@ -81,38 +81,103 @@ func TestDialogflowWebhookIdentity_FromExternal(t *testing.T) {
 
 func TestDialogflowWebhook_GetIdentity(t *testing.T) {
 	resourceID := "my-webhook"
-	obj := &DialogflowWebhook{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test-webhook",
-			Namespace: "default",
-		},
-		Spec: DialogflowWebhookSpec{
-			AgentRef: &DialogflowCXAgentRef{
-				External: "projects/my-project/locations/us-central1/agents/my-agent",
+	tests := []struct {
+		name      string
+		obj       *DialogflowWebhook
+		want      *DialogflowWebhookIdentity
+		wantHasID bool
+	}{
+		{
+			name: "specified resourceID",
+			obj: &DialogflowWebhook{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-webhook",
+					Namespace: "default",
+				},
+				Spec: DialogflowWebhookSpec{
+					AgentRef: &DialogflowCXAgentRef{
+						External: "projects/my-project/locations/us-central1/agents/my-agent",
+					},
+					ResourceID: &resourceID,
+				},
 			},
-			ResourceID: &resourceID,
+			want: &DialogflowWebhookIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Agent:    "my-agent",
+				Webhook:  "my-webhook",
+			},
+			wantHasID: true,
+		},
+		{
+			name: "empty resourceID before creation",
+			obj: &DialogflowWebhook{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-webhook",
+					Namespace: "default",
+				},
+				Spec: DialogflowWebhookSpec{
+					AgentRef: &DialogflowCXAgentRef{
+						External: "projects/my-project/locations/us-central1/agents/my-agent",
+					},
+				},
+			},
+			want: &DialogflowWebhookIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Agent:    "my-agent",
+				Webhook:  "",
+			},
+			wantHasID: false,
+		},
+		{
+			name: "empty resourceID with status.externalRef after creation",
+			obj: &DialogflowWebhook{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-webhook",
+					Namespace: "default",
+				},
+				Spec: DialogflowWebhookSpec{
+					AgentRef: &DialogflowCXAgentRef{
+						External: "projects/my-project/locations/us-central1/agents/my-agent",
+					},
+				},
+				Status: DialogflowWebhookStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-central1/agents/my-agent/webhooks/server-assigned-id"
+						return &s
+					}(),
+				},
+			},
+			want: &DialogflowWebhookIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Agent:    "my-agent",
+				Webhook:  "server-assigned-id",
+			},
+			wantHasID: true,
 		},
 	}
 
 	fakeClient := fake.NewFakeClient()
-	id, err := obj.GetIdentity(context.Background(), fakeClient)
-	if err != nil {
-		t.Fatalf("GetIdentity() error = %v", err)
-	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			id, err := tc.obj.GetIdentity(context.Background(), fakeClient)
+			if err != nil {
+				t.Fatalf("GetIdentity() error = %v", err)
+			}
 
-	webhookID, ok := id.(*DialogflowWebhookIdentity)
-	if !ok {
-		t.Fatalf("unexpected identity type: %T", id)
-	}
+			webhookID, ok := id.(*DialogflowWebhookIdentity)
+			if !ok {
+				t.Fatalf("unexpected identity type: %T", id)
+			}
 
-	want := &DialogflowWebhookIdentity{
-		Project:  "my-project",
-		Location: "us-central1",
-		Agent:    "my-agent",
-		Webhook:  "my-webhook",
-	}
-
-	if diff := cmp.Diff(want, webhookID); diff != "" {
-		t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+			if diff := cmp.Diff(tc.want, webhookID); diff != "" {
+				t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+			}
+			if webhookID.HasIdentitySpecified() != tc.wantHasID {
+				t.Errorf("HasIdentitySpecified() = %v, want %v", webhookID.HasIdentitySpecified(), tc.wantHasID)
+			}
+		})
 	}
 }

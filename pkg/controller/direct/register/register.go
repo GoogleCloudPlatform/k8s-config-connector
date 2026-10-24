@@ -92,6 +92,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/developerconnect"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/conversationdataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/generator"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/knowledgebase"

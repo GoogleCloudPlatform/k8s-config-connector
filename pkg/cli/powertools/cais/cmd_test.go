@@ -17,6 +17,7 @@ package cais
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -257,6 +258,25 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 				if err := unstructured.SetNestedField(u.Object, "folders/"+folderID, "status", "externalRef"); err != nil {
 					t.Fatalf("failed to inject status.externalRef for Folder %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.name and status.externalRef for DialogflowCXAgent to simulate a reconciled agent in static unit tests.
+			if u.GetKind() == "DialogflowCXAgent" && u.GroupVersionKind().Group == "dialogflowcx.cnrm.cloud.google.com" {
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "global"
+				}
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				agentName := fmt.Sprintf("projects/%s/locations/%s/agents/%s", projectID, location, u.GetName())
+				if err := unstructured.SetNestedField(u.Object, agentName, "status", "name"); err != nil {
+					t.Fatalf("failed to inject status.name for DialogflowCXAgent %s: %v", u.GetName(), err)
+				}
+				if err := unstructured.SetNestedField(u.Object, agentName, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for DialogflowCXAgent %s: %v", u.GetName(), err)
 				}
 			}
 
