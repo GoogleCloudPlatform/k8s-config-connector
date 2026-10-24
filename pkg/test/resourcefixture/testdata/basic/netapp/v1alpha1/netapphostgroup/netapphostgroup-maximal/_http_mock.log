@@ -93,7 +93,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A maximal NetApp host group test resource",
     "hosts": [
       "iqn.1994-05.com.redhat:host1",
@@ -128,7 +127,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A maximal NetApp host group test resource",
   "hosts": [
     "iqn.1994-05.com.redhat:host1",
@@ -217,7 +215,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "An updated maximal NetApp host group test resource",
     "hosts": [
       "iqn.1994-05.com.redhat:host3",
@@ -252,7 +249,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated maximal NetApp host group test resource",
   "hosts": [
     "iqn.1994-05.com.redhat:host3",

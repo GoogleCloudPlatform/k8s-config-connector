@@ -87,7 +87,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "hosts": [
       "iqn.1994-05.com.redhat:minimal1"
     ],
@@ -116,7 +115,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "hosts": [
     "iqn.1994-05.com.redhat:minimal1"
   ],
@@ -193,7 +191,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "hosts": [
       "iqn.1994-05.com.redhat:minimal2"
     ],
@@ -222,7 +219,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "hosts": [
     "iqn.1994-05.com.redhat:minimal2"
   ],
