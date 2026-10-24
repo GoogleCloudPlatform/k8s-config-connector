@@ -1135,7 +1135,8 @@ Content-Type: application/json
 {
   "bigqueryConfig": {
     "dropUnknownFields": true,
-    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "labels": {
     "cnrm-test": "true",
@@ -1161,7 +1162,8 @@ X-Xss-Protection: 0
   "bigqueryConfig": {
     "dropUnknownFields": true,
     "state": 1,
-    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "expirationPolicy": {
     "ttl": "2678400s"
@@ -1220,7 +1222,8 @@ X-Xss-Protection: 0
   "bigqueryConfig": {
     "dropUnknownFields": true,
     "state": 1,
-    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+    "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}",
+    "useTableSchema": true
   },
   "expirationPolicy": {
     "ttl": "2678400s"

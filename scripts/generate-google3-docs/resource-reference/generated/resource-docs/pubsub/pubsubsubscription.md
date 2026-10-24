@@ -95,6 +95,7 @@ bigqueryConfig:
     external: string
     name: string
     namespace: string
+  useTableSchema: boolean
   useTopicSchema: boolean
   writeMetadata: boolean
 cloudStorageConfig:
@@ -216,6 +217,16 @@ topicRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a BigQueryTable resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bigqueryConfig.useTableSchema</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>When true, use the BigQuery table's schema as the columns to write to in BigQuery.</p>
         </td>
     </tr>
     <tr>
