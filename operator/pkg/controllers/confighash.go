@@ -23,7 +23,6 @@ import (
 	"strings"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -41,15 +40,14 @@ type CanonicalResourceSettings struct {
 
 // CanonicalCCConfig is hashed to produce "cnrm.cloud.google.com/cc-config-hash".
 type CanonicalCCConfig struct {
-	ResourceSettings     *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
-	ConcurrencyOverrides map[string]int             `json:"concurrencyOverrides,omitempty"`
+	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
 }
 
 // CanonicalCCCConfig is hashed to produce "cnrm.cloud.google.com/ccc-config-hash".
 type CanonicalCCCConfig struct {
-	ResourceSettings     *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
-	ControllerOverrides  map[string]string          `json:"controllerOverrides,omitempty"`
-	ConcurrencyOverrides map[string]int             `json:"concurrencyOverrides,omitempty"`
+	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
 }
 
 // ComputeCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
@@ -59,10 +57,10 @@ func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
 		return ""
 	}
 	cfg := CanonicalCCConfig{
-		ResourceSettings:     canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
-		ConcurrencyOverrides: canonicalizeConcurrencyOverrides(cc.Spec.Experiments.ConcurrencyOverrides),
+		ResourceSettings:                 canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
+		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(cc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
 	}
-	if cfg.ResourceSettings == nil && len(cfg.ConcurrencyOverrides) == 0 {
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
 		return ""
 	}
 	data, err := json.Marshal(cfg)
@@ -80,11 +78,10 @@ func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
 		return ""
 	}
 	cfg := CanonicalCCCConfig{
-		ResourceSettings:     canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
-		ControllerOverrides:  canonicalizeControllerOverrides(ccc.Spec.Experiments.ControllerOverrides),
-		ConcurrencyOverrides: canonicalizeConcurrencyOverrides(ccc.Spec.Experiments.ConcurrencyOverrides),
+		ResourceSettings:                 canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
+		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(ccc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
 	}
-	if cfg.ResourceSettings == nil && len(cfg.ControllerOverrides) == 0 && len(cfg.ConcurrencyOverrides) == 0 {
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
 		return ""
 	}
 	data, err := json.Marshal(cfg)
@@ -95,23 +92,7 @@ func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
 	return hex.EncodeToString(sum[:])
 }
 
-func canonicalizeControllerOverrides(overrides map[string]k8scontrollertype.ReconcilerType) map[string]string {
-	if len(overrides) == 0 {
-		return nil
-	}
-	out := make(map[string]string, len(overrides))
-	for k, v := range overrides {
-		if k != "" && v != "" {
-			out[k] = string(v)
-		}
-	}
-	if len(out) == 0 {
-		return nil
-	}
-	return out
-}
-
-func canonicalizeConcurrencyOverrides(overrides map[string]int) map[string]int {
+func canonicalizeMaxConcurrentReconcilesOverrides(overrides map[string]int) map[string]int {
 	if len(overrides) == 0 {
 		return nil
 	}

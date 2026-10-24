@@ -19,7 +19,6 @@ import (
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
-	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/utils/ptr"
 )
@@ -36,7 +35,7 @@ func TestComputeCCConfigHash(t *testing.T) {
 		ccNonRestartExp := &corev1beta1.ConfigConnector{
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Experiments: &corev1beta1.CCExperiments{
-					ConcurrencyOverrides: map[string]int{"BigQueryDataset.bigquery.cnrm.cloud.google.com": 0},
+					MaxConcurrentReconcilesOverrides: map[string]int{"BigQueryDataset.bigquery.cnrm.cloud.google.com": 0},
 				},
 			},
 		}
@@ -45,11 +44,11 @@ func TestComputeCCConfigHash(t *testing.T) {
 		}
 	})
 
-	t.Run("concurrency overrides produce deterministic hash", func(t *testing.T) {
+	t.Run("maxConcurrentReconcilesOverrides produce deterministic hash", func(t *testing.T) {
 		cc1 := &corev1beta1.ConfigConnector{
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Experiments: &corev1beta1.CCExperiments{
-					ConcurrencyOverrides: map[string]int{
+					MaxConcurrentReconcilesOverrides: map[string]int{
 						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
 						"StorageBucket.storage.cnrm.cloud.google.com":    10,
 					},
@@ -59,7 +58,7 @@ func TestComputeCCConfigHash(t *testing.T) {
 		cc2 := &corev1beta1.ConfigConnector{
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Experiments: &corev1beta1.CCExperiments{
-					ConcurrencyOverrides: map[string]int{
+					MaxConcurrentReconcilesOverrides: map[string]int{
 						"StorageBucket.storage.cnrm.cloud.google.com":    10,
 						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
 						"IgnoredZero.storage.cnrm.cloud.google.com":      0,
@@ -70,7 +69,7 @@ func TestComputeCCConfigHash(t *testing.T) {
 		cc3 := &corev1beta1.ConfigConnector{
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Experiments: &corev1beta1.CCExperiments{
-					ConcurrencyOverrides: map[string]int{
+					MaxConcurrentReconcilesOverrides: map[string]int{
 						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 25,
 						"StorageBucket.storage.cnrm.cloud.google.com":    10,
 					},
@@ -81,7 +80,7 @@ func TestComputeCCConfigHash(t *testing.T) {
 		h2 := ComputeCCConfigHash(cc2)
 		h3 := ComputeCCConfigHash(cc3)
 		if h1 == "" {
-			t.Fatal("expected non-empty hash for concurrencyOverrides")
+			t.Fatal("expected non-empty hash for maxConcurrentReconcilesOverrides")
 		}
 		if h1 != h2 {
 			t.Errorf("expected identical hashes, got %q vs %q", h1, h2)
@@ -223,14 +222,11 @@ func TestComputeCCCConfigHash(t *testing.T) {
 		}
 	})
 
-	t.Run("controllerOverrides and concurrencyOverrides produce deterministic hash", func(t *testing.T) {
+	t.Run("maxConcurrentReconcilesOverrides produce deterministic hash", func(t *testing.T) {
 		ccc1 := &corev1beta1.ConfigConnectorContext{
 			Spec: corev1beta1.ConfigConnectorContextSpec{
 				Experiments: &corev1beta1.Experiments{
-					ControllerOverrides: map[string]k8scontrollertype.ReconcilerType{
-						"BigQueryDataset.bigquery.cnrm.cloud.google.com": k8scontrollertype.ReconcilerTypeDirect,
-					},
-					ConcurrencyOverrides: map[string]int{
+					MaxConcurrentReconcilesOverrides: map[string]int{
 						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
 					},
 				},
@@ -239,22 +235,7 @@ func TestComputeCCCConfigHash(t *testing.T) {
 		ccc2 := &corev1beta1.ConfigConnectorContext{
 			Spec: corev1beta1.ConfigConnectorContextSpec{
 				Experiments: &corev1beta1.Experiments{
-					ControllerOverrides: map[string]k8scontrollertype.ReconcilerType{
-						"BigQueryDataset.bigquery.cnrm.cloud.google.com": k8scontrollertype.ReconcilerTypeTerraform,
-					},
-					ConcurrencyOverrides: map[string]int{
-						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
-					},
-				},
-			},
-		}
-		ccc3 := &corev1beta1.ConfigConnectorContext{
-			Spec: corev1beta1.ConfigConnectorContextSpec{
-				Experiments: &corev1beta1.Experiments{
-					ControllerOverrides: map[string]k8scontrollertype.ReconcilerType{
-						"BigQueryDataset.bigquery.cnrm.cloud.google.com": k8scontrollertype.ReconcilerTypeDirect,
-					},
-					ConcurrencyOverrides: map[string]int{
+					MaxConcurrentReconcilesOverrides: map[string]int{
 						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 100,
 					},
 				},
@@ -262,15 +243,11 @@ func TestComputeCCCConfigHash(t *testing.T) {
 		}
 		h1 := ComputeCCCConfigHash(ccc1)
 		h2 := ComputeCCCConfigHash(ccc2)
-		h3 := ComputeCCCConfigHash(ccc3)
 		if h1 == "" {
 			t.Fatal("expected non-empty hash")
 		}
 		if h1 == h2 {
-			t.Errorf("expected distinct hash when controllerOverrides changes")
-		}
-		if h1 == h3 {
-			t.Errorf("expected distinct hash when concurrencyOverrides changes")
+			t.Errorf("expected distinct hash when maxConcurrentReconcilesOverrides changes")
 		}
 	})
 }
