@@ -18,8 +18,303 @@
 // krm.version: v1alpha1
 // proto.service: google.appengine.v1
 // resource: AppEngineFirewallRule:FirewallRule
+// resource: AppEngineFlexibleAppVersion:Version
 
 package v1alpha1
+
+/* unreachable type APIConfigHandler
+// +kcc:proto=google.appengine.v1.ApiConfigHandler
+type APIConfigHandler struct {
+	// Action to take when users access resources that require
+	//  authentication. Defaults to `redirect`.
+	// +kcc:proto:field=google.appengine.v1.ApiConfigHandler.auth_fail_action
+	AuthFailAction *string `json:"authFailAction,omitempty"`
+
+	// Level of login required to access this resource. Defaults to
+	//  `optional`.
+	// +kcc:proto:field=google.appengine.v1.ApiConfigHandler.login
+	Login *string `json:"login,omitempty"`
+
+	// Path to the script from the application root directory.
+	// +kcc:proto:field=google.appengine.v1.ApiConfigHandler.script
+	Script *string `json:"script,omitempty"`
+
+	// Security (HTTPS) enforcement for this URL.
+	// +kcc:proto:field=google.appengine.v1.ApiConfigHandler.security_level
+	SecurityLevel *string `json:"securityLevel,omitempty"`
+
+	// URL to serve the endpoint at.
+	// +kcc:proto:field=google.appengine.v1.ApiConfigHandler.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* unreachable type APIEndpointHandler
+// +kcc:proto=google.appengine.v1.ApiEndpointHandler
+type APIEndpointHandler struct {
+	// Path to the script from the application root directory.
+	// +kcc:proto:field=google.appengine.v1.ApiEndpointHandler.script_path
+	ScriptPath *string `json:"scriptPath,omitempty"`
+}
+*/
+
+/* unreachable type AutomaticScaling
+// +kcc:proto=google.appengine.v1.AutomaticScaling
+type AutomaticScaling struct {
+	// The time period that the
+	//  [Autoscaler](https://cloud.google.com/compute/docs/autoscaler/)
+	//  should wait before it starts collecting information from a new instance.
+	//  This prevents the autoscaler from collecting information when the instance
+	//  is initializing, during which the collected usage would not be reliable.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.cool_down_period
+	CoolDownPeriod *string `json:"coolDownPeriod,omitempty"`
+
+	// Target scaling by CPU usage.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.cpu_utilization
+	CPUUtilization *CPUUtilization `json:"cpuUtilization,omitempty"`
+
+	// Number of concurrent requests an automatic scaling instance can accept
+	//  before the scheduler spawns a new instance.
+	//
+	//  Defaults to a runtime-specific value.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.max_concurrent_requests
+	MaxConcurrentRequests *int32 `json:"maxConcurrentRequests,omitempty"`
+
+	// Maximum number of idle instances that should be maintained for this
+	//  version.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.max_idle_instances
+	MaxIdleInstances *int32 `json:"maxIdleInstances,omitempty"`
+
+	// Maximum number of instances that should be started to handle requests for
+	//  this version.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.max_total_instances
+	MaxTotalInstances *int32 `json:"maxTotalInstances,omitempty"`
+
+	// Maximum amount of time that a request should wait in the pending queue
+	//  before starting a new instance to handle it.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.max_pending_latency
+	MaxPendingLatency *string `json:"maxPendingLatency,omitempty"`
+
+	// Minimum number of idle instances that should be maintained for
+	//  this version. Only applicable for the default version of a service.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.min_idle_instances
+	MinIdleInstances *int32 `json:"minIdleInstances,omitempty"`
+
+	// Minimum number of running instances that should be maintained for this
+	//  version.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.min_total_instances
+	MinTotalInstances *int32 `json:"minTotalInstances,omitempty"`
+
+	// Minimum amount of time a request should wait in the pending queue before
+	//  starting a new instance to handle it.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.min_pending_latency
+	MinPendingLatency *string `json:"minPendingLatency,omitempty"`
+
+	// Target scaling by request utilization.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.request_utilization
+	RequestUtilization *RequestUtilization `json:"requestUtilization,omitempty"`
+
+	// Target scaling by disk usage.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.disk_utilization
+	DiskUtilization *DiskUtilization `json:"diskUtilization,omitempty"`
+
+	// Target scaling by network usage.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.network_utilization
+	NetworkUtilization *NetworkUtilization `json:"networkUtilization,omitempty"`
+
+	// Scheduler settings for standard environment.
+	// +kcc:proto:field=google.appengine.v1.AutomaticScaling.standard_scheduler_settings
+	StandardSchedulerSettings *StandardSchedulerSettings `json:"standardSchedulerSettings,omitempty"`
+}
+*/
+
+/* unreachable type BasicScaling
+// +kcc:proto=google.appengine.v1.BasicScaling
+type BasicScaling struct {
+	// Duration of time after the last request that an instance must wait before
+	//  the instance is shut down.
+	// +kcc:proto:field=google.appengine.v1.BasicScaling.idle_timeout
+	IdleTimeout *string `json:"idleTimeout,omitempty"`
+
+	// Maximum number of instances to create for this version.
+	// +kcc:proto:field=google.appengine.v1.BasicScaling.max_instances
+	MaxInstances *int32 `json:"maxInstances,omitempty"`
+}
+*/
+
+/* unreachable type CloudBuildOptions
+// +kcc:proto=google.appengine.v1.CloudBuildOptions
+type CloudBuildOptions struct {
+	// Path to the yaml file used in deployment, used to determine runtime
+	//  configuration details.
+	//
+	//  Required for flexible environment builds.
+	//
+	//  See https://cloud.google.com/appengine/docs/standard/python/config/appref
+	//  for more details.
+	// +kcc:proto:field=google.appengine.v1.CloudBuildOptions.app_yaml_path
+	AppYamlPath *string `json:"appYamlPath,omitempty"`
+
+	// The Cloud Build timeout used as part of any dependent builds performed by
+	//  version creation. Defaults to 10 minutes.
+	// +kcc:proto:field=google.appengine.v1.CloudBuildOptions.cloud_build_timeout
+	CloudBuildTimeout *string `json:"cloudBuildTimeout,omitempty"`
+}
+*/
+
+/* unreachable type ContainerInfo
+// +kcc:proto=google.appengine.v1.ContainerInfo
+type ContainerInfo struct {
+	// URI to the hosted container image in Google Container Registry. The URI
+	//  must be fully qualified and include a tag or digest.
+	//  Examples: "gcr.io/my-project/image:tag" or "gcr.io/my-project/image@digest"
+	// +kcc:proto:field=google.appengine.v1.ContainerInfo.image
+	Image *string `json:"image,omitempty"`
+}
+*/
+
+/* unreachable type CPUUtilization
+// +kcc:proto=google.appengine.v1.CpuUtilization
+type CPUUtilization struct {
+	// Period of time over which CPU utilization is calculated.
+	// +kcc:proto:field=google.appengine.v1.CpuUtilization.aggregation_window_length
+	AggregationWindowLength *string `json:"aggregationWindowLength,omitempty"`
+
+	// Target CPU utilization ratio to maintain when scaling. Must be between 0
+	//  and 1.
+	// +kcc:proto:field=google.appengine.v1.CpuUtilization.target_utilization
+	TargetUtilization *float64 `json:"targetUtilization,omitempty"`
+}
+*/
+
+/* unreachable type Deployment
+// +kcc:proto=google.appengine.v1.Deployment
+type Deployment struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// The Docker image for the container that runs the version.
+	//  Only applicable for instances running in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Deployment.container
+	Container *ContainerInfo `json:"container,omitempty"`
+
+	// The zip file for this deployment, if this is a zip deployment.
+	// +kcc:proto:field=google.appengine.v1.Deployment.zip
+	Zip *ZipInfo `json:"zip,omitempty"`
+
+	// Options for any Google Cloud Build builds created as a part of this
+	//  deployment.
+	//
+	//  These options will only be used if a new build is created, such as when
+	//  deploying to the App Engine flexible environment using files or zip.
+	// +kcc:proto:field=google.appengine.v1.Deployment.cloud_build_options
+	CloudBuildOptions *CloudBuildOptions `json:"cloudBuildOptions,omitempty"`
+}
+*/
+
+/* unreachable type DiskUtilization
+// +kcc:proto=google.appengine.v1.DiskUtilization
+type DiskUtilization struct {
+	// Target bytes written per second.
+	// +kcc:proto:field=google.appengine.v1.DiskUtilization.target_write_bytes_per_second
+	TargetWriteBytesPerSecond *int32 `json:"targetWriteBytesPerSecond,omitempty"`
+
+	// Target ops written per second.
+	// +kcc:proto:field=google.appengine.v1.DiskUtilization.target_write_ops_per_second
+	TargetWriteOpsPerSecond *int32 `json:"targetWriteOpsPerSecond,omitempty"`
+
+	// Target bytes read per second.
+	// +kcc:proto:field=google.appengine.v1.DiskUtilization.target_read_bytes_per_second
+	TargetReadBytesPerSecond *int32 `json:"targetReadBytesPerSecond,omitempty"`
+
+	// Target ops read per seconds.
+	// +kcc:proto:field=google.appengine.v1.DiskUtilization.target_read_ops_per_second
+	TargetReadOpsPerSecond *int32 `json:"targetReadOpsPerSecond,omitempty"`
+}
+*/
+
+/* unreachable type EndpointsAPIService
+// +kcc:proto=google.appengine.v1.EndpointsApiService
+type EndpointsAPIService struct {
+	// Endpoints service name which is the name of the "service" resource in the
+	//  Service Management API. For example "myapi.endpoints.myproject.cloud.goog"
+	// +kcc:proto:field=google.appengine.v1.EndpointsApiService.name
+	Name *string `json:"name,omitempty"`
+
+	// Endpoints service configuration ID as specified by the Service Management
+	//  API. For example "2016-09-19r1".
+	//
+	//  By default, the rollout strategy for Endpoints is `RolloutStrategy.FIXED`.
+	//  This means that Endpoints starts up with a particular configuration ID.
+	//  When a new configuration is rolled out, Endpoints must be given the new
+	//  configuration ID. The `config_id` field is used to give the configuration
+	//  ID and is required in this case.
+	//
+	//  Endpoints also has a rollout strategy called `RolloutStrategy.MANAGED`.
+	//  When using this, Endpoints fetches the latest configuration and does not
+	//  need the configuration ID. In this case, `config_id` must be omitted.
+	// +kcc:proto:field=google.appengine.v1.EndpointsApiService.config_id
+	ConfigID *string `json:"configID,omitempty"`
+
+	// Endpoints rollout strategy. If `FIXED`, `config_id` must be specified. If
+	//  `MANAGED`, `config_id` must be omitted.
+	// +kcc:proto:field=google.appengine.v1.EndpointsApiService.rollout_strategy
+	RolloutStrategy *string `json:"rolloutStrategy,omitempty"`
+
+	// Enable or disable trace sampling. By default, this is set to false for
+	//  enabled.
+	// +kcc:proto:field=google.appengine.v1.EndpointsApiService.disable_trace_sampling
+	DisableTraceSampling *bool `json:"disableTraceSampling,omitempty"`
+}
+*/
+
+/* unreachable type Entrypoint
+// +kcc:proto=google.appengine.v1.Entrypoint
+type Entrypoint struct {
+	// The format should be a shell command that can be fed to `bash -c`.
+	// +kcc:proto:field=google.appengine.v1.Entrypoint.shell
+	Shell *string `json:"shell,omitempty"`
+}
+*/
+
+/* unreachable type ErrorHandler
+// +kcc:proto=google.appengine.v1.ErrorHandler
+type ErrorHandler struct {
+	// Error condition this handler applies to.
+	// +kcc:proto:field=google.appengine.v1.ErrorHandler.error_code
+	ErrorCode *string `json:"errorCode,omitempty"`
+
+	// Static file content to be served for this error.
+	// +kcc:proto:field=google.appengine.v1.ErrorHandler.static_file
+	StaticFile *string `json:"staticFile,omitempty"`
+
+	// MIME type of file. Defaults to `text/html`.
+	// +kcc:proto:field=google.appengine.v1.ErrorHandler.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+}
+*/
+
+/* unreachable type FileInfo
+// +kcc:proto=google.appengine.v1.FileInfo
+type FileInfo struct {
+	// URL source to use to fetch this file. Must be a URL to a resource in
+	//  Google Cloud Storage in the form
+	//  'http(s)://storage.googleapis.com/\<bucket\>/\<object\>'.
+	// +kcc:proto:field=google.appengine.v1.FileInfo.source_url
+	SourceURL *string `json:"sourceURL,omitempty"`
+
+	// The SHA1 hash of the file, in hex.
+	// +kcc:proto:field=google.appengine.v1.FileInfo.sha1_sum
+	Sha1Sum *string `json:"sha1Sum,omitempty"`
+
+	// The MIME type of the file.
+	//
+	//  Defaults to the value from Google Cloud Storage.
+	// +kcc:proto:field=google.appengine.v1.FileInfo.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.appengine.v1.FirewallRule", skipping
 
@@ -56,5 +351,670 @@ type FirewallRule struct {
 	//  This field has a maximum length of 100 characters.
 	// +kcc:proto:field=google.appengine.v1.FirewallRule.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* unreachable type HealthCheck
+// +kcc:proto=google.appengine.v1.HealthCheck
+type HealthCheck struct {
+	// Whether to explicitly disable health checks for this instance.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.disable_health_check
+	DisableHealthCheck *bool `json:"disableHealthCheck,omitempty"`
+
+	// Host header to send when performing an HTTP health check.
+	//  Example: "myapp.appspot.com"
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// Number of consecutive successful health checks required before receiving
+	//  traffic.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.healthy_threshold
+	HealthyThreshold *uint32 `json:"healthyThreshold,omitempty"`
+
+	// Number of consecutive failed health checks required before removing
+	//  traffic.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.unhealthy_threshold
+	UnhealthyThreshold *uint32 `json:"unhealthyThreshold,omitempty"`
+
+	// Number of consecutive failed health checks required before an instance is
+	//  restarted.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.restart_threshold
+	RestartThreshold *uint32 `json:"restartThreshold,omitempty"`
+
+	// Interval between health checks.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.check_interval
+	CheckInterval *string `json:"checkInterval,omitempty"`
+
+	// Time before the health check is considered failed.
+	// +kcc:proto:field=google.appengine.v1.HealthCheck.timeout
+	Timeout *string `json:"timeout,omitempty"`
+}
+*/
+
+/* unreachable type Library
+// +kcc:proto=google.appengine.v1.Library
+type Library struct {
+	// Name of the library. Example: "django".
+	// +kcc:proto:field=google.appengine.v1.Library.name
+	Name *string `json:"name,omitempty"`
+
+	// Version of the library to select, or "latest".
+	// +kcc:proto:field=google.appengine.v1.Library.version
+	Version *string `json:"version,omitempty"`
+}
+*/
+
+/* unreachable type LivenessCheck
+// +kcc:proto=google.appengine.v1.LivenessCheck
+type LivenessCheck struct {
+	// The request path.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.path
+	Path *string `json:"path,omitempty"`
+
+	// Host header to send when performing a HTTP Liveness check.
+	//  Example: "myapp.appspot.com"
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// Number of consecutive failed checks required before considering the
+	//  VM unhealthy.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.failure_threshold
+	FailureThreshold *uint32 `json:"failureThreshold,omitempty"`
+
+	// Number of consecutive successful checks required before considering
+	//  the VM healthy.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.success_threshold
+	SuccessThreshold *uint32 `json:"successThreshold,omitempty"`
+
+	// Interval between health checks.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.check_interval
+	CheckInterval *string `json:"checkInterval,omitempty"`
+
+	// Time before the check is considered failed.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// The initial delay before starting to execute the checks.
+	// +kcc:proto:field=google.appengine.v1.LivenessCheck.initial_delay
+	InitialDelay *string `json:"initialDelay,omitempty"`
+}
+*/
+
+/* unreachable type ManualScaling
+// +kcc:proto=google.appengine.v1.ManualScaling
+type ManualScaling struct {
+	// Number of instances to assign to the service at the start. This number
+	//  can later be altered by using the
+	//  [Modules API](https://cloud.google.com/appengine/docs/python/modules/functions)
+	//  `set_num_instances()` function.
+	// +kcc:proto:field=google.appengine.v1.ManualScaling.instances
+	Instances *int32 `json:"instances,omitempty"`
+}
+*/
+
+/* unreachable type Network
+// +kcc:proto=google.appengine.v1.Network
+type Network struct {
+	// List of ports, or port pairs, to forward from the virtual machine to the
+	//  application container.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Network.forwarded_ports
+	ForwardedPorts []string `json:"forwardedPorts,omitempty"`
+
+	// Tag to apply to the instance during creation.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Network.instance_tag
+	InstanceTag *string `json:"instanceTag,omitempty"`
+
+	// Google Compute Engine network where the virtual machines are created.
+	//  Specify the short name, not the resource path.
+	//
+	//  Defaults to `default`.
+	// +kcc:proto:field=google.appengine.v1.Network.name
+	Name *string `json:"name,omitempty"`
+
+	// Google Cloud Platform sub-network where the virtual machines are created.
+	//  Specify the short name, not the resource path.
+	//
+	//  If a subnetwork name is specified, a network name will also be required
+	//  unless it is for the default network.
+	//
+	//  * If the network that the instance is being created in is a Legacy network,
+	//  then the IP address is allocated from the IPv4Range.
+	//  * If the network that the instance is being created in is an auto Subnet
+	//  Mode Network, then only network name should be specified (not the
+	//  subnetwork_name) and the IP address is created from the IPCidrRange of the
+	//  subnetwork that exists in that zone for that network.
+	//  * If the network that the instance is being created in is a custom Subnet
+	//  Mode Network, then the subnetwork_name must be specified and the
+	//  IP address is created from the IPCidrRange of the subnetwork.
+	//
+	//  If specified, the subnetwork must exist in the same region as the
+	//  App Engine flexible environment application.
+	// +kcc:proto:field=google.appengine.v1.Network.subnetwork_name
+	SubnetworkName *string `json:"subnetworkName,omitempty"`
+
+	// Enable session affinity.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Network.session_affinity
+	SessionAffinity *bool `json:"sessionAffinity,omitempty"`
+}
+*/
+
+/* unreachable type NetworkUtilization
+// +kcc:proto=google.appengine.v1.NetworkUtilization
+type NetworkUtilization struct {
+	// Target bytes sent per second.
+	// +kcc:proto:field=google.appengine.v1.NetworkUtilization.target_sent_bytes_per_second
+	TargetSentBytesPerSecond *int32 `json:"targetSentBytesPerSecond,omitempty"`
+
+	// Target packets sent per second.
+	// +kcc:proto:field=google.appengine.v1.NetworkUtilization.target_sent_packets_per_second
+	TargetSentPacketsPerSecond *int32 `json:"targetSentPacketsPerSecond,omitempty"`
+
+	// Target bytes received per second.
+	// +kcc:proto:field=google.appengine.v1.NetworkUtilization.target_received_bytes_per_second
+	TargetReceivedBytesPerSecond *int32 `json:"targetReceivedBytesPerSecond,omitempty"`
+
+	// Target packets received per second.
+	// +kcc:proto:field=google.appengine.v1.NetworkUtilization.target_received_packets_per_second
+	TargetReceivedPacketsPerSecond *int32 `json:"targetReceivedPacketsPerSecond,omitempty"`
+}
+*/
+
+/* unreachable type ReadinessCheck
+// +kcc:proto=google.appengine.v1.ReadinessCheck
+type ReadinessCheck struct {
+	// The request path.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.path
+	Path *string `json:"path,omitempty"`
+
+	// Host header to send when performing a HTTP Readiness check.
+	//  Example: "myapp.appspot.com"
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// Number of consecutive failed checks required before removing
+	//  traffic.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.failure_threshold
+	FailureThreshold *uint32 `json:"failureThreshold,omitempty"`
+
+	// Number of consecutive successful checks required before receiving
+	//  traffic.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.success_threshold
+	SuccessThreshold *uint32 `json:"successThreshold,omitempty"`
+
+	// Interval between health checks.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.check_interval
+	CheckInterval *string `json:"checkInterval,omitempty"`
+
+	// Time before the check is considered failed.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// A maximum time limit on application initialization, measured from moment
+	//  the application successfully replies to a healthcheck until it is ready to
+	//  serve traffic.
+	// +kcc:proto:field=google.appengine.v1.ReadinessCheck.app_start_timeout
+	AppStartTimeout *string `json:"appStartTimeout,omitempty"`
+}
+*/
+
+/* unreachable type RequestUtilization
+// +kcc:proto=google.appengine.v1.RequestUtilization
+type RequestUtilization struct {
+	// Target requests per second.
+	// +kcc:proto:field=google.appengine.v1.RequestUtilization.target_request_count_per_second
+	TargetRequestCountPerSecond *int32 `json:"targetRequestCountPerSecond,omitempty"`
+
+	// Target number of concurrent requests.
+	// +kcc:proto:field=google.appengine.v1.RequestUtilization.target_concurrent_requests
+	TargetConcurrentRequests *int32 `json:"targetConcurrentRequests,omitempty"`
+}
+*/
+
+/* unreachable type Resources
+// +kcc:proto=google.appengine.v1.Resources
+type Resources struct {
+	// Number of CPU cores needed.
+	// +kcc:proto:field=google.appengine.v1.Resources.cpu
+	CPU *float64 `json:"cpu,omitempty"`
+
+	// Disk size (GB) needed.
+	// +kcc:proto:field=google.appengine.v1.Resources.disk_gb
+	DiskGB *float64 `json:"diskGB,omitempty"`
+
+	// Memory (GB) needed.
+	// +kcc:proto:field=google.appengine.v1.Resources.memory_gb
+	MemoryGB *float64 `json:"memoryGB,omitempty"`
+
+	// User specified volumes.
+	// +kcc:proto:field=google.appengine.v1.Resources.volumes
+	Volumes []Volume `json:"volumes,omitempty"`
+
+	// The name of the encryption key that is stored in Google Cloud KMS.
+	//  Only should be used by Cloud Composer to encrypt the vm disk
+	// +kcc:proto:field=google.appengine.v1.Resources.kms_key_reference
+	KMSKeyReference *string `json:"kmsKeyReference,omitempty"`
+}
+*/
+
+/* unreachable type ScriptHandler
+// +kcc:proto=google.appengine.v1.ScriptHandler
+type ScriptHandler struct {
+	// Path to the script from the application root directory.
+	// +kcc:proto:field=google.appengine.v1.ScriptHandler.script_path
+	ScriptPath *string `json:"scriptPath,omitempty"`
+}
+*/
+
+/* unreachable type StandardSchedulerSettings
+// +kcc:proto=google.appengine.v1.StandardSchedulerSettings
+type StandardSchedulerSettings struct {
+	// Target CPU utilization ratio to maintain when scaling.
+	// +kcc:proto:field=google.appengine.v1.StandardSchedulerSettings.target_cpu_utilization
+	TargetCPUUtilization *float64 `json:"targetCPUUtilization,omitempty"`
+
+	// Target throughput utilization ratio to maintain when scaling
+	// +kcc:proto:field=google.appengine.v1.StandardSchedulerSettings.target_throughput_utilization
+	TargetThroughputUtilization *float64 `json:"targetThroughputUtilization,omitempty"`
+
+	// Minimum number of instances to run for this version. Set to zero to disable
+	//  `min_instances` configuration.
+	// +kcc:proto:field=google.appengine.v1.StandardSchedulerSettings.min_instances
+	MinInstances *int32 `json:"minInstances,omitempty"`
+
+	// Maximum number of instances to run for this version. Set to zero to disable
+	//  `max_instances` configuration.
+	// +kcc:proto:field=google.appengine.v1.StandardSchedulerSettings.max_instances
+	MaxInstances *int32 `json:"maxInstances,omitempty"`
+}
+*/
+
+/* unreachable type StaticFilesHandler
+// +kcc:proto=google.appengine.v1.StaticFilesHandler
+type StaticFilesHandler struct {
+	// Path to the static files matched by the URL pattern, from the
+	//  application root directory. The path can refer to text matched in groupings
+	//  in the URL pattern.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.path
+	Path *string `json:"path,omitempty"`
+
+	// Regular expression that matches the file paths for all files that should be
+	//  referenced by this handler.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.upload_path_regex
+	UploadPathRegex *string `json:"uploadPathRegex,omitempty"`
+
+	// HTTP headers to use for all responses from these URLs.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.http_headers
+	HTTPHeaders map[string]string `json:"httpHeaders,omitempty"`
+
+	// MIME type used to serve all files served by this handler.
+	//
+	//  Defaults to file-specific MIME types, which are derived from each file's
+	//  filename extension.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Time a static file served by this handler should be cached
+	//  by web proxies and browsers.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.expiration
+	Expiration *string `json:"expiration,omitempty"`
+
+	// Whether this handler should match the request if the file
+	//  referenced by the handler does not exist.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.require_matching_file
+	RequireMatchingFile *bool `json:"requireMatchingFile,omitempty"`
+
+	// Whether files should also be uploaded as code data. By default, files
+	//  declared in static file handlers are uploaded as static
+	//  data and are only served to end users; they cannot be read by the
+	//  application. If enabled, uploads are charged against both your code and
+	//  static data storage resource quotas.
+	// +kcc:proto:field=google.appengine.v1.StaticFilesHandler.application_readable
+	ApplicationReadable *bool `json:"applicationReadable,omitempty"`
+}
+*/
+
+/* unreachable type URLMap
+// +kcc:proto=google.appengine.v1.UrlMap
+type URLMap struct {
+	// URL prefix. Uses regular expression syntax, which means regexp
+	//  special characters must be escaped, but should not contain groupings.
+	//  All URLs that begin with this prefix are handled by this handler, using the
+	//  portion of the URL after the prefix as part of the file path.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.url_regex
+	URLRegex *string `json:"urlRegex,omitempty"`
+
+	// Returns the contents of a file, such as an image, as the response.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.static_files
+	StaticFiles *StaticFilesHandler `json:"staticFiles,omitempty"`
+
+	// Executes a script to handle the requests that match this URL
+	//  pattern. Only the `auto` value is supported for Node.js in the
+	//  App Engine standard environment, for example `"script": "auto"`.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.script
+	Script *ScriptHandler `json:"script,omitempty"`
+
+	// Uses API Endpoints to handle requests.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.api_endpoint
+	APIEndpoint *APIEndpointHandler `json:"apiEndpoint,omitempty"`
+
+	// Security (HTTPS) enforcement for this URL.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.security_level
+	SecurityLevel *string `json:"securityLevel,omitempty"`
+
+	// Level of login required to access this resource. Not supported for Node.js
+	//  in the App Engine standard environment.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.login
+	Login *string `json:"login,omitempty"`
+
+	// Action to take when users access resources that require
+	//  authentication. Defaults to `redirect`.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.auth_fail_action
+	AuthFailAction *string `json:"authFailAction,omitempty"`
+
+	// `30x` code to use when performing redirects for the `secure` field.
+	//  Defaults to `302`.
+	// +kcc:proto:field=google.appengine.v1.UrlMap.redirect_http_response_code
+	RedirectHTTPResponseCode *string `json:"redirectHTTPResponseCode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.appengine.v1.Version", skipping
+
+// +kcc:proto=google.appengine.v1.Version
+type Version struct {
+	// Full path to the Version resource in the API.  Example:
+	//  `apps/myapp/services/default/versions/v1`.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Version.name
+	Name *string `json:"name,omitempty"`
+
+	// Relative name of the version within the service.  Example: `v1`.
+	//  Version names can contain only lowercase letters, numbers, or hyphens.
+	//  Reserved names: "default", "latest", and any name with the prefix "ah-".
+	// +kcc:proto:field=google.appengine.v1.Version.id
+	ID *string `json:"id,omitempty"`
+
+	// Automatic scaling is based on request rate, response latencies, and other
+	//  application metrics. Instances are dynamically created and destroyed as
+	//  needed in order to handle traffic.
+	// +kcc:proto:field=google.appengine.v1.Version.automatic_scaling
+	AutomaticScaling *AutomaticScaling `json:"automaticScaling,omitempty"`
+
+	// A service with basic scaling will create an instance when the application
+	//  receives a request. The instance will be turned down when the app becomes
+	//  idle. Basic scaling is ideal for work that is intermittent or driven by
+	//  user activity.
+	// +kcc:proto:field=google.appengine.v1.Version.basic_scaling
+	BasicScaling *BasicScaling `json:"basicScaling,omitempty"`
+
+	// A service with manual scaling runs continuously, allowing you to perform
+	//  complex initialization and rely on the state of its memory over time.
+	//  Manually scaled versions are sometimes referred to as "backends".
+	// +kcc:proto:field=google.appengine.v1.Version.manual_scaling
+	ManualScaling *ManualScaling `json:"manualScaling,omitempty"`
+
+	// Before an application can receive email or XMPP messages, the application
+	//  must be configured to enable the service.
+	// +kcc:proto:field=google.appengine.v1.Version.inbound_services
+	InboundServices []string `json:"inboundServices,omitempty"`
+
+	// Instance class that is used to run this version. Valid values are:
+	//
+	//  * AutomaticScaling: `F1`, `F2`, `F4`, `F4_1G`
+	//  * ManualScaling or BasicScaling: `B1`, `B2`, `B4`, `B8`, `B4_1G`
+	//
+	//  Defaults to `F1` for AutomaticScaling and `B1` for ManualScaling or
+	//  BasicScaling.
+	// +kcc:proto:field=google.appengine.v1.Version.instance_class
+	InstanceClass *string `json:"instanceClass,omitempty"`
+
+	// Extra network settings.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Version.network
+	Network *Network `json:"network,omitempty"`
+
+	// The Google Compute Engine zones that are supported by this version in the
+	//  App Engine flexible environment. Deprecated.
+	// +kcc:proto:field=google.appengine.v1.Version.zones
+	Zones []string `json:"zones,omitempty"`
+
+	// Machine resources for this version.
+	//  Only applicable in the App Engine flexible environment.
+	// +kcc:proto:field=google.appengine.v1.Version.resources
+	Resources *Resources `json:"resources,omitempty"`
+
+	// Desired runtime. Example: `python27`.
+	// +kcc:proto:field=google.appengine.v1.Version.runtime
+	Runtime *string `json:"runtime,omitempty"`
+
+	// The channel of the runtime to use. Only available for some
+	//  runtimes. Defaults to the `default` channel.
+	// +kcc:proto:field=google.appengine.v1.Version.runtime_channel
+	RuntimeChannel *string `json:"runtimeChannel,omitempty"`
+
+	// Whether multiple requests can be dispatched to this version at once.
+	// +kcc:proto:field=google.appengine.v1.Version.threadsafe
+	Threadsafe *bool `json:"threadsafe,omitempty"`
+
+	// Whether to deploy this version in a container on a virtual machine.
+	// +kcc:proto:field=google.appengine.v1.Version.vm
+	VM *bool `json:"vm,omitempty"`
+
+	// Allows App Engine second generation runtimes to access the legacy bundled
+	//  services.
+	// +kcc:proto:field=google.appengine.v1.Version.app_engine_apis
+	AppEngineApis *bool `json:"appEngineApis,omitempty"`
+
+	// Metadata settings that are supplied to this version to enable
+	//  beta runtime features.
+	// +kcc:proto:field=google.appengine.v1.Version.beta_settings
+	BetaSettings map[string]string `json:"betaSettings,omitempty"`
+
+	// App Engine execution environment for this version.
+	//
+	//  Defaults to `standard`.
+	// +kcc:proto:field=google.appengine.v1.Version.env
+	Env *string `json:"env,omitempty"`
+
+	// Current serving status of this version. Only the versions with a
+	//  `SERVING` status create instances and can be billed.
+	//
+	//  `SERVING_STATUS_UNSPECIFIED` is an invalid value. Defaults to `SERVING`.
+	// +kcc:proto:field=google.appengine.v1.Version.serving_status
+	ServingStatus *string `json:"servingStatus,omitempty"`
+
+	// Email address of the user who created this version.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Version.created_by
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Time that this version was created.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Version.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Total size in bytes of all the files that are included in this version
+	//  and currently hosted on the App Engine disk.
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Version.disk_usage_bytes
+	DiskUsageBytes *int64 `json:"diskUsageBytes,omitempty"`
+
+	// The version of the API in the given runtime environment. Please see the
+	//  app.yaml reference for valid values at
+	//  https://cloud.google.com/appengine/docs/standard/<language>/config/appref
+	// +kcc:proto:field=google.appengine.v1.Version.runtime_api_version
+	RuntimeAPIVersion *string `json:"runtimeAPIVersion,omitempty"`
+
+	// The path or name of the app's main executable.
+	// +kcc:proto:field=google.appengine.v1.Version.runtime_main_executable_path
+	RuntimeMainExecutablePath *string `json:"runtimeMainExecutablePath,omitempty"`
+
+	// The identity that the deployed version will run as.
+	//  Admin API will use the App Engine Appspot service account as default if
+	//  this field is neither provided in app.yaml file nor through CLI flag.
+	// +kcc:proto:field=google.appengine.v1.Version.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// An ordered list of URL-matching patterns that should be applied to incoming
+	//  requests. The first matching URL handles the request and other request
+	//  handlers are not attempted.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.handlers
+	Handlers []URLMap `json:"handlers,omitempty"`
+
+	// Custom static error pages. Limited to 10KB per page.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.error_handlers
+	ErrorHandlers []ErrorHandler `json:"errorHandlers,omitempty"`
+
+	// Configuration for third-party Python runtime libraries that are required
+	//  by the application.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.libraries
+	Libraries []Library `json:"libraries,omitempty"`
+
+	// Serving configuration for
+	//  [Google Cloud Endpoints](https://cloud.google.com/appengine/docs/python/endpoints/).
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.api_config
+	APIConfig *APIConfigHandler `json:"apiConfig,omitempty"`
+
+	// Environment variables available to the application.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.env_variables
+	EnvVariables map[string]string `json:"envVariables,omitempty"`
+
+	// Environment variables available to the build environment.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.build_env_variables
+	BuildEnvVariables map[string]string `json:"buildEnvVariables,omitempty"`
+
+	// Duration that static files should be cached by web proxies and browsers.
+	//  Only applicable if the corresponding
+	//  [StaticFilesHandler](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StaticFilesHandler)
+	//  does not specify its own expiration time.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.default_expiration
+	DefaultExpiration *string `json:"defaultExpiration,omitempty"`
+
+	// Configures health checking for instances. Unhealthy instances are
+	//  stopped and replaced with new instances.
+	//  Only applicable in the App Engine flexible environment.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.health_check
+	HealthCheck *HealthCheck `json:"healthCheck,omitempty"`
+
+	// Configures readiness health checking for instances.
+	//  Unhealthy instances are not put into the backend traffic rotation.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.readiness_check
+	ReadinessCheck *ReadinessCheck `json:"readinessCheck,omitempty"`
+
+	// Configures liveness health checking for instances.
+	//  Unhealthy instances are stopped and replaced with new instances
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.liveness_check
+	LivenessCheck *LivenessCheck `json:"livenessCheck,omitempty"`
+
+	// Files that match this pattern will not be built into this version.
+	//  Only applicable for Go runtimes.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.nobuild_files_regex
+	NobuildFilesRegex *string `json:"nobuildFilesRegex,omitempty"`
+
+	// Code and application artifacts that make up this version.
+	//
+	//  Only returned in `GET` requests if `view=FULL` is set.
+	// +kcc:proto:field=google.appengine.v1.Version.deployment
+	Deployment *Deployment `json:"deployment,omitempty"`
+
+	// Serving URL for this version. Example:
+	//  "https://myversion-dot-myservice-dot-myapp.appspot.com"
+	//
+	//  @OutputOnly
+	// +kcc:proto:field=google.appengine.v1.Version.version_url
+	VersionURL *string `json:"versionURL,omitempty"`
+
+	// Cloud Endpoints configuration.
+	//
+	//  If endpoints_api_service is set, the Cloud Endpoints Extensible Service
+	//  Proxy will be provided to serve the API implemented by the app.
+	// +kcc:proto:field=google.appengine.v1.Version.endpoints_api_service
+	EndpointsAPIService *EndpointsAPIService `json:"endpointsAPIService,omitempty"`
+
+	// The entrypoint for the application.
+	// +kcc:proto:field=google.appengine.v1.Version.entrypoint
+	Entrypoint *Entrypoint `json:"entrypoint,omitempty"`
+
+	// Enables VPC connectivity for standard apps.
+	// +kcc:proto:field=google.appengine.v1.Version.vpc_access_connector
+	VPCAccessConnector *VPCAccessConnector `json:"vpcAccessConnector,omitempty"`
+}
+*/
+
+/* unreachable type Volume
+// +kcc:proto=google.appengine.v1.Volume
+type Volume struct {
+	// Unique name for the volume.
+	// +kcc:proto:field=google.appengine.v1.Volume.name
+	Name *string `json:"name,omitempty"`
+
+	// Underlying volume type, e.g. 'tmpfs'.
+	// +kcc:proto:field=google.appengine.v1.Volume.volume_type
+	VolumeType *string `json:"volumeType,omitempty"`
+
+	// Volume size in gigabytes.
+	// +kcc:proto:field=google.appengine.v1.Volume.size_gb
+	SizeGB *float64 `json:"sizeGB,omitempty"`
+}
+*/
+
+/* unreachable type VPCAccessConnector
+// +kcc:proto=google.appengine.v1.VpcAccessConnector
+type VPCAccessConnector struct {
+	// Full Serverless VPC Access Connector name e.g.
+	//  /projects/my-project/locations/us-central1/connectors/c1.
+	// +kcc:proto:field=google.appengine.v1.VpcAccessConnector.name
+	Name *string `json:"name,omitempty"`
+
+	// The egress setting for the connector, controlling what traffic is diverted
+	//  through it.
+	// +kcc:proto:field=google.appengine.v1.VpcAccessConnector.egress_setting
+	EgressSetting *string `json:"egressSetting,omitempty"`
+}
+*/
+
+/* unreachable type ZipInfo
+// +kcc:proto=google.appengine.v1.ZipInfo
+type ZipInfo struct {
+	// URL of the zip file to deploy from. Must be a URL to a resource in
+	//  Google Cloud Storage in the form
+	//  'http(s)://storage.googleapis.com/\<bucket\>/\<object\>'.
+	// +kcc:proto:field=google.appengine.v1.ZipInfo.source_url
+	SourceURL *string `json:"sourceURL,omitempty"`
+
+	// An estimate of the number of files in a zip for a zip deployment.
+	//  If set, must be greater than or equal to the actual number of files.
+	//  Used for optimizing performance; if not provided, deployment may be slow.
+	// +kcc:proto:field=google.appengine.v1.ZipInfo.files_count
+	FilesCount *int32 `json:"filesCount,omitempty"`
 }
 */
