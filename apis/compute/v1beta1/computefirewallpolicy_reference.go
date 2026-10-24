@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -98,7 +99,31 @@ func (r *ComputeFirewallPolicyRef) Normalize(ctx context.Context, reader client.
 				return trimmed
 			}
 		}
-		return ""
+
+		// Also check status.externalRef
+		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if externalRef != "" {
+			trimmed := apirefs.TrimComputeURIPrefix(externalRef)
+			id := &ComputeFirewallPolicyIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
+		}
+
+		obj, err := common.ToStructuredType[*ComputeFirewallPolicy](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeFirewallPolicySpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+
+		if identity.FirewallPolicy == "" {
+			identity.FirewallPolicy = u.GetName()
+		}
+
+		return identity.String()
 	}
 
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
