@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -28,7 +27,7 @@ type BackupDRBackupPlanSpec struct {
 	// The BackupDRBackupPlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	v1alpha1.Parent `json:",inline"`
+	Parent `json:",inline"`
 
 	// Optional. The description of the `BackupPlan` resource.
 	//
