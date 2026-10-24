@@ -16,5 +16,7 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: bigquerydatasetsample${uniqueId}
+  labels:
+    updated-by: robot
 spec:
   friendlyName: bigquerydataset-sample
