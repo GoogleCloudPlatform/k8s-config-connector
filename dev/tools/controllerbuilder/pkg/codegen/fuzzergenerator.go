@@ -612,7 +612,7 @@ func lookupKRMFieldForProto(fd protoreflect.FieldDescriptor, parent fuzzerSide) 
 	if f := findStructField(parent.goStruct, krmFieldName); f != nil {
 		return f, isKRMReferenceField(f)
 	}
-	for _, suffix := range []string{"", "ID", "Id", "IDs", "Ids", "URI", "Uri"} {
+	for _, suffix := range []string{"", "ID", "Id", "IDs", "Ids", "URI", "Uri", "Name"} {
 		if base := strings.TrimSuffix(krmFieldName, suffix); base != "" {
 			if findStructField(parent.goStruct, base+"Ref") != nil || findStructField(parent.goStruct, strings.TrimSuffix(base, "s")+"Refs") != nil {
 				return nil, true
