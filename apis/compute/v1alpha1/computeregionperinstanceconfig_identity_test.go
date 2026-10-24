@@ -431,6 +431,55 @@ func TestComputeRegionPerInstanceConfig_GetIdentity(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "igm not found when reader is provided",
+			obj: &ComputeRegionPerInstanceConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "default-pic",
+					Namespace: "test-ns",
+				},
+				Spec: ComputeRegionPerInstanceConfigSpec{
+					ProjectRef: apirefs.ProjectRef{
+						External: "test-project",
+					},
+					Region: "us-central1",
+					RegionInstanceGroupManagerRef: ComputeRegionInstanceGroupManagerRef{
+						Name: "nonexistent-rigm",
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "igm invalid identity when reader is provided",
+			obj: &ComputeRegionPerInstanceConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "default-pic",
+					Namespace: "test-ns",
+				},
+				Spec: ComputeRegionPerInstanceConfigSpec{
+					ProjectRef: apirefs.ProjectRef{
+						External: "test-project",
+					},
+					Region: "us-central1",
+					RegionInstanceGroupManagerRef: ComputeRegionInstanceGroupManagerRef{
+						Name: "invalid-rigm",
+					},
+				},
+			},
+			objects: []runtime.Object{
+				&computev1beta1.ComputeInstanceGroupManager{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "invalid-rigm",
+						Namespace: "test-ns",
+					},
+					Spec: computev1beta1.ComputeInstanceGroupManagerSpec{
+						// missing project and location
+					},
+				},
+			},
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {

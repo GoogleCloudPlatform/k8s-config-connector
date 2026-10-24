@@ -19,6 +19,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -83,7 +84,7 @@ func (r *ComputeRegionPerInstanceConfigRef) ParseExternalToIdentity() (identity.
 
 func (r *ComputeRegionPerInstanceConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
-		r.External = refs.TrimComputeURIPrefix(r.External)
+		r.External = apirefs.TrimComputeURIPrefix(r.External)
 	}
 
 	fallback := func(u *unstructured.Unstructured) string {

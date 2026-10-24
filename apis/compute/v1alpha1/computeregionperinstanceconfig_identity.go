@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/types"
@@ -51,7 +52,7 @@ func (i *ComputeRegionPerInstanceConfigIdentity) String() string {
 }
 
 func (i *ComputeRegionPerInstanceConfigIdentity) FromExternal(ref string) error {
-	trimmedRef := refs.TrimComputeURIPrefix(ref)
+	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	parsed, match, err := ComputeRegionPerInstanceConfigIdentityFormat.Parse(trimmedRef)
 	if err != nil {
 		return fmt.Errorf("format of ComputeRegionPerInstanceConfig external=%q was not known (use %s): %w", ref, ComputeRegionPerInstanceConfigIdentityFormat.CanonicalForm(), err)
@@ -86,7 +87,7 @@ func ParseComputeRegionPerInstanceConfigExternal(external string) (*ComputeRegio
 func parseRegionInstanceGroupManager(ctx context.Context, reader client.Reader, obj *ComputeRegionPerInstanceConfig) (string, error) {
 	ref := obj.Spec.RegionInstanceGroupManagerRef
 	if ref.External != "" {
-		external := refs.TrimComputeURIPrefix(ref.External)
+		external := apirefs.TrimComputeURIPrefix(ref.External)
 		if strings.Contains(external, "instanceGroupManagers/") {
 			parts := strings.Split(external, "instanceGroupManagers/")
 			if len(parts) == 2 && parts[1] != "" {
@@ -109,16 +110,24 @@ func parseRegionInstanceGroupManager(ctx context.Context, reader client.Reader, 
 		}
 		if reader != nil {
 			igm := &computev1beta1.ComputeInstanceGroupManager{}
-			if err := reader.Get(ctx, types.NamespacedName{Name: ref.Name, Namespace: ns}, igm); err == nil {
-				if id, err := igm.GetIdentity(ctx, reader); err == nil {
-					if igmId, ok := id.(*computev1beta1.ComputeInstanceGroupManagerIdentity); ok {
-						return igmId.InstanceGroupManager, nil
-					}
-				}
-				if resourceID, err := refs.GetResourceID(igm); err == nil && resourceID != "" {
-					return resourceID, nil
-				}
+			if err := reader.Get(ctx, types.NamespacedName{Name: ref.Name, Namespace: ns}, igm); err != nil {
+				return "", fmt.Errorf("cannot get referenced ComputeInstanceGroupManager %s/%s: %w", ns, ref.Name, err)
 			}
+			id, err := igm.GetIdentity(ctx, reader)
+			if err != nil {
+				return "", fmt.Errorf("cannot get identity of referenced ComputeInstanceGroupManager %s/%s: %w", ns, ref.Name, err)
+			}
+			if igmId, ok := id.(*computev1beta1.ComputeInstanceGroupManagerIdentity); ok && igmId.InstanceGroupManager != "" {
+				return igmId.InstanceGroupManager, nil
+			}
+			resourceID, err := refs.GetResourceID(igm)
+			if err != nil {
+				return "", fmt.Errorf("cannot get resource ID of referenced ComputeInstanceGroupManager %s/%s: %w", ns, ref.Name, err)
+			}
+			if resourceID != "" {
+				return resourceID, nil
+			}
+			return ref.Name, nil
 		}
 		return ref.Name, nil
 	}
