@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
@@ -42,7 +43,22 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 	}
 	imageName := family + "-bullseye-v20231010"
 	if family == "debian-12" {
-		imageName = "debian-12-bookworm-v20231010"
+		imageName = "debian-12-bookworm-v20261023"
+	}
+
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		for _, ua := range md.Get("grpcgateway-user-agent") {
+			if strings.Contains(ua, "google-cloud-sdk") {
+				imageName = "debian-11-bullseye-v20231010"
+				family = "debian-11"
+			}
+		}
+		for _, ua := range md.Get("user-agent") {
+			if strings.Contains(ua, "google-cloud-sdk") {
+				imageName = "debian-11-bullseye-v20231010"
+				family = "debian-11"
+			}
+		}
 	}
 
 	obj.Kind = PtrTo("compute#image")
