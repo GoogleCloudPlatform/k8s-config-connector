@@ -2,6 +2,7 @@ GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/image
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -14,10 +15,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "family": "debian-11",
+  "family": "debian-12",
   "kind": "compute#image",
-  "name": "debian-11-bullseye-v20231010",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "name": "debian-12-bookworm-v20261023",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-12-bookworm-v20261023",
   "status": "READY"
 }
 
@@ -28,6 +29,7 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
+X-Goog-Api-Version: 2026-09-01
 
 {
   "description": "test instance template",
@@ -109,6 +111,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/oper
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -142,6 +145,7 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/insta
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -223,6 +227,7 @@ DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/in
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -255,6 +260,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/oper
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8

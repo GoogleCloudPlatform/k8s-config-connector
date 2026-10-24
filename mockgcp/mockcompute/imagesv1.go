@@ -42,7 +42,7 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 	}
 	imageName := family + "-bullseye-v20231010"
 	if family == "debian-12" {
-		imageName = "debian-12-bookworm-v20231010"
+		imageName = "debian-12-bookworm-v20261023"
 	}
 
 	obj.Kind = PtrTo("compute#image")

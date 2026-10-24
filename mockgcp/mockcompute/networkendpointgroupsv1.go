@@ -49,6 +49,28 @@ func (s *NetworkEndpointGroupsV1) Get(ctx context.Context, req *pb.GetNetworkEnd
 	return obj, nil
 }
 
+func (s *NetworkEndpointGroupsV1) List(ctx context.Context, req *pb.ListNetworkEndpointGroupsRequest) (*pb.NetworkEndpointGroupList, error) {
+	prefix := fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/", req.GetProject(), req.GetZone())
+
+	var items []*pb.NetworkEndpointGroup
+	kind := (&pb.NetworkEndpointGroup{}).ProtoReflect().Descriptor()
+	err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		neg := obj.(*pb.NetworkEndpointGroup)
+		items = append(items, neg)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.NetworkEndpointGroupList{
+		Id:    PtrTo(""),
+		Kind:  PtrTo("compute#networkEndpointGroupList"),
+		Items: items,
+	}
+	return response, nil
+}
+
 func (s *NetworkEndpointGroupsV1) Insert(ctx context.Context, req *pb.InsertNetworkEndpointGroupRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/networkEndpointGroups/" + req.GetNetworkEndpointGroupResource().GetName()
 	name, err := s.parseZonalNetworkEndpointGroupName(reqName)
@@ -110,13 +132,7 @@ func (s *NetworkEndpointGroupsV1) Delete(ctx context.Context, req *pb.DeleteNetw
 	kind := (&pb.NetworkEndpoint{}).ProtoReflect().Descriptor()
 	err = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
 		endpoint := obj.(*pb.NetworkEndpoint)
-		instanceName := ""
-		if endpoint.Instance != nil {
-			instanceName = lastComponent(*endpoint.Instance)
-		}
-		ipAddress := endpoint.GetIpAddress()
-		port := endpoint.GetPort()
-		endpointFQN := fmt.Sprintf("%s%s-%d-%s", prefix, ipAddress, port, instanceName)
+		endpointFQN := buildEndpointKey(fqn, endpoint)
 		toDelete = append(toDelete, endpointFQN)
 		return nil
 	})
@@ -153,13 +169,7 @@ func (s *NetworkEndpointGroupsV1) AttachNetworkEndpoints(ctx context.Context, re
 
 	endpoints := req.GetNetworkEndpointGroupsAttachEndpointsRequestResource().GetNetworkEndpoints()
 	for _, endpoint := range endpoints {
-		instanceName := ""
-		if endpoint.Instance != nil {
-			instanceName = lastComponent(*endpoint.Instance)
-		}
-		ipAddress := endpoint.GetIpAddress()
-		port := endpoint.GetPort()
-		endpointFQN := fmt.Sprintf("%s/networkEndpoints/%s-%d-%s", fqn, ipAddress, port, instanceName)
+		endpointFQN := buildEndpointKey(fqn, endpoint)
 
 		existing := &pb.NetworkEndpoint{}
 		if err := s.storage.Get(ctx, endpointFQN, existing); err != nil {
@@ -177,17 +187,7 @@ func (s *NetworkEndpointGroupsV1) AttachNetworkEndpoints(ctx context.Context, re
 		}
 	}
 
-	var count int32
-	kind := (&pb.NetworkEndpoint{}).ProtoReflect().Descriptor()
-	prefix := fqn + "/networkEndpoints/"
-	err = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		count++
-		return nil
-	})
-	if err == nil {
-		neg.Size = &count
-		_ = s.storage.Update(ctx, fqn, neg)
-	}
+	_ = s.updateNegSize(ctx, fqn, neg)
 
 	op := &pb.Operation{
 		TargetId:      neg.Id,
@@ -216,13 +216,7 @@ func (s *NetworkEndpointGroupsV1) DetachNetworkEndpoints(ctx context.Context, re
 
 	endpoints := req.GetNetworkEndpointGroupsDetachEndpointsRequestResource().GetNetworkEndpoints()
 	for _, endpoint := range endpoints {
-		instanceName := ""
-		if endpoint.Instance != nil {
-			instanceName = lastComponent(*endpoint.Instance)
-		}
-		ipAddress := endpoint.GetIpAddress()
-		port := endpoint.GetPort()
-		endpointFQN := fmt.Sprintf("%s/networkEndpoints/%s-%d-%s", fqn, ipAddress, port, instanceName)
+		endpointFQN := buildEndpointKey(fqn, endpoint)
 
 		deleted := &pb.NetworkEndpoint{}
 		if err := s.storage.Delete(ctx, endpointFQN, deleted); err != nil {
@@ -232,17 +226,7 @@ func (s *NetworkEndpointGroupsV1) DetachNetworkEndpoints(ctx context.Context, re
 		}
 	}
 
-	var count int32
-	kind := (&pb.NetworkEndpoint{}).ProtoReflect().Descriptor()
-	prefix := fqn + "/networkEndpoints/"
-	err = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		count++
-		return nil
-	})
-	if err == nil {
-		neg.Size = &count
-		_ = s.storage.Update(ctx, fqn, neg)
-	}
+	_ = s.updateNegSize(ctx, fqn, neg)
 
 	op := &pb.Operation{
 		TargetId:      neg.Id,
@@ -273,7 +257,7 @@ func (s *NetworkEndpointGroupsV1) ListNetworkEndpoints(ctx context.Context, req 
 	kind := (&pb.NetworkEndpoint{}).ProtoReflect().Descriptor()
 	prefix := fqn + "/networkEndpoints/"
 	err = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		endpoint := obj.(*pb.NetworkEndpoint)
+		endpoint := proto.Clone(obj).(*pb.NetworkEndpoint)
 		if endpoint.Instance != nil {
 			inst := lastComponent(*endpoint.Instance)
 			endpoint.Instance = &inst
@@ -297,26 +281,32 @@ func (s *NetworkEndpointGroupsV1) ListNetworkEndpoints(ctx context.Context, req 
 	return response, nil
 }
 
-func (s *NetworkEndpointGroupsV1) List(ctx context.Context, req *pb.ListNetworkEndpointGroupsRequest) (*pb.NetworkEndpointGroupList, error) {
-	prefix := fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/", req.GetProject(), req.GetZone())
-
-	var items []*pb.NetworkEndpointGroup
-	kind := (&pb.NetworkEndpointGroup{}).ProtoReflect().Descriptor()
+func (s *NetworkEndpointGroupsV1) updateNegSize(ctx context.Context, fqn string, neg *pb.NetworkEndpointGroup) error {
+	var count int32
+	kind := (&pb.NetworkEndpoint{}).ProtoReflect().Descriptor()
+	prefix := fqn + "/networkEndpoints/"
 	err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
-		neg := obj.(*pb.NetworkEndpointGroup)
-		items = append(items, neg)
+		count++
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
+	neg.Size = &count
+	return s.storage.Update(ctx, fqn, neg)
+}
 
-	response := &pb.NetworkEndpointGroupList{
-		Id:    PtrTo(""),
-		Kind:  PtrTo("compute#networkEndpointGroupList"),
-		Items: items,
+func buildEndpointKey(prefix string, endpoint *pb.NetworkEndpoint) string {
+	instanceName := ""
+	if endpoint.Instance != nil {
+		instanceName = lastComponent(*endpoint.Instance)
 	}
-	return response, nil
+	addr := endpoint.GetIpAddress()
+	if addr == "" && endpoint.GetFqdn() != "" {
+		addr = endpoint.GetFqdn()
+	}
+	port := endpoint.GetPort()
+	return fmt.Sprintf("%s/networkEndpoints/%s-%d-%s", strings.TrimSuffix(prefix, "/"), addr, port, instanceName)
 }
 
 type zonalNetworkEndpointGroupName struct {
