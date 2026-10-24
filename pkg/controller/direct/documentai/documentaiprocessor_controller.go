@@ -34,6 +34,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -86,6 +87,7 @@ func (m *modelProcessor) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, err
 	}
 	return &ProcessorAdapter{
+		reader:    reader,
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
@@ -98,6 +100,7 @@ func (m *modelProcessor) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type ProcessorAdapter struct {
+	reader    client.Reader
 	id        *krm.ProcessorIdentity
 	gcpClient *gcp.DocumentProcessorClient
 	desired   *krm.DocumentAIProcessor
@@ -131,6 +134,11 @@ func (a *ProcessorAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Processor", "name", a.id)
+
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -163,6 +171,11 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Processor", "name", a.id)
+
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	desiredPb := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
