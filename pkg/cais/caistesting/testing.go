@@ -163,6 +163,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize KMSSecretCiphertext ciphertext: cryptoKeys/.../ciphertext/<ciphertext>
+		// Since it has a server-generated ID (ciphertext), we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/ciphertext/"); idx != -1 && strings.Contains(line, "cloudkms") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize AIPlatformReasoningEngine reasoningEngines IDs: locations/.../reasoningEngines/<reasoningEngineId>
 		if idx := strings.Index(line, "/reasoningEngines/"); idx != -1 {
 			start := idx + len("/reasoningEngines/")
