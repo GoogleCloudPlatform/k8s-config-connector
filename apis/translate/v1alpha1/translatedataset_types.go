@@ -15,13 +15,12 @@
 // API sources for TranslateDataset, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/translate/v3/automl_translation.proto
 // +kcc:source:service-docs=https://cloud.google.com/translate/docs/quickstarts
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/translate/docs/quickstarts/reference/rest/v3/projects.locations.datasets
+// +kcc:source:resource-docs=https://cloud.google.com/translate/docs/reference/rest/v3/projects.locations.datasets
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +31,7 @@ var TranslateDatasetGVK = GroupVersion.WithKind("TranslateDataset")
 // +kcc:spec:proto=google.cloud.translation.v3.Dataset
 // +kcc:required-from-proto
 type TranslateDatasetSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The TranslateDataset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

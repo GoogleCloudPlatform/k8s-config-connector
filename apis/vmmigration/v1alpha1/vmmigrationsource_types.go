@@ -15,13 +15,12 @@
 // API sources for VMMigrationSource, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/vmmigration/v1/vmmigration.proto
 // +kcc:source:service-docs=https://cloud.google.com/migrate/virtual-machines
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.sources
+// +kcc:source:resource-docs=https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +31,7 @@ var VMMigrationSourceGVK = GroupVersion.WithKind("VMMigrationSource")
 // +kcc:spec:proto=google.cloud.vmmigration.v1.Source
 // +kcc:required-from-proto
 type VMMigrationSourceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The VMMigrationSource name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -47,10 +42,6 @@ type VMMigrationSourceSpec struct {
 	// AWS type source details.
 	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.aws
 	Aws *AwsSourceDetails `json:"aws,omitempty"`
-
-	// The labels of the source.
-	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// User-provided description of the source.
 	// +kcc:proto:field=google.cloud.vmmigration.v1.Source.description

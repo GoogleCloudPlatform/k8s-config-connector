@@ -129,35 +129,47 @@ entries:
     group: vmmigration.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined parent.ProjectAndLocationRef, removed top-level Labels from Spec, and verified resource docs link
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateSource takes a client-specified source_id parameter and VMMigrationSourceIdentity implements IdentityV2
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.sources: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.sources'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.aws.accessKeyCreds.accessKeyID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: external AWS access key identifier, not a GCP resource
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.aws.accessKeyCreds.secretAccessKey
     reason: possible-reference-by-name
     detail: SecretManagerSecretVersionRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: raw AWS secret access key credential string, not a SecretManagerSecretVersion resource name
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: VMMigrationSource
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.vmware.password
@@ -168,26 +180,36 @@ entries:
     group: vmmigration.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined parent.ProjectAndLocationRef and verified resource docs link
   - kind: VMMigrationTargetProject
     group: vmmigration.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateTargetProject takes a client-specified target_project_id parameter and VMMigrationTargetProjectIdentity implements IdentityV2
   - kind: VMMigrationTargetProject
     group: vmmigration.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.targetProjects: https://docs.cloud.google.com/migrate/virtual-machines/docs/reference/rest/v1/projects.locations.targetProjects'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.targetProjects
   - kind: VMMigrationTargetProject
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: VMMigrationTargetProject
     group: vmmigration.cnrm.cloud.google.com
     field: .spec.project
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: TargetProject.project expects a bare project ID or project number rather than projects/{project}, and projectRef is already used by parent.ProjectAndLocationRef
