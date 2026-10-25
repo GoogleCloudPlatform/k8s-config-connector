@@ -615,6 +615,87 @@ spec:
                               items:
                                 type: string
                               type: array
+                            pscAutoConnections:
+                              description: Optional. The list of settings for requested
+                                Private Service Connect consumer endpoints that can
+                                be used to connect to this Cloud SQL instance.
+                              items:
+                                properties:
+                                  consumerNetworkRef:
+                                    description: 'The consumer network of this consumer
+                                      endpoint. This must be a resource path that
+                                      includes both the host project and the network
+                                      name, for example: "projects/project1/global/networks/network1".
+                                      The consumer host project of this network might
+                                      be different from the consumer service project.'
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed ComputeNetwork resource. Should
+                                          be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a ComputeNetwork
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a ComputeNetwork
+                                          resource.
+                                        type: string
+                                    type: object
+                                  consumerProjectRef:
+                                    description: The consumer project to which the
+                                      PSC service automation endpoint will be created.
+                                      This is only applicable if consumerNetworkRef
+                                      is a Shared VPC network.
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: The `projectID` field of a project,
+                                          when not managed by Config Connector.
+                                        type: string
+                                      kind:
+                                        description: The kind of the Project resource;
+                                          optional but must be `Project` if provided.
+                                        type: string
+                                      name:
+                                        description: The `name` field of a `Project`
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The `namespace` field of a `Project`
+                                          resource.
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
                             pscEnabled:
                               description: Whether PSC connectivity is enabled for
                                 this instance.

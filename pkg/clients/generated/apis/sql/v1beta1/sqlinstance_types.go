@@ -267,10 +267,24 @@ type InstancePasswordValidationPolicy struct {
 	ReuseInterval *int64 `json:"reuseInterval,omitempty"`
 }
 
+type InstancePscAutoConnections struct {
+	/* The consumer network of this consumer endpoint. This must be a resource path that includes both the host project and the network name, for example: "projects/project1/global/networks/network1". The consumer host project of this network might be different from the consumer service project. */
+	// +optional
+	ConsumerNetworkRef *v1alpha1.ResourceRef `json:"consumerNetworkRef,omitempty"`
+
+	/* The consumer project to which the PSC service automation endpoint will be created. This is only applicable if consumerNetworkRef is a Shared VPC network. */
+	// +optional
+	ConsumerProjectRef *v1alpha1.ResourceRef `json:"consumerProjectRef,omitempty"`
+}
+
 type InstancePscConfig struct {
 	/* List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric). */
 	// +optional
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	/* Optional. The list of settings for requested Private Service Connect consumer endpoints that can be used to connect to this Cloud SQL instance. */
+	// +optional
+	PscAutoConnections []InstancePscAutoConnections `json:"pscAutoConnections,omitempty"`
 
 	/* Whether PSC connectivity is enabled for this instance. */
 	// +optional
@@ -380,6 +394,10 @@ type InstanceSettings struct {
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
+	/* Configuration specific to read replica instances. Indicates whether replication is enabled or not. WARNING: Changing this field restarts the read replica instance. */
+	// +optional
+	DatabaseReplicationEnabled *bool `json:"databaseReplicationEnabled,omitempty"`
+
 	/* Configuration to protect against accidental instance deletion. */
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
@@ -472,6 +490,7 @@ type SQLInstanceSpec struct {
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
+	/* KMSCryptoKeyRef is a reference to a KMSCryptoKey. */
 	// +optional
 	EncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
@@ -522,17 +541,25 @@ type InstanceIpAddressStatus struct {
 }
 
 type InstanceObservedStateStatus struct {
-	/* The configuration for the replication cluster. */
+	/* The name of the master instance if this instance is currently acting as a replica. */
+	// +optional
+	MasterInstanceName *string `json:"masterInstanceName,omitempty"`
+
+	/* The configuration and live state of the replication cluster. */
 	// +optional
 	ReplicationCluster *InstanceReplicationClusterStatus `json:"replicationCluster,omitempty"`
 }
 
 type InstanceReplicationClusterStatus struct {
-	/* Output only. Read-only field that indicates whether the replica is a DR replica. This field is not set if the instance is a primary instance. */
+	/* Output only. Read-only field that indicates whether the replica is a DR replica. */
 	// +optional
 	DrReplica *bool `json:"drReplica,omitempty"`
 
-	/* Output only. If set, it indicates this instance has a private service access (PSA) dns endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, the dns should be pointing to this instance. After Switchover or Replica failover, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance does not yet have a replica, or had a DR replica that was deleted. */
+	/* Output only. The name of the failover DR replica if this instance is acting as the primary. */
+	// +optional
+	FailoverDRReplicaName *string `json:"failoverDRReplicaName,omitempty"`
+
+	/* Output only. If set, this field indicates this instance has a private service access (PSA) DNS endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, then the DNS endpoint points to this instance. After a switchover or replica failover operation, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance doesn't have a DR replica yet or the DR replica is deleted. */
 	// +optional
 	PsaWriteEndpoint *string `json:"psaWriteEndpoint,omitempty"`
 }

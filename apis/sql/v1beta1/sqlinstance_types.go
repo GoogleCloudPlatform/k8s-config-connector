@@ -227,10 +227,24 @@ type InstancePasswordValidationPolicy struct {
 	ReuseInterval *int64 `json:"reuseInterval,omitempty"`
 }
 
+type InstancePscAutoConnectionConfig struct {
+	/* The consumer network of this consumer endpoint. This must be a resource path that includes both the host project and the network name, for example: "projects/project1/global/networks/network1". The consumer host project of this network might be different from the consumer service project. */
+	// +optional
+	ConsumerNetworkRef *computerefs.ComputeNetworkRef `json:"consumerNetworkRef,omitempty"`
+
+	/* The consumer project to which the PSC service automation endpoint will be created. This is only applicable if consumerNetworkRef is a Shared VPC network. */
+	// +optional
+	ConsumerProjectRef *refsv1beta1.ProjectRef `json:"consumerProjectRef,omitempty"`
+}
+
 type InstancePscConfig struct {
 	/* List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric). */
 	// +optional
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	/* Optional. The list of settings for requested Private Service Connect consumer endpoints that can be used to connect to this Cloud SQL instance. */
+	// +optional
+	PscAutoConnections []InstancePscAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
 
 	/* Whether PSC connectivity is enabled for this instance. */
 	// +optional

@@ -239,3 +239,65 @@ func TestDiffInstances_AvailabilityTypeCasing(t *testing.T) {
 		t.Errorf("DiffInstances() expected no diffs, but got: %v", diff.Fields)
 	}
 }
+
+func TestDiffInstances_PscAutoConnections(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				PscConfig: &api.PscConfig{
+					PscEnabled: true,
+					PscAutoConnections: []*api.PscAutoConnectionConfig{
+						{
+							ConsumerProject: "proj-a",
+							ConsumerNetwork: "projects/proj-a/global/networks/net-a",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	actualSame := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				PscConfig: &api.PscConfig{
+					PscEnabled: true,
+					PscAutoConnections: []*api.PscAutoConnectionConfig{
+						{
+							ConsumerProject:       "proj-a",
+							ConsumerNetwork:       "projects/proj-a/global/networks/net-a",
+							IpAddress:             "10.0.0.5",
+							Status:                "ACTIVE",
+							ConsumerNetworkStatus: "AVAILABLE",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if diff := DiffInstances(desired, actualSame); diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs when PscAutoConnections match (ignoring server-computed fields), got: %v", diff.Fields)
+	}
+
+	actualDiff := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				PscConfig: &api.PscConfig{
+					PscEnabled: true,
+					PscAutoConnections: []*api.PscAutoConnectionConfig{
+						{
+							ConsumerProject: "proj-b",
+							ConsumerNetwork: "projects/proj-b/global/networks/net-b",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if diff := DiffInstances(desired, actualDiff); !diff.HasDiff() {
+		t.Errorf("DiffInstances() expected diff when PscAutoConnections differ, got none")
+	}
+}

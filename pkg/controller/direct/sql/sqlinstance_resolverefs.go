@@ -177,13 +177,32 @@ func resolveRootPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQ
 }
 
 func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if obj.Spec.Settings.IpConfiguration == nil || obj.Spec.Settings.IpConfiguration.PrivateNetworkRef == nil {
+	if obj.Spec.Settings.IpConfiguration == nil {
 		return nil
 	}
 
-	netRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
-	if err := netRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
-		return err
+	if netRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef; netRef != nil {
+		if err := netRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
+	for i := range obj.Spec.Settings.IpConfiguration.PscConfig {
+		for j := range obj.Spec.Settings.IpConfiguration.PscConfig[i].PscAutoConnections {
+			conn := &obj.Spec.Settings.IpConfiguration.PscConfig[i].PscAutoConnections[j]
+			if conn.ConsumerNetworkRef != nil {
+				if err := conn.ConsumerNetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+					return err
+				}
+			}
+			if conn.ConsumerProjectRef != nil {
+				project, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), conn.ConsumerProjectRef)
+				if err != nil {
+					return err
+				}
+				conn.ConsumerProjectRef.External = project.ProjectID
+			}
+		}
 	}
 	return nil
 }

@@ -196,6 +196,16 @@ settings:
     pscConfig:
     - allowedConsumerProjects:
       - string
+      pscAutoConnections:
+      - consumerNetworkRef:
+          external: string
+          name: string
+          namespace: string
+        consumerProjectRef:
+          external: string
+          kind: string
+          name: string
+          namespace: string
       pscEnabled: boolean
     requireSsl: boolean
     sslMode: string
@@ -1372,6 +1382,116 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. The list of settings for requested Private Service Connect consumer endpoints that can be used to connect to this Cloud SQL instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerNetworkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The consumer network of this consumer endpoint. This must be a resource path that includes both the host project and the network name, for example: "projects/project1/global/networks/network1". The consumer host project of this network might be different from the consumer service project.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerNetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerNetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerNetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerProjectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The consumer project to which the PSC service automation endpoint will be created. This is only applicable if consumerNetworkRef is a Shared VPC network.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerProjectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerProjectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerProjectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscAutoConnections[].consumerProjectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>

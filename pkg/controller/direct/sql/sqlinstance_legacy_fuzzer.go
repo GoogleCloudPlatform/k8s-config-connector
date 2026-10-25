@@ -77,6 +77,26 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 				for _, net := range in.Settings.IpConfiguration.AuthorizedNetworks {
 					net.Kind = "sql#aclEntry"
 				}
+				if in.Settings.IpConfiguration.PscConfig != nil {
+					filtered := make([]*api.PscAutoConnectionConfig, 0, len(in.Settings.IpConfiguration.PscConfig.PscAutoConnections))
+					for _, conn := range in.Settings.IpConfiguration.PscConfig.PscAutoConnections {
+						if conn != nil && (conn.ConsumerNetwork != "" || conn.ConsumerProject != "") {
+							conn.ConsumerNetworkStatus = ""
+							conn.IpAddress = ""
+							conn.ServiceConnectionPolicy = ""
+							conn.ServiceConnectionPolicyCreationResult = ""
+							conn.Status = ""
+							conn.ForceSendFields = nil
+							conn.NullFields = nil
+							filtered = append(filtered, conn)
+						}
+					}
+					if len(filtered) == 0 {
+						in.Settings.IpConfiguration.PscConfig.PscAutoConnections = nil
+					} else {
+						in.Settings.IpConfiguration.PscConfig.PscAutoConnections = filtered
+					}
+				}
 			}
 			if in.Settings.LocationPreference != nil {
 				in.Settings.LocationPreference.Kind = "sql#locationPreference"
@@ -163,6 +183,9 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Settings.IpConfiguration.PrivateNetwork")
 	f.SpecField(".Settings.IpConfiguration.PscConfig")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.AllowedConsumerProjects")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ConsumerNetwork")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ConsumerProject")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.PscEnabled")
 	f.SpecField(".Settings.IpConfiguration.RequireSsl")
 	f.SpecField(".Settings.IpConfiguration.SslMode")
@@ -276,7 +299,13 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCertificateRotationMode")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.NetworkAttachmentUri")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
-	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ConsumerNetworkStatus")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.IpAddress")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ServiceConnectionPolicy")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ServiceConnectionPolicyCreationResult")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.Status")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.ForceSendFields")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections.NullFields")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscWriteEndpointDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
