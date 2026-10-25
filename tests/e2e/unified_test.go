@@ -278,6 +278,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				if fixture.GVK.Group == "ces.cnrm.cloud.google.com" && fixture.GVK.Kind == "CESApp" {
 					t.Skip("skipping CESApp as the controller is not implemented yet")
 				}
+				if os.Getenv("E2E_PARALLEL") == "true" {
+					t.Parallel()
+				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
 
