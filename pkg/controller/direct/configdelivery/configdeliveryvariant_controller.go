@@ -157,6 +157,7 @@ func (a *VariantAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
 	req := &configdeliverypb.CreateVariantRequest{
 		Parent:    a.id.ParentString(),

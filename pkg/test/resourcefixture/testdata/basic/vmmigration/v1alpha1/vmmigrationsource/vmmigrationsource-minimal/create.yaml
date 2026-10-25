@@ -1,0 +1,14 @@
+apiVersion: vmmigration.cnrm.cloud.google.com/v1alpha1
+kind: VMMigrationSource
+metadata:
+  name: vmsrc-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: Initial VMware source
+  vmware:
+    username: admin
+    password: test-password-123
+    vcenterIP: 10.0.0.1
+    thumbprint: "0123456789abcdef0123456789abcdef01234567"

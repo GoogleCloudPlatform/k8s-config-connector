@@ -69,7 +69,7 @@ func (m *modelGlossary) AdapterForObject(ctx context.Context, op *directbase.Ada
 	id := i.(*krm.TranslateGlossaryIdentity)
 
 	// Get translate GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (m *modelGlossary) AdapterForURL(ctx context.Context, url string) (directba
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -97,9 +97,9 @@ func (m *modelGlossary) AdapterForURL(ctx context.Context, url string) (directba
 		gcpClient: gcpClient,
 	}, nil
 }
-func (m *modelGlossary) client(ctx context.Context) (*gcp.TranslationClient, error) {
+func (m *modelGlossary) client(ctx context.Context, projectID string) (*gcp.TranslationClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(projectID))
 	if err != nil {
 		return nil, err
 	}

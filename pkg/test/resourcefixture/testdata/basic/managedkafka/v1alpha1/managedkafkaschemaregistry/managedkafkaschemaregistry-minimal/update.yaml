@@ -19,6 +19,7 @@ metadata:
   labels:
     updated: "true"
 spec:
+  resourceID: mkschemaregistry_${uniqueId}
   projectRef:
     external: ${projectId}
   location: us-central1

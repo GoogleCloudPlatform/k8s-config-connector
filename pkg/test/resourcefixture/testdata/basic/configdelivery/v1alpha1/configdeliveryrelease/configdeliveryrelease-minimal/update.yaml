@@ -16,8 +16,14 @@ apiVersion: configdelivery.cnrm.cloud.google.com/v1alpha1
 kind: ConfigDeliveryRelease
 metadata:
   name: cdrelease-${uniqueId}
+  labels:
+    env: test
 spec:
+  resourceID: v1-0-0
   resourceBundleRef:
     name: cdrbundle-${uniqueId}
-  version: v1.0.1
-  lifecycle: DRAFT
+  version: v1.0.0
+  lifecycle: PUBLISHED
+  info:
+    variantOciImagePaths:
+      default: us-central1-docker.pkg.dev/${projectId}/repo/img:v1

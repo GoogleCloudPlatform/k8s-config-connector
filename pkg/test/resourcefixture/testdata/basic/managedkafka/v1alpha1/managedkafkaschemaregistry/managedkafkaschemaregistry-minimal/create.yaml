@@ -17,6 +17,7 @@ kind: ManagedKafkaSchemaRegistry
 metadata:
   name: mkschemaregistry-${uniqueId}
 spec:
+  resourceID: mkschemaregistry_${uniqueId}
   projectRef:
     external: ${projectId}
   location: us-central1

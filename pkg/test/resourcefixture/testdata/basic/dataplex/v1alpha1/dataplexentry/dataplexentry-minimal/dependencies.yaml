@@ -14,6 +14,6 @@ metadata:
   name: dpet-${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    external: "projects/${projectNumber}"
   location: us-central1
   description: Entry type for minimal entry test
