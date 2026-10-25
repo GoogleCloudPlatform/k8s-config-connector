@@ -30,6 +30,7 @@ import (
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datamigration/v1alpha1"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
@@ -76,7 +77,9 @@ func AlloyDbSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings
 	}
 	out := &krm.AlloyDbSettings{}
 	out.InitialUser = AlloyDbSettings_UserPassword_FromProto(mapCtx, in.GetInitialUser())
-	out.VPCNetwork = direct.LazyPtr(in.GetVpcNetwork())
+	if in.GetVpcNetwork() != "" {
+		out.VPCNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetVpcNetwork()}
+	}
 	out.Labels = in.Labels
 	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
 	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
@@ -88,7 +91,9 @@ func AlloyDbSettings_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings)
 	}
 	out := &pb.AlloyDbSettings{}
 	out.InitialUser = AlloyDbSettings_UserPassword_ToProto(mapCtx, in.InitialUser)
-	out.VpcNetwork = direct.ValueOf(in.VPCNetwork)
+	if in.VPCNetworkRef != nil {
+		out.VpcNetwork = in.VPCNetworkRef.External
+	}
 	out.Labels = in.Labels
 	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx, in.PrimaryInstanceSettings)
 	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
@@ -123,7 +128,9 @@ func AlloyDbSettings_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.AlloyDbSettings_EncryptionConfig{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
 	return out
 }
 func AlloyDbSettings_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_EncryptionConfig) *pb.AlloyDbSettings_EncryptionConfig {
@@ -131,7 +138,9 @@ func AlloyDbSettings_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.AlloyDbSettings_EncryptionConfig{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	if in.KMSKeyNameRef != nil {
+		out.KmsKeyName = in.KMSKeyNameRef.External
+	}
 	return out
 }
 func AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krm.AlloyDbSettings_PrimaryInstanceSettings {
@@ -337,11 +346,15 @@ func CloudSQLSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlSettin
 	out.DataDiskSizeGB = direct.Int64Value_FromProto(mapCtx, in.GetDataDiskSizeGb())
 	out.Zone = direct.LazyPtr(in.GetZone())
 	out.SecondaryZone = direct.LazyPtr(in.GetSecondaryZone())
-	out.SourceID = direct.LazyPtr(in.GetSourceId())
+	if in.GetSourceId() != "" {
+		out.SourceIDRef = &krm.DatamigrationConnectionProfileRef{External: in.GetSourceId()}
+	}
 	out.RootPassword = direct.LazyPtr(in.GetRootPassword())
 	// MISSING: RootPasswordSet
 	out.Collation = direct.LazyPtr(in.GetCollation())
-	out.CmekKeyName = direct.LazyPtr(in.GetCmekKeyName())
+	if in.GetCmekKeyName() != "" {
+		out.CmekKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
+	}
 	out.AvailabilityType = direct.Enum_FromProto(mapCtx, in.GetAvailabilityType())
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
 	return out
@@ -363,11 +376,15 @@ func CloudSQLSettings_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLSetting
 	out.DataDiskSizeGb = direct.Int64Value_ToProto(mapCtx, in.DataDiskSizeGB)
 	out.Zone = direct.ValueOf(in.Zone)
 	out.SecondaryZone = direct.ValueOf(in.SecondaryZone)
-	out.SourceId = direct.ValueOf(in.SourceID)
+	if in.SourceIDRef != nil {
+		out.SourceId = in.SourceIDRef.External
+	}
 	out.RootPassword = direct.ValueOf(in.RootPassword)
 	// MISSING: RootPasswordSet
 	out.Collation = direct.ValueOf(in.Collation)
-	out.CmekKeyName = direct.ValueOf(in.CmekKeyName)
+	if in.CmekKeyNameRef != nil {
+		out.CmekKeyName = in.CmekKeyNameRef.External
+	}
 	out.AvailabilityType = direct.Enum_ToProto[pb.CloudSqlSettings_SqlAvailabilityType](mapCtx, in.AvailabilityType)
 	out.Edition = direct.Enum_ToProto[pb.CloudSqlSettings_Edition](mapCtx, in.Edition)
 	return out
@@ -816,6 +833,8 @@ func DatamigrationConnectionProfileObservedState_FromProto(mapCtx *direct.MapCon
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Mysql = MySQLConnectionProfileObservedState_FromProto(mapCtx, in.GetMysql())
 	out.Postgresql = PostgreSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetPostgresql())
 	out.Oracle = OracleConnectionProfileObservedState_FromProto(mapCtx, in.GetOracle())
@@ -832,6 +851,8 @@ func DatamigrationConnectionProfileObservedState_ToProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.ConnectionProfile_State](mapCtx, in.State)
 	if oneof := MySQLConnectionProfileObservedState_ToProto(mapCtx, in.Mysql); oneof != nil {
 		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
 	}
@@ -856,8 +877,7 @@ func DatamigrationConnectionProfileSpec_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.DatamigrationConnectionProfileSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Mysql = MySQLConnectionProfile_FromProto(mapCtx, in.GetMysql())
 	out.Postgresql = PostgreSQLConnectionProfile_FromProto(mapCtx, in.GetPostgresql())
@@ -873,8 +893,7 @@ func DatamigrationConnectionProfileSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.ConnectionProfile{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.State = direct.Enum_ToProto[pb.ConnectionProfile_State](mapCtx, in.State)
+	// MISSING: Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	if oneof := MySQLConnectionProfile_ToProto(mapCtx, in.Mysql); oneof != nil {
 		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
@@ -1355,7 +1374,9 @@ func PrivateConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConn
 		return nil
 	}
 	out := &krm.PrivateConnectivity{}
-	out.PrivateConnection = direct.LazyPtr(in.GetPrivateConnection())
+	if in.GetPrivateConnection() != "" {
+		out.PrivateConnectionRef = &krm.DatabaseMigrationPrivateConnectionRef{External: in.GetPrivateConnection()}
+	}
 	return out
 }
 func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnectivity) *pb.PrivateConnectivity {
@@ -1363,7 +1384,9 @@ func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConne
 		return nil
 	}
 	out := &pb.PrivateConnectivity{}
-	out.PrivateConnection = direct.ValueOf(in.PrivateConnection)
+	if in.PrivateConnectionRef != nil {
+		out.PrivateConnection = in.PrivateConnectionRef.External
+	}
 	return out
 }
 func PrivateServiceConnectConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConnectivity) *krm.PrivateServiceConnectConnectivity {
@@ -1371,7 +1394,9 @@ func PrivateServiceConnectConnectivity_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.PrivateServiceConnectConnectivity{}
-	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	if in.GetServiceAttachment() != "" {
+		out.ServiceAttachmentRef = &refsv1beta1.ComputeServiceAttachmentRef{External: in.GetServiceAttachment()}
+	}
 	return out
 }
 func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConnectivity) *pb.PrivateServiceConnectConnectivity {
@@ -1379,7 +1404,9 @@ func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.PrivateServiceConnectConnectivity{}
-	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	if in.ServiceAttachmentRef != nil {
+		out.ServiceAttachment = in.ServiceAttachmentRef.External
+	}
 	return out
 }
 func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivity {
@@ -1460,7 +1487,9 @@ func SQLIPConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlIpConfig) *krm.S
 	}
 	out := &krm.SQLIPConfig{}
 	out.EnableIPV4 = direct.BoolValue_FromProto(mapCtx, in.GetEnableIpv4())
-	out.PrivateNetwork = direct.LazyPtr(in.GetPrivateNetwork())
+	if in.GetPrivateNetwork() != "" {
+		out.PrivateNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetPrivateNetwork()}
+	}
 	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
 	out.RequireSSL = direct.BoolValue_FromProto(mapCtx, in.GetRequireSsl())
 	out.AuthorizedNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_FromProto)
@@ -1472,7 +1501,9 @@ func SQLIPConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLIPConfig) *pb.Sql
 	}
 	out := &pb.SqlIpConfig{}
 	out.EnableIpv4 = direct.BoolValue_ToProto(mapCtx, in.EnableIPV4)
-	out.PrivateNetwork = direct.ValueOf(in.PrivateNetwork)
+	if in.PrivateNetworkRef != nil {
+		out.PrivateNetwork = in.PrivateNetworkRef.External
+	}
 	out.AllocatedIpRange = direct.ValueOf(in.AllocatedIPRange)
 	out.RequireSsl = direct.BoolValue_ToProto(mapCtx, in.RequireSSL)
 	out.AuthorizedNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_ToProto)

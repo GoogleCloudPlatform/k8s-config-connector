@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,23 +30,12 @@ var NetworkConnectivityDestinationGVK = GroupVersion.WithKind("NetworkConnectivi
 // +kcc:spec:proto=google.cloud.networkconnectivity.v1.Destination
 // +kcc:required-from-proto
 type NetworkConnectivityDestinationSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. The MulticloudDataTransferConfig that this destination belongs to.
+	// +required
+	MulticloudDataTransferConfigRef *NetworkConnectivityMulticloudDataTransferConfigRef `json:"multicloudDataTransferConfigRef"`
 
 	// The NetworkConnectivityDestination name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. User-defined labels.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// The etag is computed by the server, and might be sent with update and
-	//  delete requests so that the client has an up-to-date value before
-	//  proceeding.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.etag
-	Etag *string `json:"etag,omitempty"`
 
 	// Optional. A description of this resource.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.description
@@ -92,6 +80,12 @@ type NetworkConnectivityDestinationObservedState struct {
 	// Output only. Time when the `Destination` resource was updated.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// The etag is computed by the server, and might be sent with update and
+	//  delete requests so that the client has an up-to-date value before
+	//  proceeding.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.etag
+	Etag *string `json:"etag,omitempty"`
 
 	// Required. Unordered list. The list of `DestinationEndpoint` resources
 	//  configured for the IP prefix.

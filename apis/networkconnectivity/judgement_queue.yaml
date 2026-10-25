@@ -25,76 +25,104 @@ entries:
     group: networkconnectivity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with MulticloudDataTransferConfigRef, removed top-level Labels from Spec, moved Etag to ObservedState, and regenerated identity and mappers
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}" contains ancestor segment(s) multicloudDataTransferConfigs/{multicloud_data_transfer_config} with no matching reference or field on NetworkConnectivityDestinationSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: added MulticloudDataTransferConfigRef (*NetworkConnectivityMulticloudDataTransferConfigRef) on NetworkConnectivityDestinationSpec and regenerated identity
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, and no MulticloudDataTransferConfigRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: generated NetworkConnectivityMulticloudDataTransferConfigRef and replaced ProjectRef and Location with MulticloudDataTransferConfigRef (*NetworkConnectivityMulticloudDataTransferConfigRef)
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved Etag from NetworkConnectivityDestinationSpec to NetworkConnectivityDestinationObservedState
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with MulticloudDataTransferConfigRef (*NetworkConnectivityMulticloudDataTransferConfigRef) and regenerated identity
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed top-level Labels from Spec, converted network to NetworkRef (*computev1beta1.ComputeNetworkRef), updated resource-docs URL, set --pattern override matching CAI, and updated mappers
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.networkconnectivity.v1.PolicyBasedRoute declares 2 resource name patterns (projects/{project}/locations/global/PolicyBasedRoutes/{policy_based_route}, projects/{projectsid}/locations/global/policyBasedRoutes/{policybasedroutesid}); generated identity uses "projects/{projectsid}/locations/global/policyBasedRoutes/{policybasedroutesid}" (pass --pattern NetworkConnectivityPolicyBasedRoute=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: edited
+    note: passed --pattern NetworkConnectivityPolicyBasedRoute=projects/{project}/locations/global/policyBasedRoutes/{policy_based_route} matching CAI format
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.global.PolicyBasedRoutes: https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/reference/rest/v1/projects.locations.global.PolicyBasedRoutes, https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.PolicyBasedRoutes'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.policyBasedRoutes and removed +kcc:guess=source-link
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.interconnectAttachment.region
     reason: location-or-parent-ref
     detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: accepted
+    note: plain GCP region name string (or 'all') specifying where to install the policy-based route on interconnect attachments
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.network
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to NetworkRef (*computev1beta1.ComputeNetworkRef)
   - kind: NetworkConnectivityServiceConnectionToken
     group: networkconnectivity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, removed top-level Labels from Spec, moved Etag to ObservedState, converted network to NetworkRef (*computev1beta1.ComputeNetworkRef), and updated mappers
   - kind: NetworkConnectivityServiceConnectionToken
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved Etag from NetworkConnectivityServiceConnectionTokenSpec to NetworkConnectivityServiceConnectionTokenObservedState
   - kind: NetworkConnectivityServiceConnectionToken
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: NetworkConnectivityServiceConnectionToken
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.network
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to NetworkRef (*computev1beta1.ComputeNetworkRef)

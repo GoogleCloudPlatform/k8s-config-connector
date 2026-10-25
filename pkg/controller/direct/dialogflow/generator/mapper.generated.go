@@ -396,7 +396,9 @@ func InputDataset_FromProto(mapCtx *direct.MapContext, in *pb.InputDataset) *krm
 		return nil
 	}
 	out := &krm.InputDataset{}
-	out.Dataset = direct.LazyPtr(in.GetDataset())
+	if in.GetDataset() != "" {
+		out.DatasetRef = &krm.DialogflowConversationDatasetRef{External: in.GetDataset()}
+	}
 	return out
 }
 func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *pb.InputDataset {
@@ -404,7 +406,9 @@ func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *pb.I
 		return nil
 	}
 	out := &pb.InputDataset{}
-	out.Dataset = direct.ValueOf(in.Dataset)
+	if in.DatasetRef != nil {
+		out.Dataset = in.DatasetRef.External
+	}
 	return out
 }
 func MessageEntry_FromProto(mapCtx *direct.MapContext, in *pb.MessageEntry) *krm.MessageEntry {

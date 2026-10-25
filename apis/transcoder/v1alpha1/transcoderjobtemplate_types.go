@@ -20,6 +20,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -31,22 +32,109 @@ var TranscoderJobTemplateGVK = GroupVersion.WithKind("TranscoderJobTemplate")
 // +kcc:spec:proto=google.cloud.video.transcoder.v1.JobTemplate
 // +kcc:required-from-proto
 type TranscoderJobTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The TranscoderJobTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The configuration for this template.
 	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobTemplate.config
-	Config *JobConfigWithRequired `json:"config,omitempty"`
+	Config *TranscoderJobTemplate_JobConfig `json:"config,omitempty"`
+}
 
-	// The labels associated with this job template. You can use these to organize
-	//  and group your job templates.
-	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobTemplate.labels
-	Labels map[string]string `json:"labels,omitempty"`
+// +kcc:proto=google.cloud.video.transcoder.v1.JobConfig
+type TranscoderJobTemplate_JobConfig struct {
+	// List of input assets stored in Cloud Storage.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.inputs
+	Inputs []Input `json:"inputs,omitempty"`
+
+	// List of edit atoms. Defines the ultimate timeline of the resulting
+	//  file or manifest.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.edit_list
+	EditList []EditAtom `json:"editList,omitempty"`
+
+	// List of elementary streams.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.elementary_streams
+	ElementaryStreams []ElementaryStreamWithRequired `json:"elementaryStreams,omitempty"`
+
+	// List of multiplexing settings for output streams.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.mux_streams
+	MuxStreams []MuxStreamWithRequired `json:"muxStreams,omitempty"`
+
+	// List of output manifests.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.manifests
+	Manifests []ManifestWithRequired `json:"manifests,omitempty"`
+
+	// Output configuration.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.output
+	Output *Output `json:"output,omitempty"`
+
+	// List of ad breaks. Specifies where to insert ad break tags in the output
+	//  manifests.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.ad_breaks
+	AdBreaks []AdBreak `json:"adBreaks,omitempty"`
+
+	// Destination on Pub/Sub.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.pubsub_destination
+	PubsubDestination *PubsubDestination `json:"pubsubDestination,omitempty"`
+
+	// List of output sprite sheets.
+	//  Spritesheets require at least one VideoStream in the Jobconfig.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.sprite_sheets
+	SpriteSheets []SpriteSheetWithRequired `json:"spriteSheets,omitempty"`
+
+	// List of overlays on the output video, in descending Z-order.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.overlays
+	Overlays []OverlayWithRequired `json:"overlays,omitempty"`
+
+	// List of encryption configurations for the content.
+	//  Each configuration has an ID. Specify this ID in the
+	//  [MuxStream.encryption_id][google.cloud.video.transcoder.v1.MuxStream.encryption_id]
+	//  field to indicate the configuration to use for that `MuxStream` output.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobConfig.encryptions
+	Encryptions []TranscoderJobTemplate_Encryption `json:"encryptions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.transcoder.v1.Encryption
+type TranscoderJobTemplate_Encryption struct {
+	// Required. Identifier for this set of encryption options.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Configuration for AES-128 encryption.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.aes_128
+	Aes128 *Encryption_Aes128Encryption `json:"aes128,omitempty"`
+
+	// Configuration for SAMPLE-AES encryption.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.sample_aes
+	SampleAes *Encryption_SampleAesEncryption `json:"sampleAes,omitempty"`
+
+	// Configuration for MPEG Common Encryption (MPEG-CENC).
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.mpeg_cenc
+	MpegCenc *Encryption_MpegCommonEncryptionWithRequired `json:"mpegCenc,omitempty"`
+
+	// Keys are stored in Google Secret Manager.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.secret_manager_key_source
+	SecretManagerKeySource *TranscoderJobTemplate_Encryption_SecretManagerSource `json:"secretManagerKeySource,omitempty"`
+
+	// Required. DRM system(s) to use; at least one must be specified. If a
+	//  DRM system is omitted, it is considered disabled.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.drm_systems
+	// +required
+	DrmSystems *Encryption_DrmSystems `json:"drmSystems,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.transcoder.v1.Encryption.SecretManagerSource
+type TranscoderJobTemplate_Encryption_SecretManagerSource struct {
+	// Required. The name of the Secret Version containing the encryption key in
+	//  the following format:
+	//  `projects/{project}/secrets/{secret_id}/versions/{version_number}`
+	//
+	//  Note that only numbered versions are supported. Aliases like "latest" are
+	//  not supported.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Encryption.SecretManagerSource.secret_version
+	// +required
+	SecretVersionRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretVersionRef,omitempty"`
 }
 
 // TranscoderJobTemplateStatus defines the config connector machine state of TranscoderJobTemplate

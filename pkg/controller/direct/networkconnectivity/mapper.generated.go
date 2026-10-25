@@ -20,6 +20,7 @@
 // krm.group: networkconnectivity.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: mockgcp.cloud.networkconnectivity.v1
+// proto.service: google.cloud.networkconnectivity.v1
 
 package networkconnectivity
 
