@@ -478,18 +478,35 @@ func JudgementEntries(kind, group string, items []JudgementItem) []judgement.Ent
 	return out
 }
 
+var apiVersionQualifierRe = regexp.MustCompile(`\b([a-z][a-z0-9]*)(v1alpha1|v1beta1)\.`)
+
 // ExtraImportsFor scans rendered field bodies and returns required package imports
-// for mapped external types (e.g. apiextensionsv1.JSON, common.Status).
+// for mapped external types (e.g. apiextensionsv1.JSON, common.Status, or
+// cross-package/cross-version KCC reference types like dataformv1beta1.DataformRepositoryRef).
 func ExtraImportsFor(bodies ...string) []string {
+	seen := map[string]bool{}
 	var out []string
 	for qualifier, importPath := range codegen.QualifierImports {
 		for _, body := range bodies {
 			if strings.Contains(body, qualifier+".") {
 				// Always emit with explicit qualifier alias, avoiding mismatches between
 				// package import path segments and type qualifiers (e.g. apiextensionsv1).
+				seen[qualifier] = true
 				out = append(out, fmt.Sprintf("%s %q", qualifier, importPath))
 				break
 			}
+		}
+	}
+	for _, body := range bodies {
+		for _, m := range apiVersionQualifierRe.FindAllStringSubmatch(body, -1) {
+			service, ver := m[1], m[2]
+			qualifier := service + ver
+			if qualifier == "refsv1beta1" || seen[qualifier] {
+				continue
+			}
+			seen[qualifier] = true
+			importPath := fmt.Sprintf("github.com/GoogleCloudPlatform/k8s-config-connector/apis/%s/%s", service, ver)
+			out = append(out, fmt.Sprintf("%s %q", qualifier, importPath))
 		}
 	}
 	sort.Strings(out)

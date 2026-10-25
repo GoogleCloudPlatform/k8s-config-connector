@@ -38,8 +38,9 @@ var wellKnownCrossServiceRefs = map[string]string{
 	"secretmanager.googleapis.com/Secret":              "refsv1beta1.SecretManagerSecretRef",
 	"secretmanager.googleapis.com/SecretVersion":       "refsv1beta1.SecretManagerSecretVersionRef",
 	"bigquery.googleapis.com/Dataset":                  "refsv1beta1.BigQueryDatasetRef",
-	"compute.googleapis.com/Network":                   "refsv1beta1.ComputeNetworkRef",
-	"compute.googleapis.com/Subnetwork":                "refsv1beta1.ComputeSubnetworkRef",
+	"compute.googleapis.com/Network":                   "computerefs.ComputeNetworkRef",
+	"compute.googleapis.com/Networks":                  "computerefs.ComputeNetworkRef",
+	"compute.googleapis.com/Subnetwork":                "computev1beta1.ComputeSubnetworkRef",
 	"compute.googleapis.com/ServiceAttachment":         "refsv1beta1.ComputeServiceAttachmentRef",
 	"sqladmin.googleapis.com/Instance":                 "refsv1beta1.SQLInstanceRef",
 	"sqladmin.googleapis.com/Database":                 "refsv1beta1.SQLDatabaseRef",
@@ -47,6 +48,7 @@ var wellKnownCrossServiceRefs = map[string]string{
 	"pubsub.googleapis.com/Topic":                      "pubsubv1beta1.PubSubTopicRef",
 	"logging.googleapis.com/LogBucket":                 "loggingv1beta1.LoggingLogBucketRef",
 	"storage.googleapis.com/Bucket":                    "storagev1beta1.StorageBucketRef",
+	"servicedirectory.googleapis.com/Service":          "servicedirectoryv1beta1.ServiceDirectoryServiceRef",
 }
 
 // ResolveTargetRef maps a google.api.resource_reference target type (e.g.
@@ -118,6 +120,11 @@ func (a *APIScaffolder) candidatesForTargetWithNormalize(targetType, serviceDir 
 		}
 		if len(found) > 0 {
 			return disambiguateServiceRefs(found, currentService, targetService, want)
+		}
+		if requireNormalize && currentService != "" {
+			if sibFound := scanSiblingVersionDirs(serviceDir, currentService, want, re, requireNormalize); len(sibFound) > 0 {
+				return disambiguateServiceRefs(sibFound, currentService, targetService, want)
+			}
 		}
 	}
 
@@ -220,7 +227,53 @@ func parentRefTypesWithNormalize(repoRoot, serviceDir, currentService, name stri
 	if found := scan(serviceDir, "", false); len(found) > 0 {
 		return disambiguateServiceRefs(found, currentService, "", want)
 	}
+	if requireNormalize && currentService != "" {
+		if sibFound := scanSiblingVersionDirs(serviceDir, currentService, want, re, requireNormalize); len(sibFound) > 0 {
+			return disambiguateServiceRefs(sibFound, currentService, "", want)
+		}
+	}
 	return scan(filepath.Join(repoRoot, sharedRefsPackage), "refsv1beta1", true)
+}
+
+func scanSiblingVersionDirs(serviceDir, currentService, want string, re *regexp.Regexp, requireNormalize bool) map[string]string {
+	parentDir := filepath.Dir(serviceDir)
+	currentVer := filepath.Base(serviceDir)
+	found := map[string]string{}
+	for _, sibVer := range []string{"v1beta1", "v1alpha1"} {
+		if sibVer == currentVer {
+			continue
+		}
+		sibDir := filepath.Join(parentDir, sibVer)
+		entries, err := os.ReadDir(sibDir)
+		if err != nil {
+			continue
+		}
+		qual := currentService + sibVer
+		for _, e := range entries {
+			if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") {
+				continue
+			}
+			body, err := os.ReadFile(filepath.Join(sibDir, e.Name()))
+			if err != nil {
+				continue
+			}
+			bodyStr := string(body)
+			for _, m := range re.FindAllStringSubmatch(bodyStr, -1) {
+				typeName := m[1]
+				if !strings.HasSuffix(strings.ToLower(typeName), want) {
+					continue
+				}
+				if requireNormalize && !hasNormalizeMethod(bodyStr, typeName) {
+					continue
+				}
+				found[typeName] = qual
+			}
+		}
+		if len(found) > 0 {
+			return found
+		}
+	}
+	return found
 }
 
 // disambiguateServiceRefs narrows multiple suffix matches in the same package
