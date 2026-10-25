@@ -1,0 +1,50 @@
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "MapConfig ${uniqueId}",
+  "mapId": "63bce22e5a9e9aa653af78ef",
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "StyleConfig ${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "alias": "alias-upd-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

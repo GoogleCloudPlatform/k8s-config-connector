@@ -1,0 +1,13 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubQueryTemplate
+metadata:
+  name: bqahqt${uniqueId}
+spec:
+  dataExchangeRef:
+    external: projects/${projectId}/locations/us/dataExchanges/kccdcrde1
+  displayName: qt_${uniqueId}
+  description: minimal query template
+  primaryContact: lmadariaga@google.com
+  routine:
+    routineType: TABLE_VALUED_FUNCTION
+    definitionBody: "bqahqt${uniqueId}() AS (SELECT 1 AS x)"

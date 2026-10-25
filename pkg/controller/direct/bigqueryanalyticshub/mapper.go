@@ -17,6 +17,7 @@ package bigqueryanalyticshub
 import (
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -317,5 +318,79 @@ func Publisher_ToProto(mapCtx *direct.MapContext, in *krm.Publisher) *pb.Publish
 	out := &pb.Publisher{}
 	out.Name = direct.ValueOf(in.Name)
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
+	return out
+}
+
+func BigQueryAnalyticsHubQueryTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QueryTemplate) *krmv1alpha1.BigQueryAnalyticsHubQueryTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.BigQueryAnalyticsHubQueryTemplateObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func BigQueryAnalyticsHubQueryTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryAnalyticsHubQueryTemplateObservedState) *pb.QueryTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QueryTemplate{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.QueryTemplate_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func BigQueryAnalyticsHubQueryTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.QueryTemplate) *krmv1alpha1.BigQueryAnalyticsHubQueryTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.BigQueryAnalyticsHubQueryTemplateSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Proposer = direct.LazyPtr(in.GetProposer())
+	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
+	out.Documentation = direct.LazyPtr(in.GetDocumentation())
+	out.Routine = Routine_FromProto(mapCtx, in.GetRoutine())
+	return out
+}
+
+func BigQueryAnalyticsHubQueryTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryAnalyticsHubQueryTemplateSpec) *pb.QueryTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QueryTemplate{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Proposer = direct.ValueOf(in.Proposer)
+	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
+	out.Documentation = direct.ValueOf(in.Documentation)
+	out.Routine = Routine_ToProto(mapCtx, in.Routine)
+	return out
+}
+
+func Routine_FromProto(mapCtx *direct.MapContext, in *pb.Routine) *krmv1alpha1.Routine {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Routine{}
+	out.RoutineType = direct.Enum_FromProto(mapCtx, in.GetRoutineType())
+	out.DefinitionBody = direct.LazyPtr(in.GetDefinitionBody())
+	return out
+}
+
+func Routine_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Routine) *pb.Routine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Routine{}
+	out.RoutineType = direct.Enum_ToProto[pb.Routine_RoutineType](mapCtx, in.RoutineType)
+	out.DefinitionBody = direct.ValueOf(in.DefinitionBody)
 	return out
 }

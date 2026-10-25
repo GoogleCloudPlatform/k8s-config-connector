@@ -334,6 +334,8 @@ cloud.google.com/go/certificatemanager v1.7.4/go.mod h1:FHAylPe/6IIKuaRmHbjbdLhG
 cloud.google.com/go/certificatemanager v1.7.5/go.mod h1:uX+v7kWqy0Y3NG/ZhNvffh0kuqkKZIXdvlZRO7z0VtM=
 cloud.google.com/go/certificatemanager v1.14.0 h1:31fCXgMFDLSXh9HeF2M6hLE+dPF/1UFyIJXLmqpr41g=
 cloud.google.com/go/certificatemanager v1.14.0/go.mod h1:QOA8qRoM6/Ik03+srLnBykenGTy0fk78dnPcx5ZWOW8=
+cloud.google.com/go/ces v1.0.0 h1:jmwyCu/L58us5q4s9Ay19Pw2YE4MtmZiBynC5v4XdpI=
+cloud.google.com/go/ces v1.0.0/go.mod h1:8mVTdlYgKcVhV6H341zFHQSw0IyTrIuvUtPEvknvHLo=
 cloud.google.com/go/channel v1.8.0/go.mod h1:W5SwCXDJsq/rg3tn3oG0LOxpAo6IMxNa09ngphpSlnk=
 cloud.google.com/go/channel v1.9.0/go.mod h1:jcu05W0my9Vx4mt3/rEHpfxc9eKi9XwsdDL8yBMbKUk=
 cloud.google.com/go/channel v1.11.0/go.mod h1:IdtI0uWGqhEeatSB62VOoJ8FSUhJ9/+iGkJVqp74CGE=
@@ -364,6 +366,8 @@ cloud.google.com/go/cloudbuild v1.15.0/go.mod h1:eIXYWmRt3UtggLnFGx4JvXcMj4kShhV
 cloud.google.com/go/cloudbuild v1.15.1/go.mod h1:gIofXZSu+XD2Uy+qkOrGKEx45zd7s28u/k8f99qKals=
 cloud.google.com/go/cloudbuild v1.30.0 h1:iOvtaQAcMmdLJaseR6qV76RgFHAAwZlwbpHwWMTqIdo=
 cloud.google.com/go/cloudbuild v1.30.0/go.mod h1:rg52xEmndQQPiC9NV/8sCaVtKxHMU9D9MeU+oE9VGKA=
+cloud.google.com/go/cloudcontrolspartner v1.4.0 h1:Y9juxFwDctW0bNRc6Vx3khcugfMVNR6ZSnW0CVVEqz8=
+cloud.google.com/go/cloudcontrolspartner v1.4.0/go.mod h1:Z2Jf6ctHEmd8oW8Sr1MrW8Sdwrr8zdCjmfc4lwJYzOc=
 cloud.google.com/go/clouddms v1.3.0/go.mod h1:oK6XsCDdW4Ib3jCCBugx+gVjevp2TMXFtgxvPSee3OM=
 cloud.google.com/go/clouddms v1.4.0/go.mod h1:Eh7sUGCC+aKry14O1NRljhjyrr0NFC0G2cjwX0cByRk=
 cloud.google.com/go/clouddms v1.5.0/go.mod h1:QSxQnhikCLUw13iAbffF2CZxAER3xDGNHjsTAkQJcQA=
@@ -934,8 +938,8 @@ cloud.google.com/go/maps v1.6.1/go.mod h1:4+buOHhYXFBp58Zj/K+Lc1rCmJssxxF4pJ5CJn
 cloud.google.com/go/maps v1.6.2/go.mod h1:4+buOHhYXFBp58Zj/K+Lc1rCmJssxxF4pJ5CJnhdz18=
 cloud.google.com/go/maps v1.6.3/go.mod h1:VGAn809ADswi1ASofL5lveOHPnE6Rk/SFTTBx1yuOLw=
 cloud.google.com/go/maps v1.6.4/go.mod h1:rhjqRy8NWmDJ53saCfsXQ0LKwBHfi6OSh5wkq6BaMhI=
-cloud.google.com/go/maps v1.39.0 h1:lcoR/d/elJb02dwL7bL+gLv+AV3Sl0FBdsaV/1YRtL0=
-cloud.google.com/go/maps v1.39.0/go.mod h1:OTPStQ6AWGQtDQo4QwSRbpJUczmD5XIZg2iXR9XJtW8=
+cloud.google.com/go/maps v1.43.0 h1:wnaL0IgoQKzKYhCTzGjpKdNI9h5FRoPF8hjfilXiAlE=
+cloud.google.com/go/maps v1.43.0/go.mod h1:uvxK2/seAX+LvZ2y/Laz5fJec1rkiFSgSu07axofsEU=
 cloud.google.com/go/mediatranslation v0.5.0/go.mod h1:jGPUhGTybqsPQn91pNXw0xVHfuJ3leR1wj37oU3y1f4=
 cloud.google.com/go/mediatranslation v0.6.0/go.mod h1:hHdBCTYNigsBxshbznuIMFNe5QXEowAuNmmC7h8pu5w=
 cloud.google.com/go/mediatranslation v0.7.0/go.mod h1:LCnB/gZr90ONOIQLgSXagp8XUW1ODs2UmUMvcgMfI2I=
@@ -1005,6 +1009,8 @@ cloud.google.com/go/networkconnectivity v1.14.1/go.mod h1:LyGPXR742uQcDxZ/wv4EI0
 cloud.google.com/go/networkconnectivity v1.14.2/go.mod h1:5UFlwIisZylSkGG1AdwK/WZUaoz12PKu6wODwIbFzJo=
 cloud.google.com/go/networkconnectivity v1.14.3/go.mod h1:4aoeFdrJpYEXNvrnfyD5kIzs8YtHg945Og4koAjHQek=
 cloud.google.com/go/networkconnectivity v1.14.4/go.mod h1:PU12q++/IMnDJAB+3r+tJtuCXCfwfN+C6Niyj6ji1Po=
+cloud.google.com/go/networkconnectivity v1.27.0 h1:ieYJjbUn2L9ZSzEB9+qKgtoD3/l1/qAnId/Z6KE4ZBo=
+cloud.google.com/go/networkconnectivity v1.27.0/go.mod h1:pCnczH2W/cnLSlnsnN+VzBoXlM81ZoUGuuacFBGThyw=
 cloud.google.com/go/networkmanagement v1.4.0/go.mod h1:Q9mdLLRn60AsOrPc8rs8iNV6OHXaGcDdsIQe1ohekq8=
 cloud.google.com/go/networkmanagement v1.5.0/go.mod h1:ZnOeZ/evzUdUsnvRt792H0uYEnHQEMaz+REhhzJRcf4=
 cloud.google.com/go/networkmanagement v1.6.0/go.mod h1:5pKPqyXjB/sgtvB5xqOemumoQNB7y95Q7S+4rjSOPYY=
@@ -1103,6 +1109,8 @@ cloud.google.com/go/oslogin v1.13.0/go.mod h1:xPJqLwpTZ90LSE5IL1/svko+6c5avZLlui
 cloud.google.com/go/oslogin v1.13.1/go.mod h1:vS8Sr/jR7QvPWpCjNqy6LYZr5Zs1e8ZGW/KPn9gmhws=
 cloud.google.com/go/oslogin v1.18.0 h1:OkccORMcY2XEHwN5+AP0XH/SCUNBl39GGjaQuSCVcIw=
 cloud.google.com/go/oslogin v1.18.0/go.mod h1:3Oa36T3781Mv+yCSVYlfasi7auHjfPFqvNOd1q92umc=
+cloud.google.com/go/parallelstore v1.2.0 h1:VXi9dggRgjugOoSC2iCsdwSmfqwqoSj1H6Tn9ALjl2E=
+cloud.google.com/go/parallelstore v1.2.0/go.mod h1:WvAO6RXodd9N39pM5mCzLSB+X7aZYDQYskeGCcNC80o=
 cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
 cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
 cloud.google.com/go/phishingprotection v0.5.0/go.mod h1:Y3HZknsK9bc9dMi+oE8Bim0lczMU6hrX0UpADuMefr0=
@@ -1313,6 +1321,8 @@ cloud.google.com/go/securitycenter v1.44.0 h1:/jinB3GeXuNkWfrzK1EdWR+kD4J0z0YGyE
 cloud.google.com/go/securitycenter v1.44.0/go.mod h1:7BMMbSTAddVfiE+HrC8tKS6SuRkyK7FRPlkpAZBRV3U=
 cloud.google.com/go/securitycentermanagement v1.6.0 h1:1oH0hTRrwS0Er8QVhrUR2ScQNSmupUAMorFHt45QN24=
 cloud.google.com/go/securitycentermanagement v1.6.0/go.mod h1:2vT5sKJSeclefx8yku77inS/bAyEiLH9n1CHpshtDMQ=
+cloud.google.com/go/securityposture v1.2.0 h1:B7F0GfoLWYNm60nB2BL2hfFuRJSTA0+f2IB9NDcFBD4=
+cloud.google.com/go/securityposture v1.2.0/go.mod h1:0sN3OMaybxJ+n+n6qlM4i+MldQz7IrDV3DYhKeBQXX0=
 cloud.google.com/go/servicecontrol v1.4.0/go.mod h1:o0hUSJ1TXJAmi/7fLJAedOovnujSEvjKCAFNXPQ1RaU=
 cloud.google.com/go/servicecontrol v1.5.0/go.mod h1:qM0CnXHhyqKVuiZnGKrIurvVImCs8gmqWsDoqe9sU1s=
 cloud.google.com/go/servicecontrol v1.10.0/go.mod h1:pQvyvSRh7YzUF2efw7H87V92mxU8FnFDawMClGCNuAA=

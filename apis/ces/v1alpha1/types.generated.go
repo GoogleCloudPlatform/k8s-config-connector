@@ -23,65 +23,8 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.ces.v1.Agent.AgentToolset
-type Agent_AgentToolset struct {
-	// Required. The resource name of the toolset.
-	//  Format:
-	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.AgentToolset.toolset
-	// +required
-	Toolset *string `json:"toolset,omitempty"`
-
-	// Optional. The tools IDs to filter the toolset.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.AgentToolset.tool_ids
-	ToolIDs []string `json:"toolIDs,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.Agent.LlmAgent
 type Agent_LlmAgent struct {
-}
-
-// +kcc:proto=google.cloud.ces.v1.Agent.RemoteDialogflowAgent
-type Agent_RemoteDialogflowAgent struct {
-	// Required. The
-	//  [Dialogflow](https://docs.cloud.google.com/dialogflow/cx/docs/concept/agent)
-	//  agent resource name.
-	//  Format: `projects/{project}/locations/{location}/agents/{agent}`
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.agent
-	// +required
-	Agent *string `json:"agent,omitempty"`
-
-	// Optional. The flow ID of the flow in the Dialogflow agent.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.flow_id
-	FlowID *string `json:"flowID,omitempty"`
-
-	// Optional. The environment ID of the Dialogflow agent to be used for the
-	//  agent execution. If not specified, the draft environment will be used.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.environment_id
-	EnvironmentID *string `json:"environmentID,omitempty"`
-
-	// Optional. The mapping of the app variables names to the Dialogflow
-	//  session parameters names to be sent to the Dialogflow agent as input.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.input_variable_mapping
-	InputVariableMapping map[string]string `json:"inputVariableMapping,omitempty"`
-
-	// Optional. The mapping of the Dialogflow session parameters names to the
-	//  app variables names to be sent back to the CES agent after the Dialogflow
-	//  agent execution ends.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.output_variable_mapping
-	OutputVariableMapping map[string]string `json:"outputVariableMapping,omitempty"`
-
-	// Optional. Indicates whether to respect the message-level interruption
-	//  settings configured in the Dialogflow agent.
-	//
-	//  * If false: all response messages from the Dialogflow agent follow the
-	//  app-level barge-in settings.
-	//  * If true: only response messages with
-	//  [`allow_playback_interruption`](https://docs.cloud.google.com/dialogflow/cx/docs/reference/rpc/google.cloud.dialogflow.cx.v3#text)
-	//  set to true will be interruptable, all other messages follow the
-	//  app-level barge-in settings.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.RemoteDialogflowAgent.respect_response_interruption_settings
-	RespectResponseInterruptionSettings *bool `json:"respectResponseInterruptionSettings,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1.Callback
@@ -139,31 +82,6 @@ type PythonCodeCondition struct {
 	// +kcc:proto:field=google.cloud.ces.v1.PythonCodeCondition.python_code
 	// +required
 	PythonCode *string `json:"pythonCode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.TransferRule
-type TransferRule struct {
-	// Optional. A rule that immediately transfers to the target agent when the
-	//  condition is met.
-	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.deterministic_transfer
-	DeterministicTransfer *TransferRule_DeterministicTransfer `json:"deterministicTransfer,omitempty"`
-
-	// Optional. Rule that prevents the planner from transferring to the target
-	//  agent.
-	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.disable_planner_transfer
-	DisablePlannerTransfer *TransferRule_DisablePlannerTransfer `json:"disablePlannerTransfer,omitempty"`
-
-	// Required. The resource name of the child agent the rule applies to.
-	//  Format:
-	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
-	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.child_agent
-	// +required
-	ChildAgent *string `json:"childAgent,omitempty"`
-
-	// Required. The direction of the transfer.
-	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.direction
-	// +required
-	Direction *string `json:"direction,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1.TransferRule.DeterministicTransfer

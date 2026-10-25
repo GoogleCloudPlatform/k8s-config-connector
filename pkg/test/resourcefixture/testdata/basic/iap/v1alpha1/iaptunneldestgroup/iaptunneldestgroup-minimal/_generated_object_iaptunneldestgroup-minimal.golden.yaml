@@ -1,0 +1,27 @@
+apiVersion: iap.cnrm.cloud.google.com/v1alpha1
+kind: IAPTunnelDestGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: iaptunneldestgroup-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  cidrs:
+  - 10.10.0.0/24
+  - 10.10.1.0/24
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}
+  observedGeneration: 2

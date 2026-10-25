@@ -1,0 +1,161 @@
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app%2Fagents%2Fcesagent-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "com.google.apps.framework.request.NotFoundException: Agent cesagent-${uniqueId} does not exist in the app.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents?%24alt=json%3Benum-encoding%3Dint&agentId=cesagent-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app
+
+{
+  "description": "minimal ces agent",
+  "displayName": "Agent ${uniqueId}",
+  "instruction": "You are a helpful assistant."
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "minimal ces agent",
+  "displayName": "Agent ${uniqueId}",
+  "instruction": "You are a helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app%2Fagents%2Fcesagent-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "minimal ces agent",
+  "displayName": "Agent ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "instruction": "You are a helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cinstruction
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: agent.name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app%2Fagents%2Fcesagent-${uniqueId}
+
+{
+  "description": "updated ces agent",
+  "displayName": "Agent Updated ${uniqueId}",
+  "instruction": "You are a very helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated ces agent",
+  "displayName": "Agent Updated ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "instruction": "You are a very helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app%2Fagents%2Fcesagent-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated ces agent",
+  "displayName": "Agent Updated ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "instruction": "You are a very helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fapps%2Fkcc-test-app%2Fagents%2Fcesagent-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

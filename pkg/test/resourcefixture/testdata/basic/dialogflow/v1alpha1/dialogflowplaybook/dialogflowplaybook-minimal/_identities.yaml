@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowPlaybook
+  name: dfplaybook-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

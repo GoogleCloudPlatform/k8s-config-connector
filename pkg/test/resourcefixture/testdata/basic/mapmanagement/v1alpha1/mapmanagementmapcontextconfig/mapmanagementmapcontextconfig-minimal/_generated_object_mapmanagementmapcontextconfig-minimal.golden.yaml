@@ -1,0 +1,31 @@
+apiVersion: mapmanagement.cnrm.cloud.google.com/v1alpha1
+kind: MapmanagementMapContextConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: mmmcc-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  alias: alias-upd-${uniqueId}
+  mapConfigRef:
+    name: mmmc-${uniqueId}
+  mapVariants:
+  - ROADMAP
+  styleConfigRef:
+    name: mmsc-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

@@ -1,0 +1,15 @@
+apiVersion: datamigration.cnrm.cloud.google.com/v1alpha1
+kind: DatamigrationConnectionProfile
+metadata:
+  name: dmsconnprofile-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: dms-profile-updated-${uniqueId}
+  provider: CLOUDSQL
+  mysql:
+    host: 10.0.0.10
+    port: 3306
+    username: testuser
+    password: testpassword123

@@ -1,0 +1,69 @@
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "description": "updated dialogflow cx flow",
+  "displayName": "Flow Updated ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "a1c2ad29-7c18-48e3-9efa-d80b532c59d4",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "32bafc1f-46ab-4f3a-9532-2135f0642891",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}

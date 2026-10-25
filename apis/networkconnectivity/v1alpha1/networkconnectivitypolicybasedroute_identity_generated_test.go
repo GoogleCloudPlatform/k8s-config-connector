@@ -29,12 +29,12 @@ import (
 
 func TestNetworkConnectivityPolicyBasedRouteIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[NetworkConnectivityPolicyBasedRouteIdentity]{
-		SampleExternal: "projects/my-projectsid/locations/global/policyBasedRoutes/my-policybasedroutesid",
+		SampleExternal: "projects/my-project/locations/global/policyBasedRoutes/my-policy-based-route",
 		WantHost:       "networkconnectivity.googleapis.com",
-		WantParent:     "projects/my-projectsid/locations/global",
+		WantParent:     "projects/my-project/locations/global",
 		WantIdentity: &NetworkConnectivityPolicyBasedRouteIdentity{
-			Projectsid:          "my-projectsid",
-			Policybasedroutesid: "my-policybasedroutesid",
+			Project:          "my-project",
+			PolicyBasedRoute: "my-policy-based-route",
 		},
 		Ref: &NetworkConnectivityPolicyBasedRouteRef{},
 	})

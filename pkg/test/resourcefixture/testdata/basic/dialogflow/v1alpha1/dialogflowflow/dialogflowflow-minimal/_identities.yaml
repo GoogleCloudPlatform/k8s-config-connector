@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowFlow
+  name: dfflow-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

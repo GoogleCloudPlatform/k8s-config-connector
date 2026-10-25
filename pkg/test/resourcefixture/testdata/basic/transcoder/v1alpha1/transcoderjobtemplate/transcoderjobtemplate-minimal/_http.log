@@ -1,0 +1,214 @@
+GET https://transcoder.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FjobTemplates%2Ftranscoderjobtemplate-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://transcoder.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobTemplates?%24alt=json%3Benum-encoding%3Dint&jobTemplateId=transcoderjobtemplate-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "config": {
+    "elementaryStreams": [
+      {
+        "key": "video-stream0",
+        "videoStream": {
+          "h264": {
+            "bitrateBps": 550000,
+            "frameRate": 60,
+            "heightPixels": 360,
+            "widthPixels": 640
+          }
+        }
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "mp4",
+        "elementaryStreams": [
+          "video-stream0"
+        ],
+        "key": "sd"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "editList": [
+      {
+        "inputs": [
+          "input0"
+        ],
+        "key": "atom0",
+        "startTimeOffset": "0s"
+      }
+    ],
+    "elementaryStreams": [
+      {
+        "key": "video-stream0",
+        "videoStream": {
+          "h264": {
+            "bitrateBps": 550000,
+            "crfLevel": 21,
+            "entropyCoder": "cabac",
+            "frameRate": 60,
+            "frameRateConversionStrategy": 1,
+            "gopDuration": "3s",
+            "heightPixels": 360,
+            "pixelFormat": "yuv420p",
+            "preset": "veryfast",
+            "profile": "high",
+            "rateControlMode": "vbr",
+            "vbvFullnessBits": 495000,
+            "vbvSizeBits": 550000,
+            "widthPixels": 640
+          }
+        }
+      }
+    ],
+    "inputs": [
+      {
+        "key": "input0"
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "mp4",
+        "elementaryStreams": [
+          "video-stream0"
+        ],
+        "fileName": "sd.mp4",
+        "key": "sd"
+      }
+    ],
+    "output": {}
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}"
+}
+
+---
+
+GET https://transcoder.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FjobTemplates%2Ftranscoderjobtemplate-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "editList": [
+      {
+        "inputs": [
+          "input0"
+        ],
+        "key": "atom0",
+        "startTimeOffset": "0s"
+      }
+    ],
+    "elementaryStreams": [
+      {
+        "key": "video-stream0",
+        "videoStream": {
+          "h264": {
+            "bitrateBps": 550000,
+            "crfLevel": 21,
+            "entropyCoder": "cabac",
+            "frameRate": 60,
+            "frameRateConversionStrategy": 1,
+            "gopDuration": "3s",
+            "heightPixels": 360,
+            "pixelFormat": "yuv420p",
+            "preset": "veryfast",
+            "profile": "high",
+            "rateControlMode": "vbr",
+            "vbvFullnessBits": 495000,
+            "vbvSizeBits": 550000,
+            "widthPixels": 640
+          }
+        }
+      }
+    ],
+    "inputs": [
+      {
+        "key": "input0"
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "mp4",
+        "elementaryStreams": [
+          "video-stream0"
+        ],
+        "fileName": "sd.mp4",
+        "key": "sd"
+      }
+    ],
+    "output": {}
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}"
+}
+
+---
+
+DELETE https://transcoder.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobTemplates/transcoderjobtemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FjobTemplates%2Ftranscoderjobtemplate-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

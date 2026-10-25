@@ -1,0 +1,117 @@
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "externalId": "tenant-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Service must be permitted to access job and behavioral data to improve common machine learning models, so only data deletion calls are accessible if these terms have not been opted in to. See https://console.cloud.google.com/talent-solution/data-permission-onboard for more information.. Request ID for tracking: b3642f11-ae5f-4919-85f2-2f566b2d27c6:APAb7IQ47IEpHBWtvwXtf/lD+s4UrOyzPA==",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "externalId": "tenant-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Service must be permitted to access job and behavioral data to improve common machine learning models, so only data deletion calls are accessible if these terms have not been opted in to. See https://console.cloud.google.com/talent-solution/data-permission-onboard for more information.. Request ID for tracking: 4f999f4d-a18e-47ee-8c1b-0254be1830a1:APAb7ITg0yJbj2QfmsY1syKE3sqDYAiFzQ==",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "externalId": "tenant-upd-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Service must be permitted to access job and behavioral data to improve common machine learning models, so only data deletion calls are accessible if these terms have not been opted in to. See https://console.cloud.google.com/talent-solution/data-permission-onboard for more information.. Request ID for tracking: 683ab511-bc44-4653-b4f2-d1f9f873b882:APAb7IRQKFnReIzNKswiHgj2OTL7k0Z8ZQ==",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "externalId": "tenant-upd-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Service must be permitted to access job and behavioral data to improve common machine learning models, so only data deletion calls are accessible if these terms have not been opted in to. See https://console.cloud.google.com/talent-solution/data-permission-onboard for more information.. Request ID for tracking: e8e16701-9dc7-48a7-a7e1-36a6d928f55a:APAb7IS1mZXSBGtZz1Dq2v12CvvPy+hJkw==",
+    "status": "FAILED_PRECONDITION"
+  }
+}

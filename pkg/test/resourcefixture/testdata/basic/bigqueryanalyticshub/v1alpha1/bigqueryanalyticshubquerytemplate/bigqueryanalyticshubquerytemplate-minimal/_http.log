@@ -1,0 +1,186 @@
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1%2FqueryTemplates%2Fbqahqt${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Failed to find query template: projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates?queryTemplateId=bqahqt${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "minimal query template",
+  "displayName": "qt_${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "minimal query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1%2FqueryTemplates%2Fbqahqt${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "minimal query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}?updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: query_template.name=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1%2FqueryTemplates%2Fbqahqt${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "updated query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1%2FqueryTemplates%2Fbqahqt${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2FdataExchanges%2Fkccdcrde1%2FqueryTemplates%2Fbqahqt${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

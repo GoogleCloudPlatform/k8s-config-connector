@@ -82,19 +82,25 @@ entries:
     group: datamigration.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Inlined parent.ProjectAndLocationRef, removed spec.labels, moved spec.state to observedState, and converted reference fields in AlloyDbSettings, CloudSQLSettings, SQLIPConfig, PrivateConnectivity, and PrivateServiceConnectConnectivity.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.alloydb.clusterID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: clusterID is the short ID of the destination AlloyDB cluster to be created by DMS alongside AlloyDbSettings, not a resource reference.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.alloydb.settings.encryptionConfig.kmsKeyName
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted KMSKeyName *string to KMSKeyNameRef *kmsv1beta1.KMSCryptoKeyRef in AlloyDbSettings_EncryptionConfig.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.alloydb.settings.initialUser.password
@@ -106,13 +112,17 @@ entries:
     field: .spec.alloydb.settings.vpcNetwork
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_number}/global/networks/{network_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted VPCNetwork *string to VPCNetworkRef *computev1beta1.ComputeNetworkRef in AlloyDbSettings.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.cmekKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted CmekKeyName *string to CmekKeyNameRef *kmsv1beta1.KMSCryptoKeyRef in CloudSQLSettings.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.rootPassword
@@ -124,25 +134,33 @@ entries:
     field: .spec.cloudsql.settings.sourceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted SourceID *string to SourceIDRef *DatamigrationConnectionProfileRef in CloudSQLSettings.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.zone
     reason: location-or-parent-ref
     detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: accepted
+    note: zone is a plain GCP zone string specifying where the Cloud SQL database instance is located.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef on DatamigrationConnectionProfileSpec.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.mysql.cloudSQLID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: cloudSQLID is a short Cloud SQL instance ID string, not a full GCP resource name path.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.mysql.password
@@ -165,13 +183,17 @@ entries:
     group: datamigration.cnrm.cloud.google.com
     field: .spec.oracle.privateConnectivity.privateConnection
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted PrivateConnection *string to PrivateConnectionRef *DatabaseMigrationPrivateConnectionRef in PrivateConnectivity.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.postgresql.cloudSQLID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: cloudSQLID is a short Cloud SQL instance ID string, not a full GCP resource name path.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.postgresql.password
@@ -183,10 +205,14 @@ entries:
     field: .spec.postgresql.privateServiceConnectConnectivity.serviceAttachment
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted ServiceAttachment *string to ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef in PrivateServiceConnectConnectivity.
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com
     field: .spec.state
     reason: possible-status-field-in-spec
     detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: Moved State from DatamigrationConnectionProfileSpec to DatamigrationConnectionProfileObservedState.

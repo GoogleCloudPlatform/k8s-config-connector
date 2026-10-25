@@ -1,0 +1,10 @@
+apiVersion: ces.cnrm.cloud.google.com/v1alpha1
+kind: CesAgent
+metadata:
+  name: cesagent-${uniqueId}
+spec:
+  appRef:
+    external: projects/${projectId}/locations/us/apps/kcc-test-app
+  displayName: Agent ${uniqueId}
+  description: minimal ces agent
+  instruction: You are a helpful assistant.

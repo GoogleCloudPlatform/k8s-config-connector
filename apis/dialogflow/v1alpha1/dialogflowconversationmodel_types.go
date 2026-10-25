@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,7 @@ var DialogflowConversationModelGVK = GroupVersion.WithKind("DialogflowConversati
 // +kcc:spec:proto=google.cloud.dialogflow.v2.ConversationModel
 // +kcc:required-from-proto
 type DialogflowConversationModelSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The DialogflowConversationModel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -64,6 +60,16 @@ type DialogflowConversationModelSpec struct {
 	// Metadata for smart reply models.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationModel.smart_reply_model_metadata
 	SmartReplyModelMetadata *SmartReplyModelMetadata `json:"smartReplyModelMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.InputDataset
+type InputDataset struct {
+	// Required. ConversationDataset resource name. Format:
+	//  `projects/<Project ID>/locations/<Location
+	//  ID>/conversationDatasets/<Conversation Dataset ID>`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InputDataset.dataset
+	// +required
+	DatasetRef *DialogflowConversationDatasetRef `json:"datasetRef,omitempty"`
 }
 
 // DialogflowConversationModelStatus defines the config connector machine state of DialogflowConversationModel
