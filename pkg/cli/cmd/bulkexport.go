@@ -54,6 +54,7 @@ func init() {
 	commonparams.AddOAuth2TokenParam(bulkExportCmd, &bulkExportParams.OAuth2Token)
 	commonparams.AddIAMFormatParam(bulkExportCmd, &bulkExportParams.IAMFormat)
 	commonparams.AddFilterDeletedIAMMembersParam(bulkExportCmd, &bulkExportParams.FilterDeletedIAMMembers)
+	commonparams.AddFilterSensitiveFieldsParam(bulkExportCmd, &bulkExportParams.FilterSensitiveFields)
 	commonparams.AddOutputParam(bulkExportCmd, &bulkExportParams.Output)
 	commonparams.AddResourceFormatParam(bulkExportCmd, &bulkExportParams.ResourceFormat)
 	inputUsage := fmt.Sprintf("an optional input file path containing an asset inventory export, cannot be used with piped input or '%v'", parameters.StorageKeyParam)
