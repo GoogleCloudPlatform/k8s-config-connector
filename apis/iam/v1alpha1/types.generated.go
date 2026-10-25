@@ -18,9 +18,11 @@
 // krm.version: v1alpha1
 // proto.service: google.iam.v2
 // proto.service: google.iam.v3
+// proto.service: google.iam.v1
 // resource: IAMDenyPolicy:Policy
 // resource: IAMAccessPolicy:AccessPolicy
 // resource: IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+// resource: IAMWorkloadIdentityPoolManagedIdentity:WorkloadIdentityPoolManagedIdentity
 
 package v1alpha1
 
