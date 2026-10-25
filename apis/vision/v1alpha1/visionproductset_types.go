@@ -32,6 +32,7 @@ var VisionProductSetGVK = GroupVersion.WithKind("VisionProductSet")
 // +kcc:spec:proto=google.cloud.vision.v1.ProductSet
 // +kcc:required-from-proto
 type VisionProductSetSpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The VisionProductSet name. If not given, the metadata.name will be used.

@@ -14,8 +14,10 @@
 
 // API sources for MapmanagementMapContextConfig, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/maps/mapmanagement/v2/map_management_service.proto
-// +kcc:source:service-docs=https://developers.google.com/maps/documentation/map-management
-// +kcc:source:resource-docs=https://developers.google.com/maps/documentation/map-management/reference/rest/v2/projects.mapConfigs.mapContextConfigs
+// +kcc:guess=source-link reason=verify-service-docs-link
+// +kcc:source:service-docs=
+// +kcc:guess=source-link reason=verify-resource-docs-link
+// +kcc:source:resource-docs=
 
 package v1alpha1
 
@@ -30,22 +32,22 @@ var MapmanagementMapContextConfigGVK = GroupVersion.WithKind("MapmanagementMapCo
 // +kcc:spec:proto=google.maps.mapmanagement.v2.MapContextConfig
 // +kcc:required-from-proto
 type MapmanagementMapContextConfigSpec struct {
+
+	// The MapmanagementMapContextConfig name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The MapConfig resource name that this MapContextConfig is
 	//  associated with. Format: projects/{project}/mapConfigs/{map_config}. This
 	//  field is required and cannot be omitted.
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.map_config
 	// +required
-	MapConfigRef *MapManagementMapConfigRef `json:"mapConfigRef"`
-
-	// The MapmanagementMapContextConfig name. If not given, a server-generated ID will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	MapConfigRef *MapManagementMapConfigRef `json:"mapConfigRef,omitempty"`
 
 	// Required. The StyleConfig resource name that is styling this
 	//  MapContextConfig. This field is required and cannot be omitted. Format:
 	//  projects/{project}/styleConfigs/{style_config}
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.style_config
 	// +required
-	StyleConfigRef *MapManagementStyleConfigRef `json:"styleConfigRef"`
+	StyleConfigRef *MapManagementStyleConfigRef `json:"styleConfigRef,omitempty"`
 
 	// Optional. The Dataset resource name that is associated with this
 	//  MapContextConfig. This field is optional and can be omitted. If omitted, no

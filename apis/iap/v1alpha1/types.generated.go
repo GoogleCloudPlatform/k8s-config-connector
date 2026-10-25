@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 // krm.group: iap.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.iap.v1
-// resource: IapTunnelDestGroup:TunnelDestGroup
+// resource: IAPSettings:IapSettings
 // resource: IAPTunnelDestGroup:TunnelDestGroup
 
 package v1alpha1
@@ -41,45 +41,56 @@ type AccessDeniedPageSettings struct {
 
 // +kcc:proto=google.cloud.iap.v1.AccessSettings
 type AccessSettings struct {
-	// GCIP claims and endpoint configurations for 3p identity providers.
+	// Optional. GCIP claims and endpoint configurations for 3p identity
+	//  providers.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.gcip_settings
 	GcipSettings *GcipSettings `json:"gcipSettings,omitempty"`
 
-	// Configuration to allow cross-origin requests via IAP.
+	// Optional. Configuration to allow cross-origin requests via IAP.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.cors_settings
 	CorsSettings *CorsSettings `json:"corsSettings,omitempty"`
 
-	// Settings to configure IAP's OAuth behavior.
+	// Optional. Settings to configure IAP's OAuth behavior.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.oauth_settings
 	OauthSettings *OAuthSettings `json:"oauthSettings,omitempty"`
 
-	// Settings to configure reauthentication policies in IAP.
+	// Optional. Settings to configure reauthentication policies in IAP.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.reauth_settings
 	ReauthSettings *ReauthSettings `json:"reauthSettings,omitempty"`
 
-	// Settings to configure and enable allowed domains.
+	// Optional. Settings to configure and enable allowed domains.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.allowed_domains_settings
 	AllowedDomainsSettings *AllowedDomainsSettings `json:"allowedDomainsSettings,omitempty"`
+
+	// Optional. Settings to configure the workforce identity federation,
+	//  including workforce pools and OAuth 2.0 settings.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.workforce_identity_settings
+	WorkforceIdentitySettings *WorkforceIdentitySettings `json:"workforceIdentitySettings,omitempty"`
+
+	// Optional. Identity sources that IAP can use to authenticate the end user.
+	//  Only one identity source can be configured.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.identity_sources
+	IdentitySources []string `json:"identitySources,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.AllowedDomainsSettings
 type AllowedDomainsSettings struct {
-	// Configuration for customers to opt in for the feature.
+	// Optional. Configuration for customers to opt in for the feature.
 	// +kcc:proto:field=google.cloud.iap.v1.AllowedDomainsSettings.enable
 	Enable *bool `json:"enable,omitempty"`
 
-	// List of trusted domains.
+	// Optional. List of trusted domains.
 	// +kcc:proto:field=google.cloud.iap.v1.AllowedDomainsSettings.domains
 	Domains []string `json:"domains,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.ApplicationSettings
 type ApplicationSettings struct {
-	// Settings to configure IAP's behavior for a service mesh.
+	// Optional. Settings to configure IAP's behavior for a service mesh.
 	// +kcc:proto:field=google.cloud.iap.v1.ApplicationSettings.csm_settings
 	CsmSettings *CsmSettings `json:"csmSettings,omitempty"`
 
-	// Customization for Access Denied page.
+	// Optional. Customization for Access Denied page.
 	// +kcc:proto:field=google.cloud.iap.v1.ApplicationSettings.access_denied_page_settings
 	AccessDeniedPageSettings *AccessDeniedPageSettings `json:"accessDeniedPageSettings,omitempty"`
 
@@ -88,16 +99,16 @@ type ApplicationSettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.ApplicationSettings.cookie_domain
 	CookieDomain *string `json:"cookieDomain,omitempty"`
 
-	// Settings to configure attribute propagation.
+	// Optional. Settings to configure attribute propagation.
 	// +kcc:proto:field=google.cloud.iap.v1.ApplicationSettings.attribute_propagation_settings
 	AttributePropagationSettings *AttributePropagationSettings `json:"attributePropagationSettings,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.AttributePropagationSettings
 type AttributePropagationSettings struct {
-	// Raw string CEL expression. Must return a list of attributes. A maximum of
-	//  45 attributes can be selected. Expressions can select different attribute
-	//  types from `attributes`: `attributes.saml_attributes`,
+	// Optional. Raw string CEL expression. Must return a list of attributes. A
+	//  maximum of 45 attributes can be selected. Expressions can select different
+	//  attribute types from `attributes`: `attributes.saml_attributes`,
 	//  `attributes.iap_attributes`. The following functions are supported:
 	//
 	//   - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
@@ -126,23 +137,24 @@ type AttributePropagationSettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.AttributePropagationSettings.expression
 	Expression *string `json:"expression,omitempty"`
 
-	// Which output credentials attributes selected by the CEL expression should
-	//  be propagated in. All attributes will be fully duplicated in each selected
-	//  output credential.
+	// Optional. Which output credentials attributes selected by the CEL
+	//  expression should be propagated in. All attributes will be fully duplicated
+	//  in each selected output credential.
 	// +kcc:proto:field=google.cloud.iap.v1.AttributePropagationSettings.output_credentials
 	OutputCredentials []string `json:"outputCredentials,omitempty"`
 
-	// Whether the provided attribute propagation settings should be evaluated on
-	//  user requests. If set to true, attributes returned from the expression will
-	//  be propagated in the set output credentials.
+	// Optional. Whether the provided attribute propagation settings should be
+	//  evaluated on user requests. If set to true, attributes returned from the
+	//  expression will be propagated in the set output credentials.
 	// +kcc:proto:field=google.cloud.iap.v1.AttributePropagationSettings.enable
 	Enable *bool `json:"enable,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.CorsSettings
 type CorsSettings struct {
-	// Configuration to allow HTTP OPTIONS calls to skip authorization. If
-	//  undefined, IAP will not apply any special logic to OPTIONS requests.
+	// Configuration to allow HTTP `OPTIONS` calls to skip
+	//  authentication and authorization. If undefined, IAP will not apply any
+	//  special logic to `OPTIONS` requests.
 	// +kcc:proto:field=google.cloud.iap.v1.CorsSettings.allow_http_options
 	AllowHTTPOptions *bool `json:"allowHTTPOptions,omitempty"`
 }
@@ -155,6 +167,19 @@ type CsmSettings struct {
 	RctokenAud *string `json:"rctokenAud,omitempty"`
 }
 
+// +kcc:proto=google.cloud.iap.v1.OAuth2
+type OAuth2 struct {
+	// The OAuth 2.0 client ID registered in the workforce identity federation
+	//  OAuth 2.0 Server.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_id
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Input only. The OAuth 2.0 client secret created while registering the
+	//  client ID.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_secret
+	ClientSecret *string `json:"clientSecret,omitempty"`
+}
+
 // +kcc:proto=google.cloud.iap.v1.OAuthSettings
 type OAuthSettings struct {
 	// Domain hint to send as hd=? parameter in OAuth request flow. Enables
@@ -165,24 +190,67 @@ type OAuthSettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.login_hint
 	LoginHint *string `json:"loginHint,omitempty"`
 
-	// List of OAuth client IDs allowed to programmatically authenticate with IAP.
+	// Optional. List of client ids allowed to use IAP programmatically.
 	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.programmatic_clients
 	ProgrammaticClients []string `json:"programmaticClients,omitempty"`
 }
 
 // +kcc:proto=google.cloud.iap.v1.ReauthSettings
 type ReauthSettings struct {
-	// Reauth method requested.
+	// Optional. Reauth method requested.
 	// +kcc:proto:field=google.cloud.iap.v1.ReauthSettings.method
 	Method *string `json:"method,omitempty"`
 
-	// Reauth session lifetime, how long before a user has to reauthenticate
-	//  again.
+	// Optional. Reauth session lifetime, how long before a user has to
+	//  reauthenticate again.
 	// +kcc:proto:field=google.cloud.iap.v1.ReauthSettings.max_age
 	MaxAge *string `json:"maxAge,omitempty"`
 
-	// How IAP determines the effective policy in cases of hierarchial policies.
-	//  Policies are merged from higher in the hierarchy to lower in the hierarchy.
+	// Optional. How IAP determines the effective policy in cases of hierarchical
+	//  policies. Policies are merged from higher in the hierarchy to lower in the
+	//  hierarchy.
 	// +kcc:proto:field=google.cloud.iap.v1.ReauthSettings.policy_type
 	PolicyType *string `json:"policyType,omitempty"`
 }
+
+// +kcc:proto=google.cloud.iap.v1.WorkforceIdentitySettings
+type WorkforceIdentitySettings struct {
+	// The workforce pool resources. Only one workforce pool is accepted.
+	// +kcc:proto:field=google.cloud.iap.v1.WorkforceIdentitySettings.workforce_pools
+	WorkforcePools []string `json:"workforcePools,omitempty"`
+
+	// OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity
+	//  federation services.
+	// +kcc:proto:field=google.cloud.iap.v1.WorkforceIdentitySettings.oauth2
+	OAUTH2 *OAuth2 `json:"oauth2,omitempty"`
+}
+
+/* unreachable type AccessSettingsObservedState
+// +kcc:observedstate:proto=google.cloud.iap.v1.AccessSettings
+type AccessSettingsObservedState struct {
+	// Optional. Settings to configure the workforce identity federation,
+	//  including workforce pools and OAuth 2.0 settings.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.workforce_identity_settings
+	WorkforceIdentitySettings *WorkforceIdentitySettingsObservedState `json:"workforceIdentitySettings,omitempty"`
+}
+*/
+
+/* unreachable type OAuth2ObservedState
+// +kcc:observedstate:proto=google.cloud.iap.v1.OAuth2
+type OAuth2ObservedState struct {
+	// Output only. SHA256 hash value for the client secret. This field is
+	//  returned by IAP when the settings are retrieved.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_secret_sha256
+	ClientSecretSha256 *string `json:"clientSecretSha256,omitempty"`
+}
+*/
+
+/* unreachable type WorkforceIdentitySettingsObservedState
+// +kcc:observedstate:proto=google.cloud.iap.v1.WorkforceIdentitySettings
+type WorkforceIdentitySettingsObservedState struct {
+	// OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity
+	//  federation services.
+	// +kcc:proto:field=google.cloud.iap.v1.WorkforceIdentitySettings.oauth2
+	OAUTH2 *OAuth2ObservedState `json:"oauth2,omitempty"`
+}
+*/

@@ -15,12 +15,13 @@
 // API sources for TranslateGlossary, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/translate/v3/translation_service.proto
 // +kcc:source:service-docs=https://cloud.google.com/translate/docs/quickstarts
-// +kcc:source:resource-docs=https://cloud.google.com/translate/docs/reference/rest/v3/projects.locations.glossaries
+// +kcc:guess=source-link reason=verify-resource-docs-link
+// +kcc:source:resource-docs=https://docs.cloud.google.com/translate/docs/quickstarts/reference/rest/v3/projects.locations.glossaries
 
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,6 +32,7 @@ var TranslateGlossaryGVK = GroupVersion.WithKind("TranslateGlossary")
 // +kcc:spec:proto=google.cloud.translation.v3.Glossary
 // +kcc:required-from-proto
 type TranslateGlossarySpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The TranslateGlossary name. If not given, the metadata.name will be used.

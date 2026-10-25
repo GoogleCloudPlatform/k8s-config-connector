@@ -30,6 +30,7 @@ var DataplexEntryGVK = GroupVersion.WithKind("DataplexEntry")
 // +kcc:spec:proto=google.cloud.dataplex.v1.Entry
 // +kcc:required-from-proto
 type DataplexEntrySpec struct {
+
 	// A reference to the projects/{project}/locations/{location}/entryGroups/{entry_group} this resource belongs to.
 	// +required
 	EntryGroupRef *EntryGroupRef `json:"entryGroupRef"`
@@ -39,9 +40,10 @@ type DataplexEntrySpec struct {
 	// Required. Immutable. The relative resource name of the entry type that was
 	//  used to create this entry, in the format
 	//  `projects/{project_id_or_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
+	// +kcc:guess=possible-reference target=DataplexEntryType
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entry.entry_type
 	// +required
-	EntryTypeRef *EntryTypeRef `json:"entryTypeRef"`
+	EntryType *string `json:"entryType,omitempty"`
 
 	// Optional. The aspects that are attached to the entry. Depending on how the
 	//  aspect is attached to the entry, the format of the aspect key can be one of
@@ -57,7 +59,7 @@ type DataplexEntrySpec struct {
 	// Optional. Immutable. The resource name of the parent entry, in the format
 	//  `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Entry.parent_entry
-	ParentEntryRef *DataplexEntryRef `json:"parentEntryRef,omitempty"`
+	ParentEntry *string `json:"parentEntry,omitempty"`
 
 	// Optional. A name for the entry that can be referenced by an external
 	//  system. For more information, see [Fully qualified

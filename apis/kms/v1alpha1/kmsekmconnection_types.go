@@ -20,13 +20,46 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var KMSEkmConnectionGVK = GroupVersion.WithKind("KMSEkmConnection")
+
+// KMSEkmConnectionSpec defines the desired state of KMSEkmConnection
+// +kcc:spec:proto=google.cloud.kms.v1.EkmConnection
+// +kcc:required-from-proto
+type KMSEkmConnectionSpec struct {
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
+
+	// The KMSEkmConnection name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+	// Optional. A list of
+	//  [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver] where
+	//  the EKM can be reached. There should be one ServiceResolver per EKM
+	//  replica. Currently, only a single
+	//  [ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver] is
+	//  supported.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.service_resolvers
+	ServiceResolvers []EkmConnection_ServiceResolver `json:"serviceResolvers,omitempty"`
+
+	// Optional. Describes who can perform control plane operations on the EKM. If
+	//  unset, this defaults to
+	//  [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.key_management_mode
+	KeyManagementMode *string `json:"keyManagementMode,omitempty"`
+
+	// Optional. Identifies the EKM Crypto Space that this
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] maps to. Note: This
+	//  field is required if
+	//  [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode] is
+	//  [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.crypto_space_path
+	CryptoSpacePath *string `json:"cryptoSpacePath,omitempty"`
+}
 
 // +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
 type EkmConnection_ServiceResolver struct {
@@ -57,38 +90,6 @@ type EkmConnection_ServiceResolver struct {
 	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.server_certificates
 	// +required
 	ServerCertificates []Certificate `json:"serverCertificates,omitempty"`
-}
-
-// KMSEkmConnectionSpec defines the desired state of KMSEkmConnection
-// +kcc:spec:proto=google.cloud.kms.v1.EkmConnection
-// +kcc:required-from-proto
-type KMSEkmConnectionSpec struct {
-	*parent.ProjectAndLocationRef `json:",inline"`
-
-	// The KMSEkmConnection name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. A list of
-	//  [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver] where
-	//  the EKM can be reached. There should be one ServiceResolver per EKM
-	//  replica. Currently, only a single
-	//  [ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver] is
-	//  supported.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.service_resolvers
-	ServiceResolvers []EkmConnection_ServiceResolver `json:"serviceResolvers,omitempty"`
-
-	// Optional. Describes who can perform control plane operations on the EKM. If
-	//  unset, this defaults to
-	//  [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.key_management_mode
-	KeyManagementMode *string `json:"keyManagementMode,omitempty"`
-
-	// Optional. Identifies the EKM Crypto Space that this
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] maps to. Note: This
-	//  field is required if
-	//  [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode] is
-	//  [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.crypto_space_path
-	CryptoSpacePath *string `json:"cryptoSpacePath,omitempty"`
 }
 
 // KMSEkmConnectionStatus defines the config connector machine state of KMSEkmConnection

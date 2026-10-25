@@ -211,10 +211,12 @@ type ReportConfig struct {
 type ReportConfig_GroupPreferenceSetAssignment struct {
 	// Required. Name of the group.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.group
+	// +required
 	Group *string `json:"group,omitempty"`
 
 	// Required. Name of the Preference Set.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.preference_set
+	// +required
 	PreferenceSet *string `json:"preferenceSet,omitempty"`
 }
 */

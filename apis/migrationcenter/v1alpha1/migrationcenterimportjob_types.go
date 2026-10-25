@@ -31,6 +31,7 @@ var MigrationCenterImportJobGVK = GroupVersion.WithKind("MigrationCenterImportJo
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.ImportJob
 // +kcc:required-from-proto
 type MigrationCenterImportJobSpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The MigrationCenterImportJob name. If not given, the metadata.name will be used.
@@ -42,7 +43,7 @@ type MigrationCenterImportJobSpec struct {
 	// Required. Reference to a source.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.asset_source
 	// +required
-	AssetSourceRef *MigrationCenterSourceRef `json:"assetSourceRef"`
+	AssetSourceRef *MigrationCenterSourceRef `json:"assetSourceRef,omitempty"`
 }
 
 // MigrationCenterImportJobStatus defines the config connector machine state of MigrationCenterImportJob

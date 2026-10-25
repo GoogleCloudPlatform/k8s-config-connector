@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // API sources for DataplexGlossaryCategory, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/dataplex/v1/business_glossary.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/28ba5d15234eff44241492ca72b135e1171fc537/google/cloud/dataplex/v1/business_glossary.proto
 // +kcc:source:service-docs=https://cloud.google.com/dataplex/docs
 // +kcc:source:resource-docs=https://docs.cloud.google.com/dataplex/docs/reference/rest/v1/projects.locations.glossaries.categories
 
@@ -30,7 +30,8 @@ var DataplexGlossaryCategoryGVK = GroupVersion.WithKind("DataplexGlossaryCategor
 // +kcc:spec:proto=google.cloud.dataplex.v1.GlossaryCategory
 // +kcc:required-from-proto
 type DataplexGlossaryCategorySpec struct {
-	// Required. The Glossary that this GlossaryCategory belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/glossaries/{glossary} this resource belongs to.
 	// +required
 	GlossaryRef *GlossaryRef `json:"glossaryRef"`
 
@@ -47,10 +48,14 @@ type DataplexGlossaryCategorySpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Required. The immediate parent of the GlossaryCategory in the
-	//  resource-hierarchy.
+	//  resource-hierarchy. It can either be a Glossary or a GlossaryCategory.
+	//  Format:
+	//  projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
+	//  OR
+	//  projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryCategory.parent
 	// +required
-	ParentRef *GlossaryRef `json:"parentRef"`
+	Parent *string `json:"parent,omitempty"`
 }
 
 // DataplexGlossaryCategoryStatus defines the config connector machine state of DataplexGlossaryCategory

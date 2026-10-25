@@ -31,6 +31,7 @@ var DialogflowConversationModelGVK = GroupVersion.WithKind("DialogflowConversati
 // +kcc:spec:proto=google.cloud.dialogflow.v2.ConversationModel
 // +kcc:required-from-proto
 type DialogflowConversationModelSpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The DialogflowConversationModel name. If not given, the metadata.name will be used.

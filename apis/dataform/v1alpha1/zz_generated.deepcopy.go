@@ -1067,9 +1067,9 @@ func (in *InvocationConfig) DeepCopyInto(out *InvocationConfig) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.ServiceAccountRef != nil {
-		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1beta1.IAMServiceAccountRef)
+	if in.ServiceAccount != nil {
+		in, out := &in.ServiceAccount, &out.ServiceAccount
+		*out = new(string)
 		**out = **in
 	}
 	if in.QueryPriority != nil {

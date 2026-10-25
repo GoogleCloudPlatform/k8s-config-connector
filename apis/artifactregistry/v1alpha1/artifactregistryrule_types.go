@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,9 +31,10 @@ var ArtifactRegistryRuleGVK = GroupVersion.WithKind("ArtifactRegistryRule")
 // +kcc:spec:proto=google.devtools.artifactregistry.v1.Rule
 // +kcc:required-from-proto
 type ArtifactRegistryRuleSpec struct {
-	// Required. A reference to the ArtifactRegistryRepository that this rule belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/repositories/{repository} this resource belongs to.
 	// +required
-	RepositoryRef *v1beta1.ArtifactRegistryRepositoryRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *artifactregistryv1beta1.ArtifactRegistryRepositoryRef `json:"repositoryRef"`
 
 	// The ArtifactRegistryRule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

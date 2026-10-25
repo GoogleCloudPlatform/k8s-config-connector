@@ -31,6 +31,7 @@ var ManagedKafkaSchemaRegistryGVK = GroupVersion.WithKind("ManagedKafkaSchemaReg
 // +kcc:spec:proto=google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry
 // +kcc:required-from-proto
 type ManagedKafkaSchemaRegistrySpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ManagedKafkaSchemaRegistry name. If not given, the metadata.name will be used.

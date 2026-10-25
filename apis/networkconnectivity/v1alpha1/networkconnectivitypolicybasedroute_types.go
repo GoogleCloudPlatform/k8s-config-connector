@@ -15,12 +15,13 @@
 // API sources for NetworkConnectivityPolicyBasedRoute, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/networkconnectivity/v1/policy_based_routing.proto
 // +kcc:source:service-docs=https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest
-// +kcc:source:resource-docs=https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.policyBasedRoutes
+// +kcc:guess=source-link reason=verify-resource-docs-link
+// +kcc:source:resource-docs=https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/reference/rest/v1/projects.locations.global.PolicyBasedRoutes
 
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -66,7 +67,7 @@ type NetworkConnectivityPolicyBasedRouteSpec struct {
 	//  for example: projects/my-project/global/networks/my-network.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.network
 	// +required
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Required. The filter to match L4 traffic.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.filter

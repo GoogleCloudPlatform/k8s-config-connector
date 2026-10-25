@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,9 +31,10 @@ var DataformReleaseConfigGVK = GroupVersion.WithKind("DataformReleaseConfig")
 // +kcc:spec:proto=google.cloud.dataform.v1.ReleaseConfig
 // +kcc:required-from-proto
 type DataformReleaseConfigSpec struct {
-	// The DataformRepository that this resource belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/repositories/{repository} this resource belongs to.
 	// +required
-	RepositoryRef *v1beta1.DataformRepositoryRef `json:"repositoryRef"`
+	RepositoryRef *dataformv1beta1.DataformRepositoryRef `json:"repositoryRef"`
 
 	// The DataformReleaseConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

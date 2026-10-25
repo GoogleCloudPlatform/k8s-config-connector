@@ -20,8 +20,8 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -31,9 +31,10 @@ var DataformWorkspaceGVK = GroupVersion.WithKind("DataformWorkspace")
 // +kcc:spec:proto=google.cloud.dataform.v1.Workspace
 // +kcc:required-from-proto
 type DataformWorkspaceSpec struct {
-	// Required. The repository in which to create the workspace.
+
+	// A reference to the projects/{project}/locations/{location}/repositories/{repository} this resource belongs to.
 	// +required
-	RepositoryRef *v1beta1.DataformRepositoryRef `json:"repositoryRef"`
+	RepositoryRef *dataformv1beta1.DataformRepositoryRef `json:"repositoryRef"`
 
 	// The DataformWorkspace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -47,7 +48,7 @@ type DataformWorkspaceSpec struct {
 type DataformWorkspaceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

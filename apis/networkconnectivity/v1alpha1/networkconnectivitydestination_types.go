@@ -30,13 +30,13 @@ var NetworkConnectivityDestinationGVK = GroupVersion.WithKind("NetworkConnectivi
 // +kcc:spec:proto=google.cloud.networkconnectivity.v1.Destination
 // +kcc:required-from-proto
 type NetworkConnectivityDestinationSpec struct {
-	// Required. The MulticloudDataTransferConfig that this destination belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config} this resource belongs to.
 	// +required
 	MulticloudDataTransferConfigRef *NetworkConnectivityMulticloudDataTransferConfigRef `json:"multicloudDataTransferConfigRef"`
 
 	// The NetworkConnectivityDestination name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// Optional. A description of this resource.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.description
 	Description *string `json:"description,omitempty"`

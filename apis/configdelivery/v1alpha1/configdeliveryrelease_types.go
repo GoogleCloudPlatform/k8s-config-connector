@@ -30,13 +30,13 @@ var ConfigDeliveryReleaseGVK = GroupVersion.WithKind("ConfigDeliveryRelease")
 // +kcc:spec:proto=google.cloud.configdelivery.v1.Release
 // +kcc:required-from-proto
 type ConfigDeliveryReleaseSpec struct {
-	// Required. A reference to the ConfigDeliveryResourceBundle that this release belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/resourceBundles/{resource_bundle} this resource belongs to.
 	// +required
-	ResourceBundleRef *ConfigDeliveryResourceBundleRef `json:"resourceBundleRef,omitempty"`
+	ResourceBundleRef *ConfigDeliveryResourceBundleRef `json:"resourceBundleRef"`
 
 	// The ConfigDeliveryRelease name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// Optional. lifecycle of the `Release`.
 	// +kcc:proto:field=google.cloud.configdelivery.v1.Release.lifecycle
 	Lifecycle *string `json:"lifecycle,omitempty"`

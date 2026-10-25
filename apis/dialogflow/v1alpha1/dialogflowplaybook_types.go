@@ -20,17 +20,8 @@
 package v1alpha1
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
@@ -39,9 +30,10 @@ var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
 // +kcc:spec:proto=google.cloud.dialogflow.cx.v3.Playbook
 // +kcc:required-from-proto
 type DialogflowPlaybookSpec struct {
-	// The DialogflowCXAgent that this resource belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/agents/{agent} this resource belongs to.
 	// +required
-	AgentRef *DialogflowCXAgentRef `json:"agentRef,omitempty"`
+	AgentRef *DialogflowCXAgentRef `json:"agentRef"`
 
 	// The DialogflowPlaybook name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -73,7 +65,7 @@ type DialogflowPlaybookSpec struct {
 	//  the instructions. If not provided explicitly, they are will
 	//  be implied using the tool being referenced in goal and steps.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Playbook.referenced_tools
-	ReferencedToolRefs []DialogflowToolRef `json:"referencedToolRefs,omitempty"`
+	ReferencedTools []string `json:"referencedTools,omitempty"`
 
 	// Optional. The playbook's scoped code block, which may implement handlers
 	//  and actions.
@@ -94,172 +86,98 @@ type DialogflowPlaybookSpec struct {
 	PlaybookType *string `json:"playbookType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ParameterDefinition
-type ParameterDefinition struct {
-	// Required. Name of parameter.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.name
-	// +required
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment
+type Fulfillment struct {
+	// The list of rich message responses to present to the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.messages
+	Messages []ResponseMessage `json:"messages,omitempty"`
 
-	// Optional. Type schema of parameter.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.type_schema
-	TypeSchema *TypeSchema `json:"typeSchema,omitempty"`
-
-	// Human-readable description of the parameter. Limited to 300 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.description
-	Description *string `json:"description,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference
-type TypeSchema_SchemaReference struct {
-	// The tool that contains this schema definition.
+	// The webhook to call.
 	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.tool
-	ToolRef *DialogflowToolRef `json:"toolRef,omitempty"`
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.webhook
+	WebhookRef *DialogflowWebhookRef `json:"webhookRef,omitempty"`
 
-	// The name of the schema.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.schema
-	Schema *string `json:"schema,omitempty"`
+	// Whether Dialogflow should return currently queued fulfillment response
+	//  messages in streaming APIs. If a webhook is specified, it happens before
+	//  Dialogflow invokes webhook.
+	//  Warning:
+	//  1) This flag only affects streaming API. Responses are still queued
+	//  and returned once in non-streaming API.
+	//  2) The flag can be enabled in any fulfillment but only the first 3 partial
+	//  responses will be returned. You may only want to apply it to fulfillments
+	//  that have slow webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.return_partial_responses
+	ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
+
+	// The value of this field will be populated in the
+	//  [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest]
+	//  `fulfillmentInfo.tag` field by Dialogflow when the associated webhook is
+	//  called.
+	//  The tag is typically used by the webhook service to identify which
+	//  fulfillment is being called, but it could be used for other purposes.
+	//  This field is required if `webhook` is specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.tag
+	Tag *string `json:"tag,omitempty"`
+
+	// Optional. The name of the code block function to execute, if this is a code
+	//  block fulfillment. The code block itself is implied by the fulfillment's
+	//  parent, e.g. a playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.code_block_function
+	CodeBlockFunction *string `json:"codeBlockFunction,omitempty"`
+
+	// Set parameter values before executing the webhook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.set_parameter_actions
+	SetParameterActions []Fulfillment_SetParameterAction `json:"setParameterActions,omitempty"`
+
+	// Conditional cases for this fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.conditional_cases
+	ConditionalCases []Fulfillment_ConditionalCases `json:"conditionalCases,omitempty"`
+
+	// Hierarchical advanced settings for this fulfillment. The settings exposed
+	//  at the lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+
+	// If the flag is true, the agent will utilize LLM to generate a text
+	//  response. If LLM generation fails, the defined
+	//  [responses][google.cloud.dialogflow.cx.v3.Fulfillment.messages] in the
+	//  fulfillment will be respected. This flag is only useful for fulfillments
+	//  associated with no-match event handlers.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.enable_generative_fallback
+	EnableGenerativeFallback *bool `json:"enableGenerativeFallback,omitempty"`
+
+	// A list of Generators to be called during this fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.generators
+	Generators []Fulfillment_GeneratorSettings `json:"generators,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler
-type Handler struct {
-	// A handler triggered by event.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.event_handler
-	EventHandler *Handler_EventHandler `json:"eventHandler,omitempty"`
-
-	// A handler triggered during specific lifecycle of the playbook execution.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.lifecycle_handler
-	LifecycleHandler *Handler_LifecycleHandler `json:"lifecycleHandler,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.EventHandler
-type Handler_EventHandler struct {
-	// Required. The name of the event that triggers this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.event
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings
+type Fulfillment_GeneratorSettings struct {
+	// Required. The generator to call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.generator
 	// +required
-	Event *string `json:"event,omitempty"`
+	GeneratorRef *DialogflowGeneratorRef `json:"generatorRef,omitempty"`
 
-	// Optional. The condition that must be satisfied to trigger this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.condition
-	Condition *string `json:"condition,omitempty"`
+	// Map from [placeholder parameter][Generator.Parameter.id] in the
+	//  [Generator][google.cloud.dialogflow.cx.v3.Generator] to corresponding
+	//  session parameters. By default, Dialogflow uses the session parameter
+	//  with the same name to fill in the generator template. e.g. If there is a
+	//  placeholder parameter `city` in the Generator, Dialogflow default to fill
+	//  in the `$city` with
+	//  `$session.params.city`. However, you may choose to fill `$city` with
+	//  `$session.params.desination-city`.
+	//  - Map key: [parameter ID][Genrator.Parameter.id]
+	//  - Map value: session parameter name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.input_parameters
+	InputParameters map[string]string `json:"inputParameters,omitempty"`
 
-	// Required. The fulfillment to call when the event occurs.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.fulfillment
+	// Required. Output parameter which should contain the generator response.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.output_parameter
 	// +required
-	Fulfillment *DialogflowCX_Fulfillment `json:"fulfillment,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler
-type Handler_LifecycleHandler struct {
-	// Required. The name of the lifecycle stage that triggers this handler.
-	//  Supported values:
-	//  * `playbook-start`
-	//  * `pre-action-selection`
-	//  * `pre-action-execution`
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.lifecycle_stage
-	// +required
-	LifecycleStage *string `json:"lifecycleStage,omitempty"`
-
-	// Optional. The condition that must be satisfied to trigger this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.condition
-	Condition *string `json:"condition,omitempty"`
-
-	// Required. The fulfillment to call when this handler is triggered.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.fulfillment
-	// +required
-	Fulfillment *DialogflowCX_Fulfillment `json:"fulfillment,omitempty"`
-}
-
-var (
-	DialogflowToolIdentityFormat = gcpurls.Template[DialogflowToolIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}")
-)
-
-// +k8s:deepcopy-gen=false
-type DialogflowToolIdentity struct {
-	Project  string
-	Location string
-	Agent    string
-	Tool     string
-}
-
-func (i *DialogflowToolIdentity) String() string {
-	return DialogflowToolIdentityFormat.ToString(*i)
-}
-
-func (i *DialogflowToolIdentity) FromExternal(ref string) error {
-	parsed, match, err := DialogflowToolIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of DialogflowTool external=%q was not known (use %s): %w", ref, DialogflowToolIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of DialogflowTool external=%q was not known (use %s)", ref, DialogflowToolIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *DialogflowToolIdentity) Host() string {
-	return DialogflowToolIdentityFormat.Host()
-}
-
-var (
-	_ refsv1beta1.Ref         = &DialogflowToolRef{}
-	_ refsv1beta1.ExternalRef = &DialogflowToolRef{}
-)
-
-var DialogflowToolGVK = GroupVersion.WithKind("DialogflowTool")
-
-// DialogflowToolRef is a reference to a DialogflowTool resource.
-type DialogflowToolRef struct {
-	// A reference to an externally managed DialogflowTool resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
-	External string `json:"external,omitempty"`
-}
-
-func init() {
-	refsv1beta1.Register(&DialogflowToolRef{})
-}
-
-func (r *DialogflowToolRef) GetGVK() schema.GroupVersionKind {
-	return DialogflowToolGVK
-}
-
-func (r *DialogflowToolRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{}
-}
-
-func (r *DialogflowToolRef) GetExternal() string {
-	return r.External
-}
-
-func (r *DialogflowToolRef) SetExternal(ref string) {
-	r.External = ref
-}
-
-func (r *DialogflowToolRef) ValidateExternal(ref string) error {
-	id := &DialogflowToolIdentity{}
-	if err := id.FromExternal(ref); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *DialogflowToolRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &DialogflowToolIdentity{}
-	if err := id.FromExternal(r.External); err != nil {
-		return nil, err
-	}
-	return id, nil
-}
-
-func (r *DialogflowToolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External == "" {
-		return fmt.Errorf("external reference must be specified for %s", DialogflowToolGVK.Kind)
-	}
-	return r.ValidateExternal(r.External)
+	OutputParameter *string `json:"outputParameter,omitempty"`
 }
 
 // DialogflowPlaybookStatus defines the config connector machine state of DialogflowPlaybook

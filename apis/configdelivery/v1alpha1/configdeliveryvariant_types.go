@@ -30,13 +30,13 @@ var ConfigdeliveryVariantGVK = GroupVersion.WithKind("ConfigdeliveryVariant")
 // +kcc:spec:proto=google.cloud.configdelivery.v1.Variant
 // +kcc:required-from-proto
 type ConfigdeliveryVariantSpec struct {
-	// Required. A reference to the ConfigDeliveryRelease that this variant belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release} this resource belongs to.
 	// +required
-	ReleaseRef *ConfigDeliveryReleaseRef `json:"releaseRef,omitempty"`
+	ReleaseRef *ConfigDeliveryReleaseRef `json:"releaseRef"`
 
 	// The ConfigdeliveryVariant name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// Required. Input only. Unordered list. resources contain the kubernetes
 	//  manifests (YAMLs) for this variant.
 	// +kcc:proto:field=google.cloud.configdelivery.v1.Variant.resources

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // API sources for DataplexGlossaryTerm, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/dataplex/v1/business_glossary.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/28ba5d15234eff44241492ca72b135e1171fc537/google/cloud/dataplex/v1/business_glossary.proto
 // +kcc:source:service-docs=https://cloud.google.com/dataplex/docs
 // +kcc:source:resource-docs=https://docs.cloud.google.com/dataplex/docs/reference/rest/v1/projects.locations.glossaries.terms
 
@@ -30,7 +30,8 @@ var DataplexGlossaryTermGVK = GroupVersion.WithKind("DataplexGlossaryTerm")
 // +kcc:spec:proto=google.cloud.dataplex.v1.GlossaryTerm
 // +kcc:required-from-proto
 type DataplexGlossaryTermSpec struct {
-	// Required. The Glossary that this GlossaryTerm belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/glossaries/{glossary} this resource belongs to.
 	// +required
 	GlossaryRef *GlossaryRef `json:"glossaryRef"`
 
@@ -53,7 +54,7 @@ type DataplexGlossaryTermSpec struct {
 	//  projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.parent
 	// +required
-	ParentRef *GlossaryRef `json:"parentRef"`
+	Parent *string `json:"parent,omitempty"`
 }
 
 // DataplexGlossaryTermStatus defines the config connector machine state of DataplexGlossaryTerm

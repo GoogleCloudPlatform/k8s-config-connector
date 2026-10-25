@@ -31,6 +31,7 @@ var MigrationCenterReportConfigGVK = GroupVersion.WithKind("MigrationCenterRepor
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.ReportConfig
 // +kcc:required-from-proto
 type MigrationCenterReportConfigSpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The MigrationCenterReportConfig name. If not given, the metadata.name will be used.
@@ -54,12 +55,12 @@ type ReportConfig_GroupPreferenceSetAssignment struct {
 	// Required. Name of the group.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.group
 	// +required
-	GroupRef *MigrationCenterGroupRef `json:"groupRef"`
+	GroupRef *MigrationCenterGroupRef `json:"groupRef,omitempty"`
 
 	// Required. Name of the Preference Set.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.preference_set
 	// +required
-	PreferenceSetRef *MigrationCenterPreferenceSetRef `json:"preferenceSetRef"`
+	PreferenceSetRef *MigrationCenterPreferenceSetRef `json:"preferenceSetRef,omitempty"`
 }
 
 // MigrationCenterReportConfigStatus defines the config connector machine state of MigrationCenterReportConfig

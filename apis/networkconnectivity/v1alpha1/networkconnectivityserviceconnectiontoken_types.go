@@ -21,7 +21,7 @@ package v1alpha1
 
 import (
 	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +32,11 @@ var NetworkConnectivityServiceConnectionTokenGVK = GroupVersion.WithKind("Networ
 // +kcc:spec:proto=google.cloud.networkconnectivity.v1.ServiceConnectionToken
 // +kcc:required-from-proto
 type NetworkConnectivityServiceConnectionTokenSpec struct {
+	// Required. Defines the parent path of the resource.
 	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The NetworkConnectivityServiceConnectionToken name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// A description of this resource.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.description
 	Description *string `json:"description,omitempty"`
@@ -45,7 +45,7 @@ type NetworkConnectivityServiceConnectionTokenSpec struct {
 	//  Example:
 	//  projects/{projectNumOrId}/global/networks/{resourceId}.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.network
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 // NetworkConnectivityServiceConnectionTokenStatus defines the config connector machine state of NetworkConnectivityServiceConnectionToken

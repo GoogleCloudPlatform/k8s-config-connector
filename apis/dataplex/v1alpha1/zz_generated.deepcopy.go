@@ -4842,9 +4842,9 @@ func (in *DataplexEntrySpec) DeepCopyInto(out *DataplexEntrySpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.EntryTypeRef != nil {
-		in, out := &in.EntryTypeRef, &out.EntryTypeRef
-		*out = new(EntryTypeRef)
+	if in.EntryType != nil {
+		in, out := &in.EntryType, &out.EntryType
+		*out = new(string)
 		**out = **in
 	}
 	if in.Aspects != nil {
@@ -4854,9 +4854,9 @@ func (in *DataplexEntrySpec) DeepCopyInto(out *DataplexEntrySpec) {
 			(*out)[key] = *val.DeepCopy()
 		}
 	}
-	if in.ParentEntryRef != nil {
-		in, out := &in.ParentEntryRef, &out.ParentEntryRef
-		*out = new(DataplexEntryRef)
+	if in.ParentEntry != nil {
+		in, out := &in.ParentEntry, &out.ParentEntry
+		*out = new(string)
 		**out = **in
 	}
 	if in.FullyQualifiedName != nil {
@@ -5472,9 +5472,9 @@ func (in *DataplexGlossaryCategorySpec) DeepCopyInto(out *DataplexGlossaryCatego
 		*out = new(string)
 		**out = **in
 	}
-	if in.ParentRef != nil {
-		in, out := &in.ParentRef, &out.ParentRef
-		*out = new(GlossaryRef)
+	if in.Parent != nil {
+		in, out := &in.Parent, &out.Parent
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -5805,9 +5805,9 @@ func (in *DataplexGlossaryTermSpec) DeepCopyInto(out *DataplexGlossaryTermSpec) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.ParentRef != nil {
-		in, out := &in.ParentRef, &out.ParentRef
-		*out = new(GlossaryRef)
+	if in.Parent != nil {
+		in, out := &in.Parent, &out.Parent
+		*out = new(string)
 		**out = **in
 	}
 }

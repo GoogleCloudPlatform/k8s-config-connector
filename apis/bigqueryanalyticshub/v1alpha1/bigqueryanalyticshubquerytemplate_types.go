@@ -30,7 +30,8 @@ var BigQueryAnalyticsHubQueryTemplateGVK = GroupVersion.WithKind("BigQueryAnalyt
 // +kcc:spec:proto=google.cloud.bigquery.analyticshub.v1.QueryTemplate
 // +kcc:required-from-proto
 type BigQueryAnalyticsHubQueryTemplateSpec struct {
-	// Required. The parent DataExchange that this QueryTemplate belongs to.
+
+	// A reference to the projects/{project}/locations/{location}/dataExchanges/{data_exchange} this resource belongs to.
 	// +required
 	DataExchangeRef *BigQueryAnalyticsHubDataExchangeRef `json:"dataExchangeRef"`
 
