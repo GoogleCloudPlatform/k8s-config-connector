@@ -94,6 +94,9 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		if codegen.IsFieldAllOutputOnlyMessage(field) {
 			continue
 		}
+		if _, _, _, ok := codegen.ResolveAuthoritativeRefField(field, opts); ok {
+			continue
+		}
 		goType, err := codegen.GoTypeForField(field, false, opts)
 		if err != nil {
 			continue

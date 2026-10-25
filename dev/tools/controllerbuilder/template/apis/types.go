@@ -43,6 +43,9 @@ type APIArgs struct {
 	// SpecFields contains pre-rendered Go struct fields for the Spec struct.
 	// When empty, the default stub is rendered.
 	SpecFields string
+	// ExtraTypes contains pre-rendered nested Go structs (such as structs with
+	// auto-resolved KCC *Ref fields) emitted directly into <kind>_types.go.
+	ExtraTypes string
 	// ObservedStateFields contains pre-rendered Go struct fields for ObservedState.
 	// Empty when no proto fields are marked OUTPUT_ONLY.
 	ObservedStateFields string
@@ -136,6 +139,9 @@ type {{ .Kind }}Spec struct {
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
 {{ .SpecFields }}}
+{{- if .ExtraTypes }}
+{{ .ExtraTypes }}
+{{- end }}
 
 // {{ .Kind }}Status defines the config connector machine state of {{ .Kind }}
 type {{ .Kind }}Status struct {

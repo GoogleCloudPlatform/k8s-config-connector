@@ -611,6 +611,29 @@ func (p *requiredPlanner) holdsSplitMessage(msg protoreflect.MessageDescriptor, 
 	return false
 }
 
+// IsDeclaredInPackage reports whether a hand-written file of the package or a
+// reserved scaffolder type already declares the type name.
+func (g *TypeGenerator) IsDeclaredInPackage(name string) bool {
+	return g.declaredByHand(name) || g.reservedTypeNames[name]
+}
+
+// CanAutoResolveNestedMessage reports whether a nested proto message can be
+// emitted into a newly scaffolded <kind>_types.go file with auto-resolved
+// reference fields without conflicting with existing hand-written types or
+// lenient (status / legacy Kind) uses.
+func (g *TypeGenerator) CanAutoResolveNestedMessage(msg protoreflect.MessageDescriptor) bool {
+	if msg == nil {
+		return false
+	}
+	if g.declaredByHand(GoNameForProtoMessage(msg)) {
+		return false
+	}
+	if g.requiredPlan != nil && g.requiredPlan.lenient[string(msg.FullName())] {
+		return false
+	}
+	return true
+}
+
 // declaredByHand reports whether a hand-written file of the package declares
 // the type name.
 func (g *TypeGenerator) declaredByHand(name string) bool {
@@ -666,6 +689,8 @@ func (g *TypeGenerator) lenientWriteOptions() WriteOptions {
 	opts := g.writeOptions
 	opts.EmitRequired = false
 	opts.RequiredStructs = nil
+	opts.AutoResolveJudgement = false
+	opts.ResolveResourceReference = nil
 	return opts
 }
 
