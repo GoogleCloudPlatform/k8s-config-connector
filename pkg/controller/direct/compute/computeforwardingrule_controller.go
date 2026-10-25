@@ -82,7 +82,11 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 
 	// Handle TF default values
 	if obj.Spec.LoadBalancingScheme == nil {
-		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
+		if isPSCForwardingRule(&obj.Spec) {
+			obj.Spec.LoadBalancingScheme = direct.LazyPtr("")
+		} else {
+			obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
+		}
 	}
 
 	// resolveForwardingRuleRefs is required because certain spec fields on ComputeForwardingRule (like ipAddress, target, etc.)
@@ -132,6 +136,19 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		forwardingRuleAdapter.forwardingRulesClient = forwardingRulesClient
 	}
 	return forwardingRuleAdapter, nil
+}
+
+func isPSCForwardingRule(spec *krm.ComputeForwardingRuleSpec) bool {
+	if spec == nil || spec.Target == nil {
+		return false
+	}
+	if spec.Target.ServiceAttachmentRef != nil ||
+		spec.Target.MemorystoreInstanceServiceAttachment != nil ||
+		spec.Target.RedisClusterServiceAttachment != nil {
+		return true
+	}
+	bundle := direct.ValueOf(spec.Target.GoogleAPIsBundle)
+	return bundle == "all-apis" || bundle == "vpc-sc"
 }
 
 func (m *forwardingRuleModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
