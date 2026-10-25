@@ -25,52 +25,72 @@ entries:
     group: configdelivery.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with ResourceBundleRef (*ConfigDeliveryResourceBundleRef) and removed Labels from Spec.
   - kind: ConfigDeliveryRelease
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//configdelivery.googleapis.com/projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: Verified URL format matches google.cloud.configdelivery.v1.Release google.api.resource pattern.
   - kind: ConfigDeliveryRelease
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" contains ancestor segment(s) resourceBundles/{resource_bundle} with no matching reference or field on ConfigDeliveryReleaseSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Uncommented ResourceBundleRef (*ConfigDeliveryResourceBundleRef) on ConfigDeliveryReleaseSpec.
   - kind: ConfigDeliveryRelease
     group: configdelivery.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with ResourceBundleRef (*ConfigDeliveryResourceBundleRef).
   - kind: ConfigDeliveryRelease
     group: configdelivery.cnrm.cloud.google.com
     field: .spec.resourceBundleRef
     reason: parent-ref-guessed
     detail: emitted as a reference to ConfigDeliveryResourceBundleRef, read from the resourceBundles segment of projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: Confirmed and uncommented ResourceBundleRef (*ConfigDeliveryResourceBundleRef) as the required parent reference.
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with ReleaseRef (*ConfigDeliveryReleaseRef) and removed Labels from Spec.
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//configdelivery.googleapis.com/projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: Verified URL format matches google.cloud.configdelivery.v1.Variant google.api.resource pattern.
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}" contains ancestor segment(s) resourceBundles/{resource_bundle}, releases/{release} with no matching reference or field on ConfigdeliveryVariantSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added ReleaseRef (*ConfigDeliveryReleaseRef) on ConfigdeliveryVariantSpec.
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}, and no ReleaseRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Modelled parent reference as ReleaseRef (*ConfigDeliveryReleaseRef).
   - kind: ConfigdeliveryVariant
     group: configdelivery.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with ReleaseRef (*ConfigDeliveryReleaseRef).

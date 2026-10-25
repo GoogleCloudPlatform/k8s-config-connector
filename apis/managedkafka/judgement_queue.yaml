@@ -74,10 +74,14 @@ entries:
     group: managedkafka.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with inlined parent.ProjectAndLocationRef.
   - kind: ManagedKafkaSchemaRegistry
     group: managedkafka.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef.
