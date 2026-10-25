@@ -83,6 +83,12 @@ type PrepopulateResult struct {
 	// ObservedStateFields is the rendered Go source for the ObservedState struct fields,
 	// empty when no fields are marked OUTPUT_ONLY in the proto.
 	ObservedStateFields string
+	// ExtraTypes is the rendered Go source for any nested Spec structs that
+	// contain auto-resolved reference fields and are emitted into <kind>_types.go.
+	ExtraTypes string
+	// ExtraTypeNames lists the Go struct names rendered in ExtraTypes so the
+	// type generator can reserve them and avoid duplicating them in types.generated.go.
+	ExtraTypeNames []string
 	// ExtraImports contains necessary import paths beyond the default template imports.
 	ExtraImports []string
 	// Judgement lists review items requiring human inspection.
@@ -112,7 +118,16 @@ const (
 	skipServerSet
 	skipIdentity
 	skipDeprecated
+	skipLabels
 )
+
+func isTopLevelLabelsMap(field protoreflect.FieldDescriptor) bool {
+	if field == nil || string(field.Name()) != "labels" || !field.IsMap() {
+		return false
+	}
+	return field.MapKey() != nil && field.MapKey().Kind() == protoreflect.StringKind &&
+		field.MapValue() != nil && field.MapValue().Kind() == protoreflect.StringKind
+}
 
 // topLevelSkip returns why PrepopulateSpec leaves a top-level field of the
 // resource message msg out of the Spec, or inSpec if the field stays.
@@ -126,8 +141,12 @@ func topLevelSkip(field protoreflect.FieldDescriptor, msg protoreflect.MessageDe
 		return skipOutputOnly
 	case codegen.IsServerSetField(field, msg, opts):
 		return skipServerSet
+	case opts.AutoResolveJudgement && codegen.IsAutoResolvedTopLevelOutputField(field, opts):
+		return skipOutputOnly
 	case identityFields[string(field.Name())]:
 		return skipIdentity
+	case opts.AutoResolveJudgement && isTopLevelLabelsMap(field):
+		return skipLabels
 	case isDeprecated(field):
 		return skipDeprecated
 	default:
@@ -180,6 +199,10 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 			// Identity fields (e.g. "name") are managed via status.externalRef
 			// rather than directly in spec fields.
 			continue
+		case skipLabels:
+			// Top-level labels map<string, string> is managed via
+			// metadata.labels on greenfield direct resources.
+			continue
 		case skipDeprecated:
 			// Leave out a field the proto marks deprecated, so a new Kind does
 			// not start with it. walkSpecFields and DetectOutputOnlyInComments
@@ -205,19 +228,22 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		buf.Write(field_.Bytes())
 		emitted++
 
+		_, _, _, resolvedRef := codegen.ResolveAuthoritativeRefField(field, opts)
 		fieldPath := ".spec." + codegen.GetJSONForKRM(field, opts)
 		// A string field named after a resource in this service may be a
 		// reference to it. WriteField has already written a +kcc:guess marker
 		// above the field, and this adds the queue entry. Both use
 		// SiblingResource, so every marker gets an entry. The field stays a
 		// string. A reviewer decides whether to make it a reference.
-		if target, ok := codegen.SiblingResource(field, opts); ok {
-			out.Judgement = append(out.Judgement, JudgementItem{
-				FieldPath: fieldPath,
-				Reason:    judgement.ReasonPossibleReferenceBySibling,
-				Detail: "the name matches " + target + ", a resource this service declares; " +
-					"confirm whether it should be a reference",
-			})
+		if !resolvedRef {
+			if target, ok := codegen.SiblingResource(field, opts); ok {
+				out.Judgement = append(out.Judgement, JudgementItem{
+					FieldPath: fieldPath,
+					Reason:    judgement.ReasonPossibleReferenceBySibling,
+					Detail: "the name matches " + target + ", a resource this service declares; " +
+						"confirm whether it should be a reference",
+				})
+			}
 		}
 
 		unsupported := false
@@ -237,8 +263,10 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 				})
 			}
 		}
-		if item, ok := judgementFor(field, fieldPath); ok {
-			out.Judgement = append(out.Judgement, item)
+		if !resolvedRef {
+			if item, ok := judgementFor(field, fieldPath); ok {
+				out.Judgement = append(out.Judgement, item)
+			}
 		}
 		jsonName := codegen.GetJSONForKRM(field, opts)
 		if string(field.Name()) == "etag" {
@@ -254,19 +282,22 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 				Detail:    fmt.Sprintf("%s was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState", jsonName),
 			})
 		}
-		if topLevelLocationFieldNames[jsonName] && field.Kind() == protoreflect.StringKind && !field.IsList() {
+		if !resolvedRef && topLevelLocationFieldNames[jsonName] && field.Kind() == protoreflect.StringKind && !field.IsList() {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: fieldPath,
 				Reason:    judgement.ReasonLocationOrParentRef,
 				Detail:    fmt.Sprintf("proto defines a %s field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string", jsonName),
 			})
 		}
-		if !unsupported {
+		if !unsupported && !resolvedRef {
 			walkNestedSpecJudgements(field, fieldPath, opts, map[protoreflect.FullName]bool{msg.FullName(): true}, &out.Judgement)
 		}
 	}
 
 	out.SpecFields = buf.String()
+	if opts.AutoResolveJudgement {
+		out.ExtraTypes, out.ExtraTypeNames = renderAutoResolvedNestedMessages(msg, opts)
+	}
 
 	// The root marker records that nobody has reviewed this resource yet. It
 	// does not suppress any check.
@@ -276,6 +307,66 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 	}}, out.Judgement...)
 
 	return out, nil
+}
+
+func renderAutoResolvedNestedMessages(rootMsg protoreflect.MessageDescriptor, opts codegen.WriteOptions) (string, []string) {
+	visited := map[protoreflect.FullName]bool{rootMsg.FullName(): true}
+	var toRender []protoreflect.MessageDescriptor
+
+	var walk func(msg protoreflect.MessageDescriptor, top bool)
+	walk = func(msg protoreflect.MessageDescriptor, top bool) {
+		for i := 0; i < msg.Fields().Len(); i++ {
+			field := msg.Fields().Get(i)
+			if top && topLevelSkip(field, msg, opts) != inSpec {
+				continue
+			}
+			if !top {
+				if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || codegen.IsFieldAllOutputOnlyMessage(field) {
+					continue
+				}
+			}
+			var subMsg protoreflect.MessageDescriptor
+			switch {
+			case field.IsMap():
+				if v := field.MapValue(); v.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(v.Message()) {
+					subMsg = v.Message()
+				}
+			case field.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(field.Message()):
+				subMsg = field.Message()
+			}
+			if subMsg == nil || strings.HasPrefix(string(subMsg.FullName()), "google.protobuf.") || visited[subMsg.FullName()] {
+				continue
+			}
+			visited[subMsg.FullName()] = true
+			hasResolvedRef := false
+			for j := 0; j < subMsg.Fields().Len(); j++ {
+				child := subMsg.Fields().Get(j)
+				if _, _, _, ok := codegen.ResolveAuthoritativeRefField(child, opts); ok {
+					hasResolvedRef = true
+					break
+				}
+			}
+			if hasResolvedRef {
+				toRender = append(toRender, subMsg)
+			}
+			walk(subMsg, false)
+		}
+	}
+	walk(rootMsg, true)
+	if len(toRender) == 0 {
+		return "", nil
+	}
+	var buf bytes.Buffer
+	names := make([]string, 0, len(toRender))
+	for _, m := range toRender {
+		goName := codegen.GoNameForProtoMessage(m)
+		if opts.SkipExtraTypeName != nil && opts.SkipExtraTypeName(goName) {
+			continue
+		}
+		codegen.WriteMessage(&buf, m, opts)
+		names = append(names, goName)
+	}
+	return buf.String(), names
 }
 
 // PrepopulateObservedState generates the struct body for the resource-level
@@ -387,18 +478,35 @@ func JudgementEntries(kind, group string, items []JudgementItem) []judgement.Ent
 	return out
 }
 
+var apiVersionQualifierRe = regexp.MustCompile(`\b([a-z][a-z0-9]*)(v1alpha1|v1beta1)\.`)
+
 // ExtraImportsFor scans rendered field bodies and returns required package imports
-// for mapped external types (e.g. apiextensionsv1.JSON, common.Status).
+// for mapped external types (e.g. apiextensionsv1.JSON, common.Status, or
+// cross-package/cross-version KCC reference types like dataformv1beta1.DataformRepositoryRef).
 func ExtraImportsFor(bodies ...string) []string {
+	seen := map[string]bool{}
 	var out []string
 	for qualifier, importPath := range codegen.QualifierImports {
 		for _, body := range bodies {
 			if strings.Contains(body, qualifier+".") {
 				// Always emit with explicit qualifier alias, avoiding mismatches between
 				// package import path segments and type qualifiers (e.g. apiextensionsv1).
+				seen[qualifier] = true
 				out = append(out, fmt.Sprintf("%s %q", qualifier, importPath))
 				break
 			}
+		}
+	}
+	for _, body := range bodies {
+		for _, m := range apiVersionQualifierRe.FindAllStringSubmatch(body, -1) {
+			service, ver := m[1], m[2]
+			qualifier := service + ver
+			if qualifier == "refsv1beta1" || seen[qualifier] {
+				continue
+			}
+			seen[qualifier] = true
+			importPath := fmt.Sprintf("github.com/GoogleCloudPlatform/k8s-config-connector/apis/%s/%s", service, ver)
+			out = append(out, fmt.Sprintf("%s %q", qualifier, importPath))
 		}
 	}
 	sort.Strings(out)
@@ -557,6 +665,9 @@ func walkNestedSpecJudgements(field protoreflect.FieldDescriptor, path string, o
 	if field == nil {
 		return
 	}
+	if _, _, _, ok := codegen.ResolveAuthoritativeRefField(field, opts); ok {
+		return
+	}
 	goType, err := codegen.GoTypeForField(field, false, opts)
 	if err != nil || generatesAsReference(field, goType) {
 		return
@@ -587,6 +698,9 @@ func walkNestedSpecJudgements(field protoreflect.FieldDescriptor, path string, o
 			continue
 		}
 		if codegen.IsFieldAllOutputOnlyMessage(child) {
+			continue
+		}
+		if _, _, _, ok := codegen.ResolveAuthoritativeRefField(child, opts); ok {
 			continue
 		}
 		childPath := nextPrefix + "." + codegen.GetJSONForKRM(child, opts)

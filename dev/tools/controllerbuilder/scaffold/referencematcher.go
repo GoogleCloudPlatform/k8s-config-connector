@@ -15,6 +15,7 @@
 package scaffold
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -27,8 +28,64 @@ import (
 // to the repo root.
 const sharedRefsPackage = "apis/refs/v1beta1"
 
+// wellKnownCrossServiceRefs maps google.api.resource_reference target types to
+// well-known KCC reference types that implement refs.Ref (Normalize).
+var wellKnownCrossServiceRefs = map[string]string{
+	"cloudresourcemanager.googleapis.com/Project":      "refsv1beta1.ProjectRef",
+	"cloudresourcemanager.googleapis.com/Folder":       "refsv1beta1.FolderRef",
+	"cloudresourcemanager.googleapis.com/Organization": "refsv1beta1.OrganizationRef",
+	"iam.googleapis.com/ServiceAccount":                "refsv1beta1.IAMServiceAccountRef",
+	"secretmanager.googleapis.com/Secret":              "refsv1beta1.SecretManagerSecretRef",
+	"secretmanager.googleapis.com/SecretVersion":       "refsv1beta1.SecretManagerSecretVersionRef",
+	"bigquery.googleapis.com/Dataset":                  "refsv1beta1.BigQueryDatasetRef",
+	"compute.googleapis.com/Network":                   "computerefs.ComputeNetworkRef",
+	"compute.googleapis.com/Networks":                  "computerefs.ComputeNetworkRef",
+	"compute.googleapis.com/Subnetwork":                "computev1beta1.ComputeSubnetworkRef",
+	"compute.googleapis.com/ServiceAttachment":         "refsv1beta1.ComputeServiceAttachmentRef",
+	"sqladmin.googleapis.com/Instance":                 "refsv1beta1.SQLInstanceRef",
+	"sqladmin.googleapis.com/Database":                 "refsv1beta1.SQLDatabaseRef",
+	"cloudkms.googleapis.com/CryptoKey":                "kmsv1beta1.KMSCryptoKeyRef",
+	"pubsub.googleapis.com/Topic":                      "pubsubv1beta1.PubSubTopicRef",
+	"logging.googleapis.com/LogBucket":                 "loggingv1beta1.LoggingLogBucketRef",
+	"storage.googleapis.com/Bucket":                    "storagev1beta1.StorageBucketRef",
+	"servicedirectory.googleapis.com/Service":          "servicedirectoryv1beta1.ServiceDirectoryServiceRef",
+}
+
+// ResolveTargetRef maps a google.api.resource_reference target type (e.g.
+// "cloudkms.googleapis.com/CryptoKey" or "datamigration.googleapis.com/ConnectionProfile")
+// to a Go reference type name (qualified if external to the current package)
+// when an unambiguous reference type that implements Normalize exists.
+func (a *APIScaffolder) ResolveTargetRef(targetType string) (string, bool) {
+	if targetType == "" {
+		return "", false
+	}
+	serviceDir := filepath.Join(a.BaseDir, a.GoPackage)
+	candidates := a.candidatesForTargetWithNormalize(targetType, serviceDir, true)
+	if len(candidates) == 1 {
+		for typeName, qual := range candidates {
+			if qual != "" {
+				return qual + "." + typeName, true
+			}
+			return typeName, true
+		}
+	}
+	if refType, ok := wellKnownCrossServiceRefs[targetType]; ok {
+		return refType, true
+	}
+	return "", false
+}
+
+func hasNormalizeMethod(body, typeName string) bool {
+	re := regexp.MustCompile(fmt.Sprintf(`(?m)^func\s+\([^)]*\*%s\)\s+Normalize\s*\(`, regexp.QuoteMeta(typeName)))
+	return re.MatchString(body)
+}
+
 // candidatesForTarget finds reference types matching a known proto resource target type.
 func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[string]string {
+	return a.candidatesForTargetWithNormalize(targetType, serviceDir, false)
+}
+
+func (a *APIScaffolder) candidatesForTargetWithNormalize(targetType, serviceDir string, requireNormalize bool) map[string]string {
 	targetService, targetKind := protoapi.ParseResourceTarget(targetType)
 	if targetKind == "" {
 		return nil
@@ -50,8 +107,12 @@ func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[s
 				if err != nil {
 					continue
 				}
-				for _, m := range re.FindAllStringSubmatch(string(body), -1) {
+				bodyStr := string(body)
+				for _, m := range re.FindAllStringSubmatch(bodyStr, -1) {
 					if strings.HasSuffix(strings.ToLower(m[1]), want) {
+						if requireNormalize && !hasNormalizeMethod(bodyStr, m[1]) {
+							continue
+						}
 						found[m[1]] = ""
 					}
 				}
@@ -59,6 +120,11 @@ func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[s
 		}
 		if len(found) > 0 {
 			return disambiguateServiceRefs(found, currentService, targetService, want)
+		}
+		if requireNormalize && currentService != "" {
+			if sibFound := scanSiblingVersionDirs(serviceDir, currentService, want, re, requireNormalize); len(sibFound) > 0 {
+				return disambiguateServiceRefs(sibFound, currentService, targetService, want)
+			}
 		}
 	}
 
@@ -75,10 +141,14 @@ func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[s
 			if err != nil {
 				continue
 			}
-			for _, m := range re.FindAllStringSubmatch(string(body), -1) {
+			bodyStr := string(body)
+			for _, m := range re.FindAllStringSubmatch(bodyStr, -1) {
 				typeName := m[1]
 				lowerType := strings.ToLower(typeName)
 				if !strings.HasSuffix(lowerType, want) {
+					continue
+				}
+				if requireNormalize && !hasNormalizeMethod(bodyStr, typeName) {
 					continue
 				}
 				// Exact match (e.g. ProjectRef, FolderRef, OrganizationRef)
@@ -112,6 +182,10 @@ func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[s
 // preventing foreign services (e.g. Chronicle) from accidentally matching
 // service-specific types (e.g. SQLInstanceRef).
 func parentRefTypes(repoRoot, serviceDir, currentService, name string) map[string]string {
+	return parentRefTypesWithNormalize(repoRoot, serviceDir, currentService, name, false)
+}
+
+func parentRefTypesWithNormalize(repoRoot, serviceDir, currentService, name string, requireNormalize bool) map[string]string {
 	want := strings.ToLower(name) + "ref"
 	re := regexp.MustCompile(`(?m)^type ([A-Z]\w*Ref) struct`)
 
@@ -129,10 +203,14 @@ func parentRefTypes(repoRoot, serviceDir, currentService, name string) map[strin
 			if err != nil {
 				continue
 			}
-			for _, m := range re.FindAllStringSubmatch(string(body), -1) {
+			bodyStr := string(body)
+			for _, m := range re.FindAllStringSubmatch(bodyStr, -1) {
 				typeName := m[1]
 				lowerType := strings.ToLower(typeName)
 				if !strings.HasSuffix(lowerType, want) {
+					continue
+				}
+				if requireNormalize && !hasNormalizeMethod(bodyStr, typeName) {
 					continue
 				}
 				if isShared {
@@ -149,7 +227,53 @@ func parentRefTypes(repoRoot, serviceDir, currentService, name string) map[strin
 	if found := scan(serviceDir, "", false); len(found) > 0 {
 		return disambiguateServiceRefs(found, currentService, "", want)
 	}
+	if requireNormalize && currentService != "" {
+		if sibFound := scanSiblingVersionDirs(serviceDir, currentService, want, re, requireNormalize); len(sibFound) > 0 {
+			return disambiguateServiceRefs(sibFound, currentService, "", want)
+		}
+	}
 	return scan(filepath.Join(repoRoot, sharedRefsPackage), "refsv1beta1", true)
+}
+
+func scanSiblingVersionDirs(serviceDir, currentService, want string, re *regexp.Regexp, requireNormalize bool) map[string]string {
+	parentDir := filepath.Dir(serviceDir)
+	currentVer := filepath.Base(serviceDir)
+	found := map[string]string{}
+	for _, sibVer := range []string{"v1beta1", "v1alpha1"} {
+		if sibVer == currentVer {
+			continue
+		}
+		sibDir := filepath.Join(parentDir, sibVer)
+		entries, err := os.ReadDir(sibDir)
+		if err != nil {
+			continue
+		}
+		qual := currentService + sibVer
+		for _, e := range entries {
+			if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") {
+				continue
+			}
+			body, err := os.ReadFile(filepath.Join(sibDir, e.Name()))
+			if err != nil {
+				continue
+			}
+			bodyStr := string(body)
+			for _, m := range re.FindAllStringSubmatch(bodyStr, -1) {
+				typeName := m[1]
+				if !strings.HasSuffix(strings.ToLower(typeName), want) {
+					continue
+				}
+				if requireNormalize && !hasNormalizeMethod(bodyStr, typeName) {
+					continue
+				}
+				found[typeName] = qual
+			}
+		}
+		if len(found) > 0 {
+			return found
+		}
+	}
+	return found
 }
 
 // disambiguateServiceRefs narrows multiple suffix matches in the same package
@@ -211,8 +335,14 @@ func serviceMatchesPrefix(service, prefix string) bool {
 		return prefix == "alloydb"
 	case "appengine":
 		return prefix == "appengine"
-	case "kms":
-		return prefix == "kms"
+	case "kms", "cloudkms":
+		return prefix == "kms" || prefix == "cloudkms"
+	case "clouddms", "datamigration":
+		return prefix == "clouddms" || prefix == "datamigration"
+	case "bigquerybiglake", "biglake":
+		return prefix == "bigquerybiglake" || prefix == "biglake"
+	case "contactcenterinsights", "ccinsights":
+		return prefix == "contactcenterinsights" || prefix == "ccinsights"
 	}
 	return false
 }

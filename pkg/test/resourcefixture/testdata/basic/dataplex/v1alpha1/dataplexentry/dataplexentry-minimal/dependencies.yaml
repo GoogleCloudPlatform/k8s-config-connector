@@ -1,0 +1,19 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntryGroup
+metadata:
+  name: dpeg-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: Entry group for minimal entry test
+---
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntryType
+metadata:
+  name: dpet-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectNumber}"
+  location: us-central1
+  description: Entry type for minimal entry test

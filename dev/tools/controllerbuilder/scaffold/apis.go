@@ -59,6 +59,10 @@ type APIScaffolder struct {
 	// scaffolded earlier keep their optional fields, since making a field
 	// required breaks objects that omit it.
 	RequiredFromProto bool
+
+	// AutoResolveJudgement enables automatic resolution of known parent/location
+	// and reference patterns when scaffolding a new <kind>_types.go file.
+	AutoResolveJudgement bool
 }
 
 // resourceMetadata looks up what the proto states about a resource, or nil if we
@@ -252,9 +256,17 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 	if prepopulated != nil {
 		cArgs.SpecFields = prepopulated.SpecFields
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
-		cArgs.ExtraImports = prepopulated.ExtraImports
+		cArgs.ExtraTypes = prepopulated.ExtraTypes
 		cArgs.PrepopulateSpec = true
 		a.applyParentFields(cArgs, prepopulated)
+		cArgs.ExtraImports = ExtraImportsFor(
+			cArgs.RootRefField,
+			cArgs.LocationField,
+			cArgs.ParentRefField,
+			cArgs.SpecFields,
+			cArgs.ExtraTypes,
+			cArgs.ObservedStateFields,
+		)
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }
@@ -263,6 +275,33 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 // on cArgs from cArgs.ResourcePattern and appends any corresponding judgement
 // items to prepopulated.
 func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *PrepopulateResult) {
+	if a.AutoResolveJudgement && cArgs.ResourcePattern != "" {
+		if a.EmitParentRefs {
+			parentField, parentItem := a.parentRef(cArgs.ResourcePattern)
+			if parentField != "" && parentItem == nil {
+				// Direct parent reference resolved cleanly (with Normalize);
+				// it replaces rootRef and location.
+				cArgs.RootRefField = ""
+				cArgs.LocationField = ""
+				if !specAlreadyHasParentRef(cArgs.SpecFields, parentField) {
+					cArgs.ParentRefField = parentField
+				}
+				return
+			}
+			if parentItem == nil && isProjectAndLocationParent(cArgs.ResourcePattern) {
+				cArgs.RootRefField = projectAndLocationRefField
+				cArgs.LocationField = ""
+				cArgs.ParentRefField = ""
+				return
+			}
+		} else if isProjectAndLocationParent(cArgs.ResourcePattern) {
+			cArgs.RootRefField = projectAndLocationRefField
+			cArgs.LocationField = ""
+			cArgs.ParentRefField = ""
+			return
+		}
+	}
+
 	root, item := a.rootRef(cArgs.ResourcePattern)
 	cArgs.RootRefField = root
 	if item != nil {
@@ -284,6 +323,21 @@ func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *Pre
 			prepopulated.Judgement = append(prepopulated.Judgement, *item)
 		}
 	}
+}
+
+func specAlreadyHasParentRef(specFields, parentField string) bool {
+	for _, line := range strings.Split(parentField, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" || strings.HasPrefix(trimmed, "//") {
+			continue
+		}
+		fields := strings.Fields(trimmed)
+		if len(fields) > 0 {
+			re := regexp.MustCompile(`(?m)^\s*` + regexp.QuoteMeta(fields[0]) + `\s+\*`)
+			return re.MatchString(specFields)
+		}
+	}
+	return false
 }
 
 // ParentJudgement returns the judgement queue items that AddTypeFile records

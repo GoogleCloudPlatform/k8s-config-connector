@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 
 	"github.com/google/go-cmp/cmp"
+	genprotoannotations "google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
@@ -894,3 +895,123 @@ type ExampleWidgetSpec struct{}
 		t.Errorf("queue entries mismatch (-want +got):\n%s", diff)
 	}
 }
+
+func TestRunGenerateCRDAutoResolvesKnownJudgementPatterns(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+	typesPath := filepath.Join(apiDir, "example", "v1alpha1", "examplewidget_types.go")
+	genTypesPath := filepath.Join(apiDir, "example", "v1alpha1", "types.generated.go")
+	queuePath := filepath.Join(apiDir, "example", judgement.FileName)
+
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	msgType := descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+	rep := descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+
+	resOpt := &descriptorpb.MessageOptions{}
+	proto.SetExtension(resOpt, genprotoannotations.E_Resource, &genprotoannotations.ResourceDescriptor{
+		Type:    "example.googleapis.com/Widget",
+		Pattern: []string{"projects/{project}/locations/{location}/widgets/{widget}"},
+	})
+	kmsRefOpt := &descriptorpb.FieldOptions{}
+	proto.SetExtension(kmsRefOpt, genprotoannotations.E_ResourceReference, &genprotoannotations.ResourceReference{
+		Type: "cloudkms.googleapis.com/CryptoKey",
+	})
+	saRefOpt := &descriptorpb.FieldOptions{}
+	proto.SetExtension(saRefOpt, genprotoannotations.E_ResourceReference, &genprotoannotations.ResourceReference{
+		Type: "iam.googleapis.com/ServiceAccount",
+	})
+
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1/widget.proto"),
+		Package: proto.String("google.cloud.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: proto.String("EncryptionConfig"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("kms_key"), Number: proto.Int32(1), Type: str, Options: kmsRefOpt},
+				},
+			},
+			{
+				Name:    proto.String("Widget"),
+				Options: resOpt,
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: proto.String("LabelsEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: proto.String("key"), Number: proto.Int32(1), Type: str},
+							{Name: proto.String("value"), Number: proto.Int32(2), Type: str},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+					{Name: proto.String("labels"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.Widget.LabelsEntry"), Label: rep},
+					{Name: proto.String("etag"), Number: proto.Int32(3), Type: str},
+					{Name: proto.String("service_account"), Number: proto.Int32(4), Type: str, Options: saRefOpt},
+					{Name: proto.String("encryption_config"), Number: proto.Int32(5), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.EncryptionConfig")},
+					{Name: proto.String("server_note"), Number: proto.Int32(6), Type: str},
+				},
+			},
+		},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{{
+			// [4=message_type 1 (Widget), 2=field 5 (server_note)].
+			Path:            []int32{4, 1, 2, 5},
+			Span:            []int32{0, 0, 1},
+			LeadingComments: proto.String(" Output only. A note populated by the server.\n"),
+		}}},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(dir, "widget_autoresolve.pb")
+	writeFile(t, pbPath, string(b))
+
+	o := &GenerateCRDOptions{
+		GenerateOptions: &options.GenerateOptions{
+			ProtoSourcePath: pbPath,
+			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+		},
+		ServiceName:         "google.cloud.example.v1",
+		OutputAPIDirectory:  apiDir,
+		Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+		PrepopulateResource: true,
+		PruneUnusedTypes:    false,
+	}
+
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+
+	gotTypes := readFile(t, typesPath)
+	for _, wantSubstr := range []string{
+		"*parent.ProjectAndLocationRef `json:\",inline\"`",
+		"ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:\"serviceAccountRef,omitempty\"`",
+		"type EncryptionConfig struct",
+		"KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:\"kmsKeyRef,omitempty\"`",
+		"Etag *string `json:\"etag,omitempty\"`",
+		"ServerNote *string `json:\"serverNote,omitempty\"`",
+	} {
+		if !strings.Contains(gotTypes, wantSubstr) {
+			t.Errorf("expected examplewidget_types.go to contain %q, got:\n%s", wantSubstr, gotTypes)
+		}
+	}
+	if strings.Contains(gotTypes, "Labels map[string]string") {
+		t.Errorf("expected top-level Labels map[string]string to be omitted from Spec, got:\n%s", gotTypes)
+	}
+
+	gotGenTypes := readFile(t, genTypesPath)
+	if strings.Contains(gotGenTypes, "type EncryptionConfig struct") {
+		t.Errorf("expected EncryptionConfig not to be duplicated in types.generated.go, got:\n%s", gotGenTypes)
+	}
+
+	for _, e := range readQueueEntries(t, queuePath) {
+		switch e.Reason {
+		case "location-or-parent-ref", "etag-in-spec", "well-known-output-only-pattern-in-comment", "authoritative-proto-reference":
+			t.Errorf("expected reason %q to be auto-resolved and not queued, got entry: %+v", e.Reason, e)
+		}
+	}
+}
+

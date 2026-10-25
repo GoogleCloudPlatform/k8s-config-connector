@@ -173,6 +173,22 @@ func WithKubeTarget(kubeTarget string) HarnessOption {
 // It locks the window between envtest allocating a free port and the manager binding it.
 var envtestWebhookMutex sync.Mutex
 
+// harnessGlobalMutex guards package-level globals initialized or mutated inside NewHarness.
+var harnessGlobalMutex sync.Mutex
+
+var (
+	cachedCRDsOnce sync.Once
+	cachedCRDs     []apiextensions.CustomResourceDefinition
+	cachedCRDsErr  error
+)
+
+func loadAllCRDsCached() ([]apiextensions.CustomResourceDefinition, error) {
+	cachedCRDsOnce.Do(func() {
+		cachedCRDs, cachedCRDsErr = crdloader.LoadAllCRDs()
+	})
+	return cachedCRDs, cachedCRDsErr
+}
+
 type GCPTargetMode string
 
 const (
@@ -378,7 +394,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	// Set up event sink for logging to a file, if ARTIFACTS env var is set
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
-		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+		if os.Getenv("E2E_PARALLEL") == "true" {
+			outputDir = filepath.Join(outputDir, strings.ReplaceAll(t.Name(), "/", "_"))
+		}
+		dirSink := test.NewDirectoryEventSink(outputDir)
+		ctx = test.AddSinkToContext(ctx, dirSink)
+		eventSinks = append(eventSinks, dirSink)
 	} else {
 		log.Info("env var ARTIFACTS is not set; will not record http log")
 	}
@@ -425,10 +446,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.client = client
 	}
 
+	harnessGlobalMutex.Lock()
 	logging.SetupLogger()
+	harnessGlobalMutex.Unlock()
 
 	if loadCRDs {
-		crds, err := crdloader.LoadAllCRDs()
+		crds, err := loadAllCRDsCached()
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
@@ -521,6 +544,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.GCPTarget == GCPTargetModeMock {
 		// Some fixed-value fake org-ids for testing.
 		// We used fixed values so that the output is predictable (for golden testing)
+		harnessGlobalMutex.Lock()
 		testgcp.TestFolderID.Set("123451001")
 		testgcp.TestFolder2ID.Set("123451002")
 		testgcp.TestOrgID.Set("123450001")
@@ -540,6 +564,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
 		testgcp.TestSharedReservationsProject.Set("shared-reservations-project")
+		harnessGlobalMutex.Unlock()
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		createProject := func(projectID string) *cloudresourcemanagerv1.Project {
@@ -588,6 +613,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			ProjectID:     "example-project",
 			ProjectNumber: 123456789,
 		}
+		harnessGlobalMutex.Lock()
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
@@ -595,6 +621,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestOrgID.Set("123450001")
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
+		harnessGlobalMutex.Unlock()
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
 	}
@@ -636,6 +663,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.VCRRecorderNonTF = r
 		kccConfig.HTTPClient = &http.Client{Transport: h.VCRRecorderNonTF}
 
+		harnessGlobalMutex.Lock()
 		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
@@ -674,6 +702,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			ret = &http.Client{Transport: h.VCRRecorderOauth}
 			return ret
 		}
+		harnessGlobalMutex.Unlock()
 	} else {
 		// Intercept (and log) GRPC requests
 		grpcUnaryInterceptor := func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
@@ -703,13 +732,15 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 				entry.Response.Status = "OK"
 			}
 
-			for _, eventSink := range eventSinks {
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			for _, eventSink := range sinks {
 				eventSink.AddHTTPEvent(ctx, entry)
 			}
 			return err
 		}
-
-		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 
 		kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 
@@ -726,14 +757,21 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			kccConfig.HTTPClient = &http.Client{Transport: t}
 		}
 
+		harnessGlobalMutex.Lock()
+		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
+
 		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
-			if len(eventSinks) != 0 {
-				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			if len(sinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, sinks...)
 				ret = &http.Client{Transport: t}
 			}
 			return ret
@@ -745,12 +783,17 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
-			if len(eventSinks) != 0 {
-				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			if len(sinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, sinks...)
 				ret = &http.Client{Transport: t}
 			}
 			return ret
 		}
+		harnessGlobalMutex.Unlock()
 	}
 
 	h.kccConfig = kccConfig
@@ -773,7 +816,9 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 	kccConfig.SkipNameValidation = true
 
+	harnessGlobalMutex.Lock()
 	krmtotf.SetUserAgentForTerraformProvider()
+	harnessGlobalMutex.Unlock()
 
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {

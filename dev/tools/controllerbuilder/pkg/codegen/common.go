@@ -93,7 +93,13 @@ func MapsToGoStruct(msg protoreflect.MessageDescriptor) bool {
 var QualifierImports = map[string]string{
 	"apiextensionsv1":      "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1",
 	"common":               "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common",
+	"computerefs":          "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs",
+	"kmsv1beta1":           "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1",
+	"loggingv1beta1":       "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1",
+	"parent":               "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent",
+	"pubsubv1beta1":        "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1",
 	"secretmanagerv1beta1": "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1",
+	"storagev1beta1":       "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1",
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.

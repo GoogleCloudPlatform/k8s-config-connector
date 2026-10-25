@@ -960,6 +960,7 @@ func VMMigrationSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 func VMMigrationSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VMMigrationSourceObservedState) *pb.Source {
@@ -973,6 +974,7 @@ func VMMigrationSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.V
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 func VMMigrationSourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.VMMigrationSourceSpec {
@@ -983,7 +985,7 @@ func VMMigrationSourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Source) *
 	out.Vmware = VmwareSourceDetails_FromProto(mapCtx, in.GetVmware())
 	out.Aws = AwsSourceDetails_FromProto(mapCtx, in.GetAws())
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
@@ -999,7 +1001,7 @@ func VMMigrationSourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMMigratio
 		out.SourceDetails = &pb.Source_Aws{Aws: oneof}
 	}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
