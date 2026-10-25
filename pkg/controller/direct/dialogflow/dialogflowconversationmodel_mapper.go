@@ -97,6 +97,42 @@ func DialogflowConversationModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+func ArticleSuggestionModelMetadata_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ArticleSuggestionModelMetadata) *krm.ArticleSuggestionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArticleSuggestionModelMetadata{}
+	out.TrainingModelType = direct.Enum_FromProto(mapCtx, in.GetTrainingModelType())
+	return out
+}
+
+func ArticleSuggestionModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ArticleSuggestionModelMetadata) *dialogflowpb.ArticleSuggestionModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ArticleSuggestionModelMetadata{}
+	out.TrainingModelType = direct.Enum_ToProto[dialogflowpb.ConversationModel_ModelType](mapCtx, in.TrainingModelType)
+	return out
+}
+
+func SmartReplyModelMetadata_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SmartReplyModelMetadata) *krm.SmartReplyModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SmartReplyModelMetadata{}
+	out.TrainingModelType = direct.Enum_FromProto(mapCtx, in.GetTrainingModelType())
+	return out
+}
+
+func SmartReplyModelMetadata_ToProto(mapCtx *direct.MapContext, in *krm.SmartReplyModelMetadata) *dialogflowpb.SmartReplyModelMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SmartReplyModelMetadata{}
+	out.TrainingModelType = direct.Enum_ToProto[dialogflowpb.ConversationModel_ModelType](mapCtx, in.TrainingModelType)
+	return out
+}
+
 func DialogflowPlaybookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Playbook) *krm.DialogflowPlaybookObservedState {
 	if in == nil {
 		return nil
@@ -140,7 +176,9 @@ func DialogflowPlaybookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Playbook
 	out.InputParameterDefinitions = direct.Slice_FromProto(mapCtx, in.InputParameterDefinitions, ParameterDefinition_FromProto)
 	out.OutputParameterDefinitions = direct.Slice_FromProto(mapCtx, in.OutputParameterDefinitions, ParameterDefinition_FromProto)
 	out.Instruction = Playbook_Instruction_FromProto(mapCtx, in.GetInstruction())
-	out.ReferencedTools = in.ReferencedTools
+	for _, v := range in.GetReferencedTools() {
+		out.ReferencedToolRefs = append(out.ReferencedToolRefs, krm.DialogflowToolRef{External: v})
+	}
 	out.CodeBlock = CodeBlock_FromProto(mapCtx, in.GetCodeBlock())
 	out.LlmModelSettings = LlmModelSettings_FromProto(mapCtx, in.GetLlmModelSettings())
 	out.Handlers = direct.Slice_FromProto(mapCtx, in.Handlers, Handler_FromProto)
@@ -159,7 +197,9 @@ func DialogflowPlaybookSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialogflo
 	out.InputParameterDefinitions = direct.Slice_ToProto(mapCtx, in.InputParameterDefinitions, ParameterDefinition_ToProto)
 	out.OutputParameterDefinitions = direct.Slice_ToProto(mapCtx, in.OutputParameterDefinitions, ParameterDefinition_ToProto)
 	out.Instruction = Playbook_Instruction_ToProto(mapCtx, in.Instruction)
-	out.ReferencedTools = in.ReferencedTools
+	for _, v := range in.ReferencedToolRefs {
+		out.ReferencedTools = append(out.ReferencedTools, v.External)
+	}
 	out.CodeBlock = CodeBlock_ToProto(mapCtx, in.CodeBlock)
 	out.LlmModelSettings = LlmModelSettings_ToProto(mapCtx, in.LlmModelSettings)
 	out.Handlers = direct.Slice_ToProto(mapCtx, in.Handlers, Handler_ToProto)
@@ -220,7 +260,7 @@ func Handler_EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.Handler_Ev
 	out := &krm.Handler_EventHandler{}
 	out.Event = direct.LazyPtr(in.GetEvent())
 	out.Condition = direct.LazyPtr(in.GetCondition())
-	out.Fulfillment = Fulfillment_FromProto(mapCtx, in.GetFulfillment())
+	out.Fulfillment = DialogflowCX_Fulfillment_FromProto(mapCtx, in.GetFulfillment())
 	return out
 }
 
@@ -231,7 +271,7 @@ func Handler_EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.Handler_Eve
 	out := &pb.Handler_EventHandler{}
 	out.Event = direct.ValueOf(in.Event)
 	out.Condition = direct.ValueOf(in.Condition)
-	out.Fulfillment = Fulfillment_ToProto(mapCtx, in.Fulfillment)
+	out.Fulfillment = DialogflowCX_Fulfillment_ToProto(mapCtx, in.Fulfillment)
 	return out
 }
 
@@ -274,7 +314,7 @@ func Handler_LifecycleHandler_FromProto(mapCtx *direct.MapContext, in *pb.Handle
 	out := &krm.Handler_LifecycleHandler{}
 	out.LifecycleStage = direct.LazyPtr(in.GetLifecycleStage())
 	out.Condition = direct.LazyPtr(in.GetCondition())
-	out.Fulfillment = Fulfillment_FromProto(mapCtx, in.GetFulfillment())
+	out.Fulfillment = DialogflowCX_Fulfillment_FromProto(mapCtx, in.GetFulfillment())
 	return out
 }
 
@@ -285,7 +325,7 @@ func Handler_LifecycleHandler_ToProto(mapCtx *direct.MapContext, in *krm.Handler
 	out := &pb.Handler_LifecycleHandler{}
 	out.LifecycleStage = direct.ValueOf(in.LifecycleStage)
 	out.Condition = direct.ValueOf(in.Condition)
-	out.Fulfillment = Fulfillment_ToProto(mapCtx, in.Fulfillment)
+	out.Fulfillment = DialogflowCX_Fulfillment_ToProto(mapCtx, in.Fulfillment)
 	return out
 }
 
@@ -328,7 +368,9 @@ func InputDataset_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.InputDat
 		return nil
 	}
 	out := &krm.InputDataset{}
-	out.Dataset = direct.LazyPtr(in.GetDataset())
+	if in.GetDataset() != "" {
+		out.DatasetRef = &krm.DialogflowConversationDatasetRef{External: in.GetDataset()}
+	}
 	return out
 }
 
@@ -337,7 +379,9 @@ func InputDataset_ToProto(mapCtx *direct.MapContext, in *krm.InputDataset) *dial
 		return nil
 	}
 	out := &dialogflowpb.InputDataset{}
-	out.Dataset = direct.ValueOf(in.Dataset)
+	if in.DatasetRef != nil {
+		out.Dataset = in.DatasetRef.External
+	}
 	return out
 }
 
@@ -367,7 +411,6 @@ func ParameterDefinition_FromProto(mapCtx *direct.MapContext, in *pb.ParameterDe
 	}
 	out := &krm.ParameterDefinition{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.TypeSchema = TypeSchema_FromProto(mapCtx, in.GetTypeSchema())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -379,7 +422,6 @@ func ParameterDefinition_ToProto(mapCtx *direct.MapContext, in *krm.ParameterDef
 	}
 	out := &pb.ParameterDefinition{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.Enum_ToProto[pb.ParameterDefinition_ParameterType](mapCtx, in.Type)
 	out.TypeSchema = TypeSchema_ToProto(mapCtx, in.TypeSchema)
 	out.Description = direct.ValueOf(in.Description)
 	return out
@@ -449,7 +491,9 @@ func TypeSchema_SchemaReference_FromProto(mapCtx *direct.MapContext, in *pb.Type
 		return nil
 	}
 	out := &krm.TypeSchema_SchemaReference{}
-	out.Tool = direct.LazyPtr(in.GetTool())
+	if in.GetTool() != "" {
+		out.ToolRef = &krm.DialogflowToolRef{External: in.GetTool()}
+	}
 	out.Schema = direct.LazyPtr(in.GetSchema())
 	return out
 }
@@ -459,7 +503,9 @@ func TypeSchema_SchemaReference_ToProto(mapCtx *direct.MapContext, in *krm.TypeS
 		return nil
 	}
 	out := &pb.TypeSchema_SchemaReference{}
-	out.Tool = direct.ValueOf(in.Tool)
+	if in.ToolRef != nil {
+		out.Tool = in.ToolRef.External
+	}
 	out.Schema = direct.ValueOf(in.Schema)
 	return out
 }

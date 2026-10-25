@@ -507,6 +507,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
 	} else if h.GCPTarget == GCPTargetModeReal {
 		t.Logf("targeting real GCP")
+		if h.Project.ProjectID != "" {
+			kccConfig.UserProjectOverride = true
+			kccConfig.BillingProject = h.Project.ProjectID
+		}
 
 		// We create registered services, even though we only use it for replacements
 		var kubeClient client.Client // TODO: We should replace this, it didn't work
@@ -597,6 +601,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
+		if h.GCPTarget == GCPTargetModeReal && h.Project.ProjectID != "" {
+			kccConfig.UserProjectOverride = true
+			kccConfig.BillingProject = h.Project.ProjectID
+		}
 	}
 
 	if h.GCPTarget == GCPTargetModeVCR {

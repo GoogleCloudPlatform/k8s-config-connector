@@ -1,0 +1,6 @@
+- caisURL: //datamigration.googleapis.com/projects/${projectId}/locations/us-central1/connectionProfiles/dmsconnprofile-${uniqueId}
+  group: datamigration.cnrm.cloud.google.com
+  kind: DatamigrationConnectionProfile
+  name: dmsconnprofile-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

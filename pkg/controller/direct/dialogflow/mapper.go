@@ -15,7 +15,6 @@
 package dialogflow
 
 import (
-	dialogflowpb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

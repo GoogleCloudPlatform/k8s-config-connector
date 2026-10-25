@@ -68,6 +68,10 @@ func (m *modelConversationModel) AdapterForObject(ctx context.Context, op *direc
 	}
 	id := i.(*krm.DialogflowConversationModelIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get dialogflow GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

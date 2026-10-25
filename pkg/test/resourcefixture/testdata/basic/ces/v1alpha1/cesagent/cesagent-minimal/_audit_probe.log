@@ -1,0 +1,15 @@
+GET https://ces.googleapis.com/v1/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated ces agent",
+  "displayName": "Agent Updated ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "instruction": "You are a very helpful assistant.",
+  "name": "projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

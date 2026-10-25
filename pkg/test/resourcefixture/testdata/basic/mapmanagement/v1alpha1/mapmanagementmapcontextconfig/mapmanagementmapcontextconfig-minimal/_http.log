@@ -1,0 +1,363 @@
+POST https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/mapConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "MapConfig ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "MapConfig ${uniqueId}",
+  "mapId": "63bce22e5a9e9aa653af78ef",
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "MapConfig ${uniqueId}",
+  "mapId": "63bce22e5a9e9aa653af78ef",
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/styleConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "StyleConfig ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "StyleConfig ${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "StyleConfig ${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef
+X-Goog-User-Project: ${projectId}
+
+{
+  "alias": "alias-${uniqueId}",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alias": "alias-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef%2FmapContextConfigs%2F1792890820903793
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alias": "alias-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793?%24alt=json%3Benum-encoding%3Dint&updateMask=alias
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: map_context_config.name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef%2FmapContextConfigs%2F1792890820903793
+X-Goog-User-Project: ${projectId}
+
+{
+  "alias": "alias-upd-${uniqueId}",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alias": "alias-upd-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef%2FmapContextConfigs%2F1792890820903793
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alias": "alias-upd-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mapConfig": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "mapVariants": [
+    0
+  ],
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793",
+  "styleConfig": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://mapmanagement.googleapis.com/v2/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef/mapContextConfigs/1792890820903793?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef%2FmapContextConfigs%2F1792890820903793
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "StyleConfig ${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "MapConfig ${uniqueId}",
+  "mapId": "63bce22e5a9e9aa653af78ef",
+  "name": "projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/63bce22e5a9e9aa653af78ef?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F63bce22e5a9e9aa653af78ef
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -68,6 +68,10 @@ func (m *modelDestination) AdapterForObject(ctx context.Context, op *directbase.
 	}
 	id := i.(*krm.NetworkConnectivityDestinationIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get networkconnectivity GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

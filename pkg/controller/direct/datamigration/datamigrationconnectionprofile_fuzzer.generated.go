@@ -69,7 +69,6 @@ func datamigrationConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".cloudsql.settings.user_labels")
 	f.SpecField(".cloudsql.settings.zone")
 	f.SpecField(".display_name")
-	f.SpecField(".labels")
 	f.SpecField(".mysql.cloud_sql_id")
 	f.SpecField(".mysql.host")
 	f.SpecField(".mysql.password")
@@ -100,7 +99,6 @@ func datamigrationConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".postgresql.static_ip_connectivity")
 	f.SpecField(".postgresql.username")
 	f.SpecField(".provider")
-	f.SpecField(".state")
 
 	// Status fields
 	f.StatusField(".alloydb.settings.initial_user.password_set")
@@ -119,10 +117,12 @@ func datamigrationConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".postgresql.network_architecture")
 	f.StatusField(".postgresql.password_set")
 	f.StatusField(".postgresql.ssl.type")
+	f.StatusField(".state")
 	f.StatusField(".update_time")
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".error.details")

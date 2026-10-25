@@ -68,6 +68,10 @@ func (m *modelWorkspace) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 	id := i.(*krm.DataformWorkspaceIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get dataform GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

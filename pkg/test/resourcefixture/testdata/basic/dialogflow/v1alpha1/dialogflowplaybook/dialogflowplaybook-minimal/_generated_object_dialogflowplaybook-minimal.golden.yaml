@@ -1,0 +1,30 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowPlaybook
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dfplaybook-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  agentRef:
+    external: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd
+  displayName: Playbook Updated ${uniqueId}
+  goal: Help the user with their updated request.
+  instruction:
+    steps:
+    - text: Greet the user politely.
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53
+  observedGeneration: 2
+  observedState:
+    tokenCount: 16

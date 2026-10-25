@@ -1,0 +1,14 @@
+apiVersion: dataform.cnrm.cloud.google.com/v1alpha1
+kind: DataformWorkflowConfig
+metadata:
+  name: dfwc-${uniqueId}
+spec:
+  repositoryRef:
+    name: dfwc-repo-${uniqueId}
+  releaseConfigRef:
+    name: dfwc-rc-${uniqueId}
+  invocationConfig:
+    serviceAccountRef:
+      name: dfwc-sa-${uniqueId}
+  cronSchedule: "0 7 * * *"
+  timeZone: America/New_York

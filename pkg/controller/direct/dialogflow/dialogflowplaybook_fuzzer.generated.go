@@ -172,8 +172,10 @@ func dialogflowPlaybookFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".handlers[].lifecycle_handler.fulfillment.messages[].telephony_transfer_call")
 	f.Unimplemented_NotYetTriaged(".handlers[].lifecycle_handler.fulfillment.messages[].tool_call")
 	f.Unimplemented_NotYetTriaged(".handlers[].lifecycle_handler.fulfillment.set_parameter_actions[].value")
+	f.Unimplemented_NotYetTriaged(".input_parameter_definitions[].type")
 	f.Unimplemented_NotYetTriaged(".input_parameter_definitions[].type_schema.inline_schema.items")
 	f.Unimplemented_NotYetTriaged(".instruction.steps")
+	f.Unimplemented_NotYetTriaged(".output_parameter_definitions[].type")
 	f.Unimplemented_NotYetTriaged(".output_parameter_definitions[].type_schema.inline_schema.items")
 
 	return f

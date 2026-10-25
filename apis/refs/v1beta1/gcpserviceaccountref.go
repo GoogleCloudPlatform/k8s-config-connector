@@ -19,11 +19,23 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var IAMServiceAccountGVK = schema.GroupVersionKind{
+	Group:   "iam.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "IAMServiceAccount",
+}
+
+var (
+	_ Ref = &IAMServiceAccountRef{}
+	_ Ref = &MetricsGcpServiceAccountRef{}
 )
 
 type IAMServiceAccountRef struct {
@@ -35,6 +47,38 @@ type IAMServiceAccountRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func (r *IAMServiceAccountRef) GetGVK() schema.GroupVersionKind {
+	return IAMServiceAccountGVK
+}
+
+func (r *IAMServiceAccountRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *IAMServiceAccountRef) GetExternal() string {
+	return r.External
+}
+
+func (r *IAMServiceAccountRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *IAMServiceAccountRef) ValidateExternal(ref string) error {
+	if !strings.Contains(ref, "@") {
+		return fmt.Errorf("format of IAMServiceAccount reference external=%q was not known (use email address)", ref)
+	}
+	return nil
+}
+
+func (r *IAMServiceAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return normalizeServiceAccountRef(ctx, reader, r, r.Name, r.Namespace, r.External, defaultNamespace)
+}
+
 type MetricsGcpServiceAccountRef struct {
 	/* The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA. Allowed value: The `email` field of an `IAMServiceAccount` resource. */
 	External string `json:"external,omitempty"`
@@ -42,6 +86,73 @@ type MetricsGcpServiceAccountRef struct {
 	Name string `json:"name,omitempty"`
 	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *MetricsGcpServiceAccountRef) GetGVK() schema.GroupVersionKind {
+	return IAMServiceAccountGVK
+}
+
+func (r *MetricsGcpServiceAccountRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *MetricsGcpServiceAccountRef) GetExternal() string {
+	return r.External
+}
+
+func (r *MetricsGcpServiceAccountRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *MetricsGcpServiceAccountRef) ValidateExternal(ref string) error {
+	if !strings.Contains(ref, "@") {
+		return fmt.Errorf("format of IAMServiceAccount reference external=%q was not known (use email address)", ref)
+	}
+	return nil
+}
+
+func (r *MetricsGcpServiceAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return normalizeServiceAccountRef(ctx, reader, r, r.Name, r.Namespace, r.External, defaultNamespace)
+}
+
+func normalizeServiceAccountRef(ctx context.Context, reader client.Reader, ref Ref, name, namespace, external, defaultNamespace string) error {
+	if external != "" && name != "" {
+		return fmt.Errorf("cannot specify both name and external on an IAMServiceAccount reference")
+	}
+	if external == "" {
+		if name == "" {
+			return fmt.Errorf("must specify either name or external on an IAMServiceAccount reference")
+		}
+		key := types.NamespacedName{
+			Namespace: namespace,
+			Name:      name,
+		}
+		if key.Namespace == "" {
+			key.Namespace = defaultNamespace
+		}
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(IAMServiceAccountGVK)
+		if err := reader.Get(ctx, key, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(IAMServiceAccountGVK, key)
+			}
+			return fmt.Errorf("error reading referenced IAMServiceAccount %v: %w", key, err)
+		}
+		email, _, err := unstructured.NestedString(u.Object, "status", "email")
+		if err != nil {
+			return fmt.Errorf("reading status.email from IAMServiceAccount %v: %w", key, err)
+		}
+		if email == "" {
+			return k8s.NewReferenceNotReadyError(IAMServiceAccountGVK, key)
+		}
+		ref.SetExternal(email)
+	}
+	return ref.ValidateExternal(ref.GetExternal())
 }
 
 func (r *MetricsGcpServiceAccountRef) Resolve(ctx context.Context, reader client.Reader, src client.Object) error {

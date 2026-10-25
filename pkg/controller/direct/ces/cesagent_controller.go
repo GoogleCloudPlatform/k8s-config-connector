@@ -68,6 +68,10 @@ func (m *modelAgent) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	}
 	id := i.(*krm.CesAgentIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get ces GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

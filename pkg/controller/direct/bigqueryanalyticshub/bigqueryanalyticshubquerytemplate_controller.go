@@ -68,6 +68,10 @@ func (m *modelQueryTemplate) AdapterForObject(ctx context.Context, op *directbas
 	}
 	id := i.(*krm.BigQueryAnalyticsHubQueryTemplateIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get bigqueryanalyticshub GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

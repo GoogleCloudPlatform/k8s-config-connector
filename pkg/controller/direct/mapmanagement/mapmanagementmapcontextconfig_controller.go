@@ -68,6 +68,10 @@ func (m *modelMapContextConfig) AdapterForObject(ctx context.Context, op *direct
 	}
 	id := i.(*krm.MapmanagementMapContextConfigIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get mapmanagement GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

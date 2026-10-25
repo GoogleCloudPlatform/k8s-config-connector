@@ -68,6 +68,10 @@ func (m *modelPolicyBasedRoute) AdapterForObject(ctx context.Context, op *direct
 	}
 	id := i.(*krm.NetworkConnectivityPolicyBasedRouteIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get networkconnectivity GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -156,7 +160,7 @@ func (a *PolicyBasedRouteAdapter) Create(ctx context.Context, createOp *directba
 
 	req := &networkconnectivitypb.CreatePolicyBasedRouteRequest{
 		Parent:             a.id.ParentString(),
-		PolicyBasedRouteId: a.id.Policybasedroutesid,
+		PolicyBasedRouteId: a.id.PolicyBasedRoute,
 		PolicyBasedRoute:   resource,
 	}
 	op, err := a.gcpClient.CreatePolicyBasedRoute(ctx, req)
