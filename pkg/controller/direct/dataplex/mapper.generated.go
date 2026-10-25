@@ -2501,9 +2501,20 @@ func DataplexEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.D
 	}
 	out := &krm.DataplexEntrySpec{}
 	// MISSING: Name
-	out.EntryType = direct.LazyPtr(in.GetEntryType())
-	out.Aspects = Aspects_FromProto(mapCtx, in.Aspects)
-	out.ParentEntry = direct.LazyPtr(in.GetParentEntry())
+	if in.GetEntryType() != "" {
+		out.EntryTypeRef = &krm.EntryTypeRef{External: in.GetEntryType()}
+	}
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]krm.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			if c := Aspect_FromProto(mapCtx, v); c != nil {
+				out.Aspects[k] = *c
+			}
+		}
+	}
+	if in.GetParentEntry() != "" {
+		out.ParentEntryRef = &krm.DataplexEntryRef{External: in.GetParentEntry()}
+	}
 	out.FullyQualifiedName = direct.LazyPtr(in.GetFullyQualifiedName())
 	out.EntrySource = EntrySource_FromProto(mapCtx, in.GetEntrySource())
 	return out
@@ -2515,9 +2526,18 @@ func DataplexEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryS
 	}
 	out := &pb.Entry{}
 	// MISSING: Name
-	out.EntryType = direct.ValueOf(in.EntryType)
-	out.Aspects = Aspects_ToProto(mapCtx, in.Aspects)
-	out.ParentEntry = direct.ValueOf(in.ParentEntry)
+	if in.EntryTypeRef != nil {
+		out.EntryType = in.EntryTypeRef.External
+	}
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]*pb.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			out.Aspects[k] = Aspect_ToProto(mapCtx, &v)
+		}
+	}
+	if in.ParentEntryRef != nil {
+		out.ParentEntry = in.ParentEntryRef.External
+	}
 	out.FullyQualifiedName = direct.ValueOf(in.FullyQualifiedName)
 	out.EntrySource = EntrySource_ToProto(mapCtx, in.EntrySource)
 	return out
@@ -2652,6 +2672,7 @@ func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -2664,6 +2685,7 @@ func DataplexGlossaryCategoryObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -2675,8 +2697,10 @@ func DataplexGlossaryCategorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gl
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: Labels
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.GlossaryRef{External: in.GetParent()}
+	}
 	return out
 }
 
@@ -2688,8 +2712,10 @@ func DataplexGlossaryCategorySpec_ToProto(mapCtx *direct.MapContext, in *krm.Dat
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: Labels
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
 	return out
 }
 
@@ -2758,6 +2784,7 @@ func DataplexGlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -2770,6 +2797,7 @@ func DataplexGlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -2781,8 +2809,10 @@ func DataplexGlossaryTermSpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossa
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: Labels
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.GlossaryRef{External: in.GetParent()}
+	}
 	return out
 }
 
@@ -2794,8 +2824,10 @@ func DataplexGlossaryTermSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataple
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: Labels
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
 	return out
 }
 

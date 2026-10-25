@@ -1,0 +1,11 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterImportJob
+metadata:
+  name: mcij-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: ImportJob Updated ${uniqueId}
+  assetSourceRef:
+    name: mcs-${uniqueId}
