@@ -512,55 +512,6 @@ type GCSDestination struct {
 	URI *string `json:"uri,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler
-type Handler struct {
-	// A handler triggered by event.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.event_handler
-	EventHandler *Handler_EventHandler `json:"eventHandler,omitempty"`
-
-	// A handler triggered during specific lifecycle of the playbook execution.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.lifecycle_handler
-	LifecycleHandler *Handler_LifecycleHandler `json:"lifecycleHandler,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.EventHandler
-type Handler_EventHandler struct {
-	// Required. The name of the event that triggers this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.event
-	// +required
-	Event *string `json:"event,omitempty"`
-
-	// Optional. The condition that must be satisfied to trigger this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.condition
-	Condition *string `json:"condition,omitempty"`
-
-	// Required. The fulfillment to call when the event occurs.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.fulfillment
-	// +required
-	Fulfillment *Fulfillment `json:"fulfillment,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler
-type Handler_LifecycleHandler struct {
-	// Required. The name of the lifecycle stage that triggers this handler.
-	//  Supported values:
-	//  * `playbook-start`
-	//  * `pre-action-selection`
-	//  * `pre-action-execution`
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.lifecycle_stage
-	// +required
-	LifecycleStage *string `json:"lifecycleStage,omitempty"`
-
-	// Optional. The condition that must be satisfied to trigger this handler.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.condition
-	Condition *string `json:"condition,omitempty"`
-
-	// Required. The fulfillment to call when this handler is triggered.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.fulfillment
-	// +required
-	Fulfillment *Fulfillment `json:"fulfillment,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
 type KnowledgeConnectorSettings struct {
 	// Whether Knowledge Connector is enabled or not.
@@ -624,26 +575,6 @@ type NluSettings struct {
 	// Indicates NLU model training mode.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.model_training_mode
 	ModelTrainingMode *string `json:"modelTrainingMode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.ParameterDefinition
-type ParameterDefinition struct {
-	// Required. Name of parameter.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.name
-	// +required
-	Name *string `json:"name,omitempty"`
-
-	// Type of parameter.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.type
-	Type *string `json:"type,omitempty"`
-
-	// Optional. Type schema of parameter.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.type_schema
-	TypeSchema *TypeSchema `json:"typeSchema,omitempty"`
-
-	// Human-readable description of the parameter. Limited to 300 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.description
-	Description *string `json:"description,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Playbook.Instruction
@@ -881,19 +812,6 @@ type TypeSchema struct {
 	// Set if this is a schema reference.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.schema_reference
 	SchemaReference *TypeSchema_SchemaReference `json:"schemaReference,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference
-type TypeSchema_SchemaReference struct {
-	// The tool that contains this schema definition.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.tool
-	Tool *string `json:"tool,omitempty"`
-
-	// The name of the schema.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.schema
-	Schema *string `json:"schema,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Webhook
@@ -1215,16 +1133,6 @@ type InputConfig struct {
 	//  matched JSON files, which will be read as one conversation per file.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.InputConfig.gcs_source
 	GCSSource *GCSSources `json:"gcsSource,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.v2.InputDataset
-type InputDataset struct {
-	// Required. ConversationDataset resource name. Format:
-	//  `projects/<Project ID>/locations/<Location
-	//  ID>/conversationDatasets/<Conversation Dataset ID>`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InputDataset.dataset
-	// +required
-	Dataset *string `json:"dataset,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.MessageEntry

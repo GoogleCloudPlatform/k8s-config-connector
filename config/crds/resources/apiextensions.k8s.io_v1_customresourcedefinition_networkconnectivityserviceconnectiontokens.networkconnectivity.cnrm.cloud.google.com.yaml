@@ -66,25 +66,43 @@ spec:
               description:
                 description: A description of this resource.
                 type: string
-              etag:
-                description: Optional. The etag is computed by the server, and may
-                  be sent on update and delete requests to ensure the client has an
-                  up-to-date value before proceeding.
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: User-defined labels.
-                type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
-              network:
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
+              networkRef:
                 description: 'The resource path of the network associated with this
                   token. Example: projects/{projectNumOrId}/global/networks/{resourceId}.'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeNetwork resource.
+                    type: string
+                type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -172,6 +190,11 @@ spec:
                   createTime:
                     description: Output only. Time when the ServiceConnectionToken
                       was created.
+                    type: string
+                  etag:
+                    description: Optional. The etag is computed by the server, and
+                      may be sent on update and delete requests to ensure the client
+                      has an up-to-date value before proceeding.
                     type: string
                   expireTime:
                     description: Output only. The time to which this token is valid.

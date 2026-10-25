@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,9 @@ var BigQueryAnalyticsHubQueryTemplateGVK = GroupVersion.WithKind("BigQueryAnalyt
 // +kcc:spec:proto=google.cloud.bigquery.analyticshub.v1.QueryTemplate
 // +kcc:required-from-proto
 type BigQueryAnalyticsHubQueryTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/dataExchanges/{data_exchange} this resource belongs to.
-	// +kcc:guess
-	// DataExchangeRef *BigQueryAnalyticsHubDataExchangeRef `json:"dataExchangeRef,omitempty"`
+	// Required. The parent DataExchange that this QueryTemplate belongs to.
+	// +required
+	DataExchangeRef *BigQueryAnalyticsHubDataExchangeRef `json:"dataExchangeRef"`
 
 	// The BigQueryAnalyticsHubQueryTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
