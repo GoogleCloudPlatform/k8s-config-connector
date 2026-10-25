@@ -73,19 +73,12 @@ spec:
                       service uploads on package release creation
                     type: object
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels as key value pairs.
-                type: object
               lifecycle:
                 description: Optional. lifecycle of the `Release`.
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              resourceBundleRef:
+                description: Required. A reference to the ConfigDeliveryResourceBundle
+                  that this release belongs to.
                 oneOf:
                 - not:
                     required:
@@ -102,18 +95,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed ConfigDeliveryResourceBundle
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/resourceBundles/{{resourceBundleID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a ConfigDeliveryResourceBundle resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a ConfigDeliveryResourceBundle resource.
                     type: string
                 type: object
               resourceID:
@@ -124,8 +113,7 @@ spec:
                 description: Required. version of the `Release`. This must be v<major>.<minor>.<patch>.
                 type: string
             required:
-            - location
-            - projectRef
+            - resourceBundleRef
             - version
             type: object
           status:
