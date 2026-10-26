@@ -180,6 +180,16 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
+	"spec.settings.performanceCaptureConfig": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.PerformanceCaptureConfig = actual.Settings.PerformanceCaptureConfig
+			}
+		},
+	},
 	"spec.settings.pricingPlan": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {

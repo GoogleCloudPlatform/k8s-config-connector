@@ -157,6 +157,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	diff.AddDiff(DiffLocationPreference(desired.LocationPreference, actual.LocationPreference))
 	diff.AddDiff(DiffMaintenanceWindow(desired.MaintenanceWindow, actual.MaintenanceWindow))
 	diff.AddDiff(DiffPasswordValidationPolicy(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy))
+	diff.AddDiff(DiffPerformanceCaptureConfig(desired.PerformanceCaptureConfig, actual.PerformanceCaptureConfig))
 	if desired.PricingPlan != actual.PricingPlan {
 		diff.AddField(".settings.pricingPlan", actual.PricingPlan, desired.PricingPlan)
 	}
@@ -677,6 +678,37 @@ func DiffPasswordValidationPolicy(desired *api.PasswordValidationPolicy, actual 
 	}
 	if desired.ReuseInterval != actual.ReuseInterval {
 		diff.AddField(".settings.passwordValidationPolicy.reuseInterval", actual.ReuseInterval, desired.ReuseInterval)
+	}
+	// Ignore ForceSendFields. Assume it is set correctly in desired.
+	// Ignore NullFields. Assume it is set correctly in desired.
+	return diff
+}
+
+func DiffPerformanceCaptureConfig(desired *api.PerformanceCaptureConfig, actual *api.PerformanceCaptureConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+	if desired == nil {
+		desired = &api.PerformanceCaptureConfig{}
+	}
+	if actual == nil {
+		actual = &api.PerformanceCaptureConfig{}
+	}
+	if desired.Enabled != actual.Enabled {
+		diff.AddField(".settings.performanceCaptureConfig.enabled", actual.Enabled, desired.Enabled)
+	}
+	if desired.ProbeThreshold != actual.ProbeThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.probeThreshold", actual.ProbeThreshold, desired.ProbeThreshold)
+	}
+	if desired.ProbingIntervalSeconds != actual.ProbingIntervalSeconds {
+		diff.AddField(".settings.performanceCaptureConfig.probingIntervalSeconds", actual.ProbingIntervalSeconds, desired.ProbingIntervalSeconds)
+	}
+	if desired.RunningThreadsThreshold != actual.RunningThreadsThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.runningThreadsThreshold", actual.RunningThreadsThreshold, desired.RunningThreadsThreshold)
+	}
+	if desired.SecondsBehindSourceThreshold != actual.SecondsBehindSourceThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.secondsBehindSourceThreshold", actual.SecondsBehindSourceThreshold, desired.SecondsBehindSourceThreshold)
+	}
+	if desired.TransactionDurationThreshold != actual.TransactionDurationThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.transactionDurationThreshold", actual.TransactionDurationThreshold, desired.TransactionDurationThreshold)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.

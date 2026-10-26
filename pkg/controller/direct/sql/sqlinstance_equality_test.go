@@ -239,3 +239,33 @@ func TestDiffInstances_AvailabilityTypeCasing(t *testing.T) {
 		t.Errorf("DiffInstances() expected no diffs, but got: %v", diff.Fields)
 	}
 }
+
+func TestDiffInstances_PerformanceCaptureConfig(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			PerformanceCaptureConfig: &api.PerformanceCaptureConfig{
+				Enabled:                true,
+				ProbingIntervalSeconds: 30,
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			PerformanceCaptureConfig: &api.PerformanceCaptureConfig{
+				Enabled:                true,
+				ProbingIntervalSeconds: 60,
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if !diff.HasDiff() {
+		t.Fatalf("DiffInstances() expected diffs for probingIntervalSeconds, got none")
+	}
+	if len(diff.Fields) != 1 || diff.Fields[0].ID != ".settings.performanceCaptureConfig.probingIntervalSeconds" {
+		t.Errorf("Unexpected diff fields: %v", diff.Fields)
+	}
+}
