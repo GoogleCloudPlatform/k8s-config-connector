@@ -828,3 +828,226 @@ func TestNormalizeGreenfieldReferences_ExternalNormalizerIdempotent(t *testing.T
 		t.Errorf("expected SliceRefs[0] to be normalized once, got calls=%d external=%q", obj.Spec.SliceRefs[0].calls, obj.Spec.SliceRefs[0].External)
 	}
 }
+
+type testBackupRef struct {
+	Name      string `json:"name,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+	External  string `json:"external,omitempty"`
+}
+
+type fileShareTestElem struct {
+	Name            *string           `json:"name,omitempty"`
+	CapacityGb      *int64            `json:"capacityGb,omitempty"`
+	SourceBackup    *string           `json:"sourceBackup,omitempty"`
+	SourceBackupRef *testBackupRef    `json:"sourceBackupRef,omitempty"`
+	Labels          map[string]string `json:"labels,omitempty"`
+}
+
+type sliceElemTestSpec struct {
+	FileShares []fileShareTestElem `json:"fileShares,omitempty"`
+}
+
+func sliceElemTestSpecFromProto(mapCtx *direct.MapContext, in *pb.Instance) *sliceElemTestSpec {
+	if in == nil {
+		return nil
+	}
+	out := &sliceElemTestSpec{}
+	for _, fs := range in.GetFileShares() {
+		elem := fileShareTestElem{
+			Name:         direct.LazyPtr(fs.GetName()),
+			CapacityGb:   direct.LazyPtr(fs.GetCapacityGb()),
+			SourceBackup: direct.LazyPtr(fs.GetSourceBackup()),
+		}
+		if fs.GetSourceBackup() != "" {
+			elem.SourceBackupRef = &testBackupRef{External: fs.GetSourceBackup()}
+		}
+		out.FileShares = append(out.FileShares, elem)
+	}
+	return out
+}
+
+func sliceElemTestSpecToProto(mapCtx *direct.MapContext, in *sliceElemTestSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	for _, fs := range in.FileShares {
+		p := &pb.FileShareConfig{
+			Name:       direct.ValueOf(fs.Name),
+			CapacityGb: direct.ValueOf(fs.CapacityGb),
+		}
+		if fs.SourceBackupRef != nil && fs.SourceBackupRef.External != "" {
+			p.Source = &pb.FileShareConfig_SourceBackup{SourceBackup: fs.SourceBackupRef.External}
+		} else if fs.SourceBackup != nil {
+			p.Source = &pb.FileShareConfig_SourceBackup{SourceBackup: *fs.SourceBackup}
+		}
+		out.FileShares = append(out.FileShares, p)
+	}
+	return out
+}
+
+func TestCompareGreenfieldSpec_SliceElementServerDefaults(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name           string
+		desiredKRM     *sliceElemTestSpec
+		actualProto    *pb.Instance
+		wantHasDiff    bool
+		wantCapacities []int64
+	}{
+		{
+			name: "unmodified slice element adopts server-populated default subfields",
+			desiredKRM: &sliceElemTestSpec{
+				FileShares: []fileShareTestElem{
+					{Name: direct.PtrTo("share-a")},
+				},
+			},
+			actualProto: &pb.Instance{
+				FileShares: []*pb.FileShareConfig{
+					{Name: "share-a", CapacityGb: 1024},
+				},
+			},
+			wantHasDiff:    false,
+			wantCapacities: []int64{1024},
+		},
+		{
+			name: "slice element with KRM Ref set by Name and resolved External adopts server defaults",
+			desiredKRM: &sliceElemTestSpec{
+				FileShares: []fileShareTestElem{
+					{
+						Name: direct.PtrTo("share-a"),
+						SourceBackupRef: &testBackupRef{
+							Name:      "my-backup",
+							Namespace: "default",
+							External:  "projects/p/locations/l/backups/my-backup",
+						},
+					},
+				},
+			},
+			actualProto: &pb.Instance{
+				FileShares: []*pb.FileShareConfig{
+					{
+						Name:       "share-a",
+						CapacityGb: 1024,
+						Source:     &pb.FileShareConfig_SourceBackup{SourceBackup: "projects/p/locations/l/backups/my-backup"},
+					},
+				},
+			},
+			wantHasDiff:    false,
+			wantCapacities: []int64{1024},
+		},
+		{
+			name: "reordered slice elements do not cross-contaminate defaults between indices",
+			desiredKRM: &sliceElemTestSpec{
+				FileShares: []fileShareTestElem{
+					{Name: direct.PtrTo("share-b")},
+					{Name: direct.PtrTo("share-a"), CapacityGb: direct.PtrTo(int64(2048))},
+				},
+			},
+			actualProto: &pb.Instance{
+				FileShares: []*pb.FileShareConfig{
+					{Name: "share-a", CapacityGb: 2048},
+					{Name: "share-b", CapacityGb: 1024},
+				},
+			},
+			wantHasDiff:    true,
+			wantCapacities: []int64{0, 2048},
+		},
+		{
+			name: "partial slice modification merges unchanged element while keeping modified element clean",
+			desiredKRM: &sliceElemTestSpec{
+				FileShares: []fileShareTestElem{
+					{Name: direct.PtrTo("share-a")},
+					{
+						Name:         direct.PtrTo("share-b"),
+						SourceBackup: direct.PtrTo("projects/p/locations/l/backups/b2"),
+					},
+				},
+			},
+			actualProto: &pb.Instance{
+				FileShares: []*pb.FileShareConfig{
+					{Name: "share-a", CapacityGb: 1024},
+					{
+						Name:       "share-b",
+						CapacityGb: 2048,
+						Source:     &pb.FileShareConfig_SourceBackup{SourceBackup: "projects/p/locations/l/backups/b1"},
+					},
+				},
+			},
+			wantHasDiff:    true,
+			wantCapacities: []int64{1024, 0},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mergedDesiredProto, diff, fieldMask, err := CompareGreenfieldSpec(
+				ctx,
+				tc.desiredKRM,
+				tc.actualProto,
+				sliceElemTestSpecFromProto,
+				sliceElemTestSpecToProto,
+				nil,
+			)
+			if err != nil {
+				t.Fatalf("CompareGreenfieldSpec failed: %v", err)
+			}
+			gotHasDiff := diff.HasDiff() || len(fieldMask.GetPaths()) > 0
+			if gotHasDiff != tc.wantHasDiff {
+				t.Errorf("got hasDiff=%v (paths=%v, diff=%v), want %v", gotHasDiff, fieldMask.GetPaths(), diff, tc.wantHasDiff)
+			}
+			for i, wantCap := range tc.wantCapacities {
+				if gotCap := mergedDesiredProto.GetFileShares()[i].GetCapacityGb(); gotCap != wantCap {
+					t.Errorf("mergedDesiredProto.FileShares[%d].CapacityGb = %d, want %d", i, gotCap, wantCap)
+				}
+			}
+		})
+	}
+}
+
+func TestSliceElemHasNoConflicts_EdgeCases(t *testing.T) {
+	tests := []struct {
+		name string
+		d    fileShareTestElem
+		a    fileShareTestElem
+		want bool
+	}{
+		{
+			name: "map with deleted key reports conflict",
+			d:    fileShareTestElem{Labels: map[string]string{"env": "prod"}},
+			a:    fileShareTestElem{Labels: map[string]string{"env": "prod", "tier": "backend"}},
+			want: false,
+		},
+		{
+			name: "cleared non-nil empty map vs populated map reports conflict",
+			d:    fileShareTestElem{Labels: map[string]string{}},
+			a:    fileShareTestElem{Labels: map[string]string{"env": "prod"}},
+			want: false,
+		},
+		{
+			name: "non-nil empty map vs nil map has no conflict",
+			d:    fileShareTestElem{Labels: map[string]string{}},
+			a:    fileShareTestElem{Labels: nil},
+			want: true,
+		},
+		{
+			name: "KRM Ref pointing to different External reports conflict",
+			d: fileShareTestElem{
+				SourceBackupRef: &testBackupRef{Name: "b2", External: "projects/p/locations/l/backups/b2"},
+			},
+			a: fileShareTestElem{
+				SourceBackupRef: &testBackupRef{External: "projects/p/locations/l/backups/b1"},
+			},
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := sliceElemHasNoConflicts(reflect.ValueOf(tc.d), reflect.ValueOf(tc.a)); got != tc.want {
+				t.Errorf("sliceElemHasNoConflicts() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
