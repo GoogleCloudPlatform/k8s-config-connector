@@ -1,0 +1,253 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:controller
+// krm.group: gsuiteaddons.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// krm.kind: GSuiteAddonsDeployment
+
+package gsuiteaddons
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gsuiteaddons/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	gcp "cloud.google.com/go/gsuiteaddons/apiv1"
+	gsuiteaddonspb "cloud.google.com/go/gsuiteaddons/apiv1/gsuiteaddonspb"
+	"google.golang.org/api/option"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+)
+
+func init() {
+	registry.RegisterModel(krm.GSuiteAddonsDeploymentGVK, NewDeploymentModel)
+}
+
+func NewDeploymentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelDeployment{config: *config}, nil
+}
+
+var _ directbase.Model = &modelDeployment{}
+
+type modelDeployment struct {
+	config config.ControllerConfig
+}
+
+func (m *modelDeployment) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krm.GSuiteAddonsDeployment{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+	i, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	id := i.(*krm.GSuiteAddonsDeploymentIdentity)
+
+	// Get gsuiteaddons GCP client
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &DeploymentAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   obj,
+	}, nil
+}
+
+func (m *modelDeployment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	if !strings.HasPrefix(url, "//gsuiteaddons.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.GSuiteAddonsDeploymentIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &DeploymentAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
+}
+func (m *modelDeployment) client(ctx context.Context) (*gcp.Client, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building Deployment client: %w", err)
+	}
+	return gcpClient, err
+}
+
+type DeploymentAdapter struct {
+	id        *krm.GSuiteAddonsDeploymentIdentity
+	gcpClient *gcp.Client
+	desired   *krm.GSuiteAddonsDeployment
+	actual    *gsuiteaddonspb.Deployment
+}
+
+var _ directbase.Adapter = &DeploymentAdapter{}
+
+// Find retrieves the GCP resource.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return a non-nil error requeues the requests.
+func (a *DeploymentAdapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting Deployment", "name", a.id)
+
+	req := &gsuiteaddonspb.GetDeploymentRequest{
+		Name: a.id.String(),
+	}
+	deploymentpb, err := a.gcpClient.GetDeployment(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting Deployment %q: %w", a.id, err)
+	}
+
+	a.actual = deploymentpb
+	return true, nil
+}
+
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *DeploymentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating Deployment", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := GSuiteAddonsDeploymentSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	req := &gsuiteaddonspb.CreateDeploymentRequest{
+		Parent:       a.id.ParentString(),
+		DeploymentId: a.id.Deployment,
+		Deployment:   resource,
+	}
+	created, err := a.gcpClient.CreateDeployment(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating Deployment %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully created Deployment", "name", a.id)
+
+	status := &krm.GSuiteAddonsDeploymentStatus{}
+	status.ObservedState = GSuiteAddonsDeploymentObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *DeploymentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Deployment", "name", a.id)
+
+	_, report, updateMask, err := common.CompareGreenfieldSpec(
+		ctx,
+		&a.desired.Spec,
+		a.actual,
+		GSuiteAddonsDeploymentSpec_FromProto,
+		GSuiteAddonsDeploymentSpec_ToProto,
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+	if report.HasDiff() {
+		report.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, report)
+		return fmt.Errorf("updating GSuiteAddonsDeployment is not supported, fields modified: %v", updateMask.Paths)
+	}
+
+	status := &krm.GSuiteAddonsDeploymentStatus{}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = GSuiteAddonsDeploymentObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// Export maps the GCP object to a Config Connector resource `spec`.
+func (a *DeploymentAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.GSuiteAddonsDeployment{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(GSuiteAddonsDeploymentSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.Object = uObj
+	u.SetName(a.id.String())
+	u.SetGroupVersionKind(krm.GSuiteAddonsDeploymentGVK)
+
+	return u, nil
+}
+
+// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
+func (a *DeploymentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting Deployment", "name", a.id)
+
+	req := &gsuiteaddonspb.DeleteDeploymentRequest{
+		Name: a.id.String(),
+	}
+	err := a.gcpClient.DeleteDeployment(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent Deployment, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting Deployment %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted Deployment", "name", a.id)
+	return true, nil
+}
