@@ -1,0 +1,87 @@
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetIpamAdminScope
+
+{
+  "name": "projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/CreateIpamAdminScope
+
+{
+  "ipamAdminScope": {
+    "enabledAddonPlatforms": [
+      "COMPUTE_ENGINE"
+    ],
+    "scopes": [
+      "organizations/${folderID}"
+    ]
+  },
+  "ipamAdminScopeId": "cnr-ias-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+error: rpc error: code = FailedPrecondition desc = com.google.apps.framework.request.FailedPreconditionException: OrgNumberRegistry must be created for organization 128653134652 with admin project ${projectNumber} before creating an IPAM admin scope. Code: FAILED_PRECONDITION
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetIpamAdminScope
+
+{
+  "name": "projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/CreateIpamAdminScope
+
+{
+  "ipamAdminScope": {
+    "enabledAddonPlatforms": [
+      "COMPUTE_ENGINE"
+    ],
+    "scopes": [
+      "organizations/${folderID}"
+    ]
+  },
+  "ipamAdminScopeId": "cnr-ias-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+error: rpc error: code = FailedPrecondition desc = com.google.apps.framework.request.FailedPreconditionException: OrgNumberRegistry must be created for organization 128653134652 with admin project ${projectNumber} before creating an IPAM admin scope. Code: FAILED_PRECONDITION
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetIpamAdminScope
+
+{
+  "name": "projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetIpamAdminScope
+
+{
+  "name": "projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}' was not found
+
+{}
