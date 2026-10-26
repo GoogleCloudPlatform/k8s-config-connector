@@ -1,0 +1,12 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionMap
+metadata:
+  name: scm-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  description: "Updated description"
+  producerPSCConfigs:
+  - serviceAttachmentRef:
+      external: projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}

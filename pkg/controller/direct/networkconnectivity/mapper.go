@@ -253,21 +253,17 @@ func ServiceClass_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *tim
 }
 
 func ServiceConnectionMap_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
+	return Timestamp_FromProto(mapCtx, in)
 }
 func ServiceConnectionMap_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
+	return Timestamp_ToProto(mapCtx, in)
 }
 
 func ServiceConnectionMap_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
+	return Timestamp_FromProto(mapCtx, in)
 }
 func ServiceConnectionMap_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
+	return Timestamp_ToProto(mapCtx, in)
 }
 
 func ServiceConnectionToken_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
