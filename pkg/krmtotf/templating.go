@@ -115,6 +115,9 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 				return ""
 			}
 			if !found {
+				if val, ok := resolveParentReferenceFromContainerAnnotation(field, r); ok {
+					return val
+				}
 				if isRequired {
 					resolutionError = fmt.Errorf("required reference '%v' could not be found in spec", field)
 				}
@@ -243,6 +246,47 @@ func getValueFromReference(refConfig *corekccv1alpha1.ReferenceConfig, r *Resour
 		return "", false, fmt.Errorf("could not parse reference resolution value '%+v' as string", retRaw)
 	}
 	return ret, true, nil
+}
+
+func resolveParentReferenceFromContainerAnnotation(tfField string, r *Resource) (string, bool) {
+	if SupportsHierarchicalReferences(&r.ResourceConfig) || len(r.ResourceConfig.Containers) > 0 {
+		return "", false
+	}
+	var targetRef *corekccv1alpha1.ReferenceConfig
+	for i := range r.ResourceConfig.ResourceReferences {
+		ref := &r.ResourceConfig.ResourceReferences[i]
+		if !ref.Parent {
+			continue
+		}
+		pathToRef := getPathToReferenceKey(ref)
+		if _, ok, _ := unstructured.NestedMap(r.Spec, pathToRef...); ok {
+			// If any parent reference is explicitly specified in spec, do not fall back to container annotations.
+			return "", false
+		}
+		if ref.TFField == tfField {
+			targetRef = ref
+		}
+	}
+	if targetRef == nil {
+		return "", false
+	}
+	var containerType corekccv1alpha1.ContainerType
+	switch targetRef.GVK.Kind {
+	case "Project":
+		containerType = corekccv1alpha1.ContainerTypeProject
+	case "Folder":
+		containerType = corekccv1alpha1.ContainerTypeFolder
+	case "Organization":
+		containerType = corekccv1alpha1.ContainerTypeOrganization
+	default:
+		return "", false
+	}
+	annotation := k8s.GetAnnotationForContainerType(containerType)
+	val, ok := k8s.GetAnnotation(annotation, r)
+	if !ok || val == "" {
+		return "", false
+	}
+	return val, true
 }
 
 func extractValueSegmentFromIDInStatus(idInStatus, template string) (string, error) {
