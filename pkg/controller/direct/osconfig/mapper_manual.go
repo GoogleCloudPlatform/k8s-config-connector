@@ -15,12 +15,14 @@
 package osconfig
 
 import (
+	"strings"
 	"time"
 
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
 	osconfigpb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -663,5 +665,49 @@ func OSConfigGuestPolicyStatus_ToProto(mapCtx *direct.MapContext, in *krm.OSConf
 	if in.Etag != nil {
 		out.Etag = *in.Etag
 	}
+	return out
+}
+
+func parseBucketName(external string) string {
+	if external == "" {
+		return ""
+	}
+	external = strings.TrimSuffix(external, "/")
+	id := &storagev1beta1.StorageBucketIdentity{}
+	if err := id.FromExternal(external); err == nil {
+		return id.Bucket
+	}
+	// Fallback to the raw external string if it's already a short name
+	if strings.Contains(external, "/") {
+		// If it has slashes but couldn't be parsed, let's try to extract the last part
+		parts := strings.Split(external, "/")
+		return parts[len(parts)-1]
+	}
+	return external
+}
+
+func SoftwareRecipe_Artifact_GCS_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Artifact_Gcs) *krm.SoftwareRecipe_Artifact_GCS {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SoftwareRecipe_Artifact_GCS{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &storagev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
+	out.Object = direct.LazyPtr(in.GetObject())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	return out
+}
+
+func SoftwareRecipe_Artifact_GCS_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Artifact_GCS) *osconfigpb.SoftwareRecipe_Artifact_Gcs {
+	if in == nil {
+		return nil
+	}
+	out := &osconfigpb.SoftwareRecipe_Artifact_Gcs{}
+	if in.BucketRef != nil {
+		out.Bucket = parseBucketName(in.BucketRef.External)
+	}
+	out.Object = direct.ValueOf(in.Object)
+	out.Generation = direct.ValueOf(in.Generation)
 	return out
 }
