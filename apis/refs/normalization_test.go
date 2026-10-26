@@ -87,6 +87,16 @@ func TestTrimComputeURIPrefix(t *testing.T) {
 			input:    fmt.Sprintf("compute/v1/%s", relativePath),
 			expected: relativePath,
 		},
+		{
+			name:     "external is custom universe compute v1 url",
+			input:    fmt.Sprintf("https://compute.custom.universe.goog/compute/v1/%s", relativePath),
+			expected: relativePath,
+		},
+		{
+			name:     "external is custom universe compute beta url",
+			input:    fmt.Sprintf("https://compute.custom.universe.goog/compute/beta/%s", relativePath),
+			expected: relativePath,
+		},
 	}
 
 	for _, tt := range tests {

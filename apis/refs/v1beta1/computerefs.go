@@ -69,6 +69,21 @@ func TrimComputeURIPrefix(ref string) string {
 		ref = strings.TrimPrefix(ref, prefix)
 	}
 
+	// Also strip custom universe scheme and host prefixes for compute/www hosts
+	// (e.g. https://compute.custom.universe.goog/compute/v1/...)
+	for _, schemePrefix := range []string{"https://", "http://", "//"} {
+		if strings.HasPrefix(ref, schemePrefix) {
+			rest := strings.TrimPrefix(ref, schemePrefix)
+			if slashIdx := strings.Index(rest, "/"); slashIdx != -1 {
+				host := rest[:slashIdx]
+				if strings.HasPrefix(host, "compute.") || strings.HasPrefix(host, "www.") {
+					ref = rest[slashIdx+1:]
+				}
+			}
+			break
+		}
+	}
+
 	// Support the special handling from FixStaleComputeExternalFormat for unknown compute versions with warning
 	// For instance: https://www.googleapis.com/compute/otherVersion/projects/...
 	// If the string starts with compute/ (e.g. after trimming http://www.googleapis.com/ or https://www.googleapis.com/ etc.)

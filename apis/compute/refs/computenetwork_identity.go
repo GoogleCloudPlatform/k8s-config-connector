@@ -16,6 +16,7 @@ package computerefs
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -45,6 +46,7 @@ func (i *ComputeNetworkIdentity) String() string {
 // Raw short names (e.g. "my-vpc") are not valid external references until canonicalized via CanonicalizeExternal.
 func (i *ComputeNetworkIdentity) FromExternal(ref string) error {
 	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	trimmedRef = strings.Replace(trimmedRef, "/locations/global/networks/", "/global/networks/", 1)
 	parsed, match, err := ComputeNetworkIdentityFormat.Parse(trimmedRef)
 	if err != nil {
 		return fmt.Errorf("format of ComputeNetwork external=%q was not known (use %s): %w", ref, ComputeNetworkIdentityFormat.CanonicalForm(), err)
