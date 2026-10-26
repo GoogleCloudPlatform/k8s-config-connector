@@ -190,158 +190,21 @@ func DiffForTopLevelFieldsGreenfield(ctx context.Context, desired protoreflect.M
 	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
 }
 
-func prepareMessagesForGreenfieldDiff(desired, actual protoreflect.Message) (protoreflect.Message, protoreflect.Message) {
-	if desired == nil || !desired.IsValid() {
-		desired = actual.Type().New()
-	} else {
-		desired = proto.Clone(desired.Interface()).ProtoReflect()
+// NormalizeGreenfieldReferences resolves all KRM references on obj, including:
+//   - *refs.ProjectRef
+//   - refs.Ref
+//   - refs.ExternalNormalizer (skipping already-normalized and zero-value references so NormalizedExternal calls are idempotent)
+func NormalizeGreenfieldReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, opts ...NormalizeOption) error {
+	base := &refNormalizer{
+		ctx:     ctx,
+		kube:    reader,
+		src:     obj,
+		project: projectRef,
 	}
-	if actual == nil || !actual.IsValid() {
-		actual = desired.Type().New()
-	} else {
-		actual = proto.Clone(actual.Interface()).ProtoReflect()
+	for _, opt := range opts {
+		opt(base)
 	}
-	clearNonComparedProtoFields(desired)
-	clearNonComparedProtoFields(actual)
-	return desired, actual
-}
-
-func mergeUnsetFieldsGreenfield(desired, actual reflect.Value) {
-	if !desired.IsValid() || !actual.IsValid() {
-		return
-	}
-
-	switch desired.Kind() {
-	case reflect.Ptr:
-		if desired.IsNil() && !actual.IsNil() {
-			if desired.CanSet() {
-				desired.Set(actual)
-			}
-		} else if !desired.IsNil() && !actual.IsNil() {
-			mergeUnsetFieldsGreenfield(desired.Elem(), actual.Elem())
-		}
-
-	case reflect.Struct:
-		for i := 0; i < desired.NumField(); i++ {
-			field := desired.Type().Field(i)
-			if field.IsExported() {
-				mergeUnsetFieldsGreenfield(desired.Field(i), actual.Field(i))
-			}
-		}
-
-	case reflect.Slice:
-		if desired.IsNil() && !actual.IsNil() && desired.CanSet() {
-			desired.Set(actual)
-		} else if !desired.IsNil() && !actual.IsNil() && desired.Len() == actual.Len() {
-			for i := 0; i < desired.Len(); i++ {
-				if sliceElemHasNoConflicts(desired.Index(i), actual.Index(i)) {
-					mergeUnsetFieldsGreenfield(desired.Index(i), actual.Index(i))
-				}
-			}
-		}
-
-	case reflect.Map:
-		mergeUnsetMapFields(desired, actual)
-	}
-}
-
-// sliceElemHasNoConflicts reports whether every non-nil field set in d is also
-// present and equal in a. This ensures server-populated defaults are only merged
-// into slice elements that match the existing element at the same index, avoiding
-// cross-contamination when list elements are reordered or modified.
-func sliceElemHasNoConflicts(d, a reflect.Value) bool {
-	if !d.IsValid() || !a.IsValid() {
-		return true
-	}
-
-	switch d.Kind() {
-	case reflect.Ptr:
-		if d.IsNil() {
-			return true
-		}
-		if a.IsNil() {
-			return false
-		}
-		return sliceElemHasNoConflicts(d.Elem(), a.Elem())
-
-	case reflect.Struct:
-		for i := 0; i < d.NumField(); i++ {
-			if d.Type().Field(i).IsExported() {
-				if !sliceElemHasNoConflicts(d.Field(i), a.Field(i)) {
-					return false
-				}
-			}
-		}
-		return true
-
-	case reflect.Slice:
-		if d.IsNil() {
-			return true
-		}
-		if a.IsNil() || d.Len() != a.Len() {
-			return false
-		}
-		for i := 0; i < d.Len(); i++ {
-			if !sliceElemHasNoConflicts(d.Index(i), a.Index(i)) {
-				return false
-			}
-		}
-		return true
-
-	case reflect.Map:
-		if d.IsNil() {
-			return true
-		}
-		if a.IsNil() {
-			return false
-		}
-		for _, k := range d.MapKeys() {
-			aVal := a.MapIndex(k)
-			if !aVal.IsValid() || !sliceElemHasNoConflicts(d.MapIndex(k), aVal) {
-				return false
-			}
-		}
-		return true
-
-	default:
-		return reflect.DeepEqual(d.Interface(), a.Interface())
-	}
-}
-
-func mergeUnsetMapFields(desired, actual reflect.Value) {
-	if desired.IsNil() && !actual.IsNil() {
-		if desired.CanSet() {
-			desired.Set(actual)
-		}
-		return
-	}
-	if desired.IsNil() || actual.IsNil() {
-		return
-	}
-	elemKind := desired.Type().Elem().Kind()
-	isStructElem := elemKind == reflect.Struct || (elemKind == reflect.Ptr && desired.Type().Elem().Elem().Kind() == reflect.Struct)
-	if !isStructElem {
-		return
-	}
-	for _, k := range desired.MapKeys() {
-		dVal := desired.MapIndex(k)
-		aVal := actual.MapIndex(k)
-		if !dVal.IsValid() || !aVal.IsValid() {
-			continue
-		}
-		if elemKind == reflect.Ptr {
-			if dVal.IsNil() && !aVal.IsNil() {
-				desired.SetMapIndex(k, aVal)
-			} else if !dVal.IsNil() && !aVal.IsNil() {
-				mergeUnsetFieldsGreenfield(dVal, aVal)
-			}
-		} else {
-			dCopy := reflect.New(dVal.Type()).Elem()
-			dCopy.Set(dVal)
-			mergeUnsetFieldsGreenfield(dCopy, aVal)
-			desired.SetMapIndex(k, dCopy)
-		}
-	}
+	return VisitFields(obj, &greenfieldRefNormalizer{refNormalizer: base})
 }
 
 func cloneKRMSpec[SpecType any](desiredKRM *SpecType) (*SpecType, error) {
@@ -417,6 +280,204 @@ func preserveNonNilEmptyCollectionsInMap(src, dst reflect.Value) {
 	}
 }
 
+func mergeUnsetFieldsGreenfield(desired, actual reflect.Value) {
+	if !desired.IsValid() || !actual.IsValid() {
+		return
+	}
+
+	switch desired.Kind() {
+	case reflect.Ptr:
+		if desired.IsNil() && !actual.IsNil() {
+			if desired.CanSet() {
+				desired.Set(actual)
+			}
+		} else if !desired.IsNil() && !actual.IsNil() {
+			mergeUnsetFieldsGreenfield(desired.Elem(), actual.Elem())
+		}
+
+	case reflect.Struct:
+		if _, isRef := krmRefExternal(desired); isRef {
+			return
+		}
+		for i := 0; i < desired.NumField(); i++ {
+			if desired.Type().Field(i).IsExported() {
+				mergeUnsetFieldsGreenfield(desired.Field(i), actual.Field(i))
+			}
+		}
+
+	case reflect.Slice:
+		mergeUnsetSliceFields(desired, actual)
+
+	case reflect.Map:
+		mergeUnsetMapFields(desired, actual)
+	}
+}
+
+func mergeUnsetSliceFields(desired, actual reflect.Value) {
+	if desired.IsNil() && !actual.IsNil() {
+		if desired.CanSet() {
+			desired.Set(actual)
+		}
+		return
+	}
+	if desired.IsNil() || actual.IsNil() || desired.Len() != actual.Len() {
+		return
+	}
+	if !isStructElemType(desired.Type().Elem()) {
+		return
+	}
+	for i := 0; i < desired.Len(); i++ {
+		if sliceElemHasNoConflicts(desired.Index(i), actual.Index(i)) {
+			mergeUnsetFieldsGreenfield(desired.Index(i), actual.Index(i))
+		}
+	}
+}
+
+// sliceElemHasNoConflicts reports whether every non-nil field set in d is also
+// present and equal in a. This ensures server-populated defaults are only merged
+// into slice elements that match the existing element at the same index, avoiding
+// cross-contamination when list elements are reordered or modified.
+func sliceElemHasNoConflicts(d, a reflect.Value) bool {
+	if !d.IsValid() || !a.IsValid() {
+		return true
+	}
+
+	switch d.Kind() {
+	case reflect.Ptr:
+		if d.IsNil() {
+			return true
+		}
+		if a.IsNil() {
+			return false
+		}
+		return sliceElemHasNoConflicts(d.Elem(), a.Elem())
+	case reflect.Struct:
+		return structElemHasNoConflicts(d, a)
+	case reflect.Slice:
+		return sliceFieldHasNoConflicts(d, a)
+	case reflect.Map:
+		return mapFieldHasNoConflicts(d, a)
+	default:
+		return scalarFieldHasNoConflicts(d, a)
+	}
+}
+
+func structElemHasNoConflicts(d, a reflect.Value) bool {
+	if dExt, isRef := krmRefExternal(d); isRef {
+		aExt, _ := krmRefExternal(a)
+		return dExt == "" || dExt == aExt
+	}
+	for i := 0; i < d.NumField(); i++ {
+		if d.Type().Field(i).IsExported() {
+			if !sliceElemHasNoConflicts(d.Field(i), a.Field(i)) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func sliceFieldHasNoConflicts(d, a reflect.Value) bool {
+	if d.IsNil() {
+		return true
+	}
+	if d.Len() != a.Len() {
+		return false
+	}
+	for i := 0; i < d.Len(); i++ {
+		if !sliceElemHasNoConflicts(d.Index(i), a.Index(i)) {
+			return false
+		}
+	}
+	return true
+}
+
+func mapFieldHasNoConflicts(d, a reflect.Value) bool {
+	if d.IsNil() {
+		return true
+	}
+	if d.Len() != a.Len() {
+		return false
+	}
+	for _, k := range d.MapKeys() {
+		aVal := a.MapIndex(k)
+		if !aVal.IsValid() || !sliceElemHasNoConflicts(d.MapIndex(k), aVal) {
+			return false
+		}
+	}
+	return true
+}
+
+func scalarFieldHasNoConflicts(d, a reflect.Value) bool {
+	if !d.CanInterface() || !a.CanInterface() {
+		return true
+	}
+	return reflect.DeepEqual(d.Interface(), a.Interface())
+}
+
+// krmRefExternal checks if v is a KRM reference struct (which holds KRM-only Name/Namespace
+// fields alongside the resolved External URI) and returns its External string.
+func krmRefExternal(v reflect.Value) (string, bool) {
+	if v.Kind() != reflect.Struct {
+		return "", false
+	}
+	extField := v.FieldByName("External")
+	nameField := v.FieldByName("Name")
+	if !extField.IsValid() || !nameField.IsValid() || extField.Kind() != reflect.String || nameField.Kind() != reflect.String {
+		return "", false
+	}
+	ptrType := reflect.PointerTo(v.Type())
+	isRefType := strings.HasSuffix(v.Type().Name(), "Ref") ||
+		ptrType.Implements(reflect.TypeFor[refs.Ref]()) ||
+		ptrType.Implements(reflect.TypeFor[refs.ExternalNormalizer]())
+	if !isRefType {
+		return "", false
+	}
+	return extField.String(), true
+}
+
+func mergeUnsetMapFields(desired, actual reflect.Value) {
+	if desired.IsNil() && !actual.IsNil() {
+		if desired.CanSet() {
+			desired.Set(actual)
+		}
+		return
+	}
+	if desired.IsNil() || actual.IsNil() {
+		return
+	}
+	if !isStructElemType(desired.Type().Elem()) {
+		return
+	}
+	elemKind := desired.Type().Elem().Kind()
+	for _, k := range desired.MapKeys() {
+		dVal := desired.MapIndex(k)
+		aVal := actual.MapIndex(k)
+		if !dVal.IsValid() || !aVal.IsValid() {
+			continue
+		}
+		if elemKind == reflect.Ptr {
+			if dVal.IsNil() && !aVal.IsNil() {
+				desired.SetMapIndex(k, aVal)
+			} else if !dVal.IsNil() && !aVal.IsNil() {
+				mergeUnsetFieldsGreenfield(dVal, aVal)
+			}
+		} else {
+			dCopy := reflect.New(dVal.Type()).Elem()
+			dCopy.Set(dVal)
+			mergeUnsetFieldsGreenfield(dCopy, aVal)
+			desired.SetMapIndex(k, dCopy)
+		}
+	}
+}
+
+func isStructElemType(elemType reflect.Type) bool {
+	if elemType.Kind() == reflect.Ptr {
+		elemType = elemType.Elem()
+	}
+	return elemType.Kind() == reflect.Struct
+}
+
 // preserveDesiredOneofs ensures that any protobuf oneof explicitly selected in rawDesired
 // wins over stale sibling oneof fields that mergeUnsetFieldsGreenfield copied from actualKRM into clonedDesiredKRM.
 func preserveDesiredOneofs(rawDesired, mergedDesired protoreflect.Message) {
@@ -478,21 +539,6 @@ func preserveDesiredOneofsInField(fd protoreflect.FieldDescriptor, rawVal, merge
 	preserveDesiredOneofs(rawVal.Message(), mergedVal.Message())
 }
 
-func isNilProto(msg proto.Message) bool {
-	if msg == nil {
-		return true
-	}
-	rv := reflect.ValueOf(msg)
-	return rv.Kind() == reflect.Ptr && rv.IsNil()
-}
-
-func protoReflectOrNil(msg proto.Message) protoreflect.Message {
-	if isNilProto(msg) {
-		return nil
-	}
-	return msg.ProtoReflect()
-}
-
 // clearNonComparedProtoFields recursively clears any populated field marked OUTPUT_ONLY or INPUT_ONLY
 // on msg and its nested messages, lists of messages, and maps of messages.
 func clearNonComparedProtoFields(msg protoreflect.Message) {
@@ -535,6 +581,43 @@ func clearNonComparedNestedField(fd protoreflect.FieldDescriptor, val protorefle
 	clearNonComparedProtoFields(val.Message())
 }
 
+func isNilProto(msg proto.Message) bool {
+	if msg == nil {
+		return true
+	}
+	rv := reflect.ValueOf(msg)
+	return rv.Kind() == reflect.Ptr && rv.IsNil()
+}
+
+func protoReflectOrNil(msg proto.Message) protoreflect.Message {
+	if isNilProto(msg) {
+		return nil
+	}
+	return msg.ProtoReflect()
+}
+
+func setProtoLabels(msg proto.Message, labelsFieldName string, labels map[string]string) {
+	if isNilProto(msg) || labelsFieldName == "" {
+		return
+	}
+	fd := msg.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(labelsFieldName))
+	if fd == nil || !fd.IsMap() || fd.MapKey().Kind() != protoreflect.StringKind || fd.MapValue().Kind() != protoreflect.StringKind {
+		return
+	}
+	if len(labels) == 0 {
+		msg.ProtoReflect().Clear(fd)
+		return
+	}
+	m := msg.ProtoReflect().Mutable(fd).Map()
+	m.Range(func(k protoreflect.MapKey, _ protoreflect.Value) bool {
+		m.Clear(k)
+		return true
+	})
+	for k, v := range labels {
+		m.Set(protoreflect.ValueOfString(k).MapKey(), protoreflect.ValueOfString(v))
+	}
+}
+
 func appendLabelDiffIfChanged(
 	diff *structuredreporting.Diff,
 	updateMask *fieldmaskpb.FieldMask,
@@ -566,43 +649,20 @@ func appendLabelDiffIfChanged(
 	return diff, updateMask
 }
 
-func setProtoLabels(msg proto.Message, labelsFieldName string, labels map[string]string) {
-	if isNilProto(msg) || labelsFieldName == "" {
-		return
+func prepareMessagesForGreenfieldDiff(desired, actual protoreflect.Message) (protoreflect.Message, protoreflect.Message) {
+	if desired == nil || !desired.IsValid() {
+		desired = actual.Type().New()
+	} else {
+		desired = proto.Clone(desired.Interface()).ProtoReflect()
 	}
-	fd := msg.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(labelsFieldName))
-	if fd == nil || !fd.IsMap() || fd.MapKey().Kind() != protoreflect.StringKind || fd.MapValue().Kind() != protoreflect.StringKind {
-		return
+	if actual == nil || !actual.IsValid() {
+		actual = desired.Type().New()
+	} else {
+		actual = proto.Clone(actual.Interface()).ProtoReflect()
 	}
-	if len(labels) == 0 {
-		msg.ProtoReflect().Clear(fd)
-		return
-	}
-	m := msg.ProtoReflect().Mutable(fd).Map()
-	m.Range(func(k protoreflect.MapKey, _ protoreflect.Value) bool {
-		m.Clear(k)
-		return true
-	})
-	for k, v := range labels {
-		m.Set(protoreflect.ValueOfString(k).MapKey(), protoreflect.ValueOfString(v))
-	}
-}
-
-// NormalizeGreenfieldReferences resolves all KRM references on obj, including:
-//   - *refs.ProjectRef
-//   - refs.Ref
-//   - refs.ExternalNormalizer (skipping already-normalized and zero-value references so NormalizedExternal calls are idempotent)
-func NormalizeGreenfieldReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, opts ...NormalizeOption) error {
-	base := &refNormalizer{
-		ctx:     ctx,
-		kube:    reader,
-		src:     obj,
-		project: projectRef,
-	}
-	for _, opt := range opts {
-		opt(base)
-	}
-	return VisitFields(obj, &greenfieldRefNormalizer{refNormalizer: base})
+	clearNonComparedProtoFields(desired)
+	clearNonComparedProtoFields(actual)
+	return desired, actual
 }
 
 type greenfieldRefNormalizer struct {
