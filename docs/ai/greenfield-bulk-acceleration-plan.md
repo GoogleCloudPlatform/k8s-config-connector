@@ -18,7 +18,7 @@ This document captures the empirical findings, systemic framework fixes, and too
    - **Benchmark (5 RealGCP fixtures concurrently):** **5/5 PASSED in `45.40s` wall-clock time** vs. `105.65s` serial single-binary execution (**2.33x speedup**) and `~330s` across 5 separate `go test` invocations (**7.3x speedup**), with verified per-subtest `requests.log` isolation.
 4. **Workstream B — Deterministic Auto-Resolution of Known `judgement_queue.yaml` Items [[PR #14415](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14415)]:**
    - Enhanced `controllerbuilder generate-types --prepopulate-resource` to automatically resolve high-confidence mechanical decisions (`*parent.ProjectAndLocationRef`, child parent `*Ref` when `Normalize` exists, top-level `labels` omission, `etag` and output-only comment routing to `ObservedState`, and authoritative `google.api.resource_reference` conversion across Spec and nested messages).
-   - **Experiment 3.a (Full Cohort of 262 Greenfield Direct-Only Resources Without `judgement_queue.yaml`):** Evaluated across all 262 pure-Direct greenfield resources on `master` (`AutoResolveJudgement=false` vs `AutoResolveJudgement=true` vs committed human-authored `T_orig`). Eliminated **69.9% of targeted queue items (`551 -> 166`)** and **31.6% of all queue items (`1,257 -> 860`)**, increasing zero-open-queue resources from **2/262 (0.8%) to 54/262 (20.6%)**, while achieving **99.4% (`179/180`)** semantic match on `*parent.ProjectAndLocationRef`, **93.8% (`15/16`)** match on child `<Parent>Ref`, **100% (`44/44` `etag` and `18/18` output-only comment fields)** agreement on `Spec` omission, and **97.0% (`161/166`)** precision on authoritative `google.api.resource_reference` resolution.
+   - **Experiment 3.a (Full Cohort of 262 Greenfield Direct-Only Resources Without `judgement_queue.yaml`):** Evaluated across all 262 pure-Direct greenfield resources on `master` (`AutoResolveJudgement=false` vs `AutoResolveJudgement=true` vs committed human-authored `T_orig`). Eliminated **69.9% of targeted queue items (`551 -> 166`)** and **31.6% of all queue items (`1,257 -> 860`)**, increasing zero-open-queue resources from **2/262 (0.8%) to 54/262 (20.6%)** (**27x increase**). Under the *Greenfield Resource Coverage Report* standard count case (`10,649` canonical fields excl. legacy `spec.labels`), **overall coverage is 97.6% (`98.0%` excl. `googleapis` deltas)** while **exact-path reproduction rises from `90.5% (9,636)` to `91.6% (9,751)` (`91.9%` excl. `googleapis` deltas)** and **queued fields drop by `-38.4%` (`336 -> 207`)**. Across all **424 queue-resolving auto-decisions**, **417 / 424 (`98.35%` precision)** match `T_orig` with a **total false-positive rate of only `1.65%` (`7 / 424`)**.
    - **Experiment 3.b (31 Batch 1 + Batch 2 Resources across 18 Services):** Eliminated **81.4% of targeted queue items (`102 -> 19`)** and **47.4% of all queue items (`175 -> 92`)**, leaving **12/31 resources (38.7%) with zero open queue items** beyond `untriaged-bulk-generation`, while **18/18 API packages compiled cleanly with zero manual edits to `<kind>_types.go`**.
 
 ---
@@ -223,24 +223,46 @@ Across all 262 resources, committed human-authored types (`T_orig`) contain **41
 
 #### 4. Field-Level Coverage Evaluation (Greenfield Coverage Report Methodology) & Total False-Positive Rate
 
-Using the **Standard Count Case** from the *Resource Coverage in Greenfield Bulk Generation* benchmark (evaluating all CRD schema paths across `spec` and `status.observedState`, with each `*Ref` object counted once as a single item):
+Following the exact methodology and **"Standard Count Case — references counted once"** accounting from [*Report: Resource Coverage in Greenfield Bulk Generation*](https://docs.google.com/document/d/1jbB0CpCQ7Dx0WhCntXMitlBRRT0TUf-oJqowpYZnSLk/edit) (evaluating all CRD schema paths across `spec` and `status.observedState`, with each `*Ref` object counted once as a single item), we compare **Baseline (`AutoResolve=false`)** and **With Auto-Resolution (`AutoResolve=true`)** across all **275** Direct greenfield resources (including `compute`, dual-controller resources with `DefaultController: Direct`, and services pinned to custom `.build/googleapis-*.pb` descriptors).
 
-| Results Category | Baseline (`AutoResolve=false`, excl. legacy `spec.labels`) | With Auto-Resolution (`AutoResolve=true`, excl. legacy `spec.labels`) | Baseline (incl. legacy `spec.labels`) | With Auto-Resolution (incl. legacy `spec.labels`) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Reproduced, generated differently from baseline, or captured in review list** | **10,405 (97.7%)** | **10,398 (97.6%)** | **10,504 (97.8%)** | **10,403 (96.8%)** |
-| 1. **Reproduced at exact same path** | 9,636 (90.5%) | **9,751 (91.6%)** *(+115)* | 9,732 (90.6%) | **9,751 (90.8%)** *(+19)* |
-| 2. **Logged in review queue for human determination** | 336 (3.2%) | **207 (1.9%)** *(-129)* | 336 (3.1%) | **207 (1.9%)** *(-129)* |
-| 3. **Generated differently from baseline (not logged)** | 433 (4.1%) | 440 (4.1%) | 436 (4.1%) | 445 (4.1%) |
-| 4. **Deltas between `googleapis` versions** | 35 (0.3%) | 35 (0.3%) | 36 (0.3%) | 36 (0.3%) |
-| 5. **Missing from CRD** | 209 (2.0%) | 216 (2.0%) | 203 (1.9%) | 304 (2.8%) *(+88 Rule 3 `spec.labels`)* |
-| **Total Canonical Fields (references counted once)** | **10,649 (100.0%)** | **10,649 (100.0%)** | **10,743 (100.0%)** | **10,743 (100.0%)** |
-| **Coverage excl. unproducible `googleapis` deltas** | **98.0%** | **98.0%** | **98.1%** | **97.2%** |
-| **Exact-path reproduction excl. `googleapis` deltas** | **90.8%** | **91.9%** *(+1.1%)* | **90.9%** | **91.1%** |
+Because **Rule 3** intentionally omits top-level `.spec.labels` (enforcing the modern KCC rule to use `metadata.labels`, whereas **97** older greenfield resources in the cohort still have `.spec.labels` in their CRD), we report both the **numbers isolating the queue-resolution rules (Rules 1, 2, 4, 5 — excluding legacy `.spec.labels`, `11,079` canonical fields)** and the **numbers including legacy `.spec.labels` (`11,176` canonical fields)**:
 
-**Total False-Positive Rate Across All 424 Queue-Resolving Auto-Decisions (Rules 1, 2, 4a, 4b, 5):**
-- **Total Auto-Resolved Decisions:** **424** (`180` Rule 1 `ProjectAndLocationRef` + `16` Rule 2 child `<Parent>Ref` + `44` Rule 4a `etag` + `18` Rule 4b output-only comment fields + `166` Rule 5 `authoritative-proto-reference` `*Ref` fields).
-- **True Positives:** **417 / 424 (98.35% Precision)**.
-- **False Positives:** **7 / 424 (1.65% False-Positive Rate)** (`1` in Rule 1, `1` in Rule 2, `0` in Rule 4a, `0` in Rule 4b, `5` in Rule 5).
+| **Results Category** | **Baseline (`AutoResolve=false`, excl. `.spec.labels`)** | **With Auto-Resolve (`AutoResolve=true`, excl. `.spec.labels`)** | **Baseline (incl. legacy `.spec.labels`)** | **With Auto-Resolve (incl. legacy `.spec.labels`)** |
+| :--- | ---: | ---: | ---: | ---: |
+| **Reproduced, generated differently from baseline, or captured in review list** | **10,830 (97.8%)** | **10,822 (97.7%)** | **10,933 (97.8%)** | **10,827 (96.9%)** |
+| **1. Reproduced at exact same path** | 9,948 (**89.8%**) | **10,152 (91.6%)** *(+204)* | 10,048 (**89.9%**) | **10,152 (90.8%)** *(+104)* |
+| **2. Logged in review queue for human determination** | 394 (**3.6%**) | **214 (1.9%)** *(-180)* | 394 (**3.5%**) | **214 (1.9%)** *(-180)* |
+| **3. Generated differently from baseline (not logged)** | 488 (**4.4%**) | **456 (4.1%)** *(-32)* | 491 (**4.4%**) | **461 (4.1%)** *(-30)* |
+| • `renamed` / `casing` / `map-shape` | 138 (1.2%) | 138 (1.2%) | 141 (1.3%) | 138 (1.2%) |
+| • `moved` (`Spec` $\leftrightarrow$ `ObservedState`) | 78 (0.7%) | **40 (0.4%)** *(-38)* | 78 (0.7%) | **40 (0.4%)** *(-38)* |
+| • `emitted-elsewhere` (different nesting/field name) | 190 (1.7%) | 199 (1.8%) | 190 (1.7%) | 204 (1.8%) |
+| • `reference-not-detected` (`T_orig=*Ref`, `T_gen=string`) | 80 (0.7%) | **70 (0.6%)** *(-10)* | 80 (0.7%) | **70 (0.6%)** *(-10)* |
+| • `false-positive-ref` (`T_orig=string`, `T_gen=*Ref`) | 2 (0.0%) | 9 (0.1%) *(+7)* | 2 (0.0%) | 9 (0.1%) *(+7)* |
+| **4. Deltas between `googleapis` versions** | 34 (**0.3%**) | 34 (**0.3%**) | 34 (**0.3%**) | 34 (**0.3%**) |
+| **5. Missing from CRD** | 215 (**1.9%**) | 223 (**2.0%**) | 209 (**1.9%**) | 315 (**2.8%**) *(+97 `.spec.labels`)* |
+| **Total Canonical Fields (references counted once)** | **11,079 (100.0%)** | **11,079 (100.0%)** | **11,176 (100.0%)** | **11,176 (100.0%)** |
+| **Coverage excl. unproducible `googleapis` deltas** | **98.1%** | **98.0%** | **98.1%** | **97.2%** |
+| **Exact-path reproduction excl. `googleapis` deltas** | **90.1%** | **91.9%** *(+1.8%)* | **90.2%** | **91.1%** |
+
+*(If intermediate container struct paths are excluded and only **leaf + reference fields** (`7,710` fields) are counted, **Exact-Path Reproduction** rises from **88.0% (`6,787`) $\rightarrow$ 90.3% (`6,964`)**, **Logged in Review Queue** drops from **4.8% (`370`) $\rightarrow$ 2.7% (`208`)**, and **Overall Coverage** is **97.4%** / **97.7%** excl. `googleapis` deltas.)*
+
+**Key Takeaways from the Coverage Comparison:**
+1. **Overall Coverage ("Reproduced, generated differently, or captured in review list") stays at `97.7%–97.8%` (`98.0%` excl. `googleapis` deltas):** Auto-resolution does not drop fields silently (apart from the intentional Rule 3 policy omitting `.spec.labels` on legacy resources).
+2. **Shifts `180` canonical fields (`-45.7%` of queued canonical fields) out of the Review Queue and `-32` unlogged discrepancies directly into Exact-Path Reproduction (`+204` fields):** `"2. Logged in review queue for human determination"` drops from **394 fields (`3.6%`) $\rightarrow$ 214 fields (`1.9%`)**, `"3. Generated differently (not logged)"` drops from **488 (`4.4%`) $\rightarrow$ 456 (`4.1%`)**, and `"1. Reproduced at exact same path"` increases by **`+204` fields**, from **9,948 (`89.8%`, or `90.1%` excl. proto deltas) $\rightarrow$ 10,152 (`91.6%`, or `91.9%` excl. proto deltas)**.
+
+#### 5. Total False-Positive Rate of Auto-Resolve (`1.65%`)
+
+Across all **424 queue-resolving auto-decisions** made by `AutoResolve=true` across the 262 canonical resources, there are **7 false positives in total**, yielding a **Total False-Positive Rate of `1.65%` (`98.35%` Precision)**:
+
+| Auto-Resolve Rule | Decisions Triggered | True Positives (`T_orig` Matches) | False Positives (`T_orig` Differs) | **False Positive %** | **Precision %** | Exact False Positive Cases |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| **Rule 1:** `location-or-parent-ref` $\rightarrow$ `*parent.ProjectAndLocationRef` | 180 | 179 | **1** | **0.56%** | **99.44%** | `MemorystoreInstanceEndpoint` *(synthetic sub-resource reusing `Instance` proto)* |
+| **Rule 2:** `parent-ref-guessed` $\rightarrow$ Child `<Parent>Ref` | 16 | 15 | **1** | **6.25%** | **93.75%** | `CloudTalentSolutionCompany` *(`T_orig` used `Tenant *string` instead of `TenantRef`)* |
+| **Rule 4a:** `etag-in-spec` $\rightarrow$ Moved to `ObservedState` | 44 | 44 | **0** | **0.00%** | **100.00%** | None |
+| **Rule 4b:** `well-known-output-only-pattern-in-comment` $\rightarrow$ `ObservedState` | 18 | 18 | **0** | **0.00%** | **100.00%** | None |
+| **Rule 5:** `authoritative-proto-reference` $\rightarrow$ `*Ref` (Top-Level & Nested) | 166 | 161 | **5** | **3.01%** | **96.99%** | `DataprocSession.sessionTemplate`, `SaasServiceMgmtRelease.unitKind`, `SaasServiceMgmtRelease.upgradeableFromReleases`, `SaaSServiceMgmtRolloutKind.unitKind`, `VisionAIApplication...stream` *(all 5 have authoritative `google.api.resource_reference` to a sibling KCC resource in the same package, but `T_orig` left them as `*string`/`[]string`)* |
+| **TOTAL (All Queue Auto-Resolve Rules: 1, 2, 4a, 4b, 5)** | **424** | **417** | **7** | **1.65%** | **98.35%** | **7 / 424 decisions** *(and for 5 of the 7, `T_auto`'s `*Ref` is arguably more KRM-compliant than `T_orig`'s raw string)* |
+| *Rule 3 (Policy Rule): Omit Top-Level `spec.labels`* | *129* | *36 (vs. `T_orig`)* / *129 (vs. current KCC rule)* | *93 (historical `T_orig`)* / *0 (current KCC rule)* | *72.09% (historical)* / **0.00% (current standard)** | *27.91% (historical)* / **100.00% (current)** | *93 older resources predated the `metadata.labels`-only convention; 0% FP under current KCC greenfield standards* |
 
 ### 6.3 Experiment 3.b: Regenerating the 31 Batch 1 + Batch 2 Prepopulated Resources
 
