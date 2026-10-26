@@ -173,6 +173,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
 
 		// Oracle Database
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/autonomousDatabaseBackups/{}": true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exadbVmClusters/{}":           true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exascaleDbStorageVaults/{}":   true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/odbNetworks/{}":               true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/odbNetworks/{}/odbSubnets/{}": true,
 
 		// OSLogin
 
