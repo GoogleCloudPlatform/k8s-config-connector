@@ -800,6 +800,26 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
 		}
+		if _, isProcessor := v["processorVersionAliases"]; isProcessor {
+			if state, ok := v["state"].(float64); ok {
+				switch state {
+				case 1:
+					v["state"] = "ENABLED"
+				case 2:
+					v["state"] = "DISABLED"
+				case 3:
+					v["state"] = "ENABLING"
+				case 4:
+					v["state"] = "DISABLING"
+				case 5:
+					v["state"] = "CREATING"
+				case 6:
+					v["state"] = "FAILED"
+				case 7:
+					v["state"] = "DELETING"
+				}
+			}
+		}
 		if _, isDnsAuth := v["dnsResourceRecord"]; isDnsAuth {
 			if t, ok := v["type"].(float64); ok && t == 1 {
 				v["type"] = "FIXED_RECORD"
