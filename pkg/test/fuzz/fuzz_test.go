@@ -23,6 +23,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/dynamicpb"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -234,6 +235,31 @@ func TestClearFieldsHasPath(t *testing.T) {
 }
 
 func TestFillWithRandomOptionalEnumSkipsZero(t *testing.T) {
+	msgDesc := mustBuildOptionalEnumWidgetDescriptor(t)
+	modeField := msgDesc.Fields().ByName("mode")
+
+	stream := rand.New(rand.NewSource(42))
+	sawSet := false
+	sawUnset := false
+	for i := 0; i < 100; i++ {
+		msg := dynamicpb.NewMessage(msgDesc)
+		FillWithRandom(t, stream, msg)
+		if msg.Has(modeField) {
+			sawSet = true
+			if got := msg.Get(modeField).Enum(); got == 0 {
+				t.Fatalf("iteration %d: optional enum was populated with 0 (UNSPECIFIED), which loses presence on round-trip", i)
+			}
+		} else {
+			sawUnset = true
+		}
+	}
+	if !sawSet || !sawUnset {
+		t.Fatalf("expected both set and unset states across 100 iterations; sawSet=%v sawUnset=%v", sawSet, sawUnset)
+	}
+}
+
+func mustBuildOptionalEnumWidgetDescriptor(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
 	fdp := &descriptorpb.FileDescriptorProto{
 		Syntax:  proto.String("proto3"),
 		Name:    proto.String("optional_enum.proto"),
@@ -266,25 +292,5 @@ func TestFillWithRandomOptionalEnumSkipsZero(t *testing.T) {
 	if err != nil {
 		t.Fatalf("protodesc.NewFile: %v", err)
 	}
-	msgDesc := fd.Messages().ByName("Widget")
-	modeField := msgDesc.Fields().ByName("mode")
-
-	stream := rand.New(rand.NewSource(42))
-	sawSet := false
-	sawUnset := false
-	for i := 0; i < 100; i++ {
-		msg := dynamicpb.NewMessage(msgDesc)
-		FillWithRandom(t, stream, msg)
-		if msg.Has(modeField) {
-			sawSet = true
-			if got := msg.Get(modeField).Enum(); got == 0 {
-				t.Fatalf("iteration %d: optional enum was populated with 0 (UNSPECIFIED), which loses presence on round-trip", i)
-			}
-		} else {
-			sawUnset = true
-		}
-	}
-	if !sawSet || !sawUnset {
-		t.Fatalf("expected both set and unset states across 100 iterations; sawSet=%v sawUnset=%v", sawSet, sawUnset)
-	}
+	return fd.Messages().ByName("Widget")
 }

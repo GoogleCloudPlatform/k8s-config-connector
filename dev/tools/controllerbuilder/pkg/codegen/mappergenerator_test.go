@@ -314,6 +314,48 @@ func AccountType_FromProto(mapCtx *direct.MapContext, in *pb.AccountType) *krm.A
 }
 
 func TestMapperGeneratorProto3OptionalEnum(t *testing.T) {
+	msg := mustBuildOptionalEnumWidgetDescriptor(t)
+
+	mg := NewMapperGenerator(nil, t.TempDir(), &annotations.FileAnnotation{
+		Key: "+generated:mapper",
+		Attributes: map[string][]string{
+			"krm.group":     {"test.cnrm.cloud.google.com"},
+			"krm.version":   {"v1alpha1"},
+			"proto.service": {"google.cloud.test.v1"},
+		},
+	}, false)
+
+	pair := &typePair{
+		KRMType: &gocode.GoStruct{
+			Name:      "Widget",
+			GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/test/v1alpha1",
+			Fields: []*gocode.StructField{{
+				Name: "Mode",
+				Type: "*string",
+			}},
+		},
+		Proto: msg,
+	}
+	var buf bytes.Buffer
+	mg.writeMapFunctionsForPair(&buf, "test", pair)
+	got := buf.String()
+
+	wantFromProto := "out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())"
+	if !strings.Contains(got, wantFromProto) {
+		t.Errorf("generated mapper missing %q; got:\n%s", wantFromProto, got)
+	}
+	wantToProto := "out.Mode = direct.EnumPtr_ToProto[testpb.Mode](mapCtx, in.Mode)"
+	if !strings.Contains(got, wantToProto) {
+		t.Errorf("generated mapper missing %q; got:\n%s", wantToProto, got)
+	}
+	unwantedOneof := "Widget_Mode_ToProto"
+	if strings.Contains(got, unwantedOneof) {
+		t.Errorf("generated mapper unexpectedly emitted synthetic oneof helper %q; got:\n%s", unwantedOneof, got)
+	}
+}
+
+func mustBuildOptionalEnumWidgetDescriptor(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
 	fdp := &descriptorpb.FileDescriptorProto{
 		Syntax:  protoPtr("proto3"),
 		Name:    protoPtr("optional_enum.proto"),
@@ -349,39 +391,5 @@ func TestMapperGeneratorProto3OptionalEnum(t *testing.T) {
 	if err != nil {
 		t.Fatalf("protodesc.NewFile: %v", err)
 	}
-	msg := fd.Messages().ByName("Widget")
-
-	mg := NewMapperGenerator(nil, t.TempDir(), &annotations.FileAnnotation{
-		Key: "+generated:mapper",
-		Attributes: map[string][]string{
-			"krm.group":     {"test.cnrm.cloud.google.com"},
-			"krm.version":   {"v1alpha1"},
-			"proto.service": {"google.cloud.test.v1"},
-		},
-	}, false)
-
-	pair := &typePair{
-		KRMType: &gocode.GoStruct{
-			Name:      "Widget",
-			GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/test/v1alpha1",
-			Fields: []*gocode.StructField{{
-				Name: "Mode",
-				Type: "*string",
-			}},
-		},
-		Proto: msg,
-	}
-	var buf bytes.Buffer
-	mg.writeMapFunctionsForPair(&buf, "test", pair)
-	got := buf.String()
-
-	wantToProto := "out.Mode = direct.EnumPtr_ToProto[testpb.Mode](mapCtx, in.Mode)"
-	if !strings.Contains(got, wantToProto) {
-		t.Errorf("generated mapper missing %q; got:\n%s", wantToProto, got)
-	}
-	unwantedOneof := "Widget_Mode_ToProto"
-	if strings.Contains(got, unwantedOneof) {
-		t.Errorf("generated mapper unexpectedly emitted synthetic oneof helper %q; got:\n%s", unwantedOneof, got)
-	}
+	return fd.Messages().ByName("Widget")
 }
-

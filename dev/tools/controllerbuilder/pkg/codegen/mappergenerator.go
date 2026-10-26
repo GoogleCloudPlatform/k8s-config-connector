@@ -843,6 +843,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.EnumKind:
 					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 					functionName := "direct.Enum_ToProto"
+					if protoIsPointerInGo(protoField) {
+						functionName = "direct.EnumPtr_ToProto"
+					}
 					fmt.Fprintf(out, "\t\tout.%s = %s[%s](mapCtx, *in.%s[0])\n", protoFieldName, functionName, protoTypeName, krmFieldName)
 
 				case protoreflect.StringKind,
