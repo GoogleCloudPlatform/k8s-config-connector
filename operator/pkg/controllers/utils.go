@@ -746,3 +746,54 @@ func addMetadataHostEnvVarFn(metadataHost string) func(container map[string]inte
 		return nil
 	}
 }
+
+// ApplyUniverseDomain injects GOOGLE_CLOUD_UNIVERSE_DOMAIN into all workload containers
+// (StatefulSets and Deployments) in the manifest when a non-commercial universe domain is configured.
+func ApplyUniverseDomain(m *manifest.Objects, universeDomain string) error {
+	if universeDomain == "" || universeDomain == "googleapis.com" {
+		return nil
+	}
+	for _, item := range m.Items {
+		if item.Kind != "StatefulSet" && item.Kind != "Deployment" {
+			continue
+		}
+		if err := item.MutateContainers(addEnvVarIfAbsentFn("GOOGLE_CLOUD_UNIVERSE_DOMAIN", universeDomain)); err != nil {
+			return fmt.Errorf("failed to apply universe domain to %s/%s: %w", item.Kind, item.GetName(), err)
+		}
+	}
+	return nil
+}
+
+func addEnvVarIfAbsentFn(envName, envValue string) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		existingEnv, found, err := unstructured.NestedSlice(container, "env")
+		if err != nil {
+			return fmt.Errorf("error getting container env list: %w", err)
+		}
+		if !found {
+			existingEnv = []interface{}{}
+		}
+		for _, e := range existingEnv {
+			envMap, ok := e.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			name, _, err := unstructured.NestedString(envMap, "name")
+			if err != nil {
+				return fmt.Errorf("error getting env var name: %w", err)
+			}
+			if name == envName {
+				return nil
+			}
+		}
+		newEnvVar := map[string]interface{}{
+			"name":  envName,
+			"value": envValue,
+		}
+		existingEnv = append(existingEnv, newEnvVar)
+		if err := unstructured.SetNestedSlice(container, existingEnv, "env"); err != nil {
+			return fmt.Errorf("failed to set env vars: %w", err)
+		}
+		return nil
+	}
+}
