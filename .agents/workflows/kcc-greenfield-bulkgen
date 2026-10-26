@@ -1,0 +1,1267 @@
+---
+description: A meta-skill for KCC Greenfield resources that describes the steps we need to take to get them to be "production ready" direct controllers at v1alpha1 at least.
+name: checklist-for-kind
+schedule: never
+mode: workflow
+cooldown: 2h
+preconditionScript: |
+  #!/bin/bash
+  # Precondition script to check if all related PRs and Issues are closed.
+
+  set -e
+  set -o pipefail
+
+  # List of issues to exclude from checks
+  EXCLUDED_ISSUES="10588"
+
+  echo "Checking precondition for KCC migration..."
+  echo "RELATED_ISSUES: ${RELATED_ISSUES:-(none)}"
+
+  if [ -z "${RELATED_ISSUES}" ]; then
+    echo "No related issues to check."
+    exit 0
+  fi
+
+  # Convert comma-separated list into an array
+  has_open_issue=false
+  IFS=',' read -ra ADDR <<< "${RELATED_ISSUES}"
+  for issue in "${ADDR[@]}"; do
+    # Trim whitespace
+    issue=$(echo "${issue}" | tr -d '[:space:]')
+    if [ -z "${issue}" ]; then
+      continue
+    fi
+
+    # Check if the issue is in the excluded list
+    is_excluded=false
+    for excl in ${EXCLUDED_ISSUES}; do
+      if [ "${issue}" = "${excl}" ]; then
+        is_excluded=true
+        break
+      fi
+    done
+
+    if [ "${is_excluded}" = "true" ]; then
+      echo "Excluding issue ${issue} from checks."
+      continue
+    fi
+
+    echo "Checking status of issue/PR #${issue}..."
+    state=$(gh issue view "${issue}" --json state --jq .state 2>/dev/null || echo "UNKNOWN")
+    echo "State of #${issue} is: ${state}"
+
+    if [ "${state}" != "CLOSED" ] && [ "${state}" != "MERGED" ]; then
+      has_open_issue=true
+
+      # Check if this open child issue has an open linked PR that isn't recorded yet
+      open_pr=$(gh api graphql -f query='
+        query($issue: Int!) {
+          repository(owner: "GoogleCloudPlatform", name: "k8s-config-connector") {
+            issue(number: $issue) {
+              timelineItems(itemTypes: [CROSS_REFERENCED_EVENT, CONNECTED_EVENT], last: 20) {
+                nodes {
+                  ... on CrossReferencedEvent { source { ... on PullRequest { number state } } }
+                  ... on ConnectedEvent { subject { ... on PullRequest { number state } } }
+                }
+              }
+            }
+          }
+        }' -F issue="${issue}" 2>/dev/null | jq -r '[.data.repository.issue.timelineItems.nodes[]? | (.source // .subject) | select(. != null and .state == "OPEN") | .number] | last // empty' 2>/dev/null || true)
+
+      if [ -n "${open_pr}" ]; then
+        parent_issue="${SESSION_ID#issue-}"
+        is_recorded=false
+        if [[ ",${RELATED_ISSUES// /}," == *",${open_pr},"* ]]; then
+          is_recorded=true
+        elif [ -n "${parent_issue}" ] && gh issue view "${parent_issue}" --json body,comments --jq '[.body, .comments[].body] | join("\n")' 2>/dev/null | grep -qE "#${open_pr}\b|pull/${open_pr}\b"; then
+          is_recorded=true
+        fi
+
+        if [ "${is_recorded}" = "false" ]; then
+          echo "New unrecorded PR #${open_pr} found for open issue #${issue}. Waking agent once to update table."
+          exit 0
+        fi
+        echo "Open PR #${open_pr} for issue #${issue} is already recorded in parent issue."
+      fi
+    fi
+  done
+
+  if [ "${has_open_issue}" = "true" ]; then
+    echo "Precondition failed: One or more related issues/PRs are not closed."
+    exit 1
+  fi
+
+  echo "All related issues/PRs are closed."
+  exit 0
+---
+
+# Checklist for KCC Greenfield Resource Migration
+
+This is a meta-skill describing the steps to migrate a KCC greenfield resource kind to a production-ready direct controller at `v1alpha1`.
+Greenfield resources are API resources that have not yet been implemented in KCC, they can be part of a brand new API or new resources in an existing API. 
+Compare to Brownfield resources which are already implemented in KCC.
+
+Instead of doing the coding yourself under this skill, you will coordinate and orchestrate:
+1. Planning the migration steps.
+2. Opening GitHub issues for each step, labeling them with `overseer`, and inheriting assignees from the parent workflow issue (`${SESSION_ID#issue-}`).
+3. Monitoring progress of the Pull Requests.
+4. Opening subsequent issues once the prior steps are successfully completed.
+
+> [!IMPORTANT]
+> **Safety Guardrails (Strict Enforcement)**:
+> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues.
+> - **Do NOT comment on child Pull Requests**: You must **never** comment directly on the child Pull Requests. The watch daemon will automatically monitor and handle PR review feedback and CI check failures.
+> - **Do NOT assign to PRs directly**: You must **never** directly assign PRs to bots or humans. The watch daemon will automatically handle bot and task assignment.
+> - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
+> - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
+> - **Idempotent Issue Creation, Assignee Inheritance & Journal Recording**:
+>   - **Fetch parent workflow issue assignees**: Before creating or adopting a child issue, look up the assignees on the parent workflow issue (`${SESSION_ID#issue-}`):
+>     `gh issue view ${SESSION_ID#issue-} --repo GoogleCloudPlatform/k8s-config-connector --json assignees --jq '[.assignees[].login] | join(",")'`
+>   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
+>     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels,assignees`
+>   - **When creating a new child issue**, if the parent workflow issue has assignees, inherit them by passing `--assignee "<parent-assignees-comma-separated>"` to `gh issue create`.
+>   - **Only adopt issues newer than the parent workflow issue**: An existing issue is eligible for adoption **only if its issue number is strictly greater than the parent workflow issue number** (`${SESSION_ID#issue-}`). Ignore any matching issue whose number is less than or equal to the parent workflow issue number (it predates this workflow and must not be adopted); treat it as if no matching issue exists.
+>   - If an eligible open issue with that title already exists (issue number greater than `${SESSION_ID#issue-}`), **DO NOT run `gh issue create`**. Reuse (adopt) the existing issue number in your progress table and journal file!
+>   - **When reusing (adopting) an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable) AND all assignees from the parent workflow issue (`${SESSION_ID#issue-}`). If any required labels or parent assignees are missing, add them immediately:
+>     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>" --add-assignee "<parent-assignees-comma-separated>"`
+>   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
+
+## Journaling and Progress Tracking
+
+To track the progress of each resource kind, maintain a journal file in `.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md` (using the CamelCase Kind name).
+
+The journal should contain:
+1. The current step of the migration.
+2. A table tracking:
+   * Step Number and Name
+   * GitHub Issue link/number
+   * GitHub Pull Request link/number
+   * Status (e.g. `Open`, `PR Created`, `Merged`, `Completed`)
+   * Date Started and Date Completed
+
+If the current step's child issue is still `OPEN` and has an open Pull Request linked to it (including when a previously recorded PR was closed without merging and replaced by a new open PR), update the table's `GitHub Pull Request` column with the latest open PR link/number (replacing any closed PR) and set `Status` to `PR Created` in both the local journal file and the parent issue description/comment, then stop. Only proceed to the next step once the PR for the current step is merged successfully.
+
+3. In addition to the local journal file, **update the parent issue description** (using the issue ID/number extracted from `${SESSION_ID#issue-}`) or fall back to updating a comment:
+   * **Formatting the GitHub Description/Comment**: To keep the parent GitHub issue clean and avoid excessively chatty updates, the body posted to GitHub (description or comment) must **only** include the current step, the progress tracking table, and **at most the 3 most recent status update notes**. Do not include the entire historical list of check logs or updates under the table in the GitHub description/comment; all older history must remain in the local journal file on the branch only.
+   * Edit/create the description or comment using the `gh` CLI:
+     ```bash
+     gh issue edit ${SESSION_ID#issue-} --body "<updated_body>"
+     ```
+     If editing the issue description fails (due to write permissions on public repositories), **fall back to updating a comment**:
+     * Search the comments on the issue for any existing comment containing the text `Migration Progress` or `Migration Progress: {kind}`:
+       ```bash
+       gh api repos/{owner}/{repo}/issues/${SESSION_ID#issue-}/comments --jq '.[] | select(.body | contains("Migration Progress")) | .id' | tail -n 1
+       ```
+     * If such a comment exists (e.g., `<comment-id>`), edit it with the updated progress using `gh api`:
+       ```bash
+       gh api --method PATCH repos/{owner}/{repo}/issues/comments/<comment-id> -f body="<updated_comment_body>"
+       ```
+     * If no such comment exists, create a new comment:
+       ```bash
+       gh issue comment ${SESSION_ID#issue-} --body "<updated_comment_body>"
+       ```
+4. Once all steps of the migration for the resource kind are successfully completed and verified merged, update the parent issue description to show completion, and close the parent issue:
+   ```bash
+   gh issue close ${SESSION_ID#issue-}
+   ```
+
+### Verifying PR CI Checks Status
+When checking if all CI check-runs have passed for a pull request, do NOT rely on a single unpaginated `gh api .../check-runs` call (since GitHub defaults to 30 items per page and might hide failing runs). Instead, use the `--paginate` option to ensure all runs are checked:
+```bash
+gh api repos/GoogleCloudPlatform/k8s-config-connector/commits/<head-sha>/check-runs --paginate --jq '.check_runs[] | select(.conclusion != "success" and .conclusion != "neutral" and .conclusion != "skipped") | {name: .name, conclusion: .conclusion}'
+```
+Or check via GitHub CLI:
+```bash
+gh pr checks <pr-number> --repo GoogleCloudPlatform/k8s-config-connector
+```
+Only declare the PR as fully passed/verified if no failures are returned across all pages of checks.
+
+<!--
+Notes for maintainers (not part of the task):
+
+- Expanded version of `.agents/workflows/kcc-greenfield.txt` for the bulkgen pipeline. Source: master @ 3f202104a5 (2026-10-26); kcc-greenfield.txt last changed in 715dc09b8e.
+- Everything above `## Steps` is copied verbatim from kcc-greenfield.txt (frontmatter, precondition script, guardrails, journaling, CI checks). Step titles, labels and routing text are also unchanged, so the adoption search and existing tooling keep working.
+- New: every child issue body is expanded (self-contained). The overseer extracts it mechanically; see "Creating child issues (expanded bodies)".
+- Inlined skills (master @ 3f202104a5):
+  - kcc-direct-greenfield-types-implementer: router, prepopulate/, judgement/, judgement/references/PARENT_AND_IDENTITY.md, judgement/references/REFERENCES_AND_NESTED_STRUCTS.md
+  - kcc-direct-base-types-implementer, kcc-identity-reference, kcc-direct-identity-implementer, kcc-direct-service-generated-id
+  - kcc-direct-controller-logic-greenfield-implementer: router, generated/
+  - record-real-gcp, kcc-direct-mockgcp-implementer, match-mockgcp-with-realgcp
+  - kcc-agentic-journaler, send-pr, run-presubmits-and-linters
+  - reviewgen-greenfield-new-types: prepopulate/, judgement/; reviewgen-greenfield-controller: generated/
+- Not inlined: the legacy/ sub-skills (in-flight handwritten PRs only) and kcc-bulk-controller-generator (ad-hoc multi-resource campaigns; explicitly not for per-resource workflows).
+- Deliberate deviations from the skills:
+  - `dev/ci/presubmits/tests-e2e-fixtures-direct` (generated/SKILL.md) does not exist. Mock runs use `dev/ci/presubmits/tests-e2e-fixtures-suite <group>`, which is what CI runs per service.
+  - `dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>` (old Step 1a/1b bodies) exists for only a few kinds and there are no fixtures in Step 1; dropped.
+  - Agents must not edit SKILL.md during these trials (journaler Tier 1). General learnings go in the PR's "Workflow feedback" section so they can be folded back into this file.
+  - Journals go to `.gemini/journals/<service_name>.md` (journaler Tier 2), never under `.gemini/skills/`.
+  - Steps 3 and 4 get a review checklist derived from their own rules (there is no reviewgen skill for them).
+  - Step 1b tells agents to search all of `apis/` for an existing `<Kind>Ref` before generating or adding one: the generator only searches the kind's own package, so it reports `parent-ref-not-modelled` even when the parent's ref exists in another version package (e.g. ArtifactRegistryRule's parent ref is in `apis/artifactregistry/v1beta1/`).
+  - The `cnrm.cloud.google.com/stability-level=alpha` label is not required: the bulkgen generator doesn't emit it and the triaged LoggingLogScope doesn't have it.
+- Parent modelling (decided 2026-10-26): child resources use the single-parent rule from `kcc-greenfield-oneParent`, one required, immutable `spec.parentRef` (`*<ParentKind>Ref`); top-level resources keep the bulkgen shape, a project/folder/organization reference plus `location` (inlined `*parent.ProjectAndLocationRef` for `projects/{p}/locations/{l}`). Notes:
+  - `generate-identity` supports this: `matchParentRefField` matches a field named `parentRef` for non-root ancestors and builds the identity from the parent's external reference.
+  - `TestCRDsHaveParentRefs` flags any ref field starting with `parent`, so each child CRD adds one line to `crds_have_parent_refs.txt`. On #14016 the test was skipped instead, reviewbot-robot rejected that and had `parentRef` renamed to `agentRef`; the Step 1b review instructions now say the name and the line are intentional. Relaxing the test to allow a bare `parentRef` would remove the need for the lines.
+  - Stop conditions from oneParent kept: parents of several different kinds, or a parent no KCC kind can create.
+- When editing a body: keep its start/end marker comments and the 4-backtick fence, never use a 4-backtick fence inside a body, and only use the placeholders `{kind}`, `{kind_lowercase}` and `{parent_issue}` (the overseer substitutes them; everything in angle brackets is for the coder).
+-->
+
+## Creating child issues (expanded bodies)
+
+Every child issue in this workflow gets an **expanded body**: the complete instructions for its step, so coder and reviewer bots never need to open a skill. Each body is in the step's section below, inside a 4-backtick `markdown` fence between two marker comments, `child-body:<step-id>:start` and `child-body:<step-id>:end`. The step ids are `step-1a`, `step-1b`, `step-2`, `step-3` and `step-4`.
+
+When a step tells you to open a child issue:
+
+1. **Never write, summarize, shorten or reorder the body yourself.** It must be the exact block for that step, with only these placeholders replaced:
+   - `{kind}` → the Kind from the parent issue title (`ai:feat: KCC support for <Kind>`), e.g. `DialogflowWebhook`
+   - `{kind_lowercase}` → the same Kind in lowercase, e.g. `dialogflowwebhook`
+   - `{parent_issue}` → the parent workflow issue number (`${SESSION_ID#issue-}`)
+
+   Leave every `<angle-bracket>` placeholder as it is; the coder fills those in.
+2. **Extract the body** with this script. Set `KIND` and `STEP`:
+   ```bash
+   PARENT="${SESSION_ID#issue-}"
+   KIND="<Kind>"
+   STEP="<step-id>"
+   KIND_LOWER="$(printf '%s' "${KIND}" | tr '[:upper:]' '[:lower:]')"
+   WF_URL="$(gh issue view "${PARENT}" --repo GoogleCloudPlatform/k8s-config-connector --json body --jq .body \
+     | grep -oE 'https://raw\.githubusercontent\.com/[^[:space:])]+' | head -n 1)"
+   WF_URL="${WF_URL:-https://raw.githubusercontent.com/acpana/k8s-config-connector/refs/heads/acpana-bulkgen-wf/.agents/workflows/kcc-greenfield-bulkgen}"
+   BODY_FILE="$(mktemp)"
+   curl -fsSL "${WF_URL}" | tr -d '\r' \
+     | awk -v s="${STEP}" '$0 == "<!-- child-body:" s ":start -->" {f=1; next} $0 == "<!-- child-body:" s ":end -->" {f=0} f' \
+     | sed '1d;$d' \
+     | sed -e "s/{kind_lowercase}/${KIND_LOWER}/g" -e "s/{kind}/${KIND}/g" -e "s/{parent_issue}/${PARENT}/g" \
+     > "${BODY_FILE}"
+   head -n 1 "${BODY_FILE}" | grep -qx "<!-- kcc-greenfield-bulkgen:${STEP} -->" \
+     && tail -n 1 "${BODY_FILE}" | grep -qx "<!-- end kcc-greenfield-bulkgen:${STEP} -->" \
+     && ! grep -qE '\{(kind|kind_lowercase|parent_issue)\}' "${BODY_FILE}" \
+     && echo "body OK ($(wc -c < "${BODY_FILE}") bytes)"
+   ```
+   If `curl` isn't available, copy the step's block from this workflow into `${BODY_FILE}` verbatim (only the placeholder substitutions above), then run the same three checks.
+3. **Create the issue** with `--body-file`, never `--body`, using the title and labels from the step and the parent's assignees:
+   ```bash
+   gh issue create --repo GoogleCloudPlatform/k8s-config-connector \
+     --title "<title from the step>" \
+     --label "<labels from the step, comma-separated>" \
+     --assignee "<parent-assignees-comma-separated>" \
+     --body-file "${BODY_FILE}"
+   ```
+4. **If the checks in 2 fail**, don't create the issue. Post one short comment on the parent issue saying that body extraction failed for `<step-id>`, and stop. Never fall back to a body you wrote yourself.
+5. **Adopted issues.** If you adopt an existing child issue (see the guardrails above) whose body doesn't contain `kcc-greenfield-bulkgen:<step-id>`, and it has no linked PR yet, replace its body with the extracted one: `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --body-file "${BODY_FILE}"`.
+6. **Keep the workflow link.** If you edit the parent issue description, always keep its `Workflow: <url>` line.
+
+## Steps
+
+Each step says when to open its child issue, gives the title, assignees and labels, and holds the expanded body.
+
+### Step 1a: Prepopulate Direct API Types, Identity, and Judgement Queue
+
+Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<service>/v1alpha1/{kind_lowercase}_types.go` exists on `master`, or `apis/<service>/judgement_queue.yaml` on `master` already contains `kind: {kind}`):
+*   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
+*   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
+
+**GitHub Issue Details for Step 1a (Prepopulate):**
+*   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/gen-types`, `overseer/review`
+*   **Body:** extract `step-1a` (see "Creating child issues"). It is this block:
+
+<!-- child-body:step-1a:start -->
+````markdown
+<!-- kcc-greenfield-bulkgen:step-1a -->
+**Parent workflow:** #{parent_issue} | **Kind:** `{kind}` | **Step 1a: Prepopulate** (pipeline: **1a** → 1b → 2 → 3 → 4)
+
+> [!NOTE]
+> This issue is self-contained: it inlines every KCC skill this step needs, so you don't need to open anything under `.gemini/skills/`. If a skill, a doc under `docs/`, or `GEMINI.md` disagrees with this issue, follow this issue.
+
+Step 1a scaffolds `{kind}` mechanically with `controllerbuilder`: KRM types, identity, reference, mapper and CRD. The generator also writes `apis/<group>/judgement_queue.yaml`, the list of decisions it couldn't make. **You make none of those decisions here**; Step 1b triages the queue.
+
+## Values you need
+
+| Value | Meaning | How to find it |
+|---|---|---|
+| `<group>` | Group prefix. Types live in `apis/<group>/v1alpha1/`, the API group is `<group>.cnrm.cloud.google.com`, controllers live in `pkg/controller/direct/<group>/`. | If `apis/<group>/` already has kinds with the same prefix as `{kind}`, reuse it. Otherwise use the lowercase service name from the proto package (`google.cloud.apihub.v1` → `apihub`). |
+| `<proto.package>` | Proto package, e.g. `google.cloud.apihub.v1`. | Section 1. |
+| `<ProtoMessage>` | Proto message of the resource, e.g. `Plugin`. | Usually `{kind}` without the group prefix. Confirm with `grep -i <name> docs/ai/metadata/cloudassetinventory_names.jsonl` and the proto. |
+| `<service_name>` | Short GCP service name, as in `<service_name>.googleapis.com`. Used for the journal. | The proto's `option (google.api.default_host)`. |
+
+## Guardrails
+
+- **Already done?** Run `git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`. A hit means `{kind}` was bulk-prepopulated: don't open a PR, comment that on this issue, and stop.
+- **No hand edits** to `{kind_lowercase}_types.go`, `types.generated.go`, `{kind_lowercase}_identity.generated.go`, `{kind_lowercase}_reference.generated.go` or `apis/<group>/judgement_queue.yaml`. (Section 4.3 has the one exception.)
+- **Resolve no queue entries.** `untriaged-bulk-generation` for `{kind}` must stay `status: open`.
+- **No `--allow-non-ga-proto`.** If the resource only exists in a non-GA proto (`v1alpha*`, `v1beta*`), stop and comment on this issue.
+- **Stay in scope.** Touch only `{kind}`'s files and the shared files named below. Don't refactor other resources.
+- **Don't edit any `SKILL.md`.** Put general learnings in the PR's "Workflow feedback" section.
+
+## 1. Find the proto (GA only)
+
+1. If `.build/third_party/googleapis` is missing, run `./dev/tools/controllerbuilder/generate-proto.sh`.
+2. Find the message: `grep -rn "^message <ProtoMessage> {" .build/third_party/googleapis/google/`.
+3. Confirm the package is GA (`v1`, `v2`, `v4`, …). Note its `option (google.api.resource)` pattern(s) and `Create<ProtoMessage>Request`.
+
+## 2. Configure `apis/<group>/generate.sh`
+
+If the group is new, create the script; otherwise add `{kind}` to it. All three `controllerbuilder` commands get `--prepopulate-resource`:
+
+```bash
+#!/bin/bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+./generate-proto.sh
+
+${CONTROLLERBUILDER} generate-types \
+  --service <proto.package> \
+  --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource {kind}:<ProtoMessage> \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service <proto.package> \
+  --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
+  --resource {kind}:<ProtoMessage>
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service <proto.package> \
+  --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/<group>" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/<group>/
+fi
+```
+
+- **Order.** Every `generate-types` and `generate-identity` call comes before `generate-mapper`, followed by `cd ${REPO_ROOT}`, `dev/tasks/generate-crds` and `goimports`. In an existing script, insert the new blocks **above** `generate-mapper`, never below it; otherwise the mapper is generated before `types.generated.go` is updated.
+- **Groups with `v1beta1` kinds.** Pass `--multiversion` and `--prepopulate-resource` to the single `generate-mapper` call, targeting `<group>.cnrm.cloud.google.com/v1beta1`.
+- `--prepopulate-resource` already turns on the bulk-generation options (`--emit-plural-acronyms`, `--emit-message-maps`) in `generate-types` and `generate-mapper`. Don't add them yourself.
+
+## 3. Generate, block the kind from releases, and compile
+
+1. Run the script:
+   ```bash
+   chmod +x apis/<group>/generate.sh
+   ./apis/<group>/generate.sh
+   ```
+2. **`BLOCKED_KINDS`.** Add `{kind}` to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`: 4-space indent, double quotes (`    "{kind}"`), alphabetical order, no duplicates. This keeps the unverified CRD out of the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation step removes it at the end of the pipeline.
+3. **New API group?** If `dev/tasks/generate-crds` added the group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, keep the operator files in sync:
+   ```bash
+   ./dev/tasks/generate-channels
+   WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...
+   ```
+4. Check that `apis/<group>/judgement_queue.yaml` exists and has `reason: untriaged-bulk-generation` with `status: open` for `{kind}`.
+5. Compile:
+   ```bash
+   go build ./apis/<group>/... ./pkg/controller/direct/<group>/...
+   ```
+6. If `pkg/controller/direct/<group>/` doesn't compile, make **only** these minimal fixes. Never edit `{kind_lowercase}_types.go` or the queue to fix compilation.
+   - **Missing Go client library:** `go get cloud.google.com/go/<service_name>/apiv1/<service_name>pb && go mod tidy`, then `(cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
+   - **Missing external proto mappers** (`Money_FromProto`, `LatLng_FromProto`, `Expr_FromProto`, …): append `,google.type` (or the right package) to `--service` on `generate-mapper` and re-run `generate.sh`.
+   - **Missing helpers for `*Request` / `*Metadata` messages or wrapper types:** add a small hand-written `{kind_lowercase}_mapper.go` (or `mapper.go`) in `pkg/controller/direct/<group>/` with only the missing `*_FromProto` / `*_ToProto` functions. The `{kind_lowercase}_` prefix keeps `TestDirectResourceFileNaming` from flagging it.
+   - **Existing `v1beta1` controllers broken by `--multiversion`:** switch their callers to the versioned `*_v1beta1_FromProto` / `*_v1beta1_ToProto` functions (or the new `URIs` acronym casing).
+
+## 4. Idempotency and API checks
+
+1. Re-run `./apis/<group>/generate.sh`. It must leave no new diff.
+2. Run:
+   ```bash
+   go test ./apis/<group>/... ./pkg/controller/direct/<group>/...
+   go test ./tests/apichecks/...
+   . dev/tasks/setup-envtest && go test ./pkg/cli/preview/... -run TestPreview
+   go test ./operator/pkg/controllers/configconnector/...
+   ```
+   - While `untriaged-bulk-generation` is open, `TestMissingRefs`, `TestDescriptions`, `TestFieldNames`, `TestRequiredFields` and `TestCRDBackwardCompatibility` skip `{kind}`.
+   - `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` may add untriaged lines for `{kind}` to `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt` and `recursivetypes.txt`. That's expected. Revert any formatting churn under `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
+   - **Never** modify `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt` or anything under `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
+3. **Recursive protos.** If `recursivetypes.txt` or envtest (`pkg/cli/preview`) flags a recursive message cycle where `controller-gen` emits an empty `{}` schema, add `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` (`+kubebuilder:validation:items:XPreserveUnknownFields` for slices) and `+kubebuilder:validation:Type=object` on the cycle-edge field in `{kind_lowercase}_types.go`, then re-run `./dev/tasks/generate-crds`. This is the only hand edit to `_types.go` allowed in Step 1a; call it out in the PR.
+4. **Empty oneof variants.** If `TestCRDObjectTypes` fails with `field ... is an object with no properties` on a genuinely parameterless proto `oneof` variant (e.g. `message LlmAgent {}`), add the CRD plural to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with the comment `// GCP known pattern: Empty oneof option (<field path>)`.
+5. Run `scripts/validate-prereqs.sh`. It runs fmt/generate/manifests and fails on any unstaged diff; its output includes hints for fixing errors. Commit again if it changes files.
+
+## Done when
+
+- `apis/<group>/generate.sh` has the three `--prepopulate-resource` commands in the right order, and re-running it leaves no diff.
+- `judgement_queue.yaml` has `{kind}`'s `untriaged-bulk-generation` entry with `status: open`; no `{kind}` entry was resolved or deleted.
+- `{kind}` is in `BLOCKED_KINDS`.
+- Everything in sections 3 and 4 builds and passes, including `scripts/validate-prereqs.sh`.
+
+## Journal
+
+Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it if needed). Never write to a `journal/` folder or `journal.md` under `.gemini/skills/`. Use this format:
+
+```markdown
+### [YYYY-MM-DD] <Brief title>
+- **Context**: <what you were implementing; kind/PR>
+- **Problem**: <the unexpected behavior>
+- **Solution**: <how you solved it; snippets if useful>
+- **Impact**: <why the next agent should care>
+```
+
+## Pull request
+
+- **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
+- **Labels:** the labels on this issue.
+- **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
+- **Body:** `Fixes #<this issue's number>`; the checks you ran and their results; any minimal compile fix or `_types.go` edit and why; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+
+```release-note
+NONE
+```
+
+## Review Instructions
+
+Check every item, then post the result in the format at the end.
+
+1. **`generate.sh`.** It runs, in order: `generate-types` (`--resource {kind}:<ProtoMessage>`, `--prepopulate-resource`); `generate-identity` (`--resource {kind}:<ProtoMessage>`); `generate-mapper` after all types/identity calls (`--prepopulate-resource`, plus `--multiversion` if the group has `v1alpha1` and `v1beta1`); then `cd ${REPO_ROOT}`, `dev/tasks/generate-crds` and `goimports` on `pkg/controller/direct/<group>/`. No `--allow-non-ga-proto` unless this issue authorized it. Files are under `apis/<group>/v1alpha1/`. New `.go` and `.sh` files have a 2026 copyright header.
+2. **Queue still open.** `apis/<group>/judgement_queue.yaml` is committed with `untriaged-bulk-generation` / `status: open` for `{kind}`. Reject if any `{kind}` entry was resolved or deleted.
+3. **Pure generator output.** Re-running `./apis/<group>/generate.sh` and then `git diff --exit-code` shows no change to `{kind_lowercase}_types.go`, `types.generated.go`, `{kind_lowercase}_identity.generated.go`, `{kind_lowercase}_reference.generated.go`, `pkg/controller/direct/<group>/mapper.generated.go`, or the CRD under `config/crds/resources/`. Reject hand edits to those files; the recursive-type markers of section 4.3 are the only exception. Allowed compile fixes: the client library in `go.mod`/`go.sum`, extra proto packages on `generate-mapper --service`, small hand-written mapper helpers in `pkg/controller/direct/<group>/`, versioned-caller updates for `--multiversion`.
+4. **Blocklist.** `{kind}` is in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (4-space indent, double quotes, alphabetical, no duplicates).
+5. **Builds and checks.** These pass:
+   ```bash
+   go build ./apis/<group>/... ./pkg/controller/direct/<group>/...
+   go test -v ./apis/<group>/... ./pkg/controller/direct/<group>/...
+   go test -v ./tests/apichecks/...
+   . dev/tasks/setup-envtest && go test ./pkg/cli/preview/... -run TestPreview
+   go test ./operator/pkg/controllers/configconnector/...
+   ```
+6. **Exception files.** Only `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, `recursivetypes.txt`, and empty-oneof `knownInvalidCRDs` entries (with the `// GCP known pattern: Empty oneof option (...)` comment) may change. Reject any change to `missingrefs.txt`, `naming_violations.txt` or `multi_version_crd_diff/`.
+
+```markdown
+### KCC Greenfield Step 1a (Prepopulate) Auto-Review Results
+* **`generate.sh` & Flags Check**: [Pass/Fail] - (generate-types/generate-identity/generate-mapper with --prepopulate-resource, order, no --allow-non-ga-proto)
+* **Judgement Queue Open Check**: [Pass/Fail] - (untriaged-bulk-generation open; nothing resolved or deleted)
+* **Mechanical Output & Idempotency**: [Pass/Fail] - (zero diff after re-running generate.sh; no hand edits)
+* **Release Bundle Blocklist (`BLOCKED_KINDS`)**: [Pass/Fail]
+* **Mapper Compilation & `apichecks`**: [Pass/Fail] - (builds; tests pass; no unauthorized exception edits)
+
+#### Detailed Findings / Actions Required:
+1. [file, line, exact issue]
+```
+<!-- end kcc-greenfield-bulkgen:step-1a -->
+````
+<!-- child-body:step-1a:end -->
+
+### Step 1b: Triage Judgement Queue and Finalize Direct API Types, Identity, and Reference Types
+
+Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or after Step 1a merges):
+*   *Compatibility check for legacy in-flight workflows:* If `apis/<service>/v1alpha1/{kind_lowercase}_types.go` is already on `master` from a legacy Step 1 PR and `apis/<service>/judgement_queue.yaml` does not have an `open` `untriaged-bulk-generation` entry for `{kind}`, mark Step 1b as `Skipped (Legacy Step 1)` and proceed directly to **Step 2**.
+*   Otherwise, open a GitHub issue to triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files (plus the generated controller and fuzzer if already present on `master`) for `{kind}`.
+
+**GitHub Issue Details for Step 1b (Judgement Triage):**
+*   **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types and identity for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
+*   **Body:** extract `step-1b` (see "Creating child issues"). It is this block:
+
+<!-- child-body:step-1b:start -->
+````markdown
+<!-- kcc-greenfield-bulkgen:step-1b -->
+**Parent workflow:** #{parent_issue} | **Kind:** `{kind}` | **Step 1b: Judgement triage** (pipeline: 1a → **1b** → 2 → 3 → 4)
+
+> [!NOTE]
+> This issue is self-contained: it inlines every KCC skill this step needs, so you don't need to open anything under `.gemini/skills/`. If a skill, a doc under `docs/`, or `GEMINI.md` disagrees with this issue, follow this issue.
+
+`{kind}` was scaffolded with `controllerbuilder ... --prepopulate-resource`, in Step 1a or a bulk batch. Every decision the generator couldn't make is an entry in `apis/<group>/judgement_queue.yaml`. Your job: resolve all of `{kind}`'s entries, finalize the KRM types, identity and references, and leave everything compiling and passing.
+
+## Values you need
+
+| Value | How to find it |
+|---|---|
+| `<group>` | `git grep -l "kind: {kind}$" -- 'apis/*/judgement_queue.yaml'` gives `apis/<group>/judgement_queue.yaml`. The API group is `<group>.cnrm.cloud.google.com`. |
+| `<proto.package>.<ProtoMessage>` | `+kcc:spec:proto=` in `apis/<group>/v1alpha1/{kind_lowercase}_types.go`. |
+| `<proto_lower>` | `<ProtoMessage>` in lowercase. |
+| `<service_name>` | The proto's `option (google.api.default_host)`, as in `<service_name>.googleapis.com`. |
+
+## Guardrails
+
+- **Legacy check.** If `{kind_lowercase}_types.go` exists but the queue has no open `untriaged-bulk-generation` entry for `{kind}`, this step doesn't apply. Comment that on this issue and stop.
+- **Stay in scope.** Touch only `{kind}`'s files, the shared files named below, and parent or target identity/reference files when a section says so. Don't refactor other kinds.
+- **Don't edit any `SKILL.md`.** Put general learnings in the PR's "Workflow feedback" section.
+
+## Queue rules (read these first)
+
+1. **Work field by field.** Entries are grouped by `(group, kind)`: `untriaged-bulk-generation` first, then kind-level entries (`field: ""`), then field-level entries grouped by `field`. Decide all signals for one `(kind, field)` together.
+2. **Never delete an entry.** Change `status: open` to `status: resolved` and add a `resolution` (`accepted`, `edited`, `deferred` or `not-applicable`) and a clear `note`. The note is required for `edited`, `deferred` and `not-applicable`.
+3. **Scope.** Resolve every entry with `kind: {kind}`, plus any legacy `protoMessage:` entry reachable from `{kind}Spec` or `{kind}ObservedState`. Leave other kinds' entries alone. `well-known-proto-type` and `sensitive-field` are team-policy items: leave them `open`, or resolve them as `deferred` with a note.
+4. **Reference signals agree.** All reference entries (`authoritative-proto-reference`, `possible-reference*`) for one `(kind, group, field)` must end with the same status, or `TestJudgementQueueIsWellFormed` fails.
+5. **Remove `+kcc:guess` markers** for every resolved entry from `{kind_lowercase}_types.go`, `{kind_lowercase}_identity*.go` and any struct moved out of `types.generated.go`. Never hand-edit `types.generated.go`.
+6. **Never reward-hack `TestMissingRefs`.** Never delete, truncate or reword proto doc comments (such as `"Format: projects/{project}/..."`) to silence it, and never add lines to `tests/apichecks/testdata/exceptions/missingrefs.txt`.
+7. **`untriaged-bulk-generation` goes last.** Keep it `open` while you work. Resolve it only after every other entry and the audit in section 4.
+
+## 1. Inventory
+
+1. Read `{kind}`'s block in `apis/<group>/judgement_queue.yaml`, plus `apis/<group>/generate.sh` and `apis/<group>/v1alpha1/{kind_lowercase}_types.go`.
+2. Check that `generate.sh` runs, in order:
+   - `generate-types --prepopulate-resource`
+   - `generate-identity`
+   - `generate-mapper --prepopulate-resource` (plus `--multiversion` if the group has `v1alpha1` and `v1beta1`, and `--proto-source-path ${PROTO_OUT}` if the script pins a custom `PROTO_SHA`)
+   - `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource`, if a pre-generated controller/fuzzer exists for `{kind}`
+   - `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, `goimports`
+
+   In shared or legacy packages (e.g. `dialogflow`, `iam`, `mapmanagement`, `networkconnectivity`, `bigqueryanalyticshub`), if `generate-mapper` would overwrite existing mockgcp, legacy or multi-service mappers in `pkg/controller/direct/<group>/mapper.generated.go`, keep `{kind}`'s mappers in `pkg/controller/direct/<group>/{kind_lowercase}_mapper.go` instead. The exact `{kind_lowercase}_` prefix satisfies `TestDirectResourceFileNaming`.
+3. Find the proto under `.build/third_party/googleapis/google/...` (run `./dev/tools/controllerbuilder/generate-proto.sh` if it's missing). Read the message, its `option (google.api.resource)` pattern(s) and `Create<ProtoMessage>Request`.
+
+## 2. Parent, location and identity entries
+
+Reasons: `location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-ref-not-supported`, `parent-multiple-patterns`, `location-parent-unknown`, `parent-root-unknown`, `root-not-in-name`, `root-ref-guessed`, `root-ref-not-modelled`, `identity-multi-pattern`, `identity-root-unknown`, `identity-not-in-cai`, `identity-server-generated-id`.
+
+**The single-parent rule.** First find the parent pattern: the resource's `option (google.api.resource)` pattern without its last `/<collection>/{id}` pair. For example, `projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}` has the parent `projects/{project}/locations/{location}/agents/{agent}`. It is also the `parent` of `Create<ProtoMessage>Request`. Then:
+
+- **Top-level resource:** the parent pattern is just a root (`projects/{project}`, `folders/{folder}` or `organizations/{organization}`), optionally followed by `locations/{location}`. Keep the root reference plus `location` (cases A and C).
+- **Child resource:** the parent pattern ends in another resource. Model it with exactly one field, `spec.parentRef` (case B).
+
+For this one field, the rule overrides `docs/develop-resources/api-conventions/validations.md` Rule 3 (an inlined `Parent` struct) and the convention that a reference is named after its target kind.
+
+**Case A: top-level, project and location** (`projects/{project}/locations/{location}/<collection>/{id}`; the `location-or-parent-ref` detail mentions `parent.ProjectAndLocationRef`).
+1. In `{kind_lowercase}_types.go`, import `parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"`.
+2. Replace the separate `ProjectRef *refsv1beta1.ProjectRef` and `Location` fields on `{kind}Spec` with:
+   ```go
+   *parent.ProjectAndLocationRef `json:",inline"`
+   ```
+   It defines `ProjectRef` (`+required`) and `Location string` (`+required`, immutable). That non-pointer `Location` is an approved exception to the pointer rule. The CRD keeps `spec.projectRef` and `spec.location`.
+3. Re-run `./apis/<group>/generate.sh` so `generate-identity` regenerates `{kind_lowercase}_identity.generated.go` and `{kind_lowercase}_identity_generated_test.go`.
+4. Resolve `location-or-parent-ref` as `edited`, note `replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef`.
+
+Other top-level parents keep the generated root field: `projects/{project}` keeps `ProjectRef *refsv1beta1.ProjectRef` and has no `Location`; `folders/{folder}` or `organizations/{organization}` keeps `FolderRef *refsv1beta1.FolderRef` or `OrganizationRef *refsv1beta1.OrganizationRef`, plus `Location` if the parent pattern has `locations/{location}`. All of them are required.
+
+**Case B: child resource, `spec.parentRef`** (`.../<parents>/{parent}/<collection>/{id}`; `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-ref-not-supported`, or a `location-or-parent-ref` saying the parent "already names the location").
+1. **Find the parent's reference type.** Search the whole repo: `git grep -n "type <ParentKind>Ref struct" -- apis/`. The generator only looks in `{kind}`'s own package, so `parent-ref-not-modelled` can appear even when the ref exists in another version or group package (e.g. `apis/<group>/v1beta1/`). Use it if it exists; never create a second ref type for the same kind, and don't change the parent's CRD schema. If none exists: for a parent in the same proto service, generate its identity and reference with `controllerbuilder generate-identity`; otherwise add `<parentkind>_identity.go` and an external-only `<parentkind>_reference.go` (section 5.4).
+2. **Replace** `ProjectRef`, `Location` and any guessed `<Parent>Ref` field on `{kind}Spec` with exactly this field:
+   ```go
+   // The <ParentKind> this {kind} is created under.
+   // +required
+   // +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+   ParentRef *<ParentKind>Ref `json:"parentRef"`
+   ```
+   - It is the only hierarchy field: no `projectRef`, `folderRef`, `organizationRef`, `location`, `region`, `zone` or reference to a grandparent anywhere in the spec.
+   - Never put `json:",inline"` on it. The Go name `ParentRef` and the JSON name `parentRef` are used only for this field, and no other field is named `parent<Something>Ref`.
+   - Project, location and every ancestor ID come from the parent once the reference is resolved, never from the `cnrm.cloud.google.com/project-id` annotation, the namespace, `refs.ResolveProjectID` or `refs.GetLocation`.
+   - If the proto message has its own `parent` field, don't add a spec field for it; the controller fills it from the identity.
+3. **Regenerate.** Re-run `./apis/<group>/generate.sh`. `generate-identity` recognizes a field named `parentRef`: the generated `getIdentityFrom{kind}Spec` normalizes `spec.parentRef` and builds the identity from the parent's external reference plus the resource ID. This also resolves `identity-root-unknown`. Check that the generated function reads nothing from the spec except `parentRef` and `resourceID`.
+4. **`TestCRDsHaveParentRefs`.** It flags every reference field whose name starts with `parent`, so `parentRef` trips it. That is intentional under the single-parent design: run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/ -run TestCRDsHaveParentRefs` and commit exactly the one new line it writes for `{kind}`'s CRD to `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt`. Don't skip or edit the test, and don't rename the field after the parent kind, even if a review asks; point to this issue instead. Say so in the PR description.
+5. **Resolve** the `parent-ref-*`, `location-or-parent-ref` and `identity-root-unknown` entries as `edited`, note `modelled as spec.parentRef (*<ParentKind>Ref) per the single-parent rule; removed projectRef and location`.
+6. **Stop and comment on this issue** instead of improvising if:
+   - the resource has several name patterns whose parents are different kinds: there is no shared multi-kind reference type yet; or
+   - no KCC kind, direct or legacy, can create the parent: Step 2's fixtures must create it, so the parent kind has to be implemented first. (A parent that KCC manages only through a legacy kind is fine: give it an external-only reference type as in item 1.)
+
+**Case C: global, several roots, or proto `location`/`region`/`zone` fields.**
+- `location-parent-unknown`: if the pattern has no `{location}` segment, remove `Location` from `{kind}Spec`, re-run `generate.sh`, and resolve as `edited`.
+- `location-or-parent-ref` on a proto `location`, `region` or `zone` field that is not the parent (top-level or nested): decide whether it names a Compute region/zone or sub-resource, or is a plain region/zone parameter (e.g. `StorageRapidCache.spec.zone`, `CloudSqlSettings.zone`). Convert it to a reference if that fits (`edited`), or keep the string (`accepted`, with a note).
+- `parent-multiple-patterns`, `parent-root-unknown`, `root-not-in-name`, `root-ref-*` on a **top-level** resource that can live under several roots (`projects/...`, `folders/...`, `organizations/...`): add an optional (`// +optional`) `ProjectRef *refsv1beta1.ProjectRef`, `FolderRef *refsv1beta1.FolderRef` and/or `OrganizationRef *refsv1beta1.OrganizationRef` for each supported root. Re-run `generate.sh` (it generates the multi-parent identity) and resolve as `edited`. For a child resource, see case B, item 6.
+
+**Identity entries.** `generate-identity` resolves `identity-*` entries itself once `{kind}Spec` models every segment of the pattern and `generate.sh` is re-run.
+- `identity-root-unknown` / `identity-multi-pattern`: fix the parent/root fields as above and re-run `generate.sh`. If the proto has no `(google.api.resource)`, or several patterns, lock the pattern with `--pattern {kind}=<pattern>` (or `--pattern {kind}=//<host>/<pattern>`) on `generate-identity` rather than hand-writing the identity.
+  - **Singletons** (the pattern ends in a literal, e.g. `projects/{project}/locations/{location}/config`): the template keeps the literal suffix, with no invented `{config}` variable. Remove `ResourceID` from `{kind}Spec` if it doesn't apply.
+- `identity-not-in-cai`: check the `gcpurls.Template` host and path against the proto pattern (camelCase collection names) and `docs/ai/metadata/cloudassetinventory_names.jsonl`. `pkg/gcpurls/registry_test.go` skips templates that have this entry. If the template matches the proto, resolve as `accepted`, note `verified template against proto google.api.resource pattern`.
+- `identity-server-generated-id` (no `*_id` on `Create<ProtoMessage>Request`, or `.name` is `OUTPUT_ONLY`): read `Create<ProtoMessage>Request` (or `Insert<ProtoMessage>Request`).
+  - **No `<resource>_id` field, and the server assigns the ID:** make sure the `ResourceID` comment in `{kind}Spec` says it is server-generated, so `generate-identity` emits `identity.ServerGeneratedIdentity`. Resolve as `accepted`, or `edited` if you changed the spec and regenerated.
+  - **Has a `<resource>_id` field** (even if `.name` is `OUTPUT_ONLY`), or takes the ID through `name`: `{kind}Identity` must implement `identity.IdentityV2`. Resolve as `accepted` with a note that the request has `<resource>_id`, or `edited`.
+
+## 3. Reference, output-only and required entries
+
+Reasons: `authoritative-proto-reference`, `possible-reference`, `possible-reference-by-description`, `possible-reference-by-description-loose`, `possible-reference-by-name`, `possible-reference-by-sibling`, `reference-not-representable`, `well-known-output-only-pattern-in-comment`, `possible-output-only-pattern-in-comment`, `required-not-enforced`.
+
+### 3.1 Editing nested structs from `types.generated.go`
+
+Before a **breaking** edit to a nested struct (removing a field, converting a field to `*Ref`, adding `+required`), find every kind that uses it: `grep -rn "<Struct>" apis/<group>/`. Don't rely on the queue alone: pre-existing kinds have no entries, triaged kinds have `untriaged-bulk-generation` resolved, untriaged kinds have it open.
+
+- **Always keep `// +kcc:proto=<full.proto.MessageName>`** on every hand-written nested struct in `{kind_lowercase}_types.go` (and `// +kcc:proto:field=...` on its fields), and keep `<Struct>` in its Go name. `TestHandWrittenProtoStructAnnotationsAndNaming` enforces both.
+- **Non-breaking changes** from `generate.sh` (new optional fields, updated doc comments) are fine in place in `types.generated.go`.
+- **Used only by `{kind}`** (or only by untriaged kinds you change together): move `type <Struct> struct` into `{kind_lowercase}_types.go` under its original name and edit it there. Don't move unmodified parent structs; the generator keeps them in `types.generated.go` and points them at your copy.
+- **Shared with another kind** (especially a pre-existing or triaged one): never change `type <Struct> struct` in place; that breaks the other kind's CRD and mappers (`TestCRDBackwardCompatibility`). Reuse a compatible hand-written variant, or fork the struct into `{kind_lowercase}_types.go` under a distinct name that still contains `<Struct>` (e.g. `{kind}_<Struct>`, `<Struct>Spec` paired with `<Struct>ObservedState`, or the generated `<Struct>WithRequired`), keeping `+kcc:proto=`. The base struct stays generated for the other kinds. If an intermediate struct between `{kind}Spec` and `<Struct>` is also shared, fork it too, keeping its `+kcc:proto=` and its name.
+
+### 3.2 Reference entries
+
+`authoritative-proto-reference` means the proto field has a `google.api.resource_reference`; it is then the only finding for that field. Without one, a field can carry 2–3 heuristic `possible-reference-*` entries. Read all their `detail:` lines together with the proto field comment.
+
+- **The field references a GCP resource:**
+  1. If it's in a nested struct, move or fork the struct per 3.1.
+  2. Replace the `*string` / `[]string` with `<fieldName>Ref *<TargetKind>Ref`, or `[]<TargetKind>Ref` for lists (singular field name plus `Refs`, e.g. `datasets` → `DatasetRefs` with `json:"datasetRefs,omitempty"`). Keep `// +kcc:proto:field=...`.
+  3. Remove its `// +kcc:guess=possible-reference` or `// +kcc:guess=sibling-ref`.
+  4. If `<TargetKind>Ref` doesn't exist in `{kind}`'s package, search the whole repo first (`git grep -n "type <TargetKind>Ref struct" -- apis/`); refs often live in another group or version package, and standard ones such as `ProjectRef` live in `apis/refs/v1beta1/`. Use an existing one if found. Only if none exists: for a target in the same proto service, generate it with `generate-identity`; otherwise add an external-only reference (section 5.4). **Never** add new files or types under `apis/refs/v1beta1/`. For targets with a full KCC CRD (`status.externalRef`), `Normalize` delegates to `refs.Normalize`, never `refs.NormalizeWithFallback`.
+  5. Resolve the entry (or **all** of the field's `possible-reference*` entries) as `edited`, note `converted to <fieldName>Ref (*<TargetKind>Ref)`.
+
+  Standard targets: service accounts → `IAMServiceAccount`, Cloud Storage buckets → `StorageBucket`, Service Directory → `ServiceDirectoryService`, projects → `refsv1beta1.ProjectRef`.
+- **The field is not a control-plane GCP resource** (an opaque or third-party ID, a display string, a CVE ID, a filter expression, a `*` wildcard, or a data-plane object KCC doesn't manage, such as a Cloud Storage object): remove any `+kcc:guess`, resolve as `not-applicable` with a note saying what the field holds, and check that `go test ./tests/apichecks/... -run TestMissingRefs` passes without touching doc comments or `missingrefs.txt`.
+- **`reference-not-representable`** (a polymorphic multi-kind name, or a format KCC can't type yet): confirm the reason in `detail` and resolve as `accepted` (or `edited` if one canonical reference applies).
+
+### 3.3 Output-only fields named in comments
+
+`detail` gives the spec path and where the field would live under `status.observedState`. Check the proto comment.
+- **Server-populated:** move a top-level field from `{kind}Spec` to `{kind}ObservedState`. For a nested field, move or fork the struct per 3.1, drop the field from the spec struct, and make sure `<Struct>ObservedState` carries it under `{kind}ObservedState`. Resolve as `edited`, note `moved output-only field from <spec_path> to <observed_state_path>`.
+- **User-settable** (e.g. "Output only for X mode, required for Y mode", or a false positive): keep it, and resolve as `not-applicable` with the reason.
+
+### 3.4 `required-not-enforced`
+
+Follow `detail`. If a hand-written struct holds a generated `<Struct>` that has a `<Struct>WithRequired` copy, switch to `<Struct>WithRequired` (isolating the parent struct per 3.1 if it's shared with a non-strict kind). If a shared struct needs `+required` together with other edits, fork it per 3.1 and add `// +required` to the required fields. Resolve as `edited`.
+
+### 3.5 Every other reason
+
+| `reason` | Action |
+|---|---|
+| `ambiguous-proto-name` | Qualify `--resource {kind}:<full.proto.Package.ProtoName>` in `generate.sh`, check `+kcc:spec:proto=`, re-run `generate.sh`. `edited`. |
+| `empty-observedstate` | If server-populated output fields landed in `Spec`, move them to `{kind}ObservedState`. If there really are none, comment out `ObservedState *{kind}ObservedState` in `{kind}Status` and `type {kind}ObservedState struct`, so `TestCRDObjectTypes` passes. `edited`. |
+| `etag-in-spec` | Remove `Etag *string` from `{kind}Spec` (or the nested spec struct, isolating it per 3.1 if shared) and make sure `Etag *string` is in `ObservedState`. `edited`. |
+| `possible-status-field-in-spec` | Check the flagged field (`state`, `status`, `createTime`, `updateTime`, `deleteTime`, `lastUpdateTime`, `creationTimestamp`, `startTime`, `endTime`, `uid`, `id`, `selfLink`, `selfLinkWithID`, `reconciling`). Server-populated: move it to `ObservedState` (`edited`). An `id`/`uid` that duplicates `spec.resourceID` or is server-generated: remove it from `Spec`, and put it in `ObservedState` if server-generated (`edited`). Genuinely user-set desired state, such as an admin toggle or a scheduled start/end window: keep it (`accepted`). |
+| `server-set-field-placed` | Confirm against the proto that it belongs in `ObservedState` and remove the `+kcc:guess`. `accepted` (or `edited` if you moved it back to `Spec`). |
+| `message-map-derived` | Check that the `map[string]<Struct>` field and its mapper helpers compile. `accepted`. |
+| `deprecated-field` / `deprecated-message` / `deprecated-resource` | Top-level deprecated fields are already omitted: `accepted`. `deprecated-message`: remove the field from `Spec` (per 3.1 if nested), `edited`. `deprecated-resource`: confirm intent, `accepted`. |
+| `verify-resource-docs-link` / `verify-service-docs-link` | Fix the doc URL in `{kind_lowercase}_types.go` to a valid `https://cloud.google.com/...` page (or remove it if there is none) and remove `// +kcc:guess=source-link`. `edited`. |
+| `unsupported-field-type` | Read the `// TODO: unsupported` comment. Map it to a standard KRM type (`edited`) or resolve as `deferred` with a note. |
+| `well-known-proto-type` / `sensitive-field` | Leave `open`, or `deferred` with a note. |
+
+## 4. Audit before closing `untriaged-bulk-generation`
+
+1. **Unflagged references.** Scan every remaining `*string` / `[]string` in `{kind}Spec` and every struct it reaches (in both type files) for GCP resource references the generator missed, e.g. `sourceProjectID`, `defaultDatabase`, `kmsKey`, `serviceAccount`, `network`, `repository`. Convert them per 3.2.
+2. **No top-level `Labels`.** Remove `Labels map[string]string` from `{kind}Spec`; top-level proto `labels` are reconciled from `metadata.labels`. Leaving it fails `TestVerifyLabelsTestCasesExist` once a controller is registered.
+3. **Nested `Etag` and output-only fields.** Check the nested spec structs too. If `{kind}ObservedState` ends up empty, comment it out (see `empty-observedstate`).
+4. **KRM standards.** `{kind_lowercase}_types.go` must meet all of these:
+   - It starts with `// Copyright 2026 Google LLC` (never change the year of an existing file).
+   - The kind has `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"` and `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"`.
+   - `status.observedGeneration` is exactly `*int64`.
+   - Service-generated values (such as `etag`) are never in `spec`; they go in `status.observedState`.
+   - Every scalar field is a pointer (`*string`, `*bool`, `*int32`, `*int64`, `*float64`), except `Location` from the embedded `parent.ProjectAndLocationRef`. Slices and maps are never pointers.
+   - Acronyms are all upper or all lower case (`vertexAISearchRuntimeConfig`, not `vertexAiSearchRuntimeConfig`).
+   - `// +kcc:spec:proto=` is on the Spec, `// +kcc:observedstate:proto=` on the ObservedState (or `// +kcc:status:proto=` on the Status when there's no ObservedState), and `// +kcc:proto=` on each nested struct. One kind maps to one proto message, and back.
+   - Hand-maintained structs (with `*Ref` fields, unions/oneofs, recursive types, overrides) live in `{kind_lowercase}_types.go`, which stays as small as possible: parents of moved structs stay generated.
+   - Deeply nested or recursive types that break OpenAPI generation are commented out or simplified. `x-kubernetes-preserve-unknown-fields: true` appears only on `apiextensionsv1.JSON` fields that carry free-form user payloads.
+5. **Close it.** Resolve `{kind}`'s `untriaged-bulk-generation` as `edited` or `accepted`, with a summary note.
+
+## 5. Identity and reference
+
+`generate-identity` writes `{kind_lowercase}_identity.generated.go`, `{kind_lowercase}_reference.generated.go` and `{kind_lowercase}_identity_generated_test.go` (which calls `identity.AssertConformance`). Prefer it to hand-written code.
+
+1. **Hand-written code wins, declaration by declaration.** For a non-standard parent, write only the custom function (e.g. `getIdentityFrom{kind}Spec` in `{kind_lowercase}_identity.go`, or `Normalize` in `{kind_lowercase}_reference.go`); the generator still emits the rest without collisions. Promote the generated file to a hand-written `{kind_lowercase}_identity.go` (rename it and drop the `// Code generated by controllerbuilder... DO NOT EDIT.` header) only if `generate-identity` can't express the URL pattern.
+2. **Rules for hand-written identity code:**
+   - `var {kind}IdentityFormat = gcpurls.Template[{kind}Identity]("<service_name>.googleapis.com", "projects/{project}/...")`. Template variables match the struct fields when lowercased and have no underscores: map `{aspect_type}` to `{aspectType}` and `AspectType`. Keep camelCase collection names (`entryGroups`).
+   - Declare `_ identity.IdentityV2 = &{kind}Identity{}` (or `identity.ServerGeneratedIdentity`) and `_ identity.Resource = &{kind}{}`. The struct has one field per template variable, `// +k8s:deepcopy-gen=false`, and the doc comment `// {kind}Identity is the identity of a GCP {kind} resource.`
+   - `String()`, `FromExternal()` and `Host()` delegate to the template. `ParentString()` returns the parent URI (`projects/{project}/locations/{location}` or the parent resource's name), built with the parent's identity type rather than formatted by hand.
+   - `getIdentityFrom{kind}Spec(ctx, reader, obj *{kind})` takes the typed object and resolves the parent from the parent field chosen in section 2. For a child resource that means: normalize `spec.parentRef` and build the identity from the parent's external reference (or the parent's identity), never from other spec fields, annotations or the namespace. The resource ID is `spec.resourceID`, else `metadata.name`, except for server-generated IDs (item 3).
+   - **`GetIdentity` must cross-check the spec identity against `status.externalRef`** when the Status has that field, and return an error if they differ: `cannot change {kind} identity (old=%q, new=%q)`. If the Status has no such field, return the spec identity. Never change the schema to add one.
+   - If the template isn't in `cloudassetinventory_names.jsonl`, add it to the ignored templates in `pkg/gcpurls/registry_test.go`, or `TestRegisteredTemplatesMatchCAI` fails.
+3. **Server-generated IDs** (`ServerGeneratedIdentity` only): never default the ID to `metadata.name`; an empty `spec.resourceID` means "let GCP assign one". Implement `HasIdentitySpecified()` (`return i.<ID> != ""`). In `GetIdentity`, when `status.externalRef` is set: with an empty `spec.resourceID`, check that the parent parts match and return the status identity; otherwise spec and status must be equal. Reference: `apis/bigqueryconnection/v1beta1/bigqueryconnectionconnection_identity.go`.
+4. **External-only references** (for a referenced kind KCC doesn't support yet), in `apis/<target_group>/v1alpha1/<targetkind>_reference.go`:
+   - `<TargetKind>Ref` has only `External`, with the godoc `A reference to an externally managed <TargetKind> resource. Should be in the format "projects/{{projectID}}/...".`; `Name` and `Namespace` stay commented out inside a `/* NOTYET ... */` block.
+   - It has `GetGVK`, `GetNamespacedName` (returns an empty name), `GetExternal`, `SetExternal`, `ValidateExternal` (through `<TargetKind>Identity.FromExternal`), and a `Normalize` that errors when `External` is empty and otherwise returns `ValidateExternal(External)`.
+   - Add a matching `<targetkind>_identity.go` with a `gcpurls.Template`, following item 2.
+   - Run `TestDirectResourceFileNaming` and add the expected `[naming_violation] file=... prefix=<targetkind> (expected a valid resource kind prefix)` lines to `testdata/exceptions/naming_violations.txt`.
+5. **Hand-written full references** (`{kind}Ref`): exactly three fields, `External`, `Name` and `Namespace`; the doc comment `// {kind}Ref is a reference to a GCP {kind}.`; the godocs `The name of a {kind} resource.` and `The namespace of a {kind} resource.` on `Name` and `Namespace`; `func init() { refs.Register(&{kind}Ref{}, &{kind}{}) }`; the methods `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal` and `ParseExternalToIdentity`; and a `Normalize` that is exactly `return refs.Normalize(ctx, reader, r, defaultNamespace)`, never `NormalizeWithFallback` or anything that reads the spec (`refs` is `apis/refs/v1beta1`). Define `{kind}GVK` once, here or in `_types.go`. Reference types always live in `*_reference*.go`, never in `_types.go`.
+6. **Tests** (hand-written identity only): `{kind_lowercase}_identity_test.go` covers `String`/`FromExternal` round trips, bad formats and the parent derivation, using `cmp.Diff` with the `(-want +got):\n%s` format. Don't add a separate `_reference_test.go`.
+
+## 6. Regenerate and keep any pre-generated controller in sync
+
+1. Run `./apis/<group>/generate.sh`. `git diff apis/<group>/judgement_queue.yaml` must show no newly opened entries for `{kind}`.
+2. **If `pkg/controller/direct/<group>/` already has a controller (`*_controller.go`) or fuzzer (`{kind_lowercase}_fuzzer.generated.go`) for `{kind}` (mandatory):** your changes alter fields, `*Ref` types, `ObservedState` or `IdentityV2`/`ServerGeneratedIdentity`, so regenerate and fix them in lockstep.
+   - Make sure `generate.sh` (or direct `controllerbuilder generate-controller --prepopulate-resource` / `generate-fuzzer --prepopulate-resource` calls) updates `pkg/controller/direct/<group>/<proto_lower>_controller.go` and `pkg/controller/direct/<group>/{kind_lowercase}_fuzzer.generated.go`.
+   - If `ambiguous-proto-name` changed `<ProtoMessage>`, delete the stale `<old_proto_lower>_controller.go` and run `python3 dev/tasks/generate_static_config.py`.
+   - Check:
+     ```bash
+     go build ./pkg/controller/direct/<group>/...
+     FOCUS={kind} go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers
+     ```
+3. `{kind}` stays in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`. Add it (alphabetically) if it's missing, and never remove it in this step; a graduation step does that at the end of the pipeline.
+4. If `go.mod` changed, run `go mod tidy && (cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
+
+## 7. Verify
+
+```bash
+go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming|TestGenerateScripts|TestDirectResourceFileNaming"
+go test -v ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
+go test -v ./apis/<group>/... ./pkg/controller/direct/<group>/...
+WRITE_GOLDEN_OUTPUT=1 go test ./pkg/cli/powertools/cais/...   # _identities.yaml goldens
+go build ./... && go vet ./...
+make resource-docs
+dev/tasks/diff-crds                                            # only {kind}'s CRD should change
+scripts/validate-prereqs.sh
+```
+
+`scripts/validate-prereqs.sh` runs fmt/generate/manifests and fails on any unstaged diff; its output includes hints. Commit again if it changes files.
+
+Only these exception files may grow: `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt` (exactly one line, for a child resource's `spec.parentRef`; section 2, case B), `pkg/gcpurls/registry_test.go` (verified templates missing from CAI) and `testdata/exceptions/naming_violations.txt` (new external-only identity/reference files). Never `missingrefs.txt`.
+
+## Done when
+
+- Every `{kind}` entry is `resolved` with a correct resolution and note (`well-known-proto-type` and `sensitive-field` may stay `open`), nothing was deleted, and `untriaged-bulk-generation` was resolved last.
+- No `+kcc:guess` markers remain in hand-written files.
+- The parent is modelled per section 2, identity and references per section 5, and the section 4 standards hold.
+- Any pre-generated controller/fuzzer builds and passes `TestFocusedMappers`.
+- Everything in section 7 passes.
+
+## Journal
+
+Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it if needed). Never write to a `journal/` folder or `journal.md` under `.gemini/skills/`. Use this format:
+
+```markdown
+### [YYYY-MM-DD] <Brief title>
+- **Context**: <what you were implementing; kind/PR>
+- **Problem**: <the unexpected behavior>
+- **Solution**: <how you solved it; snippets if useful>
+- **Impact**: <why the next agent should care>
+```
+
+## Pull request
+
+- **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types and identity for {kind}`
+- **Labels:** the labels on this issue.
+- **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
+- **Body:** `Fixes #<this issue's number>`; a table of `{kind}`'s entries (reason, field, resolution, one-line reason); the parent pattern, whether `{kind}` is top-level or a child, the parent field you modelled (section 2) and why; for a child resource, a note that the new `crds_have_parent_refs.txt` line is the intentional single-parent exception; any parent or target identity/reference files you added; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+
+```release-note
+NONE
+```
+
+## Review Instructions
+
+Check every item, cross-checking against the proto in `.build/third_party/googleapis/google/...`, then post the result in the format at the end.
+
+1. **Queue complete and intact.**
+   - No entry was deleted. `{kind}`'s `untriaged-bulk-generation` is `resolved`, as is every other `{kind}` entry and any legacy `protoMessage:` entry reachable from `{kind}Spec` or `{kind}ObservedState`. Only `well-known-proto-type` and `sensitive-field` may stay `open` (or be `deferred` with a note).
+   - Reference entries for the same `(kind, group, field)` share one status. Every `edited`, `deferred` or `not-applicable` resolution has an accurate note.
+   - No `+kcc:guess` markers remain in `{kind_lowercase}_types.go`, `{kind_lowercase}_identity*.go` or structs moved out of `types.generated.go`.
+2. **Resolutions are right.**
+   - A field resolved as `not-applicable` or `accepted` that really references a control-plane GCP resource (KMS key, network, subnetwork, service account, project, dataset, bucket, Pub/Sub topic, Secret Manager secret, sibling resource) must be a `*Ref`. Data-plane objects KCC doesn't manage, such as Cloud Storage objects, may stay strings.
+   - Reject any PR that deletes, truncates or rewords proto doc comments (e.g. `"Format: projects/{project}/..."`) to get past `TestMissingRefs`.
+   - An output-only field resolved as `not-applicable` must really be user-settable on Create/Update; otherwise it belongs in `ObservedState`. `empty-observedstate` was fixed by moving fields or by commenting out the empty ObservedState. `etag` is never in a spec struct.
+3. **Parent, identity and references** (against `option (google.api.resource)` and `Create<ProtoMessage>Request`).
+   - **Top-level resources** (the parent pattern is `projects/{project}`, `folders/{folder}` or `organizations/{organization}`, optionally plus `locations/{location}`) keep the root reference plus `location`. A project+location parent is an embedded `*parent.ProjectAndLocationRef` with `json:",inline"`, not separate `ProjectRef` and `Location` fields; its `Location string` is not a pointer violation. A global resource has no `Location`. A multi-root resource has optional `ProjectRef`/`FolderRef`/`OrganizationRef` and an identity that accepts every root.
+   - **Child resources** (the parent pattern ends in another resource) have exactly one hierarchy field, `ParentRef *<ParentKind>Ref` with `json:"parentRef"`, marked `+required` and carrying the `self == oldSelf` CEL immutability rule. No `projectRef`, `folderRef`, `organizationRef`, `location`, `region`, `zone` or grandparent reference anywhere in the spec, no `json:",inline"` on it, and no other `parent<Something>Ref` field. The identity takes project, location and ancestor IDs only from the resolved `spec.parentRef` (no `refs.ResolveProjectID`, `refs.GetLocation` or annotations).
+   - **The `parentRef` name is intentional** (single-parent design). Don't ask to rename it after the parent kind, and don't fail the PR for the one new `crds_have_parent_refs.txt` line it requires. Do fail it if `TestCRDsHaveParentRefs` was skipped or edited, or if more than that one line was added.
+   - `generate.sh` runs `generate-identity`. Hand-written identity/reference code appears only where the generator can't express the pattern. Singleton templates keep the literal suffix.
+   - `{kind}Identity` is `ServerGeneratedIdentity` exactly when `Create<ProtoMessage>Request` has no `<resource>_id` field; otherwise `IdentityV2`.
+   - Every new `<TargetKind>Ref` lives in its own `<targetkind>_reference*.go` with a matching identity file, never in `_types.go` or under `apis/refs/v1beta1/`. No new ref type duplicates one that already exists elsewhere in `apis/` (check with `git grep "type <TargetKind>Ref struct" -- apis/`). Targets with a full CRD use `refs.Normalize` (never `NormalizeWithFallback`); external-only references validate `External`.
+4. **Proto-vs-KRM audit and struct isolation.**
+   - `+kcc:spec:proto=` and `+kcc:observedstate:proto=` point at exactly `{kind}`'s message, and no proto is shared by two kinds.
+   - Flag any reference still typed `*string` / `[]string` anywhere reachable from `{kind}Spec`, even without a queue entry.
+   - Hand-written nested structs carry `// +kcc:proto=` and contain the proto message name. Structs shared with a triaged or pre-existing kind were forked under a distinct name, not changed in place. `TestCRDBackwardCompatibility` and `TestHandWrittenProtoStructAnnotationsAndNaming` pass.
+   - Scalars are pointers (except the embedded parent `Location`), slices and maps are not, and an empty ObservedState is commented out.
+5. **Generated files, controller sync and exceptions.**
+   - `{kind}` is still in `BLOCKED_KINDS`.
+   - `generate.sh` has `generate-mapper --prepopulate-resource` (plus `--multiversion` / `--proto-source-path` where needed), or `{kind}`'s mappers are isolated in `{kind_lowercase}_mapper.go`. `types.generated.go`, the mappers, `zz_generated.deepcopy.go` and the CRD are in sync with `{kind_lowercase}_types.go`. `{kind}Spec` has no top-level `Labels`.
+   - **Gate:** if a controller or fuzzer already exists for `{kind}`, it still builds (`go build ./pkg/controller/direct/<group>/...`) and passes `FOCUS={kind} go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`. If not, fail the review and ask for the controller and fuzzer to be regenerated with `generate-controller` / `generate-fuzzer --prepopulate-resource` and fixed.
+   - Only `alpha-missingfields.txt`, `crds_have_parent_refs.txt` (one line, child resources only), `pkg/gcpurls/registry_test.go` (verified non-CAI templates) and `naming_violations.txt` (new external-only files) may grow. `missingrefs.txt` is untouched.
+
+```markdown
+### KCC Greenfield Step 1b (Judgement Queue) Auto-Review Results
+* **Judgement Queue Completeness**: [Pass/Fail] - (all {kind} entries resolved, none deleted, no +kcc:guess left)
+* **Queue Resolution Accuracy**: [Pass/Fail] - (wrong not-applicable/accepted; etag or top-level labels in Spec; doc comments stripped)
+* **Parent, Identity & References**: [Pass/Fail] - (top-level: root ref + location / ProjectAndLocationRef; child: single required, immutable spec.parentRef plus one crds_have_parent_refs.txt line; generate-identity; singleton/multi-pattern templates; ServerGeneratedIdentity vs IdentityV2; refs.Normalize)
+* **Unflagged Proto-vs-KRM Audit & Struct Isolation**: [Pass/Fail] - (unflagged refs; missing +kcc:proto; shared structs mutated; non-pointer scalars; empty ObservedState)
+* **Generated Files, Controller/Fuzzer Sync & `BLOCKED_KINDS`**: [Pass/Fail] - (CRD/mapper/deepcopy in sync; pre-existing controller/fuzzer regenerated and passing; BLOCKED_KINDS; missingrefs.txt untouched)
+
+#### Detailed Findings / Actions Required:
+1. [file, line, exact issue]
+```
+<!-- end kcc-greenfield-bulkgen:step-1b -->
+````
+<!-- child-body:step-1b:end -->
+
+### Step 2: Direct Controller, E2E fixtures and Fuzzer
+
+Open a GitHub issue to coordinate the autogeneration/verification of the direct controller and fuzzer (`generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource`) and E2E fixture recording for `{kind}`.
+
+**GitHub Issue Details:**
+*   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
+*   **Body:** extract `step-2` (see "Creating child issues"). It is this block:
+
+<!-- child-body:step-2:start -->
+````markdown
+<!-- kcc-greenfield-bulkgen:step-2 -->
+**Parent workflow:** #{parent_issue} | **Kind:** `{kind}` | **Step 2: Controller, fixtures and fuzzer** (pipeline: 1a → 1b → **2** → 3 → 4)
+
+> [!NOTE]
+> This issue is self-contained: it inlines every KCC skill this step needs, so you don't need to open anything under `.gemini/skills/`. If a skill, a doc under `docs/`, or `GEMINI.md` disagrees with this issue, follow this issue.
+
+Generate `{kind}`'s direct controller and round-trip fuzzer with `controllerbuilder`, add minimal and maximal E2E fixtures, and record their golden logs against **real GCP**.
+
+## Values you need
+
+| Value | How to find it |
+|---|---|
+| `<group>` | The `apis/<group>/` directory holding `{kind_lowercase}_types.go`. The API group is `<group>.cnrm.cloud.google.com`. |
+| `<proto.package>`, `<ProtoMessage>` | `+kcc:spec:proto=` in `apis/<group>/v1alpha1/{kind_lowercase}_types.go`. |
+| `<proto_lower>` | `<ProtoMessage>` in lowercase. The controller is `pkg/controller/direct/<group>/<proto_lower>_controller.go`. |
+| `<service_name>` | The proto's `option (google.api.default_host)`, as in `<service_name>.googleapis.com`. |
+
+## Guardrails
+
+- **Judgement must be finished.** `{kind}`'s `untriaged-bulk-generation` and every actionable `{kind}` entry in `apis/<group>/judgement_queue.yaml` are `resolved`, and `{kind}Spec` has no top-level `Labels`. If not, comment on this issue that Step 1b isn't done, and stop.
+- **Existing handwritten controller?** If `grep -rn "RegisterModel(.*{kind}GVK" pkg/controller/direct/<group>/` finds a controller **without** `// +generated:controller`, this issue doesn't fit. Comment and stop.
+- **Real GCP only.** Ignore anything in `GEMINI.md` or `mockgcp/GEMINI.md` about MockGCP, `E2E_GCP_TARGET=mock` or `hack/compare-mock`. MockGCP is Step 3.
+- **Never fake logs.** Never create or edit `_http.log`, `_audit_probe.log` or `*.golden.yaml` by hand (no editor, no `sed`), and never fall back to mock logs.
+- **Stay in scope**, and don't edit any `SKILL.md`. Put general learnings in the PR's "Workflow feedback" section.
+
+## 1. Generate the controller and fuzzer
+
+1. In `apis/<group>/generate.sh`, after `generate-mapper --prepopulate-resource`, make sure both of these exist for `{kind}`:
+   ```bash
+   ${CONTROLLERBUILDER} generate-controller \
+     --service <proto.package> \
+     --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
+     --prepopulate-resource \
+     --resource {kind}:<ProtoMessage>
+
+   ${CONTROLLERBUILDER} generate-fuzzer \
+     --prepopulate-resource \
+     --service <proto.package> \
+     --api-version <group>.cnrm.cloud.google.com/v1alpha1 \
+     --resource {kind}:<ProtoMessage>
+   ```
+   If `generate-types` pins `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb`, pass the same flag to `generate-mapper`, `generate-controller` and `generate-fuzzer`.
+2. Generate and register. Both commands are mandatory:
+   ```bash
+   SKIP_GENERATE_CRDS=1 ./apis/<group>/generate.sh
+   python3 dev/tasks/generate_static_config.py
+   ```
+   This writes `pkg/controller/direct/<group>/<proto_lower>_controller.go` (marked `// +generated:controller`), `pkg/controller/direct/<group>/{kind_lowercase}_fuzzer.generated.go` (marked `// +generated:fuzzer`), and the registration in `pkg/controller/direct/register/register.go` and `pkg/controller/resourceconfig/static_config.go`. Never edit `static_config.go` by hand.
+3. Hard cases:
+   - **Missing GAPIC module** (e.g. `iam/apiv3`, `dialogflow` spanning `v2` and `cx/v3`, `mapmanagement/apiv2`): run `go get cloud.google.com/go/<service_name>@latest && go mod tidy && (cd mockgcp && go mod tidy)`, so both modules stay aligned (`validate-ensure`).
+   - **Mapper collisions** in shared or legacy packages: if `mapper.generated.go` can't be regenerated without clobbering existing mockgcp or multi-service mappers (or `v1alpha1` and `v1beta1` types collide), isolate `{kind}`'s mappers in `pkg/controller/direct/<group>/{kind_lowercase}_mapper.go`, or pass `--multiversion` to `generate-mapper`.
+   - **Immutable resources without an `Update*` RPC:** `Update` refreshes status (`a.setStatus(u, actual)`) without calling an update RPC. Resolve every `// TODO:` in `<proto_lower>_controller.go`.
+   - **CAI and labels tests:** run `go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"`. If `{kind}`'s URL template is missing from CAI, add it to `ignoredTemplates` in `pkg/gcpurls/registry_test.go`.
+4. Check straight away:
+   ```bash
+   go test ./pkg/controller/direct/<group>/...
+   FOCUS={kind} go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers
+   go test -v ./tests/apichecks -run "TestGenerateScripts|TestDirectResourceFileNaming"
+   ```
+   If `TestFocusedMappers` fails, read the `// HINT:` comments in `{kind_lowercase}_fuzzer.generated.go` and the `<hint_for_agent>...</hint_for_agent>` block in the test output, then fix the mapper or configure `FilterSpec` / `FilterStatus`.
+
+## 2. Check the controller against the five greenfield standards
+
+The generator should get these right. Verify them, and change the controller only where real GCP proves it wrong.
+
+1. **Client.** The GAPIC REST client (`New<Service>RESTClient` with `m.config.RESTClientOptions()`). Fall back to the gRPC client (`New<Service>Client` with `m.config.GRPCClientOptions()`) only if REST is unsupported or broken on real GCP (e.g. 403, 404 or LRO errors), and say why in the PR.
+2. **References.** `common.NormalizeGreenfieldReferences(...)` is called first in `AdapterForObject`, before `GetIdentity` and before `{kind}Spec_ToProto`.
+3. **Identity.** `AdapterForObject` calls `obj.GetIdentity(ctx, reader)` and asserts `*krm.{kind}Identity`. The parent in requests comes from the identity (`ParentString()`), never from spec fields. If the proto message has a `parent` field, set it from `a.id.ParentString()` in `Create`. If the controller implements export (`AdapterForURL`/`Export`), build the parent fields from the identity: for a child resource `obj.Spec.ParentRef = &krm.<ParentKind>Ref{External: a.id.ParentString()}`, for a top-level one `projectRef` (or `folderRef`/`organizationRef`) and `location`. Server-generated IDs: see section 3.
+4. **Diff.** `Update` uses `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.{kind}Spec_FromProto)`, or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when top-level proto `labels` are reconciled from `metadata.labels`. Never `common.CompareProtoMessage` or `common.CompareBrownfieldSpec`. When paths changed, it calls `structuredreporting.ReportDiff(ctx, report)` before sending the update request.
+5. **LROs and status.** `Create`, `Update` and `Delete` wait on every LRO (`op.Wait(ctx)`), `GET` the resource after `Create`/`Update` LROs when the LRO result is incomplete, and call `setStatus(u, resolved)` at the end of `Create` and on **every** `Update` path, no-op updates included.
+
+## 3. Server-generated IDs (only if `{kind}Identity` is a `ServerGeneratedIdentity`)
+
+- The identity never defaults the ID to `metadata.name`; an empty `spec.resourceID` means "create a new one".
+- The first line of `Find` is `if a.id.<ID> == "" { return false, nil }`. A 404 on a non-empty ID is the usual `false, nil`.
+- `Create` never sets the name or ID in the request. It reads the assigned ID back with `a.id.FromExternal(created.GetName())`, and `setStatus` writes `status.externalRef = direct.LazyPtr(a.id.String())`.
+- `GetIdentity`, when `status.externalRef` is set: with an empty `spec.resourceID`, check that the parent parts match and return the status identity; with a non-empty one, it must equal the status ID, otherwise return `cannot change resource identity (old=%q, new=%q)`.
+
+## 4. Fixtures
+
+Put fixtures under `pkg/test/resourcefixture/testdata/basic/<group>/v1alpha1/{kind_lowercase}/`. Directory names must contain the kind name.
+
+- **`{kind_lowercase}-minimal/`**
+  - `create.yaml`: only the required spec fields, including the parent. Use `${uniqueId}` in names and `${projectId}` for the project.
+  - `update.yaml`: changes mutable fields that `create.yaml` sets. Leave it out only if nothing is mutable or there's no update RPC.
+  - `dependencies.yaml`: every prerequisite KCC object `create.yaml` refers to, such as the parent resource.
+- **`{kind_lowercase}-maximal/`**: every supported spec field, with an `update.yaml` that changes all the mutable fields it sets, and its own `dependencies.yaml`. Add sibling fixture directories for mutually exclusive `oneof` fields.
+- Never change the parent fields (`parentRef`, or `projectRef`/`location`) in `update.yaml`.
+- Set the parent the way `{kind}Spec` models it (see Step 1b's single-parent rule):
+  ```yaml
+  # Top-level resource (project + location parent)
+  spec:
+    projectRef:
+      external: projects/${projectId}
+    location: us-central1
+  ---
+  # Child resource: spec.parentRef names the parent, which dependencies.yaml creates
+  spec:
+    parentRef:
+      name: <parentkind>-${uniqueId}
+  ```
+  If the parent's reference type is external-only (`External` only), create the parent in `dependencies.yaml` with the KCC kind that manages it and set `parentRef: {external: <the parent's full name>}`.
+- **Ratcheting (mandatory):** in `tests/e2e/ratcheting.go`, remove any `case` for `{kind}` from the `switch` in `ShouldTestRereconiliation`, so re-reconciliation (SSA) is tested.
+
+## 5. Record against real GCP
+
+Note the start and end times in PDT and the GCP project; they go in the PR. Compiling and recording often take 10–20+ minutes, so give the shell a long timeout (30 minutes).
+
+```bash
+go run ./hack/find-test-targets          # lists the fixtures your change affects; record all of them
+RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^{kind_lowercase}-minimal$"
+RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^{kind_lowercase}-maximal$"
+```
+
+`RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/{kind_lowercase}"` records all of them in one run.
+
+- **A fixture is done** when the output shows `=== RUN   TestAllInSeries/fixtures/<test>`, the resource reached `Ready` on create (and update), `Done waiting for resource to delete`, and `wrote updated golden output to .../_http.log`, with no panic, timeout or permission abort, and `_http.log` and `_audit_probe.log` exist.
+- **Don't re-record for noise.** LRO poll counts, tokens, ETags, cookies and timestamps are normalization issues: fix them in `tests/e2e/normalize.go`. Re-record only after changing fixture YAML or the requests the controller sends. `hack/record-gcp` only warns on golden diffs, so don't re-run it just to check the goldens.
+- **Failures.** Missing dependency: add it to `dependencies.yaml`. Invalid argument: fix the YAML using the API reference. API disabled: `gcloud services enable <service_name>.googleapis.com`. After 3 distinct failed attempts, stop and explain the blocker in a comment on this issue.
+
+## 6. Validate
+
+```bash
+dev/ci/presubmits/fuzz-roundtrippers
+WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha   # the maximal fixture should shrink alpha-missingfields.txt
+go test ./tests/apichecks/... ./pkg/controller/direct/<group>/...
+go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
+make ready-pr
+```
+
+Don't run the fixtures against MockGCP in this step. If something fails, fix it where it belongs (controller, mapper, fuzzer, fixture or normalizer) and repeat. Commit everything, including the recorded logs.
+
+## Done when
+
+- `generate.sh` has `generate-controller` and `generate-fuzzer` with `--prepopulate-resource`, the generated files carry their markers, and `static_config.go` is regenerated.
+- The controller meets the five standards (deviations explained in the PR).
+- Minimal and maximal fixtures are recorded against real GCP with `_http.log` and `_audit_probe.log`, and `{kind}` is not excluded from re-reconciliation.
+- Everything in sections 1.4 and 6 passes.
+
+## Journal
+
+Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it if needed). Never write to a `journal/` folder or `journal.md` under `.gemini/skills/`. Use this format:
+
+```markdown
+### [YYYY-MM-DD] <Brief title>
+- **Context**: <what you were implementing; kind/PR>
+- **Problem**: <the unexpected behavior>
+- **Solution**: <how you solved it; snippets if useful>
+- **Impact**: <why the next agent should care>
+```
+
+## Pull request
+
+- **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
+- **Labels:** the labels on this issue.
+- **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
+- **Body:** `Fixes #<this issue's number>`; a statement that `hack/record-gcp` ran against real GCP, with the project and the PDT start and end times; any deviation from the five standards and why; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+
+```release-note
+NONE
+```
+
+- **Audit-log proof:** after opening the PR, post the output of this command as a PR comment:
+  ```bash
+  gcloud logging read 'logName:"audit" AND "<service_name>"' --freshness=3h --limit=50
+  ```
+
+## Review Instructions
+
+Check every item, then post the result in the format at the end.
+
+1. **Prerequisites, generation and registration.** `{kind}`'s queue entries are all `resolved` and `{kind}Spec` has no top-level `Labels`. `generate.sh` calls `generate-controller` (or `generate-direct-reconciler`) and `generate-fuzzer`, both with `--prepopulate-resource --resource {kind}:<ProtoMessage>`. `<proto_lower>_controller.go` carries `// +generated:controller`, `{kind_lowercase}_fuzzer.generated.go` carries `// +generated:fuzzer`, and `static_config.go` was regenerated with `python3 dev/tasks/generate_static_config.py`. `TestGenerateScripts`, `TestDirectResourceFileNaming`, `TestRegisteredTemplatesMatchCAI` and `TestVerifyLabelsTestCasesExist` pass.
+2. **The five standards.**
+   1. The REST GAPIC client with `m.config.RESTClientOptions()`; gRPC only when REST is unsupported or broken, with the reason stated.
+   2. `common.NormalizeGreenfieldReferences` in `AdapterForObject`, before `GetIdentity` and `{kind}Spec_ToProto`.
+   3. `obj.GetIdentity` asserted to `*krm.{kind}Identity`. For server-generated IDs, `Create` reads the ID back with `a.id.FromExternal(created.GetName())` and `setStatus` writes `status.externalRef`.
+   4. `common.CompareGreenfieldSpec` / `CompareGreenfieldSpecAndLabels` (never `CompareProtoMessage` or `CompareBrownfieldSpec`), with `structuredreporting.ReportDiff` before the update request when paths changed.
+   5. Every LRO is waited on. `setStatus` runs at the end of `Create` and on every `Update` path, the no-op path included (or unconditionally for immutable resources without an update RPC).
+3. **Fuzzer.** `{kind_lowercase}_fuzzer.generated.go` registers in `init()` and passes `FOCUS={kind} go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers` and `dev/ci/presubmits/fuzz-roundtrippers`.
+4. **Real-GCP fixtures.** `{kind_lowercase}-minimal` and `{kind_lowercase}-maximal` have `create.yaml`, `update.yaml` (if mutable), `_http.log` and `_audit_probe.log` recorded against **real GCP**, never mock. The maximal fixture covers the spec. A child resource's fixtures set `spec.parentRef` (to the parent created in `dependencies.yaml`, or `external:` for an external-only parent), and no `update.yaml` changes the parent fields. `{kind}` isn't excluded in `ShouldTestRereconiliation`. The PR states the project and PDT timestamps and has the audit-log comment.
+
+```markdown
+### KCC Greenfield Controller Auto-Review Results
+* **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (queue resolved; generate-controller & generate-fuzzer with --prepopulate-resource; +generated markers; static_config.go updated)
+* **Client Creation & Reference Normalization**: [Pass/Fail] - (GAPIC REST client; common.NormalizeGreenfieldReferences in AdapterForObject)
+* **CompareGreenfieldSpec & Structured Reporting**: [Pass/Fail]
+* **LRO Wait & Mandatory Status Updates**: [Pass/Fail] - (op.Wait; setStatus on no-op and mutating paths)
+* **Fuzzer & Real-GCP Test Coverage**: [Pass/Fail] - (fuzzer; minimal/maximal real-GCP _http.log & _audit_probe.log; ratcheting enabled)
+
+#### Detailed Findings / Actions Required:
+1. [file, line, exact issue]
+```
+<!-- end kcc-greenfield-bulkgen:step-2 -->
+````
+<!-- child-body:step-2:end -->
+
+### Step 3: mockGCP generation
+
+Open a GitHub issue to coordinate the implementation of the mockGCP for a specific Kubernetes resource.
+
+**GitHub Issue Details for Greenfield Resource:**
+*   **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
+*   **Body:** extract `step-3` (see "Creating child issues"). It is this block:
+
+<!-- child-body:step-3:start -->
+````markdown
+<!-- kcc-greenfield-bulkgen:step-3 -->
+**Parent workflow:** #{parent_issue} | **Kind:** `{kind}` | **Step 3: MockGCP** (pipeline: 1a → 1b → 2 → **3** → 4)
+
+> [!NOTE]
+> This issue is self-contained: it inlines every KCC skill this step needs, so you don't need to open anything under `.gemini/skills/`. If a skill, a doc under `docs/`, or `GEMINI.md` disagrees with this issue, follow this issue.
+
+Step 2 added `{kind}`'s controller and fixtures, recorded against real GCP (`_http.log`). Now implement `{kind}` in MockGCP so the same fixtures run hermetically in CI, and align the mock with the real logs.
+
+## Values you need
+
+| Value | How to find it |
+|---|---|
+| `<group>` | The `apis/<group>/` directory holding `{kind_lowercase}_types.go`. |
+| `<service_name>` | The GCP service (`<service_name>.googleapis.com`). Look for an existing mock with `ls mockgcp/`; it may use a different short name than `<group>`. |
+| Fixtures | `pkg/test/resourcefixture/testdata/basic/<group>/v1alpha1/{kind_lowercase}/*/` |
+
+## Guardrails
+
+- **The real logs are the baseline.** Every fixture directory must already have an `_http.log` recorded against real GCP. If one is missing, stop and comment on this issue.
+- **Don't re-record against real GCP for alignment.** Align with `hack/compare-mock` against the existing `_http.log`. The only exception: if you change fixture YAML (`create.yaml`, `update.yaml`, `dependencies.yaml`) or the requests the controller sends, re-record those fixtures first with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<test>$"`, and say so in the PR.
+- **Never hand-edit** `_http.log`, `_http_mock.log` or golden files.
+- **Don't touch legacy code**: no changes to Terraform/DCL controllers or shared legacy framework code (e.g. `pkg/krmtotf/`).
+- **No new missing fields.** Don't add lines to `tests/apichecks/testdata/exceptions/missingfields.txt`; extend a fixture or add one instead.
+- **Stay in scope**, and don't edit any `SKILL.md`. Put general learnings in the PR's "Workflow feedback" section.
+
+## 1. Add or extend the mock service
+
+- **No `mockgcp/mock<service_name>/` yet:** create it following `mockgcp/README.md` and `mockgcp/GEMINI.md`. Add the proto to the mockgcp Makefile and run `make gen-proto` if needed, write `mockgcp/mock<service_name>/service.go`, and register the service in `mockgcp/register.go`.
+- **The mock exists:** implement Create, Get, Update and Delete (and List, if the controller uses it) for `{kind}` in `mockgcp/mock<service_name>/{kind_lowercase}.go`.
+- **Parents.** Take the parent from the request (`projects/{project}/locations/{location}` or the parent resource's name). If real GCP rejects a missing parent (for example with a 404 when the parent doesn't exist), the mock does too. Return LROs where real GCP does.
+- **Ratcheting.** Make sure `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go` has no `case` for `{kind}`.
+
+## 2. Run against the mock and align
+
+```bash
+hack/compare-mock "fixtures/{kind_lowercase}"        # writes _http_mock.log and _generated_object_*.golden.yaml
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/{kind_lowercase}"
+```
+
+Fix one discrepancy at a time and re-run both commands after each fix. Only requests to `{kind}`'s own CRUD endpoints must match exactly; dependency requests can be looser. If you go in circles, `git reset --hard` to the last good state.
+
+| What you see | Fix |
+|---|---|
+| A default in real GCP but not in the mock (e.g. `<missing> => REGIONAL`) | Set it in `populateDefaultsFor<Resource>` in `mockgcp/mock<service_name>/{kind_lowercase}.go`, called from the write paths (`Create`/`Insert`/`Update`) and the read paths (`Get`/`List`). If the proto lacks the field, leave a `TODO`. |
+| A field in the mock but not in real GCP | Check whether real GCP returns it in other cases. If it's conditional, default it conditionally, with a comment explaining the condition. If real GCP never returns it, remove it. |
+| A zero value (`""`, `0`, `false`, `[]`) in real GCP that the mock drops | Set it explicitly. If proto3 JSON still drops it, leave a `TODO` explaining the proto3 limitation. |
+| Real GCP canonicalizes inputs (short names → full names, `/zones/` → `/locations/`, CIDRs) | Do the same transformation in the mock's Create, so stored state matches GCP's output. |
+| Random IDs or hashes in names, self-links or generated resources | Normalize them to placeholders (`${uniqueId}`, `${projectNumber}`, …) in `mockgcp/mock<service_name>/normalize.go`. Always scope `Previsit` to the service URL, e.g. `strings.Contains(event.URL(), "<service_name>.googleapis.com")`. |
+| Full URL prefixes in real GCP (`//<service_name>.googleapis.com/`, `https://www.googleapis.com/...`) vs relative paths in the mock | Strip the prefix in that service's normalizer, scoped to that resource or field. |
+| Different API versions in real GCP and the mock | Replace the exact version strings for this service only. No broad wildcards. |
+| Intermediate LRO metadata (e.g. `done: false` polls) | May be simplified, as long as the final resource state matches. |
+
+Run-to-run variation (poll counts, timestamps, tokens, cookies) is normalized in `normalize.go`, never fixed by re-recording.
+
+## 3. Verify every fixture
+
+```bash
+hack/compare-mock "fixtures/{kind_lowercase}"
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/{kind_lowercase}"
+./dev/ci/presubmits/tests-e2e-fixtures-suite <group>     # what CI runs for this group, against MockGCP
+scripts/validate-prereqs.sh
+```
+
+- Every `{kind}` fixture directory has `_http.log`, `_http_mock.log` and `_generated_object_*.golden.yaml`. A zero `git status` diff on regenerated goldens is fine when nothing in the responses is random.
+- `hack/compare-mock` has no failures, and `TestGoldenLogAlignment` passes with zero errors for every fixture.
+- Commit all regenerated mock logs and goldens.
+
+## Done when
+
+- `{kind}` is implemented in `mockgcp/mock<service_name>/` and handles its parent like real GCP.
+- Every fixture has a mock log and goldens, and `TestGoldenLogAlignment/{kind_lowercase}` and `tests-e2e-fixtures-suite <group>` pass.
+- No real-GCP log changed unless a fixture or request change required a fresh recording (explained in the PR).
+
+## Journal
+
+Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it if needed). Never write to a `journal/` folder or `journal.md` under `.gemini/skills/`. Use this format:
+
+```markdown
+### [YYYY-MM-DD] <Brief title>
+- **Context**: <what you were implementing; kind/PR>
+- **Problem**: <the unexpected behavior>
+- **Solution**: <how you solved it; snippets if useful>
+- **Impact**: <why the next agent should care>
+```
+
+## Pull request
+
+- **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
+- **Labels:** the labels on this issue.
+- **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
+- **Body:** `Fixes #<this issue's number>`; the mock files you added or changed; any fixture you re-recorded and why; the alignment status of each fixture; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+
+```release-note
+New Alpha Resources (Direct Reconciler): `{kind}`
+```
+
+## Review Instructions
+
+Check every item, then post the result in the format at the end.
+
+1. **Mock service.** `{kind}` is implemented in `mockgcp/mock<service_name>/` (a new service is registered in `mockgcp/register.go`). CRUD handles the parent like real GCP, including rejecting a missing parent.
+2. **Real-GCP baseline.** No `_http.log` changed, unless the PR explains a fixture or request change and the new log comes from `hack/record-gcp`. No log or golden file was edited by hand.
+3. **Alignment and CI.** Every fixture has `_http_mock.log` and goldens. `TestGoldenLogAlignment/{kind_lowercase}` passes with zero errors, and `./dev/ci/presubmits/tests-e2e-fixtures-suite <group>` passes.
+4. **Normalizers.** `Previsit` is scoped to `<service_name>.googleapis.com` URLs. API-version and URL-prefix replacements are exact strings for this service only, with no broad wildcards.
+5. **Mock behavior and scope.** Defaults are set on both write and read paths. Proto3 zero-value gaps have `TODO`s. No legacy controller code changed, no new `missingfields.txt` lines, and `{kind}` isn't excluded in `ShouldTestRereconiliation`.
+6. **Release note.** It is `New Alpha Resources (Direct Reconciler): `{kind}``.
+
+```markdown
+### KCC Greenfield Step 3 (MockGCP) Auto-Review Results
+* **Mock Service & CRUD**: [Pass/Fail]
+* **Real-GCP Baseline Untouched**: [Pass/Fail]
+* **Golden Log Alignment & CI Fixtures**: [Pass/Fail]
+* **Normalizer Scoping**: [Pass/Fail]
+* **Mock Behavior, Legacy Code & Exceptions**: [Pass/Fail]
+
+#### Detailed Findings / Actions Required:
+1. [file, line, exact issue]
+```
+<!-- end kcc-greenfield-bulkgen:step-3 -->
+````
+<!-- child-body:step-3:end -->
+
+### Step 4: MockGCP Alignment with RealGCP
+
+Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP output to ensure high fidelity.
+
+**GitHub Issue Details:**
+*   **Title:** `Greenfield: Align MockGCP logs with RealGCP for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`
+*   **Body:** extract `step-4` (see "Creating child issues"). It is this block:
+
+<!-- child-body:step-4:start -->
+````markdown
+<!-- kcc-greenfield-bulkgen:step-4 -->
+**Parent workflow:** #{parent_issue} | **Kind:** `{kind}` | **Step 4: Align MockGCP with real GCP** (pipeline: 1a → 1b → 2 → 3 → **4**)
+
+> [!NOTE]
+> This issue is self-contained: it inlines every KCC skill this step needs, so you don't need to open anything under `.gemini/skills/`. If a skill, a doc under `docs/`, or `GEMINI.md` disagrees with this issue, follow this issue.
+
+Make MockGCP's behavior for `{kind}` match the real-GCP golden logs (`_http.log`) exactly, so `TestGoldenLogAlignment` passes with zero errors.
+
+## Values you need
+
+| Value | How to find it |
+|---|---|
+| `<group>` | The `apis/<group>/` directory holding `{kind_lowercase}_types.go`. |
+| `<service_name>` | The GCP service (`<service_name>.googleapis.com`); its mock is `mockgcp/mock<service_name>/`. |
+| Fixtures | `pkg/test/resourcefixture/testdata/basic/<group>/v1alpha1/{kind_lowercase}/*/` |
+
+## First, check whether there's anything left to do
+
+```bash
+hack/compare-mock "fixtures/{kind_lowercase}"
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/{kind_lowercase}"
+git status --porcelain -- pkg/test/resourcefixture mockgcp
+```
+
+If `TestGoldenLogAlignment` passes with zero errors for every `{kind}` fixture and the commands leave no diff, Step 3 already aligned the mock. Post the command output as a comment on this issue and close it (`gh issue close <this issue's number> --comment "<summary>"`). No PR is needed.
+
+## Guardrails
+
+- **Real-GCP baseline required.** Every fixture directory must have an `_http.log` recorded against real GCP. If one is missing, stop and comment on this issue.
+- **Don't re-run `hack/record-gcp` for alignment.** Alignment uses `hack/compare-mock` against the existing `_http.log` only. The one exception: if you change fixture YAML or the requests the controller sends, re-record those fixtures first with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<test>$"`, and say so in the PR.
+- **Never hand-edit** `_http.log`, `_http_mock.log` or golden files.
+- **Don't touch legacy code**: no changes to Terraform/DCL controllers or shared legacy framework code (e.g. `pkg/krmtotf/references.go`).
+- **No new missing fields.** Don't add lines to `tests/apichecks/testdata/exceptions/missingfields.txt`; if a fixture change exposes more missing fields, extend the fixture or add another one.
+- Fixture directory names must contain the kind name (e.g. `{kind_lowercase}-maximal`, not `maximal`).
+- **Stay in scope**, and don't edit any `SKILL.md`. Put general learnings in the PR's "Workflow feedback" section.
+- Make sure `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go` has no `case` for `{kind}`.
+
+## Align
+
+Loop until `TestGoldenLogAlignment` passes with zero errors:
+
+```bash
+hack/compare-mock "fixtures/{kind_lowercase}"             # or "fixtures/^<test>$" for one fixture
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/<fixture_name>"
+```
+
+Only requests to `{kind}`'s own CRUD endpoints must match exactly; requests for dependencies can be looser. Fix **one field at a time** and re-run both commands after each fix. If you go in circles, `git reset --hard` to the last good state.
+
+| What you see | Fix |
+|---|---|
+| A default in real GCP but not in the mock (e.g. `<missing> => REGIONAL`) | Set it in `populateDefaultsFor<Resource>` in `mockgcp/mock<service_name>/{kind_lowercase}.go`, called from the write paths (`Create`/`Insert`/`Update`) and the read paths (`Get`/`List`). If the proto lacks the field, leave a `TODO`. |
+| A field in the mock but not in real GCP | Check whether real GCP returns it in other cases. If it's conditional, default it conditionally, with a comment explaining the condition. If real GCP never returns it, remove it. |
+| A zero value (`""`, `0`, `false`, `[]`) in real GCP that the mock drops | Set it explicitly. If proto3 JSON still drops it, leave a `TODO` explaining the proto3 limitation. |
+| Real GCP canonicalizes inputs (short names → full names, `/zones/` → `/locations/`, CIDRs) | Do the same transformation in the mock's Create, so stored state matches GCP's output. |
+| Random IDs or hashes in names, self-links or generated resources | Normalize them to placeholders (`${uniqueId}`, `${projectNumber}`, …) in `mockgcp/mock<service_name>/normalize.go`. Always scope `Previsit` to the service URL, e.g. `strings.Contains(event.URL(), "<service_name>.googleapis.com")`. |
+| Full URL prefixes in real GCP (`//<service_name>.googleapis.com/`, `https://www.googleapis.com/...`) vs relative paths in the mock | Strip the prefix in that service's normalizer, scoped to that resource or field. |
+| Different API versions in real GCP and the mock | Replace the exact version strings for this service only. No broad wildcards. |
+| Intermediate LRO metadata (e.g. `done: false` polls) | May be simplified, as long as the final resource state matches. |
+
+Run-to-run variation (poll counts, timestamps, tokens, cookies) is normalized in `normalize.go`, never fixed by re-recording.
+
+## Verify
+
+```bash
+hack/compare-mock "fixtures/{kind_lowercase}"
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/{kind_lowercase}"
+./dev/ci/presubmits/tests-e2e-fixtures-suite <group>     # what CI runs for this group, against MockGCP
+scripts/validate-prereqs.sh
+```
+
+- Every `{kind}` fixture directory has `_http.log`, `_http_mock.log` and `_generated_object_*.golden.yaml` (a zero diff is fine when nothing in the responses is random).
+- `hack/compare-mock` runs with zero failures, and `TestGoldenLogAlignment` passes with zero errors for every fixture.
+- Commit all regenerated files.
+
+## Done when
+
+`TestGoldenLogAlignment/{kind_lowercase}` passes with zero errors and no unintended diffs, `tests-e2e-fixtures-suite <group>` passes, and every fix is scoped to `{kind}`'s service.
+
+## Journal
+
+Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it if needed). Never write to a `journal/` folder or `journal.md` under `.gemini/skills/`. Use this format:
+
+```markdown
+### [YYYY-MM-DD] <Brief title>
+- **Context**: <what you were implementing; kind/PR>
+- **Problem**: <the unexpected behavior>
+- **Solution**: <how you solved it; snippets if useful>
+- **Impact**: <why the next agent should care>
+```
+
+## Pull request
+
+- **Title:** `Greenfield: Align MockGCP logs with RealGCP for {kind}`
+- **Labels:** the labels on this issue.
+- **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
+- **Body:** `Fixes #<this issue's number>`; each discrepancy you fixed and how; any fixture you re-recorded and why; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+
+```release-note
+NONE
+```
+
+## Review Instructions
+
+Check every item, then post the result in the format at the end.
+
+1. **Alignment.** `TestGoldenLogAlignment/{kind_lowercase}` passes with zero errors for every fixture, `hack/compare-mock "fixtures/{kind_lowercase}"` runs cleanly, and `./dev/ci/presubmits/tests-e2e-fixtures-suite <group>` passes.
+2. **Real-GCP baseline.** No `_http.log` changed, unless the PR explains a fixture or request change and the new log comes from `hack/record-gcp`. No log or golden file was edited by hand.
+3. **Fix quality.** Defaults are applied on both write and read paths. Conditional defaults are commented. Proto3 zero-value gaps and missing proto fields have `TODO`s. Canonicalization happens in the mock's Create.
+4. **Normalizer scoping.** `Previsit` is limited to `<service_name>.googleapis.com` URLs. API-version and URL-prefix replacements are exact strings for this service, with no broad wildcards.
+5. **Scope.** No legacy (Terraform/DCL) controller changes, no new `missingfields.txt` lines, fixture names contain the kind name, and `{kind}` isn't excluded in `ShouldTestRereconiliation`.
+
+```markdown
+### KCC Greenfield Step 4 (MockGCP Alignment) Auto-Review Results
+* **Golden Log Alignment & CI Fixtures**: [Pass/Fail]
+* **Real-GCP Baseline Untouched**: [Pass/Fail]
+* **Fix Quality**: [Pass/Fail]
+* **Normalizer Scoping**: [Pass/Fail]
+* **Scope & Exceptions**: [Pass/Fail]
+
+#### Detailed Findings / Actions Required:
+1. [file, line, exact issue]
+```
+<!-- end kcc-greenfield-bulkgen:step-4 -->
+````
+<!-- child-body:step-4:end -->
