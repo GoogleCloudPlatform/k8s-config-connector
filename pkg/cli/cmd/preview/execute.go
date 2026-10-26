@@ -189,7 +189,7 @@ func runKCCManagerPreview(ctx context.Context, recorder *corepreview.Recorder, i
 		// shutdown before returning. This prevents a data race where the main thread reads
 		// from the recorder (e.g., to generate reports) while the background manager is
 		// still performing its final mutations.
-		<-errChan
+		_ = <-errChan
 		return recorder, &TimeoutError{Err: ctx.Err()}
 	}
 	return recorder, nil

@@ -735,7 +735,7 @@ func (in *SecretManagerSecretVersionSpec) DeepCopyInto(out *SecretManagerSecretV
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(SecretManagerSecretRef)
+		*out = new(SecretRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {

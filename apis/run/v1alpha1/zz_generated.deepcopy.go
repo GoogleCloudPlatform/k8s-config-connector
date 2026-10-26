@@ -991,12 +991,12 @@ func (in *SecretKeySelector) DeepCopyInto(out *SecretKeySelector) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
+		*out = new(secretmanagerv1beta1.SecretRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }
@@ -1016,7 +1016,7 @@ func (in *SecretVolumeSource) DeepCopyInto(out *SecretVolumeSource) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
+		*out = new(secretmanagerv1beta1.SecretRef)
 		**out = **in
 	}
 	if in.Items != nil {
@@ -1155,7 +1155,7 @@ func (in *VersionToPath) DeepCopyInto(out *VersionToPath) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 	if in.Mode != nil {

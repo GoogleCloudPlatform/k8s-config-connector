@@ -545,7 +545,7 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetRef != nil {

@@ -234,7 +234,7 @@ func (in *KMSAutokeyConfigSpec) DeepCopyInto(out *KMSAutokeyConfigSpec) {
 	*out = *in
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRefDeprecated)
+		*out = new(refsv1beta1.FolderRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {

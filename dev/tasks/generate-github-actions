@@ -480,7 +480,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: golangci-lint
         uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
-          version: v2.9.0
+          version: v2.15.0
           args: --timeout=20m
 EOF
     continue
@@ -734,7 +734,7 @@ jobs:
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
         with:
-          go-version: '1.26'
+          go-version: '1.27'
       - name: "Run dev/ci/experiments-ci.sh"
         run: |
           chmod +x dev/ci/experiments-ci.sh

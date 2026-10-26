@@ -1345,7 +1345,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(ComputeNetworkRef)
 		**out = **in
 	}
 	if in.OutlierDetection != nil {
@@ -8504,7 +8504,7 @@ func (in *ComputeTargetInstanceSpec) DeepCopyInto(out *ComputeTargetInstanceSpec
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(ComputeNetworkRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -9103,7 +9103,7 @@ func (in *ComputeTargetVPNGatewaySpec) DeepCopyInto(out *ComputeTargetVPNGateway
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -12367,7 +12367,7 @@ func (in *PacketmirroringNetwork) DeepCopyInto(out *PacketmirroringNetwork) {
 	*out = *in
 	if in.UrlRef != nil {
 		in, out := &in.UrlRef, &out.UrlRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(ComputeNetworkRef)
 		**out = **in
 	}
 }

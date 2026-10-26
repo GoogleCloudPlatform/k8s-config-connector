@@ -26,8 +26,12 @@ if [[ -n ${SKIP_GENERATE_CRDS:-} ]]; then
 fi
 
 # Run controller-gen to generate CRDs (including deepcopy)
+# controller-gen's version comes from go.mod (controller-tools v0.18.0; earlier versions
+# mishandle type aliases since Go 1.27 removed gotypesalias=0). Building it from this
+# module (instead of controller-gen@version) also uses our golang.org/x/tools, which
+# can read the export data written by the Go toolchain in go.mod.
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
+go run sigs.k8s.io/controller-tools/cmd/controller-gen \
   object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
   crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
   output:crd:artifacts:config=config/crd/ \

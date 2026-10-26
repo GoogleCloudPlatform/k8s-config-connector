@@ -1844,7 +1844,7 @@ func (in *NetworkSecurityFirewallEndpointAssociationSpec) DeepCopyInto(out *Netw
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.FirewallEndpointRef != nil {
@@ -2421,7 +2421,7 @@ func (in *NetworkSecurityInterceptDeploymentGroupSpec) DeepCopyInto(out *Network
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -2817,7 +2817,7 @@ func (in *NetworkSecurityInterceptEndpointGroupAssociationSpec) DeepCopyInto(out
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -3215,7 +3215,7 @@ func (in *NetworkSecurityMirroringDeploymentGroupSpec) DeepCopyInto(out *Network
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -3621,7 +3621,7 @@ func (in *NetworkSecurityMirroringEndpointGroupAssociationSpec) DeepCopyInto(out
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }

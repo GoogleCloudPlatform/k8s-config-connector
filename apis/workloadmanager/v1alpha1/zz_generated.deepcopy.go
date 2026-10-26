@@ -139,7 +139,7 @@ func (in *Scope) DeepCopyInto(out *Scope) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(v1beta1.FolderRefDeprecated)
+		*out = new(v1beta1.FolderRef)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {

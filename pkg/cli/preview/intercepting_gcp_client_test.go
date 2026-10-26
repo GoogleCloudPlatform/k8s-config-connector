@@ -129,8 +129,10 @@ func TestExtractBlockedGCPError(t *testing.T) {
 			wantMethod: "POST",
 		},
 		{
-			name:       "wrapped pointer error",
-			err:        fmt.Errorf("Update call failed: %w", &origErr),
+			name: "wrapped pointer error",
+			// error(...) keeps the pointer that this case wraps; vet's printf check
+			// rejects %w with a pointer to a value-receiver error type.
+			err:        fmt.Errorf("Update call failed: %w", error(&origErr)),
 			wantOk:     true,
 			wantMethod: "POST",
 		},

@@ -26,7 +26,7 @@ CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_S
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v2.9.0
+GOLANGCI_LINT_VERSION := v2.15.0
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -394,9 +394,10 @@ config-connector-manifests-standard: build-operator-manifests
 config-connector-manifests-autopilot: build-operator-manifests
 	$(KUSTOMIZE) build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
+# controller-gen is built from go.mod (controller-tools v0.18.0); see dev/tasks/generate-crds.
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 
 .PHONY: push-operator-manifest

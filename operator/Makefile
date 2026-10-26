@@ -54,9 +54,10 @@ ensure-channels:
 	fi
 
 # Generate manifests e.g. CRD, RBAC etc.
+# controller-gen is built from the root go.mod (controller-tools v0.18.0); see dev/tasks/generate-crds.
 .PHONY: manifests
 manifests: ensure-channels
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
 	@if [ -f "${CHANNEL_MANIFEST}" ]; then \
 		go run scripts/generate-image-configmap/main.go; \
 	else \
@@ -76,7 +77,7 @@ vet:
 # Generate code
 .PHONY: generate
 generate:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 object paths="./..."
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen object paths="./..."
 
 # Install CRDs into a cluster
 .PHONY: install

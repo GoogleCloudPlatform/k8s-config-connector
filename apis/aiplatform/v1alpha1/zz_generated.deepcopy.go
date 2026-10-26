@@ -987,7 +987,7 @@ func (in *AIPlatformPersistentResourceSpec) DeepCopyInto(out *AIPlatformPersiste
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.PSCInterfaceConfig != nil {
@@ -1741,7 +1741,7 @@ func (in *CreatePipelineJobRequest) DeepCopyInto(out *CreatePipelineJobRequest) 
 	}
 	if in.PipelineJob != nil {
 		in, out := &in.PipelineJob, &out.PipelineJob
-		*out = new(VertexAIPipelineJobSpec)
+		*out = new(PipelineJob)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.PipelineJobID != nil {
@@ -1766,7 +1766,7 @@ func (in *CreatePipelineJobRequestObservedState) DeepCopyInto(out *CreatePipelin
 	*out = *in
 	if in.PipelineJob != nil {
 		in, out := &in.PipelineJob, &out.PipelineJob
-		*out = new(VertexAIPipelineJobObservedState)
+		*out = new(PipelineJobObservedState)
 		(*in).DeepCopyInto(*out)
 	}
 }
@@ -1796,7 +1796,7 @@ func (in *DNSPeeringConfig) DeepCopyInto(out *DNSPeeringConfig) {
 	}
 	if in.TargetNetworkRef != nil {
 		in, out := &in.TargetNetworkRef, &out.TargetNetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -3433,7 +3433,7 @@ func (in *NetworkSpec) DeepCopyInto(out *NetworkSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
@@ -6604,7 +6604,7 @@ func (in *VertexAIPipelineJobSpec) DeepCopyInto(out *VertexAIPipelineJobSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refs.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.ReservedIPRanges != nil {

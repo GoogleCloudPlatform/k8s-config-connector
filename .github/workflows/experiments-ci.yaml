@@ -44,7 +44,7 @@ jobs:
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
         with:
-          go-version: '1.26'
+          go-version: '1.27'
       - name: "Run dev/ci/experiments-ci.sh"
         run: |
           chmod +x dev/ci/experiments-ci.sh

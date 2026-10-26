@@ -12261,28 +12261,28 @@ func file_google_cloud_sql_v1beta4_cloud_sql_resources_proto_rawDescGZIP() []byt
 var file_google_cloud_sql_v1beta4_cloud_sql_resources_proto_enumTypes = make([]protoimpl.EnumInfo, 31)
 var file_google_cloud_sql_v1beta4_cloud_sql_resources_proto_msgTypes = make([]protoimpl.MessageInfo, 91)
 var file_google_cloud_sql_v1beta4_cloud_sql_resources_proto_goTypes = []interface{}{
-	(SqlFileType)(0),                           // 0: google.cloud.sql.v1beta4.SqlFileType
-	(BakType)(0),                               // 1: google.cloud.sql.v1beta4.BakType
-	(SqlBackupRunStatus)(0),                    // 2: google.cloud.sql.v1beta4.SqlBackupRunStatus
-	(SqlBackupRunType)(0),                      // 3: google.cloud.sql.v1beta4.SqlBackupRunType
-	(SqlBackupKind)(0),                         // 4: google.cloud.sql.v1beta4.SqlBackupKind
-	(SqlBackendType)(0),                        // 5: google.cloud.sql.v1beta4.SqlBackendType
-	(SqlIpAddressType)(0),                      // 6: google.cloud.sql.v1beta4.SqlIpAddressType
-	(SqlInstanceType)(0),                       // 7: google.cloud.sql.v1beta4.SqlInstanceType
-	(SqlDatabaseVersion)(0),                    // 8: google.cloud.sql.v1beta4.SqlDatabaseVersion
-	(SqlSuspensionReason)(0),                   // 9: google.cloud.sql.v1beta4.SqlSuspensionReason
-	(SqlPricingPlan)(0),                        // 10: google.cloud.sql.v1beta4.SqlPricingPlan
-	(SqlReplicationType)(0),                    // 11: google.cloud.sql.v1beta4.SqlReplicationType
-	(SqlDataDiskType)(0),                       // 12: google.cloud.sql.v1beta4.SqlDataDiskType
-	(SqlAvailabilityType)(0),                   // 13: google.cloud.sql.v1beta4.SqlAvailabilityType
-	(SqlUpdateTrack)(0),                        // 14: google.cloud.sql.v1beta4.SqlUpdateTrack
-	(SqlFlagType)(0),                           // 15: google.cloud.sql.v1beta4.SqlFlagType
-	(ApiWarning_SqlApiWarningCode)(0),          // 16: google.cloud.sql.v1beta4.ApiWarning.SqlApiWarningCode
-	(BackupRetentionSettings_RetentionUnit)(0), // 17: google.cloud.sql.v1beta4.BackupRetentionSettings.RetentionUnit
-	(BackupConfiguration_TransactionalLogStorageState)(0),            // 18: google.cloud.sql.v1beta4.BackupConfiguration.TransactionalLogStorageState
-	(DatabaseInstance_SqlInstanceState)(0),                           // 19: google.cloud.sql.v1beta4.DatabaseInstance.SqlInstanceState
-	(DatabaseInstance_SqlNetworkArchitecture)(0),                     // 20: google.cloud.sql.v1beta4.DatabaseInstance.SqlNetworkArchitecture
-	(DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState)(0),       // 21: google.cloud.sql.v1beta4.DatabaseInstance.SqlOutOfDiskReport.SqlOutOfDiskState
+	(SqlFileType)(0),                                           // 0: google.cloud.sql.v1beta4.SqlFileType
+	(BakType)(0),                                               // 1: google.cloud.sql.v1beta4.BakType
+	(SqlBackupRunStatus)(0),                                    // 2: google.cloud.sql.v1beta4.SqlBackupRunStatus
+	(SqlBackupRunType)(0),                                      // 3: google.cloud.sql.v1beta4.SqlBackupRunType
+	(SqlBackupKind)(0),                                         // 4: google.cloud.sql.v1beta4.SqlBackupKind
+	(SqlBackendType)(0),                                        // 5: google.cloud.sql.v1beta4.SqlBackendType
+	(SqlIpAddressType)(0),                                      // 6: google.cloud.sql.v1beta4.SqlIpAddressType
+	(SqlInstanceType)(0),                                       // 7: google.cloud.sql.v1beta4.SqlInstanceType
+	(SqlDatabaseVersion)(0),                                    // 8: google.cloud.sql.v1beta4.SqlDatabaseVersion
+	(SqlSuspensionReason)(0),                                   // 9: google.cloud.sql.v1beta4.SqlSuspensionReason
+	(SqlPricingPlan)(0),                                        // 10: google.cloud.sql.v1beta4.SqlPricingPlan
+	(SqlReplicationType)(0),                                    // 11: google.cloud.sql.v1beta4.SqlReplicationType
+	(SqlDataDiskType)(0),                                       // 12: google.cloud.sql.v1beta4.SqlDataDiskType
+	(SqlAvailabilityType)(0),                                   // 13: google.cloud.sql.v1beta4.SqlAvailabilityType
+	(SqlUpdateTrack)(0),                                        // 14: google.cloud.sql.v1beta4.SqlUpdateTrack
+	(SqlFlagType)(0),                                           // 15: google.cloud.sql.v1beta4.SqlFlagType
+	(ApiWarning_SqlApiWarningCode)(0),                          // 16: google.cloud.sql.v1beta4.ApiWarning.SqlApiWarningCode
+	(BackupRetentionSettings_RetentionUnit)(0),                 // 17: google.cloud.sql.v1beta4.BackupRetentionSettings.RetentionUnit
+	(BackupConfiguration_TransactionalLogStorageState)(0),      // 18: google.cloud.sql.v1beta4.BackupConfiguration.TransactionalLogStorageState
+	(DatabaseInstance_SqlInstanceState)(0),                     // 19: google.cloud.sql.v1beta4.DatabaseInstance.SqlInstanceState
+	(DatabaseInstance_SqlNetworkArchitecture)(0),               // 20: google.cloud.sql.v1beta4.DatabaseInstance.SqlNetworkArchitecture
+	(DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState)(0), // 21: google.cloud.sql.v1beta4.DatabaseInstance.SqlOutOfDiskReport.SqlOutOfDiskState
 	(SqlExternalSyncSettingError_SqlExternalSyncSettingErrorType)(0), // 22: google.cloud.sql.v1beta4.SqlExternalSyncSettingError.SqlExternalSyncSettingErrorType
 	(IpConfiguration_SslMode)(0),                                     // 23: google.cloud.sql.v1beta4.IpConfiguration.SslMode
 	(Operation_SqlOperationType)(0),                                  // 24: google.cloud.sql.v1beta4.Operation.SqlOperationType

@@ -36,6 +36,9 @@ linters:
     govet:
       disable:
         - fieldalignment
+        # inline flags calls to deprecated APIs marked //go:fix inline (such as
+        # ioutil.ReadFile and reflect.Ptr); `go fix` can rewrite them.
+        - inline
         - nilness
         - shadow
         - testinggoroutine
