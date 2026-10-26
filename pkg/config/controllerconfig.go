@@ -22,6 +22,7 @@ import (
 
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
@@ -61,6 +62,9 @@ type ControllerConfig struct {
 
 	// SkipNameValidation bypasses the duplicate controller name check during registration
 	SkipNameValidation bool
+
+	// UniverseDomain specifies a custom Google Cloud universe domain (for example, in sovereign cloud environments).
+	UniverseDomain string
 }
 
 func (c *ControllerConfig) Init(ctx context.Context) error {
@@ -124,7 +128,7 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		httpClient.Transport = &optionsRoundTripper{
 			config:       *c,
 			quotaProject: quotaProject,
-			inner:        transport,
+			inner:        gcp.NewUniverseDomainRoundTripper(transport, c.UniverseDomain),
 		}
 		opts = append(opts, option.WithHTTPClient(httpClient))
 
@@ -136,6 +140,9 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		// we cannot pass both a custom http client and a token source to the Google transport
 		if c.GCPTokenSource != nil {
 			opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+		}
+		if universeDomain := gcp.ResolveUniverseDomain(c.UniverseDomain); gcp.IsCustomUniverse(universeDomain) {
+			opts = append(opts, option.WithUniverseDomain(universeDomain))
 		}
 	}
 
@@ -164,6 +171,9 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	}
 	if c.GRPCUnaryClientInterceptor != nil {
 		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(c.GRPCUnaryClientInterceptor)))
+	}
+	if universeDomain := gcp.ResolveUniverseDomain(c.UniverseDomain); gcp.IsCustomUniverse(universeDomain) {
+		opts = append(opts, option.WithUniverseDomain(universeDomain))
 	}
 
 	// TODO: support endpoints?
@@ -213,5 +223,5 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 		return nil, fmt.Errorf("error creating authenticated transport: %w", err)
 	}
 
-	return &http.Client{Transport: authTransport}, nil
+	return &http.Client{Transport: gcp.NewUniverseDomainRoundTripper(authTransport, c.UniverseDomain)}, nil
 }
