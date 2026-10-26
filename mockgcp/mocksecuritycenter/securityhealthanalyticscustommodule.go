@@ -22,6 +22,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -74,13 +75,6 @@ func (s *SecurityCenterServer) GetSecurityHealthAnalyticsCustomModule(ctx contex
 	return obj, nil
 }
 
-func generateCustomModuleID(displayName string) string {
-	if strings.Contains(displayName, "max") {
-		return "1792528049302448382"
-	}
-	return "1792528067365337255"
-}
-
 func (s *SecurityCenterServer) CreateSecurityHealthAnalyticsCustomModule(ctx context.Context, req *pb.CreateSecurityHealthAnalyticsCustomModuleRequest) (*pb.SecurityHealthAnalyticsCustomModule, error) {
 	parent := req.GetParent() // e.g. organizations/{organization}/securityHealthAnalyticsSettings
 	tokens := strings.Split(parent, "/")
@@ -88,7 +82,7 @@ func (s *SecurityCenterServer) CreateSecurityHealthAnalyticsCustomModule(ctx con
 		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
 	}
 
-	id := generateCustomModuleID(req.GetSecurityHealthAnalyticsCustomModule().GetDisplayName())
+	id := fmt.Sprintf("%d", time.Now().UnixNano())
 	reqName := fmt.Sprintf("%s/customModules/%s", parent, id)
 
 	name, err := s.parseSecurityHealthAnalyticsCustomModuleName(reqName)

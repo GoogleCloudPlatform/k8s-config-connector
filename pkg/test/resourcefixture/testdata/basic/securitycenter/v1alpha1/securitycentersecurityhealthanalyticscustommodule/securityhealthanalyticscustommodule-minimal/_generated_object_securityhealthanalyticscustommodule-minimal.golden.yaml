@@ -30,7 +30,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528067365337255
+  externalRef: organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}
   observedGeneration: 2
   observedState:
     lastEditor: mock-editor@gcp-mock.iam.gserviceaccount.com

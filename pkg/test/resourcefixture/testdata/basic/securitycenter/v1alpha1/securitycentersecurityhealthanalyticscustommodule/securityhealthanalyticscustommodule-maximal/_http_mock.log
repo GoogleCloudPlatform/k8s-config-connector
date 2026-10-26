@@ -80,16 +80,16 @@ X-Xss-Protection: 0
   "displayName": "custom_sha_max_${uniqueId}",
   "enablementState": 1,
   "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
-  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382?%24alt=json%3Benum-encoding%3Dint
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528049302448382
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F${customModuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -134,16 +134,16 @@ X-Xss-Protection: 0
   "displayName": "custom_sha_max_${uniqueId}",
   "enablementState": 1,
   "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
-  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382?%24alt=json%3Benum-encoding%3Dint&updateMask=customConfig%2CenablementState
+PATCH https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}?%24alt=json%3Benum-encoding%3Dint&updateMask=customConfig%2CenablementState
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: security_health_analytics_custom_module.name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528049302448382
+X-Goog-Request-Params: security_health_analytics_custom_module.name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F${customModuleID}
 
 {
   "customConfig": {
@@ -177,7 +177,7 @@ X-Goog-Request-Params: security_health_analytics_custom_module.name=organization
   },
   "displayName": "custom_sha_max_${uniqueId}",
   "enablementState": 2,
-  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382"
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}"
 }
 
 200 OK
@@ -223,16 +223,16 @@ X-Xss-Protection: 0
   "displayName": "custom_sha_max_${uniqueId}",
   "enablementState": 2,
   "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
-  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382?%24alt=json%3Benum-encoding%3Dint
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528049302448382
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F${customModuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -277,16 +277,16 @@ X-Xss-Protection: 0
   "displayName": "custom_sha_max_${uniqueId}",
   "enablementState": 2,
   "lastEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
-  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382",
+  "name": "organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/1792528049302448382?%24alt=json%3Benum-encoding%3Dint
+DELETE https://securitycenter.googleapis.com/v1/organizations/${organizationID}/securityHealthAnalyticsSettings/customModules/${customModuleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F1792528049302448382
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FsecurityHealthAnalyticsSettings%2FcustomModules%2F${customModuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
