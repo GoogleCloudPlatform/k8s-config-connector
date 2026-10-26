@@ -27,6 +27,21 @@ func TestDiskImageDiffSuppress(t *testing.T) {
 			New:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20171213",
 			ExpectDiffSuppress: true,
 		},
+		"matching sovereign universe self_link with image family partial self_link": {
+			Old:                "https://compute.custom.universe.goog/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240101",
+			New:                "projects/debian-cloud/global/images/family/debian-11",
+			ExpectDiffSuppress: true,
+		},
+		"matching sovereign universe self_link with image partial self_link": {
+			Old:                "https://compute.custom.universe.goog/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20240101",
+			New:                "projects/debian-cloud/global/images/debian-11-bullseye-v20240101",
+			ExpectDiffSuppress: true,
+		},
+		"different sovereign universe self_link with image family partial self_link": {
+			Old:                "https://compute.custom.universe.goog/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240101",
+			New:                "projects/debian-cloud/global/images/family/debian-10",
+			ExpectDiffSuppress: false,
+		},
 		"matching image partial self_link": {
 			Old:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20171213",
 			New:                "projects/debian-cloud/global/images/debian-8-jessie-v20171213",
