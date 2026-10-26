@@ -890,11 +890,11 @@ func TestCompareGreenfieldSpec_SliceElementServerDefaults(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		name            string
-		desiredKRM      *sliceElemTestSpec
-		actualProto     *pb.Instance
-		wantHasDiff     bool
-		wantCapacities  []int64
+		name           string
+		desiredKRM     *sliceElemTestSpec
+		actualProto    *pb.Instance
+		wantHasDiff    bool
+		wantCapacities []int64
 	}{
 		{
 			name: "unmodified slice element adopts server-populated default subfields",
@@ -1051,4 +1051,3 @@ func TestSliceElemHasNoConflicts_EdgeCases(t *testing.T) {
 		})
 	}
 }
-
