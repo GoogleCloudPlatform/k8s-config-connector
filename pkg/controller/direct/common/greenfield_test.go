@@ -828,3 +828,171 @@ func TestNormalizeGreenfieldReferences_ExternalNormalizerIdempotent(t *testing.T
 		t.Errorf("expected SliceRefs[0] to be normalized once, got calls=%d external=%q", obj.Spec.SliceRefs[0].calls, obj.Spec.SliceRefs[0].External)
 	}
 }
+
+type fileShareTestElem struct {
+	Name         *string `json:"name,omitempty"`
+	CapacityGb   *int64  `json:"capacityGb,omitempty"`
+	SourceBackup *string `json:"sourceBackup,omitempty"`
+}
+
+type sliceElemTestSpec struct {
+	FileShares []fileShareTestElem `json:"fileShares,omitempty"`
+}
+
+func sliceElemTestSpecFromProto(mapCtx *direct.MapContext, in *pb.Instance) *sliceElemTestSpec {
+	if in == nil {
+		return nil
+	}
+	out := &sliceElemTestSpec{}
+	for _, fs := range in.GetFileShares() {
+		out.FileShares = append(out.FileShares, fileShareTestElem{
+			Name:         direct.LazyPtr(fs.GetName()),
+			CapacityGb:   direct.LazyPtr(fs.GetCapacityGb()),
+			SourceBackup: direct.LazyPtr(fs.GetSourceBackup()),
+		})
+	}
+	return out
+}
+
+func sliceElemTestSpecToProto(mapCtx *direct.MapContext, in *sliceElemTestSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	for _, fs := range in.FileShares {
+		p := &pb.FileShareConfig{
+			Name:       direct.ValueOf(fs.Name),
+			CapacityGb: direct.ValueOf(fs.CapacityGb),
+		}
+		if fs.SourceBackup != nil {
+			p.Source = &pb.FileShareConfig_SourceBackup{SourceBackup: *fs.SourceBackup}
+		}
+		out.FileShares = append(out.FileShares, p)
+	}
+	return out
+}
+
+func TestGreenfieldComparison_SliceElementServerDefaultsAndReordering(t *testing.T) {
+	ctx := context.Background()
+
+	t.Run("unmodified slice element adopts server-populated default subfields with zero diff", func(t *testing.T) {
+		desiredKRM := &sliceElemTestSpec{
+			FileShares: []fileShareTestElem{
+				{
+					Name: direct.PtrTo("share-a"),
+					// CapacityGb omitted by user, defaulted by server to 1024
+				},
+			},
+		}
+		actualProto := &pb.Instance{
+			FileShares: []*pb.FileShareConfig{
+				{
+					Name:       "share-a",
+					CapacityGb: 1024,
+				},
+			},
+		}
+
+		mergedDesiredProto, diff, fieldMask, err := CompareGreenfieldSpec(
+			ctx,
+			desiredKRM,
+			actualProto,
+			sliceElemTestSpecFromProto,
+			sliceElemTestSpecToProto,
+			nil,
+		)
+		if err != nil {
+			t.Fatalf("CompareGreenfieldSpec failed: %v", err)
+		}
+		if len(fieldMask.GetPaths()) > 0 || diff.HasDiff() {
+			t.Errorf("expected no diff when slice element only has server-defaulted subfields, got paths=%v diff=%v", fieldMask.GetPaths(), diff)
+		}
+		if got := mergedDesiredProto.GetFileShares()[0].GetCapacityGb(); got != 1024 {
+			t.Errorf("expected mergedDesiredProto FileShares[0].CapacityGb=1024, got %d", got)
+		}
+	})
+
+	t.Run("reordered slice elements do not cross-contaminate defaults between indices", func(t *testing.T) {
+		desiredKRM := &sliceElemTestSpec{
+			FileShares: []fileShareTestElem{
+				{
+					Name: direct.PtrTo("share-b"),
+					// CapacityGb omitted on share-b
+				},
+				{
+					Name:       direct.PtrTo("share-a"),
+					CapacityGb: direct.PtrTo(int64(2048)),
+				},
+			},
+		}
+		actualProto := &pb.Instance{
+			FileShares: []*pb.FileShareConfig{
+				{
+					Name:       "share-a",
+					CapacityGb: 2048,
+				},
+				{
+					Name:       "share-b",
+					CapacityGb: 1024,
+				},
+			},
+		}
+
+		mergedDesiredProto, diff, fieldMask, err := CompareGreenfieldSpec(
+			ctx,
+			desiredKRM,
+			actualProto,
+			sliceElemTestSpecFromProto,
+			sliceElemTestSpecToProto,
+			nil,
+		)
+		if err != nil {
+			t.Fatalf("CompareGreenfieldSpec failed: %v", err)
+		}
+		if len(fieldMask.GetPaths()) == 0 || !diff.HasDiff() {
+			t.Fatalf("expected diff when slice elements are reordered, got no diff")
+		}
+		// share-b at index 0 must NOT inherit CapacityGb=2048 from share-a at actual[0]
+		if got := mergedDesiredProto.GetFileShares()[0].GetCapacityGb(); got != 0 {
+			t.Errorf("expected mergedDesiredProto FileShares[0] (share-b) CapacityGb=0 (uncontaminated), got %d", got)
+		}
+	})
+
+	t.Run("modified slice element does not copy stale defaults from actual at same index", func(t *testing.T) {
+		desiredKRM := &sliceElemTestSpec{
+			FileShares: []fileShareTestElem{
+				{
+					Name:         direct.PtrTo("share-a"),
+					SourceBackup: direct.PtrTo("projects/p/locations/l/backups/b2"),
+				},
+			},
+		}
+		actualProto := &pb.Instance{
+			FileShares: []*pb.FileShareConfig{
+				{
+					Name:       "share-a",
+					CapacityGb: 1024,
+					Source:     &pb.FileShareConfig_SourceBackup{SourceBackup: "projects/p/locations/l/backups/b1"},
+				},
+			},
+		}
+
+		mergedDesiredProto, diff, fieldMask, err := CompareGreenfieldSpec(
+			ctx,
+			desiredKRM,
+			actualProto,
+			sliceElemTestSpecFromProto,
+			sliceElemTestSpecToProto,
+			nil,
+		)
+		if err != nil {
+			t.Fatalf("CompareGreenfieldSpec failed: %v", err)
+		}
+		if len(fieldMask.GetPaths()) == 0 || !diff.HasDiff() {
+			t.Fatalf("expected diff when slice element is modified, got no diff")
+		}
+		if got := mergedDesiredProto.GetFileShares()[0].GetCapacityGb(); got != 0 {
+			t.Errorf("expected modified slice element not to copy stale CapacityGb=1024, got %d", got)
+		}
+	})
+}
