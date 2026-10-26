@@ -29,37 +29,6 @@ type Certificate struct {
 	RawDer []byte `json:"rawDer,omitempty"`
 }
 
-// +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
-type EkmConnection_ServiceResolver struct {
-	// Required. The resource name of the Service Directory service pointing to
-	//  an EKM replica, in the format
-	//  `projects/*/locations/*/namespaces/*/services/*`.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.service_directory_service
-	// +required
-	ServiceDirectoryService *string `json:"serviceDirectoryService,omitempty"`
-
-	// Optional. The filter applied to the endpoints of the resolved service. If
-	//  no filter is specified, all endpoints will be considered. An endpoint
-	//  will be chosen arbitrarily from the filtered list for each request.
-	//
-	//  For endpoint filter syntax and examples, see
-	//  https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.endpoint_filter
-	EndpointFilter *string `json:"endpointFilter,omitempty"`
-
-	// Required. The hostname of the EKM replica used at TLS and HTTP layers.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.hostname
-	// +required
-	Hostname *string `json:"hostname,omitempty"`
-
-	// Required. A list of leaf server certificates used to authenticate HTTPS
-	//  connections to the EKM replica. Currently, a maximum of 10
-	//  [Certificate][google.cloud.kms.v1.Certificate] is supported.
-	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.server_certificates
-	// +required
-	ServerCertificates []Certificate `json:"serverCertificates,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.kms.v1.Certificate
 type CertificateObservedState struct {
 	// Output only. True if the certificate was parsed successfully.

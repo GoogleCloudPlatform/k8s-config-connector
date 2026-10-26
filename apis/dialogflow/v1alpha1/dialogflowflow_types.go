@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var DialogflowFlowGVK = GroupVersion.WithKind("DialogflowFlow")
 // +kcc:spec:proto=google.cloud.dialogflow.cx.v3.Flow
 // +kcc:required-from-proto
 type DialogflowFlowSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// A reference to the projects/{project}/locations/{location}/agents/{agent} this resource belongs to.
-	// +kcc:guess
-	// AgentRef *DialogflowCXAgentRef `json:"agentRef,omitempty"`
+	// +required
+	AgentRef *DialogflowCXAgentRef `json:"agentRef"`
 
 	// The DialogflowFlow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -102,7 +96,7 @@ type DialogflowFlowSpec struct {
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
 	//  for agent-level groups.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Flow.transition_route_groups
-	TransitionRouteGroups []string `json:"transitionRouteGroups,omitempty"`
+	TransitionRouteGroupRefs []DialogflowTransitionRouteGroupRef `json:"transitionRouteGroupRefs,omitempty"`
 
 	// NLU related settings of the flow.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Flow.nlu_settings
@@ -133,6 +127,123 @@ type DialogflowFlowSpec struct {
 	//  modifications to the flow will be rejected.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Flow.locked
 	Locked *bool `json:"locked,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
+type TransitionRoute struct {
+
+	// Optional. The description of the transition route. The maximum length is
+	//  500 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.description
+	Description *string `json:"description,omitempty"`
+
+	// The unique identifier of an [Intent][google.cloud.dialogflow.cx.v3.Intent].
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
+	//  Indicates that the transition can only happen when the given intent is
+	//  matched.
+	//  At least one of `intent` or `condition` must be specified. When both
+	//  `intent` and `condition` are specified, the transition can only happen
+	//  when both are fulfilled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.intent
+	IntentRef *DialogflowCXIntentRef `json:"intentRef,omitempty"`
+
+	// The condition to evaluate against [form
+	//  parameters][google.cloud.dialogflow.cx.v3.Form.parameters] or [session
+	//  parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
+	//
+	//  See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	//  At least one of `intent` or `condition` must be specified. When both
+	//  `intent` and `condition` are specified, the transition can only happen
+	//  when both are fulfilled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// The fulfillment to call when the condition is satisfied. At least one of
+	//  `trigger_fulfillment` and `target` must be specified. When both are
+	//  defined, `trigger_fulfillment` is executed first.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_page
+	TargetPageRef *DialogflowPageRef `json:"targetPageRef,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_flow
+	TargetFlowRef *DialogflowFlowRef `json:"targetFlowRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.EventHandler
+type EventHandler struct {
+
+	// Required. The name of the event to handle.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.event
+	// +required
+	Event *string `json:"event,omitempty"`
+
+	// The fulfillment to call when the event occurs.
+	//  Handling webhook errors with a fulfillment enabled with webhook could
+	//  cause infinite loop. It is invalid to specify such fulfillment for a
+	//  handler handling webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_page
+	TargetPageRef *DialogflowPageRef `json:"targetPageRef,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_flow
+	TargetFlowRef *DialogflowFlowRef `json:"targetFlowRef,omitempty"`
+
+	// The target playbook to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_playbook
+	TargetPlaybookRef *DialogflowPlaybookRef `json:"targetPlaybookRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
+type KnowledgeConnectorSettings struct {
+	// Whether Knowledge Connector is enabled or not.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The fulfillment to be triggered.
+	//
+	//  When the answers from the Knowledge Connector are selected by Dialogflow,
+	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
+	//  (contains up to the 5 highest confidence answers) and
+	//  `$request.knowledge.questions` (contains the corresponding questions) to
+	//  construct the fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_page
+	TargetPageRef *DialogflowPageRef `json:"targetPageRef,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_flow
+	TargetFlowRef *DialogflowFlowRef `json:"targetFlowRef,omitempty"`
+
+	// Optional. List of related data store connections.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.data_store_connections
+	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
 }
 
 // DialogflowFlowStatus defines the config connector machine state of DialogflowFlow

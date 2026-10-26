@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var DataplexEntryGVK = GroupVersion.WithKind("DataplexEntry")
 // +kcc:spec:proto=google.cloud.dataplex.v1.Entry
 // +kcc:required-from-proto
 type DataplexEntrySpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// A reference to the projects/{project}/locations/{location}/entryGroups/{entry_group} this resource belongs to.
-	// +kcc:guess
-	// EntryGroupRef *EntryGroupRef `json:"entryGroupRef,omitempty"`
+	// +required
+	EntryGroupRef *EntryGroupRef `json:"entryGroupRef"`
 
 	// The DataplexEntry name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

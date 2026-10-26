@@ -28,16 +28,6 @@ entries:
     status: open
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on DataformReleaseConfigSpec
-    status: open
-  - kind: DataformReleaseConfig
-    group: dataform.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: DataformReleaseConfig
-    group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.assertionSchema
     reason: possible-reference-by-description-loose
     status: open
@@ -65,12 +55,6 @@ entries:
     status: open
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
-  - kind: DataformReleaseConfig
-    group: dataform.cnrm.cloud.google.com
     field: .spec.releaseCompilationResult
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dataform.googleapis.com/CompilationResult (google.api.resource_reference); confirm whether it should be a KCC reference
@@ -79,16 +63,6 @@ entries:
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: DataformWorkflowConfig
-    group: dataform.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on DataformWorkflowConfigSpec
-    status: open
-  - kind: DataformWorkflowConfig
-    group: dataform.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
     status: open
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
@@ -106,36 +80,8 @@ entries:
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
     status: open
-  - kind: DataformWorkflowConfig
-    group: dataform.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
-  - kind: DataformWorkflowConfig
-    group: dataform.cnrm.cloud.google.com
-    field: .spec.releaseConfig
-    reason: authoritative-proto-reference
-    detail: the proto marks this field as a reference to dataform.googleapis.com/ReleaseConfig (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
   - kind: DataformWorkspace
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: DataformWorkspace
-    group: dataform.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on DataformWorkspaceSpec
-    status: open
-  - kind: DataformWorkspace
-    group: dataform.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: DataformWorkspace
-    group: dataform.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
     status: open

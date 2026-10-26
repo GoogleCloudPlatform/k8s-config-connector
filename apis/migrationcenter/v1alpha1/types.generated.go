@@ -205,6 +205,8 @@ type ReportConfig struct {
 }
 */
 
+/* found existing non-generated go type "ReportConfig_GroupPreferenceSetAssignment", skipping
+
 // +kcc:proto=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment
 type ReportConfig_GroupPreferenceSetAssignment struct {
 	// Required. Name of the group.
@@ -217,6 +219,7 @@ type ReportConfig_GroupPreferenceSetAssignment struct {
 	// +required
 	PreferenceSet *string `json:"preferenceSet,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.migrationcenter.v1.SoleTenancyPreferences
 type SoleTenancyPreferences struct {

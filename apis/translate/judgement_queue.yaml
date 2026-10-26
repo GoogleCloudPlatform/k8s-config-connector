@@ -28,39 +28,13 @@ entries:
     status: open
   - kind: TranslateDataset
     group: translate.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//translate.googleapis.com/projects/{project}/locations/{location}/datasets/{dataset}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: TranslateDataset
-    group: translate.cnrm.cloud.google.com
-    reason: identity-server-generated-id
-    detail: generated TranslateDatasetIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
-  - kind: TranslateDataset
-    group: translate.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v3/projects.locations.datasets: https://docs.cloud.google.com/translate/docs/quickstarts/reference/rest/v3/projects.locations.datasets'
-    status: open
-  - kind: TranslateDataset
-    group: translate.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
   - kind: TranslateGlossary
     group: translate.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: TranslateGlossary
-    group: translate.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//translate.googleapis.com/projects/{project}/locations/{location}/glossaries/{glossary}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: TranslateGlossary
-    group: translate.cnrm.cloud.google.com
-    reason: identity-server-generated-id
-    detail: generated TranslateGlossaryIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
     status: open
   - kind: TranslateGlossary
     group: translate.cnrm.cloud.google.com
@@ -72,12 +46,6 @@ entries:
     field: .spec.inputConfig.gcsSource.inputURI
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
-  - kind: TranslateGlossary
-    group: translate.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
   - kind: TranslateGlossaryEntry
     group: translate.cnrm.cloud.google.com
@@ -91,28 +59,14 @@ entries:
     status: open
   - kind: TranslateGlossaryEntry
     group: translate.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//translate.googleapis.com/projects/{project}/locations/{location}/glossaries/{glossary}/glossaryEntries/{glossary_entry}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: TranslateGlossaryEntry
-    group: translate.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/glossaries/{glossary}/glossaryEntries/{glossary_entry}" contains ancestor segment(s) glossaries/{glossary} with no matching reference or field on TranslateGlossaryEntrySpec
-    status: open
-  - kind: TranslateGlossaryEntry
-    group: translate.cnrm.cloud.google.com
-    reason: identity-server-generated-id
-    detail: generated TranslateGlossaryEntryIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
-  - kind: TranslateGlossaryEntry
-    group: translate.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/glossaries/{glossary}, and no GlossaryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: TranslateGlossaryEntry
-    group: translate.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v3/projects.locations.glossaries.glossaryEntries: https://docs.cloud.google.com/translate/docs/quickstarts/reference/rest/v3/projects.locations.glossaries.glossaryEntries'
+    status: open
+  - kind: TranslateGlossaryEntry
+    group: translate.cnrm.cloud.google.com
+    field: .spec.glossaryRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to TranslateGlossaryRef, read from the glossaries segment of projects/{project}/locations/{location}/glossaries/{glossary}/glossaryEntries/{glossary_entry}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
     status: open
   - kind: TranslateGlossaryEntry
     group: translate.cnrm.cloud.google.com
@@ -124,16 +78,6 @@ entries:
     group: translate.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: TranslateModel
-    group: translate.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//translate.googleapis.com/projects/{project}/locations/{location}/models/{model}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: TranslateModel
-    group: translate.cnrm.cloud.google.com
-    reason: identity-server-generated-id
-    detail: generated TranslateModelIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
     status: open
   - kind: TranslateModel
     group: translate.cnrm.cloud.google.com

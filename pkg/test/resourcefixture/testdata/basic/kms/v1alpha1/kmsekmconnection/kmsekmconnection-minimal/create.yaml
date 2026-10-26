@@ -1,0 +1,15 @@
+apiVersion: kms.cnrm.cloud.google.com/v1alpha1
+kind: KMSEkmConnection
+metadata:
+  name: kmsekm-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  keyManagementMode: MANUAL
+  serviceResolvers:
+    - serviceDirectoryServiceRef:
+        name: sds-${uniqueId}
+      hostname: ekm.example.com
+      serverCertificates:
+        - rawDer: MIIDMTCCAhmgAwIBAgIUb2UPdFjoXV7DXABGE8w8zI8ZjFgwDQYJKoZIhvcNAQELBQAwGjEYMBYGA1UEAwwPZWttLmV4YW1wbGUuY29tMB4XDTI0MDEwMTAwMDAwMFoXDTM2MDEwMTAwMDAwMFowGjEYMBYGA1UEAwwPZWttLmV4YW1wbGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAudkG4j0kJjJNQXS8reqSMEOUAKYGb3SwHiAxPC31QEGWAOuifSgaPGEUYsEaYa30KsgWog/kWKurGNKHPzUi+6ue+aGYSSfzTAILzqZv3DwzxiKwqbm1XDx5UWdvmTBPA4t2V7li2FQAPk2tDtt7icty4X7bKwOIGohFCTYdLJ6CfE9iur0WE7XjSnYPpDFp6PJB0x6o+c7iGHIGrth+oxYwTVp1FNEStJthSnRoUKVB/PzyPHgFnjzpVl6gmH7PnJfkod2WTjipWOgCIeLtmm5mpJsqnife3MANbgPuWLI9t5CEH95IAYxE0Ssv+9PcmRJjeFc+7wKxKhGQeIXpgQIDAQABo28wbTAdBgNVHQ4EFgQUOE4b49N2JmrD3Owb6BFh8fhZrlwwHwYDVR0jBBgwFoAUOE4b49N2JmrD3Owb6BFh8fhZrlwwDwYDVR0TAQH/BAUwAwEB/zAaBgNVHREEEzARgg9la20uZXhhbXBsZS5jb20wDQYJKoZIhvcNAQELBQADggEBAH6B83tic3E3Ceeayh99F9xiYppboR+rFWyzHajmUL2DCS8M+QaYhmCCbitpa4bKuNqT8hLyO5sOwg0HgpdmDHLNzZYKUFou5KfimyC8SqqAYs32K+bHaWTGTBCezWFqbS3tiCPB0KcRNdKRc6dp9iMHOqm7ZuEQXhzy/NwPXHlsCeiVSHkXgTRkuAJRtx8pAQ/3k79UNszXnzKekNroAlg0vZq+4od7Wp34fCi+zjuM4zrFfDq+QgcxGG6DLVJNY3jbMt7ZqSslHISMPfPyU2JBTpniLys85+BRD8Kh+bc0jUklFyyaZafl4uYmOngtEMzx9eLzpoFtsAQUox1IXxw=

@@ -28,25 +28,9 @@ entries:
     status: open
   - kind: ArtifactRegistryAttachment
     group: artifactregistry.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/attachments/{attachment}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on ArtifactRegistryAttachmentSpec
-    status: open
-  - kind: ArtifactRegistryAttachment
-    group: artifactregistry.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: ArtifactRegistryAttachment
-    group: artifactregistry.cnrm.cloud.google.com
     field: .spec.files
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to artifactregistry.googleapis.com/File (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
-  - kind: ArtifactRegistryAttachment
-    group: artifactregistry.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
     status: open
   - kind: ArtifactRegistryRule
     group: artifactregistry.cnrm.cloud.google.com
@@ -57,22 +41,6 @@ entries:
     group: artifactregistry.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
-  - kind: ArtifactRegistryRule
-    group: artifactregistry.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/rules/{rule}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on ArtifactRegistryRuleSpec
-    status: open
-  - kind: ArtifactRegistryRule
-    group: artifactregistry.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
-  - kind: ArtifactRegistryRule
-    group: artifactregistry.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
     status: open
   - kind: ArtifactRegistryRule
     group: artifactregistry.cnrm.cloud.google.com

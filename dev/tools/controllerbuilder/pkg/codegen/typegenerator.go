@@ -155,6 +155,22 @@ type WriteOptions struct {
 	// ObservedState when no field of the message carries field_behavior. See
 	// IsServerSetField for the allowlist and the guard.
 	PlaceServerSetFields bool
+	// AutoResolveJudgement automatically resolves high-confidence judgement
+	// queue patterns during scaffolding (such as authoritative
+	// google.api.resource_reference fields with an existing Normalized Ref type,
+	// top-level labels omission, top-level optional etag placement into
+	// ObservedState, and explicit "Output only." comment-prefixed fields).
+	AutoResolveJudgement bool
+	// ResolveResourceReference maps a google.api.resource_reference type
+	// (e.g. "cloudkms.googleapis.com/CryptoKey") to a Go Ref type
+	// (e.g. "kmsv1beta1.KMSCryptoKeyRef") when AutoResolveJudgement is set.
+	ResolveResourceReference func(targetType string) (string, bool)
+	// CanAutoResolveMessage reports whether fields of msg may be auto-resolved
+	// into reference fields. When nil, all messages are allowed.
+	CanAutoResolveMessage func(msg protoreflect.MessageDescriptor) bool
+	// SkipExtraTypeName reports whether a nested struct Go name has already been
+	// emitted into an earlier <kind>_types.go file in the same run.
+	SkipExtraTypeName func(goName string) bool
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -298,6 +314,9 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 func (g *TypeGenerator) isServerSet(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor) bool {
 	if string(msg.FullName()) != g.rootMessageFQN {
 		return false
+	}
+	if IsAutoResolvedTopLevelOutputField(field, g.writeOptions) {
+		return true
 	}
 	return IsServerSetField(field, msg, g.writeOptions)
 }
@@ -490,6 +509,8 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
 		renderOpts := opts
+		renderOpts.AutoResolveJudgement = false
+		renderOpts.ResolveResourceReference = nil
 		if !activeForJudgement {
 			renderOpts.Siblings = nil
 		}
@@ -519,6 +540,8 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		// scans above cover it too.
 		if writeRequired {
 			strictOpts := g.StrictWriteOptions()
+			strictOpts.AutoResolveJudgement = false
+			strictOpts.ResolveResourceReference = nil
 			if !activeForJudgement {
 				strictOpts.Siblings = nil
 			}
@@ -775,6 +798,8 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	observedOpts.EmitRequired = false
 	observedOpts.RequiredStructs = nil
 	observedOpts.Siblings = nil
+	observedOpts.AutoResolveJudgement = false
+	observedOpts.ResolveResourceReference = nil
 
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
@@ -907,11 +932,137 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 	return goType, nil
 }
 
+// ResolveAuthoritativeRefField checks whether field is a non-output string or
+// repeated string field annotated with google.api.resource_reference (type:
+// "...") that resolves unambiguously via opts.ResolveResourceReference when
+// opts.AutoResolveJudgement is enabled.
+func ResolveAuthoritativeRefField(field protoreflect.FieldDescriptor, opts WriteOptions) (goFieldName, jsonName, goType string, ok bool) {
+	if !opts.AutoResolveJudgement || opts.ResolveResourceReference == nil || field == nil {
+		return "", "", "", false
+	}
+	if opts.CanAutoResolveMessage != nil && field.ContainingMessage() != nil && !opts.CanAutoResolveMessage(field.ContainingMessage()) {
+		return "", "", "", false
+	}
+	if field.Kind() != protoreflect.StringKind || field.IsMap() {
+		return "", "", "", false
+	}
+	if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+		return "", "", "", false
+	}
+	if string(field.Name()) == "parent" && field.ContainingMessage() != nil && protoapi.GetResourceMetadata(field.ContainingMessage()) != nil {
+		return "", "", "", false
+	}
+	if field.Options() == nil {
+		return "", "", "", false
+	}
+	v := proto.GetExtension(field.Options(), annotations.E_ResourceReference)
+	rr, _ := v.(*annotations.ResourceReference)
+	if rr == nil || rr.GetType() == "" {
+		return "", "", "", false
+	}
+	refType, found := opts.ResolveResourceReference(rr.GetType())
+	if !found || refType == "" {
+		return "", "", "", false
+	}
+	if field.Cardinality() == protoreflect.Repeated {
+		singular := Singular(string(field.Name()))
+		goFieldName = goNameFromSnake(singular, opts) + "Refs"
+		jsonName = jsonNameFromSnake(singular, opts) + "Refs"
+		goType = "[]" + refType
+		return goFieldName, jsonName, goType, true
+	}
+	goFieldName = goFieldNameOpts(field, opts)
+	jsonName = GetJSONForKRM(field, opts)
+	if !strings.HasSuffix(goFieldName, "Ref") {
+		goFieldName += "Ref"
+		jsonName += "Ref"
+	}
+	goType = "*" + refType
+	return goFieldName, jsonName, goType, true
+}
+
+func goNameFromSnake(snake string, opts WriteOptions) string {
+	tokens := strings.Split(snake, "_")
+	for i, token := range tokens {
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
+		} else {
+			token = strings.Title(token)
+		}
+		tokens[i] = token
+	}
+	return strings.Join(tokens, "")
+}
+
+func jsonNameFromSnake(snake string, opts WriteOptions) string {
+	tokens := strings.Split(snake, "_")
+	for i, token := range tokens {
+		if i == 0 {
+			continue
+		}
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
+		} else {
+			token = strings.Title(token)
+		}
+		tokens[i] = token
+	}
+	return strings.Join(tokens, "")
+}
+
+// IsAutoResolvedTopLevelOutputField reports whether a top-level field of a
+// resource message should be placed directly into ObservedState when
+// opts.AutoResolveJudgement is enabled: either an optional top-level "etag"
+// field, or a field whose leading proto comment starts with "Output only." or
+// "[Output Only]".
+func IsAutoResolvedTopLevelOutputField(field protoreflect.FieldDescriptor, opts WriteOptions) bool {
+	if !opts.AutoResolveJudgement || field == nil {
+		return false
+	}
+	if string(field.Name()) == "name" {
+		return false
+	}
+	if string(field.Name()) == "etag" && field.Kind() == protoreflect.StringKind && !field.IsList() && !IsFieldBehavior(field, annotations.FieldBehavior_REQUIRED) {
+		return true
+	}
+	return HasOutputOnlyCommentPrefix(field)
+}
+
+// HasOutputOnlyCommentPrefix reports whether field's leading proto comment
+// starts with "Output only." or "[Output Only]" (case-insensitively).
+func HasOutputOnlyCommentPrefix(field protoreflect.FieldDescriptor) bool {
+	if field == nil || field.ParentFile() == nil {
+		return false
+	}
+	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
+	comment := strings.Join(strings.Fields(loc.LeadingComments), " ")
+	for _, prefix := range []string{"Output only.", "[Output Only]"} {
+		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
+			return true
+		}
+	}
+	return false
+}
+
 func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, opts WriteOptions, note string) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := GetJSONForKRM(field, opts)
 	GoFieldName := goFieldNameOpts(field, opts)
+
+	var (
+		goType     string
+		err        error
+		resolvedRef bool
+	)
+	if !isTransitiveOutput {
+		if refGoName, refJSONName, refGoType, ok := ResolveAuthoritativeRefField(field, opts); ok {
+			GoFieldName = refGoName
+			jsonName = refJSONName
+			goType = refGoType
+			resolvedRef = true
+		}
+	}
 
 	// The caller's own note wins: it knows something more specific than a name
 	// match, such as why a field was placed in ObservedState.
@@ -919,13 +1070,15 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	// Otherwise, a string field named after a resource this service declares is
 	// probably a reference to it. The note records the guess for a reader; the
 	// field stays a string, and the queue carries the matching entry.
-	if note == "" {
+	if note == "" && !resolvedRef {
 		if target, ok := SiblingResource(field, opts); ok {
 			note = SiblingGuessMarker + target
 		}
 	}
 
-	goType, err := GoTypeForField(field, isTransitiveOutput, opts)
+	if !resolvedRef {
+		goType, err = GoTypeForField(field, isTransitiveOutput, opts)
+	}
 	if err != nil {
 		// Include the field name in the TODO comment when prepopulating is enabled.
 		// This provides clarity for human review and queue processing without

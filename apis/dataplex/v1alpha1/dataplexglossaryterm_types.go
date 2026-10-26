@@ -13,14 +13,13 @@
 // limitations under the License.
 
 // API sources for DataplexGlossaryTerm, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/dataplex/v1/business_glossary.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/28ba5d15234eff44241492ca72b135e1171fc537/google/cloud/dataplex/v1/business_glossary.proto
 // +kcc:source:service-docs=https://cloud.google.com/dataplex/docs
 // +kcc:source:resource-docs=https://docs.cloud.google.com/dataplex/docs/reference/rest/v1/projects.locations.glossaries.terms
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +30,10 @@ var DataplexGlossaryTermGVK = GroupVersion.WithKind("DataplexGlossaryTerm")
 // +kcc:spec:proto=google.cloud.dataplex.v1.GlossaryTerm
 // +kcc:required-from-proto
 type DataplexGlossaryTermSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// A reference to the projects/{project}/locations/{location}/glossaries/{glossary} this resource belongs to.
+	// +required
+	GlossaryRef *GlossaryRef `json:"glossaryRef"`
 
 	// The DataplexGlossaryTerm name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -47,10 +45,6 @@ type DataplexGlossaryTermSpec struct {
 	// Optional. The user-mutable description of the GlossaryTerm.
 	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. User-defined labels for the GlossaryTerm.
-	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The immediate parent of the GlossaryTerm in the
 	//  resource-hierarchy. It can either be a Glossary or a GlossaryCategory.

@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var DataformWorkspaceGVK = GroupVersion.WithKind("DataformWorkspace")
 // +kcc:spec:proto=google.cloud.dataform.v1.Workspace
 // +kcc:required-from-proto
 type DataformWorkspaceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// A reference to the projects/{project}/locations/{location}/repositories/{repository} this resource belongs to.
+	// +required
+	RepositoryRef *dataformv1beta1.DataformRepositoryRef `json:"repositoryRef"`
 
 	// The DataformWorkspace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

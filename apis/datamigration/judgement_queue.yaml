@@ -28,11 +28,6 @@ entries:
     status: open
   - kind: DataMigrationMappingRule
     group: datamigration.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}/mappingRules/{mapping_rule}" contains ancestor segment(s) conversionWorkspaces/{conversion_workspace} with no matching reference or field on DataMigrationMappingRuleSpec
-    status: open
-  - kind: DataMigrationMappingRule
-    group: datamigration.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}, and no ConversionWorkspaceRef type exists to point at; add the parent resource first, then model this as a reference
     status: open
@@ -130,12 +125,6 @@ entries:
     field: .spec.cloudsql.settings.zone
     reason: location-or-parent-ref
     detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
-  - kind: DatamigrationConnectionProfile
-    group: datamigration.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
   - kind: DatamigrationConnectionProfile
     group: datamigration.cnrm.cloud.google.com

@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,22 +31,14 @@ var TranscoderJobTemplateGVK = GroupVersion.WithKind("TranscoderJobTemplate")
 // +kcc:spec:proto=google.cloud.video.transcoder.v1.JobTemplate
 // +kcc:required-from-proto
 type TranscoderJobTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The TranscoderJobTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// The configuration for this template.
 	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobTemplate.config
 	Config *JobConfigWithRequired `json:"config,omitempty"`
-
-	// The labels associated with this job template. You can use these to organize
-	//  and group your job templates.
-	// +kcc:proto:field=google.cloud.video.transcoder.v1.JobTemplate.labels
-	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // TranscoderJobTemplateStatus defines the config connector machine state of TranscoderJobTemplate

@@ -60,9 +60,11 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig \
   --resource NetworkConnectivityDestination:Destination \
   --resource NetworkConnectivityPolicyBasedRoute:PolicyBasedRoute \
-  --resource NetworkConnectivityServiceConnectionToken:ServiceConnectionToken
+  --resource NetworkConnectivityServiceConnectionToken:ServiceConnectionToken \
+  --pattern NetworkConnectivityPolicyBasedRoute=projects/{project}/locations/global/policyBasedRoutes/{policy_based_route}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \

@@ -156,6 +156,34 @@ spec:
                   - pythonCode
                   type: object
                 type: array
+              appRef:
+                description: Required. The App that this Agent belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CESApp resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}".
+                    type: string
+                  name:
+                    description: The name of a CESApp resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CESApp resource.
+                    type: string
+                type: object
               beforeAgentCallbacks:
                 description: Optional. The callbacks to execute before the agent is
                   called. The provided callbacks are executed sequentially in the
@@ -251,11 +279,37 @@ spec:
                   - pythonCode
                   type: object
                 type: array
-              childAgents:
+              childAgentRefs:
                 description: 'Optional. List of child agents in the agent tree. Format:
                   `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`'
                 items:
-                  type: string
+                  description: CesAgentRef is a reference to a GCP CesAgent resource.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed CesAgent resource.
+                        Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/agents/{{agentID}}".
+                      type: string
+                    name:
+                      description: The name of a CesAgent resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a CesAgent resource.
+                      type: string
+                  type: object
                 type: array
               description:
                 description: Optional. Human-readable description of the agent.
@@ -263,16 +317,38 @@ spec:
               displayName:
                 description: Required. Display name of the agent.
                 type: string
-              etag:
-                description: Etag used to ensure the object hasn't changed during
-                  a read-modify-write operation. If the etag is empty, the update
-                  will overwrite any concurrent changes.
-                type: string
-              guardrails:
+              guardrailRefs:
                 description: 'Optional. List of guardrails for the agent. Format:
                   `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`'
                 items:
-                  type: string
+                  description: CesGuardrailRef is a reference to a GCP CesGuardrail
+                    resource.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed CesGuardrail
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/guardrails/{{guardrailID}}".
+                      type: string
+                    name:
+                      description: The name of a CesGuardrail resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a CesGuardrail resource.
+                      type: string
+                  type: object
                 type: array
               instruction:
                 description: Optional. Instructions for the LLM model to guide the
@@ -281,9 +357,6 @@ spec:
               llmAgent:
                 description: Optional. The default agent type.
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               modelSettings:
                 description: Optional. Configurations for the LLM model.
                 properties:
@@ -300,38 +373,6 @@ spec:
                       more creative.
                     type: number
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               remoteDialogflowAgent:
                 description: |-
                   Optional. The remote
@@ -343,10 +384,15 @@ spec:
                    should grant `roles/dialogflow.client` to the CES service agent
                    `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
                 properties:
-                  agent:
+                  agentRef:
                     description: 'Required. The [Dialogflow](https://docs.cloud.google.com/dialogflow/cx/docs/concept/agent)
                       agent resource name. Format: `projects/{project}/locations/{location}/agents/{agent}`'
-                    type: string
+                    properties:
+                      external:
+                        description: A reference to an externally managed DialogflowCXAgent
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
+                        type: string
+                    type: object
                   environmentID:
                     description: Optional. The environment ID of the Dialogflow agent
                       to be used for the agent execution. If not specified, the draft
@@ -383,17 +429,43 @@ spec:
                        app-level barge-in settings.
                     type: boolean
                 required:
-                - agent
+                - agentRef
                 type: object
               resourceID:
                 description: The CesAgent name. If not given, the metadata.name will
                   be used.
                 type: string
-              tools:
+              toolRefs:
                 description: 'Optional. List of available tools for the agent. Format:
                   `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`'
                 items:
-                  type: string
+                  description: CesToolRef is a reference to a GCP CesTool resource.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed CesTool resource.
+                        Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/tools/{{toolID}}".
+                      type: string
+                    name:
+                      description: The name of a CesTool resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a CesTool resource.
+                      type: string
+                  type: object
                 type: array
               toolsets:
                 description: Optional. List of toolsets for the agent.
@@ -404,12 +476,37 @@ spec:
                       items:
                         type: string
                       type: array
-                    toolset:
+                    toolsetRef:
                       description: 'Required. The resource name of the toolset. Format:
                         `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`'
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed CesToolset
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/toolsets/{{toolsetID}}".
+                          type: string
+                        name:
+                          description: The name of a CesToolset resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a CesToolset resource.
+                          type: string
+                      type: object
                   required:
-                  - toolset
+                  - toolsetRef
                   type: object
                 type: array
               transferRules:
@@ -417,10 +514,35 @@ spec:
                   the first one in the list will be used.
                 items:
                   properties:
-                    childAgent:
+                    childAgentRef:
                       description: 'Required. The resource name of the child agent
                         the rule applies to. Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`'
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed CesAgent
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/agents/{{agentID}}".
+                          type: string
+                        name:
+                          description: The name of a CesAgent resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a CesAgent resource.
+                          type: string
+                      type: object
                     deterministicTransfer:
                       description: Optional. A rule that immediately transfers to
                         the target agent when the condition is met.
@@ -472,14 +594,13 @@ spec:
                       - expressionCondition
                       type: object
                   required:
-                  - childAgent
+                  - childAgentRef
                   - direction
                   type: object
                 type: array
             required:
+            - appRef
             - displayName
-            - location
-            - projectRef
             type: object
           status:
             description: CesAgentStatus defines the config connector machine state
@@ -528,6 +649,11 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Timestamp when the agent was created.
+                    type: string
+                  etag:
+                    description: Etag used to ensure the object hasn't changed during
+                      a read-modify-write operation. If the etag is empty, the update
+                      will overwrite any concurrent changes.
                     type: string
                   generatedSummary:
                     description: Output only. If the agent is generated by the LLM

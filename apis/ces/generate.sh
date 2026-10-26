@@ -56,8 +56,16 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
   --resource CesAgent:Agent
 
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ces.v1 \
+  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/ces" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/ces/

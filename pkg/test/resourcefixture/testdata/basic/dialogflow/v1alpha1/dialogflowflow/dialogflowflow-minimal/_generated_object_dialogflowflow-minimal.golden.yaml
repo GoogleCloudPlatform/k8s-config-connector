@@ -1,0 +1,35 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowFlow
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dfflow-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  agentRef:
+    external: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd
+  description: updated dialogflow cx flow
+  displayName: Flow Updated ${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023
+  observedGeneration: 2
+  observedState:
+    eventHandlers:
+    - name: a1c2ad29-7c18-48e3-9efa-d80b532c59d4
+      triggerFulfillment:
+        messages:
+        - text: {}
+    - name: 32bafc1f-46ab-4f3a-9532-2135f0642891
+      triggerFulfillment:
+        messages:
+        - text: {}

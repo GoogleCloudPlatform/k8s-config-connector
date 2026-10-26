@@ -13,14 +13,14 @@
 // limitations under the License.
 
 // API sources for DataformWorkflowConfig, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/dataform/v1/dataform.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/cdc919ff596e263f2cc55a9780d2f74633da1ced/google/cloud/dataform/v1/dataform.proto
 // +kcc:source:service-docs=https://cloud.google.com/dataform/docs
 // +kcc:source:resource-docs=https://docs.cloud.google.com/dataform/reference/rest/v1/projects.locations.repositories.workflowConfigs
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var DataformWorkflowConfigGVK = GroupVersion.WithKind("DataformWorkflowConfig")
 // +kcc:spec:proto=google.cloud.dataform.v1.WorkflowConfig
 // +kcc:required-from-proto
 type DataformWorkflowConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// A reference to the projects/{project}/locations/{location}/repositories/{repository} this resource belongs to.
+	// +required
+	RepositoryRef *dataformv1beta1.DataformRepositoryRef `json:"repositoryRef"`
 
 	// The DataformWorkflowConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -44,7 +43,7 @@ type DataformWorkflowConfigSpec struct {
 	//  `projects/*/locations/*/repositories/*/releaseConfigs/*`.
 	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.release_config
 	// +required
-	ReleaseConfig *string `json:"releaseConfig,omitempty"`
+	ReleaseConfigRef *DataformReleaseConfigRef `json:"releaseConfigRef,omitempty"`
 
 	// Optional. If left unset, a default InvocationConfig will be used.
 	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.invocation_config

@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,35 +17,262 @@
 // krm.group: bigqueryanalyticshub.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.bigquery.analyticshub.v1
+// resource: BigQueryAnalyticsHubDataExchange:DataExchange
+// resource: BigQueryAnalyticsHubListing:Listing
 // resource: BigQueryAnalyticsHubQueryTemplate:QueryTemplate
 
 package v1alpha1
 
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.DataExchange", skipping
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
+type DataExchange struct {
+
+	// Required. Human-readable display name of the data exchange. The display
+	//  name must contain only Unicode letters, numbers (0-9), underscores (_),
+	//  dashes (-), spaces ( ), ampersands (&) and must not start or end with
+	//  spaces. Default value is an empty string. Max length: 63 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the data exchange. The description must not
+	//  contain Unicode non-characters as well as C0 and C1 control codes except
+	//  tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF).
+	//  Default value is an empty string.
+	//  Max length: 2000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Email or URL of the primary point of contact of the data
+	//  exchange. Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.primary_contact
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+
+	// Optional. Documentation describing the data exchange.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.documentation
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Optional. Base64 encoded image representing the data exchange. Max
+	//  Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API
+	//  only performs validation on size of the encoded data. Note: For byte
+	//  fields, the content of the fields are base64-encoded (which increases the
+	//  size of the data by 33-36%) when using JSON on the wire.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.icon
+	Icon []byte `json:"icon,omitempty"`
+
+	// Optional. Configurable data sharing environment option for a data exchange.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.sharing_environment_config
+	SharingEnvironmentConfig *SharingEnvironmentConfig `json:"sharingEnvironmentConfig,omitempty"`
+
+	// Optional. Type of discovery on the discovery page for all the listings
+	//  under this exchange. Updating this field also updates (overwrites) the
+	//  discovery_type field for all the listings under this exchange.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.discovery_type
+	DiscoveryType *string `json:"discoveryType,omitempty"`
+
+	// Optional. By default, false.
+	//  If true, the DataExchange has an email sharing mandate enabled.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.log_linked_dataset_query_user_email
+	LogLinkedDatasetQueryUserEmail *bool `json:"logLinkedDatasetQueryUserEmail,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataProvider
 type DataProvider struct {
 	// Optional. Name of the data provider.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataProvider.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Email or URL of the data provider.
 	//  Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataProvider.primary_contact
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.Listing", skipping
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
+type Listing struct {
+	// Shared dataset i.e. BigQuery dataset source.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.bigquery_dataset
+	BigqueryDataset *Listing_BigQueryDatasetSource `json:"bigqueryDataset,omitempty"`
+
+	// Pub/Sub topic source.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.pubsub_topic
+	PubsubTopic *Listing_PubSubTopicSource `json:"pubsubTopic,omitempty"`
+
+	// Required. Human-readable display name of the listing. The display name must
+	//  contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+	//  spaces ( ), ampersands (&) and can't start or end with spaces. Default
+	//  value is an empty string. Max length: 63 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Short description of the listing. The description must not
+	//  contain Unicode non-characters and C0 and C1 control codes except tabs
+	//  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
+	//  value is an empty string. Max length: 2000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Email or URL of the primary point of contact of the listing.
+	//  Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.primary_contact
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+
+	// Optional. Documentation describing the listing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.documentation
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Optional. Base64 encoded image representing the listing. Max Size: 3.0MiB
+	//  Expected image dimensions are 512x512 pixels, however the API only
+	//  performs validation on size of the encoded data.
+	//  Note: For byte fields, the contents of the field are base64-encoded (which
+	//  increases the size of the data by 33-36%) when using JSON on the wire.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.icon
+	Icon []byte `json:"icon,omitempty"`
+
+	// Optional. Details of the data provider who owns the source data.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.data_provider
+	DataProvider *DataProvider `json:"dataProvider,omitempty"`
+
+	// Optional. Categories of the listing. Up to five categories are allowed.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.categories
+	Categories []string `json:"categories,omitempty"`
+
+	// Optional. Details of the publisher who owns the listing and who can share
+	//  the source data.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.publisher
+	Publisher *Publisher `json:"publisher,omitempty"`
+
+	// Optional. Email or URL of the request access of the listing.
+	//  Subscribers can use this reference to request access.
+	//  Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.request_access
+	RequestAccess *string `json:"requestAccess,omitempty"`
+
+	// Optional. If set, restricted export configuration will be propagated and
+	//  enforced on the linked dataset.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.restricted_export_config
+	RestrictedExportConfig *Listing_RestrictedExportConfig `json:"restrictedExportConfig,omitempty"`
+
+	// Optional. If set, stored procedure configuration will be propagated and
+	//  enforced on the linked dataset.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.stored_procedure_config
+	StoredProcedureConfig *StoredProcedureConfig `json:"storedProcedureConfig,omitempty"`
+
+	// Optional. Type of discovery of the listing on the discovery page.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.discovery_type
+	DiscoveryType *string `json:"discoveryType,omitempty"`
+
+	// Optional. By default, false.
+	//  If true, the Listing has an email sharing mandate enabled.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.log_linked_dataset_query_user_email
+	LogLinkedDatasetQueryUserEmail *bool `json:"logLinkedDatasetQueryUserEmail,omitempty"`
+
+	// Optional. If true, the listing is only available to get the resource
+	//  metadata. Listing is non subscribable.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.allow_only_metadata_sharing
+	AllowOnlyMetadataSharing *bool `json:"allowOnlyMetadataSharing,omitempty"`
+}
+*/
 
 /* unreachable type Listing_BigQueryDatasetSource
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource
 type Listing_BigQueryDatasetSource struct {
-	// Resource name of the dataset source for this listing.
+	// Optional. Resource name of the dataset source for this listing.
 	//  e.g. `projects/myproject/datasets/123`
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.dataset
 	Dataset *string `json:"dataset,omitempty"`
 
-	// Optional. Resources in this dataset that are selectively shared.
-	//  If this field is empty, then the entire dataset (all resources) are
-	//  shared. This field is only valid for data clean room exchanges.
-	SelectedResources []SelectedResource `json:"selectedResources,omitempty"`
+	// Optional. Resource in this dataset that is selectively shared.
+	//  This field is required for data clean room exchanges.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.selected_resources
+	SelectedResources []Listing_BigQueryDatasetSource_SelectedResource `json:"selectedResources,omitempty"`
 
 	// Optional. If set, restricted export policy will be propagated and
 	//  enforced on the linked dataset.
-	RestrictedExportPolicy *RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.restricted_export_policy
+	RestrictedExportPolicy *Listing_BigQueryDatasetSource_RestrictedExportPolicy `json:"restrictedExportPolicy,omitempty"`
+
+	// Optional. A list of regions where the publisher has created shared
+	//  dataset replicas.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.replica_locations
+	ReplicaLocations []string `json:"replicaLocations,omitempty"`
+}
+*/
+
+/* unreachable type Listing_BigQueryDatasetSource_Replica
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.Replica
+type Listing_BigQueryDatasetSource_Replica struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy", skipping
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy
+type Listing_BigQueryDatasetSource_RestrictedExportPolicy struct {
+	// Optional. If true, enable restricted export.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. If true, restrict direct table access (read
+	//  api/tabledata.list) on linked table.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.restrict_direct_table_access
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+
+	// Optional. If true, restrict export of query result derived from
+	//  restricted linked dataset table.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.RestrictedExportPolicy.restrict_query_result
+	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource", skipping
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource
+type Listing_BigQueryDatasetSource_SelectedResource struct {
+	// Optional. Format:
+	//  For table:
+	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource.table
+	Table *string `json:"table,omitempty"`
+
+	// Optional. Format:
+	//  For routine:
+	//  `projects/{projectId}/datasets/{datasetId}/routines/{routineId}`
+	//  Example:"projects/test_project/datasets/test_dataset/routines/test_routine"
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.SelectedResource.routine
+	Routine *string `json:"routine,omitempty"`
+}
+*/
+
+/* unreachable type Listing_CommercialInfo
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo
+type Listing_CommercialInfo struct {
+}
+*/
+
+/* unreachable type Listing_CommercialInfo_GoogleCloudMarketplaceInfo
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo
+type Listing_CommercialInfo_GoogleCloudMarketplaceInfo struct {
+}
+*/
+
+/* unreachable type Listing_PubSubTopicSource
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.PubSubTopicSource
+type Listing_PubSubTopicSource struct {
+	// Required. Resource name of the Pub/Sub topic source for this listing.
+	//  e.g. projects/myproject/topics/topicId
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.PubSubTopicSource.topic
+	Topic *string `json:"topic,omitempty"`
+
+	// Optional. Region hint on where the data might be published. Data affinity
+	//  regions are modifiable. See https://cloud.google.com/about/locations for
+	//  full listing of possible Cloud regions.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.PubSubTopicSource.data_affinity_regions
+	DataAffinityRegions []string `json:"dataAffinityRegions,omitempty"`
 }
 */
 
@@ -53,14 +280,12 @@ type Listing_BigQueryDatasetSource struct {
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
 type Listing_RestrictedExportConfig struct {
 	// Optional. If true, enable restricted export.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
-
-	// Output only. If true, restrict direct table access(read
-	//  api/tabledata.list) on linked table.
-	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
 
 	// Optional. If true, restrict export of query result derived from
 	//  restricted linked dataset table.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_query_result
 	RestrictQueryResult *bool `json:"restrictQueryResult,omitempty"`
 }
 */
@@ -68,18 +293,59 @@ type Listing_RestrictedExportConfig struct {
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Publisher
 type Publisher struct {
 	// Optional. Name of the listing publisher.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Publisher.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Email or URL of the listing publisher.
 	//  Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Publisher.primary_contact
 	PrimaryContact *string `json:"primaryContact,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.QueryTemplate", skipping
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.QueryTemplate
+type QueryTemplate struct {
+
+	// Required. Human-readable display name of the QueryTemplate. The display
+	//  name must contain only Unicode letters, numbers (0-9), underscores (_),
+	//  dashes (-), spaces ( ), ampersands (&) and can't start or end with spaces.
+	//  Default value is an empty string. Max length: 63 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Short description of the QueryTemplate. The description must not
+	//  contain Unicode non-characters and C0 and C1 control codes except tabs
+	//  (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
+	//  value is an empty string. Max length: 2000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Will be deprecated.
+	//  Email or URL of the primary point of contact of the QueryTemplate.
+	//  Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.proposer
+	Proposer *string `json:"proposer,omitempty"`
+
+	// Optional. Email or URL of the primary point of contact of the
+	//  QueryTemplate. Max Length: 1000 bytes.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.primary_contact
+	PrimaryContact *string `json:"primaryContact,omitempty"`
+
+	// Optional. Documentation describing the QueryTemplate.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.documentation
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Optional. The routine associated with the QueryTemplate.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.routine
+	Routine *Routine `json:"routine,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.Routine
 type Routine struct {
 	// Required. The type of routine.
 	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Routine.routine_type
-	// +required
 	RoutineType *string `json:"routineType,omitempty"`
 
 	// Optional. The definition body of the routine.
@@ -91,9 +357,11 @@ type Routine struct {
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
 type SharingEnvironmentConfig struct {
 	// Default Analytics Hub data exchange, used for secured data sharing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.default_exchange_config
 	DefaultExchangeConfig *SharingEnvironmentConfig_DefaultExchangeConfig `json:"defaultExchangeConfig,omitempty"`
 
 	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.dcr_exchange_config
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 }
 */
@@ -101,20 +369,6 @@ type SharingEnvironmentConfig struct {
 /* unreachable type SharingEnvironmentConfig_DcrExchangeConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig
 type SharingEnvironmentConfig_DcrExchangeConfig struct {
-	// Output only. If True, this DCR restricts the contributors to sharing
-	//  only a single resource in a Listing. And no two resources should have the
-	//  same IDs. So if a contributor adds a view with a conflicting name, the
-	//  CreateListing API will reject the request. if False, the data contributor
-	//  can publish an entire dataset (as before). This is not configurable, and
-	//  by default, all new DCRs will have the restriction set to True.
-	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
-
-	// Output only. If True, when subscribing to this DCR, it will create only
-	//  one linked dataset containing all resources shared within the
-	//  cleanroom. If False, when subscribing to this DCR, it will
-	//  create 1 linked dataset per listing. This is not configurable, and by
-	//  default, all new DCRs will have the restriction set to True.
-	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
 }
 */
 
@@ -124,10 +378,197 @@ type SharingEnvironmentConfig_DefaultExchangeConfig struct {
 }
 */
 
-/* unreachable type BoolValue
-// +kcc:proto=google.protobuf.BoolValue
-type BoolValue struct {
-	// The bool value.
-	Value *bool `json:"value,omitempty"`
+/* unreachable type StoredProcedureConfig
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.StoredProcedureConfig
+type StoredProcedureConfig struct {
+	// Optional. If true, enable sharing of stored procedure.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.StoredProcedureConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.DataExchange", skipping
+
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
+type DataExchangeObservedState struct {
+	// Output only. The resource name of the data exchange.
+	//  e.g. `projects/myproject/locations/us/dataExchanges/123`.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Number of listings contained in the data exchange.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.listing_count
+	ListingCount *int32 `json:"listingCount,omitempty"`
+
+	// Optional. Configurable data sharing environment option for a data exchange.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.DataExchange.sharing_environment_config
+	SharingEnvironmentConfig *SharingEnvironmentConfigObservedState `json:"sharingEnvironmentConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.Listing", skipping
+
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing
+type ListingObservedState struct {
+	// Shared dataset i.e. BigQuery dataset source.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.bigquery_dataset
+	BigqueryDataset *Listing_BigQueryDatasetSourceObservedState `json:"bigqueryDataset,omitempty"`
+
+	// Output only. The resource name of the listing.
+	//  e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Current state of the listing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.state
+	State *string `json:"state,omitempty"`
+
+	// Optional. If set, restricted export configuration will be propagated and
+	//  enforced on the linked dataset.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.restricted_export_config
+	RestrictedExportConfig *Listing_RestrictedExportConfigObservedState `json:"restrictedExportConfig,omitempty"`
+
+	// Optional. If set, stored procedure configuration will be propagated and
+	//  enforced on the linked dataset.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.stored_procedure_config
+	StoredProcedureConfig *StoredProcedureConfigObservedState `json:"storedProcedureConfig,omitempty"`
+
+	// Output only. Listing shared asset type.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Output only. Commercial info contains the information about the commercial
+	//  data products associated with the listing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.commercial_info
+	CommercialInfo *Listing_CommercialInfoObservedState `json:"commercialInfo,omitempty"`
+}
+*/
+
+/* unreachable type Listing_BigQueryDatasetSourceObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource
+type Listing_BigQueryDatasetSourceObservedState struct {
+	// Output only. Server-owned effective state of replicas.
+	//  Contains both primary and secondary replicas.
+	//  Each replica includes a system-computed (output-only) state and primary
+	//  designation.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.effective_replicas
+	EffectiveReplicas []Listing_BigQueryDatasetSource_ReplicaObservedState `json:"effectiveReplicas,omitempty"`
+}
+*/
+
+/* unreachable type Listing_BigQueryDatasetSource_ReplicaObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.Replica
+type Listing_BigQueryDatasetSource_ReplicaObservedState struct {
+	// Output only. The geographic location where the replica resides. See
+	//  [BigQuery locations](https://cloud.google.com/bigquery/docs/locations)
+	//  for supported locations. Eg. "us-central1".
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.Replica.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. Assigned by Analytics Hub based on real BigQuery
+	//  replication state.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.Replica.replica_state
+	ReplicaState *string `json:"replicaState,omitempty"`
+
+	// Output only. Indicates that this replica is the primary replica.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.BigQueryDatasetSource.Replica.primary_state
+	PrimaryState *string `json:"primaryState,omitempty"`
+}
+*/
+
+/* unreachable type Listing_CommercialInfoObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo
+type Listing_CommercialInfoObservedState struct {
+	// Output only. Details of the Marketplace Data Product associated with the
+	//  Listing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.cloud_marketplace
+	CloudMarketplace *Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState `json:"cloudMarketplace,omitempty"`
+}
+*/
+
+/* unreachable type Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo
+type Listing_CommercialInfo_GoogleCloudMarketplaceInfoObservedState struct {
+	// Output only. Resource name of the commercial service associated with
+	//  the Marketplace Data Product. e.g. example.com
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo.service
+	Service *string `json:"service,omitempty"`
+
+	// Output only. Commercial state of the Marketplace Data Product.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.CommercialInfo.GoogleCloudMarketplaceInfo.commercial_state
+	CommercialState *string `json:"commercialState,omitempty"`
+}
+*/
+
+/* unreachable type Listing_RestrictedExportConfigObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig
+type Listing_RestrictedExportConfigObservedState struct {
+	// Output only. If true, restrict direct table access(read
+	//  api/tabledata.list) on linked table.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Listing.RestrictedExportConfig.restrict_direct_table_access
+	RestrictDirectTableAccess *bool `json:"restrictDirectTableAccess,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.analyticshub.v1.QueryTemplate", skipping
+
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.QueryTemplate
+type QueryTemplateObservedState struct {
+	// Output only. The resource name of the QueryTemplate.
+	//  e.g. `projects/myproject/locations/us/dataExchanges/123/queryTemplates/456`
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The QueryTemplate lifecycle state.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Timestamp when the QueryTemplate was created.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the QueryTemplate was last modified.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.QueryTemplate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type SharingEnvironmentConfigObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
+type SharingEnvironmentConfigObservedState struct {
+	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.dcr_exchange_config
+	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfigObservedState `json:"dcrExchangeConfig,omitempty"`
+}
+*/
+
+/* unreachable type SharingEnvironmentConfig_DcrExchangeConfigObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig
+type SharingEnvironmentConfig_DcrExchangeConfigObservedState struct {
+	// Output only. If True, this DCR restricts the contributors to sharing
+	//  only a single resource in a Listing. And no two resources should have the
+	//  same IDs. So if a contributor adds a view with a conflicting name, the
+	//  CreateListing API will reject the request. if False, the data contributor
+	//  can publish an entire dataset (as before). This is not configurable, and
+	//  by default, all new DCRs will have the restriction set to True.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig.single_selected_resource_sharing_restriction
+	SingleSelectedResourceSharingRestriction *bool `json:"singleSelectedResourceSharingRestriction,omitempty"`
+
+	// Output only. If True, when subscribing to this DCR, it will create only
+	//  one linked dataset containing all resources shared within the
+	//  cleanroom. If False, when subscribing to this DCR, it will
+	//  create 1 linked dataset per listing. This is not configurable, and by
+	//  default, all new DCRs will have the restriction set to True.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig.single_linked_dataset_per_cleanroom
+	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
+}
+*/
+
+/* unreachable type StoredProcedureConfigObservedState
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.StoredProcedureConfig
+type StoredProcedureConfigObservedState struct {
+	// Output only. Types of stored procedure supported to share.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.StoredProcedureConfig.allowed_stored_procedure_types
+	AllowedStoredProcedureTypes []string `json:"allowedStoredProcedureTypes,omitempty"`
 }
 */

@@ -13,14 +13,13 @@
 // limitations under the License.
 
 // API sources for CesAgent, recorded by generate-types:
-// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/ces/v1/agent.proto
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1526e545e9d26f23b9c5d0f04af17297def8d045/google/cloud/ces/v1/agent.proto
 // +kcc:source:service-docs=https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
 // +kcc:source:resource-docs=https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/reference/rest/v1/projects.locations.apps.agents
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +30,10 @@ var CesAgentGVK = GroupVersion.WithKind("CesAgent")
 // +kcc:spec:proto=google.cloud.ces.v1.Agent
 // +kcc:required-from-proto
 type CesAgentSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// A reference to the projects/{project}/locations/{location}/apps/{app} this resource belongs to.
+	// +required
+	AppRef *CesAppRef `json:"appRef"`
 
 	// The CesAgent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -74,12 +72,12 @@ type CesAgentSpec struct {
 	// Optional. List of available tools for the agent.
 	//  Format: `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.tools
-	Tools []string `json:"tools,omitempty"`
+	ToolRefs []CesToolRef `json:"toolRefs,omitempty"`
 
 	// Optional. List of child agents in the agent tree.
 	//  Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.child_agents
-	ChildAgents []string `json:"childAgents,omitempty"`
+	ChildAgentRefs []CesAgentRef `json:"childAgentRefs,omitempty"`
 
 	// Optional. The callbacks to execute before the agent is called.
 	//  The provided callbacks are executed sequentially in the exact order they
@@ -131,13 +129,7 @@ type CesAgentSpec struct {
 	//  Format:
 	//  `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.guardrails
-	Guardrails []string `json:"guardrails,omitempty"`
-
-	// Etag used to ensure the object hasn't changed during a read-modify-write
-	//  operation. If the etag is empty, the update will overwrite any concurrent
-	//  changes.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.etag
-	Etag *string `json:"etag,omitempty"`
+	GuardrailRefs []CesGuardrailRef `json:"guardrailRefs,omitempty"`
 
 	// Optional. List of toolsets for the agent.
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.toolsets
@@ -147,6 +139,45 @@ type CesAgentSpec struct {
 	//  If multiple rules match, the first one in the list will be used.
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.transfer_rules
 	TransferRules []TransferRule `json:"transferRules,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.Agent.AgentToolset
+type Agent_AgentToolset struct {
+	// Required. The resource name of the toolset.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
+	// +kcc:proto:field=google.cloud.ces.v1.Agent.AgentToolset.toolset
+	// +required
+	ToolsetRef *CesToolsetRef `json:"toolsetRef,omitempty"`
+
+	// Optional. The tools IDs to filter the toolset.
+	// +kcc:proto:field=google.cloud.ces.v1.Agent.AgentToolset.tool_ids
+	ToolIDs []string `json:"toolIDs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1.TransferRule
+type TransferRule struct {
+	// Optional. A rule that immediately transfers to the target agent when the
+	//  condition is met.
+	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.deterministic_transfer
+	DeterministicTransfer *TransferRule_DeterministicTransfer `json:"deterministicTransfer,omitempty"`
+
+	// Optional. Rule that prevents the planner from transferring to the target
+	//  agent.
+	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.disable_planner_transfer
+	DisablePlannerTransfer *TransferRule_DisablePlannerTransfer `json:"disablePlannerTransfer,omitempty"`
+
+	// Required. The resource name of the child agent the rule applies to.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.child_agent
+	// +required
+	ChildAgentRef *CesAgentRef `json:"childAgentRef,omitempty"`
+
+	// Required. The direction of the transfer.
+	// +kcc:proto:field=google.cloud.ces.v1.TransferRule.direction
+	// +required
+	Direction *string `json:"direction,omitempty"`
 }
 
 // CesAgentStatus defines the config connector machine state of CesAgent
@@ -176,15 +207,16 @@ type CesAgentObservedState struct {
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
+	// Etag used to ensure the object hasn't changed during a read-modify-write
+	//  operation. If the etag is empty, the update will overwrite any concurrent
+	//  changes.
+	// +kcc:proto:field=google.cloud.ces.v1.Agent.etag
+	Etag *string `json:"etag,omitempty"`
+
 	// Output only. If the agent is generated by the LLM assistant, this field
 	//  contains a descriptive summary of the generation.
 	// +kcc:proto:field=google.cloud.ces.v1.Agent.generated_summary
 	GeneratedSummary *string `json:"generatedSummary,omitempty"`
-
-	// Output only. Misconfigurations or errors in the agent that may affect agent
-	//  quality.
-	// +kcc:proto:field=google.cloud.ces.v1.Agent.validation_errors
-	ValidationErrors []string `json:"validationErrors,omitempty"`
 }
 
 // +genclient

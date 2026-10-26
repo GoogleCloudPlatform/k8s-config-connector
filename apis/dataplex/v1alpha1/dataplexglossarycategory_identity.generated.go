@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -79,28 +80,19 @@ func getIdentityFromDataplexGlossaryCategorySpec(ctx context.Context, reader cli
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.GlossaryRef == nil {
+		return nil, fmt.Errorf("spec.glossaryRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.GlossaryRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.glossaryRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	glossary := ""
-	if glossary == "" {
-		return nil, fmt.Errorf("cannot resolve glossary for DataplexGlossaryCategory")
+	parsed := &DataplexGlossaryCategoryIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/categories" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.glossaryRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &DataplexGlossaryCategoryIdentity{
-		Project:          projectID,
-		Location:         location,
-		Glossary:         glossary,
-		GlossaryCategory: resourceID,
-	}, nil
+	parsed.GlossaryCategory = resourceID
+	return parsed, nil
 }
 
 func (obj *DataplexGlossaryCategory) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

@@ -62,17 +62,9 @@ spec:
           spec:
             description: ConfigdeliveryVariantSpec defines the desired state of ConfigdeliveryVariant
             properties:
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. labels to represent any metadata associated
-                  with the variant.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              releaseRef:
+                description: Required. A reference to the ConfigDeliveryRelease that
+                  this variant belongs to.
                 oneOf:
                 - not:
                     required:
@@ -89,18 +81,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed ConfigDeliveryRelease
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/resourceBundles/{{resourceBundleID}}/releases/{{releaseID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a ConfigDeliveryRelease resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a ConfigDeliveryRelease resource.
                     type: string
                 type: object
               resourceID:
@@ -114,8 +102,7 @@ spec:
                   type: string
                 type: array
             required:
-            - location
-            - projectRef
+            - releaseRef
             - resources
             type: object
           status:

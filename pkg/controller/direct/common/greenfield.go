@@ -232,10 +232,79 @@ func mergeUnsetFieldsGreenfield(desired, actual reflect.Value) {
 	case reflect.Slice:
 		if desired.IsNil() && !actual.IsNil() && desired.CanSet() {
 			desired.Set(actual)
+		} else if !desired.IsNil() && !actual.IsNil() && desired.Len() == actual.Len() {
+			for i := 0; i < desired.Len(); i++ {
+				if sliceElemHasNoConflicts(desired.Index(i), actual.Index(i)) {
+					mergeUnsetFieldsGreenfield(desired.Index(i), actual.Index(i))
+				}
+			}
 		}
 
 	case reflect.Map:
 		mergeUnsetMapFields(desired, actual)
+	}
+}
+
+// sliceElemHasNoConflicts reports whether every non-nil field set in d is also
+// present and equal in a. This ensures server-populated defaults are only merged
+// into slice elements that match the existing element at the same index, avoiding
+// cross-contamination when list elements are reordered or modified.
+func sliceElemHasNoConflicts(d, a reflect.Value) bool {
+	if !d.IsValid() || !a.IsValid() {
+		return true
+	}
+
+	switch d.Kind() {
+	case reflect.Ptr:
+		if d.IsNil() {
+			return true
+		}
+		if a.IsNil() {
+			return false
+		}
+		return sliceElemHasNoConflicts(d.Elem(), a.Elem())
+
+	case reflect.Struct:
+		for i := 0; i < d.NumField(); i++ {
+			if d.Type().Field(i).IsExported() {
+				if !sliceElemHasNoConflicts(d.Field(i), a.Field(i)) {
+					return false
+				}
+			}
+		}
+		return true
+
+	case reflect.Slice:
+		if d.IsNil() {
+			return true
+		}
+		if a.IsNil() || d.Len() != a.Len() {
+			return false
+		}
+		for i := 0; i < d.Len(); i++ {
+			if !sliceElemHasNoConflicts(d.Index(i), a.Index(i)) {
+				return false
+			}
+		}
+		return true
+
+	case reflect.Map:
+		if d.IsNil() {
+			return true
+		}
+		if a.IsNil() {
+			return false
+		}
+		for _, k := range d.MapKeys() {
+			aVal := a.MapIndex(k)
+			if !aVal.IsValid() || !sliceElemHasNoConflicts(d.MapIndex(k), aVal) {
+				return false
+			}
+		}
+		return true
+
+	default:
+		return reflect.DeepEqual(d.Interface(), a.Interface())
 	}
 }
 

@@ -26,12 +26,6 @@ entries:
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: open
-  - kind: VisionProductSet
-    group: vision.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
   - kind: VisionReferenceImage
     group: vision.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -41,11 +35,6 @@ entries:
     group: vision.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
-  - kind: VisionReferenceImage
-    group: vision.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}" contains ancestor segment(s) products/{product} with no matching reference or field on VisionReferenceImageSpec
     status: open
   - kind: VisionReferenceImage
     group: vision.cnrm.cloud.google.com

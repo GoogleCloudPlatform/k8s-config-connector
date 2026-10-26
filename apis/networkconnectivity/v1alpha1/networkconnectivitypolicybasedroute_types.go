@@ -21,6 +21,7 @@
 package v1alpha1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -57,10 +58,6 @@ type NetworkConnectivityPolicyBasedRouteSpec struct {
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.next_hop_other_routes
 	NextHopOtherRoutes *string `json:"nextHopOtherRoutes,omitempty"`
 
-	// User-defined labels.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Optional. An optional description of this resource. Provide this field when
 	//  you create the resource.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.description
@@ -70,7 +67,7 @@ type NetworkConnectivityPolicyBasedRouteSpec struct {
 	//  for example: projects/my-project/global/networks/my-network.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.network
 	// +required
-	Network *string `json:"network,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Required. The filter to match L4 traffic.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.filter

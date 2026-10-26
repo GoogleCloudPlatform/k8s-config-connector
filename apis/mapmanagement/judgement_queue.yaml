@@ -28,18 +28,8 @@ entries:
     status: open
   - kind: MapmanagementMapContextConfig
     group: mapmanagement.cnrm.cloud.google.com
-    reason: identity-not-in-cai
-    detail: template "//mapmanagement.googleapis.com/projects/{project}/mapConfigs/{map_config}/mapContextConfigs/{map_context_config}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
-  - kind: MapmanagementMapContextConfig
-    group: mapmanagement.cnrm.cloud.google.com
     reason: identity-server-generated-id
-    detail: generated MapmanagementMapContextConfigIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
-  - kind: MapmanagementMapContextConfig
-    group: mapmanagement.cnrm.cloud.google.com
-    reason: parent-ref-not-modelled
-    detail: the parent is projects/{project}/mapConfigs/{map_config}, and no MapConfigRef type exists to point at; add the parent resource first, then model this as a reference
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
     status: open
   - kind: MapmanagementMapContextConfig
     group: mapmanagement.cnrm.cloud.google.com
@@ -50,22 +40,4 @@ entries:
     group: mapmanagement.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
-  - kind: MapmanagementMapContextConfig
-    group: mapmanagement.cnrm.cloud.google.com
-    field: .spec.dataset
-    reason: authoritative-proto-reference
-    detail: the proto marks this field as a reference to mapmanagement.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
-  - kind: MapmanagementMapContextConfig
-    group: mapmanagement.cnrm.cloud.google.com
-    field: .spec.mapConfig
-    reason: authoritative-proto-reference
-    detail: the proto marks this field as a reference to mapmanagement.googleapis.com/MapConfig (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
-  - kind: MapmanagementMapContextConfig
-    group: mapmanagement.cnrm.cloud.google.com
-    field: .spec.styleConfig
-    reason: authoritative-proto-reference
-    detail: the proto marks this field as a reference to mapmanagement.googleapis.com/StyleConfig (google.api.resource_reference); confirm whether it should be a KCC reference
     status: open

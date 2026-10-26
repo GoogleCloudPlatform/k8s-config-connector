@@ -28,11 +28,6 @@ entries:
     status: open
   - kind: ManagedKafkaACL
     group: managedkafka.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}" contains ancestor segment(s) clusters/{cluster} with no matching reference or field on ManagedKafkaACLSpec
-    status: open
-  - kind: ManagedKafkaACL
-    group: managedkafka.cnrm.cloud.google.com
     field: .spec.clusterRef
     reason: parent-ref-guessed
     detail: emitted as a reference to ClusterRef, read from the clusters segment of projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
@@ -56,11 +51,6 @@ entries:
     status: open
   - kind: ManagedKafkaConnector
     group: managedkafka.cnrm.cloud.google.com
-    reason: identity-root-unknown
-    detail: pattern "projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}" contains ancestor segment(s) connectClusters/{connect_cluster} with no matching reference or field on ManagedKafkaConnectorSpec
-    status: open
-  - kind: ManagedKafkaConnector
-    group: managedkafka.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/connectClusters/{connect_cluster}, and no ConnectClusterRef type exists to point at; add the parent resource first, then model this as a reference
     status: open
@@ -74,10 +64,4 @@ entries:
     group: managedkafka.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
-  - kind: ManagedKafkaSchemaRegistry
-    group: managedkafka.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open

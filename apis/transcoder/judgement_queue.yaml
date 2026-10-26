@@ -68,9 +68,3 @@ entries:
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/topics/{topic}"
     status: open
-  - kind: TranscoderJobTemplate
-    group: transcoder.cnrm.cloud.google.com
-    field: .spec.location
-    reason: location-or-parent-ref
-    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open

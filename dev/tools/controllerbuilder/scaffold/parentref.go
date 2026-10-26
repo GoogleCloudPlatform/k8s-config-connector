@@ -153,10 +153,29 @@ func (a *APIScaffolder) locationRef(pattern string) (field string, item *Judgeme
 	}
 }
 
+// isProjectAndLocationParent reports whether pattern's direct parent is
+// projects/{project}/locations/{location}.
+func isProjectAndLocationParent(pattern string) bool {
+	if pattern == "" {
+		return false
+	}
+	segs := strings.Split(pattern, "/")
+	if len(segs) < 4 || segs[0] != "projects" || !strings.HasPrefix(segs[1], "{") {
+		return false
+	}
+	parentCollection, parentPlaceholder := protoapi.ParentPair(pattern)
+	return parentCollection == "locations" && segs[2] == "locations" && strings.Trim(segs[3], "{}") == parentPlaceholder
+}
+
 // locationField is the Spec's location field emitted when prepopulating a
 // resource that has a location segment.
 const locationField = "\t// The location of this resource.\n" +
 	"\tLocation *string `json:\"location\"`"
+
+// projectAndLocationRefField is the embedded *parent.ProjectAndLocationRef
+// field used for resources whose direct parent is projects/{project}/locations/{location}.
+const projectAndLocationRefField = "\t// Required. Defines the parent path of the resource.\n" +
+	"\t*parent.ProjectAndLocationRef `json:\",inline\"`"
 
 // legacyLocationField is the Spec's location field emitted in the default
 // three-field stub when --prepopulate-resource is not enabled.
@@ -171,17 +190,39 @@ const legacyLocationField = "\t// The location of this resource.\n" +
 func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (field string, item *JudgementItem) {
 	name := codegen.Singular(collection)
 	currentService := a.serviceName()
+	requireNormalize := a.AutoResolveJudgement && role == "parent"
 
 	var candidates map[string]string
 	// 1. Try google.api.resource / google.api.resource_definition from proto first.
 	if a.Proto != nil && path != "" {
 		if targetType := a.Proto.TargetForPath(path); targetType != "" {
-			candidates = a.candidatesForTarget(targetType, filepath.Join(a.BaseDir, a.GoPackage))
+			candidates = a.candidatesForTargetWithNormalize(targetType, filepath.Join(a.BaseDir, a.GoPackage), requireNormalize)
 		}
 	}
 	// 2. Fall back to name-based matching if no candidates found from proto.
 	if len(candidates) == 0 {
-		candidates = parentRefTypes(a.repoRoot(), filepath.Join(a.BaseDir, a.GoPackage), currentService, name)
+		candidates = parentRefTypesWithNormalize(a.repoRoot(), filepath.Join(a.BaseDir, a.GoPackage), currentService, name, requireNormalize)
+	}
+
+	if len(candidates) != 1 {
+		// If AutoResolveJudgement required Normalize and filtered out a stub
+		// _reference.go file without Normalize, check whether an un-normalized
+		// candidate exists so the non-auto-resolved comment+queue fallback still works.
+		if requireNormalize {
+			var fallback map[string]string
+			if a.Proto != nil && path != "" {
+				if targetType := a.Proto.TargetForPath(path); targetType != "" {
+					fallback = a.candidatesForTargetWithNormalize(targetType, filepath.Join(a.BaseDir, a.GoPackage), false)
+				}
+			}
+			if len(fallback) == 0 {
+				fallback = parentRefTypesWithNormalize(a.repoRoot(), filepath.Join(a.BaseDir, a.GoPackage), currentService, name, false)
+			}
+			if len(fallback) == 1 {
+				candidates = fallback
+				requireNormalize = false
+			}
+		}
 	}
 
 	if len(candidates) != 1 {
@@ -201,6 +242,13 @@ func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (fie
 	goType := typeName
 	if qualifier := candidates[typeName]; qualifier != "" {
 		goType = qualifier + "." + typeName
+	}
+
+	if requireNormalize {
+		field = fmt.Sprintf("\t// A reference to the %s this resource belongs to.\n"+
+			"\t// +required\n"+
+			"\t%sRef *%s `json:%q`", path, exportedName(name), goType, name+"Ref")
+		return field, nil
 	}
 
 	field = fmt.Sprintf("\t// A reference to the %s this resource belongs to.\n"+

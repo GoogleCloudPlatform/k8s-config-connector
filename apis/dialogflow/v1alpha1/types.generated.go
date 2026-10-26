@@ -214,40 +214,6 @@ type Environment_WebhookConfig struct {
 	WebhookOverrides []Webhook `json:"webhookOverrides,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.EventHandler
-type EventHandler struct {
-
-	// Required. The name of the event to handle.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.event
-	// +required
-	Event *string `json:"event,omitempty"`
-
-	// The fulfillment to call when the event occurs.
-	//  Handling webhook errors with a fulfillment enabled with webhook could
-	//  cause infinite loop. It is invalid to specify such fulfillment for a
-	//  handler handling webhooks.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
-	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
-
-	// The target page to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_page
-	TargetPage *string `json:"targetPage,omitempty"`
-
-	// The target flow to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_flow
-	TargetFlow *string `json:"targetFlow,omitempty"`
-
-	// The target playbook to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_playbook
-	TargetPlaybook *string `json:"targetPlaybook,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings
 type Flow_MultiLanguageSettings struct {
 	// Optional. Enable multi-language detection for this flow. This can be set
@@ -373,72 +339,6 @@ type Form_Parameter_FillBehavior struct {
 	RepromptEventHandlers []EventHandler `json:"repromptEventHandlers,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment
-type Fulfillment struct {
-	// The list of rich message responses to present to the user.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.messages
-	Messages []ResponseMessage `json:"messages,omitempty"`
-
-	// The webhook to call.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.webhook
-	Webhook *string `json:"webhook,omitempty"`
-
-	// Whether Dialogflow should return currently queued fulfillment response
-	//  messages in streaming APIs. If a webhook is specified, it happens before
-	//  Dialogflow invokes webhook.
-	//  Warning:
-	//  1) This flag only affects streaming API. Responses are still queued
-	//  and returned once in non-streaming API.
-	//  2) The flag can be enabled in any fulfillment but only the first 3 partial
-	//  responses will be returned. You may only want to apply it to fulfillments
-	//  that have slow webhooks.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.return_partial_responses
-	ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
-
-	// The value of this field will be populated in the
-	//  [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest]
-	//  `fulfillmentInfo.tag` field by Dialogflow when the associated webhook is
-	//  called.
-	//  The tag is typically used by the webhook service to identify which
-	//  fulfillment is being called, but it could be used for other purposes.
-	//  This field is required if `webhook` is specified.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.tag
-	Tag *string `json:"tag,omitempty"`
-
-	// Optional. The name of the code block function to execute, if this is a code
-	//  block fulfillment. The code block itself is implied by the fulfillment's
-	//  parent, e.g. a playbook.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.code_block_function
-	CodeBlockFunction *string `json:"codeBlockFunction,omitempty"`
-
-	// Set parameter values before executing the webhook.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.set_parameter_actions
-	SetParameterActions []Fulfillment_SetParameterAction `json:"setParameterActions,omitempty"`
-
-	// Conditional cases for this fulfillment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.conditional_cases
-	ConditionalCases []Fulfillment_ConditionalCases `json:"conditionalCases,omitempty"`
-
-	// Hierarchical advanced settings for this fulfillment. The settings exposed
-	//  at the lower level overrides the settings exposed at the higher level.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.advanced_settings
-	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
-
-	// If the flag is true, the agent will utilize LLM to generate a text
-	//  response. If LLM generation fails, the defined
-	//  [responses][google.cloud.dialogflow.cx.v3.Fulfillment.messages] in the
-	//  fulfillment will be respected. This flag is only useful for fulfillments
-	//  associated with no-match event handlers.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.enable_generative_fallback
-	EnableGenerativeFallback *bool `json:"enableGenerativeFallback,omitempty"`
-
-	// A list of Generators to be called during this fulfillment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.generators
-	Generators []Fulfillment_GeneratorSettings `json:"generators,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases
 type Fulfillment_ConditionalCases struct {
 	// A list of cascading if-else conditions.
@@ -461,34 +361,6 @@ type Fulfillment_ConditionalCases_Case struct {
 	// A list of case content.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case.case_content
 	CaseContent []Fulfillment_ConditionalCases_Case_CaseContent `json:"caseContent,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings
-type Fulfillment_GeneratorSettings struct {
-	// Required. The generator to call.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.generator
-	// +required
-	Generator *string `json:"generator,omitempty"`
-
-	// Map from [placeholder parameter][Generator.Parameter.id] in the
-	//  [Generator][google.cloud.dialogflow.cx.v3.Generator] to corresponding
-	//  session parameters. By default, Dialogflow uses the session parameter
-	//  with the same name to fill in the generator template. e.g. If there is a
-	//  placeholder parameter `city` in the Generator, Dialogflow default to fill
-	//  in the `$city` with
-	//  `$session.params.city`. However, you may choose to fill `$city` with
-	//  `$session.params.desination-city`.
-	//  - Map key: [parameter ID][Genrator.Parameter.id]
-	//  - Map value: session parameter name
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.input_parameters
-	InputParameters map[string]string `json:"inputParameters,omitempty"`
-
-	// Required. Output parameter which should contain the generator response.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.output_parameter
-	// +required
-	OutputParameter *string `json:"outputParameter,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction
@@ -559,39 +431,6 @@ type Handler_LifecycleHandler struct {
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.fulfillment
 	// +required
 	Fulfillment *Fulfillment `json:"fulfillment,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
-type KnowledgeConnectorSettings struct {
-	// Whether Knowledge Connector is enabled or not.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// The fulfillment to be triggered.
-	//
-	//  When the answers from the Knowledge Connector are selected by Dialogflow,
-	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
-	//  (contains up to the 5 highest confidence answers) and
-	//  `$request.knowledge.questions` (contains the corresponding questions) to
-	//  construct the fulfillment.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
-	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
-
-	// The target page to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_page
-	TargetPage *string `json:"targetPage,omitempty"`
-
-	// The target flow to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_flow
-	TargetFlow *string `json:"targetFlow,omitempty"`
-
-	// Optional. List of related data store connections.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.data_store_connections
-	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.LlmModelSettings
@@ -820,56 +659,6 @@ type ToolCall struct {
 	// Optional. The action's input parameters.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.input_parameters
 	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
-type TransitionRoute struct {
-
-	// Optional. The description of the transition route. The maximum length is
-	//  500 characters.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.description
-	Description *string `json:"description,omitempty"`
-
-	// The unique identifier of an [Intent][google.cloud.dialogflow.cx.v3.Intent].
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
-	//  Indicates that the transition can only happen when the given intent is
-	//  matched.
-	//  At least one of `intent` or `condition` must be specified. When both
-	//  `intent` and `condition` are specified, the transition can only happen
-	//  when both are fulfilled.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.intent
-	Intent *string `json:"intent,omitempty"`
-
-	// The condition to evaluate against [form
-	//  parameters][google.cloud.dialogflow.cx.v3.Form.parameters] or [session
-	//  parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
-	//
-	//  See the [conditions
-	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
-	//  At least one of `intent` or `condition` must be specified. When both
-	//  `intent` and `condition` are specified, the transition can only happen
-	//  when both are fulfilled.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.condition
-	Condition *string `json:"condition,omitempty"`
-
-	// The fulfillment to call when the condition is satisfied. At least one of
-	//  `trigger_fulfillment` and `target` must be specified. When both are
-	//  defined, `trigger_fulfillment` is executed first.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.trigger_fulfillment
-	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
-
-	// The target page to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_page
-	TargetPage *string `json:"targetPage,omitempty"`
-
-	// The target flow to transition to.
-	//  Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_flow
-	TargetFlow *string `json:"targetFlow,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.TypeSchema
@@ -1215,16 +1004,6 @@ type InputConfig struct {
 	//  matched JSON files, which will be read as one conversation per file.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.InputConfig.gcs_source
 	GCSSource *GCSSources `json:"gcsSource,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.v2.InputDataset
-type InputDataset struct {
-	// Required. ConversationDataset resource name. Format:
-	//  `projects/<Project ID>/locations/<Location
-	//  ID>/conversationDatasets/<Conversation Dataset ID>`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.InputDataset.dataset
-	// +required
-	Dataset *string `json:"dataset,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.MessageEntry

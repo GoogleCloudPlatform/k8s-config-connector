@@ -1,0 +1,153 @@
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1%2FdestGroups%2Fiaptunneldestgroup-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups?%24alt=json%3Benum-encoding%3Dint&tunnelDestGroupId=iaptunneldestgroup-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1
+
+{
+  "cidrs": [
+    "10.10.0.0/24"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cidrs": [
+    "10.10.0.0/24"
+  ],
+  "name": "projects/${projectNumber}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1%2FdestGroups%2Fiaptunneldestgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cidrs": [
+    "10.10.0.0/24"
+  ],
+  "name": "projects/${projectNumber}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=cidrs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: tunnel_dest_group.name=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1%2FdestGroups%2Fiaptunneldestgroup-${uniqueId}
+
+{
+  "cidrs": [
+    "10.10.0.0/24",
+    "10.10.1.0/24"
+  ],
+  "name": "projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cidrs": [
+    "10.10.0.0/24",
+    "10.10.1.0/24"
+  ],
+  "name": "projects/${projectNumber}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1%2FdestGroups%2Fiaptunneldestgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cidrs": [
+    "10.10.0.0/24",
+    "10.10.1.0/24"
+  ],
+  "name": "projects/${projectNumber}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}"
+}
+
+---
+
+DELETE https://iap.googleapis.com/v1/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_tunnel%2Flocations%2Fus-central1%2FdestGroups%2Fiaptunneldestgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

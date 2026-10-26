@@ -248,12 +248,14 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	// untriaged Kinds so existing already-triaged resources do not get unexpected
 	// judgement_queue.yaml entries.
 	activeJudgementKinds := make(map[string]bool, len(o.Resources))
+	newlyScaffoldedKinds := make(map[string]bool, len(o.Resources))
 	for _, resource := range o.Resources {
 		if o.SkipScaffoldFiles || resource.SkipScaffoldFiles {
 			continue
 		}
 		if !scaffolder.TypeFileExists(resource) {
 			activeJudgementKinds[resource.Kind] = true
+			newlyScaffoldedKinds[resource.Kind] = true
 			continue
 		}
 		if o.PrepopulateResource {
@@ -270,11 +272,15 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	// Each --resource is resolved once here, so the warning is logged once and
 	// the scaffolding below uses the same message.
 	protoFullNames := make(map[string]string, len(o.Resources))
+	newResourceProtoMessages := make(map[string]bool, len(newlyScaffoldedKinds))
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	activeProtoMessages := make(map[string]bool)
 	for _, resource := range o.Resources {
 		resourceProtoFullName, matches := resolveProtoFullName(api, o.ServiceName, resource)
 		protoFullNames[resource.Kind] = resourceProtoFullName
+		if newlyScaffoldedKinds[resource.Kind] {
+			newResourceProtoMessages[resourceProtoFullName] = true
+		}
 		if item, ok := ambiguousResourceItem(resource, matches); ok {
 			klog.Warningf("%s: %s", resource.Kind, item.Detail)
 			if o.PrepopulateResource && activeJudgementKinds[resource.Kind] {
@@ -291,12 +297,16 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				}
 			}
 		}
+		visitOpts := writeOptions
+		visitOpts.AutoResolveJudgement = o.PrepopulateResource && newlyScaffoldedKinds[resource.Kind]
+		typeGenerator.WithWriteOptions(visitOpts)
 		log.V(2).Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
 		}
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
+	typeGenerator.WithWriteOptions(writeOptions)
 	typeGenerator.WithActiveJudgementMessages(activeProtoMessages)
 
 	// With --prepopulate-resource, +required only goes on structs that
@@ -320,7 +330,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			if err != nil {
 				return err
 			}
-			newSpecFields = append(newSpecFields, scaffold.SpecFields(msg, writeOptions)...)
+			newSpecOpts := writeOptions
+			newSpecOpts.AutoResolveJudgement = true
+			newSpecFields = append(newSpecFields, scaffold.SpecFields(msg, newSpecOpts)...)
 		}
 		typeGenerator.PlanRequiredStructs(uses, newSpecFields)
 		specOptions = typeGenerator.StrictWriteOptions()
@@ -337,6 +349,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
 
+	emittedExtraTypes := make(map[string]bool)
 	for _, resource := range o.Resources { // A separate loop is needed to scaffold files AFTER all the visited messages have been traversed.
 		skipScaffold := o.SkipScaffoldFiles || resource.SkipScaffoldFiles
 		if skipScaffold {
@@ -361,6 +374,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						if err != nil {
 							return err
 						}
+						scaffolder.AutoResolveJudgement = false
 						prepopulated, err := prepopulate(msg, typeGenerator, writeOptions, specOptions)
 						if err != nil {
 							return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
@@ -392,14 +406,43 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				}
 			} else {
 				var prepopulated *scaffold.PrepopulateResult
+				scaffolder.AutoResolveJudgement = o.PrepopulateResource
 				if o.PrepopulateResource {
 					msg, err := resourceMessage(api, protoFullNames[resource.Kind])
 					if err != nil {
 						return err
 					}
-					prepopulated, err = prepopulate(msg, typeGenerator, writeOptions, specOptions)
+					canAutoResolve := func(m protoreflect.MessageDescriptor) bool {
+						if m == nil {
+							return false
+						}
+						if newResourceProtoMessages[string(m.FullName())] {
+							return true
+						}
+						return typeGenerator.CanAutoResolveNestedMessage(m)
+					}
+					skipExtra := func(goName string) bool {
+						return emittedExtraTypes[goName] || typeGenerator.IsDeclaredInPackage(goName)
+					}
+					autoWriteOpts := writeOptions
+					autoWriteOpts.AutoResolveJudgement = true
+					autoWriteOpts.ResolveResourceReference = scaffolder.ResolveTargetRef
+					autoWriteOpts.CanAutoResolveMessage = canAutoResolve
+					autoWriteOpts.SkipExtraTypeName = skipExtra
+
+					autoSpecOpts := specOptions
+					autoSpecOpts.AutoResolveJudgement = true
+					autoSpecOpts.ResolveResourceReference = scaffolder.ResolveTargetRef
+					autoSpecOpts.CanAutoResolveMessage = canAutoResolve
+					autoSpecOpts.SkipExtraTypeName = skipExtra
+
+					prepopulated, err = prepopulate(msg, typeGenerator, autoWriteOpts, autoSpecOpts)
 					if err != nil {
 						return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
+					}
+					for _, extraName := range prepopulated.ExtraTypeNames {
+						emittedExtraTypes[extraName] = true
+						typeGenerator.WithReservedTypeNames(extraName)
 					}
 				}
 				var sourceLinks string
