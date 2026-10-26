@@ -1,0 +1,196 @@
+9c9
+< X-Goog-Gcs-Base-Ts: 1a17a0d9c55
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0bd6a2
+53c53
+< X-Goog-Gcs-Base-Ts: 1a17a0d9f4e
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0bda77
+100c100
+< X-Goog-Gcs-Base-Ts: 1a17a0d9fed
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0bdb18
+545c545
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+574c574
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+578d577
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+583c582
+< 200 OK
+---
+> 400 Bad Request
+594,605c593,603
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${urlMapID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+<   "user": "user@example.com"
+---
+>   "error": {
+>     "code": 400,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Invalid value for field 'resource.defaultService': ''. No default backend service specified.",
+>         "reason": "invalid"
+>       }
+>     ],
+>     "message": "Invalid value for field 'resource.defaultService': ''. No default backend service specified."
+>   }
+610c608,609
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+> Content-Type: application/json
+612c611
+< 200 OK
+---
+> 404 Not Found
+623,635c622,632
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${urlMapID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}",
+<   "user": "user@example.com"
+---
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found"
+>   }
+640c637
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+643c640,645
+< 200 OK
+---
+> {
+>   "description": "test global URLMap",
+>   "name": "${urlMapID}"
+> }
+> 
+> 400 Bad Request
+654,661c656,666
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+<   "description": "test global URLMap",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "kind": "compute#urlMap",
+<   "name": "${urlMapID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
+---
+>   "error": {
+>     "code": 400,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Invalid value for field 'resource.defaultService': ''. No default backend service specified.",
+>         "reason": "invalid"
+>       }
+>     ],
+>     "message": "Invalid value for field 'resource.defaultService': ''. No default backend service specified."
+>   }
+666c671,700
+< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "The resource 'projects/${projectId}/global/urlMaps/${urlMapID}' was not found"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+675,676d708
+<   "fingerprint": "abcdef0123A=",
+<   "hostRules": [],
+695c727
+<   "operationType": "update",
+---
+>   "operationType": "insert",
+707c739,740
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+725c758
+<   "operationType": "update",
+---
+>   "operationType": "insert",
+737c770
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+766c799
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+796c829,830
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+1115c1149
+< X-Goog-Gcs-Base-Ts: 1a17a0f5ce2
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0d6bba
+1162c1196
+< X-Goog-Gcs-Base-Ts: 1a17a0f5d27
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0d6bf5
+1178c1212
+< X-Goog-Gcs-Base-Ts: 1a17a0f5ff7
+\ No newline at end of file
+---
+> X-Goog-Gcs-Base-Ts: 1a17a0d6fd6
+\ No newline at end of file
