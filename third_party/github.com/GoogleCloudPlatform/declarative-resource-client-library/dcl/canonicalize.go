@@ -845,10 +845,14 @@ func IsPartialSelfLink(s string) bool {
 	return strings.HasPrefix(s, "projects/") || strings.HasPrefix(s, "organizations/") || strings.HasPrefix(s, "folders/") || strings.HasPrefix(s, "billingAccounts/") || strings.HasPrefix(s, "tagKeys/") || strings.HasPrefix(s, "tagValues/") || strings.HasPrefix(s, "groups/")
 }
 
+var selfLinkRegex = regexp.MustCompile(`(https?:\/\/)?(www\.)?([a-z0-9\.\-]*)?(googleapis\.com|[a-z0-9\.\-]+\.goog)\/`)
+
 // IsSelfLink returns true if this string represents a full self link.
 func IsSelfLink(s string) bool {
-	r := regexp.MustCompile(`(https:\/\/)?(www\.)?([a-z]*)?googleapis.com\/`)
-	return r.MatchString(s)
+	if strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://") {
+		return true
+	}
+	return selfLinkRegex.MatchString(s)
 }
 
 // ValueShouldBeSent returns if a value should be sent as part of the JSON request.
