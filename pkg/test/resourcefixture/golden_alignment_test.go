@@ -62,6 +62,8 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {

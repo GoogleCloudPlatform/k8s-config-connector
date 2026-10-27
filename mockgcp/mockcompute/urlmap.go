@@ -18,7 +18,42 @@ import (
 	"context"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+func validateURLMap(obj *pb.UrlMap) error {
+	numDefaults := 0
+	if obj.DefaultService != nil && *obj.DefaultService != "" {
+		numDefaults++
+	}
+	if obj.DefaultUrlRedirect != nil {
+		numDefaults++
+	}
+	if obj.DefaultRouteAction != nil && len(obj.DefaultRouteAction.WeightedBackendServices) > 0 {
+		numDefaults++
+	}
+	if numDefaults > 1 {
+		return status.Errorf(codes.InvalidArgument, "A default redirect can only be specified for a url map if it neither specifies a default service nor a default route action, invalid")
+	}
+
+	for _, pm := range obj.PathMatchers {
+		pmDefaults := 0
+		if pm.DefaultService != nil && *pm.DefaultService != "" {
+			pmDefaults++
+		}
+		if pm.DefaultUrlRedirect != nil {
+			pmDefaults++
+		}
+		if pm.DefaultRouteAction != nil && len(pm.DefaultRouteAction.WeightedBackendServices) > 0 {
+			pmDefaults++
+		}
+		if pmDefaults > 1 {
+			return status.Errorf(codes.InvalidArgument, "A default redirect can only be specified for a url map if it neither specifies a default service nor a default route action, invalid")
+		}
+	}
+	return nil
+}
 
 func (s *MockService) populateURLMapDefaults(ctx context.Context, obj *pb.UrlMap) {
 	if obj.DefaultService != nil {
