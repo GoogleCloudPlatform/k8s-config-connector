@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -25,66 +26,61 @@ import (
 )
 
 const (
-	TargetClusterFlag = "target-cluster"
+	targetClusterFlag = "target-cluster"
 )
 
-// FailoverOptions holds flags and configuration for `config-connector ha failover`.
-type FailoverOptions struct {
-	*BaseOptions
+// failoverOptions holds flags and configuration for `config-connector ha failover`.
+type failoverOptions struct {
+	baseOptions
 
-	TargetCluster string
+	targetCluster string
 }
 
-func NewFailoverOptions(baseOpts *BaseOptions) *FailoverOptions {
-	if baseOpts == nil {
-		baseOpts = NewBaseOptions()
-	}
-	return &FailoverOptions{
-		BaseOptions: baseOpts,
-	}
+func newFailoverOptions() failoverOptions {
+	return failoverOptions{}
 }
 
-func NewFailoverCmd(baseOpts *BaseOptions) *cobra.Command {
-	opts := NewFailoverOptions(baseOpts)
+func NewFailoverCmd() *cobra.Command {
+	opts := newFailoverOptions()
 	cmd := &cobra.Command{
 		Use:   "failover",
 		Short: "Trigger a manual failover to a target standby cluster",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			opts.Stdout = cmd.OutOrStdout()
-			opts.Stderr = cmd.ErrOrStderr()
-			if err := opts.Validate(); err != nil {
+			opts.stdout = cmd.OutOrStdout()
+			opts.stderr = cmd.ErrOrStderr()
+			if err := opts.validate(); err != nil {
 				return err
 			}
-			return RunFailover(cmd.Context(), opts)
+			return runFailover(cmd.Context(), opts)
 		},
 	}
-	opts.AddFlags(cmd.Flags())
+	opts.addFlags(cmd.Flags())
 	return cmd
 }
 
-func RunFailover(ctx context.Context, opts *FailoverOptions) error {
-	if err := opts.InitClusterHandles(ctx); err != nil {
+func runFailover(ctx context.Context, opts failoverOptions) error {
+	if _, err := buildClusterHandles(ctx, opts.contexts); err != nil {
 		return err
 	}
 	return fmt.Errorf("ha failover is not yet implemented")
 }
 
-func (o *FailoverOptions) AddFlags(flags *pflag.FlagSet) {
-	flags.StringVar(&o.TargetCluster, TargetClusterFlag, o.TargetCluster, "Kubeconfig context name of the standby cluster to promote to leader.")
+func (o *failoverOptions) addFlags(flags *pflag.FlagSet) {
+	o.baseOptions.addFlags(flags)
+	flags.StringVar(&o.targetCluster, targetClusterFlag, o.targetCluster, "Kubeconfig context name of the standby cluster to promote to leader.")
 }
 
-func (o *FailoverOptions) Validate() error {
-	if err := o.BaseOptions.Validate(); err != nil {
-		return err
+func (o *failoverOptions) validate() error {
+	var errs []error
+	if err := o.baseOptions.validate(); err != nil {
+		errs = append(errs, err)
 	}
-	o.TargetCluster = strings.TrimSpace(o.TargetCluster)
-	if o.TargetCluster == "" {
-		return fmt.Errorf("--%s is required", TargetClusterFlag)
+	o.targetCluster = strings.TrimSpace(o.targetCluster)
+	if o.targetCluster == "" {
+		errs = append(errs, fmt.Errorf("--%s is required", targetClusterFlag))
+	} else if !slices.Contains(o.contexts, o.targetCluster) {
+		errs = append(errs, fmt.Errorf("--%s %q must be one of the contexts specified in --%s (%v)", targetClusterFlag, o.targetCluster, contextsFlag, o.contexts))
 	}
-	clusterNames := o.ClusterNames()
-	if !slices.Contains(clusterNames, o.TargetCluster) {
-		return fmt.Errorf("--%s %q must be one of the contexts specified in --%s (%v)", TargetClusterFlag, o.TargetCluster, ContextsFlag, clusterNames)
-	}
-	return nil
+	return errors.Join(errs...)
 }

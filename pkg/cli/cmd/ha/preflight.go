@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -29,77 +30,84 @@ import (
 )
 
 const (
-	ConfigConnectorResourceName = "configconnector.core.cnrm.cloud.google.com"
+	configConnectorResourceName = "configconnector.core.cnrm.cloud.google.com"
 )
 
-// ClusterHAState holds the observed HA-related resources on a single cluster.
-type ClusterHAState struct {
-	ContextName       string
-	ConfigConnector   *operatorv1beta1.ConfigConnector
-	MultiClusterLease *mclv1alpha1.MultiClusterLease
-	KRMSyncers        []syncerv1alpha1.KRMSyncer
+// clusterHAState holds the observed HA-related resources on a single cluster.
+type clusterHAState struct {
+	contextName       string
+	configConnector   *operatorv1beta1.ConfigConnector
+	multiClusterLease *mclv1alpha1.MultiClusterLease
+	krmSyncers        []syncerv1alpha1.KRMSyncer
 }
 
-// FetchAllClusterHAStates fetches the HA state across all configured clusters.
-func FetchAllClusterHAStates(ctx context.Context, handles []*ClusterHandle) ([]*ClusterHAState, error) {
-	states := make([]*ClusterHAState, 0, len(handles))
+// fetchAllClusterHAStates fetches the HA state across all configured clusters.
+func fetchAllClusterHAStates(ctx context.Context, handles []*clusterHandle) ([]*clusterHAState, error) {
+	var errs []error
+	states := make([]*clusterHAState, 0, len(handles))
 	for _, h := range handles {
-		state, err := FetchClusterHAState(ctx, h)
+		state, err := fetchClusterHAState(ctx, h)
 		if err != nil {
-			return nil, err
+			errs = append(errs, err)
+			continue
 		}
 		states = append(states, state)
+	}
+	if len(errs) > 0 {
+		return nil, errors.Join(errs...)
 	}
 	return states, nil
 }
 
-// FetchClusterHAState reads the ConfigConnector, MultiClusterLease, and KRMSyncer objects from a cluster.
-func FetchClusterHAState(ctx context.Context, handle *ClusterHandle) (*ClusterHAState, error) {
-	if handle == nil || handle.Client == nil {
+// fetchClusterHAState reads and validates the ConfigConnector, MultiClusterLease, and KRMSyncer objects from a cluster.
+func fetchClusterHAState(ctx context.Context, handle *clusterHandle) (*clusterHAState, error) {
+	if handle == nil || handle.client == nil {
 		return nil, fmt.Errorf("cluster handle or client is nil")
-	}
-
-	state := &ClusterHAState{
-		ContextName: handle.ContextName,
 	}
 
 	cc, err := fetchConfigConnector(ctx, handle)
 	if err != nil {
 		return nil, err
 	}
-	state.ConfigConnector = cc
+	if cc == nil {
+		return nil, fmt.Errorf("cluster %q is missing the %q ConfigConnector object", handle.contextName, configConnectorResourceName)
+	}
 
 	mclSpec := multiClusterLeaseSpec(cc)
-	if mclSpec == nil || mclSpec.LeaseName == "" || mclSpec.Namespace == "" {
-		return state, nil
+	if err := validateClusterLeaseSpec(handle.contextName, mclSpec); err != nil {
+		return nil, err
 	}
 
 	lease, err := fetchMultiClusterLease(ctx, handle, mclSpec.Namespace, mclSpec.LeaseName)
 	if err != nil {
 		return nil, err
 	}
-	state.MultiClusterLease = lease
 
 	syncers, err := listKRMSyncers(ctx, handle, mclSpec.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	state.KRMSyncers = syncers
 
-	return state, nil
+	return &clusterHAState{
+		contextName:       handle.contextName,
+		configConnector:   cc,
+		multiClusterLease: lease,
+		krmSyncers:        syncers,
+	}, nil
 }
 
-func fetchConfigConnector(ctx context.Context, handle *ClusterHandle) (*operatorv1beta1.ConfigConnector, error) {
+func fetchConfigConnector(ctx context.Context, handle *clusterHandle) (*operatorv1beta1.ConfigConnector, error) {
 	cc := &operatorv1beta1.ConfigConnector{}
-	key := types.NamespacedName{Name: ConfigConnectorResourceName}
-	err := handle.Client.Get(ctx, key, cc)
-	if err == nil {
-		return cc, nil
+	key := types.NamespacedName{Name: configConnectorResourceName}
+	if err := handle.client.Get(ctx, key, cc); err != nil {
+		if isResourceOrKindAbsent(err) {
+			return nil, nil
+		}
+
+		return nil, fmt.Errorf("fetching ConfigConnector on cluster %q: %w", handle.contextName, err)
 	}
-	if isResourceOrKindAbsent(err) {
-		return nil, nil
-	}
-	return nil, fmt.Errorf("fetching ConfigConnector on cluster %q: %w", handle.ContextName, err)
+
+	return cc, nil
 }
 
 func multiClusterLeaseSpec(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1.MultiClusterLeaseSpec {
@@ -109,98 +117,93 @@ func multiClusterLeaseSpec(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1
 	return cc.Spec.Experiments.MultiClusterLease
 }
 
-func fetchMultiClusterLease(ctx context.Context, handle *ClusterHandle, namespace, name string) (*mclv1alpha1.MultiClusterLease, error) {
-	lease := &mclv1alpha1.MultiClusterLease{}
-	key := types.NamespacedName{Namespace: namespace, Name: name}
-	err := handle.Client.Get(ctx, key, lease)
-	if err == nil {
-		return lease, nil
+func validateClusterLeaseSpec(contextName string, mcl *operatorv1beta1.MultiClusterLeaseSpec) error {
+	if mcl == nil {
+		return fmt.Errorf("cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector", contextName)
 	}
-	if isResourceOrKindAbsent(err) {
-		return nil, nil
+	var errs []error
+	if mcl.LeaseName == "" {
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.leaseName", contextName))
 	}
-	return nil, fmt.Errorf("fetching MultiClusterLease %s on cluster %q: %w", key, handle.ContextName, err)
+	if mcl.Namespace == "" {
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.namespace", contextName))
+	}
+	if mcl.ClusterCandidateIdentity == "" {
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.clusterCandidateIdentity", contextName))
+	}
+	return errors.Join(errs...)
 }
 
-func listKRMSyncers(ctx context.Context, handle *ClusterHandle, namespace string) ([]syncerv1alpha1.KRMSyncer, error) {
+func fetchMultiClusterLease(ctx context.Context, handle *clusterHandle, namespace, name string) (*mclv1alpha1.MultiClusterLease, error) {
+	lease := &mclv1alpha1.MultiClusterLease{}
+	key := types.NamespacedName{Namespace: namespace, Name: name}
+	if err := handle.client.Get(ctx, key, lease); err != nil {
+		if isResourceOrKindAbsent(err) {
+			return nil, nil
+		}
+
+		return nil, fmt.Errorf("fetching MultiClusterLease %s on cluster %q: %w", key, handle.contextName, err)
+	}
+
+	return lease, nil
+}
+
+func listKRMSyncers(ctx context.Context, handle *clusterHandle, namespace string) ([]syncerv1alpha1.KRMSyncer, error) {
 	syncerList := &syncerv1alpha1.KRMSyncerList{}
-	err := handle.Client.List(ctx, syncerList, client.InNamespace(namespace))
-	if err == nil {
-		return syncerList.Items, nil
+	if err := handle.client.List(ctx, syncerList, client.InNamespace(namespace)); err != nil {
+		if isResourceOrKindAbsent(err) {
+			return nil, nil
+		}
+
+		return nil, fmt.Errorf("listing KRMSyncers in namespace %q on cluster %q: %w", namespace, handle.contextName, err)
 	}
-	if isResourceOrKindAbsent(err) {
-		return nil, nil
-	}
-	return nil, fmt.Errorf("listing KRMSyncers in namespace %q on cluster %q: %w", namespace, handle.ContextName, err)
+
+	return syncerList.Items, nil
 }
 
 func isResourceOrKindAbsent(err error) bool {
 	return apierrors.IsNotFound(err) || meta.IsNoMatchError(err) || runtime.IsNotRegisteredError(err)
 }
 
-// ValidateMultiClusterLeaseConfigs checks that all clusters have consistent MultiClusterLease
+// validateMultiClusterLeaseConfigs checks that all clusters have consistent MultiClusterLease
 // settings (identical leaseName and namespace, and unique clusterCandidateIdentity per cluster).
-func ValidateMultiClusterLeaseConfigs(states []*ClusterHAState) error {
+func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 	if len(states) < 2 {
 		return fmt.Errorf("at least 2 clusters are required for multi-cluster HA validation, got %d", len(states))
 	}
 
-	firstSpec, err := extractAndValidateLeaseSpec(states[0])
-	if err != nil {
-		return err
-	}
-	firstCluster := states[0].ContextName
+	var errs []error
+	leaseNames := make(map[string]int, len(states))
+	namespaces := make(map[string]int, len(states))
+	identities := make(map[string]int, len(states))
 
-	identities := make(map[string]string, len(states))
 	for _, s := range states {
-		mcl, err := extractAndValidateLeaseSpec(s)
-		if err != nil {
-			return err
+		if s == nil {
+			errs = append(errs, fmt.Errorf("cluster HA state is nil"))
+			continue
 		}
-		if err := validateSameLeaseTarget(firstCluster, firstSpec, s.ContextName, mcl); err != nil {
-			return err
+		mcl := multiClusterLeaseSpec(s.configConnector)
+		if err := validateClusterLeaseSpec(s.contextName, mcl); err != nil {
+			errs = append(errs, err)
+			continue
 		}
-		if prevCluster, exists := identities[mcl.ClusterCandidateIdentity]; exists {
-			return fmt.Errorf("duplicate clusterCandidateIdentity %q shared by clusters %q and %q",
-				mcl.ClusterCandidateIdentity, prevCluster, s.ContextName)
-		}
-		identities[mcl.ClusterCandidateIdentity] = s.ContextName
+		leaseNames[mcl.LeaseName]++
+		namespaces[mcl.Namespace]++
+		identities[mcl.ClusterCandidateIdentity]++
+	}
+	if len(errs) > 0 {
+		return errors.Join(errs...)
 	}
 
-	return nil
-}
+	if len(leaseNames) != 1 {
+		errs = append(errs, fmt.Errorf("mismatched leaseName across clusters: found %d distinct lease names", len(leaseNames)))
+	}
+	if len(namespaces) != 1 {
+		errs = append(errs, fmt.Errorf("mismatched lease namespace across clusters: found %d distinct namespaces", len(namespaces)))
+	}
+	if len(identities) != len(states) {
+		errs = append(errs, fmt.Errorf("duplicate clusterCandidateIdentity across clusters: expected %d unique identities, got %d", len(states), len(identities)))
+	}
 
-func extractAndValidateLeaseSpec(s *ClusterHAState) (*operatorv1beta1.MultiClusterLeaseSpec, error) {
-	if s == nil {
-		return nil, fmt.Errorf("cluster HA state is nil")
-	}
-	if s.ConfigConnector == nil {
-		return nil, fmt.Errorf("cluster %q is missing the %q ConfigConnector object", s.ContextName, ConfigConnectorResourceName)
-	}
-	mcl := multiClusterLeaseSpec(s.ConfigConnector)
-	if mcl == nil {
-		return nil, fmt.Errorf("cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector", s.ContextName)
-	}
-	if mcl.LeaseName == "" {
-		return nil, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.leaseName", s.ContextName)
-	}
-	if mcl.Namespace == "" {
-		return nil, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.namespace", s.ContextName)
-	}
-	if mcl.ClusterCandidateIdentity == "" {
-		return nil, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.clusterCandidateIdentity", s.ContextName)
-	}
-	return mcl, nil
-}
-
-func validateSameLeaseTarget(firstCluster string, expected *operatorv1beta1.MultiClusterLeaseSpec, cluster string, actual *operatorv1beta1.MultiClusterLeaseSpec) error {
-	if actual.LeaseName != expected.LeaseName {
-		return fmt.Errorf("mismatched leaseName across clusters: cluster %q has %q, but cluster %q has %q",
-			firstCluster, expected.LeaseName, cluster, actual.LeaseName)
-	}
-	if actual.Namespace != expected.Namespace {
-		return fmt.Errorf("mismatched lease namespace across clusters: cluster %q has %q, but cluster %q has %q",
-			firstCluster, expected.Namespace, cluster, actual.Namespace)
-	}
-	return nil
+	return errors.Join(errs...)
 }

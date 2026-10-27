@@ -17,62 +17,57 @@ package ha
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
 
-// StatusOptions holds flags and configuration for `config-connector ha status`.
-type StatusOptions struct {
-	*BaseOptions
+// statusOptions holds flags and configuration for `config-connector ha status`.
+type statusOptions struct {
+	baseOptions
 
-	Bucket string
+	bucket string
 }
 
-func NewStatusOptions(baseOpts *BaseOptions) *StatusOptions {
-	if baseOpts == nil {
-		baseOpts = NewBaseOptions()
-	}
-	return &StatusOptions{
-		BaseOptions: baseOpts,
-	}
+func newStatusOptions() statusOptions {
+	return statusOptions{}
 }
 
-func NewStatusCmd(baseOpts *BaseOptions) *cobra.Command {
-	opts := NewStatusOptions(baseOpts)
+func NewStatusCmd() *cobra.Command {
+	opts := newStatusOptions()
 	cmd := &cobra.Command{
 		Use:   "status",
 		Short: "Display multi-cluster high availability leadership and replication status",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			opts.Stdout = cmd.OutOrStdout()
-			opts.Stderr = cmd.ErrOrStderr()
-			if err := opts.Validate(); err != nil {
+			opts.stdout = cmd.OutOrStdout()
+			opts.stderr = cmd.ErrOrStderr()
+			if err := opts.validate(); err != nil {
 				return err
 			}
-			return RunStatus(cmd.Context(), opts)
+			return runStatus(cmd.Context(), opts)
 		},
 	}
-	opts.AddFlags(cmd.Flags())
+	opts.addFlags(cmd.Flags())
 	return cmd
 }
 
-func RunStatus(ctx context.Context, opts *StatusOptions) error {
-	if err := opts.InitClusterHandles(ctx); err != nil {
+func runStatus(ctx context.Context, opts statusOptions) error {
+	if _, err := buildClusterHandles(ctx, opts.contexts); err != nil {
 		return err
 	}
 	return fmt.Errorf("ha status is not yet implemented")
 }
 
-func (o *StatusOptions) AddFlags(flags *pflag.FlagSet) {
-	flags.StringVar(&o.Bucket, BucketFlag, o.Bucket, "Optional GCS bucket name to inspect the global lock object directly.")
+func (o *statusOptions) addFlags(flags *pflag.FlagSet) {
+	o.baseOptions.addFlags(flags)
+	flags.StringVar(&o.bucket, bucketFlag, o.bucket, "Optional GCS bucket name to inspect the global lock object directly.")
 }
 
-func (o *StatusOptions) Validate() error {
-	if err := o.BaseOptions.Validate(); err != nil {
+func (o *statusOptions) validate() error {
+	if err := o.baseOptions.validate(); err != nil {
 		return err
 	}
-	o.Bucket = strings.TrimSpace(o.Bucket)
+	o.bucket = normalizeBucketName(o.bucket)
 	return nil
 }

@@ -34,7 +34,6 @@ const (
 )
 
 func NewHACmd() *cobra.Command {
-	baseOpts := ha.NewBaseOptions()
 	cmd := &cobra.Command{
 		Use:     haCommandName,
 		Short:   "Manage multi-cluster High Availability (HA) for Config Connector",
@@ -43,11 +42,9 @@ func NewHACmd() *cobra.Command {
 		Args:    cobra.NoArgs,
 	}
 
-	baseOpts.AddFlags(cmd.PersistentFlags())
-
-	cmd.AddCommand(ha.NewSetupCmd(baseOpts))
-	cmd.AddCommand(ha.NewStatusCmd(baseOpts))
-	cmd.AddCommand(ha.NewFailoverCmd(baseOpts))
+	cmd.AddCommand(ha.NewSetupCmd())
+	cmd.AddCommand(ha.NewStatusCmd())
+	cmd.AddCommand(ha.NewFailoverCmd())
 
 	return cmd
 }

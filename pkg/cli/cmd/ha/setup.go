@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -24,85 +25,83 @@ import (
 )
 
 const (
-	BucketFlag         = "bucket"
-	LeaseNameFlag      = "lease-name"
-	LeaseNamespaceFlag = "lease-namespace"
-	YAMLOnlyFlag       = "yaml-only"
+	bucketFlag         = "bucket"
+	leaseNameFlag      = "lease-name"
+	leaseNamespaceFlag = "lease-namespace"
+	yamlOnlyFlag       = "yaml-only"
 
 	defaultLeaseName      = "kcc-multicluster-lease"
 	defaultLeaseNamespace = "cnrm-system"
 )
 
-// SetupOptions holds flags and configuration for `config-connector ha setup`.
-type SetupOptions struct {
-	*BaseOptions
+// setupOptions holds flags and configuration for `config-connector ha setup`.
+type setupOptions struct {
+	baseOptions
 
-	Bucket         string
-	LeaseName      string
-	LeaseNamespace string
-	YAMLOnly       bool
+	bucket         string
+	leaseName      string
+	leaseNamespace string
+	yamlOnly       bool
 }
 
-func NewSetupOptions(baseOpts *BaseOptions) *SetupOptions {
-	if baseOpts == nil {
-		baseOpts = NewBaseOptions()
-	}
-	return &SetupOptions{
-		BaseOptions:    baseOpts,
-		LeaseName:      defaultLeaseName,
-		LeaseNamespace: defaultLeaseNamespace,
+func newSetupOptions() setupOptions {
+	return setupOptions{
+		leaseName:      defaultLeaseName,
+		leaseNamespace: defaultLeaseNamespace,
 	}
 }
 
-func NewSetupCmd(baseOpts *BaseOptions) *cobra.Command {
-	opts := NewSetupOptions(baseOpts)
+func NewSetupCmd() *cobra.Command {
+	opts := newSetupOptions()
 	cmd := &cobra.Command{
 		Use:   "setup",
 		Short: "Configure multi-cluster high availability across Config Connector clusters",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			opts.Stdout = cmd.OutOrStdout()
-			opts.Stderr = cmd.ErrOrStderr()
-			if err := opts.Validate(); err != nil {
+			opts.stdout = cmd.OutOrStdout()
+			opts.stderr = cmd.ErrOrStderr()
+			if err := opts.validate(); err != nil {
 				return err
 			}
-			return RunSetup(cmd.Context(), opts)
+			return runSetup(cmd.Context(), opts)
 		},
 	}
-	opts.AddFlags(cmd.Flags())
+	opts.addFlags(cmd.Flags())
 	return cmd
 }
 
-func RunSetup(ctx context.Context, opts *SetupOptions) error {
-	if err := opts.InitClusterHandles(ctx); err != nil {
+func runSetup(ctx context.Context, opts setupOptions) error {
+	if _, err := buildClusterHandles(ctx, opts.contexts); err != nil {
 		return err
 	}
 	return fmt.Errorf("ha setup is not yet implemented")
 }
 
-func (o *SetupOptions) AddFlags(flags *pflag.FlagSet) {
-	flags.StringVar(&o.Bucket, BucketFlag, o.Bucket, "GCS bucket name used to store the multi-cluster leader election lock.")
-	flags.StringVar(&o.LeaseName, LeaseNameFlag, o.LeaseName, "Name of the MultiClusterLease object across all clusters.")
-	flags.StringVar(&o.LeaseNamespace, LeaseNamespaceFlag, o.LeaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
-	flags.BoolVar(&o.YAMLOnly, YAMLOnlyFlag, o.YAMLOnly, "If true, print rendered manifests to stdout without applying them.")
+func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
+	o.baseOptions.addFlags(flags)
+	flags.StringVar(&o.bucket, bucketFlag, o.bucket, "GCS bucket name used to store the multi-cluster leader election lock.")
+	flags.StringVar(&o.leaseName, leaseNameFlag, o.leaseName, "Name of the MultiClusterLease object across all clusters.")
+	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
+	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 }
 
-func (o *SetupOptions) Validate() error {
-	if err := o.BaseOptions.Validate(); err != nil {
-		return err
+func (o *setupOptions) validate() error {
+	var errs []error
+	if err := o.baseOptions.validate(); err != nil {
+		errs = append(errs, err)
 	}
-	o.Bucket = strings.TrimSpace(o.Bucket)
-	o.LeaseName = strings.TrimSpace(o.LeaseName)
-	o.LeaseNamespace = strings.TrimSpace(o.LeaseNamespace)
+	o.bucket = normalizeBucketName(o.bucket)
+	o.leaseName = strings.TrimSpace(o.leaseName)
+	o.leaseNamespace = strings.TrimSpace(o.leaseNamespace)
 
-	if o.Bucket == "" {
-		return fmt.Errorf("--%s is required", BucketFlag)
+	if o.bucket == "" {
+		errs = append(errs, fmt.Errorf("--%s is required", bucketFlag))
 	}
-	if o.LeaseName == "" {
-		return fmt.Errorf("--%s cannot be empty", LeaseNameFlag)
+	if o.leaseName == "" {
+		errs = append(errs, fmt.Errorf("--%s cannot be empty", leaseNameFlag))
 	}
-	if o.LeaseNamespace == "" {
-		return fmt.Errorf("--%s cannot be empty", LeaseNamespaceFlag)
+	if o.leaseNamespace == "" {
+		errs = append(errs, fmt.Errorf("--%s cannot be empty", leaseNamespaceFlag))
 	}
-	return nil
+	return errors.Join(errs...)
 }

@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -33,120 +34,100 @@ import (
 )
 
 const (
-	ContextsFlag = "contexts"
-	DryRunFlag   = "dry-run"
+	contextsFlag = "contexts"
+	dryRunFlag   = "dry-run"
 )
 
-// BaseOptions holds shared configuration across `config-connector ha` subcommands.
-type BaseOptions struct {
-	// Contexts is the list of kubeconfig context names participating in the HA setup.
-	Contexts []string
+// baseOptions holds shared configuration across `config-connector ha` subcommands.
+type baseOptions struct {
+	// contexts is the list of kubeconfig context names participating in the HA setup.
+	contexts []string
 
-	// DryRun indicates that mutating subcommands should print planned actions without applying them.
-	DryRun bool
+	// dryRun indicates that mutating subcommands should print planned actions without applying them.
+	dryRun bool
 
-	// Stdout and Stderr are populated from the Cobra command streams before execution.
-	Stdout io.Writer
-	Stderr io.Writer
-
-	// Clusters holds the initialized per-context Kubernetes clients.
-	// May be pre-populated in unit tests.
-	Clusters []*ClusterHandle
+	// stdout and stderr are populated from the Cobra command streams before execution.
+	stdout io.Writer
+	stderr io.Writer
 }
 
-func NewBaseOptions() *BaseOptions {
-	return &BaseOptions{}
+func (o *baseOptions) addFlags(flags *pflag.FlagSet) {
+	flags.StringSliceVar(&o.contexts, contextsFlag, o.contexts, "Comma-separated list of kubeconfig contexts participating in the HA group (at least 2 required).")
+	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without making changes.")
 }
 
-func (o *BaseOptions) AddFlags(flags *pflag.FlagSet) {
-	flags.StringSliceVar(&o.Contexts, ContextsFlag, o.Contexts, "Comma-separated list of kubeconfig contexts participating in the HA group (at least 2 required).")
-	flags.BoolVar(&o.DryRun, DryRunFlag, o.DryRun, "If true, print planned actions without making changes.")
-}
-
-// Validate checks that the shared base options are valid for multi-cluster HA operations
+// validate checks that the shared base options are valid for multi-cluster HA operations
 // and normalizes context names in place.
-func (o *BaseOptions) Validate() error {
-	for i, c := range o.Contexts {
-		o.Contexts[i] = strings.TrimSpace(c)
+func (o *baseOptions) validate() error {
+	for i, c := range o.contexts {
+		o.contexts[i] = strings.TrimSpace(c)
 	}
-	for _, h := range o.Clusters {
-		if h == nil {
-			return fmt.Errorf("cluster handle cannot be nil")
-		}
-		h.ContextName = strings.TrimSpace(h.ContextName)
+	if len(o.contexts) < 2 {
+		return fmt.Errorf("at least 2 cluster contexts must be specified via --%s", contextsFlag)
 	}
-
-	clusterNames := o.ClusterNames()
-	if len(clusterNames) < 2 {
-		return fmt.Errorf("at least 2 cluster contexts must be specified via --%s", ContextsFlag)
-	}
-	return validateUniqueContextNames(clusterNames)
+	return validateUniqueContextNames(o.contexts)
 }
 
 func validateUniqueContextNames(names []string) error {
+	var errs []error
 	seen := make(map[string]bool, len(names))
 	for _, name := range names {
 		if name == "" {
-			return fmt.Errorf("context name in --%s cannot be empty", ContextsFlag)
+			errs = append(errs, fmt.Errorf("context name in --%s cannot be empty", contextsFlag))
+			continue
 		}
 		if seen[name] {
-			return fmt.Errorf("duplicate context %q specified in --%s", name, ContextsFlag)
+			errs = append(errs, fmt.Errorf("duplicate context %q specified in --%s", name, contextsFlag))
+			continue
 		}
 		seen[name] = true
 	}
-	return nil
+	return errors.Join(errs...)
 }
 
-// ClusterNames returns the configured kubeconfig context names from either Contexts or pre-populated Clusters.
-func (o *BaseOptions) ClusterNames() []string {
-	if len(o.Contexts) > 0 {
-		return o.Contexts
-	}
-	names := make([]string, 0, len(o.Clusters))
-	for _, h := range o.Clusters {
-		if h != nil {
-			names = append(names, h.ContextName)
-		}
-	}
-	return names
+func normalizeBucketName(bucket string) string {
+	trimmed := strings.TrimSpace(bucket)
+	trimmed = strings.TrimPrefix(trimmed, "gs://")
+	trimmed = strings.TrimSuffix(trimmed, "/")
+	return strings.TrimSpace(trimmed)
 }
 
-// InitClusterHandles initializes a Kubernetes client for each context in o.Contexts
-// if o.Clusters has not already been pre-populated (e.g. in tests).
-func (o *BaseOptions) InitClusterHandles(ctx context.Context) error {
-	if len(o.Clusters) > 0 {
-		return nil
-	}
-	scheme, err := NewHAScheme()
+// clusterHandle wraps a kubeconfig context name and its initialized Kubernetes client.
+type clusterHandle struct {
+	contextName string
+	client      *kubecli.Client
+}
+
+// buildClusterHandles initializes a Kubernetes client for each kubeconfig context name.
+func buildClusterHandles(ctx context.Context, contexts []string) ([]*clusterHandle, error) {
+	scheme, err := newHAScheme()
 	if err != nil {
-		return fmt.Errorf("creating HA runtime scheme: %w", err)
+		return nil, fmt.Errorf("creating HA runtime scheme: %w", err)
 	}
-	handles := make([]*ClusterHandle, 0, len(o.Contexts))
-	for _, ctxName := range o.Contexts {
+	var errs []error
+	handles := make([]*clusterHandle, 0, len(contexts))
+	for _, ctxName := range contexts {
 		c, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{
 			Context: ctxName,
 			Scheme:  scheme,
 		})
 		if err != nil {
-			return fmt.Errorf("building kubernetes client for context %q: %w", ctxName, err)
+			errs = append(errs, fmt.Errorf("building kubernetes client for context %q: %w", ctxName, err))
+			continue
 		}
-		handles = append(handles, &ClusterHandle{
-			ContextName: ctxName,
-			Client:      c,
+		handles = append(handles, &clusterHandle{
+			contextName: ctxName,
+			client:      c,
 		})
 	}
-	o.Clusters = handles
-	return nil
+	if len(errs) > 0 {
+		return nil, errors.Join(errs...)
+	}
+	return handles, nil
 }
 
-// ClusterHandle wraps a kubeconfig context name and its initialized Kubernetes client.
-type ClusterHandle struct {
-	ContextName string
-	Client      *kubecli.Client
-}
-
-// NewHAScheme constructs a runtime.Scheme registered with all API types needed by HA commands.
-func NewHAScheme() (*runtime.Scheme, error) {
+// newHAScheme constructs a runtime.Scheme registered with all API types needed by HA commands.
+func newHAScheme() (*runtime.Scheme, error) {
 	scheme := runtime.NewScheme()
 	builders := []func(*runtime.Scheme) error{
 		corev1.AddToScheme,

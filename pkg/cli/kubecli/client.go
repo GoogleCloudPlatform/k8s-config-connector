@@ -79,31 +79,21 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 }
 
 func loadRESTConfig(options ClusterOptions) (*rest.Config, error) {
-	hasExplicitClientConfig := options.Kubeconfig != "" || options.Context != ""
-	if !hasExplicitClientConfig {
-		rc, err := config.GetConfig()
+	if options.Kubeconfig != "" {
+		loadingRules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: options.Kubeconfig}
+		overrides := &clientcmd.ConfigOverrides{CurrentContext: options.Context}
+		rc, err := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, overrides).ClientConfig()
 		if err != nil {
-			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
+			return nil, fmt.Errorf("loading kubernetes configuration (kubeconfig=%q, context=%q): %w", options.Kubeconfig, options.Context, err)
 		}
 		return rc, nil
 	}
 
-	loadingRules := clientConfigLoadingRules(options.Kubeconfig)
-	overrides := &clientcmd.ConfigOverrides{
-		CurrentContext: options.Context,
-	}
-	rc, err := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, overrides).ClientConfig()
+	rc, err := config.GetConfigWithContext(options.Context)
 	if err != nil {
-		return nil, fmt.Errorf("loading kubernetes configuration (kubeconfig=%q, context=%q): %w", options.Kubeconfig, options.Context, err)
+		return nil, fmt.Errorf("getting kubernetes configuration (context=%q): %w", options.Context, err)
 	}
 	return rc, nil
-}
-
-func clientConfigLoadingRules(kubeconfigPath string) clientcmd.ClientConfigLoader {
-	if kubeconfigPath != "" {
-		return &clientcmd.ClientConfigLoadingRules{ExplicitPath: kubeconfigPath}
-	}
-	return clientcmd.NewDefaultClientConfigLoadingRules()
 }
 
 func buildDiscoveryClient(ctx context.Context, restConfig *rest.Config) (discovery.DiscoveryInterface, error) {
