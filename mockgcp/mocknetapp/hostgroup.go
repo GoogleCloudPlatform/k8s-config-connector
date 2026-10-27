@@ -84,7 +84,6 @@ func (s *backupVaultsService) CreateHostGroup(ctx context.Context, req *pb.Creat
 
 	obj := proto.Clone(req.GetHostGroup()).(*pb.HostGroup)
 	obj.Name = fqn
-	obj.CreateTime = timestamppb.Now()
 	obj.State = pb.HostGroup_READY
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
