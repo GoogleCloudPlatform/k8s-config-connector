@@ -1,6 +1,5 @@
-GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,12 +21,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?alt=json
+POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "action": "ALLOW",
+  "action": 1,
   "description": "Sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.1.0/24"
@@ -44,7 +42,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "action": "ALLOW",
+  "action": 1,
   "description": "Sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.1.0/24"
@@ -52,9 +50,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -67,7 +64,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "action": "ALLOW",
+  "action": 1,
   "description": "Sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.1.0/24"
@@ -75,12 +72,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json&updateMask=description%2CsourceRange%2Caction
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2Cdescription%2CsourceRange
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "action": "DENY",
+  "action": 2,
   "description": "Updated sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.2.0/24"
@@ -97,7 +93,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "action": "DENY",
+  "action": 2,
   "description": "Updated sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.2.0/24"
@@ -105,9 +101,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -120,7 +115,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "action": "DENY",
+  "action": 2,
   "description": "Updated sample firewall rule",
   "priority": 1000,
   "sourceRange": "192.168.2.0/24"
@@ -128,9 +123,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
