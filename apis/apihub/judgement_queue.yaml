@@ -99,6 +99,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.secretValue.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue.secretVersion
     reason: possible-reference-by-description-loose
     status: open
   - kind: APIHubPluginInstance
@@ -106,6 +112,12 @@ entries:
     field: .spec.authConfig.apiKeyConfig.apiKey
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/secrets/{secrete}/versions/{version}"
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
     status: open
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
@@ -139,6 +151,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
     reason: possible-reference-by-description-loose
     status: open
   - kind: APIHubPluginInstance
@@ -150,6 +168,12 @@ entries:
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.userPasswordConfig.password.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password.secretVersion
     reason: possible-reference-by-description-loose
     status: open
   - kind: APIHubPluginInstance
@@ -157,6 +181,12 @@ entries:
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.sourceProjectID
+    reason: possible-reference-by-description
+    detail: the field name is project or ends in projectID
     status: open
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
