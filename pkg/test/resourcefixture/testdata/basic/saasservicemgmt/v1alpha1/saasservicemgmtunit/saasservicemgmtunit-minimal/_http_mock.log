@@ -81,28 +81,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "conditions": [
-    {
-      "lastTransitionTime": "2024-04-01T12:34:56.123456Z",
-      "status": 3,
-      "type": 2
-    },
-    {
-      "lastTransitionTime": "2024-04-01T12:34:56.123456Z",
-      "status": 3,
-      "type": 3
-    },
-    {
-      "lastTransitionTime": "2024-04-01T12:34:56.123456Z",
-      "status": 1,
-      "type": 4
-    },
-    {
-      "lastTransitionTime": "2024-04-01T12:34:56.123456Z",
-      "status": 3,
-      "type": 1
-    }
-  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
@@ -110,7 +88,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
-  "state": 1,
   "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
