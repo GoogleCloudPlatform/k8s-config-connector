@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strings"
 
 	gcp "cloud.google.com/go/documentai/apiv1"
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
@@ -33,6 +34,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+)
+
+var (
+	projectNumberRegex = regexp.MustCompile(`projects/\d+`)
+	projectRegex       = regexp.MustCompile(`projects/[^/]+`)
 )
 
 func init() {
@@ -62,7 +68,7 @@ func (m *modelProcessorDefaultVersion) client(ctx context.Context, location stri
 	if err != nil {
 		return nil, fmt.Errorf("building Processor client: %w", err)
 	}
-	return gcpClient, err
+	return gcpClient, nil
 }
 
 func (m *modelProcessorDefaultVersion) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -99,7 +105,20 @@ func (m *modelProcessorDefaultVersion) AdapterForObject(ctx context.Context, op 
 }
 
 func (m *modelProcessorDefaultVersion) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krmv1alpha1.DocumentAIProcessorDefaultVersionIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx, id.Location)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProcessorDefaultVersionAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ProcessorDefaultVersionAdapter struct {
@@ -132,26 +151,7 @@ func (a *ProcessorDefaultVersionAdapter) Create(ctx context.Context, createOp *d
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DocumentAIProcessorDefaultVersion", "name", a.id.String())
 
-	req := &pb.SetDefaultProcessorVersionRequest{
-		Processor:               a.id.String(),
-		DefaultProcessorVersion: a.desired.Spec.Version,
-	}
-	op, err := a.gcpClient.SetDefaultProcessorVersion(ctx, req)
-	if err != nil {
-		return fmt.Errorf("setting default processor version for %s: %w", a.id.String(), err)
-	}
-	_, err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting for setting default processor version for %s: %w", a.id.String(), err)
-	}
-
-	updated, err := a.gcpClient.GetProcessor(ctx, &pb.GetProcessorRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting Processor after setting default version %s: %w", a.id.String(), err)
-	}
-	a.actual = updated
-
-	return a.updateStatus(ctx, createOp)
+	return a.setDefaultVersion(ctx, createOp)
 }
 
 func (a *ProcessorDefaultVersionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -171,15 +171,43 @@ func (a *ProcessorDefaultVersionAdapter) Update(ctx context.Context, updateOp *d
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	return a.setDefaultVersion(ctx, updateOp)
+}
+
+func (a *ProcessorDefaultVersionAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	obj := &krmv1alpha1.DocumentAIProcessorDefaultVersion{}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.String())
+	obj.Spec.Version = a.actual.GetDefaultProcessorVersion()
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u := &unstructured.Unstructured{Object: uObj}
+	u.SetName(a.id.Processor)
+	u.SetGroupVersionKind(krmv1alpha1.DocumentAIProcessorDefaultVersionGVK)
+	return u, nil
+}
+
+func (a *ProcessorDefaultVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting DocumentAIProcessorDefaultVersion is a no-op because processor default versions cannot be deleted in GCP", "name", a.id.String())
+	return true, nil
+}
+
+func (a *ProcessorDefaultVersionAdapter) setDefaultVersion(ctx context.Context, op directbase.Operation) error {
 	req := &pb.SetDefaultProcessorVersionRequest{
 		Processor:               a.id.String(),
 		DefaultProcessorVersion: a.desired.Spec.Version,
 	}
-	op, err := a.gcpClient.SetDefaultProcessorVersion(ctx, req)
+	lro, err := a.gcpClient.SetDefaultProcessorVersion(ctx, req)
 	if err != nil {
 		return fmt.Errorf("setting default processor version for %s: %w", a.id.String(), err)
 	}
-	_, err = op.Wait(ctx)
+	_, err = lro.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for setting default processor version for %s: %w", a.id.String(), err)
 	}
@@ -190,7 +218,7 @@ func (a *ProcessorDefaultVersionAdapter) Update(ctx context.Context, updateOp *d
 	}
 	a.actual = updated
 
-	return a.updateStatus(ctx, updateOp)
+	return a.updateStatus(ctx, op)
 }
 
 func (a *ProcessorDefaultVersionAdapter) diff(ctx context.Context) (*structuredreporting.Diff, error) {
@@ -206,8 +234,8 @@ func (a *ProcessorDefaultVersionAdapter) diff(ctx context.Context) (*structuredr
 	for _, alias := range a.actual.GetProcessorVersionAliases() {
 		aliasName := alias.GetAlias()
 		targetVersion := alias.GetProcessorVersion()
-		if (projectNumberDiffSuppress(desiredVersion, aliasName) || desiredVersion == alias.GetAlias()) &&
-			projectNumberDiffSuppress(targetVersion, actualVersion) {
+		aliasMatches := projectNumberDiffSuppress(desiredVersion, aliasName) || strings.HasSuffix(aliasName, "/"+desiredVersion)
+		if aliasMatches && projectNumberDiffSuppress(targetVersion, actualVersion) {
 			return report, nil
 		}
 	}
@@ -216,25 +244,21 @@ func (a *ProcessorDefaultVersionAdapter) diff(ctx context.Context) (*structuredr
 	return report, nil
 }
 
-func projectNumberDiffSuppress(old, new string) bool {
-	if old == new {
+func projectNumberDiffSuppress(desired, actual string) bool {
+	if desired == actual {
 		return true
 	}
-	re := regexp.MustCompile(`projects/[^/]+`)
-	replacement := "projects/equal"
-	a2 := re.ReplaceAllString(old, replacement)
-	b2 := re.ReplaceAllString(new, replacement)
-	return a2 == b2
-}
-
-func (a *ProcessorDefaultVersionAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
-}
-
-func (a *ProcessorDefaultVersionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting DocumentAIProcessorDefaultVersion is a no-op because processor default versions cannot be deleted in GCP", "name", a.id.String())
-	return true, nil
+	if projectNumberRegex.MatchString(actual) {
+		normActual := projectNumberRegex.ReplaceAllString(actual, "projects/equal")
+		normDesired := projectRegex.ReplaceAllString(desired, "projects/equal")
+		return normActual == normDesired
+	}
+	if projectNumberRegex.MatchString(desired) {
+		normDesired := projectNumberRegex.ReplaceAllString(desired, "projects/equal")
+		normActual := projectRegex.ReplaceAllString(actual, "projects/equal")
+		return normActual == normDesired
+	}
+	return false
 }
 
 func (a *ProcessorDefaultVersionAdapter) updateStatus(ctx context.Context, op directbase.Operation) error {
