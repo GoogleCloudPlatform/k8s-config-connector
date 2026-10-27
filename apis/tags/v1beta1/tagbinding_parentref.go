@@ -27,7 +27,7 @@ import (
 )
 
 // ParentRef is a reference to a parent resource.
-// +kcc:ref=Project;StorageBucket
+// +kcc:ref=Project;StorageBucket;SQLInstance
 type TagsTagBindingParentRef struct {
 	// Kind to which we are binding the tag.  Defaults to Project if not specified.
 	// +optional

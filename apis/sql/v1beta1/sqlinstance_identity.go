@@ -15,15 +15,22 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var SQLInstanceIdentityFormat = gcpurls.Template[SQLInstanceIdentity]("sqladmin.googleapis.com", "projects/{project}/instances/{instance}")
 
-var _ identity.IdentityV2 = &SQLInstanceIdentity{}
+var (
+	_ identity.IdentityV2 = &SQLInstanceIdentity{}
+	_ identity.Resource   = &SQLInstance{}
+)
 
 // SQLInstanceIdentity is the canonical identity of a Cloud SQL instance.
 // +k8s:deepcopy-gen=false
@@ -51,4 +58,33 @@ func (i *SQLInstanceIdentity) FromExternal(ref string) error {
 
 func (i *SQLInstanceIdentity) Host() string {
 	return SQLInstanceIdentityFormat.Host()
+}
+
+func (i *SQLInstanceIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s", i.Project)
+}
+
+func getIdentityFromSQLInstanceSpec(ctx context.Context, reader client.Reader, obj *SQLInstance) (*SQLInstanceIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &SQLInstanceIdentity{
+		Project:  projectID,
+		Instance: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *SQLInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromSQLInstanceSpec(ctx, reader, obj)
 }

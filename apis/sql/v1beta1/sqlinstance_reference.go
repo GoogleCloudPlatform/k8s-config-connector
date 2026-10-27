@@ -19,6 +19,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -70,7 +72,18 @@ func (r *SQLInstanceRef) ValidateExternal(ref string) error {
 }
 
 func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj := &SQLInstance{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		id, err := getIdentityFromSQLInstanceSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return id.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 func (r *SQLInstanceRef) ParseExternalToIdentity() (identity.Identity, error) {

@@ -103,6 +103,14 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			expectedExternal: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
 		},
 		{
+			name: "External: projects/{project}/instances/{instance} with kind=SQLInstance",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SQLInstance",
+				External: "projects/my-project/instances/my-instance",
+			},
+			expectedExternal: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+		},
+		{
 			name: "External: {project} (project ID) with kind=Project",
 			initial: TagsTagBindingParentRef{
 				Kind:     "Project",

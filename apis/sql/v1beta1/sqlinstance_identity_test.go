@@ -14,7 +14,14 @@
 
 package v1beta1
 
-import "testing"
+import (
+	"context"
+	"testing"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
+)
 
 func TestSQLInstanceIdentityFromExternal(t *testing.T) {
 	tests := []struct {
@@ -72,5 +79,86 @@ func TestSQLInstanceIdentityString(t *testing.T) {
 	want := "projects/my-project/instances/my-instance"
 	if got := identity.String(); got != want {
 		t.Errorf("String() = %q, want %q", got, want)
+	}
+}
+
+func TestSQLInstanceRef_Normalize(t *testing.T) {
+	ctx := context.Background()
+
+	scheme := runtime.NewScheme()
+	if err := AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme() error = %v", err)
+	}
+
+	sqlInstance := &unstructured.Unstructured{}
+	sqlInstance.SetGroupVersionKind(SQLInstanceGVK)
+	sqlInstance.SetName("my-instance")
+	sqlInstance.SetNamespace("test-ns")
+	sqlInstance.SetAnnotations(map[string]string{
+		"cnrm.cloud.google.com/project-id": "my-project",
+	})
+
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstance).Build()
+
+	tests := []struct {
+		name         string
+		ref          *SQLInstanceRef
+		defaultNS    string
+		wantExternal string
+		wantErr      bool
+	}{
+		{
+			name: "full external URI",
+			ref: &SQLInstanceRef{
+				External: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+			},
+			wantExternal: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+		},
+		{
+			name: "relative external URI",
+			ref: &SQLInstanceRef{
+				External: "projects/my-project/instances/my-instance",
+			},
+			wantExternal: "projects/my-project/instances/my-instance",
+		},
+		{
+			name: "resolve by name with default namespace",
+			ref: &SQLInstanceRef{
+				Name: "my-instance",
+			},
+			defaultNS:    "test-ns",
+			wantExternal: "projects/my-project/instances/my-instance",
+		},
+		{
+			name: "resolve by name with explicit namespace",
+			ref: &SQLInstanceRef{
+				Name:      "my-instance",
+				Namespace: "test-ns",
+			},
+			wantExternal: "projects/my-project/instances/my-instance",
+		},
+		{
+			name: "resource not found",
+			ref: &SQLInstanceRef{
+				Name: "non-existent",
+			},
+			defaultNS: "test-ns",
+			wantErr:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.ref.Normalize(ctx, fakeClient, tt.defaultNS)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.wantErr {
+				return
+			}
+			if tt.ref.External != tt.wantExternal {
+				t.Errorf("Normalize() external = %q, want %q", tt.ref.External, tt.wantExternal)
+			}
+		})
 	}
 }
