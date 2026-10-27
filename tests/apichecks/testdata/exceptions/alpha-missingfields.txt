@@ -1596,7 +1596,6 @@
 [missing_field] crd=computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.importCustomRoutes" is not set in unstructured objects
 [missing_field] crd=computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeorganizationsecuritypolicyassociations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.attachmentId" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyassociations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyId" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.action" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

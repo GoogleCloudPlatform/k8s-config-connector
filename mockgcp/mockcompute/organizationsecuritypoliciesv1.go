@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -207,6 +208,159 @@ func (s *OrganizationSecurityPoliciesV1) List(ctx context.Context, req *pb.ListO
 		if strings.HasPrefix(policy.GetSelfLink(), "https://www.googleapis.com/compute/v1/locations/global/securityPolicies/") {
 			if req.ParentId == nil || policy.GetParent() == req.GetParentId() {
 				response.Items = append(response.Items, policy)
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (s *OrganizationSecurityPoliciesV1) AddAssociation(ctx context.Context, req *pb.AddAssociationOrganizationSecurityPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, policy); err != nil {
+		return nil, err
+	}
+
+	association := proto.Clone(req.GetSecurityPolicyAssociationResource()).(*pb.SecurityPolicyAssociation)
+	assocName := association.GetName()
+	if assocName == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "association name is required")
+	}
+
+	found := false
+	for i, existing := range policy.Associations {
+		if existing.GetName() == assocName {
+			if !req.GetReplaceExistingAssociation() {
+				return nil, status.Errorf(codes.AlreadyExists, "association %q already exists", assocName)
+			}
+			policy.Associations[i] = association
+			found = true
+			break
+		}
+	}
+	if !found {
+		policy.Associations = append(policy.Associations, association)
+	}
+
+	if err := s.storage.Update(ctx, fqn, policy); err != nil {
+		return nil, err
+	}
+
+	assocFQN := fmt.Sprintf("%s/associations/%s", fqn, assocName)
+	if found {
+		if err := s.storage.Update(ctx, assocFQN, association); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := s.storage.Create(ctx, assocFQN, association); err != nil {
+			return nil, err
+		}
+	}
+
+	op := &pb.Operation{
+		TargetId:      policy.Id,
+		TargetLink:    policy.SelfLink,
+		OperationType: PtrTo("attachOrganizationSecurityPolicy"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return association, nil
+	})
+}
+
+func (s *OrganizationSecurityPoliciesV1) GetAssociation(ctx context.Context, req *pb.GetAssociationOrganizationSecurityPolicyRequest) (*pb.SecurityPolicyAssociation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	assocFQN := fmt.Sprintf("%s/associations/%s", fqn, req.GetName())
+
+	assoc := &pb.SecurityPolicyAssociation{}
+	if err := s.storage.Get(ctx, assocFQN, assoc); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'name': '%s'. An association with that name does not exist.", req.GetName())
+		}
+		return nil, err
+	}
+
+	return assoc, nil
+}
+
+func (s *OrganizationSecurityPoliciesV1) RemoveAssociation(ctx context.Context, req *pb.RemoveAssociationOrganizationSecurityPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	policy := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, policy); err != nil {
+		return nil, err
+	}
+
+	assocFQN := fmt.Sprintf("%s/associations/%s", fqn, req.GetName())
+	deleted := &pb.SecurityPolicyAssociation{}
+	if err := s.storage.Delete(ctx, assocFQN, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'name': '%s'. An association with that name does not exist.", req.GetName())
+		}
+		return nil, err
+	}
+
+	var associations []*pb.SecurityPolicyAssociation
+	for _, assoc := range policy.Associations {
+		if assoc.GetName() != req.GetName() {
+			associations = append(associations, assoc)
+		}
+	}
+	policy.Associations = associations
+
+	if err := s.storage.Update(ctx, fqn, policy); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      policy.Id,
+		TargetLink:    policy.SelfLink,
+		OperationType: PtrTo("detachOrganizationSecurityPolicy"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
+}
+
+func (s *OrganizationSecurityPoliciesV1) ListAssociations(ctx context.Context, req *pb.ListAssociationsOrganizationSecurityPolicyRequest) (*pb.OrganizationSecurityPoliciesListAssociationsResponse, error) {
+	if req.GetTargetResource() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "targetResource is required")
+	}
+
+	response := &pb.OrganizationSecurityPoliciesListAssociationsResponse{
+		Kind: PtrTo("compute#organizationSecurityPoliciesListAssociations"),
+	}
+
+	policyKind := (&pb.SecurityPolicy{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, policyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		policy := obj.(*pb.SecurityPolicy)
+		for _, assoc := range policy.Associations {
+			if assoc.GetAttachmentId() == req.GetTargetResource() {
+				response.Associations = append(response.Associations, assoc)
 			}
 		}
 		return nil
