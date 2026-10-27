@@ -24,7 +24,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 
 	"github.com/spf13/cobra"
