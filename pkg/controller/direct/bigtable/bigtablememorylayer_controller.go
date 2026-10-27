@@ -231,19 +231,16 @@ func (a *MemoryLayerAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 // setMemoryConfig sets (enables) or clears (disables) the memory layer's
 // memory_config and waits for the resulting long-running operation.
 func (a *MemoryLayerAdapter) setMemoryConfig(ctx context.Context, memoryConfig *bigtablepb.MemoryLayer_MemoryConfig) error {
-	// The service requires the etag we last read, so that it can reject the
-	// write if the memory layer changed underneath us. Find always populates
-	// a.actual before Create or Delete runs, including for a disabled memory
-	// layer, so a missing etag here is a programming error rather than
-	// something to paper over by sending an empty one.
-	if a.actual == nil || a.actual.GetEtag() == "" {
-		return fmt.Errorf("no etag available for memory layer %s; Find() must run first", a.id)
-	}
-
 	ml := &bigtablepb.MemoryLayer{
 		Name:         a.id.String(),
 		MemoryConfig: memoryConfig,
-		Etag:         a.actual.GetEtag(),
+	}
+	// Send the etag we last read, so the server can reject the write if the
+	// memory layer changed underneath us. A memory layer that has never been
+	// enabled is reported with no etag, so there is nothing to send on the
+	// first enable.
+	if a.actual != nil {
+		ml.Etag = a.actual.GetEtag()
 	}
 
 	op, err := a.gcpClient.UpdateMemoryLayer(ctx, &bigtablepb.UpdateMemoryLayerRequest{
