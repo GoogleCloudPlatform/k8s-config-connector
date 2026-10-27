@@ -319,6 +319,12 @@ entries:
   - kind: DataplexEntryLink
     group: dataplex.cnrm.cloud.google.com
     field: .spec.entryLinkType
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/dataplex-types/locations/global/entryLinkTypes/synonym"
+    status: open
+  - kind: DataplexEntryLink
+    group: dataplex.cnrm.cloud.google.com
+    field: .spec.entryLinkType
     reason: possible-reference-by-description-loose
     status: open
   - kind: DataplexEntryLink

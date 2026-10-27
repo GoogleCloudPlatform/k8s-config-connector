@@ -95,6 +95,12 @@ entries:
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key"; the field name is kmsKeyName or cmekKeyName
+    status: open
+  - kind: AIPlatformHyperparameterTuningJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
     status: open
@@ -281,6 +287,12 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.notebookRuntimeTemplates: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookRuntimeTemplates, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.notebookRuntimeTemplates'
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key"; the field name is kmsKeyName or cmekKeyName
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
