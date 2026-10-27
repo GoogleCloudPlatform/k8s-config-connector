@@ -48,10 +48,12 @@ func (r *protoResolver) FindMessageByName(message protoreflect.FullName) (protor
 }
 
 func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, error) {
-	// Default to trying to find the message as-is.
-	mt, err := protoregistry.GlobalTypes.FindMessageByURL(url)
-	if err == nil {
-		return mt, nil
+	// Default to trying to find the message as-is, except for networkconnectivity where mockgcp uses Discovery-ordered OperationMetadata.
+	if !strings.HasPrefix(url, "type.googleapis.com/google.cloud.networkconnectivity.") {
+		mt, err := protoregistry.GlobalTypes.FindMessageByURL(url)
+		if err == nil {
+			return mt, nil
+		}
 	}
 	if suffix, ok := strings.CutPrefix(url, "type.googleapis.com/google."); ok {
 		s := "type.googleapis.com/mockgcp." + suffix
@@ -63,7 +65,7 @@ func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, 
 		}
 	}
 
-	return nil, err
+	return protoregistry.GlobalTypes.FindMessageByURL(url)
 }
 
 func (r *protoResolver) remapName(name protoreflect.FullName) protoreflect.FullName {
