@@ -68,6 +68,10 @@ func (m *modelRule) AdapterForObject(ctx context.Context, op *directbase.Adapter
 	}
 	id := i.(*krm.ArtifactRegistryRuleIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get artifactregistry GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
