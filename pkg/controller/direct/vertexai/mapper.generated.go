@@ -391,6 +391,109 @@ func FeatureGroup_BigQuery_TimeSeries_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
 	return out
 }
+func FeaturestoreMonitoringConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto(mapCtx, in.GetSnapshotAnalysis())
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_FromProto(mapCtx, in.GetImportFeaturesAnalysis())
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx, in.GetNumericalThresholdConfig())
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx, in.GetCategoricalThresholdConfig())
+	return out
+}
+func FeaturestoreMonitoringConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig) *pb.FeaturestoreMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto(mapCtx, in.SnapshotAnalysis)
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_ToProto(mapCtx, in.ImportFeaturesAnalysis)
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx, in.NumericalThresholdConfig)
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx, in.CategoricalThresholdConfig)
+	return out
+}
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.AnomalyDetectionBaseline = direct.Enum_FromProto(mapCtx, in.GetAnomalyDetectionBaseline())
+	return out
+}
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_State](mapCtx, in.State)
+	out.AnomalyDetectionBaseline = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_Baseline](mapCtx, in.AnomalyDetectionBaseline)
+	return out
+}
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto", skipping
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MonitoringInterval = direct.StringDuration_FromProto(mapCtx, in.GetMonitoringInterval())
+	out.MonitoringIntervalDays = direct.LazyPtr(in.GetMonitoringIntervalDays())
+	out.StalenessDays = direct.LazyPtr(in.GetStalenessDays())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto", skipping
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis) *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MonitoringInterval = direct.StringDuration_ToProto(mapCtx, in.MonitoringInterval)
+	out.MonitoringIntervalDays = direct.ValueOf(in.MonitoringIntervalDays)
+	out.StalenessDays = direct.ValueOf(in.StalenessDays)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto", skipping
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ThresholdConfig) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	out.Value = in.GetValue()
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto", skipping
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig) *pb.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	if oneof := FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx, in.Value); oneof != nil {
+		out.Threshold = oneof
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto", skipping
+
+	func FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx *direct.MapContext, in float64) *pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value {
+		if in == nil {
+			return nil
+		}
+		return &pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value{Value: *in}
+	}
+*/
 func Featurestore_OnlineServingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmvertexaiv1alpha1.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
@@ -1167,6 +1270,82 @@ func VertexAIFeaturestoreEntityTypeFeatureStatus_v1alpha1_ToProto(mapCtx *direct
 	// MISSING: FeatureStatsAndAnomaly
 	// MISSING: VersionColumnName
 	// MISSING: PointOfContact
+	return out
+}
+
+/* found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto", skipping
+func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_FromProto(mapCtx, in.GetMonitoringConfig())
+	out.OfflineStorageTTLDays = direct.LazyPtr(in.GetOfflineStorageTtlDays())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto", skipping
+
+	func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec) *pb.EntityType {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EntityType{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		// MISSING: Etag
+		out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_ToProto(mapCtx, in.MonitoringConfig)
+		out.OfflineStorageTtlDays = direct.ValueOf(in.OfflineStorageTTLDays)
+		// MISSING: SatisfiesPzs
+		// MISSING: SatisfiesPzi
+		return out
+	}
+*/
+func VertexAIFeaturestoreEntityTypeStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTTLDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreEntityTypeStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTTLDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func VertexAIFeaturestoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krmvertexaiv1alpha1.VertexAIFeaturestoreObservedState {
