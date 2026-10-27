@@ -159,7 +159,7 @@ func TestComputeOrganizationSecurityPolicyAssociation_GetIdentity(t *testing.T) 
 				},
 				Spec: ComputeOrganizationSecurityPolicyAssociationSpec{
 					AttachmentID: "organizations/123456789",
-					PolicyID:     "1234567890",
+					PolicyID:     common.LazyPtr("1234567890"),
 					ResourceID:   common.LazyPtr("custom-assoc-id"),
 				},
 			},
@@ -177,7 +177,7 @@ func TestComputeOrganizationSecurityPolicyAssociation_GetIdentity(t *testing.T) 
 				},
 				Spec: ComputeOrganizationSecurityPolicyAssociationSpec{
 					AttachmentID: "folders/987654321",
-					PolicyID:     "locations/global/securityPolicies/9876543210",
+					PolicyID:     common.LazyPtr("locations/global/securityPolicies/9876543210"),
 				},
 			},
 			wantIdentity: &ComputeOrganizationSecurityPolicyAssociationIdentity{
@@ -194,12 +194,31 @@ func TestComputeOrganizationSecurityPolicyAssociation_GetIdentity(t *testing.T) 
 				},
 				Spec: ComputeOrganizationSecurityPolicyAssociationSpec{
 					AttachmentID: "organizations/123456789",
-					PolicyID:     "https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/5555555555",
+					PolicyID:     common.LazyPtr("https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/5555555555"),
 				},
 			},
 			wantIdentity: &ComputeOrganizationSecurityPolicyAssociationIdentity{
 				SecurityPolicy: "5555555555",
 				Association:    "assoc-1",
+			},
+		},
+		{
+			name: "spec with securityPolicyRef",
+			obj: &ComputeOrganizationSecurityPolicyAssociation{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "assoc-ref",
+					Namespace: "default",
+				},
+				Spec: ComputeOrganizationSecurityPolicyAssociationSpec{
+					AttachmentID: "projects/123456789",
+					SecurityPolicyRef: &ComputeOrganizationSecurityPolicyRef{
+						External: "locations/global/securityPolicies/1234567890",
+					},
+				},
+			},
+			wantIdentity: &ComputeOrganizationSecurityPolicyAssociationIdentity{
+				SecurityPolicy: "1234567890",
+				Association:    "assoc-ref",
 			},
 		},
 		{
@@ -211,7 +230,7 @@ func TestComputeOrganizationSecurityPolicyAssociation_GetIdentity(t *testing.T) 
 				},
 				Spec: ComputeOrganizationSecurityPolicyAssociationSpec{
 					AttachmentID: "organizations/123456789",
-					PolicyID:     "",
+					PolicyID:     common.LazyPtr(""),
 				},
 			},
 			wantErr: true,

@@ -26,8 +26,13 @@ type ComputeOrganizationSecurityPolicyAssociationSpec struct {
 	/* Immutable. The resource that the security policy is attached to. */
 	AttachmentID string `json:"attachmentId"`
 
-	/* Immutable. The security policy ID of the association. */
-	PolicyID string `json:"policyId"`
+	/* Immutable. The security policy ID of the association. Exactly one of policyId or securityPolicyRef must be specified. */
+	// +optional
+	PolicyID *string `json:"policyId,omitempty"`
+
+	/* Immutable. The security policy that this association belongs to. Exactly one of policyId or securityPolicyRef must be specified. */
+	// +optional
+	SecurityPolicyRef *ComputeOrganizationSecurityPolicyRef `json:"securityPolicyRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

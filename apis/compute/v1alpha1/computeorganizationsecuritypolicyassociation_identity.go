@@ -104,9 +104,28 @@ func getIdentityFromComputeOrganizationSecurityPolicyAssociationSpec(ctx context
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	policyID, err := parseSecurityPolicyID(obj.Spec.PolicyID)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve security policy ID: %w", err)
+	var policyID string
+	if obj.Spec.PolicyID != nil && *obj.Spec.PolicyID != "" {
+		policyID, err = parseSecurityPolicyID(*obj.Spec.PolicyID)
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve security policy ID: %w", err)
+		}
+	} else if obj.Spec.SecurityPolicyRef != nil {
+		ref := obj.Spec.SecurityPolicyRef
+		if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("cannot normalize securityPolicyRef: %w", err)
+		}
+		id, err := ref.ParseExternalToIdentity()
+		if err != nil {
+			return nil, fmt.Errorf("cannot parse securityPolicyRef: %w", err)
+		}
+		policyIdentity, ok := id.(*ComputeOrganizationSecurityPolicyIdentity)
+		if !ok {
+			return nil, fmt.Errorf("unexpected identity type for securityPolicyRef: %T", id)
+		}
+		policyID = policyIdentity.SecurityPolicy
+	} else {
+		return nil, fmt.Errorf("cannot resolve security policy ID: exactly one of spec.policyId or spec.securityPolicyRef must be set")
 	}
 
 	identity := &ComputeOrganizationSecurityPolicyAssociationIdentity{
