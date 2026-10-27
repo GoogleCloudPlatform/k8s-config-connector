@@ -160,6 +160,48 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			wantErrSubstr: "unknown format for a Project reference",
 		},
 		{
+			name: "External: projects/{project}/instances/{instance} with kind=Project (should fail)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "projects/my-project/instances/my-instance",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: projects/{project}/instances/{instance} with no kind (defaults to Project, should fail)",
+			initial: TagsTagBindingParentRef{
+				External: "projects/my-project/instances/my-instance",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: //sqladmin.googleapis.com/projects/{project}/instances/{instance} with kind=Project (should fail)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: //sqladmin.googleapis.com/projects/{project}/instances/{instance} with no kind (defaults to Project, should fail)",
+			initial: TagsTagBindingParentRef{
+				External: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: invalid format with kind=SQLInstance (should fail)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SQLInstance",
+				External: "projects/my-project/locations/us-central1/instances/my-instance",
+			},
+			wantErr: true,
+		},
+		{
 			name: "External: organizations/{organization} with kind=Organization",
 			initial: TagsTagBindingParentRef{
 				Kind:     "Organization",

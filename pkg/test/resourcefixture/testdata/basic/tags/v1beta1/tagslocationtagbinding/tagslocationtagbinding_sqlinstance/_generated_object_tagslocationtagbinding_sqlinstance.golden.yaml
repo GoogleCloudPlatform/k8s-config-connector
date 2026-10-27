@@ -16,7 +16,7 @@ spec:
   parentRef:
     external: //sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-${uniqueId}
     kind: SQLInstance
-  resourceID: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
+  resourceID: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -26,6 +26,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
-  name: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
+  externalRef: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
+  name: tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2

@@ -574,8 +574,8 @@ X-Xss-Protection: 0
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
-    "name": "tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}",
-    "parent": "//sqladmin.googleapis.com/projects/${projectNumber}/instances/sqlinstance-${uniqueId}",
+    "name": "tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}",
+    "parent": "//sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-${uniqueId}",
     "tagValue": "tagValues/${tagValueID}",
     "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
   }
@@ -600,8 +600,8 @@ X-Xss-Protection: 0
 {
   "tagBindings": [
     {
-      "name": "tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}",
-      "parent": "//sqladmin.googleapis.com/projects/${projectNumber}/instances/sqlinstance-${uniqueId}",
+      "name": "tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}",
+      "parent": "//sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-${uniqueId}",
       "tagValue": "tagValues/${tagValueID}",
       "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
@@ -610,62 +610,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fsqladmin.googleapis.com%252Fprojects%252F${projectId}%252Finstances%252Fsqlinstance-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectNumber}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}",
-  "projectId": "${projectId}",
-  "state": 1
-}
-
----
-
-GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectId}%2Finstances%2Fsqlinstance-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "tagBindings": [
-    {
-      "name": "tagBindings/%2F%2Fsqladmin.googleapis.com%2Fprojects%2F${projectNumber}%2Finstances%2Fsqlinstance-${uniqueId}/tagValues/${tagValueID}",
-      "parent": "//sqladmin.googleapis.com/projects/${projectNumber}/instances/sqlinstance-${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
-    }
-  ]
-}
-
----
-
-DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fsqladmin.googleapis.com%252Fprojects%252F${projectNumber}%252Finstances%252Fsqlinstance-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=tagBindings%2F%252F%252Fsqladmin.googleapis.com%252Fprojects%252F${projectNumber}%252Finstances%252Fsqlinstance-${uniqueId}%2FtagValues%2F${tagValueID}
+X-Goog-Request-Params: name=tagBindings%2F%252F%252Fsqladmin.googleapis.com%252Fprojects%252F${projectId}%252Finstances%252Fsqlinstance-${uniqueId}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

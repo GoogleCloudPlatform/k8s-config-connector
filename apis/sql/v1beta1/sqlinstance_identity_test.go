@@ -44,6 +44,26 @@ func TestSQLInstanceIdentityFromExternal(t *testing.T) {
 			wantInstance: "my-instance",
 		},
 		{
+			name:     "empty string",
+			external: "",
+			wantErr:  true,
+		},
+		{
+			name:     "invalid string without format",
+			external: "invalid",
+			wantErr:  true,
+		},
+		{
+			name:     "missing instance name",
+			external: "projects/my-project/instances/",
+			wantErr:  true,
+		},
+		{
+			name:     "wrong resource type",
+			external: "projects/my-project/databases/my-database",
+			wantErr:  true,
+		},
+		{
 			name:     "invalid location-qualified resource name",
 			external: "projects/my-project/locations/us-central1/instances/my-instance",
 			wantErr:  true,
@@ -80,6 +100,20 @@ func TestSQLInstanceIdentityString(t *testing.T) {
 	if got := identity.String(); got != want {
 		t.Errorf("String() = %q, want %q", got, want)
 	}
+
+	wantParent := "projects/my-project"
+	if got := identity.ParentString(); got != wantParent {
+		t.Errorf("ParentString() = %q, want %q", got, wantParent)
+	}
+
+	// Test nil safety
+	var nilIdentity *SQLInstanceIdentity
+	if got := nilIdentity.String(); got != "" {
+		t.Errorf("nil.String() = %q, want empty string", got)
+	}
+	if got := nilIdentity.ParentString(); got != "" {
+		t.Errorf("nil.ParentString() = %q, want empty string", got)
+	}
 }
 
 func TestSQLInstanceRef_Normalize(t *testing.T) {
@@ -98,7 +132,24 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 		"cnrm.cloud.google.com/project-id": "my-project",
 	})
 
-	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstance).Build()
+	sqlInstanceWithResourceID := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": SQLInstanceGVK.GroupVersion().String(),
+			"kind":       SQLInstanceGVK.Kind,
+			"metadata": map[string]interface{}{
+				"name":      "k8s-name",
+				"namespace": "test-ns",
+				"annotations": map[string]interface{}{
+					"cnrm.cloud.google.com/project-id": "my-project",
+				},
+			},
+			"spec": map[string]interface{}{
+				"resourceID": "custom-instance-id",
+			},
+		},
+	}
+
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstance, sqlInstanceWithResourceID).Build()
 
 	tests := []struct {
 		name         string
@@ -136,6 +187,14 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 				Namespace: "test-ns",
 			},
 			wantExternal: "projects/my-project/instances/my-instance",
+		},
+		{
+			name: "resolve by name with spec.resourceID taking precedence",
+			ref: &SQLInstanceRef{
+				Name: "k8s-name",
+			},
+			defaultNS:    "test-ns",
+			wantExternal: "projects/my-project/instances/custom-instance-id",
 		},
 		{
 			name: "resource not found",
