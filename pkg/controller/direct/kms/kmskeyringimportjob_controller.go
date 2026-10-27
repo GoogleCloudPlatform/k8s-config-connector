@@ -135,7 +135,7 @@ var _ directbase.Adapter = &keyRingImportJobAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *keyRingImportJobAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting kms keyringimportjob", "name", a.id)
+	log.V(2).Info("getting KMSKeyRingImportJob", "name", a.id.String())
 
 	req := &kmspb.GetImportJobRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetImportJob(ctx, req)
@@ -153,7 +153,7 @@ func (a *keyRingImportJobAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *keyRingImportJobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating kms keyringimportjob", "name", a.id)
+	log.V(2).Info("creating KMSKeyRingImportJob", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := KMSKeyRingImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
@@ -166,19 +166,27 @@ func (a *keyRingImportJobAdapter) Create(ctx context.Context, createOp *directba
 		ImportJobId: a.id.ImportJob,
 		ImportJob:   desired,
 	}
-	created, err := a.gcpClient.CreateImportJob(ctx, req)
+	_, err := a.gcpClient.CreateImportJob(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating kms keyringimportjob %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created kms keyringimportjob in gcp", "name", a.id)
+	log.V(2).Info("successfully created KMSKeyRingImportJob in GCP", "name", a.id.String())
 
-	return a.updateStatus(ctx, createOp, created)
+	// Cloud KMS CreateImportJob returns state=PENDING_GENERATION without public key/attestation.
+	// Fetch the created ImportJob from GCP (matching TF's Read() after Create()) so that
+	// status.publicKey, status.attestation, and state=ACTIVE are populated.
+	actual, err := a.gcpClient.GetImportJob(ctx, &kmspb.GetImportJobRequest{Name: a.id.String()})
+	if err != nil {
+		return fmt.Errorf("reading kms keyringimportjob %s after creation: %w", a.id.String(), err)
+	}
+
+	return a.updateStatus(ctx, createOp, actual)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *keyRingImportJobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating KMSKeyRingImportJob", "name", a.id)
+	log.V(2).Info("updating KMSKeyRingImportJob", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := KMSKeyRingImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
@@ -200,21 +208,10 @@ func (a *keyRingImportJobAdapter) Update(ctx context.Context, updateOp *directba
 	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
-func compareKeyRingImportJob(ctx context.Context, actual, desired *kmspb.ImportJob) (*structuredreporting.Diff, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, KMSKeyRingImportJobSpec_FromProto, KMSKeyRingImportJobSpec_ToProto)
-	if err != nil {
-		return nil, err
-	}
-	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, err
-	}
-	return diffs, nil
-}
-
 // Export implements the Adapter interface.
 func (a *keyRingImportJobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	log := klog.FromContext(ctx)
+	log.V(2).Info("exporting KMSKeyRingImportJob", "name", a.id.String())
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -245,7 +242,7 @@ func (a *keyRingImportJobAdapter) Export(ctx context.Context) (*unstructured.Uns
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *keyRingImportJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("No-op Delete for key ring import job", "name", a.id.String())
+	log.V(2).Info("no-op deleting KMSKeyRingImportJob", "name", a.id.String())
 	// KMS API does not support deleting an import job. An import job expires after three days.
 	// Return success to remove the finalizer, so the resource can be deleted in k8s.
 	return true, nil
@@ -258,4 +255,16 @@ func (a *keyRingImportJobAdapter) updateStatus(ctx context.Context, op directbas
 		return mapCtx.Err()
 	}
 	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareKeyRingImportJob(ctx context.Context, actual, desired *kmspb.ImportJob) (*structuredreporting.Diff, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, KMSKeyRingImportJobSpec_FromProto, KMSKeyRingImportJobSpec_ToProto)
+	if err != nil {
+		return nil, err
+	}
+	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	return diffs, nil
 }

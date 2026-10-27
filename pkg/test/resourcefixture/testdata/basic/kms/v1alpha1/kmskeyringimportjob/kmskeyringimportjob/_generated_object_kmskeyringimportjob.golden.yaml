@@ -17,6 +17,9 @@ spec:
   keyRing: projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}
   protectionLevel: HSM
 status:
+  attestation:
+  - content: H4sIAAAAAAAAAGNgAANmBgbWfwwMLK/AmJGBgYEDJCx7koGBQZWBgeUaRBkDIzMDWBZBMDIxMDCAMCMjAwMjC0yUFSbCBhNhh4lwwBhcMKlkmAgzjJEEswIk0pBYUBCfnVrJMHAA7MsGA3MLA0vLlBRLS1NLUwsTY+PUtMREI+M0Y5Mko1QzM4ukNCNDQ0NLI8NUU7PkVENLo9RUEwvTFNNkY0tLS3MDU0sjS2MLU/PEpCRzI2PLtDQzI2NjS8s0y2RjE3NTE4vkRENTY1MLC3MLQ0tDizQjA0PLtKTkNCODZHMzw5REcwMGBsZEBgYGFgYGdiYGBsZiUPh82lXGwCAACiaFfdNXzern7Xj6uqds1ffd8hvD3dN91mQc3bMo4cbjuouqngwMAgywmAVFWgMDYwlIHwG//29gYCwlUl0ZkerKiVRXQaS6SiLVNRCjjoGBUYGBgbGhI8HgrvZ3nmXaIruTdRhm9EV/n7GGXU1Yzfty+4yAyy8eVBjO/V5WP332th1vsl8yXjL7XH0m/uqUbRxugTESzlu+Lp3Q+mb22jN9BoaJRxexBRWsu/Ljy55DihventFc43f6+4oE2Wl2JRa3cm9bePp9a/x1tbZieu1so63ljz54iEy3e3mx6aDZ8+Xpa6/PP+52dMfE3+oHgnYfPXaq335Su8eip1bX32WWhZwzMlvE+b5j8sJKzlMiyyJalYSk1yRpJcmFKhTHJnvdlIm6E8icJRnQ9P3bp36R65qP5rZ7lN5g7/WbyfL2xaPfaWe3ywulrmgoSP0ey+rBPPPC+82btJmV58bxZbMki9VYe80xMeGLFrtoevDgfx2LeqnDy5TC/Y5OnDylKl0qcbl79L2POp+s1T+v9XPY5HPNiGfy2xMar3ccLg/h1YvxuWcWobjom5rihoydSYfXv27oC1b8Irz2zPfMzm2tkTeU9DZ0PQtVCtffsPntPcscp9srjlZpOqpF3JsSXhrRxOnUt50p9etbBgZGRUhy5wFlQSVQcmeExCFEmPkAAwNDG7SoYBKAFSdg1SCcCi5OGqDlE0MDpDgBS6WApZ7wHY2SqltU+kWr5wIXj95x3TntHerfTK+xG/I9si07921Z4B/haBPr208+7RCsO/La64ahD7uvbtb9sJS90i/zdn4Os1BYsOzVC/vbMln/Duv+u3or1E/NzN63+IbfPMvvXs4dEcbMvgxNPZ93n9V56VxsILXp78lYYdMJc1XCn3yLSTklG3jl693PTJeOvvwQt/jfncMZ/1yDn7KKle3NKfupYVxRKFylXWdqJu6rzywaOiFBXERjmV3bKzMx54K222Ep55Q/2brtuCm3VK6+7GsvX7GizVwNs5ez1gabn8xNm3PZ3jjuytLkzJeaU4Wuhff/3aQ2h23hk8Ljc+dyfZDmnB/RcVZiuqgVAILYXQL+BQAA
+    format: CAVIUM_V2_COMPRESSED
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
@@ -26,4 +29,17 @@ status:
   expireTime: "2024-04-01T12:34:56.123456Z"
   name: projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}
   observedGeneration: 1
-  state: PENDING_GENERATION
+  publicKey:
+  - pem: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAiGAw3Sv3DKYrFLtjLACY
+      jlv3mKwHJhMmS9OHmFDT6OB4MZ33dn+Xm7a47GvpAdI283vMX9WUtghGUVwYQ7T1
+      pZCF7JutzI4wMWHFogZScK7U+PS8wiGw7cwprE7L96hgHZY+dDjabds4SU72gfrV
+      fXiXfZsytXfi8EgUlz7p0YLBNuenZ63Xn8dGxbiR+yfAUrvFxsqPP5KHSKLlOtfu
+      aXZUzjI2ognviJOheQnKFKZYhSISG6xiKmIeVSBzXWNK2Rxa3FEDahlQgvf28o8U
+      1yninYdIddgHjU6ZBO3o4vtmzbcfEmWogHBl910FSAOZ0O+zsisDI51eDmsEYxZ8
+      O0qcNDQOWxbRNcHB/yw4fxrDpiJXTsWRk5R6Zxphp0db3vEs8jsn861OQLJM1jIM
+      k+3IKOu4w3dUDS5cTN42WCGi9iYhsGi5YsOv64COUyH0E63M92mJtoVZ2CIusIrm
+      VSJXL7Cz7d45bELbqMV6KUEmWN6UV3VYgglCjrcCZfXtAgMBAAE=
+      -----END PUBLIC KEY-----
+  state: ACTIVE
