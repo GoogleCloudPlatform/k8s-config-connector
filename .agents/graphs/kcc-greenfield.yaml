@@ -1,0 +1,161 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Issue graph for onboarding a KCC greenfield resource Kind to a
+# production-ready direct controller at v1alpha1.
+#
+# Replaces .agents/workflows/kcc-greenfield.txt (an LLM-driven
+# `mode: workflow`). The factory watch graph reconciler opens one sub-issue
+# per step, in order, as the previous one closes; no orchestrator sandbox,
+# journal branch or precondition script is involved. See
+# https://github.com/gke-labs/gemini-for-kubernetes-development/blob/main/factory/design/issue-graph.md
+#
+# Start a graph by filing a parent issue (trigger-labelled or assigned to
+# the bot) whose body contains:
+#
+#   ```factory-graph
+#   graph: kcc-greenfield
+#   params:
+#     kind: SpannerInstanceConfig
+#   ```
+#
+# Validate changes with: factory graph validate .agents/graphs/kcc-greenfield.yaml
+apiVersion: factory.gemini.google.com/v1alpha1
+kind: IssueGraph
+metadata:
+  name: kcc-greenfield
+  description: >-
+    Drive a KCC greenfield resource Kind to a production-ready direct
+    controller at v1alpha1: types and identity, controller and fuzzer,
+    MockGCP, then MockGCP/RealGCP alignment.
+spec:
+  params:
+    - name: kind
+      description: CamelCase KCC Kind (for example SpannerInstanceConfig)
+      pattern: '^[A-Z][A-Za-z0-9]{1,62}$'
+      example: SpannerInstanceConfig
+
+  # One step at a time: each step builds on the previous step's merged PR.
+  maxActive: 1
+
+  # The deployment's trigger label (overseer) is always added by the
+  # reconciler; a step's `review` adds the review label (overseer/review).
+  defaults:
+    labels: [greenfield]
+
+  steps:
+    # Step 1a. Kinds bulk-prepopulated on master need no PR here: the issue
+    # is closed as not planned, which the graph treats as Skipped.
+    - id: prepopulate
+      title: 'Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {{ .Params.kind }}'
+      labels: [step/gen-types]
+      review: |
+        Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
+      body: |
+        Prepopulate the initial direct KRM types, identity, and `judgement_queue.yaml` for {{ .Params.kind }}.
+
+        **First, check whether {{ .Params.kind }} is already prepopulated on `master`**: `apis/<service>/v1alpha1/<kind_lowercase>_types.go` exists, or `apis/<service>/judgement_queue.yaml` already contains `kind: {{ .Params.kind }}`. If it is, do not open a PR: comment that {{ .Params.kind }} is already prepopulated on `master` (naming the file), and close this issue as **not planned**. The next step will pick it up from there.
+
+        Otherwise:
+
+        Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1a: `prepopulate/SKILL.md`, using `--prepopulate-resource`) for prepopulating types and `judgement_queue.yaml` for {{ .Params.kind }}.
+        Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {{ .Params.kind }}.
+
+        Validate your changes locally by:
+         * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
+         * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
+
+    # Step 1b. Kinds whose types were finalized by a legacy Step 1 PR need no
+    # PR here: the issue is closed as not planned, which the graph treats as
+    # Skipped.
+    - id: types-judgement
+      after: [prepopulate]
+      title: 'Greenfield: Triage judgement queue and finalize direct KRM types and identity for {{ .Params.kind }}'
+      labels: [step/types-judgement]
+      review: |
+        Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
+      body: |
+        {{ .Params.kind }} is prepopulated on `master` (by bulk prepopulation, or by the previous step). Triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files (plus the generated controller and fuzzer if already present on `master`) for {{ .Params.kind }}.
+
+        **First, check whether {{ .Params.kind }} was already finalized by a legacy Step 1 PR**: `apis/<service>/v1alpha1/<kind_lowercase>_types.go` exists on `master` and `apis/<service>/judgement_queue.yaml` on `master` has no `open` `untriaged-bulk-generation` entry for {{ .Params.kind }}. If so, do not open a PR: comment that {{ .Params.kind }} was finalized by a legacy Step 1 PR (naming the types file), and close this issue as **not planned**. The next step will pick it up from there.
+
+        Otherwise:
+
+        Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {{ .Params.kind }}.
+        Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {{ .Params.kind }}.
+
+        Validate your changes locally by:
+         * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
+         * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
+
+    # Step 2.
+    - id: controller
+      after: [types-judgement]
+      title: 'Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {{ .Params.kind }}'
+      labels: [step/controller]
+      review: |
+        Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
+      body: |
+        Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {{ .Params.kind }}.
+
+        If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
+
+    # Step 3. No automated review, as in the workflow.
+    - id: mockgcp
+      after: [controller]
+      title: 'Greenfield: Implement MockGCP and Alignment for {{ .Params.kind }}'
+      labels: [step/mockgcp]
+      body: |
+        Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {{ .Params.kind }} to verify behavioral correctness against the simulated GCP services.
+
+        The direct controller and E2E fixtures were added in #{{ (step "controller").Issue }}.
+
+        When creating the PR, include the release note block for adding new alpha resources:
+        ```release-note
+        New Alpha Resources (Direct Reconciler): `{{ .Params.kind }}`
+        ```
+
+    # Step 4. No automated review, as in the workflow.
+    - id: mockgcp-alignment
+      after: [mockgcp]
+      title: 'Greenfield: Align MockGCP logs with RealGCP for {{ .Params.kind }}'
+      labels: [step/mockgcp-alignment]
+      body: |
+        Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {{ .Params.kind }}.
+
+        MockGCP for {{ .Params.kind }} was implemented in #{{ (step "mockgcp").Issue }}.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
