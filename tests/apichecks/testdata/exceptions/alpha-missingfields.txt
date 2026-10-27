@@ -4752,10 +4752,6 @@
 [missing_field] crd=kmsekmconnections.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceResolvers[].hostname" is not set in unstructured objects
 [missing_field] crd=kmsekmconnections.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceResolvers[].serverCertificates[].rawDer" is not set in unstructured objects
 [missing_field] crd=kmsekmconnections.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceResolvers[].serviceDirectoryService" is not set in unstructured objects
-[missing_field] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.importJobId" is not set in unstructured objects
-[missing_field] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.importMethod" is not set in unstructured objects
-[missing_field] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyRing" is not set in unstructured objects
-[missing_field] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.protectionLevel" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.additionalAuthenticatedData.value" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.additionalAuthenticatedData.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" is not set in unstructured objects

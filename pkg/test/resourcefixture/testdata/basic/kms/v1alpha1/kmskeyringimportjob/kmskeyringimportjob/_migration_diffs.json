@@ -1,0 +1,81 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRing/kmskeyringimportjob-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-west2"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmskeyringimportjob-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRingImportJob/kmskeyringimportjob-${uniqueId}",
+    "fields": [
+      {
+        "id": "attestation.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "expire_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "import_job_id",
+        "old": "",
+        "new": "kmskeyringimportjob-${uniqueId}"
+      },
+      {
+        "id": "import_method",
+        "old": "",
+        "new": "RSA_OAEP_3072_SHA1_AES_256"
+      },
+      {
+        "id": "key_ring",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "protection_level",
+        "old": "",
+        "new": "HSM"
+      },
+      {
+        "id": "public_key.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "state",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
