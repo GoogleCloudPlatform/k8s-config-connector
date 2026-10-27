@@ -60,3 +60,12 @@
   6. Verified fuzzer with `fuzz-roundtrippers` presubmit.
 - **Impact**: Fully implements direct reconciliation, round-trip fuzz testing, and real GCP E2E validation for `NetworkSecurityInterceptDeploymentGroup`.
 
+### [2026-10-27] MockGCP Implementation and Alignment for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Implementing Phase 3 MockGCP and Alignment for `NetworkSecurityInterceptDeploymentGroup` (Issue #14476).
+- **Details**:
+  1. Implemented `CreateInterceptDeploymentGroup`, `GetInterceptDeploymentGroup`, `UpdateInterceptDeploymentGroup`, and `DeleteInterceptDeploymentGroup` on `InterceptServer` in `mockgcp/mocknetworksecurity/interceptdeploymentgroup.go`.
+  2. Registered `NetworkSecurityInterceptDeploymentGroup` in the mock GCP supported GK list in `config/tests/samples/create/harness.go`.
+  3. Generated and aligned mock HTTP logs (`_http_mock.log`) for both minimal and maximal fixtures.
+  4. Verified all tests pass with zero diff and re-reconciliation succeeds.
+- **Impact**: Enables hermetic and CI testing for `NetworkSecurityInterceptDeploymentGroup` against MockGCP.
+
