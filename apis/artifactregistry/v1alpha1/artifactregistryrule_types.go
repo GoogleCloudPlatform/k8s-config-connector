@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var ArtifactRegistryRuleGVK = GroupVersion.WithKind("ArtifactRegistryRule")
 // +kcc:spec:proto=google.devtools.artifactregistry.v1.Rule
 // +kcc:required-from-proto
 type ArtifactRegistryRuleSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The ArtifactRegistryRepository this ArtifactRegistryRule is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *artifactregistryv1beta1.ArtifactRegistryRepositoryRef `json:"parentRef"`
 
 	// The ArtifactRegistryRule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

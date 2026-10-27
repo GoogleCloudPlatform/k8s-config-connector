@@ -90,17 +90,15 @@ spec:
                       which allow to enter the expression.
                     type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               operation:
                 type: string
               packageID:
                 description: The package ID the rule applies to. If empty, this rule
                   applies to all packages inside the repository.
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The ArtifactRegistryRepository this ArtifactRegistryRule
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -117,27 +115,25 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed ArtifactRegistryRepository
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of an ArtifactRegistryRepository resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of an ArtifactRegistryRepository resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The ArtifactRegistryRule name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: ArtifactRegistryRuleStatus defines the config connector machine

@@ -63,6 +63,18 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-controller \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryRule:Rule
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryRule:Rule
+
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds
