@@ -36,7 +36,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource AppEngineFirewallRule:FirewallRule \
-  --resource AppEngineServiceSplitTraffic:Service
+  --resource AppEngineServiceSplitTraffic:Service \
+  --resource AppEngineStandardAppVersion:Version
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.appengine.v1 \

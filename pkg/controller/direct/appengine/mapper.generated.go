@@ -147,3 +147,437 @@ func AppEngineServiceSplitTrafficSplit_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Allocations = Allocations_ToProto(mapCtx, in.Allocations)
 	return out
 }
+func AppEngineStandardAppVersionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krmappenginev1alpha1.AppEngineStandardAppVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineStandardAppVersionObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Network
+	// MISSING: Zones
+	// MISSING: Resources
+	// MISSING: RuntimeChannel
+	// MISSING: VM
+	// MISSING: BetaSettings
+	// MISSING: Env
+	// MISSING: ServingStatus
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	// MISSING: RuntimeMainExecutablePath
+	// MISSING: ErrorHandlers
+	// MISSING: APIConfig
+	// MISSING: BuildEnvVariables
+	// MISSING: DefaultExpiration
+	// MISSING: HealthCheck
+	// MISSING: ReadinessCheck
+	// MISSING: LivenessCheck
+	// MISSING: NobuildFilesRegex
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	return out
+}
+func AppEngineStandardAppVersionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineStandardAppVersionObservedState) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: Network
+	// MISSING: Zones
+	// MISSING: Resources
+	// MISSING: RuntimeChannel
+	// MISSING: VM
+	// MISSING: BetaSettings
+	// MISSING: Env
+	// MISSING: ServingStatus
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	// MISSING: RuntimeMainExecutablePath
+	// MISSING: ErrorHandlers
+	// MISSING: APIConfig
+	// MISSING: BuildEnvVariables
+	// MISSING: DefaultExpiration
+	// MISSING: HealthCheck
+	// MISSING: ReadinessCheck
+	// MISSING: LivenessCheck
+	// MISSING: NobuildFilesRegex
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	return out
+}
+func AppEngineStandardAppVersionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krmappenginev1alpha1.AppEngineStandardAppVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineStandardAppVersionSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	out.AutomaticScaling = AutomaticScaling_v1alpha1_FromProto(mapCtx, in.GetAutomaticScaling())
+	out.BasicScaling = BasicScaling_v1alpha1_FromProto(mapCtx, in.GetBasicScaling())
+	out.ManualScaling = ManualScaling_v1alpha1_FromProto(mapCtx, in.GetManualScaling())
+	out.InboundServices = direct.EnumSlice_FromProto(mapCtx, in.InboundServices)
+	out.InstanceClass = direct.LazyPtr(in.GetInstanceClass())
+	// MISSING: Network
+	// MISSING: Zones
+	// MISSING: Resources
+	out.Runtime = in.GetRuntime()
+	// MISSING: RuntimeChannel
+	out.Threadsafe = direct.LazyPtr(in.GetThreadsafe())
+	// MISSING: VM
+	out.AppEngineApis = direct.LazyPtr(in.GetAppEngineApis())
+	// MISSING: BetaSettings
+	// MISSING: Env
+	// MISSING: ServingStatus
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	out.RuntimeAPIVersion = direct.LazyPtr(in.GetRuntimeApiVersion())
+	// MISSING: RuntimeMainExecutablePath
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Handlers = direct.Slice_FromProto(mapCtx, in.Handlers, URLMap_v1alpha1_FromProto)
+	// MISSING: ErrorHandlers
+	out.Libraries = direct.Slice_FromProto(mapCtx, in.Libraries, Library_v1alpha1_FromProto)
+	// MISSING: APIConfig
+	out.EnvVariables = in.EnvVariables
+	// MISSING: BuildEnvVariables
+	// MISSING: DefaultExpiration
+	// MISSING: HealthCheck
+	// MISSING: ReadinessCheck
+	// MISSING: LivenessCheck
+	// MISSING: NobuildFilesRegex
+	out.Deployment = Deployment_v1alpha1_FromProto(mapCtx, in.GetDeployment())
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	out.Entrypoint = Entrypoint_v1alpha1_FromProto(mapCtx, in.GetEntrypoint())
+	out.VPCAccessConnector = VPCAccessConnector_v1alpha1_FromProto(mapCtx, in.GetVpcAccessConnector())
+	return out
+}
+func AppEngineStandardAppVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineStandardAppVersionSpec) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: ID
+	if oneof := AutomaticScaling_v1alpha1_ToProto(mapCtx, in.AutomaticScaling); oneof != nil {
+		out.Scaling = &pb.Version_AutomaticScaling{AutomaticScaling: oneof}
+	}
+	if oneof := BasicScaling_v1alpha1_ToProto(mapCtx, in.BasicScaling); oneof != nil {
+		out.Scaling = &pb.Version_BasicScaling{BasicScaling: oneof}
+	}
+	if oneof := ManualScaling_v1alpha1_ToProto(mapCtx, in.ManualScaling); oneof != nil {
+		out.Scaling = &pb.Version_ManualScaling{ManualScaling: oneof}
+	}
+	out.InboundServices = direct.EnumSlice_ToProto[pb.InboundServiceType](mapCtx, in.InboundServices)
+	out.InstanceClass = direct.ValueOf(in.InstanceClass)
+	// MISSING: Network
+	// MISSING: Zones
+	// MISSING: Resources
+	out.Runtime = AppEngineStandardAppVersionSpec_Runtime_ToProto(mapCtx, in.Runtime)
+	// MISSING: RuntimeChannel
+	out.Threadsafe = direct.ValueOf(in.Threadsafe)
+	// MISSING: VM
+	out.AppEngineApis = direct.ValueOf(in.AppEngineApis)
+	// MISSING: BetaSettings
+	// MISSING: Env
+	// MISSING: ServingStatus
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	out.RuntimeApiVersion = direct.ValueOf(in.RuntimeAPIVersion)
+	// MISSING: RuntimeMainExecutablePath
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Handlers = direct.Slice_ToProto(mapCtx, in.Handlers, URLMap_v1alpha1_ToProto)
+	// MISSING: ErrorHandlers
+	out.Libraries = direct.Slice_ToProto(mapCtx, in.Libraries, Library_v1alpha1_ToProto)
+	// MISSING: APIConfig
+	out.EnvVariables = in.EnvVariables
+	// MISSING: BuildEnvVariables
+	// MISSING: DefaultExpiration
+	// MISSING: HealthCheck
+	// MISSING: ReadinessCheck
+	// MISSING: LivenessCheck
+	// MISSING: NobuildFilesRegex
+	out.Deployment = Deployment_v1alpha1_ToProto(mapCtx, in.Deployment)
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	out.Entrypoint = Entrypoint_v1alpha1_ToProto(mapCtx, in.Entrypoint)
+	out.VpcAccessConnector = VPCAccessConnector_v1alpha1_ToProto(mapCtx, in.VPCAccessConnector)
+	return out
+}
+
+/* found existing non-generated mapping function "AutomaticScaling_v1alpha1_FromProto", skipping
+func AutomaticScaling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutomaticScaling) *krmappenginev1alpha1.AutomaticScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AutomaticScaling{}
+	// MISSING: CoolDownPeriod
+	// MISSING: CPUUtilization
+	out.MaxConcurrentRequests = direct.LazyPtr(in.GetMaxConcurrentRequests())
+	out.MaxIdleInstances = direct.LazyPtr(in.GetMaxIdleInstances())
+	// MISSING: MaxTotalInstances
+	out.MaxPendingLatency = direct.StringDuration_FromProto(mapCtx, in.GetMaxPendingLatency())
+	out.MinIdleInstances = direct.LazyPtr(in.GetMinIdleInstances())
+	// MISSING: MinTotalInstances
+	out.MinPendingLatency = direct.StringDuration_FromProto(mapCtx, in.GetMinPendingLatency())
+	// MISSING: RequestUtilization
+	// MISSING: DiskUtilization
+	// MISSING: NetworkUtilization
+	out.StandardSchedulerSettings = StandardSchedulerSettings_v1alpha1_FromProto(mapCtx, in.GetStandardSchedulerSettings())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AutomaticScaling_v1alpha1_ToProto", skipping
+func AutomaticScaling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AutomaticScaling) *pb.AutomaticScaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomaticScaling{}
+	// MISSING: CoolDownPeriod
+	// MISSING: CPUUtilization
+	out.MaxConcurrentRequests = direct.ValueOf(in.MaxConcurrentRequests)
+	out.MaxIdleInstances = direct.ValueOf(in.MaxIdleInstances)
+	// MISSING: MaxTotalInstances
+	out.MaxPendingLatency = direct.StringDuration_ToProto(mapCtx, in.MaxPendingLatency)
+	out.MinIdleInstances = direct.ValueOf(in.MinIdleInstances)
+	// MISSING: MinTotalInstances
+	out.MinPendingLatency = direct.StringDuration_ToProto(mapCtx, in.MinPendingLatency)
+	// MISSING: RequestUtilization
+	// MISSING: DiskUtilization
+	// MISSING: NetworkUtilization
+	out.StandardSchedulerSettings = StandardSchedulerSettings_v1alpha1_ToProto(mapCtx, in.StandardSchedulerSettings)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "BasicScaling_v1alpha1_FromProto", skipping
+func BasicScaling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BasicScaling) *krmappenginev1alpha1.BasicScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.BasicScaling{}
+	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
+	out.MaxInstances = in.GetMaxInstances()
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "BasicScaling_v1alpha1_ToProto", skipping
+
+	func BasicScaling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.BasicScaling) *pb.BasicScaling {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BasicScaling{}
+		out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
+		out.MaxInstances = direct.ValueOf(in.MaxInstances)
+		return out
+	}
+*/
+func Entrypoint_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Entrypoint) *krmappenginev1alpha1.Entrypoint {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.Entrypoint{}
+	out.Shell = in.GetShell()
+	return out
+}
+
+/* found existing non-generated mapping function "Entrypoint_v1alpha1_ToProto", skipping
+func Entrypoint_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.Entrypoint) *pb.Entrypoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entrypoint{}
+	if oneof := Entrypoint_Shell_ToProto(mapCtx, in.Shell); oneof != nil {
+		out.Command = oneof
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "Entrypoint_Shell_ToProto", skipping
+
+	func Entrypoint_Shell_ToProto(mapCtx *direct.MapContext, in string) *pb.Entrypoint_Shell {
+		if in == nil {
+			return nil
+		}
+		return &pb.Entrypoint_Shell{Shell: *in}
+	}
+*/
+func Library_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Library) *krmappenginev1alpha1.Library {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.Library{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+func Library_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.Library) *pb.Library {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Library{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+/* found existing non-generated mapping function "ManualScaling_v1alpha1_FromProto", skipping
+func ManualScaling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManualScaling) *krmappenginev1alpha1.ManualScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.ManualScaling{}
+	out.Instances = in.GetInstances()
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ManualScaling_v1alpha1_ToProto", skipping
+
+	func ManualScaling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.ManualScaling) *pb.ManualScaling {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ManualScaling{}
+		out.Instances = direct.ValueOf(in.Instances)
+		return out
+	}
+*/
+func ScriptHandler_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ScriptHandler) *krmappenginev1alpha1.ScriptHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.ScriptHandler{}
+	out.ScriptPath = in.GetScriptPath()
+	return out
+}
+func ScriptHandler_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.ScriptHandler) *pb.ScriptHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScriptHandler{}
+	out.ScriptPath = ScriptHandler_ScriptPath_ToProto(mapCtx, in.ScriptPath)
+	return out
+}
+
+/* found existing non-generated mapping function "StandardSchedulerSettings_v1alpha1_FromProto", skipping
+func StandardSchedulerSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedulerSettings) *krmappenginev1alpha1.StandardSchedulerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.StandardSchedulerSettings{}
+	out.TargetCPUUtilization = direct.LazyPtr(in.GetTargetCpuUtilization())
+	out.TargetThroughputUtilization = direct.LazyPtr(in.GetTargetThroughputUtilization())
+	out.MinInstances = direct.LazyPtr(in.GetMinInstances())
+	out.MaxInstances = direct.LazyPtr(in.GetMaxInstances())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "StandardSchedulerSettings_v1alpha1_ToProto", skipping
+
+	func StandardSchedulerSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.StandardSchedulerSettings) *pb.StandardSchedulerSettings {
+		if in == nil {
+			return nil
+		}
+		out := &pb.StandardSchedulerSettings{}
+		out.TargetCpuUtilization = direct.ValueOf(in.TargetCPUUtilization)
+		out.TargetThroughputUtilization = direct.ValueOf(in.TargetThroughputUtilization)
+		out.MinInstances = direct.ValueOf(in.MinInstances)
+		out.MaxInstances = direct.ValueOf(in.MaxInstances)
+		return out
+	}
+*/
+func StaticFilesHandler_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StaticFilesHandler) *krmappenginev1alpha1.StaticFilesHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.StaticFilesHandler{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.UploadPathRegex = direct.LazyPtr(in.GetUploadPathRegex())
+	out.HTTPHeaders = in.HttpHeaders
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Expiration = direct.StringDuration_FromProto(mapCtx, in.GetExpiration())
+	out.RequireMatchingFile = direct.LazyPtr(in.GetRequireMatchingFile())
+	out.ApplicationReadable = direct.LazyPtr(in.GetApplicationReadable())
+	return out
+}
+func StaticFilesHandler_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.StaticFilesHandler) *pb.StaticFilesHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticFilesHandler{}
+	out.Path = direct.ValueOf(in.Path)
+	out.UploadPathRegex = direct.ValueOf(in.UploadPathRegex)
+	out.HttpHeaders = in.HTTPHeaders
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.Expiration = direct.StringDuration_ToProto(mapCtx, in.Expiration)
+	out.RequireMatchingFile = direct.ValueOf(in.RequireMatchingFile)
+	out.ApplicationReadable = direct.ValueOf(in.ApplicationReadable)
+	return out
+}
+func URLMap_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krmappenginev1alpha1.URLMap {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.URLMap{}
+	out.URLRegex = direct.LazyPtr(in.GetUrlRegex())
+	out.StaticFiles = StaticFilesHandler_v1alpha1_FromProto(mapCtx, in.GetStaticFiles())
+	out.Script = ScriptHandler_v1alpha1_FromProto(mapCtx, in.GetScript())
+	// MISSING: APIEndpoint
+	out.SecurityLevel = direct.Enum_FromProto(mapCtx, in.GetSecurityLevel())
+	out.Login = direct.Enum_FromProto(mapCtx, in.GetLogin())
+	out.AuthFailAction = direct.Enum_FromProto(mapCtx, in.GetAuthFailAction())
+	out.RedirectHTTPResponseCode = direct.Enum_FromProto(mapCtx, in.GetRedirectHttpResponseCode())
+	return out
+}
+func URLMap_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.URLMap) *pb.UrlMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMap{}
+	out.UrlRegex = direct.ValueOf(in.URLRegex)
+	if oneof := StaticFilesHandler_v1alpha1_ToProto(mapCtx, in.StaticFiles); oneof != nil {
+		out.HandlerType = &pb.UrlMap_StaticFiles{StaticFiles: oneof}
+	}
+	if oneof := ScriptHandler_v1alpha1_ToProto(mapCtx, in.Script); oneof != nil {
+		out.HandlerType = &pb.UrlMap_Script{Script: oneof}
+	}
+	// MISSING: APIEndpoint
+	out.SecurityLevel = direct.Enum_ToProto[pb.SecurityLevel](mapCtx, in.SecurityLevel)
+	out.Login = direct.Enum_ToProto[pb.LoginRequirement](mapCtx, in.Login)
+	out.AuthFailAction = direct.Enum_ToProto[pb.AuthFailAction](mapCtx, in.AuthFailAction)
+	out.RedirectHttpResponseCode = direct.Enum_ToProto[pb.UrlMap_RedirectHttpResponseCode](mapCtx, in.RedirectHTTPResponseCode)
+	return out
+}
+func VPCAccessConnector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccessConnector) *krmappenginev1alpha1.VPCAccessConnector {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.VPCAccessConnector{}
+	out.Name = in.GetName()
+	out.EgressSetting = direct.Enum_FromProto(mapCtx, in.GetEgressSetting())
+	return out
+}
+func VPCAccessConnector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.VPCAccessConnector) *pb.VpcAccessConnector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcAccessConnector{}
+	out.Name = VPCAccessConnector_Name_ToProto(mapCtx, in.Name)
+	out.EgressSetting = direct.Enum_ToProto[pb.VpcAccessConnector_EgressSetting](mapCtx, in.EgressSetting)
+	return out
+}
