@@ -15,10 +15,17 @@
 package ha
 
 import (
+	"bytes"
 	"context"
 	"slices"
 	"strings"
 	"testing"
+
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 func TestSetupValidateNormalizesFields(t *testing.T) {
@@ -105,15 +112,160 @@ func TestSetupValidateErrors(t *testing.T) {
 	}
 }
 
-func TestRunSetup(t *testing.T) {
-	useTestKubeconfig(t, "cluster-a", "cluster-b")
+func TestExecuteSetupAppliesManifestsAndConfiguresClusters(t *testing.T) {
+	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+		newFakeClusterHandle(t, "gke_proj-b_us-east1_cluster-b", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+	}
+	runner := &recordingCommandRunner{}
 	opts := newSetupOptions()
-	opts.contexts = []string{"cluster-a", "cluster-b"}
 	opts.bucket = "my-ha-bucket"
 
-	err := runSetup(context.Background(), opts)
+	err := executeSetup(context.Background(), opts, handles, runner)
 
-	if err == nil || !strings.Contains(err.Error(), "ha setup is not yet implemented") {
-		t.Fatalf("expected not yet implemented error from runSetup, got %v", err)
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	if len(runner.commands) == 0 {
+		t.Fatalf("expected gcloud commands to be recorded, got none")
+	}
+	for _, h := range handles {
+		mclDeploy := &appsv1.Deployment{}
+		if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: cnrmSystemNamespace, Name: mclDeploymentName}, mclDeploy); err != nil {
+			t.Fatalf("expected Deployment %s on %s, got error: %v", mclDeploymentName, h.contextName, err)
+		}
+		if gotImage := mclDeploy.Spec.Template.Spec.Containers[0].Image; gotImage != kccImage {
+			t.Fatalf("got MCL image %q on %s, want %q", gotImage, h.contextName, kccImage)
+		}
+		cc, err := fetchConfigConnector(context.Background(), h)
+		if err != nil || cc == nil || cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
+			t.Fatalf("expected MultiClusterLease to be configured on %s, got %+v (err=%v)", h.contextName, cc, err)
+		}
+	}
+}
+
+func TestExecuteSetupYAMLOnlyRendersWithoutMutating(t *testing.T) {
+	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	var stdout bytes.Buffer
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+		newFakeClusterHandle(t, "gke_proj-a_us-east1_cluster-b", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newSetupOptions()
+	opts.bucket = "my-ha-bucket"
+	opts.yamlOnly = true
+	opts.stdout = &stdout
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	if len(runner.commands) != 0 {
+		t.Fatalf("expected 0 gcloud commands in --yaml-only mode, got %d", len(runner.commands))
+	}
+	if !strings.Contains(stdout.String(), mclDeploymentName) || !strings.Contains(stdout.String(), "gke-proj-a-us-central1-cluster-a") {
+		t.Fatalf("expected rendered YAML to contain %q and cluster identity, got:\n%s", mclDeploymentName, stdout.String())
+	}
+}
+
+func TestExecuteSetupPreflightErrors(t *testing.T) {
+	tests := []struct {
+		name              string
+		handles           func(t *testing.T) []*clusterHandle
+		wantErrSubstrings []string
+	}{
+		{
+			name: "non-GKE context name fails preflight before running gcloud",
+			handles: func(t *testing.T) []*clusterHandle {
+				return []*clusterHandle{
+					newFakeClusterHandle(t, "cluster-a", newBaseConfigConnector(), newManagerStatefulSet("img:1")),
+					newFakeClusterHandle(t, "cluster-b", newBaseConfigConnector(), newManagerStatefulSet("img:1")),
+				}
+			},
+			wantErrSubstrings: []string{"does not match expected GKE context format"},
+		},
+		{
+			name: "missing ConfigConnector and missing manager StatefulSet accumulate across clusters",
+			handles: func(t *testing.T) []*clusterHandle {
+				return []*clusterHandle{
+					newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a"),
+					newFakeClusterHandle(t, "gke_proj-a_us-east1_cluster-b", newBaseConfigConnector()),
+				}
+			},
+			wantErrSubstrings: []string{
+				"missing the \"configconnector.core.cnrm.cloud.google.com\" ConfigConnector object",
+				"could not find running Config Connector manager container image",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			handles := tc.handles(t)
+			runner := &recordingCommandRunner{}
+			opts := newSetupOptions()
+			opts.bucket = "my-ha-bucket"
+
+			err := executeSetup(context.Background(), opts, handles, runner)
+
+			if err == nil {
+				t.Fatalf("expected error containing %v, got nil", tc.wantErrSubstrings)
+			}
+			for _, sub := range tc.wantErrSubstrings {
+				if !strings.Contains(err.Error(), sub) {
+					t.Fatalf("expected error %q to contain %q", err.Error(), sub)
+				}
+			}
+			if len(runner.commands) != 0 {
+				t.Fatalf("expected 0 gcloud commands when preflight fails, got %v", runner.commands)
+			}
+		})
+	}
+}
+
+type recordingCommandRunner struct {
+	commands []string
+}
+
+func (r *recordingCommandRunner) run(_ context.Context, name string, args ...string) error {
+	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	return nil
+}
+
+func newBaseConfigConnector() *operatorv1beta1.ConfigConnector {
+	return &operatorv1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: configConnectorResourceName,
+		},
+		Spec: operatorv1beta1.ConfigConnectorSpec{
+			Mode: "cluster",
+		},
+	}
+}
+
+func newManagerStatefulSet(image string) *appsv1.StatefulSet {
+	return &appsv1.StatefulSet{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: cnrmSystemNamespace,
+			Labels: map[string]string{
+				componentLabelKey: managerStatefulSetComponent,
+			},
+		},
+		Spec: appsv1.StatefulSetSpec{
+			Template: corev1.PodTemplateSpec{
+				Spec: corev1.PodSpec{
+					Containers: []corev1.Container{
+						{
+							Name:  "manager",
+							Image: image,
+						},
+					},
+				},
+			},
+		},
 	}
 }
