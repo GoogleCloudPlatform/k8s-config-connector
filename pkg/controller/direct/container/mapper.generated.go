@@ -2306,9 +2306,7 @@ func NodePoolUpgradeSettings_ToProto(mapCtx *direct.MapContext, in *krm.NodePool
 	out := &pb.NodePool_UpgradeSettings{}
 	out.MaxSurge = direct.ValueOf(in.MaxSurge)
 	out.MaxUnavailable = direct.ValueOf(in.MaxUnavailable)
-	if oneof := NodePoolUpgradeSettings_Strategy_ToProto(mapCtx, in.Strategy); oneof != nil {
-		out.Strategy = oneof
-	}
+	out.Strategy = direct.EnumPtr_ToProto[pb.NodePoolUpdateStrategy](mapCtx, in.Strategy)
 	out.BlueGreenSettings = NodePoolBlueGreenSettings_ToProto(mapCtx, in.BlueGreenSettings)
 	return out
 }
@@ -2368,9 +2366,7 @@ found existing non-generated mapping function "NodePool_UpgradeSettings_ToProto"
 		out := &pb.NodePool_UpgradeSettings{}
 		out.MaxSurge = direct.ValueOf(in.MaxSurge)
 		out.MaxUnavailable = direct.ValueOf(in.MaxUnavailable)
-		if oneof := NodePool_UpgradeSettings_Strategy_ToProto(mapCtx, in.Strategy); oneof != nil {
-			out.Strategy = oneof
-		}
+		out.Strategy = direct.EnumPtr_ToProto[pb.NodePoolUpdateStrategy](mapCtx, in.Strategy)
 		// MISSING: BlueGreenSettings
 		return out
 	}
@@ -2713,12 +2709,8 @@ func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPo
 		return nil
 	}
 	out := &pb.SecurityPostureConfig{}
-	if oneof := SecurityPostureConfig_Mode_ToProto(mapCtx, in.Mode); oneof != nil {
-		out.Mode = oneof
-	}
-	if oneof := SecurityPostureConfig_VulnerabilityMode_ToProto(mapCtx, in.VulnerabilityMode); oneof != nil {
-		out.VulnerabilityMode = oneof
-	}
+	out.Mode = direct.EnumPtr_ToProto[pb.SecurityPostureConfig_Mode](mapCtx, in.Mode)
+	out.VulnerabilityMode = direct.EnumPtr_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
 	return out
 }
 func ServiceExternalIPsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceExternalIPsConfig) *krm.ServiceExternalIPsConfig {

@@ -466,15 +466,11 @@ func DataSchemaDetails_ToProto(mapCtx *direct.MapContext, in *krm.DataSchemaDeta
 		return nil
 	}
 	out := &pb.DataSchemaDetails{}
-	if oneof := DataSchemaDetails_Type_ToProto(mapCtx, in.Type); oneof != nil {
-		out.Type = oneof
-	}
+	out.Type = direct.EnumPtr_ToProto[pb.DataSchemaDetails_DataType](mapCtx, in.Type)
 	out.ProtoAnyConfig = DataSchemaDetails_ProtoAnyConfig_ToProto(mapCtx, in.ProtoAnyConfig)
 	out.ListConfig = DataSchemaDetails_ListConfig_ToProto(mapCtx, in.ListConfig)
 	out.CustomizedStructConfig = DataSchemaDetails_CustomizedStructConfig_ToProto(mapCtx, in.CustomizedStructConfig)
-	if oneof := DataSchemaDetails_Granularity_ToProto(mapCtx, in.Granularity); oneof != nil {
-		out.Granularity = oneof
-	}
+	out.Granularity = direct.EnumPtr_ToProto[pb.DataSchemaDetails_Granularity](mapCtx, in.Granularity)
 	out.SearchStrategy = DataSchemaDetails_SearchStrategy_ToProto(mapCtx, in.SearchStrategy)
 	return out
 }
@@ -552,9 +548,7 @@ func DataSchemaDetails_SearchStrategy_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.DataSchemaDetails_SearchStrategy{}
-	if oneof := DataSchemaDetails_SearchStrategy_SearchStrategyType_ToProto(mapCtx, in.SearchStrategyType); oneof != nil {
-		out.SearchStrategyType = oneof
-	}
+	out.SearchStrategyType = direct.EnumPtr_ToProto[pb.DataSchemaDetails_SearchStrategy_SearchStrategyType](mapCtx, in.SearchStrategyType)
 	out.ConfidenceScoreIndexConfig = DataSchemaDetails_SearchStrategy_ConfidenceScoreIndexConfig_ToProto(mapCtx, in.ConfidenceScoreIndexConfig)
 	return out
 }

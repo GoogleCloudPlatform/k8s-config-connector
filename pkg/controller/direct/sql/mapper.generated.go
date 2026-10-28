@@ -152,9 +152,7 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PointInTimeRecoveryEnabled
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
-	if oneof := BackupConfigurationObservedState_TransactionalLogStorageState_ToProto(mapCtx, in.TransactionalLogStorageState); oneof != nil {
-		out.TransactionalLogStorageState = oneof
-	}
+	out.TransactionalLogStorageState = direct.EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
 	return out
 }
 func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
@@ -302,9 +300,7 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
 	// MISSING: UpgradableDatabaseVersions
-	if oneof := DatabaseInstance_SqlNetworkArchitecture_ToProto(mapCtx, in.SQLNetworkArchitecture); oneof != nil {
-		out.SqlNetworkArchitecture = oneof
-	}
+	out.SqlNetworkArchitecture = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlNetworkArchitecture](mapCtx, in.SQLNetworkArchitecture)
 	// MISSING: PSCServiceAttachmentLink
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
@@ -447,9 +443,7 @@ func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.DatabaseInstance_SqlOutOfDiskReport{}
-	if oneof := DatabaseInstance_SQLOutOfDiskReport_SqlOutOfDiskState_ToProto(mapCtx, in.SQLOutOfDiskState); oneof != nil {
-		out.SqlOutOfDiskState = oneof
-	}
+	out.SqlOutOfDiskState = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in.SQLOutOfDiskState)
 	out.SqlMinRecommendedIncreaseSizeGb = in.SQLMinRecommendedIncreaseSizeGB
 	return out
 }

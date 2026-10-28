@@ -520,9 +520,7 @@ func TieringPolicy_ToProto(mapCtx *direct.MapContext, in *krm.TieringPolicy) *pb
 		return nil
 	}
 	out := &pb.TieringPolicy{}
-	if oneof := TieringPolicy_TierAction_ToProto(mapCtx, in.TierAction); oneof != nil {
-		out.TierAction = oneof
-	}
+	out.TierAction = direct.EnumPtr_ToProto[pb.TieringPolicy_TierAction](mapCtx, in.TierAction)
 	out.CoolingThresholdDays = in.CoolingThresholdDays
 	out.HotTierBypassModeEnabled = in.HotTierBypassModeEnabled
 	return out
