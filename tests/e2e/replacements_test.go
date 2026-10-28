@@ -30,9 +30,11 @@ func TestExtractTagResourceIDsFromLinks(t *testing.T) {
 	replacements := NewReplacements()
 	replacements.ExtractIDsFromLinks("tagKeys/123456789")
 	replacements.ExtractIDsFromLinks("tagValues/987654321")
+	replacements.ExtractIDsFromLinks("tagKeys/namespaced")
+	replacements.ExtractIDsFromLinks("tagValues/namespaced")
 
-	got := replacements.ApplyReplacements("tagKeys/123456789 tagValues/987654321")
-	want := "tagKeys/${tagKeyID} tagValues/${tagValueID}"
+	got := replacements.ApplyReplacements("tagKeys/123456789 tagValues/987654321 tagKeys/namespaced tagValues/namespaced namespacedName")
+	want := "tagKeys/${tagKeyID} tagValues/${tagValueID} tagKeys/namespaced tagValues/namespaced namespacedName"
 	if got != want {
 		t.Fatalf("ApplyReplacements() = %q, want %q", got, want)
 	}
