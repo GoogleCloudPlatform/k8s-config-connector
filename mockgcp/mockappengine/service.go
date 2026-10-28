@@ -58,6 +58,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFirewallServer(grpcServer, &firewallServer{MockService: s})
+	pb.RegisterServicesServer(grpcServer, &servicesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -67,6 +68,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	grpcMux.AddService(pb.NewFirewallClient(conn))
+	grpcMux.AddService(pb.NewServicesClient(conn))
+	grpcMux.AddOperationsPath("/v1/{prefix=apps/*}/operations/{name}", conn)
 
 	return grpcMux, nil
 }

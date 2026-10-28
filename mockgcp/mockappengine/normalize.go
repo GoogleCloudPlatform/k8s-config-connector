@@ -20,6 +20,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
+var _ mockgcpregistry.SupportsNormalization = &MockService{}
+
+func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "appengine.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".metadata.insertTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.metadata.insertTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".insertTime", "2024-04-01T12:34:56.123456Z")
+}
+
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(event.URL(), "appengine.googleapis.com") {
 		return
