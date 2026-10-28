@@ -92,15 +92,15 @@ func ComputeOrganizationSecurityPolicyStatus_v1alpha1_ToProto(mapCtx *direct.Map
 }
 
 // ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto maps a GCP proto SecurityPolicyAssociation to a KRM spec.
-// We hand-code this function because AttachmentID and PolicyID are string fields in KRM but *string in proto,
-// and PolicyID maps to SecurityPolicyId in the proto message, while ResourceID maps to Name.
 func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec{}
 	out.AttachmentID = in.GetAttachmentId()
-	out.PolicyID = in.GetSecurityPolicyId()
+	if in.SecurityPolicyId != nil {
+		out.PolicyID = in.SecurityPolicyId
+	}
 	if in.GetName() != "" {
 		out.ResourceID = direct.LazyPtr(in.GetName())
 	}
@@ -108,8 +108,6 @@ func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx 
 }
 
 // ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto SecurityPolicyAssociation.
-// We hand-code this function because AttachmentID and PolicyID are string fields in KRM but *string in proto,
-// and PolicyID maps to SecurityPolicyId in the proto message, while ResourceID maps to Name.
 func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
 	if in == nil {
 		return nil
@@ -118,8 +116,8 @@ func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *d
 	if in.AttachmentID != "" {
 		out.AttachmentId = direct.LazyPtr(in.AttachmentID)
 	}
-	if in.PolicyID != "" {
-		out.SecurityPolicyId = direct.LazyPtr(in.PolicyID)
+	if in.PolicyID != nil && *in.PolicyID != "" {
+		out.SecurityPolicyId = in.PolicyID
 	}
 	if in.ResourceID != nil {
 		out.Name = in.ResourceID

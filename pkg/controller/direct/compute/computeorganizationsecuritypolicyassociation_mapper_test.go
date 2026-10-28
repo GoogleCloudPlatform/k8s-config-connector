@@ -29,7 +29,7 @@ func TestComputeOrganizationSecurityPolicyAssociationSpecMappers(t *testing.T) {
 
 	spec := &krm.ComputeOrganizationSecurityPolicyAssociationSpec{
 		AttachmentID: attachmentID,
-		PolicyID:     policyID,
+		PolicyID:     &policyID,
 		ResourceID:   &resourceID,
 	}
 

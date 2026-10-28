@@ -69,15 +69,46 @@ spec:
                 type: string
               policyId:
                 description: Immutable. The security policy ID of the association.
+                  Exactly one of policyId or securityPolicyRef must be specified.
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              securityPolicyRef:
+                description: Immutable. The security policy that this association
+                  belongs to. Exactly one of policyId or securityPolicyRef must be
+                  specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeOrganizationSecurityPolicy
+                      resource. Should be in the format "locations/global/securityPolicies/{{securityPolicyID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeOrganizationSecurityPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeOrganizationSecurityPolicy
+                      resource.
+                    type: string
+                type: object
             required:
             - attachmentId
-            - policyId
             type: object
           status:
             properties:

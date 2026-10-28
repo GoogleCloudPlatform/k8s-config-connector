@@ -373,6 +373,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
 		error.Status = ""
+		if error.Code == 400 && len(error.Errors) == 0 {
+			error.Errors = append(error.Errors, httpmux.ErrorResponseDetails{
+				Domain:  "global",
+				Message: error.Message,
+				Reason:  "invalid",
+			})
+		}
 	}
 
 	// Does not return Cache-Control header
