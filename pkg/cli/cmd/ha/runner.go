@@ -28,13 +28,18 @@ type commandRunner interface {
 	run(ctx context.Context, name string, args ...string) error
 }
 
+// commandOutputRunner executes external CLI commands and returns their captured stdout.
+type commandOutputRunner interface {
+	output(ctx context.Context, name string, args ...string) (string, error)
+}
+
 type execCommandRunner struct {
 	stdout io.Writer
 	stderr io.Writer
 	dryRun bool
 }
 
-func newExecCommandRunner(stdout, stderr io.Writer, dryRun bool) commandRunner {
+func newExecCommandRunner(stdout, stderr io.Writer, dryRun bool) *execCommandRunner {
 	if stdout == nil {
 		stdout = io.Discard
 	}
@@ -74,6 +79,25 @@ func (r *execCommandRunner) run(ctx context.Context, name string, args ...string
 	}
 
 	return nil
+}
+
+func (r *execCommandRunner) output(ctx context.Context, name string, args ...string) (string, error) {
+	cmdLine := formatCommandLine(name, args)
+	var outBuf, errBuf bytes.Buffer
+	cmd := exec.CommandContext(ctx, name, args...)
+	cmd.Stdout = &outBuf
+	cmd.Stderr = &errBuf
+
+	if err := cmd.Run(); err != nil {
+		stderrMsg := strings.TrimSpace(errBuf.String())
+		if stderrMsg != "" {
+			return "", fmt.Errorf("running `%s`: %w: %s", cmdLine, err, stderrMsg)
+		}
+
+		return "", fmt.Errorf("running `%s`: %w", cmdLine, err)
+	}
+
+	return outBuf.String(), nil
 }
 
 func formatCommandLine(name string, args []string) string {
