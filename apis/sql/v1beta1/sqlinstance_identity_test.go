@@ -124,13 +124,27 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 		t.Fatalf("AddToScheme() error = %v", err)
 	}
 
-	sqlInstance := &unstructured.Unstructured{}
-	sqlInstance.SetGroupVersionKind(SQLInstanceGVK)
-	sqlInstance.SetName("my-instance")
-	sqlInstance.SetNamespace("test-ns")
-	sqlInstance.SetAnnotations(map[string]string{
-		"cnrm.cloud.google.com/project-id": "my-project",
-	})
+	sqlInstance := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": SQLInstanceGVK.GroupVersion().String(),
+			"kind":       SQLInstanceGVK.Kind,
+			"metadata": map[string]interface{}{
+				"name":      "my-instance",
+				"namespace": "test-ns",
+				"annotations": map[string]interface{}{
+					"cnrm.cloud.google.com/project-id": "my-project",
+				},
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+			},
+		},
+	}
 
 	sqlInstanceWithResourceID := &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -146,10 +160,40 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 			"spec": map[string]interface{}{
 				"resourceID": "custom-instance-id",
 			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+			},
 		},
 	}
 
-	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstance, sqlInstanceWithResourceID).Build()
+	sqlInstanceNotReady := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": SQLInstanceGVK.GroupVersion().String(),
+			"kind":       SQLInstanceGVK.Kind,
+			"metadata": map[string]interface{}{
+				"name":      "not-ready-instance",
+				"namespace": "test-ns",
+				"annotations": map[string]interface{}{
+					"cnrm.cloud.google.com/project-id": "my-project",
+				},
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "False",
+					},
+				},
+			},
+		},
+	}
+
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstance, sqlInstanceWithResourceID, sqlInstanceNotReady).Build()
 
 	tests := []struct {
 		name         string
@@ -195,6 +239,14 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 			},
 			defaultNS:    "test-ns",
 			wantExternal: "projects/my-project/instances/custom-instance-id",
+		},
+		{
+			name: "resource not ready",
+			ref: &SQLInstanceRef{
+				Name: "not-ready-instance",
+			},
+			defaultNS: "test-ns",
+			wantErr:   true,
 		},
 		{
 			name: "resource not found",

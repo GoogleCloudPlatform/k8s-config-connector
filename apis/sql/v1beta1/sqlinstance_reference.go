@@ -73,6 +73,22 @@ func (r *SQLInstanceRef) ValidateExternal(ref string) error {
 
 func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
+		var ready bool
+		conditions, _, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+		for _, condition := range conditions {
+			if cond, ok := condition.(map[string]interface{}); ok {
+				if cond["type"] == "Ready" && cond["status"] == "True" {
+					ready = true
+					break
+				}
+			}
+		}
+		if !ready {
+			if selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink"); selfLink == "" {
+				return ""
+			}
+		}
+
 		obj := &SQLInstance{}
 		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
 			return ""

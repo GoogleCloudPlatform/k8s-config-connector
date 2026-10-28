@@ -19,9 +19,12 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
@@ -250,6 +253,128 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			}
 			if !tt.wantErr && r.External != tt.expectedExternal {
 				t.Errorf("Normalize() external = %v, want %v", r.External, tt.expectedExternal)
+			}
+		})
+	}
+}
+
+func TestTagsTagBindingParentRef_Normalize_ByName(t *testing.T) {
+	ctx := context.Background()
+
+	scheme := runtime.NewScheme()
+	if err := sqlv1beta1.AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme() error = %v", err)
+	}
+
+	sqlInstanceReady := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": sqlv1beta1.SQLInstanceGVK.GroupVersion().String(),
+			"kind":       sqlv1beta1.SQLInstanceGVK.Kind,
+			"metadata": map[string]interface{}{
+				"name":      "ready-instance",
+				"namespace": "test-ns",
+				"annotations": map[string]interface{}{
+					"cnrm.cloud.google.com/project-id": "my-project",
+				},
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+			},
+		},
+	}
+
+	sqlInstanceNotReady := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": sqlv1beta1.SQLInstanceGVK.GroupVersion().String(),
+			"kind":       sqlv1beta1.SQLInstanceGVK.Kind,
+			"metadata": map[string]interface{}{
+				"name":      "not-ready-instance",
+				"namespace": "test-ns",
+				"annotations": map[string]interface{}{
+					"cnrm.cloud.google.com/project-id": "my-project",
+				},
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "False",
+					},
+				},
+			},
+		},
+	}
+
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(sqlInstanceReady, sqlInstanceNotReady).Build()
+
+	tests := []struct {
+		name             string
+		initial          TagsTagBindingParentRef
+		defaultNS        string
+		expectedExternal string
+		wantErr          bool
+	}{
+		{
+			name: "SQLInstance by name (ready) with explicit kind",
+			initial: TagsTagBindingParentRef{
+				Kind:      "SQLInstance",
+				Name:      "ready-instance",
+				Namespace: "test-ns",
+			},
+			defaultNS:        "test-ns",
+			expectedExternal: "//sqladmin.googleapis.com/projects/my-project/instances/ready-instance",
+		},
+		{
+			name: "SQLInstance by name (ready) using default namespace",
+			initial: TagsTagBindingParentRef{
+				Kind: "SQLInstance",
+				Name: "ready-instance",
+			},
+			defaultNS:        "test-ns",
+			expectedExternal: "//sqladmin.googleapis.com/projects/my-project/instances/ready-instance",
+		},
+		{
+			name: "SQLInstance by name (not ready) should fail",
+			initial: TagsTagBindingParentRef{
+				Kind:      "SQLInstance",
+				Name:      "not-ready-instance",
+				Namespace: "test-ns",
+			},
+			defaultNS: "test-ns",
+			wantErr:   true,
+		},
+		{
+			name: "SQLInstance by name (not found) should fail",
+			initial: TagsTagBindingParentRef{
+				Kind:      "SQLInstance",
+				Name:      "non-existent-instance",
+				Namespace: "test-ns",
+			},
+			defaultNS: "test-ns",
+			wantErr:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := tt.initial
+			err := r.Normalize(ctx, fakeClient, tt.defaultNS)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.wantErr {
+				return
+			}
+			if r.External != tt.expectedExternal {
+				t.Errorf("Normalize() external = %v, want %v", r.External, tt.expectedExternal)
+			}
+			if r.Name != "" || r.Namespace != "" {
+				t.Errorf("Normalize() name/namespace not cleared: name=%q, namespace=%q", r.Name, r.Namespace)
 			}
 		})
 	}

@@ -49,13 +49,11 @@ type TagsTagBindingParentRef struct {
 var _ refs.Ref = &TagsTagBindingParentRef{}
 
 func (r *TagsTagBindingParentRef) GetGVK() schema.GroupVersionKind {
-	_, id, _ := r.resolveReference()
-
-	if id == nil {
+	ref, err := r.buildRef(r.External)
+	if err != nil {
 		return schema.GroupVersionKind{}
 	}
-
-	return id.GetGVK()
+	return ref.GetGVK()
 }
 
 func (r *TagsTagBindingParentRef) GetNamespacedName() types.NamespacedName {
@@ -76,43 +74,54 @@ func (r *TagsTagBindingParentRef) SetExternal(ref string) {
 }
 
 func (r *TagsTagBindingParentRef) ValidateExternal(ref string) error {
-	_, id, err := r.resolveReference()
+	rawRef, err := r.buildRef(ref)
 	if err != nil {
 		return err
 	}
-	if id == nil {
-		return fmt.Errorf("unknown format for external reference %q", r.External)
-	}
-
-	if err := id.ValidateExternal(ref); err != nil {
-		return err
-	}
-	return nil
+	return rawRef.ValidateExternal(ref)
 }
 
 func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	service, id, err := r.resolveReference()
+	ref, err := r.buildRef(r.External)
 	if err != nil {
 		return err
 	}
-	if id == nil {
-		return fmt.Errorf("unknown format for external reference %q", r.External)
-	}
 
-	if err := id.Normalize(ctx, reader, defaultNamespace); err != nil {
+	if err := ref.Normalize(ctx, reader, defaultNamespace); err != nil {
 		return err
 	}
 
+	extRef, ok := ref.(refs.ExternalRef)
+	if !ok {
+		return fmt.Errorf("kind %q does not implement ExternalRef", ref.GetGVK().Kind)
+	}
+
+	id, err := extRef.ParseExternalToIdentity()
+	if err != nil {
+		return err
+	}
+
+	idV2, ok := id.(identity.IdentityV2)
+	if !ok {
+		return fmt.Errorf("identity for kind %q does not implement IdentityV2", ref.GetGVK().Kind)
+	}
+
 	// Include the service qualification in case of ambiguities
-	r.External = "//" + service + "/" + id.GetExternal()
+	r.External = "//" + idV2.Host() + "/" + id.String()
+	r.Name = ""
+	r.Namespace = ""
 
 	return nil
 }
 
-func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
+func (r *TagsTagBindingParentRef) buildRef(external string) (refs.Ref, error) {
 	kind := r.Kind
 	if kind == "" {
-		if r.External != "" && (strings.HasPrefix(r.External, "organizations/") || strings.Contains(r.External, "/organizations/")) {
+		ext := external
+		if ext == "" {
+			ext = r.External
+		}
+		if ext != "" && (strings.HasPrefix(ext, "organizations/") || strings.Contains(ext, "/organizations/")) {
 			kind = "Organization"
 		} else {
 			kind = "Project"
@@ -120,42 +129,25 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 	}
 
 	if kind == "Project" {
-		if r.External != "" && !isProjectExternal(r.External) {
-			return "", nil, fmt.Errorf("unknown format for a Project reference in %q, please set Kind for non-project references or use projects/{project} for project references", r.External)
+		ext := external
+		if ext == "" {
+			ext = r.External
+		}
+		if ext != "" && !isProjectExternal(ext) {
+			return nil, fmt.Errorf("unknown format for a Project reference in %q, please set Kind for non-project references or use projects/{project} for project references", ext)
 		}
 	}
 
 	ref, err := refs.NewRefByKind(kind)
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 
-	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
-		return "", nil, err
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, external); err != nil {
+		return nil, err
 	}
 
-	// Get host/service
-	extRef, ok := ref.(refs.ExternalRef)
-	if !ok {
-		return "", nil, fmt.Errorf("kind %q does not implement ExternalRef", kind)
-	}
-
-	id, err := extRef.ParseExternalToIdentity()
-	if err != nil {
-		return "", nil, err
-	}
-
-	// Update External to canonical form (without host)
-	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
-		return "", nil, err
-	}
-
-	idV2, ok := id.(identity.IdentityV2)
-	if !ok {
-		return "", ref, fmt.Errorf("identity for kind %q does not implement IdentityV2", kind)
-	}
-
-	return idV2.Host(), ref, nil
+	return ref, nil
 }
 
 func isProjectExternal(external string) bool {
