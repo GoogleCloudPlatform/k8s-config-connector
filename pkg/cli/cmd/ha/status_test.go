@@ -62,7 +62,7 @@ func TestExecuteStatusHealthySetupWithAutoDiscoveredBucket(t *testing.T) {
 		newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", leaderID),
 		newStatusMCLDeployment("my-ha-bucket"),
 		newStatusMultiClusterLease("cnrm-system", "kcc-multicluster-lease", leaderID, leaderID, renewStr, duration, transitions),
-		newStatusKRMSyncer("cnrm-system", "krmsyncer-cluster", true, standbyID, []metav1.Condition{
+		newStatusKRMSyncer("cnrm-system", "krmsyncer-cluster", true, "dummy-secret", []metav1.Condition{
 			{Type: "Suspended", Status: metav1.ConditionTrue, Reason: "LeaderSuspended", Message: "Syncer suspended on leader"},
 		}),
 		newPeerKubeconfigSecret("cnrm-system", standbyID),
@@ -80,7 +80,7 @@ func TestExecuteStatusHealthySetupWithAutoDiscoveredBucket(t *testing.T) {
 	)
 	outRunner := &fakeOutputRunner{
 		responses: map[string]string{
-			"gcloud storage ls gs://my-ha-bucket/leases/**": "gs://my-ha-bucket/leases/cnrm-system/kcc-multicluster-lease\n",
+			"gcloud storage ls gs://my-ha-bucket/leases/**":                                  "gs://my-ha-bucket/leases/cnrm-system/kcc-multicluster-lease\n",
 			"gcloud storage cat gs://my-ha-bucket/leases/cnrm-system/kcc-multicluster-lease": `{"holderIdentity":"cluster-a","renewTime":"2026-10-28T03:00:05Z","leaseTransitions":2}`,
 		},
 	}
@@ -101,7 +101,7 @@ func TestExecuteStatusHealthySetupWithAutoDiscoveredBucket(t *testing.T) {
 		"Renew Age:   5s (renewed at 2026-10-28T03:00:05Z, transitions: 2)",
 		"Context:            gke_proj_us-central1_cluster-a",
 		"Role:             LEADER",
-		"Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: true, source: cluster-b, health: Suspended=True, errors: none)",
+		"Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: true, source: dummy-secret, health: Suspended=True, errors: none)",
 		"Context:            gke_proj_us-east1_cluster-b",
 		"Role:             STANDBY",
 		"Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: false, source: cluster-a, health: Active=True, errors: none)",

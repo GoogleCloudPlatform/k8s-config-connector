@@ -390,9 +390,12 @@ func checkMissingPeerSecrets(ctx context.Context, handles []*clusterHandle, repo
 
 		if r.rawState != nil {
 			for _, syncer := range r.rawState.krmSyncers {
+				if syncer.Spec.Suspend {
+					continue
+				}
 				if syncer.Spec.Remote != nil && syncer.Spec.Remote.ClusterConfig != nil && syncer.Spec.Remote.ClusterConfig.KubeConfigSecretRef != nil {
 					ref := syncer.Spec.Remote.ClusterConfig.KubeConfigSecretRef
-					if ref.Name != "" {
+					if ref.Name != "" && ref.Name != "dummy-secret" {
 						ns := ref.Namespace
 						if ns == "" {
 							ns = r.leaseNamespace
