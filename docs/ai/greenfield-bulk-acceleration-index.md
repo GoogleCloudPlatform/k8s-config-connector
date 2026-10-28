@@ -37,12 +37,14 @@ This document indexes the Pull Requests, branches, design documents, and empiric
 | PR | Status | Merged | Area | Summary |
 | :--- | :---: | :---: | :--- | :--- |
 | **[#14449](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14449)** | MERGED | 2026-10-26 | `dev/tools/controllerbuilder` | Updates controller template copyright header to 2026. |
+| **[#14445](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14445)** | MERGED | 2026-10-26 | `.github/workflows` | Reduces peak disk and `/tmp` quota usage in `golangci-lint` job after bulk generation expanded repository file count. |
 | **[#14413](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14413)** | MERGED | 2026-10-26 | `pkg/controller/direct/common` | **Recursive Slice Element Server-Default Merge:** Updates `MergeGreenfieldServerDefaults` (`greenfield.go`) to recursively merge unset server-defaulted sub-fields on matching struct slice elements and compare KRM `*Ref` structs by `.External`. |
 | **[#14111](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14111)** | MERGED | 2026-10-26 | `dev/tools/controllerbuilder` | Rejects scaffolding non-declarative / data-plane resources by default (`nondeclarative.go`). |
 | **[#14267](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14267)** | MERGED | 2026-10-23 | `.gemini/skills` | Adds greenfield controller/fuzzer generation, bulk generator (`kcc-bulk-controller-generator`), and controller-aware judgement skills. |
 | **[#14224](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14224)** | MERGED | 2026-10-23 | `dev/tools/controllerbuilder` | **Deterministic Controller Generation (`generate-controller --prepopulate-resource`):** Proto-driven direct controller codegen supporting gRPC/REST clients, LROs, parent references, and custom ID fields. |
 | **[#13561](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13561)** | MERGED | 2026-10-23 | `dev/tools/controllerbuilder` | **Deterministic Fuzzer Generation (`generate-fuzzer --prepopulate-resource`):** Generates round-trip spec/status fuzzers with automatic identity/output-only `UnimplementedFields` classification. |
 | **[#14222](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14222)** | MERGED | 2026-10-22 | `pkg/controller/direct/common` | **Greenfield UUS Spec-Diff (`CompareGreenfieldSpec` / `MergeGreenfieldServerDefaults`):** Proto-agnostic spec comparison and server-default merging for generated direct controllers. |
+| **[#14191](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14191)** | MERGED | 2026-10-21 | `pkg/controller/direct/networkservices` | Preserves empty nested structs in `EdgeCacheService` `ToProto` mappers (surfaced during round-trip fuzzer generation). |
 | **[#14173](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14173)** | MERGED | 2026-10-21 | `dev/tools/controllerbuilder` | Blocks scaffolding deprecated resources without `--allow-deprecated`. |
 
 ### 3.2 Open Acceleration & Systemic Fix PRs (Ready for Review)
@@ -124,4 +126,72 @@ This document indexes the Pull Requests, branches, design documents, and empiric
      - **Targeted Queue Categories:** `102` $\rightarrow$ **`19` (`-81.4%` reduction)**.
      - **Total Open Queue Items:** `175` $\rightarrow$ **`92` (`-47.4%` reduction)**.
      - **Zero-Touch Step 1b Resources:** **15 / 31 (48.4%)** require zero code edits in Step 1b.
+
+---
+
+## Appendix A: Complete Chronological List of All 61 Merged Bulk-Gen PRs (Sept 23 – Oct 27, 2026)
+
+| # | PR | Created | Merged | Title |
+| ---: | :--- | :---: | :---: | :--- |
+| 1 | **[#14449](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14449)** | 2026-10-26 | 2026-10-26 | `fix(controllerbuilder): update controller template copyright header to 2026` |
+| 2 | **[#14445](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14445)** | 2026-10-26 | 2026-10-26 | `fix(ci): reduce peak disk and /tmp quota usage in golangci-lint job` |
+| 3 | **[#14413](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14413)** | 2026-10-25 | 2026-10-26 | `greenfield: merge unset server defaults on matching slice elements` |
+| 4 | **[#14309](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14309)** | 2026-10-23 | 2026-10-27 | `feat(direct): generate mappers, controllers, and fuzzers for 13 higher-touch greenfield resources` |
+| 5 | **[#14284](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14284)** | 2026-10-22 | 2026-10-26 | `feat(direct): generate direct controllers and fuzzers for 85 greenfield resources` |
+| 6 | **[#14267](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14267)** | 2026-10-21 | 2026-10-23 | `skills: add greenfield controller/fuzzer generation, bulk generator, and controller-aware judgement skills` |
+| 7 | **[#14229](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14229)** | 2026-10-21 | 2026-10-26 | `feat(direct): generate direct controllers and fuzzers for 30 greenfield resources (#14066)` |
+| 8 | **[#14224](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14224)** | 2026-10-21 | 2026-10-23 | `controllerbuilder: implement deterministic controller generation (--prepopulate-resource)` |
+| 9 | **[#14222](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14222)** | 2026-10-21 | 2026-10-22 | `direct/common: add CompareGreenfieldSpec and CompareGreenfieldSpecAndLabels (UUS spec-diff)` |
+| 10 | **[#14191](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14191)** | 2026-10-20 | 2026-10-21 | `fix(networkservices): preserve empty nested structs in EdgeCacheService ToProto mappers` |
+| 11 | **[#14173](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14173)** | 2026-10-20 | 2026-10-21 | `feat(controllerbuilder): block scaffolding new deprecated resources without --allow-deprecated` |
+| 12 | **[#14131](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14131)** | 2026-10-20 | 2026-10-21 | `skills: enforce 4-space quoted BLOCKED_KINDS formatting and align Step 1 prepopulate checks` |
+| 13 | **[#14127](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14127)** | 2026-10-20 | 2026-10-21 | `[3 of 3 — Category 3: Major Surgery] apis: bulk generate v1alpha1 types, identities, references, and mappers (13 services, 35 resources)` |
+| 14 | **[#14126](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14126)** | 2026-10-20 | 2026-10-21 | `[2 of 3 — Category 2: Initial Setup] apis: bulk generate v1alpha1 types, identities, references, and mappers (4 services, 11 resources)` |
+| 15 | **[#14125](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14125)** | 2026-10-20 | 2026-10-20 | `[1 of 3 — Category 1: Zero-Touch] apis: bulk generate v1alpha1 types, identities, references, and mappers (18 services, 37 resources)` |
+| 16 | **[#14123](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14123)** | 2026-10-20 | 2026-10-20 | `fix(controllerbuilder,apichecks): recover and guard clobbered judgement_queue.yaml entries` |
+| 17 | **[#14111](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14111)** | 2026-10-20 | 2026-10-26 | `controllerbuilder: reject scaffolding non-declarative resources by default` |
+| 18 | **[#14075](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14075)** | 2026-10-19 | 2026-10-19 | `controllerbuilder: expand restRootOverrides for irregular REST docs roots` |
+| 19 | **[#14071](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14071)** | 2026-10-17 | 2026-10-20 | `controllerbuilder: support additive file merging in generatorBase` |
+| 20 | **[#14070](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14070)** | 2026-10-17 | 2026-10-20 | `controllerbuilder: preserve multi-service mapper import aliases and reserve scaffolded types before WriteVisitedMessages` |
+| 21 | **[#14069](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14069)** | 2026-10-17 | 2026-10-20 | `controllerbuilder: fix proto kinds, multi-location ancestors, CAI discovery names, and authoritative-proto-reference` |
+| 22 | **[#14066](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14066)** | 2026-10-17 | 2026-10-20 | `feat(apis): bulk-generate v1alpha1 types, identities, CRDs, and mappers for 47 net-new GCP resources` |
+| 23 | **[#14062](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14062)** | 2026-10-17 | 2026-10-19 | `controllerbuilder: recurse into nested messages in generate-mapper and pluralize shortName` |
+| 24 | **[#14045](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14045)** | 2026-10-16 | 2026-10-20 | `skills: add Step 1 prepopulate/ and Step 2 judgement/ greenfield skills and update workflow` |
+| 25 | **[#14044](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14044)** | 2026-10-16 | 2026-10-16 | `controllerbuilder: emit Location *string when --prepopulate-resource is set` |
+| 26 | **[#14028](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14028)** | 2026-10-16 | 2026-10-16 | `Enforce CRD backward compatibility for triaged Kinds and hand-written proto struct invariants` |
+| 27 | **[#14027](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14027)** | 2026-10-16 | 2026-10-16 | `controllerbuilder: emit nested sibling, unsupported, and map judgements per Kind` |
+| 28 | **[#14020](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14020)** | 2026-10-16 | 2026-10-16 | `controllerbuilder: sort judgement_queue.yaml canonically by (Kind, Field, Reason)` |
+| 29 | **[#14002](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14002)** | 2026-10-15 | 2026-10-15 | `controllerbuilder: fix source-link SHA, judgement queue gating, etag, and ref detection` |
+| 30 | **[#13981](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13981)** | 2026-10-14 | 2026-10-16 | `controllerbuilder: consolidate bulk-generation flags into --prepopulate-resource` |
+| 31 | **[#13965](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13965)** | 2026-10-13 | 2026-10-14 | `controllerbuilder: queue REQUIRED spec fields that the CRD leaves optional` |
+| 32 | **[#13964](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13964)** | 2026-10-13 | 2026-10-14 | `controllerbuilder: plan per-Kind *WithRequired structs for --emit-required-from-proto` |
+| 33 | **[#13922](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13922)** | 2026-10-12 | 2026-10-16 | `controllerbuilder: handle all-OUTPUT_ONLY messages, expand judgement queue, and gate non-GA protos` |
+| 34 | **[#13893](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13893)** | 2026-10-10 | 2026-10-14 | `gcpurls: supplement CAI asset names with Google API Discovery REST formats` |
+| 35 | **[#13887](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13887)** | 2026-10-10 | 2026-10-16 | `controllerbuilder: add generate-identity CLI, conformance helper, and tests` |
+| 36 | **[#13883](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13883)** | 2026-10-10 | 2026-10-14 | `controllerbuilder: add deterministic IdentityGenerator for IdentityV2 and Reference` |
+| 37 | **[#13853](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13853)** | 2026-10-09 | 2026-10-13 | `controllerbuilder: check unreviewed Kinds again` |
+| 38 | **[#13850](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13850)** | 2026-10-09 | 2026-10-10 | `controllerbuilder: flag more fields in the judgement queue` |
+| 39 | **[#13849](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13849)** | 2026-10-09 | 2026-10-09 | `controllerbuilder: check nested fields for output-only comments` |
+| 40 | **[#13847](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13847)** | 2026-10-09 | 2026-10-09 | `controllerbuilder: leave deprecated fields out of new Kinds` |
+| 41 | **[#13809](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13809)** | 2026-10-08 | 2026-10-15 | `controllerbuilder: Tweak automatic generation of +required fields when using --emit-required-from-proto` |
+| 42 | **[#13774](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13774)** | 2026-10-07 | 2026-10-15 | `controllerbuilder: don't say --emit-source-links always checks links in the same run` |
+| 43 | **[#13561](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13561)** | 2026-10-01 | 2026-10-23 | `controllerbuilder: add deterministic fuzzer generator (--prepopulate-resource)` |
+| 44 | **[#13556](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13556)** | 2026-09-30 | 2026-10-07 | `controllerbuilder: link a new types file to its proto and docs (--emit-source-links)` |
+| 45 | **[#13531](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13531)** | 2026-09-30 | 2026-10-06 | `apichecks: suppress [refs] per field, only for open reference entries` |
+| 46 | **[#13530](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13530)** | 2026-09-30 | 2026-10-01 | `controllerbuilder: write the judgement queue as YAML with a status per entry` |
+| 47 | **[#13463](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13463)** | 2026-09-25 | 2026-09-26 | `controllerbuilder: avoid duplicate types and prune unused imports in types.generated.go` |
+| 48 | **[#13407](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13407)** | 2026-09-23 | 2026-10-17 | `chronicle: add ChronicleWatchlist using bulk generation flags` |
+| 49 | **[#13405](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13405)** | 2026-09-23 | 2026-09-29 | `controllerbuilder: flag an ambiguous --resource` |
+| 50 | **[#13404](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13404)** | 2026-09-23 | 2026-09-29 | `controllerbuilder: place server-computed fields in ObservedState, behind a flag` |
+| 51 | **[#13403](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13403)** | 2026-09-23 | 2026-09-29 | `controllerbuilder: report fields that look like references, without guessing` |
+| 52 | **[#13402](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13402)** | 2026-09-23 | 2026-09-28 | `controllerbuilder: Add flags to match KRM acronym casing and deterministically generate map<string, message> maps` |
+| 53 | **[#13401](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13401)** | 2026-09-23 | 2026-09-28 | `scaffold: name a resource's real root, location and parent from its proto` |
+| 54 | **[#13400](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13400)** | 2026-09-23 | 2026-09-26 | `apichecks: record and read judgement queue to suppress [refs] during scaffolding` |
+| 55 | **[#13399](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13399)** | 2026-09-23 | 2026-09-26 | `controllerbuilder: populate scaffolded resource Spec and ObservedState from proto` |
+| 56 | **[#13398](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13398)** | 2026-09-23 | 2026-09-25 | `controllerbuilder: derive +required from field_behavior, behind a flag` |
+| 57 | **[#13397](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13397)** | 2026-09-23 | 2026-09-25 | `controllerbuilder: read google.api.resource instead of guessing the resource name` |
+| 58 | **[#13396](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13396)** | 2026-09-23 | 2026-09-24 | `apichecks: extract reference rules from crds_test.go into controllerbuilder/pkg/refs` |
+| 59 | **[#13395](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13395)** | 2026-09-23 | 2026-09-24 | `generate-types-and-mappers: always rebuild controllerbuilder` |
+| 60 | **[#13393](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13393)** | 2026-09-23 | 2026-09-24 | `controllerbuilder: drop imports orphaned by --prune-unused-types` |
+| 61 | **[#13392](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13392)** | 2026-09-23 | 2026-09-24 | `apichecks: catch identity collection segments GCP has never seen` |
 
