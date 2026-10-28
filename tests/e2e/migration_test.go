@@ -424,6 +424,11 @@ func (l *migrationDiffListener) OnDiff(ctx context.Context, diff *structuredrepo
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
+	// Existing-object callbacks with no changed fields do not represent drift.
+	if !diff.IsNewObject && len(diff.Fields) == 0 {
+		return
+	}
+
 	// Clone the diff because the underlying object might be modified
 	clone := &structuredreporting.Diff{
 		Controller:  diff.Controller,
@@ -447,6 +452,25 @@ func (l *migrationDiffListener) OnError(ctx context.Context, err error, args ...
 func (l *migrationDiffListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8scontrollertype.ReconcilerType) {
 }
 func (l *migrationDiffListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8scontrollertype.ReconcilerType) {
+}
+
+func TestMigrationDiffListenerIgnoresEmptyExistingObjectDiffs(t *testing.T) {
+	listener := &migrationDiffListener{}
+	listener.OnDiff(context.Background(), &structuredreporting.Diff{IsNewObject: false})
+	if len(listener.diffs) != 0 {
+		t.Fatalf("got %d recorded diffs, want none", len(listener.diffs))
+	}
+
+	listener.OnDiff(context.Background(), &structuredreporting.Diff{IsNewObject: true})
+	listener.OnDiff(context.Background(), &structuredreporting.Diff{
+		IsNewObject: false,
+		Fields: []structuredreporting.DiffField{
+			{ID: "field", Old: "old", New: "new"},
+		},
+	})
+	if len(listener.diffs) != 2 {
+		t.Fatalf("got %d recorded diffs, want 2", len(listener.diffs))
+	}
 }
 
 type rawDiffField struct {

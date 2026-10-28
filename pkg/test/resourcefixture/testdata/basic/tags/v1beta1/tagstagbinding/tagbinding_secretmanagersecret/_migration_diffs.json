@@ -2,48 +2,6 @@
   {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "TagsTagKey/tagstagkey-${uniqueId}",
-    "fields": [
-      {
-        "id": "create_time",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "description",
-        "old": "",
-        "new": "Tag key for a Secret Manager secret."
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "namespaced_name",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "parent",
-        "old": "",
-        "new": "projects/${projectNumber}"
-      },
-      {
-        "id": "short_name",
-        "old": "",
-        "new": "secrettag${uniqueId}"
-      },
-      {
-        "id": "update_time",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
     "resource": "SecretManagerSecret/secretmanagersecret-${uniqueId}",
     "fields": [
       {
@@ -101,6 +59,70 @@
   {
     "controller": "tf",
     "isNewObject": true,
+    "resource": "TagsTagBinding/tagstagbinding-${uniqueId}",
+    "fields": [
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent",
+        "old": "",
+        "new": "//secretmanager.googleapis.com/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+      },
+      {
+        "id": "tag_value",
+        "old": "",
+        "new": "tagValues/${tagValueID}"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "TagsTagKey/tagstagkey-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Tag key for a Secret Manager secret."
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "namespaced_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent",
+        "old": "",
+        "new": "projects/${projectNumber}"
+      },
+      {
+        "id": "short_name",
+        "old": "",
+        "new": "secrettag${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
     "resource": "TagsTagValue/tagstagvalue-${uniqueId}",
     "fields": [
       {
@@ -139,37 +161,5 @@
         "new": ""
       }
     ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "TagsTagBinding/tagstagbinding-${uniqueId}",
-    "fields": [
-      {
-        "id": "name",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "parent",
-        "old": "",
-        "new": "//secretmanager.googleapis.com/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
-      },
-      {
-        "id": "tag_value",
-        "old": "",
-        "new": "tagValues/${tagValueID}"
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": ""
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": ""
   }
 ]
