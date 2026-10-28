@@ -38,6 +38,11 @@ ${CONTROLLERBUILDER} generate-types \
     --include-skipped-output \
     --resource AccessContextManagerGCPUserAccessBinding:GcpUserAccessBinding
 
+${CONTROLLERBUILDER} generate-identity \
+    --service google.identity.accesscontextmanager.v1 \
+    --api-version "accesscontextmanager.cnrm.cloud.google.com/v1alpha1" \
+    --resource AccessContextManagerGCPUserAccessBinding:GcpUserAccessBinding
+
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
     --service google.identity.accesscontextmanager.v1 \
