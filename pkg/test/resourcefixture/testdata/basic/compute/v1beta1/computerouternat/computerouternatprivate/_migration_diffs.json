@@ -154,47 +154,47 @@
         "new": "1"
       },
       {
-        "id": "rules.5971609654.action.#",
+        "id": "rules.5194116109.action.#",
         "old": "0",
         "new": "1"
       },
       {
-        "id": "rules.5971609654.action.0.source_nat_active_ips.#",
+        "id": "rules.5194116109.action.0.source_nat_active_ips.#",
         "old": "0",
         "new": "0"
       },
       {
-        "id": "rules.5971609654.action.0.source_nat_active_ranges.#",
+        "id": "rules.5194116109.action.0.source_nat_active_ranges.#",
         "old": "0",
         "new": "1"
       },
       {
-        "id": "rules.5971609654.action.0.source_nat_active_ranges.4200679285",
+        "id": "rules.5194116109.action.0.source_nat_active_ranges.1414942859",
         "old": "",
         "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetworkprivate-${uniqueId}"
       },
       {
-        "id": "rules.5971609654.action.0.source_nat_drain_ips.#",
+        "id": "rules.5194116109.action.0.source_nat_drain_ips.#",
         "old": "0",
         "new": "0"
       },
       {
-        "id": "rules.5971609654.action.0.source_nat_drain_ranges.#",
+        "id": "rules.5194116109.action.0.source_nat_drain_ranges.#",
         "old": "0",
         "new": "0"
       },
       {
-        "id": "rules.5971609654.description",
+        "id": "rules.5194116109.description",
         "old": "",
         "new": "private nat rule example"
       },
       {
-        "id": "rules.5971609654.match",
+        "id": "rules.5194116109.match",
         "old": "",
         "new": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'"
       },
       {
-        "id": "rules.5971609654.rule_number",
+        "id": "rules.5194116109.rule_number",
         "old": "",
         "new": "100"
       },
@@ -209,22 +209,22 @@
         "new": "1"
       },
       {
-        "id": "subnetwork.1932036059.name",
+        "id": "subnetwork.4586304909.name",
         "old": "",
         "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
       },
       {
-        "id": "subnetwork.1932036059.secondary_ip_range_names.#",
+        "id": "subnetwork.4586304909.secondary_ip_range_names.#",
         "old": "0",
         "new": "0"
       },
       {
-        "id": "subnetwork.1932036059.source_ip_ranges_to_nat.#",
+        "id": "subnetwork.4586304909.source_ip_ranges_to_nat.#",
         "old": "0",
         "new": "1"
       },
       {
-        "id": "subnetwork.1932036059.source_ip_ranges_to_nat.1768336052",
+        "id": "subnetwork.4586304909.source_ip_ranges_to_nat.1768336052",
         "old": "",
         "new": "ALL_IP_RANGES"
       },
