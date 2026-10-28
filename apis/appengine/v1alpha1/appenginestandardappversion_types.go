@@ -378,6 +378,9 @@ type AppEngineStandardAppVersionStatus struct {
 	// +optional
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
+	// A unique specifier for the AppEngineStandardAppVersion resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	// Full path to the Version resource in the API. Example, "v1".
 	// +optional
 	Name *string `json:"name,omitempty"`

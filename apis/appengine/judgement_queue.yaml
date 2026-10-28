@@ -31,3 +31,8 @@ entries:
     reason: identity-root-unknown
     detail: pattern "apps/{app}/services/{service}" contains ancestor segment(s) apps/{app} with no matching reference or field on AppEngineServiceSplitTrafficSpec
     status: open
+  - kind: AppEngineStandardAppVersion
+    group: appengine.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AppEngineStandardAppVersionIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
