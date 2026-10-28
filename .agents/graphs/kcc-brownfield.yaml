@@ -1,0 +1,172 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Issue graph for migrating an existing (Terraform/DCL-based) KCC resource
+# Kind to a production-ready direct controller.
+#
+# Replaces .agents/workflows/kcc-example.txt (an LLM-driven
+# `mode: workflow`). The factory watch graph reconciler opens one sub-issue
+# per step, in order, as the previous one closes; no orchestrator sandbox,
+# journal branch or precondition script is involved. See
+# https://github.com/gke-labs/gemini-for-kubernetes-development/blob/main/factory/design/issue-graph.md
+#
+# Start a graph by filing a parent issue (trigger-labelled or assigned to
+# the bot) whose body contains:
+#
+#   ```factory-graph
+#   graph: kcc-brownfield
+#   params:
+#     kind: ComputeURLMap
+#   ```
+#
+# Validate changes with: factory graph validate .agents/graphs/kcc-brownfield.yaml
+apiVersion: factory.gemini.google.com/v1alpha1
+kind: IssueGraph
+metadata:
+  name: kcc-brownfield
+  description: >-
+    Migrate an existing Terraform/DCL-based KCC resource Kind to a
+    production-ready direct controller: direct types, identity and
+    reference, round-trip fuzzer, MockGCP/RealGCP alignment, direct
+    controller and E2E fixtures, then direct promotion validation.
+spec:
+  params:
+    - name: kind
+      description: CamelCase KCC Kind (for example ComputeURLMap)
+      pattern: '^[A-Z][A-Za-z0-9]{1,62}$'
+      example: ComputeURLMap
+
+  # One step at a time: each step builds on the previous step's merged PR.
+  maxActive: 1
+
+  # No default labels, as in the workflow. The deployment's trigger label
+  # (overseer) is always added by the reconciler; a step's `review` adds the
+  # review label (overseer/review).
+
+  steps:
+    # Step 1. Kinds that already have direct types and generate.sh need no
+    # PR here: the issue is closed as not planned, which the graph treats as
+    # Skipped.
+    - id: types
+      title: 'Implement direct KRM types and generate.sh for {{ .Params.kind }}'
+      review: |
+        Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+      body: |
+        **First, check whether {{ .Params.kind }} already has direct KRM types**: a `_types.go` for {{ .Params.kind }} under `apis/<service>/<version>/`, and a `generate.sh` in the resource's service directory configured for it. If it does, do not open a PR: comment that {{ .Params.kind }} already has direct types (naming the files), and close this issue as **not planned**. The next step will pick it up from there.
+
+        Otherwise:
+
+        Please follow the skill .gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md for {{ .Params.kind }}.
+
+        Make sure to configure/update `generate.sh` in the resource's service directory (e.g., `apis/<service>/<version>/generate.sh`), ensuring that the direct KRM type is strictly schema-compatible with the existing CRD.
+
+        For reference on setting up `generate.sh`, renaming files/fields to match acronyms, handling pointers, and ensuring proper directory structure, please also refer to the skill .gemini/skills/generate-sh-checker/SKILL.md.
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/crd-mapper-fuzzer-existing-type/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
+
+    # Step 2. Kinds that already follow the identity and refs pattern need no
+    # PR here: the issue is closed as not planned (Skipped).
+    - id: identity
+      after: [types]
+      title: 'Move {{ .Params.kind }} to identity and refs pattern'
+      review: |
+        Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+      body: |
+        **First, check whether {{ .Params.kind }} already follows the identity and refs pattern**: it has `_identity.go` and `_reference.go` implementing `identity.IdentityV2` and `refs.Ref` using `gcpurls.Template`. If it does, do not open a PR: comment that {{ .Params.kind }} already follows the pattern (naming the files), and close this issue as **not planned**. The next step will pick it up from there.
+
+        Otherwise:
+
+        Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for {{ .Params.kind }}.
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
+
+    # Step 3. No automated review, as in the workflow.
+    - id: fuzzer
+      after: [identity]
+      title: 'Implement round-trip KRM fuzzer for {{ .Params.kind }}'
+      body: |
+        Please follow the skill .gemini/skills/create-fuzzer/SKILL.md to implement a round-trip KRM fuzzer for {{ .Params.kind }}.
+
+        The expected path for the fuzzer is `pkg/controller/direct/<service>/<kind_lowercase>_fuzzer.go`. Ensure the direct controller package is imported/registered in `pkg/controller/direct/register/register.go` so the fuzzer executes under the central fuzz test suite.
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/create-fuzzer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
+
+    # Step 4. No automated review, as in the workflow.
+    - id: mockgcp
+      after: [fuzzer]
+      title: 'Match real gcp behavior in MockGCP for {{ .Params.kind }}'
+      body: |
+        Please first check if a mock for the GCP service and resource corresponding to {{ .Params.kind }} already exists in the codebase. Check under the mockgcp/ folder.
+        If it doesn't exist, please follow the skill .gemini/skills/add-new-mockgcp-resource/SKILL.md to implement the mock for that service and resource first.
+
+        Next please follow the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to match with realgcp for that service and resource.
+
+        CRITICAL: You MUST run `hack/record-gcp` against real GCP to record the initial baseline `_http.log`. Generating golden logs (`_http.log`) directly from MockGCP (e.g., by running with `E2E_GCP_TARGET=mock` and `WRITE_GOLDEN_OUTPUT=1`) is strictly forbidden, as it freezes mock-only behavior and bypasses actual GCP contract validation. And you MUST commit files modified by running `hack/record-gcp` in its own commit.
+
+        API ENABLEMENT TROUBLESHOOTING:
+        If `hack/record-gcp` fails with a 403 error indicating that the GCP API is disabled (e.g., "API has not been used in project ... before or it is disabled"), do NOT assume this is a permissions blocker.
+        To resolve this, you must enable the API manually using gcloud command in the project being used for E2E tests:
+        ```bash
+        gcloud services enable <api-service-domain> --project <gcp-project-id>
+        ```
+        Do NOT add the Service resource to `dependencies.yaml` because this is forbidden for E2E test fixtures to prevent unit test failures from pre-enabled check enforcement.
+
+        GCP RECORDING PR REPORTING REQUIREMENT:
+        In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
+
+        If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/add-new-mockgcp-resource/journal/, named after the kind or a similarly unique name.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
+
+    # Step 5. No automated review, as in the workflow.
+    - id: controller
+      after: [mockgcp]
+      title: 'Implement direct controller and test fixtures for {{ .Params.kind }}'
+      body: |
+        Please follow the skills:
+        - .gemini/skills/kcc-direct-controller-implementer/SKILL.md
+        - .gemini/skills/kcc-direct-controller-logic-brownfield/SKILL.md
+        to implement the direct controller and record/verify test fixtures for {{ .Params.kind }}.
+
+        MockGCP for {{ .Params.kind }} was aligned with real GCP in #{{ (step "mockgcp").Issue }}.
+
+        If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under their respective journal/ folders, named after the kind or a similarly unique name.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
+
+    # Step 6. No automated review, as in the workflow.
+    - id: validate-promotion
+      after: [controller]
+      title: 'Validate direct promotion for {{ .Params.kind }}'
+      body: |
+        The direct controller for {{ .Params.kind }} was implemented in #{{ (step "controller").Issue }}.
+
+        Find the tests added under pkg/test/resourcefixture/testdata/basic for {{ .Params.kind }}.
+        Include only those tests that are not using direct annotation `alpha.cnrm.cloud.google.com/reconciler: direct` in `create.yaml`.
+
+        For each test, follow .gemini/skills/solve-migration-diff-issues/SKILL.md to test the direct migration for {{ .Params.kind }}.
+        You MUST re-record the HTTP cassettes against live GCP by running `./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$` so that the recorded GCP traffic conforms to the new direct controller behavior. Do NOT rely solely on mockgcp.
+
+        GCP RECORDING PR REPORTING REQUIREMENT:
+        In the created PR description, you MUST explicitly document whether `./hack/record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used.
+
+        If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/solve-migration-diff-issues/journal/, named after the kind or a similarly unique name.
+
+        The created PR must include these labels: `direct-migration` and `overseer`
