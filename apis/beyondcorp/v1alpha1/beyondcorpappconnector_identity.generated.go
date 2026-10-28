@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -98,6 +99,19 @@ func (obj *BeyondCorpAppConnector) GetIdentity(ctx context.Context, reader clien
 	specIdentity, err := getIdentityFromBeyondCorpAppConnectorSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &BeyondCorpAppConnectorIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BeyondCorpAppConnector identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
 
 	return specIdentity, nil

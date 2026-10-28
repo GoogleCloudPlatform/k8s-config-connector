@@ -67,6 +67,9 @@ type BeyondCorpAppConnectorStatus struct {
 	// Represents the different states of an AppConnector.
 	// +optional
 	State *string `json:"state,omitempty"`
+
+	// A unique specifier for the BeyondCorpAppConnector resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.beyondcorp.appconnectors.v1.AppConnector

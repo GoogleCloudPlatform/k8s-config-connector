@@ -23,8 +23,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -82,6 +82,71 @@ func TestBeyondCorpAppConnector_GetIdentity(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "valid spec with matching status.externalRef",
+			obj: &BeyondCorpAppConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-connector",
+					Namespace: "test-ns",
+				},
+				Spec: BeyondCorpAppConnectorSpec{
+					ResourceID: &resourceID,
+					Region:     "us-central1",
+					ProjectRef: refs.ProjectRef{
+						External: "projects/my-project",
+					},
+				},
+				Status: BeyondCorpAppConnectorStatus{
+					ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/appConnectors/custom-connector"),
+				},
+			},
+			wantIdentity: &BeyondCorpAppConnectorIdentity{
+				Project:      "my-project",
+				Location:     "us-central1",
+				AppConnector: "custom-connector",
+			},
+			wantErr: false,
+		},
+		{
+			name: "status.externalRef does not match spec identity",
+			obj: &BeyondCorpAppConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-connector",
+					Namespace: "test-ns",
+				},
+				Spec: BeyondCorpAppConnectorSpec{
+					ResourceID: &resourceID,
+					Region:     "us-central1",
+					ProjectRef: refs.ProjectRef{
+						External: "projects/my-project",
+					},
+				},
+				Status: BeyondCorpAppConnectorStatus{
+					ExternalRef: common.LazyPtr("projects/other-project/locations/us-central1/appConnectors/custom-connector"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "malformed status.externalRef",
+			obj: &BeyondCorpAppConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-connector",
+					Namespace: "test-ns",
+				},
+				Spec: BeyondCorpAppConnectorSpec{
+					ResourceID: &resourceID,
+					Region:     "us-central1",
+					ProjectRef: refs.ProjectRef{
+						External: "projects/my-project",
+					},
+				},
+				Status: BeyondCorpAppConnectorStatus{
+					ExternalRef: common.LazyPtr("invalid-external-ref"),
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "missing region",
 			obj: &BeyondCorpAppConnector{
 				ObjectMeta: metav1.ObjectMeta{
@@ -133,26 +198,14 @@ func TestBeyondCorpAppConnectorRef_Normalize(t *testing.T) {
 	_ = AddToScheme(scheme)
 	_ = corev1.AddToScheme(scheme)
 
-	resourceID := "custom-connector"
+	externalRef := "projects/my-project/locations/us-central1/appConnectors/custom-connector"
 	readyObj := &BeyondCorpAppConnector{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-connector",
 			Namespace: "test-ns",
 		},
-		Spec: BeyondCorpAppConnectorSpec{
-			ResourceID: &resourceID,
-			Region:     "us-central1",
-			ProjectRef: refs.ProjectRef{
-				External: "my-project",
-			},
-		},
 		Status: BeyondCorpAppConnectorStatus{
-			Conditions: []k8sv1alpha1.Condition{
-				{
-					Type:   "Ready",
-					Status: "True",
-				},
-			},
+			ExternalRef: &externalRef,
 		},
 	}
 
@@ -161,20 +214,7 @@ func TestBeyondCorpAppConnectorRef_Normalize(t *testing.T) {
 			Name:      "not-ready-connector",
 			Namespace: "test-ns",
 		},
-		Spec: BeyondCorpAppConnectorSpec{
-			Region: "us-central1",
-			ProjectRef: refs.ProjectRef{
-				External: "my-project",
-			},
-		},
-		Status: BeyondCorpAppConnectorStatus{
-			Conditions: []k8sv1alpha1.Condition{
-				{
-					Type:   "Ready",
-					Status: "False",
-				},
-			},
-		},
+		Status: BeyondCorpAppConnectorStatus{},
 	}
 
 	fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyObj, notReadyObj).Build()
@@ -204,7 +244,7 @@ func TestBeyondCorpAppConnectorRef_Normalize(t *testing.T) {
 			wantErr:          true,
 		},
 		{
-			name: "by name and namespace when ready",
+			name: "by name and namespace with status.externalRef set",
 			ref: &BeyondCorpAppConnectorRef{
 				Name:      "ready-connector",
 				Namespace: "test-ns",
@@ -214,7 +254,7 @@ func TestBeyondCorpAppConnectorRef_Normalize(t *testing.T) {
 			wantExternal:     "projects/my-project/locations/us-central1/appConnectors/custom-connector",
 		},
 		{
-			name: "by name with default namespace when ready",
+			name: "by name with default namespace with status.externalRef set",
 			ref: &BeyondCorpAppConnectorRef{
 				Name: "ready-connector",
 			},
@@ -223,7 +263,7 @@ func TestBeyondCorpAppConnectorRef_Normalize(t *testing.T) {
 			wantExternal:     "projects/my-project/locations/us-central1/appConnectors/custom-connector",
 		},
 		{
-			name: "by name and namespace when not ready",
+			name: "by name and namespace when status.externalRef not set (not ready)",
 			ref: &BeyondCorpAppConnectorRef{
 				Name:      "not-ready-connector",
 				Namespace: "test-ns",

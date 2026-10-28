@@ -8,19 +8,16 @@
 
 ## Observations and Learnings
 
-1. **Deterministic Generation**:
+1. **Status Field Addition**:
+   Added `ExternalRef *string` (`json:"externalRef,omitempty"`) to `BeyondCorpAppConnectorStatus` in `apis/beyondcorp/v1alpha1/beyondcorpappconnector_types.go`, and regenerated the CRDs with `dev/tasks/generate-crds`.
+
+2. **Deterministic Generation**:
    Added `${CONTROLLERBUILDER} generate-identity` to `apis/beyondcorp/generate.sh` for `BeyondCorpAppConnector:AppConnector` with proto service `google.cloud.beyondcorp.appconnectors.v1`.
-   This deterministically generates:
-   - `beyondcorpappconnector_identity.generated.go`
-   - `beyondcorpappconnector_reference.generated.go`
+   Because `status.externalRef` is present on the status struct, the generator automatically creates:
+   - `beyondcorpappconnector_identity.generated.go` (including status cross-checking in `GetIdentity`)
+   - `beyondcorpappconnector_reference.generated.go` (including standard `Normalize` delegating to `refs.Normalize`)
    - `beyondcorpappconnector_identity_generated_test.go` (conformance testing)
+   No hand-written reference fallback file is required.
 
-2. **Declaration-by-Declaration Override ("Hand-written wins")**:
-   `BeyondCorpAppConnector` is currently managed by the Terraform controller and does not yet have `status.externalRef` in its CRD status schema. Therefore, per KCC identity standards, `Normalize` must use `refs.NormalizeWithFallback` rather than delegating directly to `refs.Normalize`.
-   We implemented `Normalize` in `beyondcorpappconnector_reference.go`. The generator cleanly detects `Normalize` and suppresses emitting `Normalize` in `beyondcorpappconnector_reference.generated.go`.
-
-3. **Fallback Readiness Check**:
-   The fallback function in `NormalizeWithFallback` inspects `obj.Status.Conditions` for `Ready` == `"True"`. If not ready, it returns `""` which causes `refs.NormalizeWithFallback` to return `k8s.NewReferenceNotReadyError`. Only when ready does it extract the identity via `getIdentityFromBeyondCorpAppConnectorSpec`.
-
-4. **Schema Parity**:
-   Ran `dev/tasks/diff-crds` to ensure zero schema changes were introduced.
+3. **Tests**:
+   `beyondcorpappconnector_identity_test.go` verifies `GetIdentity` (including `status.externalRef` validation and mismatch checks) and `Normalize` (including resolution from `status.externalRef` and unready behavior when unset).
