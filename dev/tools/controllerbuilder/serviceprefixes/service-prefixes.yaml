@@ -1,0 +1,410 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Approved service prefixes for KRM Kinds, one per GCP API. This file is
+# maintained by hand.
+#
+# A Kind is <servicePrefix><resource type>, with the resource type (the type in
+# google.api.resource) in the singular: logging + logging.googleapis.com/Settings
+# gives LoggingSetting. So the service prefix is all that needs deciding, once
+# per API.
+#
+# generate-types --prepopulate-resource checks every new resource against this
+# file and service-prefix-exceptions.yaml: the Kind must be its API's
+# servicePrefix followed by the singular resource type, and the API must be
+# listed here (an API listed only in service-prefix-exceptions.yaml is pending
+# approval, and its resources are refused). A resource whose API is in neither
+# file is not checked. There is no override flag.
+#
+# Fields:
+#   api            the API name: google.api.default_host without .googleapis.com
+#                  (or the host of the resource type), e.g. sqladmin
+#   title          the API's service config title, for reference
+#   servicePrefix  the prefix of the API's Kinds
+#   reason         optional: what was decided and where, e.g.
+#                  "approved as proposed (PR #1234)"
+#
+# To approve a prefix proposed in service-prefix-exceptions.yaml, move its
+# entry here (keeping or changing servicePrefix) and replace the reason with
+# the decision.
+services:
+  - api: accesscontextmanager
+    title: Access Context Manager API
+    servicePrefix: AccessContextManager
+  - api: aiplatform
+    title: Vertex AI API
+    servicePrefix: AIPlatform
+  - api: alloydb
+    title: AlloyDB API
+    servicePrefix: AlloyDB
+  - api: analyticshub
+    title: Analytics Hub API
+    servicePrefix: BigQueryAnalyticsHub
+  - api: apigateway
+    title: API Gateway API
+    servicePrefix: APIGateway
+  - api: apigeeregistry
+    title: Apigee Registry API
+    servicePrefix: ApigeeRegistry
+  - api: apihub
+    title: API hub API
+    servicePrefix: APIHub
+  - api: apphub
+    title: App Hub API
+    servicePrefix: AppHub
+  - api: artifactregistry
+    title: Artifact Registry API
+    servicePrefix: ArtifactRegistry
+  - api: assuredworkloads
+    title: Assured Workloads API
+    servicePrefix: AssuredWorkloads
+  - api: backupdr
+    title: Backup and DR Service API
+    servicePrefix: BackupDR
+  - api: batch
+    title: Batch API
+    servicePrefix: Batch
+  - api: beyondcorp
+    title: BeyondCorp API
+    servicePrefix: BeyondCorp
+  - api: biglake
+    title: BigLake API
+    servicePrefix: BigLake
+  - api: bigqueryconnection
+    title: BigQuery Connection API
+    servicePrefix: BigQueryConnection
+  - api: bigquerydatapolicy
+    title: BigQuery Data Policy API
+    servicePrefix: BigQueryDataPolicy
+  - api: bigquerydatatransfer
+    title: BigQuery Data Transfer API
+    servicePrefix: BigQueryDataTransfer
+  - api: bigquerymigration
+    title: BigQuery Migration API
+    servicePrefix: BigQueryMigration
+  - api: bigqueryreservation
+    title: BigQuery Reservation API
+    servicePrefix: BigQueryReservation
+  - api: bigtableadmin
+    title: Cloud Bigtable Admin API
+    servicePrefix: Bigtable
+  - api: billingbudgets
+    title: Cloud Billing Budget API
+    servicePrefix: BillingBudgets
+  - api: binaryauthorization
+    title: Binary Authorization API
+    servicePrefix: BinaryAuthorization
+  - api: blockchainnodeengine
+    title: Blockchain Node Engine API
+    servicePrefix: BlockchainNodeEngine
+  - api: certificatemanager
+    title: Certificate Manager API
+    servicePrefix: CertificateManager
+  - api: chronicle
+    title: Chronicle API
+    servicePrefix: Chronicle
+  - api: cloudasset
+    title: Cloud Asset API
+    servicePrefix: Asset
+  - api: cloudbilling
+    title: Cloud Billing API
+    servicePrefix: Billing
+  - api: cloudbuild
+    title: Cloud Build API
+    servicePrefix: CloudBuild
+  - api: cloudchannel
+    title: Cloud Channel API
+    servicePrefix: Cloudchannel
+  - api: cloudcontrolspartner
+    title: Cloud Controls Partner API
+    servicePrefix: Cloudcontrolspartner
+  - api: clouddeploy
+    title: Cloud Deploy API
+    servicePrefix: CloudDeploy
+  - api: cloudfunctions
+    title: Cloud Functions API
+    servicePrefix: CloudFunctions
+  - api: cloudkms
+    title: Cloud Key Management Service (KMS) API
+    servicePrefix: KMS
+  - api: cloudresourcemanager
+    title: Cloud Resource Manager API
+    servicePrefix: CloudResourceManager
+  - api: cloudscheduler
+    title: Cloud Scheduler API
+    servicePrefix: CloudScheduler
+  - api: cloudsecuritycompliance
+    title: Cloud Security Compliance API
+    servicePrefix: CloudSecurityCompliance
+  - api: cloudsupport
+    title: Google Cloud Support API
+    servicePrefix: CloudSupport
+  - api: cloudtasks
+    title: Cloud Tasks API
+    servicePrefix: Tasks
+  - api: composer
+    title: Cloud Composer API
+    servicePrefix: Composer
+  - api: config
+    title: Infrastructure Manager API
+    servicePrefix: ConfigDeployment
+  - api: configdelivery
+    title: Config Delivery API
+    servicePrefix: ConfigDelivery
+  - api: connectors
+    title: Connectors API
+    servicePrefix: Connectors
+  - api: contactcenterinsights
+    title: Contact Center AI Insights API
+    servicePrefix: CCInsights
+  - api: contentwarehouse
+    title: Document AI Warehouse API
+    servicePrefix: ContentWarehouse
+  - api: datacatalog
+    title: Google Cloud Data Catalog API
+    servicePrefix: DataCatalog
+  - api: dataform
+    title: Dataform API
+    servicePrefix: Dataform
+  - api: datafusion
+    title: Cloud Data Fusion API
+    servicePrefix: DataFusion
+  - api: datalineage
+    title: Data Lineage API
+    servicePrefix: DataLineage
+  - api: datamigration
+    title: Database Migration API
+    servicePrefix: CloudDMS
+  - api: dataplex
+    title: Cloud Dataplex API
+    servicePrefix: Dataplex
+  - api: dataproc
+    title: Cloud Dataproc API
+    servicePrefix: Dataproc
+  - api: datastream
+    title: Datastream API
+    servicePrefix: Datastream
+  - api: developerconnect
+    title: Developer Connect API
+    servicePrefix: DevConnect
+  - api: devicestreaming
+    title: Device Streaming API
+    servicePrefix: DeviceStreaming
+  - api: dialogflow
+    title: Dialogflow API
+    servicePrefix: Dialogflow
+  - api: discoveryengine
+    title: Discovery Engine API
+    servicePrefix: DiscoveryEngine
+  - api: documentai
+    title: Cloud Document AI API
+    servicePrefix: DocumentAI
+  - api: edgecontainer
+    title: Distributed Cloud Edge Container API
+    servicePrefix: EdgeContainer
+  - api: edgenetwork
+    title: Distributed Cloud Edge Network API
+    servicePrefix: EdgeNetwork
+  - api: essentialcontacts
+    title: Essential Contacts API
+    servicePrefix: EssentialContacts
+  - api: eventarc
+    title: Eventarc API
+    servicePrefix: Eventarc
+  - api: file
+    title: Cloud Filestore API
+    servicePrefix: Filestore
+  - api: financialservices
+    title: Financial Services API
+    servicePrefix: FinancialServices
+  - api: firestore
+    title: Cloud Firestore API
+    servicePrefix: Firestore
+  - api: gkebackup
+    title: Backup for GKE API
+    servicePrefix: GKEBackup
+  - api: gkehub
+    title: GKE Hub
+    servicePrefix: GKEHub
+  - api: gkemulticloud
+    title: GKE Multi-Cloud API
+    servicePrefix: GKEMultiCloud
+  - api: gsuiteaddons
+    title: Google Workspace add-ons API
+    servicePrefix: GSuiteAddons
+  - api: iam
+    title: Identity and Access Management (IAM) API
+    servicePrefix: IAM
+  - api: iap
+    title: Cloud Identity-Aware Proxy API
+    servicePrefix: IAP
+  - api: ids
+    title: Cloud IDS API
+    servicePrefix: CloudIDS
+  - api: jobs
+    title: Cloud Talent Solution API
+    servicePrefix: CloudTalentSolution
+  - api: licensemanager
+    title: License Manager API
+    servicePrefix: LicenseManager
+  - api: livestream
+    title: Live Stream API
+    servicePrefix: LiveStream
+  - api: logging
+    title: Cloud Logging API
+    servicePrefix: Logging
+  - api: managedkafka
+    title: Managed Service for Apache Kafka API
+    servicePrefix: ManagedKafka
+  - api: memcache
+    title: Cloud Memorystore for Memcached API
+    servicePrefix: Memcache
+  - api: memorystore
+    title: Memorystore API
+    servicePrefix: Memorystore
+  - api: metastore
+    title: Dataproc Metastore API
+    servicePrefix: Metastore
+  - api: migrationcenter
+    title: Migration Center API
+    servicePrefix: MigrationCenter
+  - api: modelarmor
+    title: Model Armor API
+    servicePrefix: ModelArmor
+  - api: monitoring
+    title: Cloud Monitoring API
+    servicePrefix: Monitoring
+  - api: netapp
+    title: NetApp API
+    servicePrefix: NetApp
+  - api: networkconnectivity
+    title: Network Connectivity API
+    servicePrefix: NetworkConnectivity
+  - api: networkmanagement
+    title: Network Management API
+    servicePrefix: NetworkManagement
+  - api: networksecurity
+    title: Network Security API
+    servicePrefix: NetworkSecurity
+  - api: networkservices
+    title: Network Services API
+    servicePrefix: NetworkServices
+  - api: notebooks
+    title: Notebooks API
+    servicePrefix: Notebooks
+  - api: oracledatabase
+    title: Oracle Database@Google Cloud API
+    servicePrefix: OracleDatabase
+  - api: orgpolicy
+    title: Organization Policy API
+    servicePrefix: OrgPolicy
+  - api: osconfig
+    title: OS Config API
+    servicePrefix: OSConfig
+  - api: oslogin
+    title: Cloud OS Login API
+    servicePrefix: OSLogin
+  - api: parallelstore
+    title: Parallelstore API
+    servicePrefix: Parallelstore
+  - api: parametermanager
+    title: Parameter Manager API
+    servicePrefix: ParameterManager
+  - api: privateca
+    title: Certificate Authority API
+    servicePrefix: PrivateCA
+  - api: privilegedaccessmanager
+    title: Privileged Access Manager API
+    servicePrefix: PrivilegedAccessManager
+  - api: pubsub
+    title: Cloud Pub/Sub API
+    servicePrefix: PubSub
+  - api: rapidmigrationassessment
+    title: Rapid Migration Assessment API
+    servicePrefix: RapidMigrationAssessment
+  - api: recaptchaenterprise
+    title: reCAPTCHA Enterprise API
+    servicePrefix: ReCAPTCHAEnterprise
+  - api: redis
+    title: Google Cloud Memorystore for Redis API
+    servicePrefix: Redis
+  - api: retail
+    title: Vertex AI Search for commerce API
+    servicePrefix: Retail
+  - api: run
+    title: Cloud Run Admin API
+    servicePrefix: Run
+  - api: secretmanager
+    title: Secret Manager API
+    servicePrefix: SecretManager
+  - api: securesourcemanager
+    title: Secure Source Manager API
+    servicePrefix: SecureSourceManager
+  - api: securitycenter
+    title: Security Command Center API
+    servicePrefix: SecurityCenter
+  - api: securitycentermanagement
+    title: Security Command Center Management API
+    servicePrefix: SecurityCenterManagement
+  - api: securityposture
+    title: Security Posture API
+    servicePrefix: Securityposture
+  - api: servicedirectory
+    title: Service Directory API
+    servicePrefix: ServiceDirectory
+  - api: spanner
+    title: Cloud Spanner API
+    servicePrefix: Spanner
+  - api: speech
+    title: Cloud Speech-to-Text API
+    servicePrefix: Speech
+  - api: storage
+    title: Storage Control API
+    servicePrefix: Storage
+  - api: storageinsights
+    title: Storage Insights API
+    servicePrefix: StorageInsights
+  - api: telcoautomation
+    title: Telco Automation API
+    servicePrefix: TelcoAutomation
+  - api: tpu
+    title: Cloud TPU API
+    servicePrefix: TPU
+  - api: transcoder
+    title: Transcoder API
+    servicePrefix: Transcoder
+  - api: translate
+    title: Cloud Translation API
+    servicePrefix: Translate
+  - api: videostitcher
+    title: Video Stitcher API
+    servicePrefix: VideoStitcher
+  - api: vision
+    title: Cloud Vision API
+    servicePrefix: Vision
+  - api: visionai
+    title: Vision AI API
+    servicePrefix: VisionAI
+  - api: vmmigration
+    title: VM Migration API
+    servicePrefix: VMMigration
+  - api: vmwareengine
+    title: VMware Engine API
+    servicePrefix: VMwareEngine
+  - api: vpcaccess
+    title: Serverless VPC Access API
+    servicePrefix: VPCAccess
+  - api: workflows
+    title: Workflows API
+    servicePrefix: Workflows

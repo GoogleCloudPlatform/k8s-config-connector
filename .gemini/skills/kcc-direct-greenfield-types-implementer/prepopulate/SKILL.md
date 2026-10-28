@@ -17,7 +17,7 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 
 ## Inputs
 - `service`: The Google API proto package name (e.g., `google.cloud.apihub.v1`).
-- `resource`: The mapping of KCC Kind to GCP Proto message (e.g., `APIHubPlugin:Plugin`).
+- `resource`: The mapping of KCC Kind to GCP Proto message (e.g., `APIHubPlugin:Plugin`). The Kind must follow the service-prefix rule in Phase 1, step 3.
 - `api_version`: The KCC API version (must be `v1alpha1` for new greenfield resources).
 
 ---
@@ -28,6 +28,12 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 1. Ensure `.build/third_party/googleapis` is populated (run `./dev/tools/controllerbuilder/generate-proto.sh` if missing).
 2. Locate the target proto message in `.build/third_party/googleapis/google/...` and confirm it belongs to a **GA** proto package (e.g., `v1`, `v2`, `v4` — not `v1alpha*` or `v1beta*`).
    - Do **not** pass `--allow-non-ga-proto` unless explicitly instructed.
+3. **Determine the Kind** from the service-prefix files in `dev/tools/controllerbuilder/serviceprefixes/`. `generate-types --prepopulate-resource` enforces this and writes nothing if it does not hold.
+   - The **API** is the proto service's `google.api.default_host` without `.googleapis.com` (e.g. `sqladmin`), or, if the package has no service, the host of the message's `google.api.resource` type.
+   - The **Kind** is the API's `servicePrefix` followed by the `google.api.resource` type in the singular: `logging` + `logging.googleapis.com/Settings` gives `LoggingSetting`. Do not use the proto message name if it differs from the resource type, and do not keep a plural.
+   - If the API is in `service-prefixes.yaml`, use its `servicePrefix`.
+   - If the API is only in `service-prefix-exceptions.yaml`, its prefix is **pending approval**: stop and ask a human to approve it (move the entry to `service-prefixes.yaml`, keeping or changing `servicePrefix`, with the decision in `reason:`). Do **not** approve it yourself.
+   - If the API is in **neither** file, add an entry to `service-prefix-exceptions.yaml` with `api`, `title` (the service config title), the proposed `servicePrefix`, and a `reason:` saying why it needs a decision (e.g. `new API with no KCC Kinds yet`), then stop and ask a human to approve it. Propose the API name kept verbatim (including `Cloud` and `Admin`), with word boundaries and casing from the title; if KCC already has Kinds for the API, propose the prefix they use.
 
 ### Phase 2: Configure `apis/<service_short>/generate.sh`
 Locate `apis/<service_short>/generate.sh` (or create it if the service is brand new) and configure all three `controllerbuilder` commands (`generate-types`, `generate-identity`, and `generate-mapper`) with `--prepopulate-resource`:
@@ -103,6 +109,11 @@ fi
    chmod +x apis/<service_short>/generate.sh
    ./apis/<service_short>/generate.sh
    ```
+   - **If `generate-types` fails with `rejected N resource(s) whose Kind does not match the service-prefix table`**, nothing was generated for that `generate-types` invocation (and, because `generate.sh` uses `set -o errexit`, the rest of the script did not run). Each listed resource says what to fix:
+     - `API <api> has service prefix <P>, so the Kind should be <Kind>`: change `--resource <Kind>:<Message>` in `apis/<service_short>/generate.sh` (and every other place that names the Kind, such as `generate-identity` and `BLOCKED_KINDS`) to the Kind given, and re-run.
+     - `the service prefix of API <api> (<P>) is pending approval in service-prefix-exceptions.yaml`: stop and ask a human to approve the prefix (Phase 1, step 3).
+     - `API <api> has no service prefix in service-prefixes.yaml or service-prefix-exceptions.yaml`: propose one in `service-prefix-exceptions.yaml` and ask a human to approve it (Phase 1, step 3).
+     - There is no override flag; do not work around the check.
 2. **Add `<Kind>` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
    - Add `<Kind>` formatted with 4-space indentation and double quotes (`    "<Kind>"`), sorted alphabetically into the existing `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` (without duplicating any pre-existing entry). This prevents unverified Greenfield CRDs from being packaged into the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation agent removes `<Kind>` at the end of the generation pipeline.
    - If `dev/tasks/generate-crds` added a brand-new API group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, run `./dev/tasks/generate-channels` and `WRITE_GOLDEN_OUTPUT=1 go test ./operator/pkg/controllers/configconnector/...` so `0-cnrm-system.yaml` and `operator/pkg/controllers/configconnector/testdata/golden/simple/_expected.yaml` stay in sync.
