@@ -1,39 +1,5 @@
 [
   {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",
-    "fields": [
-      {
-        "id": "gkeClusters",
-        "old": [],
-        "new": null
-      },
-      {
-        "id": "responsePolicyName",
-        "old": "",
-        "new": "dnsresponsepolicy-test-${uniqueId}"
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",
-    "fields": [
-      {
-        "id": "gkeClusters",
-        "old": [],
-        "new": null
-      },
-      {
-        "id": "responsePolicyName",
-        "old": "",
-        "new": "dnsresponsepolicy-test-${uniqueId}"
-      }
-    ]
-  },
-  {
     "controller": "tf",
     "isNewObject": true,
     "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",

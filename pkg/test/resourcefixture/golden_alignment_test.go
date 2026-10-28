@@ -1000,6 +1000,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "clusterEndpoints")
 		delete(v, "cluster_endpoints")
+
+		// DNSResponsePolicy specific normalization for alignment differences between mock and real GCP responses
+		if v["kind"] == "dns#responsePolicy" {
+			if slice, ok := v["gkeClusters"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "gkeClusters")
+			}
+			if slice, ok := v["networks"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "networks")
+			}
+			delete(v, "description")
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
