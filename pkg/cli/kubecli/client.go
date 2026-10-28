@@ -39,22 +39,13 @@ import (
 type Client struct {
 	client.Client
 	DiscoveryClient discovery.DiscoveryInterface
+	RestConfig      *rest.Config
 }
 
 func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
-	var restConfig *rest.Config
-	if options.Kubeconfig != "" {
-		rc, err := clientcmd.BuildConfigFromFlags("", options.Kubeconfig)
-		if err != nil {
-			return nil, fmt.Errorf("loading kubernetes configuration from %q: %w", options.Kubeconfig, err)
-		}
-		restConfig = rc
-	} else {
-		rc, err := config.GetConfig()
-		if err != nil {
-			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
-		}
-		restConfig = rc
+	restConfig, err := loadRESTConfig(options)
+	if err != nil {
+		return nil, err
 	}
 
 	if options.Impersonate != nil {
@@ -68,6 +59,7 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 
 	kubeClient, err := client.New(restConfig, client.Options{
 		HTTPClient: httpClient,
+		Scheme:     options.Scheme,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("building kubernetes client: %w", err)
@@ -82,7 +74,26 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 	return &Client{
 		DiscoveryClient: discoveryClient,
 		Client:          kubeClient,
+		RestConfig:      restConfig,
 	}, nil
+}
+
+func loadRESTConfig(options ClusterOptions) (*rest.Config, error) {
+	if options.Kubeconfig != "" {
+		loadingRules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: options.Kubeconfig}
+		overrides := &clientcmd.ConfigOverrides{CurrentContext: options.Context}
+		rc, err := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, overrides).ClientConfig()
+		if err != nil {
+			return nil, fmt.Errorf("loading kubernetes configuration (kubeconfig=%q, context=%q): %w", options.Kubeconfig, options.Context, err)
+		}
+		return rc, nil
+	}
+
+	rc, err := config.GetConfigWithContext(options.Context)
+	if err != nil {
+		return nil, fmt.Errorf("getting kubernetes configuration (context=%q): %w", options.Context, err)
+	}
+	return rc, nil
 }
 
 func buildDiscoveryClient(ctx context.Context, restConfig *rest.Config) (discovery.DiscoveryInterface, error) {

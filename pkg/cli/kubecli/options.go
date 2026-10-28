@@ -16,12 +16,19 @@ package kubecli
 
 import (
 	"github.com/spf13/cobra"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
 )
 
 type ClusterOptions struct {
 	// Path to the kubeconfig file to use for CLI requests.
 	Kubeconfig string
+
+	// The name of the kubeconfig context to use.
+	Context string
+
+	// Optional Scheme to use when constructing the controller-runtime client.
+	Scheme *runtime.Scheme
 
 	// Impersonate is the configuration that RESTClient will use for impersonation.
 	Impersonate *rest.ImpersonationConfig

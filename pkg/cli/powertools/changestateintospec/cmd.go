@@ -21,8 +21,8 @@ import (
 	"io"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/diffs"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/rest"
