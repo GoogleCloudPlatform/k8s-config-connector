@@ -230,6 +230,20 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randStream.Int31()
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "string->double":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randStream.NormFloat64()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOfFloat64(v))
+				}
+			case "string->float":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randStream.Float32()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOfFloat32(v))
+				}
 			case "int64->string":
 				mapVal := msg.Mutable(field).Map()
 				for j := 0; j < count; j++ {
@@ -532,7 +546,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
-			case "string->int32", "string->int64", "string->uint32", "string->uint64":
+			case "string->int32", "string->int64", "string->uint32", "string->uint64", "string->float", "string->double":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {
