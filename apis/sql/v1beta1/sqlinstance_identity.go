@@ -28,6 +28,7 @@ import (
 var SQLInstanceIdentityFormat = gcpurls.Template[SQLInstanceIdentity]("sqladmin.googleapis.com", "projects/{project}/instances/{instance}")
 
 var _ identity.IdentityV2 = &SQLInstanceIdentity{}
+var _ identity.Resource = &SQLInstance{}
 
 // SQLInstanceIdentity is the canonical identity of a Cloud SQL instance.
 // +k8s:deepcopy-gen=false
@@ -65,6 +66,10 @@ func (i *SQLInstanceIdentity) ParentString() string {
 		return ""
 	}
 	return fmt.Sprintf("projects/%s", i.Project)
+}
+
+func (obj *SQLInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return getIdentityFromSQLInstanceSpec(ctx, reader, obj)
 }
 
 func getIdentityFromSQLInstanceSpec(ctx context.Context, reader client.Reader, obj *SQLInstance) (*SQLInstanceIdentity, error) {

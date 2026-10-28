@@ -18,8 +18,11 @@ import (
 	"context"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
@@ -269,6 +272,87 @@ func TestSQLInstanceRef_Normalize(t *testing.T) {
 			}
 			if tt.ref.External != tt.wantExternal {
 				t.Errorf("Normalize() external = %q, want %q", tt.ref.External, tt.wantExternal)
+			}
+		})
+	}
+}
+
+func TestSQLInstance_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	scheme := runtime.NewScheme()
+	if err := AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme() error = %v", err)
+	}
+
+	fakeClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		Build()
+
+	var _ identity.Resource = &SQLInstance{}
+
+	tests := []struct {
+		name         string
+		obj          *SQLInstance
+		wantIdentity string
+		wantErr      bool
+	}{
+		{
+			name: "from metadata.name and annotation",
+			obj: &SQLInstance{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-instance",
+					Namespace: "test-ns",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "my-project",
+					},
+				},
+			},
+			wantIdentity: "projects/my-project/instances/test-instance",
+		},
+		{
+			name: "from spec.resourceID and annotation",
+			obj: &SQLInstance{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "k8s-name",
+					Namespace: "test-ns",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "custom-project",
+					},
+				},
+				Spec: SQLInstanceSpec{
+					ResourceID: ptr.To("custom-instance-id"),
+				},
+			},
+			wantIdentity: "projects/custom-project/instances/custom-instance-id",
+		},
+		{
+			name: "missing project",
+			obj: &SQLInstance{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-instance",
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			id, err := tt.obj.GetIdentity(ctx, fakeClient)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.wantErr {
+				return
+			}
+			if id.String() != tt.wantIdentity {
+				t.Errorf("GetIdentity() = %q, want %q", id.String(), tt.wantIdentity)
+			}
+			if idV2, ok := id.(identity.IdentityV2); !ok {
+				t.Errorf("expected IdentityV2")
+			} else if idV2.Host() != "sqladmin.googleapis.com" {
+				t.Errorf("Host() = %q, want sqladmin.googleapis.com", idV2.Host())
 			}
 		})
 	}

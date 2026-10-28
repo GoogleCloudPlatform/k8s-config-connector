@@ -93,7 +93,7 @@ func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, de
 		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
 			return ""
 		}
-		id, err := getIdentityFromSQLInstanceSpec(ctx, reader, obj)
+		id, err := obj.GetIdentity(ctx, reader)
 		if err != nil {
 			return ""
 		}

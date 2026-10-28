@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-backupconfiguration-pitr-direct-${uniqueId}
   group: sql.cnrm.cloud.google.com
   kind: SQLInstance
   name: sqlinstance-backupconfiguration-pitr-direct-${uniqueId}

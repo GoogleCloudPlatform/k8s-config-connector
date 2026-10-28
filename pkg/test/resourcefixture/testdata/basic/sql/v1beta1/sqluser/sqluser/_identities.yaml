@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //sqladmin.googleapis.com/projects/${projectId}/instances/sqluser-dep-${uniqueId}
   group: sql.cnrm.cloud.google.com
   kind: SQLInstance
   name: sqluser-dep-${uniqueId}
