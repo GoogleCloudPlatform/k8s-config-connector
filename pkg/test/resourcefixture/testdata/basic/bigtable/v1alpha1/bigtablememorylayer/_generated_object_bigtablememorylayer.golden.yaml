@@ -25,5 +25,5 @@ status:
   observedGeneration: 1
   observedState:
     memoryConfig:
-      storageSizeGib: 1024
+      storageSizeGib: 24
     state: READY

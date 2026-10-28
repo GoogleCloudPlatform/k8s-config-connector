@@ -17,7 +17,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
     "cluster1-${uniqueId}": {
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-central1-a",
+      "location": "projects/${projectId}/locations/us-east7-b",
       "serveNodes": 3
     }
   },
@@ -42,7 +42,7 @@ OK
       "clusters": {
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-central1-a",
+          "location": "projects/${projectId}/locations/us-east7-b",
           "serveNodes": 3
         }
       },
@@ -59,7 +59,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-east7-b/operations/${operationID}"
 }
 
 ---
@@ -67,7 +67,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-east7-b/operations/${operationID}"
 }
 
 OK
@@ -81,7 +81,7 @@ OK
       "clusters": {
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-central1-a",
+          "location": "projects/${projectId}/locations/us-east7-b",
           "serveNodes": 3
         }
       },
@@ -98,7 +98,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/locations/us-east7-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSampleML",
@@ -152,7 +152,7 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
+      "location": "projects/${projectId}/locations/us-east7-b",
       "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
@@ -200,7 +200,7 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
+      "location": "projects/${projectId}/locations/us-east7-b",
       "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
@@ -219,7 +219,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
 OK
 
 {
-  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
   "state": "DISABLED"
 }
@@ -230,7 +229,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer
 
 {
   "memoryLayer": {
-    "etag": "abcdef0123A=",
     "memoryConfig": {},
     "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
   },
@@ -244,7 +242,6 @@ OK
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMemoryLayerMetadata",
     "originalRequest": {
       "memoryLayer": {
-        "etag": "abcdef0123A=",
         "memoryConfig": {},
         "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
       },
@@ -252,7 +249,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}"
 }
 
 ---
@@ -260,7 +257,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}"
 }
 
 OK
@@ -272,7 +269,6 @@ OK
     "finishTime": "2024-04-01T12:34:56.123456Z",
     "originalRequest": {
       "memoryLayer": {
-        "etag": "abcdef0123A=",
         "memoryConfig": {},
         "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
       },
@@ -280,12 +276,12 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
     "etag": "abcdef0123A=",
     "memoryConfig": {
-      "storageSizeGib": 1024
+      "storageSizeGib": 24
     },
     "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
     "state": "READY"
@@ -305,26 +301,7 @@ OK
 {
   "etag": "abcdef0123A=",
   "memoryConfig": {
-    "storageSizeGib": 1024
-  },
-  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
-  "state": "READY"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
-
-{
-  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "memoryConfig": {
-    "storageSizeGib": 1024
+    "storageSizeGib": 24
   },
   "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
   "state": "READY"
@@ -356,7 +333,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}"
 }
 
 ---
@@ -364,7 +341,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}"
 }
 
 OK
@@ -383,10 +360,9 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer/locations/us-east7-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
-    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
     "state": "DISABLED"
   }
@@ -432,7 +408,7 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
+      "location": "projects/${projectId}/locations/us-east7-b",
       "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"

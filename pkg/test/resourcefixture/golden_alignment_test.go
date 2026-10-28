@@ -553,6 +553,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = composerNetworkAttachmentRegex.ReplaceAllString(realJSON, "composerenvironment-00000001")
 	mockJSON = composerNetworkAttachmentRegex.ReplaceAllString(mockJSON, "composerenvironment-00000001")
 
+	// Normalize Bigtable MemoryLayer weak ETags in UpdateMemoryLayer request/metadata
+	memoryLayerEtagRegex := regexp.MustCompile(`"etag":\s*"W/\\"/v1/[0-9]+\\""`)
+	realJSON = memoryLayerEtagRegex.ReplaceAllString(realJSON, `"etag": "abcdef0123A="`)
+	mockJSON = memoryLayerEtagRegex.ReplaceAllString(mockJSON, `"etag": "abcdef0123A="`)
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {

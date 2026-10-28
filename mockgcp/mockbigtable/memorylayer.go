@@ -31,11 +31,11 @@ import (
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 
-// mockMemoryLayerStorageSizeGib is the size the mock reports for an enabled
-// memory layer. The real service reports the size it actually provisioned.
-const mockMemoryLayerStorageSizeGib = 1024
+// mockMemoryLayerStorageSizeGibPerNode is the size per cluster node in GiB that
+// the mock reports for an enabled memory layer, matching the real service's 8 GiB/node.
+const mockMemoryLayerStorageSizeGibPerNode = 8
 
-// mockMemoryLayerEtag is the etag the mock hands out for every memory layer,
+// mockMemoryLayerEtag is the etag the mock hands out for an enabled memory layer,
 // matching the opaque value the other mockbigtable resources use.
 const mockMemoryLayerEtag = "abcdef0123A="
 
@@ -77,14 +77,12 @@ func (s *instanceAdminServer) GetMemoryLayer(ctx context.Context, req *adminpb.G
 }
 
 // defaultMemoryLayer builds the disabled memory layer that the service reports
-// for every cluster that has never turned one on. It is not persisted, but it
-// carries an etag like any other memory layer, because UpdateMemoryLayer
-// requires the caller to echo one back.
+// for every cluster that has never turned one on. Like the real service, a
+// disabled memory layer does not carry an etag.
 func defaultMemoryLayer(fqn string) *adminpb.MemoryLayer {
 	return &adminpb.MemoryLayer{
 		Name:  fqn,
 		State: adminpb.MemoryLayer_DISABLED,
-		Etag:  mockMemoryLayerEtag,
 	}
 }
 
@@ -127,14 +125,16 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminp
 		stored = defaultMemoryLayer(fqn)
 	}
 
-	// The service requires an up-to-date etag on every update, including the
-	// first one that enables the memory layer.
+	// The service requires an up-to-date etag when updating or disabling an
+	// already-enabled memory layer, but not on the initial enable from DISABLED.
 	reqEtag := req.GetMemoryLayer().GetEtag()
-	if reqEtag == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "etag is required when updating a memory layer")
-	}
-	if reqEtag != stored.GetEtag() {
-		return nil, status.Errorf(codes.Aborted, "etag %q does not match current etag %q", reqEtag, stored.GetEtag())
+	if stored.GetState() != adminpb.MemoryLayer_DISABLED {
+		if reqEtag == "" {
+			return nil, status.Errorf(codes.InvalidArgument, "etag is required when updating an enabled memory layer")
+		}
+		if reqEtag != stored.GetEtag() {
+			return nil, status.Errorf(codes.Aborted, "etag %q does not match current etag %q", reqEtag, stored.GetEtag())
+		}
 	}
 
 	now := timestamppb.Now()
@@ -145,19 +145,23 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminp
 			if req.GetMemoryLayer().GetMemoryConfig() == nil {
 				stored.MemoryConfig = nil
 				stored.State = adminpb.MemoryLayer_DISABLED
+				stored.Etag = ""
 			} else {
-				// storage_size_gib is output only; the service decides it.
+				// storage_size_gib is output only; the service decides it based on cluster nodes.
+				nodes := cluster.GetServeNodes()
+				if nodes <= 0 {
+					nodes = 1
+				}
 				stored.MemoryConfig = &adminpb.MemoryLayer_MemoryConfig{
-					StorageSizeGib: mockMemoryLayerStorageSizeGib,
+					StorageSizeGib: mockMemoryLayerStorageSizeGibPerNode * nodes,
 				}
 				stored.State = adminpb.MemoryLayer_READY
+				stored.Etag = mockMemoryLayerEtag
 			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "mock does not implement update of MemoryLayer field %q", path)
 		}
 	}
-
-	stored.Etag = mockMemoryLayerEtag
 
 	if exists {
 		if err := s.storage.Update(ctx, fqn, stored); err != nil {
@@ -170,7 +174,7 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminp
 	}
 
 	zone := lastComponent(cluster.GetLocation())
-	lroPrefix := fmt.Sprintf("operations/%s/locations/%s", name.cluster.String(), zone)
+	lroPrefix := fmt.Sprintf("operations/%s/locations/%s", fqn, zone)
 	metadata := &adminpb.UpdateMemoryLayerMetadata{
 		RequestTime:     now,
 		OriginalRequest: req,

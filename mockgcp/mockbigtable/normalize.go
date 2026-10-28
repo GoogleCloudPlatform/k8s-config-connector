@@ -48,6 +48,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Schema Bundles
 	replacements.ReplacePath(".schemaBundles[].etag", "abcdef0123A=")
 	replacements.ReplacePath(".etag", "abcdef0123A=")
+
+	// Memory Layers
+	replacements.ReplacePath(".memoryLayer.etag", "abcdef0123A=")
+	replacements.ReplacePath(".metadata.originalRequest.memoryLayer.etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
