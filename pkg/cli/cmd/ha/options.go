@@ -31,6 +31,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/validation"
 )
 
 const (
@@ -70,19 +71,42 @@ func (o *baseOptions) validate() error {
 
 func validateUniqueContextNames(names []string) error {
 	var errs []error
-	seen := make(map[string]bool, len(names))
+	seenContexts := make(map[string]bool, len(names))
+	seenIdentities := make(map[string]string, len(names))
 	for _, name := range names {
 		if name == "" {
 			errs = append(errs, fmt.Errorf("context name in --%s cannot be empty", contextsFlag))
 			continue
 		}
-		if seen[name] {
+		if seenContexts[name] {
 			errs = append(errs, fmt.Errorf("duplicate context %q specified in --%s", name, contextsFlag))
 			continue
 		}
-		seen[name] = true
+		seenContexts[name] = true
+
+		identity, err := sanitizeClusterIdentity(name)
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
+		if prevCtx, exists := seenIdentities[identity]; exists {
+			errs = append(errs, fmt.Errorf("contexts %q and %q sanitize to the same DNS-1123 cluster identity %q; rename one of the kubeconfig contexts", prevCtx, name, identity))
+			continue
+		}
+		seenIdentities[identity] = name
 	}
 	return errors.Join(errs...)
+}
+
+// sanitizeClusterIdentity derives a DNS-1123 subdomain identity from a kubeconfig context name
+// (e.g. "gke_my-proj_us-central1_cluster-a" -> "gke-my-proj-us-central1-cluster-a") so it can be
+// used as both clusterCandidateIdentity and the peer kubeconfig Secret name.
+func sanitizeClusterIdentity(contextName string) (string, error) {
+	identity := strings.ToLower(strings.ReplaceAll(strings.TrimSpace(contextName), "_", "-"))
+	if dnsErrs := validation.IsDNS1123Subdomain(identity); len(dnsErrs) > 0 {
+		return "", fmt.Errorf("context %q (sanitized to %q) is not a valid DNS-1123 subdomain for cluster identity (%s); rename the kubeconfig context using lowercase alphanumeric characters, '-' or '.'", contextName, identity, strings.Join(dnsErrs, "; "))
+	}
+	return identity, nil
 }
 
 func normalizeBucketName(bucket string) string {

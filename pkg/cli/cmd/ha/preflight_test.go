@@ -144,12 +144,28 @@ func TestValidateMultiClusterLeaseConfigsErrors(t *testing.T) {
 		wantErrSubstrings []string
 	}{
 		{
-			name: "mismatched leaseName, namespace, and duplicate identity are accumulated",
+			name: "mismatched leaseName, namespace, and duplicate identity include per-cluster values and remediation",
 			states: []*clusterHAState{
 				{contextName: "cluster-a", configConnector: newConfigConnectorWithMCL("kcc-lease-1", "cnrm-system", "shared-id")},
 				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease-2", "other-ns", "shared-id")},
 			},
-			wantErrSubstrings: []string{"mismatched leaseName", "mismatched lease namespace", "duplicate clusterCandidateIdentity"},
+			wantErrSubstrings: []string{
+				`mismatched leaseName across clusters (cluster-a="kcc-lease-1", cluster-b="kcc-lease-2")`,
+				`mismatched lease namespace across clusters (cluster-a="cnrm-system", cluster-b="other-ns")`,
+				`duplicate clusterCandidateIdentity across clusters (identity "shared-id" shared by [cluster-a, cluster-b])`,
+				`leases/<namespace>/<leaseName>`,
+			},
+		},
+		{
+			name: "invalid DNS-1123 clusterCandidateIdentity fails validation",
+			states: []*clusterHAState{
+				{contextName: "cluster-a", configConnector: newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "invalid_identity_with_underscore")},
+				{contextName: "cluster-b", configConnector: newConfigConnectorWithMCL("kcc-lease", "cnrm-system", "cluster-b-id")},
+			},
+			wantErrSubstrings: []string{
+				`invalid spec.experiments.multiClusterLease.clusterCandidateIdentity "invalid_identity_with_underscore"`,
+				`must be a valid DNS-1123 subdomain`,
+			},
 		},
 		{
 			name:              "nil cluster states fail cleanly",

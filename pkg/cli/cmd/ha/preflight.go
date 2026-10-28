@@ -18,6 +18,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
+	"strings"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
@@ -26,6 +28,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/validation"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -70,7 +73,7 @@ func fetchClusterHAState(ctx context.Context, handle *clusterHandle) (*clusterHA
 		return nil, err
 	}
 	if cc == nil {
-		return nil, fmt.Errorf("cluster %q is missing the %q ConfigConnector object", handle.contextName, configConnectorResourceName)
+		return nil, fmt.Errorf("cluster %q is missing the %q ConfigConnector object; install Config Connector and create the %q resource before running HA commands", handle.contextName, configConnectorResourceName, configConnectorResourceName)
 	}
 
 	mclSpec := multiClusterLeaseSpec(cc)
@@ -119,17 +122,19 @@ func multiClusterLeaseSpec(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1
 
 func validateClusterLeaseSpec(contextName string, mcl *operatorv1beta1.MultiClusterLeaseSpec) error {
 	if mcl == nil {
-		return fmt.Errorf("cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector", contextName)
+		return fmt.Errorf("cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector %q; run `config-connector ha setup` or configure spec.experiments.multiClusterLease", contextName, configConnectorResourceName)
 	}
 	var errs []error
 	if mcl.LeaseName == "" {
-		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.leaseName", contextName))
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.leaseName; set it to the shared lease name across all HA clusters", contextName))
 	}
 	if mcl.Namespace == "" {
-		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.namespace", contextName))
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.namespace; set it to the shared lease namespace (e.g. %q) across all HA clusters", contextName, defaultLeaseNamespace))
 	}
 	if mcl.ClusterCandidateIdentity == "" {
-		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.clusterCandidateIdentity", contextName))
+		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.clusterCandidateIdentity; set a unique DNS-1123 subdomain identity per cluster", contextName))
+	} else if dnsErrs := validation.IsDNS1123Subdomain(mcl.ClusterCandidateIdentity); len(dnsErrs) > 0 {
+		errs = append(errs, fmt.Errorf("cluster %q has an invalid spec.experiments.multiClusterLease.clusterCandidateIdentity %q (used as the peer kubeconfig Secret name, must be a valid DNS-1123 subdomain: %s)", contextName, mcl.ClusterCandidateIdentity, strings.Join(dnsErrs, "; ")))
 	}
 	return errors.Join(errs...)
 }
@@ -173,9 +178,9 @@ func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 	}
 
 	var errs []error
-	leaseNames := make(map[string]int, len(states))
-	namespaces := make(map[string]int, len(states))
-	identities := make(map[string]int, len(states))
+	leaseNames := make(map[string][]string, len(states))
+	namespaces := make(map[string][]string, len(states))
+	identities := make(map[string][]string, len(states))
 
 	for _, s := range states {
 		if s == nil {
@@ -187,23 +192,56 @@ func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 			errs = append(errs, err)
 			continue
 		}
-		leaseNames[mcl.LeaseName]++
-		namespaces[mcl.Namespace]++
-		identities[mcl.ClusterCandidateIdentity]++
+		leaseNames[mcl.LeaseName] = append(leaseNames[mcl.LeaseName], s.contextName)
+		namespaces[mcl.Namespace] = append(namespaces[mcl.Namespace], s.contextName)
+		identities[mcl.ClusterCandidateIdentity] = append(identities[mcl.ClusterCandidateIdentity], s.contextName)
 	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
 	}
 
 	if len(leaseNames) != 1 {
-		errs = append(errs, fmt.Errorf("mismatched leaseName across clusters: found %d distinct lease names", len(leaseNames)))
+		errs = append(errs, fmt.Errorf(
+			"mismatched leaseName across clusters (%s): set spec.experiments.multiClusterLease.leaseName to the same value on every cluster because the GCS lock object is leases/<namespace>/<leaseName>",
+			formatClusterLeaseValues(states, func(m *operatorv1beta1.MultiClusterLeaseSpec) string { return m.LeaseName }),
+		))
 	}
 	if len(namespaces) != 1 {
-		errs = append(errs, fmt.Errorf("mismatched lease namespace across clusters: found %d distinct namespaces", len(namespaces)))
+		errs = append(errs, fmt.Errorf(
+			"mismatched lease namespace across clusters (%s): set spec.experiments.multiClusterLease.namespace to the same value on every cluster because the GCS lock object is leases/<namespace>/<leaseName>",
+			formatClusterLeaseValues(states, func(m *operatorv1beta1.MultiClusterLeaseSpec) string { return m.Namespace }),
+		))
 	}
 	if len(identities) != len(states) {
-		errs = append(errs, fmt.Errorf("duplicate clusterCandidateIdentity across clusters: expected %d unique identities, got %d", len(states), len(identities)))
+		errs = append(errs, fmt.Errorf(
+			"duplicate clusterCandidateIdentity across clusters (%s): set a unique spec.experiments.multiClusterLease.clusterCandidateIdentity on each cluster",
+			formatDuplicateIdentities(identities),
+		))
 	}
 
 	return errors.Join(errs...)
+}
+
+func formatClusterLeaseValues(states []*clusterHAState, field func(*operatorv1beta1.MultiClusterLeaseSpec) string) string {
+	parts := make([]string, 0, len(states))
+	for _, s := range states {
+		mcl := multiClusterLeaseSpec(s.configConnector)
+		parts = append(parts, fmt.Sprintf("%s=%q", s.contextName, field(mcl)))
+	}
+	return strings.Join(parts, ", ")
+}
+
+func formatDuplicateIdentities(identities map[string][]string) string {
+	keys := make([]string, 0, len(identities))
+	for id, clusters := range identities {
+		if len(clusters) > 1 {
+			keys = append(keys, id)
+		}
+	}
+	sort.Strings(keys)
+	parts := make([]string, 0, len(keys))
+	for _, id := range keys {
+		parts = append(parts, fmt.Sprintf("identity %q shared by [%s]", id, strings.Join(identities[id], ", ")))
+	}
+	return strings.Join(parts, "; ")
 }
