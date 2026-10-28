@@ -15,6 +15,7 @@
 package mockkms
 
 import (
+	"encoding/base64"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -46,6 +47,19 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.TransformObject(".importJobs[].publicKey", func(m map[string]any) {
 		delete(m, "data")
 	})
+
+	// Normalize ImportJob attestation and wrapping public key
+	dummyCaviumCerts := []string{dummyCaviumCert1, dummyCaviumCert2}
+	dummyGoogleCardCerts := []string{dummyGoogleCardCert}
+	dummyGooglePartitionCerts := []string{dummyGooglePartitionCert}
+
+	for _, prefix := range []string{"", ".importJobs[]"} {
+		replacements.ReplacePath(prefix+".attestation.certChains.caviumCerts", dummyCaviumCerts)
+		replacements.ReplacePath(prefix+".attestation.certChains.googleCardCerts", dummyGoogleCardCerts)
+		replacements.ReplacePath(prefix+".attestation.certChains.googlePartitionCerts", dummyGooglePartitionCerts)
+		replacements.ReplacePath(prefix+".attestation.content", base64.StdEncoding.EncodeToString(dummyAttestationContent))
+		replacements.ReplacePath(prefix+".publicKey.pem", dummyPublicKeyPem)
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
