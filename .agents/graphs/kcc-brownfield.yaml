@@ -49,10 +49,12 @@ spec:
 
   # One step at a time: each step builds on the previous step's merged PR.
   maxActive: 1
+  defaults:
+    labels: [direct-migration]
 
-  # No default labels, as in the workflow. The deployment's trigger label
-  # (overseer) is always added by the reconciler; a step's `review` adds the
-  # review label (overseer/review).
+  # The deployment's trigger label (overseer) is always added by the
+  # reconciler; defaults.labels goes on every step's child, and a step's
+  # `review` adds overseer/review.
 
   steps:
     # Step 1. Kinds that already have direct types and generate.sh need no
@@ -60,6 +62,7 @@ spec:
     # Skipped.
     - id: types
       title: 'Implement direct KRM types and generate.sh for {{ .Params.kind }}'
+      labels: [step/types]
       review: |
         Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
       body: |
@@ -75,13 +78,12 @@ spec:
 
         If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/crd-mapper-fuzzer-existing-type/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
-        The created PR must include these labels: `direct-migration` and `overseer`
-
     # Step 2. Kinds that already follow the identity and refs pattern need no
     # PR here: the issue is closed as not planned (Skipped).
     - id: identity
       after: [types]
       title: 'Move {{ .Params.kind }} to identity and refs pattern'
+      labels: [step/identity]
       review: |
         Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
       body: |
@@ -93,12 +95,11 @@ spec:
 
         If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
-        The created PR must include these labels: `direct-migration` and `overseer`
-
     # Step 3. No automated review, as in the workflow.
     - id: fuzzer
       after: [identity]
       title: 'Implement round-trip KRM fuzzer for {{ .Params.kind }}'
+      labels: [step/fuzzer]
       body: |
         Please follow the skill .gemini/skills/create-fuzzer/SKILL.md to implement a round-trip KRM fuzzer for {{ .Params.kind }}.
 
@@ -106,12 +107,11 @@ spec:
 
         If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/create-fuzzer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
-        The created PR must include these labels: `direct-migration` and `overseer`
-
     # Step 4. No automated review, as in the workflow.
     - id: mockgcp
       after: [fuzzer]
       title: 'Match real gcp behavior in MockGCP for {{ .Params.kind }}'
+      labels: [step/mockgcp]
       body: |
         Please first check if a mock for the GCP service and resource corresponding to {{ .Params.kind }} already exists in the codebase. Check under the mockgcp/ folder.
         If it doesn't exist, please follow the skill .gemini/skills/add-new-mockgcp-resource/SKILL.md to implement the mock for that service and resource first.
@@ -133,12 +133,11 @@ spec:
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/add-new-mockgcp-resource/journal/, named after the kind or a similarly unique name.
 
-        The created PR must include these labels: `direct-migration` and `overseer`
-
     # Step 5. No automated review, as in the workflow.
     - id: controller
       after: [mockgcp]
       title: 'Implement direct controller and test fixtures for {{ .Params.kind }}'
+      labels: [step/controller]
       body: |
         Please follow the skills:
         - .gemini/skills/kcc-direct-controller-implementer/SKILL.md
@@ -149,12 +148,11 @@ spec:
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under their respective journal/ folders, named after the kind or a similarly unique name.
 
-        The created PR must include these labels: `direct-migration` and `overseer`
-
     # Step 6. No automated review, as in the workflow.
     - id: validate-promotion
       after: [controller]
       title: 'Validate direct promotion for {{ .Params.kind }}'
+      labels: [step/validate-promotion]
       body: |
         The direct controller for {{ .Params.kind }} was implemented in #{{ (step "controller").Issue }}.
 
@@ -168,5 +166,3 @@ spec:
         In the created PR description, you MUST explicitly document whether `./hack/record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used.
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/solve-migration-diff-issues/journal/, named after the kind or a similarly unique name.
-
-        The created PR must include these labels: `direct-migration` and `overseer`
