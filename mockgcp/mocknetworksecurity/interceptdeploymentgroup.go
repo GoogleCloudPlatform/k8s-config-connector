@@ -45,8 +45,14 @@ func (s *InterceptServer) CreateInterceptDeploymentGroup(ctx context.Context, re
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.State = pbv1.InterceptDeploymentGroup_ACTIVE
+	// Note: Real GCP returns "reconciling": false in the resource JSON;
+	// proto3 JSON marshaling omits false boolean values by default.
+	obj.Reconciling = false
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -61,6 +67,8 @@ func (s *InterceptServer) CreateInterceptDeploymentGroup(ctx context.Context, re
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.Clone(obj).(*pbv1.InterceptDeploymentGroup)
+		// Real GCP LRO response does not return labels on create
+		result.Labels = nil
 		return result, nil
 	})
 }
@@ -134,7 +142,10 @@ func (s *InterceptServer) UpdateInterceptDeploymentGroup(ctx context.Context, re
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		return updated, nil
+		result := proto.Clone(updated).(*pbv1.InterceptDeploymentGroup)
+		// Real GCP LRO response does not return labels on update
+		result.Labels = nil
+		return result, nil
 	})
 }
 
