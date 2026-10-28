@@ -27,9 +27,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 
-	replacements.ReplacePath(".metadata.insertTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.metadata.insertTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".insertTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".metadata.insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.metadata.insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
