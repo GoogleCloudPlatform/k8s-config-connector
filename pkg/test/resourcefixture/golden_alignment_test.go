@@ -678,6 +678,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		delete(v, "availableCpuPlatforms")
+		delete(v, "supportsPzs")
+		if _, ok := v["family"]; ok {
+			delete(v, "name")
+		}
 		if rc, ok := v["responseCode"]; ok {
 			if f, ok := rc.(float64); ok {
 				switch f {

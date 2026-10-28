@@ -1,0 +1,33 @@
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/computenetworkendpointgroup-${uniqueId}/listNetworkEndpoints
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "networkEndpointGroup": "computenetworkendpointgroup-${uniqueId}",
+  "project": "${projectId}",
+  "zone": "us-central1-a"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "items": [
+    {
+      "networkEndpoint": {
+        "instance": "computenetworkendpoint-instance-${uniqueId}",
+        "ipAddress": "10.0.0.2",
+        "port": 90
+      }
+    }
+  ],
+  "kind": "compute#networkEndpointGroupsListNetworkEndpoints"
+}

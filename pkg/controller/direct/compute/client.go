@@ -481,3 +481,15 @@ func (m *gcpClient) newNetworkFirewallPoliciesClient(ctx context.Context) (*comp
 	}
 	return client, err
 }
+
+func (m *gcpClient) newNetworkEndpointGroupsClient(ctx context.Context) (*compute.NetworkEndpointGroupsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkEndpointGroupsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute NetworkEndpointGroups client: %w", err)
+	}
+	return client, err
+}
