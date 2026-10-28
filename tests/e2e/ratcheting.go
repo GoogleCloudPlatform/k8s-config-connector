@@ -153,7 +153,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "colab.cnrm.cloud.google.com", Kind: "ColabRuntimeTemplate"}:
 	case schema.GroupKind{Group: "composer.cnrm.cloud.google.com", Kind: "ComposerEnvironment"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
-	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAutoscaler"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendBucket"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendBucketSignedURLKey"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendService"}:

@@ -107,6 +107,49 @@ func (m *computeAutoscalerModel) AdapterForObject(ctx context.Context, op *direc
 	}, nil
 }
 
+func resolveComputeAutoscalerRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeAutoscaler) error {
+	defaultNamespace := obj.GetNamespace()
+
+	if obj.Spec.TargetRef.External != "" {
+		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(obj.Spec.TargetRef.External)
+		return nil
+	}
+	if obj.Spec.TargetRef.Name == "" {
+		return nil
+	}
+	namespace := obj.Spec.TargetRef.Namespace
+	if namespace == "" {
+		namespace = defaultNamespace
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstanceGroupManager",
+	})
+	key := types.NamespacedName{
+		Namespace: namespace,
+		Name:      obj.Spec.TargetRef.Name,
+	}
+	if err := reader.Get(ctx, key, u); err != nil {
+		return fmt.Errorf("getting referenced ComputeInstanceGroupManager %s: %w", key, err)
+	}
+
+	externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+	if externalRef != "" {
+		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(externalRef)
+		return nil
+	}
+	selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+	if selfLink != "" {
+		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(selfLink)
+		return nil
+	}
+
+	return fmt.Errorf("referenced ComputeInstanceGroupManager %s does not have status.externalRef or status.selfLink", key)
+}
+
 func (m *computeAutoscalerModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	id := &krm.ComputeAutoscalerIdentity{}
 	if err := id.FromExternal(url); err != nil {
@@ -314,17 +357,8 @@ func compareComputeAutoscaler(ctx context.Context, actual, desired *pb.Autoscale
 
 	clonedDesired := proto.CloneOf(desired)
 
-	populateDefaults := func(obj *pb.Autoscaler) {
-		// Populate GCP/server defaults here if needed
-		if obj.Zone != nil {
-			*obj.Zone = lastComponent(*obj.Zone)
-		}
-		if obj.Target != nil {
-			*obj.Target = refs.TrimComputeURIPrefix(*obj.Target)
-		}
-	}
-	populateDefaults(maskedActual)
-	populateDefaults(clonedDesired)
+	normalizeComputeAutoscalerForComparison(maskedActual)
+	normalizeComputeAutoscalerForComparison(clonedDesired)
 
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -333,45 +367,14 @@ func compareComputeAutoscaler(ctx context.Context, actual, desired *pb.Autoscale
 	return diffs, updateMask, nil
 }
 
-func resolveComputeAutoscalerRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeAutoscaler) error {
-	defaultNamespace := obj.GetNamespace()
-
-	if obj.Spec.TargetRef.External != "" {
-		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(obj.Spec.TargetRef.External)
-		return nil
+func normalizeComputeAutoscalerForComparison(obj *pb.Autoscaler) {
+	if obj == nil {
+		return
 	}
-	if obj.Spec.TargetRef.Name == "" {
-		return nil
+	if obj.Zone != nil {
+		obj.Zone = direct.PtrTo(lastComponent(*obj.Zone))
 	}
-	namespace := obj.Spec.TargetRef.Namespace
-	if namespace == "" {
-		namespace = defaultNamespace
+	if obj.Target != nil {
+		obj.Target = direct.PtrTo(refs.TrimComputeURIPrefix(*obj.Target))
 	}
-
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeInstanceGroupManager",
-	})
-	key := types.NamespacedName{
-		Namespace: namespace,
-		Name:      obj.Spec.TargetRef.Name,
-	}
-	if err := reader.Get(ctx, key, u); err != nil {
-		return fmt.Errorf("getting referenced ComputeInstanceGroupManager %s: %w", key, err)
-	}
-
-	externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
-	if externalRef != "" {
-		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(externalRef)
-		return nil
-	}
-	selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
-	if selfLink != "" {
-		obj.Spec.TargetRef.External = refs.TrimComputeURIPrefix(selfLink)
-		return nil
-	}
-
-	return fmt.Errorf("referenced ComputeInstanceGroupManager %s does not have status.externalRef or status.selfLink", key)
 }
