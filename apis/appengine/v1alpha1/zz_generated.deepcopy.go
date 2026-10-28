@@ -576,6 +576,11 @@ func (in *AppEngineStandardAppVersionStatus) DeepCopyInto(out *AppEngineStandard
 		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)

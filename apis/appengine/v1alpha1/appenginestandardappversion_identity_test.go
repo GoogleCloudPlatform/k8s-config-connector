@@ -55,7 +55,7 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 			wantIdentitySpecified: true,
 		},
 		{
-			name: "GetIdentity with server-generated identity (empty spec resourceID, defaulted from status.name)",
+			name: "GetIdentity with server-generated identity (empty spec resourceID, defaulted from status.externalRef)",
 			obj: &AppEngineStandardAppVersion{
 				Spec: AppEngineStandardAppVersionSpec{
 					ServiceRef: &AppEngineServiceRef{
@@ -63,7 +63,7 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 					},
 				},
 				Status: AppEngineStandardAppVersionStatus{
-					Name: common.LazyPtr("apps/my-app/services/my-service/versions/server-gen-v1"),
+					ExternalRef: common.LazyPtr("apps/my-app/services/my-service/versions/server-gen-v1"),
 				},
 			},
 			want: &AppEngineStandardAppVersionIdentity{
@@ -74,7 +74,7 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 			wantIdentitySpecified: true,
 		},
 		{
-			name: "GetIdentity without resourceID and without status.name",
+			name: "GetIdentity without resourceID and without status.externalRef",
 			obj: &AppEngineStandardAppVersion{
 				Spec: AppEngineStandardAppVersionSpec{
 					ServiceRef: &AppEngineServiceRef{
@@ -90,7 +90,7 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 			wantIdentitySpecified: false,
 		},
 		{
-			name: "GetIdentity error on identity change (spec resourceID does not match status.name)",
+			name: "GetIdentity error on identity change (spec resourceID does not match status.externalRef)",
 			obj: &AppEngineStandardAppVersion{
 				Spec: AppEngineStandardAppVersionSpec{
 					ServiceRef: &AppEngineServiceRef{
@@ -99,7 +99,7 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 					ResourceID: common.LazyPtr("v1"),
 				},
 				Status: AppEngineStandardAppVersionStatus{
-					Name: common.LazyPtr("apps/my-app/services/my-service/versions/v2"),
+					ExternalRef: common.LazyPtr("apps/my-app/services/my-service/versions/v2"),
 				},
 			},
 			wantErr: true,

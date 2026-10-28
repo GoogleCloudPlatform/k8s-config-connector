@@ -101,7 +101,7 @@ func (obj *AppEngineStandardAppVersion) GetIdentity(ctx context.Context, reader 
 	}
 
 	// Cross-check the identity against the status value, if present.
-	externalRef := common.ValueOf(obj.Status.Name)
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		statusIdentity := &AppEngineStandardAppVersionIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {

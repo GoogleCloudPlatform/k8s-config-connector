@@ -437,6 +437,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AppEngineStandardAppVersion
+                  resource in GCP.
+                type: string
               name:
                 description: Full path to the Version resource in the API. Example,
                   "v1".

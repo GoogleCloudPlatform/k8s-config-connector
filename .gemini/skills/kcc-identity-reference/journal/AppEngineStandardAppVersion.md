@@ -16,6 +16,6 @@ Moving `AppEngineStandardAppVersion` (`appengine.cnrm.cloud.google.com/v1alpha1`
    - `generate-identity` automatically recognizes parent references and resolves them via `parentRef.Normalize(ctx, reader, obj.GetNamespace())` and parses the external URI `apps/{app}/services/{service}`.
 3. **Server-Generated Identity**:
    - In GCP App Engine API, `CreateVersion` takes a `Version` message directly without a separate `version_id` parameter. App Engine can generate a version ID if omitted, or the user can specify one in `spec.resourceID`.
-   - `generate-identity` correctly generates `identity.ServerGeneratedIdentity` and cross-checks the authoritative identity against `status.name`.
-4. **Schema Preservation**:
-   - `dev/tasks/diff-crds` confirmed that no changes to the CRD schema were introduced.
+   - `generate-identity` correctly generates `identity.ServerGeneratedIdentity` and cross-checks the authoritative identity against `status.externalRef`.
+4. **CRD Generation**:
+   - `ExternalRef *string` added to `AppEngineStandardAppVersionStatus`, exposing `status.externalRef` in the CRD schema.
