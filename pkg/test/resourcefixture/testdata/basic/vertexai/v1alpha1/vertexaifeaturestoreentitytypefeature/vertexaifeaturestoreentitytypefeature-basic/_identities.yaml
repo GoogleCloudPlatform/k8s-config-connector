@@ -4,7 +4,7 @@
   name: featurestore${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: unknown
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}
   group: vertexai.cnrm.cloud.google.com
   kind: VertexAIFeaturestoreEntityType
   name: entitytype${uniqueId}
