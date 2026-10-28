@@ -58,6 +58,9 @@ This skill guides an automated agent through the process of implementing a round
      - **Not Yet Triaged/Unimplemented Fields:** Call `f.Unimplemented_NotYetTriaged(".field_name")` or other unimplemented helpers for fields that are not yet implemented by KCC.
    - **Document Field Comparison**: Always add detailed comparison comments in the fuzzer file (just above `f.SpecField` calls) that explicitly compare the KRM Spec type fields with their corresponding fuzzer/proto field mapping status. This helps reviewers verify that every field in the KRM Spec was accounted for, especially when fields map to nested untriaged proto structures (e.g. `lifecycleRule` maps to `f.Unimplemented_NotYetTriaged(".lifecycle")`).
    - **CRITICAL - Helper Wrappers Only**: Always use the wrapper helper functions (such as `f.SpecField()`, `f.StatusField()`, `f.Unimplemented_Identity()`) instead of directly manipulating the fields sets via `.Insert()` (e.g. do NOT use `f.SpecFields.Insert()`, `f.StatusFields.Insert()`, or `f.UnimplementedFields.Insert()`). This maintains clean api patterns and safety checks.
+   - **Proto State Invariants and Normalization (`f.FilterSpec` / `f.FilterStatus`)**:
+     - When KRM defines required or non-pointer primitive fields (e.g., required non-pointer `float64` or `int32`), an unset proto field or protobuf `oneof` in the randomly generated proto can default to its zero value in KRM and serialize back into the proto as an explicitly set zero-value branch.
+     - When this happens, configure `f.FilterSpec = func(in *pb.Resource) { ... }` (or `f.FilterStatus`) to normalize the randomly fuzzed proto message before round-tripping (e.g., populating an unset oneof branch with its zero value).
 
 5. **Verify with Fuzzer Tests**
    - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
