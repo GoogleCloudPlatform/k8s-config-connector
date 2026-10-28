@@ -219,6 +219,7 @@ func TestBeyondCorpAppGatewayRef_Normalize(t *testing.T) {
 	_ = AddToScheme(scheme)
 	_ = corev1.AddToScheme(scheme)
 
+	readyExternalRef := "projects/test-project/locations/us-central1/appGateways/ready-gateway"
 	readyGateway := &BeyondCorpAppGateway{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-gateway",
@@ -231,6 +232,7 @@ func TestBeyondCorpAppGatewayRef_Normalize(t *testing.T) {
 			Region: "us-central1",
 		},
 		Status: BeyondCorpAppGatewayStatus{
+			ExternalRef: &readyExternalRef,
 			Conditions: []k8sv1alpha1.Condition{
 				{
 					Type:   "Ready",

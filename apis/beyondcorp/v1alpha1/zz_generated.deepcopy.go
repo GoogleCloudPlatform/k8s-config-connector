@@ -599,6 +599,11 @@ func (in *BeyondCorpAppGatewayStatus) DeepCopyInto(out *BeyondCorpAppGatewayStat
 		*out = new(int64)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.State != nil {
 		in, out := &in.State, &out.State
 		*out = new(string)

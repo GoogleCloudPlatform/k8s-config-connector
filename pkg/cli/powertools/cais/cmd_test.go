@@ -22,7 +22,6 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/beyondcorp/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"

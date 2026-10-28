@@ -1,4 +1,4 @@
-- caisURL: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}
+- caisURL: unknown
   group: beyondcorp.cnrm.cloud.google.com
   kind: BeyondCorpAppGateway
   name: beyondcorpappgateway-${uniqueId}

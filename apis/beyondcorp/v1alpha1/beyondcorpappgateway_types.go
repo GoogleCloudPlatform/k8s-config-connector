@@ -61,6 +61,9 @@ type BeyondCorpAppGatewayStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	// A unique specifier for the BeyondCorpAppGateway resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	// Represents the different states of an AppGateway.
 	// +kcc:proto:field=google.cloud.beyondcorp.appgateways.v1.AppGateway.state
 	State *string `json:"state,omitempty"`

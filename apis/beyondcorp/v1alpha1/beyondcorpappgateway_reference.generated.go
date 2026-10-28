@@ -22,11 +22,16 @@
 package v1alpha1
 
 import (
+	"context"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ refs.Ref = &BeyondCorpAppGatewayRef{}
 
 // BeyondCorpAppGatewayRef is a reference to a GCP BeyondCorpAppGateway resource.
 type BeyondCorpAppGatewayRef struct {
@@ -80,4 +85,8 @@ func (r *BeyondCorpAppGatewayRef) ParseExternalToIdentity() (identity.Identity, 
 		return nil, err
 	}
 	return id, nil
+}
+
+func (r *BeyondCorpAppGatewayRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }
