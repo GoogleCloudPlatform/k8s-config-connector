@@ -20,8 +20,68 @@
 // resource: ApigeeAPIProduct:GoogleCloudApigeeV1ApiProduct
 // resource: ApigeeSyncAuthorization:GoogleCloudApigeeV1SyncAuthorization
 // resource: ApigeeNATAddress:GoogleCloudApigeeV1NatAddress
+// resource: ApigeeAddonsConfig:GoogleCloudApigeeV1AddonsConfig
 
 package v1alpha1
+
+/* found existing non-generated go type "GoogleCloudApigeeV1AddonsConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig
+type GoogleCloudApigeeV1AddonsConfig struct {
+	// Configuration for the Advanced API Ops add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.advanced_api_ops_config
+	AdvancedAPIOpsConfig *GoogleCloudApigeeV1AdvancedAPIOpsConfig `json:"advancedAPIOpsConfig,omitempty"`
+
+	// Configuration for the Analytics add-on. Only used in organizations.environments.addonsConfig.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.analytics_config
+	AnalyticsConfig *GoogleCloudApigeeV1AnalyticsConfig `json:"analyticsConfig,omitempty"`
+
+	// Configuration for the API Security add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.api_security_config
+	APISecurityConfig *GoogleCloudApigeeV1APISecurityConfig `json:"apiSecurityConfig,omitempty"`
+
+	// Configuration for the Connectors Platform add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.connectors_platform_config
+	ConnectorsPlatformConfig *GoogleCloudApigeeV1ConnectorsPlatformConfig `json:"connectorsPlatformConfig,omitempty"`
+
+	// Configuration for the Integration add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.integration_config
+	IntegrationConfig *GoogleCloudApigeeV1IntegrationConfig `json:"integrationConfig,omitempty"`
+
+	// Configuration for the Monetization add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig.monetization_config
+	MonetizationConfig *GoogleCloudApigeeV1MonetizationConfig `json:"monetizationConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AdvancedApiOpsConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AdvancedApiOpsConfig
+type GoogleCloudApigeeV1AdvancedAPIOpsConfig struct {
+	// Flag that specifies whether the Advanced API Ops add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AdvancedApiOpsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AnalyticsConfig
+type GoogleCloudApigeeV1AnalyticsConfig struct {
+	// Whether the Analytics add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AnalyticsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. Time at which the Analytics add-on expires in milliseconds since epoch. If unspecified, the add-on will never expire.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AnalyticsConfig.expire_time_millis
+	ExpireTimeMillis *int64 `json:"expireTimeMillis,omitempty"`
+
+	// Output only. The state of the Analytics add-on.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AnalyticsConfig.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The latest update time.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1AnalyticsConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ApiProduct", skipping
 
@@ -121,6 +181,20 @@ type GoogleCloudApigeeV1APIProduct struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ApiSecurityConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ApiSecurityConfig
+type GoogleCloudApigeeV1APISecurityConfig struct {
+	// Flag that specifies whether the API security add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ApiSecurityConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. Time at which the API Security add-on expires in milliseconds since epoch. If unspecified, the add-on will never expire.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ApiSecurityConfig.expires_at
+	ExpiresAt *int64 `json:"expiresAt,omitempty"`
+}
+*/
+
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Attribute
 type GoogleCloudApigeeV1Attribute struct {
 	// API key of the attribute.
@@ -131,6 +205,20 @@ type GoogleCloudApigeeV1Attribute struct {
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Attribute.value
 	Value *string `json:"value,omitempty"`
 }
+
+/* found existing non-generated go type "GoogleCloudApigeeV1ConnectorsPlatformConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ConnectorsPlatformConfig
+type GoogleCloudApigeeV1ConnectorsPlatformConfig struct {
+	// Flag that specifies whether the Connectors Platform add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ConnectorsPlatformConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. Time at which the Connectors Platform add-on expires in milliseconds since epoch. If unspecified, the add-on will never expire.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1ConnectorsPlatformConfig.expires_at
+	ExpiresAt *int64 `json:"expiresAt,omitempty"`
+}
+*/
 
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1GraphQLOperation
 type GoogleCloudApigeeV1GraphQlOperation struct {
@@ -203,6 +291,16 @@ type GoogleCloudApigeeV1GrpcOperationGroup struct {
 	OperationConfigs []GoogleCloudApigeeV1GrpcOperationConfig `json:"operationConfigs,omitempty"`
 }
 
+/* found existing non-generated go type "GoogleCloudApigeeV1IntegrationConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1IntegrationConfig
+type GoogleCloudApigeeV1IntegrationConfig struct {
+	// Flag that specifies whether the Integration add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1IntegrationConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1LlmOperation
 type GoogleCloudApigeeV1LlmOperation struct {
 	// Optional. methods refers to the REST verbs as in https://httpwg.org/specs/rfc9110.html For example: GET, POST, PUT, DELETE, etc. They need to be in uppercase. When none specified, all verb types are allowed.
@@ -258,6 +356,16 @@ type GoogleCloudApigeeV1LlmTokenQuota struct {
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1LlmTokenQuota.time_unit
 	TimeUnit *string `json:"timeUnit,omitempty"`
 }
+
+/* found existing non-generated go type "GoogleCloudApigeeV1MonetizationConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1MonetizationConfig
+type GoogleCloudApigeeV1MonetizationConfig struct {
+	// Flag that specifies whether the Monetization add-on is enabled.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1MonetizationConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
 
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1NatAddress
 type GoogleCloudApigeeV1NATAddress struct {

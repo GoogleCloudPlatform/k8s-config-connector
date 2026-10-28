@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //apigee.googleapis.com/organizations/test_organization/addonsConfig
   group: apigee.cnrm.cloud.google.com
   kind: ApigeeAddonsConfig
   name: apigeeaddonsconfig-${uniqueId}
