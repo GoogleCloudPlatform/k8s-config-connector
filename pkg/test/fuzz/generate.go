@@ -17,6 +17,7 @@ package fuzz
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"testing"
 
 	"google.golang.org/protobuf/proto"
@@ -343,26 +344,51 @@ type ClearFields struct {
 	Paths sets.Set[string]
 }
 
-func (v *ClearFields) VisitPrimitive(path string, val protoreflect.Value, setter func(v protoreflect.Value)) {
+func (v *ClearFields) hasPath(path string) bool {
 	if v.Paths.Has(path) {
+		return true
+	}
+	if strings.Contains(path, "[") {
+		var sb strings.Builder
+		inBracket := false
+		for _, r := range path {
+			if r == '[' {
+				inBracket = true
+				sb.WriteRune('[')
+			} else if r == ']' {
+				inBracket = false
+				sb.WriteRune(']')
+			} else if !inBracket {
+				sb.WriteRune(r)
+			}
+		}
+		if v.Paths.Has(sb.String()) {
+			return true
+		}
+	}
+	return false
+}
+
+func (v *ClearFields) VisitPrimitive(path string, val protoreflect.Value, setter func(v protoreflect.Value)) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitMessage(path string, msg protoreflect.Message, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitList(path string, msg protoreflect.List, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitMap(path string, msg protoreflect.Map, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
