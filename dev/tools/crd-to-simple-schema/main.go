@@ -170,9 +170,7 @@ func diffCRD(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition
 
 func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) error {
 	var buf bytes.Buffer
-	labels1 := filterIgnoredLabels(crd1.Labels)
-	labels2 := filterIgnoredLabels(crd2.Labels)
-	printMapDiff(&buf, "metadata.labels", labels1, labels2)
+	printMapDiff(&buf, "metadata.labels", crd1.Labels, crd2.Labels)
 	printMapDiff(&buf, "metadata.annotations", crd1.Annotations, crd2.Annotations)
 
 	if buf.Len() > 0 {
@@ -182,20 +180,6 @@ func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefin
 		}
 	}
 	return nil
-}
-
-func filterIgnoredLabels(m map[string]string) map[string]string {
-	if m == nil {
-		return nil
-	}
-	res := make(map[string]string)
-	for k, v := range m {
-		if k == "cnrm.cloud.google.com/default-controller" {
-			continue
-		}
-		res[k] = v
-	}
-	return res
 }
 
 func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) error {
