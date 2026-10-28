@@ -88,6 +88,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeSnapshot:Snapshot \
   --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSSLCertificate:SslCertificate \
+  --resource ComputeManagedSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetGRPCProxy:TargetGrpcProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
