@@ -89,7 +89,7 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. The scheduling policy to use for jobs and queries running under this reservation.
 	// +optional
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scheduling_policy
-	SchedulingPolicy *SchedulingPolicySpec `json:"schedulingPolicy,omitempty"`
+	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
@@ -203,7 +203,7 @@ type AutoscaleObservedState struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.reservation.v1.SchedulingPolicy
-type SchedulingPolicySpec struct {
+type SchedulingPolicy struct {
 	// Limit concurrency of jobs for any particular project within the reservation.
 	// +optional
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.concurrency
