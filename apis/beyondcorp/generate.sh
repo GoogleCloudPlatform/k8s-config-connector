@@ -63,6 +63,11 @@ ${CONTROLLERBUILDER} generate-types \
 
 mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appconnection_types.generated.go" || true
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --resource BeyondCorpAppConnection:AppConnection
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
