@@ -182,8 +182,14 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "keyHandles":
 		return "${keyHandleID}"
 	case "tagKeys":
+		if !generatedTagResourceIDPattern.MatchString(name) {
+			return ""
+		}
 		return "${tagKeyID}"
 	case "tagValues":
+		if !generatedTagResourceIDPattern.MatchString(name) {
+			return ""
+		}
 		return "${tagValueID}"
 	case "instanceGroupManagers":
 		if strings.HasPrefix(name, "gke-") {
@@ -204,6 +210,7 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	}
 }
 
+var generatedTagResourceIDPattern = regexp.MustCompile(`^[0-9]+$`)
 var tagResourceIDPattern = regexp.MustCompile(`\b(?:tagKeys|tagValues)/[0-9]+\b`)
 
 // ReplaceTagResourceIDs normalizes generated TagKey and TagValue IDs in
