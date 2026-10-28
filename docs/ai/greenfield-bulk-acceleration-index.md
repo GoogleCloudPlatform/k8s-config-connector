@@ -2,6 +2,8 @@
 
 This document indexes the Pull Requests, branches, design documents, and empirical validation artifacts for the **Greenfield Bulk Acceleration** initiative, along with the exact resource and controller accounting against the **272-resource Code Purple commitment** (`80%` of the `341` total CP Purple resources in [`hack/tools/greenfield/cp_resources_list.json`](../../hack/tools/greenfield/cp_resources_list.json)).
 
+* **Tracking Issue:** **[#13411 — Deterministic Generation process](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/13411)** (`95` linked PRs: `61` merged + `34` open/draft)
+
 ---
 
 ## 1. Code Purple Coverage Summary (`272` Target / `341` Full List)
@@ -195,3 +197,43 @@ This document indexes the Pull Requests, branches, design documents, and empiric
 | 60 | **[#13393](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13393)** | 2026-09-23 | 2026-09-24 | `controllerbuilder: drop imports orphaned by --prune-unused-types` |
 | 61 | **[#13392](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13392)** | 2026-09-23 | 2026-09-24 | `apichecks: catch identity collection segments GCP has never seen` |
 
+---
+
+## Appendix B: All 34 Open & Draft Bulk-Gen PRs Linked to [#13411](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/13411)
+
+| # | PR | Status | Title |
+| ---: | :--- | :---: | :--- |
+| 1 | **[#14443](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14443)** | DRAFT | `docs: add greenfield bulk acceleration PR and workstream index` |
+| 2 | **[#14442](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14442)** | DRAFT | `exp(apis): Experiment 3.b — regenerate 31 Batch 1 + Batch 2 resources with AutoResolveJudgement` |
+| 3 | **[#14441](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14441)** | DRAFT | `feat(direct): Batch 2 Step 1b + Step 2 controllers, fuzzers, and RealGCP fixtures (15 resources)` |
+| 4 | **[#14440](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14440)** | DRAFT | `test(e2e): Batch 1 RealGCP validation fixtures and golden HTTP logs (16 + 3 parent resources)` |
+| 5 | **[#14416](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14416)** | DRAFT | `docs: add greenfield bulk acceleration plan and 34-resource empirical report` |
+| 6 | **[#14415](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14415)** | DRAFT | `controllerbuilder: auto-resolve known judgement_queue.yaml patterns` |
+| 7 | **[#14414](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14414)** | DRAFT | `e2e: support opt-in parallel fixture execution via E2E_PARALLEL=true` |
+| 8 | **[#14412](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14412)** | OPEN | `gcpwatch: use config.RESTClientOptions in NewIAMClient` |
+| 9 | **[#14411](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14411)** | DRAFT | `refs: implement refs.Ref Normalize on shared v1beta1 reference types` |
+| 10 | **[#14410](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14410)** | DRAFT | `apis: resolve Step 1b judgement_queue findings for 16 sampled resources` |
+| 11 | **[#14317](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14317)** | OPEN | `fix(codegen,fuzz): support proto3 optional enums in generate-mapper and fuzzing` |
+| 12 | **[#14271](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14271)** | OPEN | `feat(apis): prepopulate 5 declarative Full CRUD greenfield resources (apihub, apphub, networksecurity)` |
+| 13 | **[#14253](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14253)** | DRAFT | `docs(designs): evaluation of deterministic controller generation (PR #14251 vs PR #14222/#14224)` |
+| 14 | **[#14134](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14134)** | OPEN | `apis/automl: generate v1alpha1 AutoMLModel types, identity, reference, and mapper` |
+| 15 | **[#14133](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14133)** | OPEN | `apis/iam: generate v1alpha1 IAMPolicyBinding types, identity, reference, and mapper` |
+| 16 | **[#14132](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14132)** | OPEN | `apis/telcoautomation: generate v1alpha1 TelcoAutomationEdgeSLM types, identity, reference, and mapper` |
+| 17 | **[#14130](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14130)** | OPEN | `docs(ai): add docs/ai/declarative-resource-criteria.md` |
+| 18 | **[#14124](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14124)** | OPEN | `chore(skills,greenfield): add candidate sourcing workflow to kcc-bulk-resource-generator` |
+| 19 | **[#14088](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14088)** | DRAFT | `feat(apis): bulk-generate v1alpha1 types, identities, CRDs, and mappers for 27 non-declarative / data-plane GCP resources` |
+| 20 | **[#14082](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14082)** | DRAFT | `docs(controllerbuilder): backlog items from bulk resource generation (#14066)` |
+| 21 | **[#14072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14072)** | OPEN | `feat(apis): bulk-generate v1alpha1 types, identities, CRDs, and mappers for 19 in-flight GCP resources` |
+| 22 | **[#14054](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/14054)** | OPEN | `skills: add kcc-bulk-resource-generator orchestrator, generate, and verify skills` |
+| 23 | **[#13966](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13966)** | OPEN | `demo: bulk-generate types and identity for 9 non-GA greenfield resources (ces, discoveryengine, gdchardwaremanagement)` |
+| 24 | **[#13891](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13891)** | OPEN | `bulk-generate types and identity for 50 greenfield resources across 24 services` |
+| 25 | **[#13810](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13810)** | DRAFT | `demo: rerun the bulk generation flags with the per-Kind required split` |
+| 26 | **[#13797](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13797)** | DRAFT | `demo: turn on all bulk generation flags in aiplatform and saasservicemgmt` |
+| 27 | **[#13678](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13678)** | OPEN | `demo: add types for 9 greenfield resources using bulk generation flags` |
+| 28 | **[#13487](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13487)** | DRAFT | `docs: design proposal for deterministic generation of identity, references, fuzzers and controllers` |
+| 29 | **[#13394](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/13394)** | DRAFT | `docs: design proposal and runbook for deterministic CRD generation` |
+| 30 | **[#12737](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12737)** | DRAFT | `feat: post-processed bulk generated Greenfield CRDs across 99 services` |
+| 31 | **[#12682](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12682)** | DRAFT | `feat(controllerbuilder): generate root Spec/ObservedState from proto and infer parent from pattern` |
+| 32 | **[#12681](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12681)** | DRAFT | `docs: design proposal, benchmark evaluation, and learnings for bulk CRD generation` |
+| 33 | **[#12346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12346)** | DRAFT | `tests/apichecks: detect reference fields by classification, not prose` |
+| 34 | **[#12345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12345)** | DRAFT | `tests/apichecks: make missingrefs.txt a fail-closed ratchet` |
