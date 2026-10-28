@@ -214,9 +214,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptDeploymentGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Maximal intercept deployment group description",
-    "labels": {
-      "key-one": "value-one"
-    },
     "name": "projects/${projectId}/locations/global/interceptDeploymentGroups/interceptdg-max-${uniqueId}",
     "network": "projects/${projectId}/global/networks/${networkID}",
     "state": "ACTIVE",
@@ -323,10 +320,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptDeploymentGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description for maximal intercept deployment group",
-    "labels": {
-      "key-one": "value-one",
-      "key-two": "value-two"
-    },
     "name": "projects/${projectId}/locations/global/interceptDeploymentGroups/interceptdg-max-${uniqueId}",
     "network": "projects/${projectId}/global/networks/${networkID}",
     "state": "ACTIVE",

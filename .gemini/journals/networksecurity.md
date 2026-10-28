@@ -69,3 +69,13 @@
   4. Verified all tests pass with zero diff and re-reconciliation succeeds.
 - **Impact**: Enables hermetic and CI testing for `NetworkSecurityInterceptDeploymentGroup` against MockGCP.
 
+### [2026-10-28] MockGCP Log Alignment for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Aligning MockGCP logs with RealGCP for `NetworkSecurityInterceptDeploymentGroup` (Issue #14491).
+- **Details**:
+  1. Real GCP omits `labels` in the LRO Operation response body for `CreateInterceptDeploymentGroup` and `UpdateInterceptDeploymentGroup`. Updated MockGCP's LRO completion callbacks to set `result.Labels = nil`.
+  2. Formatted `AlreadyExists` errors in `CreateInterceptDeploymentGroup` to align with standard GCP error conventions (`Resource '%s' already exists`).
+  3. Documented proto3 zero-value behavior for `reconciling: false`.
+  4. Regenerated aligned `_http_mock.log` for `networksecurityinterceptdeploymentgroup-maximal`.
+- **Impact**: Aligns MockGCP behavior with Real GCP golden logs and ensures test fixtures and `TestGoldenLogAlignment` pass with zero discrepancies.
+
+
