@@ -61,6 +61,18 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 	var uniqueURLs []string
 	seen := make(map[string]bool)
 	for _, e := range h.Events.GetHTTPEvents() {
+		if e.Request.Method == "GRPC" && e.Response.Status == "OK" && strings.HasPrefix(e.Request.URL, "/google.bigtable.admin.v2.BigtableInstanceAdmin/Get") {
+			if reqBody := e.Request.ParseBody(); reqBody != nil {
+				if name, ok := reqBody["name"].(string); ok && strings.HasPrefix(name, "projects/") {
+					u := "https://bigtableadmin.googleapis.com/v2/" + name
+					if shouldProbeURL(u) && !seen[u] {
+						seen[u] = true
+						uniqueURLs = append(uniqueURLs, u)
+					}
+				}
+			}
+			continue
+		}
 		if e.Request.Method != "GET" || (e.Response.StatusCode != http.StatusOK && e.Response.StatusCode != http.StatusNotFound) {
 			continue
 		}
@@ -231,6 +243,9 @@ func emitCloudLoggingAuditMarker(ctx context.Context, t *testing.T, client *http
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
+	if project.ProjectID != "" {
+		req.Header.Set("X-Goog-User-Project", project.ProjectID)
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		t.Logf("Warning: failed to send Cloud Logging audit marker: %v", err)

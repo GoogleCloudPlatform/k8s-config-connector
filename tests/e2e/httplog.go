@@ -56,7 +56,7 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 			if r.Method == "GRPC" {
 				url := r.URL
 				switch url {
-				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
+				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
 					return true
 				}
 			}
