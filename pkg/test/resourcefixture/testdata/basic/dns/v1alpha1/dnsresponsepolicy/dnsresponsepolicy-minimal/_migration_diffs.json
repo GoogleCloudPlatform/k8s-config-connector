@@ -1,0 +1,68 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",
+    "fields": [
+      {
+        "id": "gkeClusters",
+        "old": [],
+        "new": null
+      },
+      {
+        "id": "responsePolicyName",
+        "old": "",
+        "new": "dnsresponsepolicy-test-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",
+    "fields": [
+      {
+        "id": "gkeClusters",
+        "old": [],
+        "new": null
+      },
+      {
+        "id": "responsePolicyName",
+        "old": "",
+        "new": "dnsresponsepolicy-test-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "DNSResponsePolicy/dnsresponsepolicy-test-${uniqueId}",
+    "fields": [
+      {
+        "id": "description",
+        "old": "",
+        "new": "A minimal DNS response policy"
+      },
+      {
+        "id": "networks.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "networks.0.network_url",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "response_policy_name",
+        "old": "",
+        "new": "dnsresponsepolicy-test-${uniqueId}"
+      }
+    ]
+  }
+]
