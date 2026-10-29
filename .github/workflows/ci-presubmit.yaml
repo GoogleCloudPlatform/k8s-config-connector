@@ -127,10 +127,17 @@ jobs:
     name: "fuzz-roundtrippers"
     runs-on: ubuntu-latest
     needs: fuzz-roundtrippers-matrix
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify fuzz-roundtrippers completion"
-        run: echo "All fuzz-roundtrippers matrix shards completed successfully."
+        run: |
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: fuzz-roundtrippers-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All fuzz-roundtrippers matrix shards completed successfully."
+        env:
+          MATRIX_RESULT: ${{ needs.fuzz-roundtrippers-matrix.result }}
 
   golangci-lint:
     runs-on: ubuntu-latest
@@ -416,40 +423,108 @@ jobs:
     name: "tests-e2e-fixtures-compute"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify compute shards completion"
-        run: echo "All compute fixture shards completed successfully."
+        run: |
+          if [[ "${PREPARE_RESULT}" != "success" ]]; then
+            echo "ERROR: prepare-test-matrix ended with result: ${PREPARE_RESULT}"
+            exit 1
+          fi
+          if [[ "${PRIORITY_RESULT}" != "success" && "${PRIORITY_RESULT}" != "skipped" ]]; then
+            echo "ERROR: priority-e2e-fixtures ended with result: ${PRIORITY_RESULT}"
+            exit 1
+          fi
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: tests-e2e-fixtures-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All compute fixture shards completed successfully."
+        env:
+          PREPARE_RESULT: ${{ needs.prepare-test-matrix.result }}
+          PRIORITY_RESULT: ${{ needs.priority-e2e-fixtures.result }}
+          MATRIX_RESULT: ${{ needs.tests-e2e-fixtures-matrix.result }}
 
   # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-sql (mostly a hack for branch protection)
   tests-e2e-fixtures-sql:
     name: "tests-e2e-fixtures-sql"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify sql shards completion"
-        run: echo "All sql fixture shards completed successfully."
+        run: |
+          if [[ "${PREPARE_RESULT}" != "success" ]]; then
+            echo "ERROR: prepare-test-matrix ended with result: ${PREPARE_RESULT}"
+            exit 1
+          fi
+          if [[ "${PRIORITY_RESULT}" != "success" && "${PRIORITY_RESULT}" != "skipped" ]]; then
+            echo "ERROR: priority-e2e-fixtures ended with result: ${PRIORITY_RESULT}"
+            exit 1
+          fi
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: tests-e2e-fixtures-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All sql fixture shards completed successfully."
+        env:
+          PREPARE_RESULT: ${{ needs.prepare-test-matrix.result }}
+          PRIORITY_RESULT: ${{ needs.priority-e2e-fixtures.result }}
+          MATRIX_RESULT: ${{ needs.tests-e2e-fixtures-matrix.result }}
 
   # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-container (mostly a hack for branch protection)
   tests-e2e-fixtures-container:
     name: "tests-e2e-fixtures-container"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify container shards completion"
-        run: echo "All container fixture shards completed successfully."
+        run: |
+          if [[ "${PREPARE_RESULT}" != "success" ]]; then
+            echo "ERROR: prepare-test-matrix ended with result: ${PREPARE_RESULT}"
+            exit 1
+          fi
+          if [[ "${PRIORITY_RESULT}" != "success" && "${PRIORITY_RESULT}" != "skipped" ]]; then
+            echo "ERROR: priority-e2e-fixtures ended with result: ${PRIORITY_RESULT}"
+            exit 1
+          fi
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: tests-e2e-fixtures-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All container fixture shards completed successfully."
+        env:
+          PREPARE_RESULT: ${{ needs.prepare-test-matrix.result }}
+          PRIORITY_RESULT: ${{ needs.priority-e2e-fixtures.result }}
+          MATRIX_RESULT: ${{ needs.tests-e2e-fixtures-matrix.result }}
 
   # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-bigquery (mostly a hack for branch protection)
   tests-e2e-fixtures-bigquery:
     name: "tests-e2e-fixtures-bigquery"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify bigquery shards completion"
-        run: echo "All bigquery fixture shards completed successfully."
+        run: |
+          if [[ "${PREPARE_RESULT}" != "success" ]]; then
+            echo "ERROR: prepare-test-matrix ended with result: ${PREPARE_RESULT}"
+            exit 1
+          fi
+          if [[ "${PRIORITY_RESULT}" != "success" && "${PRIORITY_RESULT}" != "skipped" ]]; then
+            echo "ERROR: priority-e2e-fixtures ended with result: ${PRIORITY_RESULT}"
+            exit 1
+          fi
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: tests-e2e-fixtures-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All bigquery fixture shards completed successfully."
+        env:
+          PREPARE_RESULT: ${{ needs.prepare-test-matrix.result }}
+          PRIORITY_RESULT: ${{ needs.priority-e2e-fixtures.result }}
+          MATRIX_RESULT: ${{ needs.tests-e2e-fixtures-matrix.result }}
 
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-${{ matrix.service }}"
@@ -597,10 +672,17 @@ jobs:
     name: "unit-tests"
     runs-on: ubuntu-latest
     needs: unit-tests-matrix
-    if: ${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.unit-tests-matrix.result, 'failure') }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify unit-tests completion"
-        run: echo "All unit-test matrix shards completed successfully."
+        run: |
+          if [[ "${MATRIX_RESULT}" != "success" && "${MATRIX_RESULT}" != "skipped" ]]; then
+            echo "ERROR: unit-tests-matrix ended with result: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          echo "All unit-test matrix shards completed successfully."
+        env:
+          MATRIX_RESULT: ${{ needs.unit-tests-matrix.result }}
 
   unit-tests-operator:
     runs-on: ubuntu-latest
