@@ -124,6 +124,11 @@ func dnsManagedZoneFuzzer() fuzztesting.KRMFuzzer_NoProto {
 }
 ```
 
+- **Spec-Only No-Proto Resources (No ObservedState or Status Fields):**
+  - If the resource does not have an `ObservedState` or status fields in its Status:
+    - Instantiate using `fuzztesting.NewKRMTypedSpecFuzzer_NoProto`, passing the zero-value API struct and the Spec FromAPI/ToAPI mappers.
+    - Register the fuzzer using `fuzztesting.RegisterKRMSpecFuzzer_NoProto` instead of `RegisterKRMFuzzer_NoProto`.
+
 ### 4. Register the Direct Package
 Ensure `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"` is imported in `pkg/controller/direct/register/register.go` so the fuzzer registers itself centrally.
 
