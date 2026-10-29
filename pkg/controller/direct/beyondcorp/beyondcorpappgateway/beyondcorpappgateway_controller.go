@@ -73,10 +73,6 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -239,9 +235,6 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	err = op.Wait(ctx)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return true, nil
-		}
 		return false, fmt.Errorf("waiting for deletion of BeyondCorpAppGateway %q: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted BeyondCorpAppGateway", "name", a.id.String())
