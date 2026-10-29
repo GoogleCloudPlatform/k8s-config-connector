@@ -324,7 +324,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		case "GET":
 			isReadOnly = true
 		case "POST":
-			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") {
+			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") || strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
 				isReadOnly = true
 			}
 		case "GRPC":
@@ -379,7 +379,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		case "GET":
 			isReadOnly = true
 		case "POST":
-			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") {
+			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") || strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
 				isReadOnly = true
 			}
 		case "GRPC":
