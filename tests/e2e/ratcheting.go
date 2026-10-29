@@ -101,7 +101,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "bigqueryconnection.cnrm.cloud.google.com", Kind: "BigQueryConnectionConnection"}:
 	case schema.GroupKind{Group: "bigquerydatapolicy.cnrm.cloud.google.com", Kind: "BigQueryDataPolicy"}:
 	case schema.GroupKind{Group: "bigquerydatapolicy.cnrm.cloud.google.com", Kind: "BigQueryDataPolicyDataPolicy"}:
-	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDatasetAccess"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		// In fullybigquerydataset, update.yaml updates isCaseInsensitive from true to false
 		// and defaultCollation from "und:ci" to "". When running with the fallback Terraform
