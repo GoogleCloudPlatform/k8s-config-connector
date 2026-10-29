@@ -3764,7 +3764,6 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.steps[].text" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.model" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.promptText" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].description" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].name" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].type" is not set in unstructured objects
@@ -3772,8 +3771,8 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.playbookType" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.referencedTools[]" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioExportPattern" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioFormat" is not set in unstructured objects
