@@ -106,6 +106,7 @@ func ConfigDeliveryReleaseObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.PublishTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPublishTime())
 	out.Info = ReleaseInfoObservedState_FromProto(mapCtx, in.GetInfo())
 	return out
@@ -118,6 +119,7 @@ func ConfigDeliveryReleaseObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.PublishTime = direct.StringTimestamp_ToProto(mapCtx, in.PublishTime)
 	out.Info = ReleaseInfoObservedState_ToProto(mapCtx, in.Info)
 	return out
@@ -128,7 +130,7 @@ func ConfigDeliveryReleaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Relea
 	}
 	out := &krm.ConfigDeliveryReleaseSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Lifecycle = direct.Enum_FromProto(mapCtx, in.GetLifecycle())
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.Info = ReleaseInfo_FromProto(mapCtx, in.GetInfo())
@@ -140,7 +142,7 @@ func ConfigDeliveryReleaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.Config
 	}
 	out := &pb.Release{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Lifecycle = direct.Enum_ToProto[pb.Release_Lifecycle](mapCtx, in.Lifecycle)
 	out.Version = direct.ValueOf(in.Version)
 	out.Info = ReleaseInfo_ToProto(mapCtx, in.Info)
