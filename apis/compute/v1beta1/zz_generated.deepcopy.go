@@ -4605,6 +4605,11 @@ func (in *ComputeManagedSSLCertificateStatus) DeepCopyInto(out *ComputeManagedSS
 		*out = new(int)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedState != nil {
 		in, out := &in.ObservedState, &out.ObservedState
 		*out = new(ComputeManagedSSLCertificateObservedState)

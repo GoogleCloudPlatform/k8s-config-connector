@@ -85,6 +85,10 @@ type ComputeManagedSSLCertificateStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	/* A unique specifier for the ComputeManagedSSLCertificate resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* The observed state of the underlying GCP resource. */
 	// +optional
 	ObservedState *ComputeManagedSSLCertificateObservedState `json:"observedState,omitempty"`

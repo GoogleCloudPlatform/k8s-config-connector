@@ -189,6 +189,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 observedState:
   certificateID: integer
@@ -253,6 +254,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Type is the type of the condition.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the ComputeManagedSSLCertificate resource in GCP.</p>
         </td>
     </tr>
     <tr>
