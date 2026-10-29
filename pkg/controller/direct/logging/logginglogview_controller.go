@@ -18,6 +18,14 @@ import (
 	"context"
 	"fmt"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
+	gcp "cloud.google.com/go/logging/apiv2"
+	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+	loggingapi "google.golang.org/api/logging/v2"
+	"google.golang.org/api/option"
+	expr "google.golang.org/genproto/googleapis/type/expr"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -25,11 +33,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-
-	gcp "cloud.google.com/go/logging/apiv2"
-	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -48,19 +51,6 @@ var _ directbase.Model = &modelLoggingLogView{}
 
 type modelLoggingLogView struct {
 	config config.ControllerConfig
-}
-
-func (m *modelLoggingLogView) client(ctx context.Context) (*gcp.ConfigClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building Logging Config client: %w", err)
-	}
-	return gcpClient, err
 }
 
 func (m *modelLoggingLogView) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -85,6 +75,11 @@ func (m *modelLoggingLogView) AdapterForObject(ctx context.Context, op *directba
 		return nil, err
 	}
 
+	loggingService, err := m.loggingService(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	mapCtx := &direct.MapContext{}
 	desiredPb := LoggingLogViewSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -92,11 +87,29 @@ func (m *modelLoggingLogView) AdapterForObject(ctx context.Context, op *directba
 	}
 	desiredPb.Name = id.String()
 
-	return &LoggingLogViewAdapter{
-		id:        id.(*krm.LoggingLogViewIdentity),
-		gcpClient: gcpClient,
-		desired:   desiredPb,
-	}, nil
+	return newLoggingLogViewAdapter(id.(*krm.LoggingLogViewIdentity), gcpClient, loggingService, desiredPb), nil
+}
+
+func (m *modelLoggingLogView) client(ctx context.Context) (*gcp.ConfigClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building Logging Config client: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *modelLoggingLogView) loggingService(ctx context.Context) (*loggingapi.Service, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	return loggingapi.NewService(ctx, opts...)
 }
 
 func (m *modelLoggingLogView) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -105,13 +118,24 @@ func (m *modelLoggingLogView) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type LoggingLogViewAdapter struct {
-	id        *krm.LoggingLogViewIdentity
-	gcpClient *gcp.ConfigClient
-	desired   *loggingpb.LogView
-	actual    *loggingpb.LogView
+	id             *krm.LoggingLogViewIdentity
+	gcpClient      *gcp.ConfigClient
+	loggingService *loggingapi.Service
+	desired        *loggingpb.LogView
+	actual         *loggingpb.LogView
+}
+
+func newLoggingLogViewAdapter(id *krm.LoggingLogViewIdentity, gcpClient *gcp.ConfigClient, loggingService *loggingapi.Service, desired *loggingpb.LogView) *LoggingLogViewAdapter {
+	return &LoggingLogViewAdapter{
+		id:             id,
+		gcpClient:      gcpClient,
+		loggingService: loggingService,
+		desired:        desired,
+	}
 }
 
 var _ directbase.Adapter = &LoggingLogViewAdapter{}
+var _ direct.IAMAdapter = &LoggingLogViewAdapter{}
 
 func (a *LoggingLogViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -182,6 +206,28 @@ func (a *LoggingLogViewAdapter) Update(ctx context.Context, updateOp *directbase
 	return a.updateStatus(ctx, updateOp, latest)
 }
 
+func compareView(ctx context.Context, actual, desired *loggingpb.LogView) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	var maskedActual *loggingpb.LogView
+	{
+		// A "trick" to only compare spec fields - round trip via the spec
+		mapCtx := &direct.MapContext{}
+		spec := LoggingLogViewSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+		maskedActual = LoggingLogViewSpec_ToProto(mapCtx, spec)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
+		}
+	}
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
 func (a *LoggingLogViewAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *loggingpb.LogView) error {
 	mapCtx := &direct.MapContext{}
 	status := LoggingLogViewStatus_FromProto(mapCtx, latest)
@@ -232,24 +278,124 @@ func (a *LoggingLogViewAdapter) Delete(ctx context.Context, deleteOp *directbase
 	return true, nil
 }
 
-func compareView(ctx context.Context, actual, desired *loggingpb.LogView) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	var maskedActual *loggingpb.LogView
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := LoggingLogViewSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = LoggingLogViewSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+func (a *LoggingLogViewAdapter) GetIAMPolicy(ctx context.Context) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot get iam policy for missing resource")
 	}
-	maskedActual.Name = desired.Name
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	resource := a.id.String()
+	req := &loggingapi.GetIamPolicyRequest{
+		Options: &loggingapi.GetPolicyOptions{
+			RequestedPolicyVersion: 3,
+		},
+	}
+	var policy *loggingapi.Policy
+	var err error
+	switch {
+	case a.id.Project != "":
+		policy, err = a.loggingService.Projects.Locations.Buckets.Views.GetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.Folder != "":
+		policy, err = a.loggingService.Folders.Locations.Buckets.Views.GetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.Organization != "":
+		policy, err = a.loggingService.Organizations.Locations.Buckets.Views.GetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.BillingAccount != "":
+		return nil, fmt.Errorf("billing accounts do not support IAM policy on LogViews: %q", resource)
+	default:
+		return nil, fmt.Errorf("unknown parent type for resource %q", resource)
+	}
 	if err != nil {
-		return nil, nil, err
+		return nil, fmt.Errorf("getting iam policy for %q: %w", resource, err)
 	}
-	return diffs, updateMask, nil
+	return convertPolicyAPIToIAMPB(policy), nil
+}
+
+func convertPolicyAPIToIAMPB(in *loggingapi.Policy) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{
+		Version: int32(in.Version),
+		Etag:    []byte(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		pbBinding := &iampb.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			pbBinding.Condition = &expr.Expr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+		out.Bindings = append(out.Bindings, pbBinding)
+	}
+	return out
+}
+
+func (a *LoggingLogViewAdapter) SetIAMPolicy(ctx context.Context, policy *iampb.Policy) (*iampb.Policy, error) {
+	if a.id == nil {
+		return nil, fmt.Errorf("cannot set iam policy for missing resource")
+	}
+	if policy == nil {
+		return nil, fmt.Errorf("policy cannot be nil")
+	}
+	resource := a.id.String()
+	req := &loggingapi.SetIamPolicyRequest{
+		Policy: convertPolicyIAMPBToAPI(policy),
+	}
+	var newPolicy *loggingapi.Policy
+	var err error
+	switch {
+	case a.id.Project != "":
+		newPolicy, err = a.loggingService.Projects.Locations.Buckets.Views.SetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.Folder != "":
+		newPolicy, err = a.loggingService.Folders.Locations.Buckets.Views.SetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.Organization != "":
+		newPolicy, err = a.loggingService.Organizations.Locations.Buckets.Views.SetIamPolicy(resource, req).Context(ctx).Do()
+	case a.id.BillingAccount != "":
+		return nil, fmt.Errorf("billing accounts do not support IAM policy on LogViews: %q", resource)
+	default:
+		return nil, fmt.Errorf("unknown parent type for resource %q", resource)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("setting iam policy for %q: %w", resource, err)
+	}
+	return convertPolicyAPIToIAMPB(newPolicy), nil
+}
+
+func convertPolicyIAMPBToAPI(in *iampb.Policy) *loggingapi.Policy {
+	if in == nil {
+		return nil
+	}
+	version := int64(in.Version)
+	hasCondition := false
+	out := &loggingapi.Policy{
+		Etag: string(in.Etag),
+	}
+	for _, b := range in.Bindings {
+		apiBinding := &loggingapi.Binding{
+			Role:    b.Role,
+			Members: b.Members,
+		}
+		if b.Condition != nil {
+			hasCondition = true
+			apiBinding.Condition = &loggingapi.Expr{
+				Expression:  b.Condition.Expression,
+				Title:       b.Condition.Title,
+				Description: b.Condition.Description,
+				Location:    b.Condition.Location,
+			}
+		}
+		out.Bindings = append(out.Bindings, apiBinding)
+	}
+	if hasCondition && version < 3 {
+		version = 3
+	}
+	out.Version = version
+	if len(out.Bindings) == 0 {
+		out.ForceSendFields = append(out.ForceSendFields, "Bindings")
+	}
+	return out
 }

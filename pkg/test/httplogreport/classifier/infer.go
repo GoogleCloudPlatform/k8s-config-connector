@@ -463,6 +463,9 @@ func matchesDepTokenInURLOrBody(e *logparser.Entry, uPath, depName string, dep, 
 	}
 	suffix := uPath[idx+len(depName):]
 	if suffix == "" || suffix == "/" || strings.HasPrefix(suffix, ":") {
+		if isIAMPrimary && (strings.HasPrefix(suffix, ":setIamPolicy") || strings.HasPrefix(suffix, ":getIamPolicy") || strings.HasPrefix(suffix, ":testIamPermissions")) {
+			return false
+		}
 		return true
 	}
 	if strings.HasPrefix(suffix, "/operations") || strings.HasPrefix(suffix, "/locations") || strings.HasPrefix(suffix, "/regions") || strings.HasPrefix(suffix, "/zones") || strings.HasPrefix(suffix, "/global") {

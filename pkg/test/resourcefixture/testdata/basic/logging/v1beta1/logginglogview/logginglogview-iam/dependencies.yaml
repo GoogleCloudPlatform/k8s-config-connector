@@ -1,0 +1,34 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: sa-${uniqueId}
+spec:
+  displayName: SA for LoggingLogView IAM test
+---
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: logginglogbucket-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: "global"
+  description: "A sample log bucket"
+  locked: false
+  retentionDays: 30
+---
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: logginglogview-${uniqueId}
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "A project-level log view"
+  filter: "LOG_ID(\"stdout\")"
