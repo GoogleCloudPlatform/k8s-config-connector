@@ -56,7 +56,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPIConfig"}:
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPI"}:
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayGateway"}:
-	case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeAddonsConfig"}:
 	case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeEndpointAttachment"}:
 	case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeEnvgroupAttachment"}:
 	case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeEnvgroup"}:
