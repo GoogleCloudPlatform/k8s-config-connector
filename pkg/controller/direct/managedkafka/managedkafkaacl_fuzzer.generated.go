@@ -41,9 +41,9 @@ func managedKafkaACLFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".acl_entries")
-	f.SpecField(".etag")
 
 	// Status fields
+	f.StatusField(".etag")
 	f.StatusField(".pattern_type")
 	f.StatusField(".resource_name")
 	f.StatusField(".resource_type")
