@@ -627,6 +627,14 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "billingAccount")
 		delete(v, "resourceSettings")
 
+		// ConnectorsConnection specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "billingConfig")
+		delete(v, "connectionRevision")
+		delete(v, "connectorVersionInfraConfig")
+		delete(v, "connectorVersionLaunchStage")
+		delete(v, "host")
+		delete(v, "tlsServiceDirectory")
+
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
 			delete(v, "displayName")

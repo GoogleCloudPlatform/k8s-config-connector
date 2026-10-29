@@ -23,6 +23,7 @@ var allServices = []string{
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
+	"connectors.googleapis.com",
 	"dataflow.googleapis.com",
 	"firebase.googleapis.com",
 	"firebasehosting.googleapis.com",
