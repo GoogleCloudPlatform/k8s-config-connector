@@ -17,66 +17,100 @@ package ha
 import (
 	"bytes"
 	"context"
-	"fmt"
+	"slices"
 	"strings"
 	"testing"
 	"time"
 
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
-	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type fakeOutputRunner struct {
-	responses map[string]string
-	errors    map[string]error
+func TestStatusValidateNormalizesFields(t *testing.T) {
+	opts := newStatusOptions()
+	opts.contexts = []string{" cluster-a ", " cluster-b"}
+	opts.bucket = "gs://my-ha-bucket/"
+
+	err := opts.validate()
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	wantContexts := []string{"cluster-a", "cluster-b"}
+	if !slices.Equal(opts.contexts, wantContexts) {
+		t.Fatalf("got contexts %v, want %v", opts.contexts, wantContexts)
+	}
+	if opts.bucket != "my-ha-bucket" {
+		t.Fatalf("got bucket %q, want %q", opts.bucket, "my-ha-bucket")
+	}
 }
 
-func (f *fakeOutputRunner) output(_ context.Context, name string, args ...string) (string, error) {
-	cmd := name + " " + strings.Join(args, " ")
-	if f.errors != nil {
-		if err, ok := f.errors[cmd]; ok {
-			return "", err
-		}
+func TestStatusValidateErrors(t *testing.T) {
+	tests := []struct {
+		name     string
+		contexts []string
+		bucket   string
+		wantErr  string
+	}{
+		{
+			name:     "fewer than 2 contexts",
+			contexts: []string{"cluster-a"},
+			wantErr:  "at least 2 cluster contexts must be specified via --contexts",
+		},
+		{
+			name:     "duplicate contexts",
+			contexts: []string{"cluster-a", "cluster-a"},
+			wantErr:  "duplicate context \"cluster-a\" specified in --contexts",
+		},
+		{
+			name:     "invalid bucket name syntax",
+			contexts: []string{"cluster-a", "cluster-b"},
+			bucket:   "INVALID_BUCKET!",
+			wantErr:  "invalid GCS bucket name \"INVALID_BUCKET!\"; bucket names must be 3-63 characters of lowercase letters, numbers, '-', '_', or '.', starting and ending with a letter or number",
+		},
 	}
-	if f.responses != nil {
-		if out, ok := f.responses[cmd]; ok {
-			return out, nil
-		}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			opts := newStatusOptions()
+			opts.contexts = slices.Clone(tc.contexts)
+			opts.bucket = tc.bucket
+
+			err := opts.validate()
+
+			if err == nil || err.Error() != tc.wantErr {
+				t.Fatalf("got error %v, want %q", err, tc.wantErr)
+			}
+		})
 	}
-	return "", fmt.Errorf("unexpected command %q", cmd)
 }
 
-func TestExecuteStatusHealthySetupWithAutoDiscoveredBucket(t *testing.T) {
+func TestExecuteStatusHealthyActivePassive(t *testing.T) {
 	now := time.Date(2026, 10, 28, 3, 0, 10, 0, time.UTC)
 	renewStr := "2026-10-28T03:00:05Z"
-	transitions := int32(2)
 	duration := int32(15)
-	leaderID := "cluster-a"
-	standbyID := "cluster-b"
+	transitions := int32(2)
+	leader := "cluster-a"
 	handleA := newFakeClusterHandle(
 		t,
 		"gke_proj_us-central1_cluster-a",
-		newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", leaderID),
-		newStatusMCLDeployment("my-ha-bucket"),
-		newStatusMultiClusterLease("cnrm-system", "kcc-multicluster-lease", leaderID, leaderID, renewStr, duration, transitions),
+		newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", "cluster-a"),
+		newStatusMultiClusterLease("cnrm-system", "kcc-multicluster-lease", "cluster-a", leader, renewStr, duration, transitions),
 		newStatusKRMSyncer("cnrm-system", "krmsyncer-cluster", true, "dummy-secret", []metav1.Condition{
-			{Type: "Suspended", Status: metav1.ConditionTrue, Reason: "LeaderSuspended", Message: "Syncer suspended on leader"},
+			{Type: "Suspended", Status: metav1.ConditionTrue, Reason: "Suspended"},
 		}),
-		newPeerKubeconfigSecret("cnrm-system", standbyID),
+		newStatusMCLDeployment("my-ha-bucket"),
 	)
 	handleB := newFakeClusterHandle(
 		t,
 		"gke_proj_us-east1_cluster-b",
-		newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", standbyID),
-		newStatusMCLDeployment("my-ha-bucket"),
-		newStatusMultiClusterLease("cnrm-system", "kcc-multicluster-lease", standbyID, leaderID, renewStr, duration, transitions),
-		newStatusKRMSyncer("cnrm-system", "krmsyncer-cluster", false, leaderID, []metav1.Condition{
-			{Type: "Active", Status: metav1.ConditionTrue, Reason: "Reconciling", Message: "Pulling from leader"},
+		newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", "cluster-b"),
+		newStatusMultiClusterLease("cnrm-system", "kcc-multicluster-lease", "cluster-b", leader, renewStr, duration, transitions),
+		newStatusKRMSyncer("cnrm-system", "krmsyncer-cluster", false, "cluster-a", []metav1.Condition{
+			{Type: "Active", Status: metav1.ConditionTrue, Reason: "Syncing"},
 		}),
-		newPeerKubeconfigSecret("cnrm-system", leaderID),
 	)
 	outRunner := &fakeOutputRunner{
 		responses: map[string]string{
@@ -93,23 +127,35 @@ func TestExecuteStatusHealthySetupWithAutoDiscoveredBucket(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	got := stdout.String()
-	for _, wantSnippet := range []string{
+	wantOutput := strings.Join([]string{
 		"=== GCS Lock Status ===",
 		"Bucket:      gs://my-ha-bucket",
+		"Lock Object: gs://my-ha-bucket/leases/cnrm-system/kcc-multicluster-lease",
 		"Leader:      cluster-a",
 		"Renew Age:   5s (renewed at 2026-10-28T03:00:05Z, transitions: 2)",
+		"",
+		"=== Cluster HA Status ===",
 		"Context:            gke_proj_us-central1_cluster-a",
-		"Role:             LEADER",
-		"Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: true, source: dummy-secret, health: Suspended=True, errors: none)",
+		"  Candidate ID:     cluster-a",
+		"  Lease:            cnrm-system/kcc-multicluster-lease (replication: Status)",
+		"  Role:             LEADER",
+		"  Observed Leader:  cluster-a",
+		"  Renew Age:        5s (renewed at 2026-10-28T03:00:05Z, transitions: 2)",
+		"  Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: true, source: dummy-secret, health: Suspended=True, errors: none)",
 		"Context:            gke_proj_us-east1_cluster-b",
-		"Role:             STANDBY",
-		"Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: false, source: cluster-a, health: Active=True, errors: none)",
-		"=== Warnings ===\nNone",
-	} {
-		if !strings.Contains(got, wantSnippet) {
-			t.Fatalf("expected status output to contain %q, got:\n%s", wantSnippet, got)
-		}
+		"  Candidate ID:     cluster-b",
+		"  Lease:            cnrm-system/kcc-multicluster-lease (replication: Status)",
+		"  Role:             STANDBY",
+		"  Observed Leader:  cluster-a",
+		"  Renew Age:        5s (renewed at 2026-10-28T03:00:05Z, transitions: 2)",
+		"  Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: false, source: cluster-a, health: Active=True, errors: none)",
+		"",
+		"=== Warnings ===",
+		"None",
+		"",
+	}, "\n")
+	if got := stdout.String(); got != wantOutput {
+		t.Fatalf("got output:\n%s\nwant:\n%s", got, wantOutput)
 	}
 }
 
@@ -154,42 +200,44 @@ func TestExecuteStatusWarnings(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	got := stdout.String()
-	for _, wantWarning := range []string{
-		"extra lease keys found in gs://my-ha-bucket: [leases/cnrm-system/lease-b]",
-		"mismatched leaseName across clusters",
-		"missing peer kubeconfig Secret \"cnrm-system/cluster-b\"",
-		"missing peer kubeconfig Secret \"cnrm-system/cluster-a\"",
-		"stale MultiClusterLease status on cluster \"gke_proj_us-central1_cluster-a\"",
-		"stale GCS lock \"gs://my-ha-bucket/leases/cnrm-system/lease-a\"",
-		"KRMSyncer \"cnrm-system/krmsyncer-cluster\" reported error condition InvalidRule=True (RuleValidationFailed): unknown GVK in rule 0",
-		"clusters disagree on global leader",
-		"multiple clusters report role LEADER simultaneously",
-	} {
-		if !strings.Contains(got, wantWarning) {
-			t.Fatalf("expected status output to contain warning %q, got:\n%s", wantWarning, got)
-		}
-	}
-}
-
-func newStatusMCLDeployment(bucket string) *appsv1.Deployment {
-	return &appsv1.Deployment{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      mclDeploymentName,
-			Namespace: cnrmSystemNamespace,
-		},
-		Spec: appsv1.DeploymentSpec{
-			Template: corev1.PodTemplateSpec{
-				Spec: corev1.PodSpec{
-					Containers: []corev1.Container{
-						{
-							Name:    "manager",
-							Command: []string{mclBinaryPath, "--gcs-bucket=" + bucket},
-						},
-					},
-				},
-			},
-		},
+	wantOutput := strings.Join([]string{
+		"=== GCS Lock Status ===",
+		"Bucket:      gs://my-ha-bucket",
+		"Lock Object: gs://my-ha-bucket/leases/cnrm-system/lease-a",
+		"Leader:      cluster-a",
+		"Renew Age:   5m0s (renewed at 2026-10-28T03:00:00Z, transitions: 1)",
+		"Extra Keys:  leases/cnrm-system/lease-b",
+		"",
+		"=== Cluster HA Status ===",
+		"Context:            gke_proj_us-central1_cluster-a",
+		"  Candidate ID:     cluster-a",
+		"  Lease:            cnrm-system/lease-a (replication: Status)",
+		"  Role:             LEADER",
+		"  Observed Leader:  cluster-a",
+		"  Renew Age:        5m0s (renewed at 2026-10-28T03:00:00Z, transitions: 1)",
+		"  Syncer:           cnrm-system/krmsyncer-cluster (mode: pull, suspended: false, source: cluster-b, health: InvalidRule=True, errors: InvalidRule=True (RuleValidationFailed): unknown GVK in rule 0)",
+		"Context:            gke_proj_us-east1_cluster-b",
+		"  Candidate ID:     cluster-b",
+		"  Lease:            cnrm-system/lease-b (replication: Status)",
+		"  Role:             LEADER",
+		"  Observed Leader:  cluster-b",
+		"  Renew Age:        5m0s (renewed at 2026-10-28T03:00:00Z, transitions: 1)",
+		"  Syncer:           <none>",
+		"",
+		"=== Warnings ===",
+		"- stale MultiClusterLease status on cluster \"gke_proj_us-central1_cluster-a\": leader \"cluster-a\" last renewed 5m0s ago (at 2026-10-28T03:00:00Z, staleness threshold 30s)",
+		"- cluster \"gke_proj_us-central1_cluster-a\" KRMSyncer \"cnrm-system/krmsyncer-cluster\" reported error condition InvalidRule=True (RuleValidationFailed): unknown GVK in rule 0",
+		"- stale MultiClusterLease status on cluster \"gke_proj_us-east1_cluster-b\": leader \"cluster-b\" last renewed 5m0s ago (at 2026-10-28T03:00:00Z, staleness threshold 30s)",
+		"- mismatched leaseName across clusters (gke_proj_us-central1_cluster-a=\"lease-a\", gke_proj_us-east1_cluster-b=\"lease-b\"): set spec.experiments.multiClusterLease.leaseName to the same value on every cluster because the GCS lock object is leases/<namespace>/<leaseName>",
+		"- extra lease keys found in gs://my-ha-bucket: [leases/cnrm-system/lease-b] (expected only \"leases/cnrm-system/lease-a\"; clusters using different lease keys will elect multiple active leaders)",
+		"- stale GCS lock \"gs://my-ha-bucket/leases/cnrm-system/lease-a\": holder \"cluster-a\" last renewed 5m0s ago (at 2026-10-28T03:00:00Z, staleness threshold 30s)",
+		"- leader mismatch on cluster \"gke_proj_us-east1_cluster-b\": MultiClusterLease status.globalHolderIdentity is \"cluster-b\", but GCS lock holder is \"cluster-a\"",
+		"- clusters disagree on global leader (gke_proj_us-central1_cluster-a=\"cluster-a\", gke_proj_us-east1_cluster-b=\"cluster-b\")",
+		"- multiple clusters report role LEADER simultaneously: [gke_proj_us-central1_cluster-a (cluster-a), gke_proj_us-east1_cluster-b (cluster-b)]",
+		"",
+	}, "\n")
+	if got := stdout.String(); got != wantOutput {
+		t.Fatalf("got output:\n%s\nwant:\n%s", got, wantOutput)
 	}
 }
 
@@ -232,18 +280,6 @@ func newStatusKRMSyncer(namespace, name string, suspend bool, secretName string,
 		},
 		Status: syncerv1alpha1.KRMSyncerStatus{
 			Conditions: conditions,
-		},
-	}
-}
-
-func newPeerKubeconfigSecret(namespace, name string) *corev1.Secret {
-	return &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: namespace,
-			Name:      name,
-		},
-		Data: map[string][]byte{
-			kubeconfigSecretKey: []byte("apiVersion: v1\nkind: Config\n"),
 		},
 	}
 }
