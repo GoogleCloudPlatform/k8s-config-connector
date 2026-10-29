@@ -1,0 +1,123 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.ServerGeneratedIdentity = &WebSecurityScannerScanConfigIdentity{}
+	_ identity.Resource                = &WebSecurityScannerScanConfig{}
+)
+
+var WebSecurityScannerScanConfigIdentityFormat = gcpurls.Template[WebSecurityScannerScanConfigIdentity]("websecurityscanner.googleapis.com", "projects/{project}/scanConfigs/{scanConfig}")
+
+// WebSecurityScannerScanConfigIdentity is the identity of a GCP WebSecurityScannerScanConfig resource.
+// +k8s:deepcopy-gen=false
+type WebSecurityScannerScanConfigIdentity struct {
+	Project    string
+	ScanConfig string
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) HasIdentitySpecified() bool {
+	return i.ScanConfig != ""
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) String() string {
+	return WebSecurityScannerScanConfigIdentityFormat.ToString(*i)
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) ID() string {
+	return i.ScanConfig
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) FromExternal(ref string) error {
+	parsed, match, err := WebSecurityScannerScanConfigIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of WebSecurityScannerScanConfig external=%q was not known (use %s): %w", ref, WebSecurityScannerScanConfigIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of WebSecurityScannerScanConfig external=%q was not known (use %s)", ref, WebSecurityScannerScanConfigIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) Host() string {
+	return WebSecurityScannerScanConfigIdentityFormat.Host()
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
+func getIdentityFromWebSecurityScannerScanConfigSpec(ctx context.Context, reader client.Reader, obj *WebSecurityScannerScanConfig) (*WebSecurityScannerScanConfigIdentity, error) {
+	// For WebSecurityScannerScanConfig, resourceID is optional / server-generated.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &WebSecurityScannerScanConfigIdentity{
+		Project:    projectID,
+		ScanConfig: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *WebSecurityScannerScanConfig) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromWebSecurityScannerScanConfigSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &WebSecurityScannerScanConfigIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if specIdentity.ScanConfig == "" {
+			specIdentity.ScanConfig = statusIdentity.ScanConfig
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change WebSecurityScannerScanConfig identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}
+
+func (obj *WebSecurityScannerScanConfig) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
+}
