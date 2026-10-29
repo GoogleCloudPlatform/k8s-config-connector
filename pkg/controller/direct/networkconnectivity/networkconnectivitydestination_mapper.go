@@ -74,6 +74,7 @@ func NetworkConnectivityDestinationObservedState_FromProto(mapCtx *direct.MapCon
 	}
 	out := &krm.NetworkConnectivityDestinationObservedState{}
 	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Destination_DestinationEndpointObservedState_FromProto)
@@ -88,6 +89,7 @@ func NetworkConnectivityDestinationObservedState_ToProto(mapCtx *direct.MapConte
 	}
 	out := &networkconnectivitypb.Destination{}
 	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Destination_DestinationEndpointObservedState_ToProto)
@@ -102,8 +104,7 @@ func NetworkConnectivityDestinationSpec_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.NetworkConnectivityDestinationSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: ParentRef
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.IPPrefix = direct.LazyPtr(in.GetIpPrefix())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Destination_DestinationEndpoint_FromProto)
@@ -116,8 +117,7 @@ func NetworkConnectivityDestinationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &networkconnectivitypb.Destination{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: ParentRef
 	out.Description = direct.ValueOf(in.Description)
 	out.IpPrefix = direct.ValueOf(in.IPPrefix)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Destination_DestinationEndpoint_ToProto)
