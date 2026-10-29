@@ -305,7 +305,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSManagedZone"}:
 	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSPolicy"}:
 	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSRecordSet"}:
-	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSResponsePolicy"}:
 	case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSResponsePolicyRule"}:
 	case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessor"}:
 	case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorVersion"}:
