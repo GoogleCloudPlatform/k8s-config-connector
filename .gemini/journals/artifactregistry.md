@@ -10,3 +10,10 @@
 - **Solution**: The rule condition CEL expression, title, description, location, action, operation, and packageID are fully supported and round-tripped by GCP Artifact Registry v1 API without field loss on create or update. The controller operates via unary RPCs (`CreateRule`, `UpdateRule`, `DeleteRule`) rather than LROs.
 - **Impact**: Subsequent steps (MockGCP implementation and promotion) can reference the recorded golden fixtures covering both minimal and maximal configurations with all CEL condition fields.
 
+### [2026-10-29] MockGCP ArtifactRegistryRule implementation and test harness registration
+- **Context**: Implementing MockGCP support for `ArtifactRegistryRule` (Step 3).
+- **Problem**: `ArtifactRegistryRule` uses unary RPCs (`CreateRule`, `GetRule`, `UpdateRule`, `DeleteRule`, `ListRules`) on `ArtifactRegistryServer`. When running E2E mock tests, `ArtifactRegistryRule` was initially skipped by `harness.go` because its GroupKind was not registered in `MaybeSkip`.
+- **Solution**: Implemented unary CRUD methods in `mockartifactregistry/artifactregistryrule.go`, supported `ruleName` parsing in `mockartifactregistry/names.go`, cleaned up child rules on `DeleteRepository`, and registered `schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRule"}` in `config/tests/samples/create/harness.go`.
+- **Impact**: Fixture tests for `ArtifactRegistryRule` can now run hermetically in MockGCP during CI presubmit.
+
+
