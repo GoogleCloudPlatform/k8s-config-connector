@@ -648,6 +648,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "publicKey")
 		}
 
+		// Cloud KMS Encrypt specific fields (ciphertext and ciphertextCrc32c are dynamically generated per encryption)
+		if _, ok := v["ciphertext"]; ok {
+			delete(v, "ciphertext")
+			delete(v, "ciphertextCrc32c")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
