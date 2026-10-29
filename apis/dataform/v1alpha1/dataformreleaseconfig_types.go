@@ -20,7 +20,9 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +33,14 @@ var DataformReleaseConfigGVK = GroupVersion.WithKind("DataformReleaseConfig")
 // +kcc:spec:proto=google.cloud.dataform.v1.ReleaseConfig
 // +kcc:required-from-proto
 type DataformReleaseConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DataformRepository this DataformReleaseConfig is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *dataformv1beta1.DataformRepositoryRef `json:"parentRef"`
 
 	// The DataformReleaseConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Git commit/tag/branch name at which the repository should be
 	//  compiled. Must exist in the remote repository. Examples:
 	//  - a commit SHA: `12ade345`
@@ -73,11 +75,74 @@ type DataformReleaseConfigSpec struct {
 	//  release config. Must be in the format
 	//  `projects/*/locations/*/repositories/*/compilationResults/*`.
 	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.release_compilation_result
-	ReleaseCompilationResult *string `json:"releaseCompilationResult,omitempty"`
+	ReleaseCompilationResultRef *DataformCompilationResultRef `json:"releaseCompilationResultRef,omitempty"`
 
 	// Optional. Disables automatic creation of compilation results.
 	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.disabled
 	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.CodeCompilationConfig
+type CodeCompilationConfig struct {
+	// Optional. The default database (Google Cloud project ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_database
+	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_schema
+	DefaultSchema *string `json:"defaultSchema,omitempty"`
+
+	// Optional. The default BigQuery location to use. Defaults to "US".
+	//  See the BigQuery docs for a full list of locations:
+	//  https://cloud.google.com/bigquery/docs/locations.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_location
+	DefaultLocation *string `json:"defaultLocation,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID) for assertions.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.assertion_schema
+	AssertionSchema *string `json:"assertionSchema,omitempty"`
+
+	// Optional. User-defined variables that are made available to project code
+	//  during compilation.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.vars
+	Vars map[string]string `json:"vars,omitempty"`
+
+	// Optional. The suffix that should be appended to all database (Google Cloud
+	//  project ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.database_suffix
+	DatabaseSuffix *string `json:"databaseSuffix,omitempty"`
+
+	// Optional. The suffix that should be appended to all schema (BigQuery
+	//  dataset ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.schema_suffix
+	SchemaSuffix *string `json:"schemaSuffix,omitempty"`
+
+	// Optional. The prefix that should be prepended to all table names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.table_prefix
+	TablePrefix *string `json:"tablePrefix,omitempty"`
+
+	// Optional. The prefix to prepend to built-in assertion names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.builtin_assertion_name_prefix
+	BuiltinAssertionNamePrefix *string `json:"builtinAssertionNamePrefix,omitempty"`
+
+	// Optional. The default notebook runtime options.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_notebook_runtime_options
+	DefaultNotebookRuntimeOptions *NotebookRuntimeOptions `json:"defaultNotebookRuntimeOptions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.NotebookRuntimeOptions
+type NotebookRuntimeOptions struct {
+	// Optional. The Google Cloud Storage location to upload the result to.
+	//  Format: `gs://bucket-name`.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.gcs_output_bucket
+	GCSOutputBucketRef *storagev1beta1.StorageBucketRef `json:"gcsOutputBucketRef,omitempty"`
+
+	// Optional. The resource name of the [Colab runtime template]
+	//  (https://cloud.google.com/colab/docs/runtimes), from which a runtime is
+	//  created for notebook executions. If not specified, a runtime is created
+	//  with Colab's default specifications.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.ai_platform_notebook_runtime_template
+	AiPlatformNotebookRuntimeTemplateRef *aiplatformv1alpha1.AIPlatformNotebookRuntimeTemplateRef `json:"aiPlatformNotebookRuntimeTemplateRef,omitempty"`
 }
 
 // DataformReleaseConfigStatus defines the config connector machine state of DataformReleaseConfig

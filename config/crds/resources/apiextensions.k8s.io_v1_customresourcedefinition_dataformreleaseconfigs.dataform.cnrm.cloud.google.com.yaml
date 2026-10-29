@@ -91,17 +91,69 @@ spec:
                   defaultNotebookRuntimeOptions:
                     description: Optional. The default notebook runtime options.
                     properties:
-                      aiPlatformNotebookRuntimeTemplate:
+                      aiPlatformNotebookRuntimeTemplateRef:
                         description: Optional. The resource name of the [Colab runtime
                           template] (https://cloud.google.com/colab/docs/runtimes),
                           from which a runtime is created for notebook executions.
                           If not specified, a runtime is created with Colab's default
                           specifications.
-                        type: string
-                      gcsOutputBucket:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed AIPlatformNotebookRuntimeTemplate
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookRuntimeTemplateID}}".
+                            type: string
+                          name:
+                            description: The name of a AIPlatformNotebookRuntimeTemplate
+                              resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a AIPlatformNotebookRuntimeTemplate
+                              resource.
+                            type: string
+                        type: object
+                      gcsOutputBucketRef:
                         description: 'Optional. The Google Cloud Storage location
                           to upload the result to. Format: `gs://bucket-name`.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                     type: object
                   defaultSchema:
                     description: Optional. The default schema (BigQuery dataset ID).
@@ -134,11 +186,9 @@ spec:
                   should be compiled. Must exist in the remote repository. Examples:
                   - a commit SHA: `12ade345` - a tag: `tag1` - a branch name: `branch1`'
                 type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DataformRepository this DataformReleaseConfig is
+                  created under.
                 oneOf:
                 - not:
                     required:
@@ -155,21 +205,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataformRepository
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataformRepository resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataformRepository resource.
                     type: string
                 type: object
-              releaseCompilationResult:
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              releaseCompilationResultRef:
                 description: Optional. The name of the currently released compilation
                   result for this release config. This value is updated when a compilation
                   result is automatically created from this release config (using
@@ -177,7 +226,12 @@ spec:
                   to roll back to an earlier release). The compilation result must
                   have been created using this release config. Must be in the format
                   `projects/*/locations/*/repositories/*/compilationResults/*`.
-                type: string
+                properties:
+                  external:
+                    description: A reference to an externally managed DataformCompilationResult
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}/compilationResults/{{compilationResultID}}".
+                    type: string
+                type: object
               resourceID:
                 description: The DataformReleaseConfig name. If not given, the metadata.name
                   will be used.
@@ -190,8 +244,7 @@ spec:
                 type: string
             required:
             - gitCommitish
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DataformReleaseConfigStatus defines the config connector

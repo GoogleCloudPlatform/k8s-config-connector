@@ -25,56 +25,76 @@ entries:
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged DataformReleaseConfig; modelled child parentRef to DataformRepository, added references for releaseCompilationResult, gcsOutputBucket, and aiPlatformNotebookRuntimeTemplate, and resolved all queue entries
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on DataformReleaseConfigSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*dataformv1beta1.DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*dataformv1beta1.DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.assertionSchema
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string name used for assertions during compilation; not a GCP resource reference
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.defaultDatabase
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Google Cloud project ID string used as default database during compilation; not a GCP resource reference
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.defaultNotebookRuntimeOptions.aiPlatformNotebookRuntimeTemplate
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/NotebookRuntimeTemplate (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to aiPlatformNotebookRuntimeTemplateRef (*aiplatformv1alpha1.AIPlatformNotebookRuntimeTemplateRef)
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.defaultNotebookRuntimeOptions.gcsOutputBucket
     reason: possible-reference-by-description
     detail: the field name has bucket and the description mentions Cloud Storage
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to gcsOutputBucketRef (*storagev1beta1.StorageBucketRef)
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.codeCompilationConfig.defaultSchema
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string name used as default schema during compilation; not a GCP resource reference
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*dataformv1beta1.DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformReleaseConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.releaseCompilationResult
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dataform.googleapis.com/CompilationResult (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to releaseCompilationResultRef (*DataformCompilationResultRef)
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -1821,8 +1821,8 @@
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.databaseSuffix" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultDatabase" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultLocation" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultNotebookRuntimeOptions.aiPlatformNotebookRuntimeTemplate" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultNotebookRuntimeOptions.gcsOutputBucket" is not set in unstructured objects
+[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultNotebookRuntimeOptions.aiPlatformNotebookRuntimeTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultNotebookRuntimeOptions.gcsOutputBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.defaultSchema" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.schemaSuffix" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeCompilationConfig.tablePrefix" is not set in unstructured objects
@@ -1830,9 +1830,8 @@
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cronSchedule" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitCommitish" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseCompilationResult" is not set in unstructured objects
+[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseCompilationResultRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cronSchedule" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects

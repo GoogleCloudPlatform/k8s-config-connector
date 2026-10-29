@@ -55,10 +55,6 @@ func dataformReleaseConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 
 	// Unimplemented / Not Yet Triaged fields
-	f.Unimplemented_NotYetTriaged(".code_compilation_config.default_notebook_runtime_options.gcs_output_bucket")
-	f.Unimplemented_NotYetTriaged(".code_compilation_config.default_notebook_runtime_options.gcs_repository_snapshot_destination")
-	f.Unimplemented_NotYetTriaged(".code_compilation_config.lineage_enabled")
-	f.Unimplemented_NotYetTriaged(".code_compilation_config.pipeline_config")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_release_records[].compilation_result")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_release_records[].error_status.details")
 

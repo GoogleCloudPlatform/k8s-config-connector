@@ -21,6 +21,8 @@
 [naming_violation] file=apis/connector/v1/provider_identity_test.go prefix=provider (expected a valid resource kind prefix)
 [naming_violation] file=apis/connector/v1/provider_reference.go prefix=provider (expected a valid resource kind prefix)
 [naming_violation] file=apis/dataflow/v1beta1/flextemplateruntimeenvironment_types.go prefix=flextemplateruntimeenvironment (expected a valid resource kind prefix)
+[naming_violation] file=apis/dataform/v1alpha1/dataformcompilationresult_identity.go prefix=dataformcompilationresult (expected a valid resource kind prefix)
+[naming_violation] file=apis/dataform/v1alpha1/dataformcompilationresult_reference.go prefix=dataformcompilationresult (expected a valid resource kind prefix)
 [naming_violation] file=apis/dataplex/v1alpha1/recursive_types.go prefix=recursive (expected a valid resource kind prefix)
 [naming_violation] file=apis/dialogflow/v1alpha1/recursive_types.go prefix=recursive (expected a valid resource kind prefix)
 [naming_violation] file=apis/firestore/v1alpha1/collectiongroup_identity.go prefix=collectiongroup (expected a valid resource kind prefix)
