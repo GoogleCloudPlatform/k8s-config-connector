@@ -79,6 +79,10 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// Re-reconciliation will be verified once migrated to the direct controller.
 		return false
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineStandardAppVersion"}:
+		// The legacy Terraform provider for google_app_engine_standard_app_version does not read back
+		// or persist `deployment` into state during Read() (it is missing flattenAppEngineStandardAppVersionDeployment).
+		// Consequently, during re-reconciliation, Terraform detects a diff on `deployment.0.files` and triggers an update.
+		return false
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubApplication"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredService"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredWorkload"}:
