@@ -1,0 +1,54 @@
+175c175
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}:encrypt?alt=json
+---
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}:encrypt?%24alt=json%3Benum-encoding%3Dint
+179a180
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}",
+194,195c195,196
+<   "ciphertext": "CiQAYkT6k4FJqafyAEPsI4bxTxZBmfjJtD8LLBlKz3jtdW7uDVMSNwCRybm39vb01xR1fpVd5AD1ijbQGaIwL55RQ/tjUN6Wyk8OJ3+Z6s/dDv9/1z8Kexom0nz2KeA=",
+<   "ciphertextCrc32c": "1828092853",
+---
+>   "ciphertext": "CiQAJCSQOyRJrmKWig0HwqyUAE+E51Np7bAPkAt3aTAo2Wl9PDISNwD8eCQ7zbv5tsl8zLZTr4IJ6hP5ir/XPNekQJCB4b+jgWt2TdJf4EXTrnPNl0QapbqYz5kuoMM=",
+>   "ciphertextCrc32c": "1202010910",
+197c198,236
+<   "protectionLevel": "SOFTWARE"
+---
+>   "protectionLevel": 1
+> }
+> 
+> ---
+> 
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "destroyScheduledDuration": "2592000s",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}",
+>   "primary": {
+>     "algorithm": 1,
+>     "createTime": "2024-04-01T12:34:56.123456Z",
+>     "generateTime": "2024-04-01T12:34:56.123456Z",
+>     "name": "projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}/cryptoKeyVersions/1",
+>     "protectionLevel": 1,
+>     "state": 1
+>   },
+>   "purpose": 1,
+>   "versionTemplate": {
+>     "algorithm": 1,
+>     "protectionLevel": 1
+>   }
