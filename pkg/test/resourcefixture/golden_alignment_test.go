@@ -1156,6 +1156,10 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${diskID}"}
 	case "ComputeInstance":
 		return []string{"${instanceID}"}
+	case "ComputeInstanceTemplate":
+		return []string{"${instanceTemplateID}"}
+	case "ComputeInstanceGroupManager":
+		return []string{"${instanceGroupManagerID}"}
 	case "ComputeHealthCheck":
 		return []string{"${healthCheckID}"}
 	case "ComputeBackendService":
