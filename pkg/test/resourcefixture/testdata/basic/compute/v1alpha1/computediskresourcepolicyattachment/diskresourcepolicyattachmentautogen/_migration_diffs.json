@@ -20,11 +20,6 @@
         "new": ""
       },
       {
-        "id": "image",
-        "old": "",
-        "new": "debian-cloud/debian-11"
-      },
-      {
         "id": "label_fingerprint",
         "old": "",
         "new": ""
