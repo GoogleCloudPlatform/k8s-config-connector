@@ -1629,10 +1629,6 @@
 [missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.preservedState.internalIp[].autoDelete" is not set in unstructured objects
 [missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.preservedState.internalIp[].interfaceName" is not set in unstructured objects
 [missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.preservedState.internalIp[].ipAddress.address" is not set in unstructured objects
-[missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.preservedState.metadata" is not set in unstructured objects
-[missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
-[missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionInstanceGroupManagerRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.removeInstanceStateOnDestroy" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.customFeatures[]" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

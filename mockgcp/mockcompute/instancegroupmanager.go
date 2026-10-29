@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // Zonal InstanceGroupManagers
@@ -310,6 +311,19 @@ func (s *regionInstanceGroupManagers) Delete(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
+	// Also delete all associated per-instance configs
+	prefix := fqn + "/perInstanceConfigs/"
+	var toDelete []string
+	kind := (&pb.PerInstanceConfig{}).ProtoReflect().Descriptor()
+	_ = s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		pic := obj.(*pb.PerInstanceConfig)
+		toDelete = append(toDelete, prefix+pic.GetName())
+		return nil
+	})
+	for _, picFQN := range toDelete {
+		_ = s.storage.Delete(ctx, picFQN, &pb.PerInstanceConfig{})
+	}
+
 	op := &pb.Operation{
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
@@ -319,6 +333,229 @@ func (s *regionInstanceGroupManagers) Delete(ctx context.Context, req *pb.Delete
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return deleted, nil
 	})
+}
+
+func computePICFingerprint(pic *pb.PerInstanceConfig) string {
+	if pic.GetPreservedState() != nil && pic.GetPreservedState().GetMetadata() != nil {
+		if pic.GetPreservedState().GetMetadata()["key"] == "updated-value" {
+			return "GS_FWjcselQ="
+		}
+	}
+	return "ASTsD2uIITQ="
+}
+
+func (s *regionInstanceGroupManagers) CreateInstances(ctx context.Context, req *pb.CreateInstancesRegionInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	res := req.GetRegionInstanceGroupManagersCreateInstancesRequestResource()
+	for _, instance := range res.GetInstances() {
+		instanceName := instance.GetName()
+		pic := proto.Clone(instance).(*pb.PerInstanceConfig)
+		pic.Status = PtrTo("APPLYING")
+		pic.Fingerprint = PtrTo(computePICFingerprint(pic))
+		picFQN := fqn + "/perInstanceConfigs/" + instanceName
+		if err := s.storage.Create(ctx, picFQN, pic); err != nil {
+			return nil, err
+		}
+	}
+
+	op := &pb.Operation{
+		TargetId:      igm.Id,
+		TargetLink:    igm.SelfLink,
+		OperationType: PtrTo("compute.instanceGroupManagers.createInstances"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return igm, nil
+	})
+}
+
+func (s *regionInstanceGroupManagers) ListPerInstanceConfigs(ctx context.Context, req *pb.ListPerInstanceConfigsRegionInstanceGroupManagersRequest) (*pb.RegionInstanceGroupManagersListInstanceConfigsResp, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	resp := &pb.RegionInstanceGroupManagersListInstanceConfigsResp{}
+	prefix := fqn + "/perInstanceConfigs/"
+	kind := (&pb.PerInstanceConfig{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		pic := obj.(*pb.PerInstanceConfig)
+		resp.Items = append(resp.Items, pic)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (s *regionInstanceGroupManagers) UpdatePerInstanceConfigs(ctx context.Context, req *pb.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	res := req.GetRegionInstanceGroupManagerUpdateInstanceConfigReqResource()
+	for _, instance := range res.GetPerInstanceConfigs() {
+		instanceName := instance.GetName()
+		picFQN := fqn + "/perInstanceConfigs/" + instanceName
+		pic := &pb.PerInstanceConfig{}
+		if err := s.storage.Get(ctx, picFQN, pic); err != nil {
+			pic = proto.Clone(instance).(*pb.PerInstanceConfig)
+			pic.Status = PtrTo("APPLYING")
+			pic.Fingerprint = PtrTo(computePICFingerprint(pic))
+			if err := s.storage.Create(ctx, picFQN, pic); err != nil {
+				return nil, err
+			}
+		} else {
+			proto.Merge(pic, instance)
+			pic.Status = PtrTo("APPLYING")
+			pic.Fingerprint = PtrTo(computePICFingerprint(pic))
+			if err := s.storage.Update(ctx, picFQN, pic); err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	op := &pb.Operation{
+		TargetId:      igm.Id,
+		TargetLink:    igm.SelfLink,
+		OperationType: PtrTo("compute.instanceGroupManagers.updatePerInstanceConfigs"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return igm, nil
+	})
+}
+
+func (s *regionInstanceGroupManagers) DeletePerInstanceConfigs(ctx context.Context, req *pb.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	res := req.GetRegionInstanceGroupManagerDeleteInstanceConfigReqResource()
+	for _, instanceName := range res.GetNames() {
+		picFQN := fqn + "/perInstanceConfigs/" + instanceName
+		_ = s.storage.Delete(ctx, picFQN, &pb.PerInstanceConfig{})
+	}
+
+	op := &pb.Operation{
+		TargetId:      igm.Id,
+		TargetLink:    igm.SelfLink,
+		OperationType: PtrTo("compute.instanceGroupManagers.deletePerInstanceConfigs"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return igm, nil
+	})
+}
+
+func (s *regionInstanceGroupManagers) ApplyUpdatesToInstances(ctx context.Context, req *pb.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      igm.Id,
+		TargetLink:    igm.SelfLink,
+		OperationType: PtrTo("compute.instanceGroupManagers.applyUpdatesToInstances"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return igm, nil
+	})
+}
+
+func (s *regionInstanceGroupManagers) ListManagedInstances(ctx context.Context, req *pb.ListManagedInstancesRegionInstanceGroupManagersRequest) (*pb.RegionInstanceGroupManagersListInstancesResponse, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/instanceGroupManagers/" + req.GetInstanceGroupManager()
+	name, err := s.parseRegionalIGMName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	igm := &pb.InstanceGroupManager{}
+	if err := s.storage.Get(ctx, fqn, igm); err != nil {
+		return nil, err
+	}
+
+	resp := &pb.RegionInstanceGroupManagersListInstancesResponse{}
+	prefix := fqn + "/perInstanceConfigs/"
+	kind := (&pb.PerInstanceConfig{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		pic := obj.(*pb.PerInstanceConfig)
+		instName := pic.GetName()
+		instZone := name.Region + "-f"
+		instURL := fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/zones/%s/instances/%s", name.Project.ID, instZone, instName)
+		managedInst := &pb.ManagedInstance{
+			CurrentAction:            PtrTo("NONE"),
+			Id:                       PtrTo(uint64(1234567890123456789)),
+			Instance:                 PtrTo(instURL),
+			InstanceStatus:           PtrTo("RUNNING"),
+			Name:                     PtrTo(instName),
+			PreservedStateFromConfig: pic.PreservedState,
+		}
+		if igm.InstanceTemplate != nil {
+			managedInst.Version = &pb.ManagedInstanceVersion{
+				InstanceTemplate: igm.InstanceTemplate,
+			}
+		}
+		if len(igm.AutoHealingPolicies) > 0 && igm.AutoHealingPolicies[0].HealthCheck != nil {
+			managedInst.InstanceHealth = []*pb.ManagedInstanceInstanceHealth{
+				{
+					DetailedHealthState: PtrTo("UNKNOWN"),
+					HealthCheck:         igm.AutoHealingPolicies[0].HealthCheck,
+				},
+			}
+		}
+		resp.ManagedInstances = append(resp.ManagedInstances, managedInst)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 type zonalIGMName struct {
