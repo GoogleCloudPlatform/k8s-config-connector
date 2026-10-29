@@ -1,3 +1,9 @@
+- caisURL: //bigqueryreservation.googleapis.com/projects/${projectId}/locations/us-west2/reservationGroups/sample-group-${uniqueId}
+  group: bigqueryreservation.cnrm.cloud.google.com
+  kind: BigQueryReservationReservationGroup
+  name: sample-group-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
 - caisURL: unknown
   group: bigqueryreservation.cnrm.cloud.google.com
   kind: BigQueryReservationReservation
