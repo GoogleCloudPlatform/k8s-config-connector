@@ -28,4 +28,15 @@
   3. Implemented `AdapterForURL()` to parse connection URLs via `ConnectorsConnectionIdentity.FromExternal(url)`, instantiate the client, and return the adapter.
 - **Impact**: Supports URL-based adapter instantiation, accurate diff reporting, and correct KRM object export.
 
+### [2026-10-29] MockGCP Log Alignment for ConnectorsConnection
+- **Context**: Aligning MockGCP logs with RealGCP for `ConnectorsConnection` (Issue #14591).
+- **Details**:
+  1. Real GCP omits `envoyImageLocation` and `imageLocation` in the LRO Operation response body for `CreateConnection` and `UpdateConnection`. Updated MockGCP's LRO completion callbacks to omit these fields while preserving them in storage and GET/List responses.
+  2. Formatted `AlreadyExists` errors in `CreateConnection` to conform with standard GCP error conventions (`Resource '%s' already exists`).
+  3. Ensured default values are consistently populated on `GetConnection` and `ListConnections`.
+  4. Added path removals in `mockgcp/mockconnectors/normalize.go` for fields unmodeled in the `google.cloud.connectors.v1` protobuf (`billingConfig`, `connectionRevision`, `connectorVersionInfraConfig`, `connectorVersionLaunchStage`, `host`, `subscriptionType`, `tlsServiceDirectory`).
+  5. Regenerated aligned `_http_mock.log` files for `connectorsconnection-minimal` and `connectorsconnection-maximal`.
+- **Impact**: Aligns MockGCP behavior with Real GCP golden logs and ensures test fixtures and `TestGoldenLogAlignment` pass with zero discrepancies.
+
+
 
