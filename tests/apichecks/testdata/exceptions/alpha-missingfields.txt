@@ -2083,10 +2083,7 @@
 [missing_field] crd=dataplexcontents.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexcontents.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.sqlScript.engine" is not set in unstructured objects
 [missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessGroupConfigs" is not set in unstructured objects
-[missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexdataassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resource" is not set in unstructured objects
 [missing_field] crd=dataplexdataattributebindings.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexdataattributebindings.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

@@ -102,6 +102,20 @@ ${CONTROLLERBUILDER} generate-fuzzer \
   --prepopulate-resource \
   --resource DataplexEntry:Entry
 
+${CONTROLLERBUILDER} generate-controller \
+  --service google.cloud.dataplex.v1 \
+  --api-version dataplex.cnrm.cloud.google.com/v1alpha1 \
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource \
+  --resource DataplexDataAsset:DataAsset
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.cloud.dataplex.v1 \
+  --api-version dataplex.cnrm.cloud.google.com/v1alpha1 \
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource \
+  --resource DataplexDataAsset:DataAsset
+
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds

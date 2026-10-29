@@ -93,30 +93,9 @@ spec:
                    multiple predefined IAM roles, wrap them in a custom IAM role as per
                    https://cloud.google.com/iam/docs/creating-custom-roles.
                 type: object
-              etag:
-                description: Optional. This checksum is computed by the server based
-                  on the value of other fields, and may be sent on update and delete
-                  requests to ensure the client has an up-to-date value before proceeding.
-                type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  Optional. User-defined labels for the data asset.
-
-                   Example:
-                    ```
-                    {
-                      "environment": "production",
-                      "billing": "marketing-department"
-                    }
-                    ```
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DataplexDataProduct this DataplexDataAsset is created
+                  under.
                 oneOf:
                 - not:
                     required:
@@ -133,20 +112,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataplexDataProduct
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataProducts/{{dataProductID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataplexDataProduct resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataplexDataProduct resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resource:
                 description: 'Required. Immutable. Full resource name of the cloud
                   resource represented by the data asset. This must follow https://cloud.google.com/iam/docs/full-resource-names.
@@ -161,8 +139,7 @@ spec:
                   will be used.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             - resource
             type: object
           status:
@@ -214,6 +191,12 @@ spec:
                   createTime:
                     description: Output only. The time at which the data asset was
                       created.
+                    type: string
+                  etag:
+                    description: Optional. This checksum is computed by the server
+                      based on the value of other fields, and may be sent on update
+                      and delete requests to ensure the client has an up-to-date value
+                      before proceeding.
                     type: string
                   uid:
                     description: Output only. System generated globally unique ID

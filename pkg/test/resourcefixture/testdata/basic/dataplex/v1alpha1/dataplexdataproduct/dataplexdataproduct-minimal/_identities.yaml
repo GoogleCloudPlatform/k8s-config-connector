@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/dataProducts/dataplexdataproduct-minimal-${uniqueId}
   group: dataplex.cnrm.cloud.google.com
   kind: DataplexDataProduct
   name: dataplexdataproduct-minimal-${uniqueId}

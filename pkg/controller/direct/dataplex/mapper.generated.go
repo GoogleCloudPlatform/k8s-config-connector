@@ -1906,6 +1906,8 @@ func DataplexDataAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	return out
 }
 
@@ -1918,32 +1920,8 @@ func DataplexDataAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-
-func DataplexDataAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexDataAssetSpec{}
-	// MISSING: Name
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
-	out.Resource = direct.LazyPtr(in.GetResource())
-	out.AccessGroupConfigs = AccessGroupConfigs_FromProto(mapCtx, in.AccessGroupConfigs)
-	return out
-}
-
-func DataplexDataAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAssetSpec) *pb.DataAsset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataAsset{}
-	// MISSING: Name
 	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	out.Resource = direct.ValueOf(in.Resource)
-	out.AccessGroupConfigs = AccessGroupConfigs_ToProto(mapCtx, in.AccessGroupConfigs)
+	// MISSING: Labels
 	return out
 }
 
