@@ -68,6 +68,10 @@ func (m *modelUserWorkloadsConfigMap) AdapterForObject(ctx context.Context, op *
 	}
 	id := i.(*krm.ComposerUserWorkloadsConfigMapIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get composer GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

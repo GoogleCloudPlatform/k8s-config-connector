@@ -24,10 +24,10 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -80,28 +80,19 @@ func (i *ComposerUserWorkloadsConfigMapIdentity) ParentString() string {
 func getIdentityFromComposerUserWorkloadsConfigMapSpec(ctx context.Context, reader client.Reader, obj *ComposerUserWorkloadsConfigMap) (*ComposerUserWorkloadsConfigMapIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	environment := ""
-	if environment == "" {
-		return nil, fmt.Errorf("cannot resolve environment for ComposerUserWorkloadsConfigMap")
+	parsed := &ComposerUserWorkloadsConfigMapIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/userWorkloadsConfigMaps" + "/_"); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &ComposerUserWorkloadsConfigMapIdentity{
-		Project:                projectID,
-		Location:               location,
-		Environment:            environment,
-		UserWorkloadsConfigMap: resourceID,
-	}, nil
+	parsed.UserWorkloadsConfigMap = resourceID
+	return parsed, nil
 }
 
 func (obj *ComposerUserWorkloadsConfigMap) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
