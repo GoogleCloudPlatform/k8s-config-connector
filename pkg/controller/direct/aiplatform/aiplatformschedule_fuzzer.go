@@ -24,13 +24,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vertexAIScheduleFuzzer())
+	fuzztesting.RegisterKRMFuzzer(aiPlatformScheduleFuzzer())
 }
 
-func vertexAIScheduleFuzzer() fuzztesting.KRMFuzzer {
+func aiPlatformScheduleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Schedule{},
-		VertexAIScheduleSpec_FromProto, VertexAIScheduleSpec_ToProto,
-		VertexAIScheduleObservedState_FromProto, VertexAIScheduleObservedState_ToProto,
+		AIPlatformScheduleSpec_FromProto, AIPlatformScheduleSpec_ToProto,
+		AIPlatformScheduleObservedState_FromProto, AIPlatformScheduleObservedState_ToProto,
 	)
 
 	// Identity and special fields

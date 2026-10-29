@@ -25,11 +25,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var VertexAIScheduleGVK = GroupVersion.WithKind("VertexAISchedule")
+var AIPlatformScheduleGVK = GroupVersion.WithKind("AIPlatformSchedule")
 
-// VertexAIScheduleSpec defines the desired state of VertexAISchedule
+// AIPlatformScheduleSpec defines the desired state of AIPlatformSchedule
 // +kcc:spec:proto=google.cloud.aiplatform.v1.Schedule
-type VertexAIScheduleSpec struct {
+type AIPlatformScheduleSpec struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -38,7 +38,7 @@ type VertexAIScheduleSpec struct {
 	// +required
 	Location *string `json:"location"`
 
-	// The VertexAISchedule name. If not given, the metadata.name will be used.
+	// The AIPlatformSchedule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Cron schedule (https://en.wikipedia.org/wiki/Cron) to launch scheduled
@@ -105,8 +105,8 @@ type VertexAIScheduleSpec struct {
 	AllowQueueing *bool `json:"allowQueueing,omitempty"`
 }
 
-// VertexAIScheduleStatus defines the config connector machine state of VertexAISchedule
-type VertexAIScheduleStatus struct {
+// AIPlatformScheduleStatus defines the config connector machine state of AIPlatformSchedule
+type AIPlatformScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -114,16 +114,16 @@ type VertexAIScheduleStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VertexAISchedule resource in GCP.
+	// A unique specifier for the AIPlatformSchedule resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VertexAIScheduleObservedState `json:"observedState,omitempty"`
+	ObservedState *AIPlatformScheduleObservedState `json:"observedState,omitempty"`
 }
 
-// VertexAIScheduleObservedState is the state of the VertexAISchedule resource as most recently observed in GCP.
+// AIPlatformScheduleObservedState is the state of the AIPlatformSchedule resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Schedule
-type VertexAIScheduleObservedState struct {
+type AIPlatformScheduleObservedState struct {
 	// Immutable. The resource name of the Schedule.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.name
 	Name *string `json:"name,omitempty"`
@@ -188,7 +188,7 @@ type VertexAIScheduleObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaischedule;gcpvertexaischedules
+// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformschedule;gcpaiplatformschedules
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -198,27 +198,27 @@ type VertexAIScheduleObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISchedule is the Schema for the VertexAISchedule API
+// AIPlatformSchedule is the Schema for the AIPlatformSchedule API
 // +k8s:openapi-gen=true
-type VertexAISchedule struct {
+type AIPlatformSchedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   VertexAIScheduleSpec   `json:"spec,omitempty"`
-	Status VertexAIScheduleStatus `json:"status,omitempty"`
+	Spec   AIPlatformScheduleSpec   `json:"spec,omitempty"`
+	Status AIPlatformScheduleStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// VertexAIScheduleList contains a list of VertexAISchedule
-type VertexAIScheduleList struct {
+// AIPlatformScheduleList contains a list of AIPlatformSchedule
+type AIPlatformScheduleList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISchedule `json:"items"`
+	Items           []AIPlatformSchedule `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISchedule{}, &VertexAIScheduleList{})
+	SchemeBuilder.Register(&AIPlatformSchedule{}, &AIPlatformScheduleList{})
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest
@@ -310,7 +310,7 @@ type NotebookExecutionJob struct {
 	// The Schedule resource name if this job is triggered by one. Format:
 	//  `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.schedule_resource_name
-	ScheduleRef *VertexAIScheduleRef `json:"scheduleRef,omitempty"`
+	ScheduleRef *AIPlatformScheduleRef `json:"scheduleRef,omitempty"`
 
 	// The labels with user-defined metadata to organize NotebookExecutionJobs.
 	//

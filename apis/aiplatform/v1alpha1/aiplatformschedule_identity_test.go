@@ -18,17 +18,17 @@ import (
 	"testing"
 )
 
-func TestVertexAIScheduleIdentity_FromExternal(t *testing.T) {
+func TestAIPlatformScheduleIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VertexAIScheduleIdentity
+		want    *AIPlatformScheduleIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/schedules/my-schedule",
-			want: &VertexAIScheduleIdentity{
+			want: &AIPlatformScheduleIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				Schedule: "my-schedule",
@@ -42,7 +42,7 @@ func TestVertexAIScheduleIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://aiplatform.googleapis.com/projects/my-project/locations/us-central1/schedules/my-schedule",
-			want: &VertexAIScheduleIdentity{
+			want: &AIPlatformScheduleIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				Schedule: "my-schedule",
@@ -52,7 +52,7 @@ func TestVertexAIScheduleIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &VertexAIScheduleIdentity{}
+			i := &AIPlatformScheduleIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)

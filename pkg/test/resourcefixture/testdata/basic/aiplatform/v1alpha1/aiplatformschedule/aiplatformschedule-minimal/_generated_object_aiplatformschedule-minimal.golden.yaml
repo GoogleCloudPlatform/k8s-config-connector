@@ -1,15 +1,15 @@
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
-kind: VertexAISchedule
+kind: AIPlatformSchedule
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: vertexaischedule-minimal-${uniqueId}
+  name: aiplatformschedule-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
   createPipelineJobRequest:
@@ -48,9 +48,9 @@ spec:
         gcsOutputDirectoryRef:
           name: vertexai-schedule-bucket-${uniqueId}
   cron: 0 2 * * *
-  displayName: Minimal Schedule
+  displayName: Minimal Schedule Updated
   location: us-central1
-  maxConcurrentRunCount: 1
+  maxConcurrentRunCount: 2
   projectRef:
     external: ${projectId}
 status:
@@ -61,7 +61,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createPipelineJobRequest:
       pipelineJob: {}

@@ -26,69 +26,69 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &VertexAIScheduleRef{}
+var _ refs.Ref = &AIPlatformScheduleRef{}
 
-// VertexAIScheduleRef is a reference to a VertexAISchedule.
-type VertexAIScheduleRef struct {
-	// A reference to an externally managed VertexAISchedule resource.
+// AIPlatformScheduleRef is a reference to an AIPlatformSchedule.
+type AIPlatformScheduleRef struct {
+	// A reference to an externally managed AIPlatformSchedule resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/schedules/{{scheduleID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a VertexAISchedule resource.
+	// The name of an AIPlatformSchedule resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a VertexAISchedule resource.
+	// The namespace of an AIPlatformSchedule resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&VertexAIScheduleRef{}, &VertexAISchedule{})
+	refs.Register(&AIPlatformScheduleRef{}, &AIPlatformSchedule{})
 }
 
-func (r *VertexAIScheduleRef) GetGVK() schema.GroupVersionKind {
-	return VertexAIScheduleGVK
+func (r *AIPlatformScheduleRef) GetGVK() schema.GroupVersionKind {
+	return AIPlatformScheduleGVK
 }
 
-func (r *VertexAIScheduleRef) GetNamespacedName() types.NamespacedName {
+func (r *AIPlatformScheduleRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *VertexAIScheduleRef) GetExternal() string {
+func (r *AIPlatformScheduleRef) GetExternal() string {
 	return r.External
 }
 
-func (r *VertexAIScheduleRef) SetExternal(ref string) {
+func (r *AIPlatformScheduleRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *VertexAIScheduleRef) ValidateExternal(ref string) error {
-	id := &VertexAIScheduleIdentity{}
+func (r *AIPlatformScheduleRef) ValidateExternal(ref string) error {
+	id := &AIPlatformScheduleIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *VertexAIScheduleRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &VertexAIScheduleIdentity{}
+func (r *AIPlatformScheduleRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AIPlatformScheduleIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *VertexAIScheduleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *AIPlatformScheduleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		structuredObj, err := common.ToStructuredType[*VertexAISchedule](u)
+		structuredObj, err := common.ToStructuredType[*AIPlatformSchedule](u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromVertexAIScheduleSpec(ctx, reader, structuredObj)
+		identity, err := getIdentityFromAIPlatformScheduleSpec(ctx, reader, structuredObj)
 		if err != nil {
 			return ""
 		}

@@ -26,46 +26,46 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &VertexAIScheduleIdentity{}
-	_ identity.Resource   = &VertexAISchedule{}
+	_ identity.IdentityV2 = &AIPlatformScheduleIdentity{}
+	_ identity.Resource   = &AIPlatformSchedule{}
 )
 
-var VertexAIScheduleIdentityFormat = gcpurls.Template[VertexAIScheduleIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/schedules/{schedule}")
+var AIPlatformScheduleIdentityFormat = gcpurls.Template[AIPlatformScheduleIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/schedules/{schedule}")
 
-// VertexAIScheduleIdentity is the identity of a GCP VertexAISchedule resource.
+// AIPlatformScheduleIdentity is the identity of a GCP AIPlatformSchedule resource.
 // +k8s:deepcopy-gen=false
-type VertexAIScheduleIdentity struct {
+type AIPlatformScheduleIdentity struct {
 	Project  string
 	Location string
 	Schedule string
 }
 
-func (i *VertexAIScheduleIdentity) String() string {
-	return VertexAIScheduleIdentityFormat.ToString(*i)
+func (i *AIPlatformScheduleIdentity) String() string {
+	return AIPlatformScheduleIdentityFormat.ToString(*i)
 }
 
-func (i *VertexAIScheduleIdentity) FromExternal(ref string) error {
-	parsed, match, err := VertexAIScheduleIdentityFormat.Parse(ref)
+func (i *AIPlatformScheduleIdentity) FromExternal(ref string) error {
+	parsed, match, err := AIPlatformScheduleIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of VertexAISchedule external=%q was not known (use %s): %w", ref, VertexAIScheduleIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of AIPlatformSchedule external=%q was not known (use %s): %w", ref, AIPlatformScheduleIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of VertexAISchedule external=%q was not known (use %s)", ref, VertexAIScheduleIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of AIPlatformSchedule external=%q was not known (use %s)", ref, AIPlatformScheduleIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *VertexAIScheduleIdentity) Host() string {
-	return VertexAIScheduleIdentityFormat.Host()
+func (i *AIPlatformScheduleIdentity) Host() string {
+	return AIPlatformScheduleIdentityFormat.Host()
 }
 
-func (i *VertexAIScheduleIdentity) ParentString() string {
+func (i *AIPlatformScheduleIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromVertexAIScheduleSpec(ctx context.Context, reader client.Reader, obj *VertexAISchedule) (*VertexAIScheduleIdentity, error) {
+func getIdentityFromAIPlatformScheduleSpec(ctx context.Context, reader client.Reader, obj *AIPlatformSchedule) (*AIPlatformScheduleIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -81,7 +81,7 @@ func getIdentityFromVertexAIScheduleSpec(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &VertexAIScheduleIdentity{
+	identity := &AIPlatformScheduleIdentity{
 		Project:  projectID,
 		Location: location,
 		Schedule: resourceID,
@@ -89,8 +89,8 @@ func getIdentityFromVertexAIScheduleSpec(ctx context.Context, reader client.Read
 	return identity, nil
 }
 
-func (obj *VertexAISchedule) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromVertexAIScheduleSpec(ctx, reader, obj)
+func (obj *AIPlatformSchedule) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAIPlatformScheduleSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (obj *VertexAISchedule) GetIdentity(ctx context.Context, reader client.Read
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &VertexAIScheduleIdentity{}
+		statusIdentity := &AIPlatformScheduleIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
@@ -114,7 +114,7 @@ func (obj *VertexAISchedule) GetIdentity(ctx context.Context, reader client.Read
 
 		projectMatch := statusIdentity.Project == specIdentity.Project || isNumeric(statusIdentity.Project)
 		if !projectMatch || statusIdentity.Location != specIdentity.Location {
-			return nil, fmt.Errorf("cannot change VertexAISchedule identity (old project/location=%s/%s, new project/location=%s/%s)",
+			return nil, fmt.Errorf("cannot change AIPlatformSchedule identity (old project/location=%s/%s, new project/location=%s/%s)",
 				statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
 		}
 		return statusIdentity, nil

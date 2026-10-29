@@ -303,9 +303,13 @@ spec:
                   failurePolicy:
                     description: Represents the failure policy of a pipeline.
                     type: string
+                  gcsOutputDirectory:
+                    description: A path in a Cloud Storage bucket, which will be treated
+                      as the root output directory of the pipeline.
+                    type: string
                   gcsOutputDirectoryRef:
-                    description: Required. Reference to a GCS bucket, which will be
-                      treated as the root output directory of the pipeline.
+                    description: Reference to a GCS bucket, which will be treated
+                      as the root output directory of the pipeline.
                     oneOf:
                     - not:
                         required:

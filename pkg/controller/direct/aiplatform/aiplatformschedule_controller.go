@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.VertexAIScheduleGVK, NewScheduleModel)
+	registry.RegisterModel(krm.AIPlatformScheduleGVK, NewScheduleModel)
 }
 
 func NewScheduleModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -67,7 +67,7 @@ func (m *scheduleModel) client(ctx context.Context, location string) (*gcp.Sched
 }
 
 func (m *scheduleModel) AdapterForObject(ctx context.Context, reader *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-	obj := &krm.VertexAISchedule{}
+	obj := &krm.AIPlatformSchedule{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(reader.Object.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -86,9 +86,9 @@ func (m *scheduleModel) AdapterForObject(ctx context.Context, reader *directbase
 		}
 	}
 
-	typedID, ok := id.(*krm.VertexAIScheduleIdentity)
+	typedID, ok := id.(*krm.AIPlatformScheduleIdentity)
 	if !ok {
-		return nil, fmt.Errorf("expected VertexAIScheduleIdentity, got %T", id)
+		return nil, fmt.Errorf("expected AIPlatformScheduleIdentity, got %T", id)
 	}
 
 	// Get ScheduleClient client
@@ -98,7 +98,7 @@ func (m *scheduleModel) AdapterForObject(ctx context.Context, reader *directbase
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredpb := VertexAIScheduleSpec_ToProto(mapCtx, &obj.Spec)
+	desiredpb := AIPlatformScheduleSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, fmt.Errorf("mapping spec to proto: %w", mapCtx.Err())
 	}
@@ -120,7 +120,7 @@ func (m *scheduleModel) AdapterForObject(ctx context.Context, reader *directbase
 }
 
 func (m *scheduleModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	id := &krm.VertexAIScheduleIdentity{}
+	id := &krm.AIPlatformScheduleIdentity{}
 	if err := id.FromExternal(url); err != nil {
 		// Not recognized
 		return nil, nil
@@ -138,10 +138,10 @@ func (m *scheduleModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type ScheduleAdapter struct {
-	id        *krm.VertexAIScheduleIdentity
+	id        *krm.AIPlatformScheduleIdentity
 	gcpClient *gcp.ScheduleClient
 	desiredpb *pb.Schedule
-	desired   *krm.VertexAISchedule
+	desired   *krm.AIPlatformSchedule
 	actual    *pb.Schedule
 }
 
@@ -149,7 +149,7 @@ var _ directbase.Adapter = &ScheduleAdapter{}
 
 func (a *ScheduleAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("getting AIPlatformSchedule", "name", a.id.String())
 
 	req := &pb.GetScheduleRequest{
 		Name: a.id.String(),
@@ -160,7 +160,7 @@ func (a *ScheduleAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting VertexAISchedule %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting AIPlatformSchedule %q: %w", a.id.String(), err)
 	}
 
 	a.actual = schedulepb
@@ -174,7 +174,7 @@ func (a *ScheduleAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *ScheduleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("creating AIPlatformSchedule", "name", a.id.String())
 
 	req := &pb.CreateScheduleRequest{
 		Parent:   a.id.ParentString(),
@@ -183,17 +183,17 @@ func (a *ScheduleAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	created, err := a.gcpClient.CreateSchedule(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating VertexAISchedule %q: %w", a.id.String(), err)
+		return fmt.Errorf("creating AIPlatformSchedule %q: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully created VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("successfully created AIPlatformSchedule", "name", a.id.String())
 
 	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *ScheduleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("updating AIPlatformSchedule", "name", a.id.String())
 
 	a.desiredpb.Name = a.id.String()
 
@@ -216,10 +216,10 @@ func (a *ScheduleAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	updated, err := a.gcpClient.UpdateSchedule(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating VertexAISchedule %q: %w", a.id.String(), err)
+		return fmt.Errorf("updating AIPlatformSchedule %q: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully updated VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("successfully updated AIPlatformSchedule", "name", a.id.String())
 
 	return a.updateStatus(ctx, updateOp, updated)
 }
@@ -230,9 +230,9 @@ func (a *ScheduleAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.VertexAISchedule{}
+	obj := &krm.AIPlatformSchedule{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAIScheduleSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AIPlatformScheduleSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -248,14 +248,14 @@ func (a *ScheduleAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 	u.Object = uObj
 	u.SetName(a.id.Schedule)
-	u.SetGroupVersionKind(krm.VertexAIScheduleGVK)
+	u.SetGroupVersionKind(krm.AIPlatformScheduleGVK)
 	return u, nil
 }
 
 func (a *ScheduleAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Schedule) error {
 	mapCtx := &direct.MapContext{}
-	status := &krm.VertexAIScheduleStatus{}
-	status.ObservedState = VertexAIScheduleObservedState_FromProto(mapCtx, latest)
+	status := &krm.AIPlatformScheduleStatus{}
+	status.ObservedState = AIPlatformScheduleObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping status: %w", mapCtx.Err())
 	}
@@ -269,7 +269,7 @@ func (a *ScheduleAdapter) updateStatus(ctx context.Context, op directbase.Operat
 
 func (a *ScheduleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting VertexAISchedule", "name", a.id.String())
+	log.V(2).Info("deleting AIPlatformSchedule", "name", a.id.String())
 
 	req := &pb.DeleteScheduleRequest{
 		Name: a.id.String(),
@@ -280,19 +280,19 @@ func (a *ScheduleAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 		if direct.IsNotFound(err) {
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting VertexAISchedule %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting AIPlatformSchedule %q: %w", a.id.String(), err)
 	}
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting for deletion of VertexAISchedule %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("waiting for deletion of AIPlatformSchedule %q: %w", a.id.String(), err)
 	}
 
 	return true, nil
 }
 
 func compareSchedule(ctx context.Context, actual, desired *pb.Schedule) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, VertexAIScheduleSpec_FromProto, VertexAIScheduleSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, AIPlatformScheduleSpec_FromProto, AIPlatformScheduleSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}

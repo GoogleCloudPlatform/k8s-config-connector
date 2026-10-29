@@ -92,9 +92,11 @@ type VertexAIPipelineJobSpec struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig
 type PipelineJobRuntimeConfig struct {
-	// Required. Reference to a GCS bucket, which will be treated as the
-	//  root output directory of the pipeline.
+	// A path in a Cloud Storage bucket, which will be treated as the root output directory of the pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.gcs_output_directory
+	GCSOutputDirectory *string `json:"gcsOutputDirectory,omitempty"`
+
+	// Reference to a GCS bucket, which will be treated as the root output directory of the pipeline.
 	GCSOutputDirectoryRef *storagev1beta1.StorageBucketRef `json:"gcsOutputDirectoryRef,omitempty"`
 
 	// Represents the failure policy of a pipeline.

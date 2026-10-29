@@ -399,8 +399,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
-	// Specific to VertexAISchedule
-	if u.GetKind() == "VertexAISchedule" {
+	// Specific to AIPlatformSchedule
+	if u.GetKind() == "AIPlatformSchedule" {
 		visitor.replacePaths[".spec.startTime"] = mockgcpregistry.PlaceholderTime
 		visitor.replacePaths[".spec.endTime"] = mockgcpregistry.PlaceholderTime
 	}

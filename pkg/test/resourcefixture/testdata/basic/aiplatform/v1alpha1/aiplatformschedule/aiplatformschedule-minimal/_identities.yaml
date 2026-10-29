@@ -6,7 +6,7 @@
   version: v1beta1
 - caisURL: //aiplatform.googleapis.com/projects/${projectNumber}/locations/us-central1/schedules/14143703553298638269
   group: aiplatform.cnrm.cloud.google.com
-  kind: VertexAISchedule
-  name: vertexaischedule-minimal-${uniqueId}
+  kind: AIPlatformSchedule
+  name: aiplatformschedule-minimal-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1

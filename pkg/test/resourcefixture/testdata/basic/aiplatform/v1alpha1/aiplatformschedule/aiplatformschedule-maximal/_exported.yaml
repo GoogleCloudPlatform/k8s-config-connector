@@ -1,8 +1,9 @@
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
-kind: VertexAISchedule
+kind: AIPlatformSchedule
 metadata:
   name: ${scheduleID}
 spec:
+  allowQueueing: true
   createPipelineJobRequest:
     parent: projects/${projectId}/locations/us-central1
     pipelineJob:
@@ -36,12 +37,15 @@ spec:
         schemaVersion: 2.1.0
       projectRef: null
       runtimeConfig:
+        gcsOutputDirectory: gs://vertexai-schedmax-bucket-${uniqueId}
         gcsOutputDirectoryRef:
-          external: gs://vertexai-schedule-bucket-${uniqueId}
+          external: gs://vertexai-schedmax-bucket-${uniqueId}
   cron: 0 2 * * *
-  displayName: Minimal Schedule
+  displayName: Maximal Schedule Updated
+  endTime: "1970-01-01T00:00:00Z"
   location: us-central1
-  maxConcurrentRunCount: 1
+  maxConcurrentRunCount: 2
+  maxRunCount: 10
   projectRef:
     name: ${projectNumber}
   resourceID: ${scheduleID}
