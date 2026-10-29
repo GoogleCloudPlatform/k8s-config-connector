@@ -75,6 +75,174 @@ found existing non-generated mapping function "AppEngineFirewallRuleSpec_v1alpha
 		return out
 	}
 */
+func AppEngineFlexibleAppVersionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krmappenginev1alpha1.AppEngineFlexibleAppVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineFlexibleAppVersionObservedState{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: BasicScaling
+	// MISSING: Zones
+	// MISSING: Threadsafe
+	// MISSING: VM
+	// MISSING: AppEngineApis
+	// MISSING: Env
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	// MISSING: RuntimeAPIVersion
+	// MISSING: ErrorHandlers
+	// MISSING: Libraries
+	// MISSING: APIConfig
+	// MISSING: BuildEnvVariables
+	// MISSING: HealthCheck
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	// MISSING: VPCAccessConnector
+	return out
+}
+func AppEngineFlexibleAppVersionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFlexibleAppVersionObservedState) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	// MISSING: ID
+	// MISSING: BasicScaling
+	// MISSING: Zones
+	// MISSING: Threadsafe
+	// MISSING: VM
+	// MISSING: AppEngineApis
+	// MISSING: Env
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	// MISSING: RuntimeAPIVersion
+	// MISSING: ErrorHandlers
+	// MISSING: Libraries
+	// MISSING: APIConfig
+	// MISSING: BuildEnvVariables
+	// MISSING: HealthCheck
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	// MISSING: VPCAccessConnector
+	return out
+}
+
+/* found existing non-generated mapping function "AppEngineFlexibleAppVersionSpec_v1alpha1_FromProto", skipping
+func AppEngineFlexibleAppVersionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krmappenginev1alpha1.AppEngineFlexibleAppVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmappenginev1alpha1.AppEngineFlexibleAppVersionSpec{}
+	// MISSING: Name
+	// MISSING: ID
+	out.AutomaticScaling = AppEngineFlexibleAppVersionAutomaticScaling_v1alpha1_FromProto(mapCtx, in.GetAutomaticScaling())
+	// MISSING: BasicScaling
+	out.ManualScaling = AppEngineFlexibleAppVersionManualScaling_v1alpha1_FromProto(mapCtx, in.GetManualScaling())
+	out.InboundServices = direct.EnumSlice_FromProto(mapCtx, in.InboundServices)
+	out.InstanceClass = direct.LazyPtr(in.GetInstanceClass())
+	out.Network = AppEngineFlexibleAppVersionNetwork_v1alpha1_FromProto(mapCtx, in.GetNetwork())
+	// MISSING: Zones
+	out.Resources = AppEngineFlexibleAppVersionResources_v1alpha1_FromProto(mapCtx, in.GetResources())
+	out.Runtime = in.GetRuntime()
+	out.RuntimeChannel = direct.LazyPtr(in.GetRuntimeChannel())
+	// MISSING: Threadsafe
+	// MISSING: VM
+	// MISSING: AppEngineApis
+	out.BetaSettings = in.BetaSettings
+	// MISSING: Env
+	out.ServingStatus = direct.Enum_FromProto(mapCtx, in.GetServingStatus())
+	// MISSING: CreatedBy
+	// MISSING: CreateTime
+	// MISSING: DiskUsageBytes
+	// MISSING: RuntimeAPIVersion
+	// (near miss): "RuntimeAPIVersion" vs "RuntimeApiVersion"
+	out.RuntimeMainExecutablePath = direct.LazyPtr(in.GetRuntimeMainExecutablePath())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Handlers = direct.Slice_FromProto(mapCtx, in.Handlers, AppEngineFlexibleAppVersionHandlers_v1alpha1_FromProto)
+	// MISSING: ErrorHandlers
+	// MISSING: Libraries
+	// MISSING: APIConfig
+	// (near miss): "APIConfig" vs "ApiConfig"
+	out.EnvVariables = in.EnvVariables
+	// MISSING: BuildEnvVariables
+	out.DefaultExpiration = direct.StringDuration_FromProto(mapCtx, in.GetDefaultExpiration())
+	// MISSING: HealthCheck
+	out.ReadinessCheck = AppEngineFlexibleAppVersionReadinessCheck_v1alpha1_FromProto(mapCtx, in.GetReadinessCheck())
+	out.LivenessCheck = AppEngineFlexibleAppVersionLivenessCheck_v1alpha1_FromProto(mapCtx, in.GetLivenessCheck())
+	out.NobuildFilesRegex = direct.LazyPtr(in.GetNobuildFilesRegex())
+	out.Deployment = AppEngineFlexibleAppVersionDeployment_v1alpha1_FromProto(mapCtx, in.GetDeployment())
+	// MISSING: VersionURL
+	// MISSING: EndpointsAPIService
+	// (near miss): "EndpointsAPIService" vs "EndpointsApiService"
+	out.Entrypoint = AppEngineFlexibleAppVersionEntrypoint_v1alpha1_FromProto(mapCtx, in.GetEntrypoint())
+	// MISSING: VPCAccessConnector
+	// (near miss): "VPCAccessConnector" vs "VpcAccessConnector"
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AppEngineFlexibleAppVersionSpec_v1alpha1_ToProto", skipping
+
+	func AppEngineFlexibleAppVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmappenginev1alpha1.AppEngineFlexibleAppVersionSpec) *pb.Version {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Version{}
+		// MISSING: Name
+		// MISSING: ID
+		if oneof := AppEngineFlexibleAppVersionAutomaticScaling_v1alpha1_ToProto(mapCtx, in.AutomaticScaling); oneof != nil {
+			out.Scaling = &pb.Version_AutomaticScaling{AutomaticScaling: oneof}
+		}
+		// MISSING: BasicScaling
+		if oneof := AppEngineFlexibleAppVersionManualScaling_v1alpha1_ToProto(mapCtx, in.ManualScaling); oneof != nil {
+			out.Scaling = &pb.Version_ManualScaling{ManualScaling: oneof}
+		}
+		out.InboundServices = direct.EnumSlice_ToProto[pb.InboundServiceType](mapCtx, in.InboundServices)
+		out.InstanceClass = direct.ValueOf(in.InstanceClass)
+		out.Network = AppEngineFlexibleAppVersionNetwork_v1alpha1_ToProto(mapCtx, in.Network)
+		// MISSING: Zones
+		out.Resources = AppEngineFlexibleAppVersionResources_v1alpha1_ToProto(mapCtx, in.Resources)
+		out.Runtime = AppEngineFlexibleAppVersionSpec_Runtime_ToProto(mapCtx, in.Runtime)
+		out.RuntimeChannel = direct.ValueOf(in.RuntimeChannel)
+		// MISSING: Threadsafe
+		// MISSING: VM
+		// MISSING: AppEngineApis
+		out.BetaSettings = in.BetaSettings
+		// MISSING: Env
+		out.ServingStatus = direct.Enum_ToProto[pb.ServingStatus](mapCtx, in.ServingStatus)
+		// MISSING: CreatedBy
+		// MISSING: CreateTime
+		// MISSING: DiskUsageBytes
+		// MISSING: RuntimeAPIVersion
+		// (near miss): "RuntimeAPIVersion" vs "RuntimeApiVersion"
+		out.RuntimeMainExecutablePath = direct.ValueOf(in.RuntimeMainExecutablePath)
+		out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+		out.Handlers = direct.Slice_ToProto(mapCtx, in.Handlers, AppEngineFlexibleAppVersionHandlers_v1alpha1_ToProto)
+		// MISSING: ErrorHandlers
+		// MISSING: Libraries
+		// MISSING: APIConfig
+		// (near miss): "APIConfig" vs "ApiConfig"
+		out.EnvVariables = in.EnvVariables
+		// MISSING: BuildEnvVariables
+		out.DefaultExpiration = direct.StringDuration_ToProto(mapCtx, in.DefaultExpiration)
+		// MISSING: HealthCheck
+		out.ReadinessCheck = AppEngineFlexibleAppVersionReadinessCheck_v1alpha1_ToProto(mapCtx, in.ReadinessCheck)
+		out.LivenessCheck = AppEngineFlexibleAppVersionLivenessCheck_v1alpha1_ToProto(mapCtx, in.LivenessCheck)
+		out.NobuildFilesRegex = direct.ValueOf(in.NobuildFilesRegex)
+		out.Deployment = AppEngineFlexibleAppVersionDeployment_v1alpha1_ToProto(mapCtx, in.Deployment)
+		// MISSING: VersionURL
+		// MISSING: EndpointsAPIService
+		// (near miss): "EndpointsAPIService" vs "EndpointsApiService"
+		out.Entrypoint = AppEngineFlexibleAppVersionEntrypoint_v1alpha1_ToProto(mapCtx, in.Entrypoint)
+		// MISSING: VPCAccessConnector
+		// (near miss): "VPCAccessConnector" vs "VpcAccessConnector"
+		return out
+	}
+*/
 func AppEngineServiceSplitTrafficObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krmappenginev1alpha1.AppEngineServiceSplitTrafficObservedState {
 	if in == nil {
 		return nil
