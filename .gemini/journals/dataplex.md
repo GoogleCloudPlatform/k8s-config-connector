@@ -34,6 +34,12 @@
 - **Solution**: Hand-coded the direct controller and fuzzer following KCC standard practices and verified complete fuzzer field mapping coverage with the targeted test framework (`FOCUS=DataplexDataTaxonomy go test ./pkg/fuzztesting/fuzztests/ -v -run=TestFocusedMappers`). Updated API field presence exceptions golden file.
 - **Impact**: Highlights potential GCP service-side limitations or quirks for the `DataTaxonomy` API in test projects, requiring the direct controller logic and schema mappings to be carefully designed and tested offline/via fuzzer when live API execution is obstructed by service-side Internal errors.
 
+### [2026-09-17] Implement DataplexGlossary Greenfield Controller
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexGlossary` under `v1alpha1`.
+- **Problem**: The `Glossary` resource proto definitions are missing from the repository's pinned `googleapis` version. Running `dev/tasks/update-gcp-dependencies` to update googleapis globally broke other service code generator scripts (like `apigeeregistry`).
+- **Solution**: Decoupled and customized the `generate-proto.sh` invocation inside `apis/dataplex/generate.sh` by passing a specific newer `googleapis` SHA containing the `Glossary` protobuf definitions. Upgraded the `cloud.google.com/go/dataplex` client library in KCC's root and mockgcp `go.mod` to version `v1.36.0` to compile matching mappers and types.
+- **Impact**: Provides a robust, non-intrusive pattern to fetch newer Google API definitions for specific resources without causing repository-wide dependency drift or breaking other generation/presubmit scripts.
+
 ### [2026-09-23] Implement Direct KRM Types and Identity for DataplexDataProduct
 - **Context**: Implementing KRM types and IdentityV2 for `DataplexDataProduct` under `v1alpha1`.
 - **Problem**: `DataplexDataProduct` contains a map field `access_groups` which in protobuf translates to a nested map type (`map<string, AccessGroup>`). The default KCC `controllerbuilder generate-types` tool does not support direct generation of protobuf maps with message/struct values, reporting them as unreachable or unsupported. Furthermore, the Go client library for Dataplex in KCC was pinned to an older version (`v1.34.0`) that lacked the newly added `DataProduct` proto types entirely, leading to compilation issues.
