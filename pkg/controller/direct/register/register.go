@@ -42,6 +42,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch/resourceallowance"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/beyondcorp"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/beyondcorp/beyondcorpappgateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquery"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryanalyticshub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
