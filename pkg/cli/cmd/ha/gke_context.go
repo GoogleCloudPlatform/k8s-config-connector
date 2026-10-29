@@ -30,6 +30,10 @@ type gkeClusterInfo struct {
 
 // parseGKEContext parses a standard gcloud kubeconfig context name of the form
 // "gke_<project>_<location>_<cluster-name>" and derives its DNS-1123 cluster identity.
+//
+// TODO: Support custom kubeconfig context names that do not follow the default
+// gcloud "gke_<project>_<location>_<cluster>" naming convention (e.g. by inspecting the
+// kubeconfig AuthInfo/cluster metadata or accepting explicit project/location overrides).
 func parseGKEContext(contextName string) (gkeClusterInfo, error) {
 	trimmed := strings.TrimSpace(contextName)
 	parts := strings.Split(trimmed, "_")
@@ -62,47 +66,4 @@ func isValidGKEContextParts(parts []string) bool {
 	hasGKEPrefix := parts[0] == "gke"
 	hasNonEmptySegments := parts[1] != "" && parts[2] != "" && parts[3] != ""
 	return hasGKEPrefix && hasNonEmptySegments
-}
-
-func (g gkeClusterInfo) mclGSAEmail() string {
-	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", mclServiceAccountName, g.project)
-}
-
-func (g gkeClusterInfo) syncerGSAEmail() string {
-	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", syncerServiceAccountName, g.project)
-}
-
-// gcsBucketLocation returns a valid GCS bucket region derived from the GKE cluster location.
-// If the GKE cluster is zonal (e.g. "us-central1-a"), the zone suffix is stripped ("us-central1").
-func (g gkeClusterInfo) gcsBucketLocation() string {
-	if isZonalGKELocation(g.location) {
-		lastHyphen := strings.LastIndex(g.location, "-")
-		return g.location[:lastHyphen]
-	}
-
-	return g.location
-}
-
-func isZonalGKELocation(location string) bool {
-	if strings.Count(location, "-") != 2 {
-		return false
-	}
-
-	lastHyphen := strings.LastIndex(location, "-")
-	suffix := location[lastHyphen+1:]
-	return len(suffix) == 1 && suffix[0] >= 'a' && suffix[0] <= 'z'
-}
-
-// dedupeProjects returns the first gkeClusterInfo per unique GCP project while preserving order.
-func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
-	seen := make(map[string]bool, len(clusters))
-	unique := make([]gkeClusterInfo, 0, len(clusters))
-	for _, c := range clusters {
-		if !seen[c.project] {
-			seen[c.project] = true
-			unique = append(unique, c)
-		}
-	}
-
-	return unique
 }

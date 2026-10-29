@@ -148,8 +148,8 @@ func TestExecuteSetupAppliesManifestsAndConfiguresClusters(t *testing.T) {
 	}
 	for _, h := range handles {
 		mclDeploy := &appsv1.Deployment{}
-		if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: cnrmSystemNamespace, Name: mclDeploymentName}, mclDeploy); err != nil {
-			t.Fatalf("expected Deployment %s on %s, got error: %v", mclDeploymentName, h.contextName, err)
+		if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "multiclusterlease-controller-manager"}, mclDeploy); err != nil {
+			t.Fatalf("expected Deployment multiclusterlease-controller-manager on %s, got error: %v", h.contextName, err)
 		}
 		if gotImage := mclDeploy.Spec.Template.Spec.Containers[0].Image; gotImage != kccImage {
 			t.Fatalf("got MCL image %q on %s, want %q", gotImage, h.contextName, kccImage)
@@ -187,10 +187,10 @@ func TestExecuteSetupYAMLOnlyRendersWithoutMutating(t *testing.T) {
 	}
 	rendered := stdout.String()
 	for _, wantSnippet := range []string{
-		mclDeploymentName,
+		"multiclusterlease-controller-manager",
 		"gke-proj-a-us-central1-cluster-a",
 		"mode: cluster",
-		cnrmSystemSAGroup,
+		"system:serviceaccounts:cnrm-system",
 	} {
 		if !strings.Contains(rendered, wantSnippet) {
 			t.Fatalf("expected rendered YAML to contain %q, got:\n%s", wantSnippet, rendered)
@@ -265,7 +265,7 @@ func (r *recordingCommandRunner) run(_ context.Context, name string, args ...str
 func newBaseConfigConnector() *operatorv1beta1.ConfigConnector {
 	return &operatorv1beta1.ConfigConnector{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: configConnectorResourceName,
+			Name: "configconnector.core.cnrm.cloud.google.com",
 		},
 		Spec: operatorv1beta1.ConfigConnectorSpec{
 			Mode: "cluster",
@@ -277,9 +277,9 @@ func newManagerStatefulSet(image string) *appsv1.StatefulSet {
 	return &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager",
-			Namespace: cnrmSystemNamespace,
+			Namespace: "cnrm-system",
 			Labels: map[string]string{
-				componentLabelKey: managerStatefulSetComponent,
+				"cnrm.cloud.google.com/component": "cnrm-controller-manager",
 			},
 		},
 		Spec: appsv1.StatefulSetSpec{

@@ -120,15 +120,14 @@ func runSetup(ctx context.Context, opts setupOptions) error {
 }
 
 func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHandle, runner commandRunner) error {
-	configurers, err := preflightClusters(ctx, handles)
+	configurers, gkeClusters, err := initClusterConfigurers(ctx, handles, opts)
 	if err != nil {
 		return err
 	}
 
-	builder := newManifestBuilder(opts.leaseName, opts.leaseNamespace, opts.bucket)
 	if opts.yamlOnly {
 		for _, cfg := range configurers {
-			rendered, err := cfg.renderYAML(builder)
+			rendered, err := cfg.renderYAML()
 			if err != nil {
 				return err
 			}
@@ -141,11 +140,6 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 		return nil
 	}
 
-	gkeClusters := make([]gkeClusterInfo, 0, len(configurers))
-	for _, cfg := range configurers {
-		gkeClusters = append(gkeClusters, cfg.gkeInfo)
-	}
-
 	provisioner := newGCPProvisioner(runner, opts.bucket)
 	if err := provisioner.provision(ctx, gkeClusters); err != nil {
 		return err
@@ -153,10 +147,36 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 
 	var errs []error
 	for _, cfg := range configurers {
-		if err := cfg.apply(ctx, builder, opts.stdout, opts.dryRun); err != nil {
+		if err := cfg.apply(ctx, opts.stdout, opts.dryRun); err != nil {
 			errs = append(errs, err)
 		}
 	}
 
 	return errors.Join(errs...)
+}
+
+func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts setupOptions) ([]*clusterConfigurer, []gkeClusterInfo, error) {
+	if len(handles) == 0 {
+		return nil, nil, fmt.Errorf("no cluster handles provided for `config-connector ha setup`")
+	}
+
+	var errs []error
+	configurers := make([]*clusterConfigurer, 0, len(handles))
+	gkeClusters := make([]gkeClusterInfo, 0, len(handles))
+	for _, h := range handles {
+		cfg, err := newClusterConfigurer(ctx, h, opts.leaseName, opts.leaseNamespace, opts.bucket)
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
+
+		configurers = append(configurers, cfg)
+		gkeClusters = append(gkeClusters, cfg.gkeCluster())
+	}
+
+	if len(errs) > 0 {
+		return nil, nil, errors.Join(errs...)
+	}
+
+	return configurers, gkeClusters, nil
 }

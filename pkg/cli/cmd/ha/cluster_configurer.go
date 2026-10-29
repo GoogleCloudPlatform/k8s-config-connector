@@ -29,41 +29,23 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 )
 
+const (
+	controllerManagerNamespace   = "cnrm-system"
+	controllerComponentLabelKey  = "cnrm.cloud.google.com/component"
+	controllerManagerStatefulSet = "cnrm-controller-manager"
+)
+
 // clusterConfigurer inspects a target GKE cluster and applies multi-cluster HA Kubernetes configuration to it.
 type clusterConfigurer struct {
 	handle          *clusterHandle
 	gkeInfo         gkeClusterInfo
 	configConnector *operatorv1beta1.ConfigConnector
-	controllerImage string
+	manifests       *manifestBuilder
 }
 
-func preflightClusters(ctx context.Context, handles []*clusterHandle) ([]*clusterConfigurer, error) {
-	if len(handles) == 0 {
-		return nil, fmt.Errorf("no cluster handles provided for `config-connector ha setup`; specify at least 2 contexts via --%s", contextsFlag)
-	}
-
-	var errs []error
-	configurers := make([]*clusterConfigurer, 0, len(handles))
-	for i, h := range handles {
-		cfg, err := newClusterConfigurer(ctx, i, h)
-		if err != nil {
-			errs = append(errs, err)
-			continue
-		}
-
-		configurers = append(configurers, cfg)
-	}
-
-	if len(errs) > 0 {
-		return nil, errors.Join(errs...)
-	}
-
-	return configurers, nil
-}
-
-func newClusterConfigurer(ctx context.Context, index int, handle *clusterHandle) (*clusterConfigurer, error) {
+func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName, leaseNamespace, bucket string) (*clusterConfigurer, error) {
 	if handle == nil || handle.client == nil {
-		return nil, fmt.Errorf("cluster handle at index %d has a nil Kubernetes client", index)
+		return nil, fmt.Errorf("cluster handle has a nil Kubernetes client")
 	}
 
 	gkeInfo, err := parseGKEContext(handle.contextName)
@@ -81,24 +63,29 @@ func newClusterConfigurer(ctx context.Context, index int, handle *clusterHandle)
 		return nil, err
 	}
 
+	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.identity, gkeInfo.project, image, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
 		handle:          handle,
 		gkeInfo:         gkeInfo,
 		configConnector: cc,
-		controllerImage: image,
+		manifests:       manifests,
 	}, nil
 }
 
-func (c *clusterConfigurer) renderYAML(builder *manifestBuilder) (string, error) {
-	return builder.renderClusterYAML(c.gkeInfo, c.configConnector, c.controllerImage)
+func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
+	return c.gkeInfo
 }
 
-func (c *clusterConfigurer) apply(ctx context.Context, builder *manifestBuilder, stdout io.Writer, dryRun bool) error {
-	objs := builder.buildClusterObjects(c.gkeInfo.project, c.controllerImage)
+func (c *clusterConfigurer) renderYAML() (string, error) {
+	return c.manifests.renderClusterYAML(c.configConnector)
+}
+
+func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
+	objs := c.manifests.buildClusterObjects()
 	if dryRun {
 		if stdout != nil {
-			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (identity=%q, lease=%s/%s)\n",
-				c.handle.contextName, len(objs), c.gkeInfo.identity, builder.leaseNamespace, builder.leaseName)
+			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (identity=%q, lease=%s)\n",
+				c.handle.contextName, len(objs), c.gkeInfo.identity, c.manifests.leaseKey())
 		}
 
 		return nil
@@ -111,28 +98,28 @@ func (c *clusterConfigurer) apply(ctx context.Context, builder *manifestBuilder,
 		}
 	}
 
-	if err := c.updateConfigConnector(ctx, builder); err != nil {
+	if err := c.updateConfigConnector(ctx); err != nil {
 		errs = append(errs, err)
 	}
 
 	return errors.Join(errs...)
 }
 
-func (c *clusterConfigurer) updateConfigConnector(ctx context.Context, builder *manifestBuilder) error {
+func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
 	cc, err := fetchConfigConnector(ctx, c.handle)
 	if err != nil {
 		return err
 	}
 
-	builder.configureMultiClusterLease(&cc.Spec, c.gkeInfo.identity)
+	c.manifests.configureMultiClusterLease(&cc.Spec)
 	if err := c.handle.client.Update(ctx, cc); err != nil {
-		return fmt.Errorf("updating ConfigConnector %q on cluster %q: %w", configConnectorResourceName, c.handle.contextName, err)
+		return fmt.Errorf("updating ConfigConnector %q on cluster %q: %w", cc.Name, c.handle.contextName, err)
 	}
 
 	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
 		return fmt.Errorf(
 			"ConfigConnector %q on cluster %q silently dropped spec.experiments.multiClusterLease during update; the cluster's ConfigConnector CRD schema is too old (requires KCC v1.148.0+)",
-			configConnectorResourceName, c.handle.contextName,
+			cc.Name, c.handle.contextName,
 		)
 	}
 
@@ -144,17 +131,17 @@ func discoverControllerImage(ctx context.Context, handle *clusterHandle) (string
 	if err := handle.client.List(
 		ctx,
 		stsList,
-		client.InNamespace(cnrmSystemNamespace),
-		client.MatchingLabels{componentLabelKey: managerStatefulSetComponent},
+		client.InNamespace(controllerManagerNamespace),
+		client.MatchingLabels{controllerComponentLabelKey: controllerManagerStatefulSet},
 	); err != nil {
-		return "", fmt.Errorf("listing Config Connector controller StatefulSets in namespace %q on cluster %q: %w", cnrmSystemNamespace, handle.contextName, err)
+		return "", fmt.Errorf("listing Config Connector controller StatefulSets in namespace %q on cluster %q: %w", controllerManagerNamespace, handle.contextName, err)
 	}
 
 	var fallbackImage string
 	for _, sts := range stsList.Items {
 		for _, container := range sts.Spec.Template.Spec.Containers {
 			if container.Name == "manager" && container.Image != "" {
-				if sts.Name == managerStatefulSetComponent {
+				if sts.Name == controllerManagerStatefulSet {
 					return container.Image, nil
 				}
 
@@ -171,7 +158,7 @@ func discoverControllerImage(ctx context.Context, handle *clusterHandle) (string
 
 	return "", fmt.Errorf(
 		"could not find running Config Connector manager container image on cluster %q (expected StatefulSet with label %s=%s in namespace %q); verify Config Connector is installed and healthy",
-		handle.contextName, componentLabelKey, managerStatefulSetComponent, cnrmSystemNamespace,
+		handle.contextName, controllerComponentLabelKey, controllerManagerStatefulSet, controllerManagerNamespace,
 	)
 }
 

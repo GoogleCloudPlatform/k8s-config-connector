@@ -26,16 +26,15 @@ import (
 func TestClusterConfigurerApplyIsIdempotent(t *testing.T) {
 	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
 	handle := newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage))
-	cfg, err := newClusterConfigurer(context.Background(), 0, handle)
+	cfg, err := newClusterConfigurer(context.Background(), handle, "kcc-multicluster-lease", "cnrm-system", "my-ha-bucket")
 	if err != nil {
 		t.Fatalf("newClusterConfigurer failed: %v", err)
 	}
-	builder := newManifestBuilder(defaultLeaseName, defaultLeaseNamespace, "my-ha-bucket")
-	if err := cfg.apply(context.Background(), builder, nil, false); err != nil {
+	if err := cfg.apply(context.Background(), nil, false); err != nil {
 		t.Fatalf("first apply failed: %v", err)
 	}
 
-	err = cfg.apply(context.Background(), builder, nil, false)
+	err = cfg.apply(context.Background(), nil, false)
 
 	if err != nil {
 		t.Fatalf("second idempotent apply failed: %v", err)
@@ -46,8 +45,8 @@ func TestDiscoverControllerImagePrefersPrimaryManagerStatefulSet(t *testing.T) {
 	namespacedSts := &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager-ns1",
-			Namespace: cnrmSystemNamespace,
-			Labels:    map[string]string{componentLabelKey: managerStatefulSetComponent},
+			Namespace: controllerManagerNamespace,
+			Labels:    map[string]string{controllerComponentLabelKey: controllerManagerStatefulSet},
 		},
 		Spec: appsv1.StatefulSetSpec{
 			Template: corev1.PodTemplateSpec{

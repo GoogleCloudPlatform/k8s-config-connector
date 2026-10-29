@@ -17,6 +17,13 @@ package ha
 import (
 	"context"
 	"fmt"
+	"strings"
+)
+
+const (
+	gcpWorkloadIdentityNamespace = "cnrm-system"
+	gcpMCLServiceAccountName     = "kcc-mcl"
+	gcpSyncerServiceAccountName  = "kcc-syncer"
 )
 
 // gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
@@ -39,7 +46,7 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 
 	projects := dedupeProjects(clusters)
 	for _, project := range projects {
-		if err := p.configureProjectIAM(ctx, project, projects); err != nil {
+		if err := p.configureProjectIAM(ctx, project.project, projects); err != nil {
 			return err
 		}
 	}
@@ -48,7 +55,7 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 }
 
 func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClusterInfo) error {
-	location := primary.gcsBucketLocation()
+	location := gcsBucketLocation(primary.location)
 	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "create", p.bucketURI, "--project="+primary.project, "--location="+location); err != nil {
 		return fmt.Errorf("creating GCS lease bucket %q in location %q (project %q): %w", p.bucketURI, location, primary.project, err)
 	}
@@ -56,8 +63,8 @@ func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClust
 	return nil
 }
 
-func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, project gkeClusterInfo, allProjects []gkeClusterInfo) error {
-	mclGSA := project.mclGSAEmail()
+func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
+	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
 	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
 		"--member=serviceAccount:"+mclGSA,
 		"--role=roles/storage.objectAdmin",
@@ -65,17 +72,18 @@ func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, project gkeClu
 		return fmt.Errorf("granting storage.objectAdmin on %q to %q: %w", p.bucketURI, mclGSA, err)
 	}
 
+	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
 	bindings := []struct {
 		gsa string
 		ksa string
 	}{
-		{gsa: mclGSA, ksa: mclServiceAccountName},
-		{gsa: project.syncerGSAEmail(), ksa: syncerServiceAccountName},
+		{gsa: mclGSA, ksa: gcpMCLServiceAccountName},
+		{gsa: syncerGSA, ksa: gcpSyncerServiceAccountName},
 	}
 	for _, b := range bindings {
-		wiMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]", project.project, cnrmSystemNamespace, b.ksa)
+		wiMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]", projectID, gcpWorkloadIdentityNamespace, b.ksa)
 		if err := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "add-iam-policy-binding", b.gsa,
-			"--project="+project.project,
+			"--project="+projectID,
 			"--role=roles/iam.workloadIdentityUser",
 			"--member="+wiMember,
 		); err != nil {
@@ -83,7 +91,6 @@ func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, project gkeClu
 		}
 	}
 
-	syncerGSA := project.syncerGSAEmail()
 	for _, peer := range allProjects {
 		if err := p.runner.run(ctx, "gcloud", "projects", "add-iam-policy-binding", peer.project,
 			"--member=serviceAccount:"+syncerGSA,
@@ -94,4 +101,43 @@ func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, project gkeClu
 	}
 
 	return nil
+}
+
+func gsaEmail(serviceAccountName, projectID string) string {
+	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
+}
+
+// gcsBucketLocation returns a valid GCS bucket region derived from a GKE cluster location.
+// If the GKE cluster is zonal (e.g. "us-central1-a"), the zone suffix is stripped ("us-central1").
+func gcsBucketLocation(location string) string {
+	if isZonalGKELocation(location) {
+		lastHyphen := strings.LastIndex(location, "-")
+		return location[:lastHyphen]
+	}
+
+	return location
+}
+
+func isZonalGKELocation(location string) bool {
+	if strings.Count(location, "-") != 2 {
+		return false
+	}
+
+	lastHyphen := strings.LastIndex(location, "-")
+	suffix := location[lastHyphen+1:]
+	return len(suffix) == 1 && suffix[0] >= 'a' && suffix[0] <= 'z'
+}
+
+// dedupeProjects returns the first gkeClusterInfo per unique GCP project while preserving order.
+func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
+	seen := make(map[string]bool, len(clusters))
+	unique := make([]gkeClusterInfo, 0, len(clusters))
+	for _, c := range clusters {
+		if !seen[c.project] {
+			seen[c.project] = true
+			unique = append(unique, c)
+		}
+	}
+
+	return unique
 }

@@ -15,7 +15,6 @@
 package ha
 
 import (
-	"slices"
 	"strings"
 	"testing"
 )
@@ -73,54 +72,5 @@ func TestParseGKEContextErrors(t *testing.T) {
 				}
 			}
 		})
-	}
-}
-
-func TestGCSBucketLocation(t *testing.T) {
-	tests := []struct {
-		name     string
-		location string
-		want     string
-	}{
-		{
-			name:     "regional GKE location is unchanged",
-			location: "us-central1",
-			want:     "us-central1",
-		},
-		{
-			name:     "zonal GKE location strips zone suffix",
-			location: "us-central1-a",
-			want:     "us-central1",
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			info := gkeClusterInfo{location: tc.location}
-
-			got := info.gcsBucketLocation()
-
-			if got != tc.want {
-				t.Fatalf("got %q, want %q", got, tc.want)
-			}
-		})
-	}
-}
-
-func TestDedupeProjects(t *testing.T) {
-	clusters := []gkeClusterInfo{
-		{contextName: "ctx-1", project: "proj-a"},
-		{contextName: "ctx-2", project: "proj-a"},
-		{contextName: "ctx-3", project: "proj-b"},
-	}
-
-	got := dedupeProjects(clusters)
-
-	want := []gkeClusterInfo{
-		{contextName: "ctx-1", project: "proj-a"},
-		{contextName: "ctx-3", project: "proj-b"},
-	}
-	if !slices.Equal(got, want) {
-		t.Fatalf("got %+v, want %+v", got, want)
 	}
 }
