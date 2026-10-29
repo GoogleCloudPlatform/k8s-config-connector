@@ -3,18 +3,16 @@ kind: ComputeOrganizationSecurityPolicyAssociation
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: computeorganizationsecuritypolicyassociation-${uniqueId}
   namespace: ${uniqueId}
 spec:
   attachmentId: projects/${projectNumber}
-  resourceID: computeorganizationsecuritypolicyassociation-${uniqueId}
   securityPolicyRef:
     name: computeorganizationsecuritypolicy-${uniqueId}
 status:
@@ -24,4 +22,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 1
