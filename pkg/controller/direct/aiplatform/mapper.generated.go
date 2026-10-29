@@ -100,6 +100,72 @@ func AIPlatformFeatureViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlat
 	out.ServiceAgentType = direct.Enum_ToProto[pb.FeatureView_ServiceAgentType](mapCtx, in.ServiceAgentType)
 	return out
 }
+func AIPlatformHyperparameterTuningJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HyperparameterTuningJob) *krm.AIPlatformHyperparameterTuningJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformHyperparameterTuningJobObservedState{}
+	// MISSING: Name
+	out.Trials = direct.Slice_FromProto(mapCtx, in.Trials, TrialObservedState_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func AIPlatformHyperparameterTuningJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformHyperparameterTuningJobObservedState) *pb.HyperparameterTuningJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HyperparameterTuningJob{}
+	// MISSING: Name
+	out.Trials = direct.Slice_ToProto(mapCtx, in.Trials, TrialObservedState_ToProto)
+	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func AIPlatformHyperparameterTuningJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.HyperparameterTuningJob) *krm.AIPlatformHyperparameterTuningJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformHyperparameterTuningJobSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.StudySpec = StudySpecWithRequired_FromProto(mapCtx, in.GetStudySpec())
+	out.MaxTrialCount = direct.LazyPtr(in.GetMaxTrialCount())
+	out.ParallelTrialCount = direct.LazyPtr(in.GetParallelTrialCount())
+	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
+	out.TrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrialJobSpec())
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func AIPlatformHyperparameterTuningJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformHyperparameterTuningJobSpec) *pb.HyperparameterTuningJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HyperparameterTuningJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.StudySpec = StudySpecWithRequired_ToProto(mapCtx, in.StudySpec)
+	out.MaxTrialCount = direct.ValueOf(in.MaxTrialCount)
+	out.ParallelTrialCount = direct.ValueOf(in.ParallelTrialCount)
+	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
+	out.TrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrialJobSpec)
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
 
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -580,6 +646,28 @@ func ColabImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabIma
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func ContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krm.ContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerSpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVarWithRequired_FromProto)
+	return out
+}
+func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb.ContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerSpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVarWithRequired_ToProto)
+	return out
+}
 func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
 	if in == nil {
 		return nil
@@ -642,6 +730,50 @@ found existing non-generated mapping function "ContextObservedState_ToProto", sk
 		return out
 	}
 */
+func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krm.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomJobSpec{}
+	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
+	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
+	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.BaseOutputDirectory = GCSDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
+	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
+	out.Tensorboard = direct.LazyPtr(in.GetTensorboard())
+	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
+	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
+	out.Experiment = direct.LazyPtr(in.GetExperiment())
+	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
+	out.Models = in.Models
+	return out
+}
+func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomJobSpec{}
+	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
+	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
+	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Network = direct.ValueOf(in.Network)
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.BaseOutputDirectory = GCSDestination_ToProto(mapCtx, in.BaseOutputDirectory)
+	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
+	out.Tensorboard = direct.ValueOf(in.Tensorboard)
+	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
+	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
+	out.Experiment = direct.ValueOf(in.Experiment)
+	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
+	out.Models = in.Models
+	return out
+}
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
 	if in == nil {
 		return nil
@@ -1514,6 +1646,44 @@ func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.Mac
 	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
 	return out
 }
+func MeasurementObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement) *krm.MeasurementObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MeasurementObservedState{}
+	out.ElapsedDuration = direct.StringDuration_FromProto(mapCtx, in.GetElapsedDuration())
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, Measurement_MetricObservedState_FromProto)
+	return out
+}
+func MeasurementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MeasurementObservedState) *pb.Measurement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Measurement{}
+	out.ElapsedDuration = direct.StringDuration_ToProto(mapCtx, in.ElapsedDuration)
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, Measurement_MetricObservedState_ToProto)
+	return out
+}
+func Measurement_MetricObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Measurement_Metric) *krm.Measurement_MetricObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Measurement_MetricObservedState{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func Measurement_MetricObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Measurement_MetricObservedState) *pb.Measurement_Metric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Measurement_Metric{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
 func ModelContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpec {
 	if in == nil {
 		return nil
@@ -1712,6 +1882,26 @@ found existing non-generated mapping function "NetworkSpec_ToProto", skipping
 		return out
 	}
 */
+func NfsMount_FromProto(mapCtx *direct.MapContext, in *pb.NfsMount) *krm.NfsMount {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NfsMount{}
+	out.Server = direct.LazyPtr(in.GetServer())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
+	return out
+}
+func NfsMount_ToProto(mapCtx *direct.MapContext, in *krm.NfsMount) *pb.NfsMount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NfsMount{}
+	out.Server = direct.ValueOf(in.Server)
+	out.Path = direct.ValueOf(in.Path)
+	out.MountPoint = direct.ValueOf(in.MountPoint)
+	return out
+}
 func NotebookEUCConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEUCConfig {
 	if in == nil {
 		return nil
@@ -2594,6 +2784,30 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func PythonPackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krm.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PythonPackageSpec{}
+	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
+	out.PackageURIs = in.PackageUris
+	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVarWithRequired_FromProto)
+	return out
+}
+func PythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.PythonPackageSpec) *pb.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonPackageSpec{}
+	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
+	out.PackageUris = in.PackageURIs
+	out.PythonModule = direct.ValueOf(in.PythonModule)
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVarWithRequired_ToProto)
+	return out
+}
 func RayLogsSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayLogsSpec) *krm.RayLogsSpec {
 	if in == nil {
 		return nil
@@ -2876,6 +3090,30 @@ func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.Sample
 	out.PathCount = direct.ValueOf(in.PathCount)
 	return out
 }
+func Scheduling_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krm.Scheduling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Scheduling{}
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.RestartJobOnWorkerRestart = direct.LazyPtr(in.GetRestartJobOnWorkerRestart())
+	out.Strategy = direct.Enum_FromProto(mapCtx, in.GetStrategy())
+	out.DisableRetries = direct.LazyPtr(in.GetDisableRetries())
+	out.MaxWaitDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxWaitDuration())
+	return out
+}
+func Scheduling_ToProto(mapCtx *direct.MapContext, in *krm.Scheduling) *pb.Scheduling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scheduling{}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.RestartJobOnWorkerRestart = direct.ValueOf(in.RestartJobOnWorkerRestart)
+	out.Strategy = direct.Enum_ToProto[pb.Scheduling_Strategy](mapCtx, in.Strategy)
+	out.DisableRetries = direct.ValueOf(in.DisableRetries)
+	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
+	return out
+}
 
 /* found existing non-generated mapping function "Schema_FromProto", skipping
 func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.Schema {
@@ -3133,6 +3371,44 @@ func StudySpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec) *pb.StudySp
 	out.StudyStoppingConfig = StudySpec_StudyStoppingConfig_ToProto(mapCtx, in.StudyStoppingConfig)
 	return out
 }
+func StudySpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec) *krm.StudySpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpecWithRequired{}
+	out.DecayCurveStoppingSpec = StudySpec_DecayCurveAutomatedStoppingSpec_FromProto(mapCtx, in.GetDecayCurveStoppingSpec())
+	out.MedianAutomatedStoppingSpec = StudySpec_MedianAutomatedStoppingSpec_FromProto(mapCtx, in.GetMedianAutomatedStoppingSpec())
+	out.ConvexAutomatedStoppingSpec = StudySpec_ConvexAutomatedStoppingSpec_FromProto(mapCtx, in.GetConvexAutomatedStoppingSpec())
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, StudySpec_MetricSpecWithRequired_FromProto)
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, StudySpec_ParameterSpecWithRequired_FromProto)
+	out.Algorithm = direct.Enum_FromProto(mapCtx, in.GetAlgorithm())
+	out.ObservationNoise = direct.Enum_FromProto(mapCtx, in.GetObservationNoise())
+	out.MeasurementSelectionType = direct.Enum_FromProto(mapCtx, in.GetMeasurementSelectionType())
+	out.StudyStoppingConfig = StudySpec_StudyStoppingConfig_FromProto(mapCtx, in.GetStudyStoppingConfig())
+	return out
+}
+func StudySpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpecWithRequired) *pb.StudySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec{}
+	if oneof := StudySpec_DecayCurveAutomatedStoppingSpec_ToProto(mapCtx, in.DecayCurveStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_DecayCurveStoppingSpec{DecayCurveStoppingSpec: oneof}
+	}
+	if oneof := StudySpec_MedianAutomatedStoppingSpec_ToProto(mapCtx, in.MedianAutomatedStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_MedianAutomatedStoppingSpec_{MedianAutomatedStoppingSpec: oneof}
+	}
+	if oneof := StudySpec_ConvexAutomatedStoppingSpec_ToProto(mapCtx, in.ConvexAutomatedStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_ConvexAutomatedStoppingSpec_{ConvexAutomatedStoppingSpec: oneof}
+	}
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, StudySpec_MetricSpecWithRequired_ToProto)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, StudySpec_ParameterSpecWithRequired_ToProto)
+	out.Algorithm = direct.Enum_ToProto[pb.StudySpec_Algorithm](mapCtx, in.Algorithm)
+	out.ObservationNoise = direct.Enum_ToProto[pb.StudySpec_ObservationNoise](mapCtx, in.ObservationNoise)
+	out.MeasurementSelectionType = direct.Enum_ToProto[pb.StudySpec_MeasurementSelectionType](mapCtx, in.MeasurementSelectionType)
+	out.StudyStoppingConfig = StudySpec_StudyStoppingConfig_ToProto(mapCtx, in.StudyStoppingConfig)
+	return out
+}
 func StudySpec_ConvexAutomatedStoppingSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ConvexAutomatedStoppingSpec) *krm.StudySpec_ConvexAutomatedStoppingSpec {
 	if in == nil {
 		return nil
@@ -3211,6 +3487,26 @@ func StudySpec_MetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_M
 	out.SafetyConfig = StudySpec_MetricSpec_SafetyMetricConfig_ToProto(mapCtx, in.SafetyConfig)
 	return out
 }
+func StudySpec_MetricSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_MetricSpec) *krm.StudySpec_MetricSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_MetricSpecWithRequired{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Goal = direct.Enum_FromProto(mapCtx, in.GetGoal())
+	out.SafetyConfig = StudySpec_MetricSpec_SafetyMetricConfig_FromProto(mapCtx, in.GetSafetyConfig())
+	return out
+}
+func StudySpec_MetricSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_MetricSpecWithRequired) *pb.StudySpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_MetricSpec{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Goal = direct.Enum_ToProto[pb.StudySpec_MetricSpec_GoalType](mapCtx, in.Goal)
+	out.SafetyConfig = StudySpec_MetricSpec_SafetyMetricConfig_ToProto(mapCtx, in.SafetyConfig)
+	return out
+}
 func StudySpec_MetricSpec_SafetyMetricConfig_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_MetricSpec_SafetyMetricConfig) *krm.StudySpec_MetricSpec_SafetyMetricConfig {
 	if in == nil {
 		return nil
@@ -3265,6 +3561,42 @@ func StudySpec_ParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpe
 	out.ConditionalParameterSpecs = direct.Slice_ToProto(mapCtx, in.ConditionalParameterSpecs, StudySpec_ParameterSpec_ConditionalParameterSpec_ToProto)
 	return out
 }
+func StudySpec_ParameterSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec) *krm.StudySpec_ParameterSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpecWithRequired{}
+	out.DoubleValueSpec = StudySpec_ParameterSpec_DoubleValueSpecWithRequired_FromProto(mapCtx, in.GetDoubleValueSpec())
+	out.IntegerValueSpec = StudySpec_ParameterSpec_IntegerValueSpecWithRequired_FromProto(mapCtx, in.GetIntegerValueSpec())
+	out.CategoricalValueSpec = StudySpec_ParameterSpec_CategoricalValueSpecWithRequired_FromProto(mapCtx, in.GetCategoricalValueSpec())
+	out.DiscreteValueSpec = StudySpec_ParameterSpec_DiscreteValueSpecWithRequired_FromProto(mapCtx, in.GetDiscreteValueSpec())
+	out.ParameterID = direct.LazyPtr(in.GetParameterId())
+	out.ScaleType = direct.Enum_FromProto(mapCtx, in.GetScaleType())
+	out.ConditionalParameterSpecs = direct.Slice_FromProto(mapCtx, in.ConditionalParameterSpecs, StudySpec_ParameterSpec_ConditionalParameterSpec_FromProto)
+	return out
+}
+func StudySpec_ParameterSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpecWithRequired) *pb.StudySpec_ParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec{}
+	if oneof := StudySpec_ParameterSpec_DoubleValueSpecWithRequired_ToProto(mapCtx, in.DoubleValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_DoubleValueSpec_{DoubleValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_IntegerValueSpecWithRequired_ToProto(mapCtx, in.IntegerValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_IntegerValueSpec_{IntegerValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_CategoricalValueSpecWithRequired_ToProto(mapCtx, in.CategoricalValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_CategoricalValueSpec_{CategoricalValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_DiscreteValueSpecWithRequired_ToProto(mapCtx, in.DiscreteValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_DiscreteValueSpec_{DiscreteValueSpec: oneof}
+	}
+	out.ParameterId = direct.ValueOf(in.ParameterID)
+	out.ScaleType = direct.Enum_ToProto[pb.StudySpec_ParameterSpec_ScaleType](mapCtx, in.ScaleType)
+	out.ConditionalParameterSpecs = direct.Slice_ToProto(mapCtx, in.ConditionalParameterSpecs, StudySpec_ParameterSpec_ConditionalParameterSpec_ToProto)
+	return out
+}
 func StudySpec_ParameterSpec_CategoricalValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_CategoricalValueSpec) *krm.StudySpec_ParameterSpec_CategoricalValueSpec {
 	if in == nil {
 		return nil
@@ -3275,6 +3607,24 @@ func StudySpec_ParameterSpec_CategoricalValueSpec_FromProto(mapCtx *direct.MapCo
 	return out
 }
 func StudySpec_ParameterSpec_CategoricalValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_CategoricalValueSpec) *pb.StudySpec_ParameterSpec_CategoricalValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_CategoricalValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_CategoricalValueSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_CategoricalValueSpec) *krm.StudySpec_ParameterSpec_CategoricalValueSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_CategoricalValueSpecWithRequired{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_CategoricalValueSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_CategoricalValueSpecWithRequired) *pb.StudySpec_ParameterSpec_CategoricalValueSpec {
 	if in == nil {
 		return nil
 	}
@@ -3377,6 +3727,24 @@ func StudySpec_ParameterSpec_DiscreteValueSpec_ToProto(mapCtx *direct.MapContext
 	out.DefaultValue = in.DefaultValue
 	return out
 }
+func StudySpec_ParameterSpec_DiscreteValueSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_DiscreteValueSpec) *krm.StudySpec_ParameterSpec_DiscreteValueSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_DiscreteValueSpecWithRequired{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_DiscreteValueSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_DiscreteValueSpecWithRequired) *pb.StudySpec_ParameterSpec_DiscreteValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_DiscreteValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
 func StudySpec_ParameterSpec_DoubleValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_DoubleValueSpec) *krm.StudySpec_ParameterSpec_DoubleValueSpec {
 	if in == nil {
 		return nil
@@ -3397,6 +3765,26 @@ func StudySpec_ParameterSpec_DoubleValueSpec_ToProto(mapCtx *direct.MapContext, 
 	out.DefaultValue = in.DefaultValue
 	return out
 }
+func StudySpec_ParameterSpec_DoubleValueSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_DoubleValueSpec) *krm.StudySpec_ParameterSpec_DoubleValueSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_DoubleValueSpecWithRequired{}
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_DoubleValueSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_DoubleValueSpecWithRequired) *pb.StudySpec_ParameterSpec_DoubleValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_DoubleValueSpec{}
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.DefaultValue = in.DefaultValue
+	return out
+}
 func StudySpec_ParameterSpec_IntegerValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_IntegerValueSpec) *krm.StudySpec_ParameterSpec_IntegerValueSpec {
 	if in == nil {
 		return nil
@@ -3408,6 +3796,26 @@ func StudySpec_ParameterSpec_IntegerValueSpec_FromProto(mapCtx *direct.MapContex
 	return out
 }
 func StudySpec_ParameterSpec_IntegerValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_IntegerValueSpec) *pb.StudySpec_ParameterSpec_IntegerValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_IntegerValueSpec{}
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_IntegerValueSpecWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_IntegerValueSpec) *krm.StudySpec_ParameterSpec_IntegerValueSpecWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_IntegerValueSpecWithRequired{}
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_IntegerValueSpecWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_IntegerValueSpecWithRequired) *pb.StudySpec_ParameterSpec_IntegerValueSpec {
 	if in == nil {
 		return nil
 	}
@@ -3619,6 +4027,62 @@ func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *
 	out.ValidationFraction = direct.ValueOf(in.ValidationFraction)
 	out.TestFraction = direct.ValueOf(in.TestFraction)
 	out.Key = direct.ValueOf(in.Key)
+	return out
+}
+func TrialObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Trial) *krm.TrialObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrialObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Trial_ParameterObservedState_FromProto)
+	out.FinalMeasurement = MeasurementObservedState_FromProto(mapCtx, in.GetFinalMeasurement())
+	out.Measurements = direct.Slice_FromProto(mapCtx, in.Measurements, MeasurementObservedState_FromProto)
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.InfeasibleReason = direct.LazyPtr(in.GetInfeasibleReason())
+	out.CustomJob = direct.LazyPtr(in.GetCustomJob())
+	out.WebAccessURIs = in.WebAccessUris
+	return out
+}
+func TrialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TrialObservedState) *pb.Trial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Trial{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Id = direct.ValueOf(in.ID)
+	out.State = direct.Enum_ToProto[pb.Trial_State](mapCtx, in.State)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Trial_ParameterObservedState_ToProto)
+	out.FinalMeasurement = MeasurementObservedState_ToProto(mapCtx, in.FinalMeasurement)
+	out.Measurements = direct.Slice_ToProto(mapCtx, in.Measurements, MeasurementObservedState_ToProto)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.InfeasibleReason = direct.ValueOf(in.InfeasibleReason)
+	out.CustomJob = direct.ValueOf(in.CustomJob)
+	out.WebAccessUris = in.WebAccessURIs
+	return out
+}
+func Trial_ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Trial_Parameter) *krm.Trial_ParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Trial_ParameterObservedState{}
+	out.ParameterID = direct.LazyPtr(in.GetParameterId())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	return out
+}
+func Trial_ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Trial_ParameterObservedState) *pb.Trial_Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Trial_Parameter{}
+	out.ParameterId = direct.ValueOf(in.ParameterID)
+	out.Value = Value_ToProto(mapCtx, in.Value)
 	return out
 }
 func TunedModelCheckpoint_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelCheckpoint) *krm.TunedModelCheckpoint {
@@ -4111,6 +4575,36 @@ func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb
 	out := &pb.VideoMetadata{}
 	out.StartOffset = direct.StringDuration_ToProto(mapCtx, in.StartOffset)
 	out.EndOffset = direct.StringDuration_ToProto(mapCtx, in.EndOffset)
+	return out
+}
+func WorkerPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krm.WorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkerPoolSpec{}
+	out.ContainerSpec = ContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
+	out.PythonPackageSpec = PythonPackageSpec_FromProto(mapCtx, in.GetPythonPackageSpec())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
+	out.NfsMounts = direct.Slice_FromProto(mapCtx, in.NfsMounts, NfsMount_FromProto)
+	out.DiskSpec = DiskSpec_FromProto(mapCtx, in.GetDiskSpec())
+	return out
+}
+func WorkerPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkerPoolSpec) *pb.WorkerPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerPoolSpec{}
+	if oneof := ContainerSpec_ToProto(mapCtx, in.ContainerSpec); oneof != nil {
+		out.Task = &pb.WorkerPoolSpec_ContainerSpec{ContainerSpec: oneof}
+	}
+	if oneof := PythonPackageSpec_ToProto(mapCtx, in.PythonPackageSpec); oneof != nil {
+		out.Task = &pb.WorkerPoolSpec_PythonPackageSpec{PythonPackageSpec: oneof}
+	}
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
+	out.NfsMounts = direct.Slice_ToProto(mapCtx, in.NfsMounts, NfsMount_ToProto)
+	out.DiskSpec = DiskSpec_ToProto(mapCtx, in.DiskSpec)
 	return out
 }
 func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {
