@@ -67,18 +67,18 @@ spec:
                   This field is required if [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode]
                   is [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].'
                 type: string
-              etag:
-                description: Optional. Etag of the currently stored [EkmConnection][google.cloud.kms.v1.EkmConnection].
-                type: string
               keyManagementMode:
                 description: Optional. Describes who can perform control plane operations
                   on the EKM. If unset, this defaults to [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
                 type: string
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -149,14 +149,40 @@ spec:
                         - rawDer
                         type: object
                       type: array
-                    serviceDirectoryService:
+                    serviceDirectoryServiceRef:
                       description: Required. The resource name of the Service Directory
                         service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed ServiceDirectoryService
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/namespaces/{{namespaceID}}/services/{{serviceID}}".
+                          type: string
+                        name:
+                          description: The name of a ServiceDirectoryService resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a ServiceDirectoryService
+                            resource.
+                          type: string
+                      type: object
                   required:
                   - hostname
                   - serverCertificates
-                  - serviceDirectoryService
+                  - serviceDirectoryServiceRef
                   type: object
                 type: array
             required:
@@ -212,6 +238,9 @@ spec:
                   createTime:
                     description: Output only. The time at which the [EkmConnection][google.cloud.kms.v1.EkmConnection]
                       was created.
+                    type: string
+                  etag:
+                    description: Optional. Etag of the currently stored [EkmConnection][google.cloud.kms.v1.EkmConnection].
                     type: string
                   serviceResolvers:
                     description: Optional. A list of [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver]

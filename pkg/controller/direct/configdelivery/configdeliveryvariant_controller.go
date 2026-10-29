@@ -68,6 +68,10 @@ func (m *modelVariant) AdapterForObject(ctx context.Context, op *directbase.Adap
 	}
 	id := i.(*krm.ConfigdeliveryVariantIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get configdelivery GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -153,6 +157,7 @@ func (a *VariantAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
 	req := &configdeliverypb.CreateVariantRequest{
 		Parent:    a.id.ParentString(),

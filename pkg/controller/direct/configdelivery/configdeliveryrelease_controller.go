@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,6 +67,10 @@ func (m *modelRelease) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 	id := i.(*krm.ConfigDeliveryReleaseIdentity)
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 
 	// Get configdelivery GCP client
 	gcpClient, err := m.client(ctx)
@@ -153,6 +157,7 @@ func (a *ReleaseAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
 	req := &configdeliverypb.CreateReleaseRequest{
 		Parent:    a.id.ParentString(),

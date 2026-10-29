@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,7 @@ var MigrationCenterImportJobGVK = GroupVersion.WithKind("MigrationCenterImportJo
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.ImportJob
 // +kcc:required-from-proto
 type MigrationCenterImportJobSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The MigrationCenterImportJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -43,14 +39,10 @@ type MigrationCenterImportJobSpec struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Required. Reference to a source.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.asset_source
 	// +required
-	AssetSource *string `json:"assetSource,omitempty"`
+	AssetSourceRef *MigrationCenterSourceRef `json:"assetSourceRef"`
 }
 
 // MigrationCenterImportJobStatus defines the config connector machine state of MigrationCenterImportJob

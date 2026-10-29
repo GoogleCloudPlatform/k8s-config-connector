@@ -28,6 +28,7 @@ import (
 	krmkmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -208,7 +209,9 @@ func EkmConnection_ServiceResolver_v1alpha1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krmkmsv1alpha1.EkmConnection_ServiceResolver{}
-	out.ServiceDirectoryService = direct.LazyPtr(in.GetServiceDirectoryService())
+	if in.GetServiceDirectoryService() != "" {
+		out.ServiceDirectoryServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetServiceDirectoryService()}
+	}
 	out.EndpointFilter = direct.LazyPtr(in.GetEndpointFilter())
 	out.Hostname = direct.LazyPtr(in.GetHostname())
 	out.ServerCertificates = direct.Slice_FromProto(mapCtx, in.ServerCertificates, Certificate_v1alpha1_FromProto)
@@ -220,7 +223,9 @@ func EkmConnection_ServiceResolver_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.EkmConnection_ServiceResolver{}
-	out.ServiceDirectoryService = direct.ValueOf(in.ServiceDirectoryService)
+	if in.ServiceDirectoryServiceRef != nil {
+		out.ServiceDirectoryService = in.ServiceDirectoryServiceRef.External
+	}
 	out.EndpointFilter = direct.ValueOf(in.EndpointFilter)
 	out.Hostname = direct.ValueOf(in.Hostname)
 	out.ServerCertificates = direct.Slice_ToProto(mapCtx, in.ServerCertificates, Certificate_v1alpha1_ToProto)
@@ -511,6 +516,7 @@ func KMSEkmConnectionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.ServiceResolvers = direct.Slice_FromProto(mapCtx, in.ServiceResolvers, EkmConnection_ServiceResolverObservedState_v1alpha1_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 
@@ -522,6 +528,7 @@ func KMSEkmConnectionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.ServiceResolvers = direct.Slice_ToProto(mapCtx, in.ServiceResolvers, EkmConnection_ServiceResolverObservedState_v1alpha1_ToProto)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 
@@ -532,7 +539,6 @@ func KMSEkmConnectionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out := &krmkmsv1alpha1.KMSEkmConnectionSpec{}
 	// MISSING: Name
 	out.ServiceResolvers = direct.Slice_FromProto(mapCtx, in.ServiceResolvers, EkmConnection_ServiceResolver_v1alpha1_FromProto)
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.KeyManagementMode = direct.Enum_FromProto(mapCtx, in.GetKeyManagementMode())
 	out.CryptoSpacePath = direct.LazyPtr(in.GetCryptoSpacePath())
 	return out
@@ -545,7 +551,6 @@ func KMSEkmConnectionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmkms
 	out := &pb.EkmConnection{}
 	// MISSING: Name
 	out.ServiceResolvers = direct.Slice_ToProto(mapCtx, in.ServiceResolvers, EkmConnection_ServiceResolver_v1alpha1_ToProto)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.KeyManagementMode = direct.Enum_ToProto[pb.EkmConnection_KeyManagementMode](mapCtx, in.KeyManagementMode)
 	out.CryptoSpacePath = direct.ValueOf(in.CryptoSpacePath)
 	return out

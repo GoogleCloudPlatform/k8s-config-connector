@@ -55,6 +55,13 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-fuzzer \
+  --prepopulate-resource \
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigdeliveryVariant:Variant \
+  --resource ConfigDeliveryRelease:Release
+
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then

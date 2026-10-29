@@ -25,49 +25,65 @@ entries:
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, converted AssetSource to AssetSourceRef, and removed top-level Labels
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.assetSource
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/Source (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to AssetSourceRef (*MigrationCenterSourceRef)
   - kind: MigrationCenterImportJob
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef and converted Group and PreferenceSet in ReportConfig_GroupPreferenceSetAssignment to references
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.groupPreferencesetAssignments[].group
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/Group (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to GroupRef (*MigrationCenterGroupRef)
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.groupPreferencesetAssignments[].preferenceSet
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to migrationcenter.googleapis.com/PreferenceSet (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to PreferenceSetRef (*MigrationCenterPreferenceSetRef)
   - kind: MigrationCenterReportConfig
     group: migrationcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

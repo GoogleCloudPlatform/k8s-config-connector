@@ -67,10 +67,13 @@ spec:
                   Latin letters A-Z and a-z, underscores (_), and ASCII digits 0-9.
                 type: string
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

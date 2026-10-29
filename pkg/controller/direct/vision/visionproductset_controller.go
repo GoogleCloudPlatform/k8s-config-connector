@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ func (m *modelProductSet) AdapterForObject(ctx context.Context, op *directbase.A
 	id := i.(*krm.VisionProductSetIdentity)
 
 	// Get vision GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (m *modelProductSet) AdapterForURL(ctx context.Context, url string) (direct
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -97,9 +97,9 @@ func (m *modelProductSet) AdapterForURL(ctx context.Context, url string) (direct
 		gcpClient: gcpClient,
 	}, nil
 }
-func (m *modelProductSet) client(ctx context.Context) (*gcp.ProductSearchClient, error) {
+func (m *modelProductSet) client(ctx context.Context, projectID string) (*gcp.ProductSearchClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(projectID))
 	if err != nil {
 		return nil, err
 	}
