@@ -20,4 +20,4 @@ metadata:
   name: iamserviceaccount-${uniqueId}
 spec:
   displayName: Test Service Account
-  resourceID: iamserviceaccount${uniqueId}
+  resourceID: sa${uniqueId}

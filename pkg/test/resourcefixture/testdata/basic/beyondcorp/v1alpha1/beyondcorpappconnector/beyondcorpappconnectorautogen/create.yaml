@@ -17,9 +17,10 @@ kind: BeyondCorpAppConnector
 metadata:
   name: beyondcorpappconnector-${uniqueId}
 spec:
+  displayName: Sample App Connector
   principalInfo:
     serviceAccount:
-      email: ${google_service_account.service_account.email}
+      email: sa${uniqueId}@${projectId}.iam.gserviceaccount.com
   projectRef:
     external: ${projectId}
   region: us-central1
