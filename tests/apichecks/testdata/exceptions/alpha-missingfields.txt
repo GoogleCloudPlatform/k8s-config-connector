@@ -509,10 +509,6 @@
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.servingStatus" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccessConnector.name" is not set in unstructured objects
-[missing_field] crd=appengineservicesplittraffics.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.migrateTraffic" is not set in unstructured objects
-[missing_field] crd=appengineservicesplittraffics.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
-[missing_field] crd=appengineservicesplittraffics.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.split.allocations" is not set in unstructured objects
-[missing_field] crd=appengineservicesplittraffics.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.split.shardBy" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.appEngineApis" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.automaticScaling.maxConcurrentRequests" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.automaticScaling.maxIdleInstances" is not set in unstructured objects

@@ -30,7 +30,11 @@ func getIdentityFromAppEngineServiceSplitTrafficSpec(ctx context.Context, reader
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+		if obj.Spec.Project != nil && *obj.Spec.Project != "" {
+			projectID = *obj.Spec.Project
+		} else {
+			return nil, fmt.Errorf("cannot resolve project: %w", err)
+		}
 	}
 
 	return &AppEngineServiceSplitTrafficIdentity{
