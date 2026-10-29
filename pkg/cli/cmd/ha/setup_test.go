@@ -158,7 +158,7 @@ func TestExecuteSetupAppliesManifestsAndConfiguresClusters(t *testing.T) {
 		if err != nil {
 			t.Fatalf("fetching ConfigConnector on %s: %v", h.contextName, err)
 		}
-		if !hasMultiClusterLeaseConfigured(cc) {
+		if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
 			t.Fatalf("expected MultiClusterLease to be configured on %s, got %+v", h.contextName, cc)
 		}
 	}

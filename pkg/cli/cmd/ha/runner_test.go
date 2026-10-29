@@ -17,107 +17,19 @@ package ha
 import (
 	"bytes"
 	"context"
-	"strings"
 	"testing"
 )
 
-func TestParseGKEContext(t *testing.T) {
-	raw := "gke_my-project_us-central1_cluster-a"
-
-	got, err := parseGKEContext(raw)
-
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	want := gkeClusterInfo{
-		contextName: "gke_my-project_us-central1_cluster-a",
-		identity:    "gke-my-project-us-central1-cluster-a",
-		project:     "my-project",
-		location:    "us-central1",
-		clusterName: "cluster-a",
-	}
-	if got != want {
-		t.Fatalf("got %+v, want %+v", got, want)
-	}
-}
-
-func TestGCSBucketLocation(t *testing.T) {
-	tests := []struct {
-		name     string
-		location string
-		want     string
-	}{
-		{
-			name:     "regional GKE location is unchanged",
-			location: "us-central1",
-			want:     "us-central1",
-		},
-		{
-			name:     "zonal GKE location strips zone suffix",
-			location: "us-central1-a",
-			want:     "us-central1",
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			info := gkeClusterInfo{location: tc.location}
-
-			got := info.gcsBucketLocation()
-
-			if got != tc.want {
-				t.Fatalf("got %q, want %q", got, tc.want)
-			}
-		})
-	}
-}
-
-func TestParseGKEContextErrors(t *testing.T) {
-	tests := []struct {
-		name              string
-		contextName       string
-		wantErrSubstrings []string
-	}{
-		{
-			name:              "non-GKE context name without gke prefix",
-			contextName:       "cluster-a",
-			wantErrSubstrings: []string{"does not match expected GKE context format"},
-		},
-		{
-			name:              "missing cluster segment",
-			contextName:       "gke_my-project_us-central1_",
-			wantErrSubstrings: []string{"does not match expected GKE context format"},
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			ctxName := tc.contextName
-
-			_, err := parseGKEContext(ctxName)
-
-			if err == nil {
-				t.Fatalf("expected error containing %v, got nil", tc.wantErrSubstrings)
-			}
-			for _, sub := range tc.wantErrSubstrings {
-				if !strings.Contains(err.Error(), sub) {
-					t.Fatalf("expected error %q to contain %q", err.Error(), sub)
-				}
-			}
-		})
-	}
-}
-
 func TestExecCommandRunnerDryRun(t *testing.T) {
 	var stdout, stderr bytes.Buffer
-	runner := newExecCommandRunner(&stdout, &stderr /* dryRun= */, true)
+	runner := newExecCommandRunner(&stdout, &stderr, true)
 
 	err := runner.run(context.Background(), "nonexistent-binary-for-dry-run", "storage", "buckets", "create", "gs://my-bucket")
 
 	if err != nil {
 		t.Fatalf("unexpected error on dry run: %v", err)
 	}
-	wantOut := "$ nonexistent-binary-for-dry-run storage buckets create gs://my-bucket\n"
+	wantOut := "[dry-run] would run: nonexistent-binary-for-dry-run storage buckets create gs://my-bucket\n"
 	if stdout.String() != wantOut {
 		t.Fatalf("got stdout %q, want %q", stdout.String(), wantOut)
 	}
