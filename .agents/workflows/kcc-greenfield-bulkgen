@@ -196,11 +196,12 @@ Notes for maintainers (not part of the task):
   - Agents must not edit SKILL.md during these trials (journaler Tier 1). General learnings go in the PR's "Workflow feedback" section so they can be folded back into this file.
   - Journals go to `.gemini/journals/<service_name>.md` (journaler Tier 2), never under `.gemini/skills/`.
   - Steps 3 and 4 get a review checklist derived from their own rules (there is no reviewgen skill for them).
+  - Step 1a routing: on #14456 the overseer opened a Step 1a issue (#14457) for a kind that was already bulk-prepopulated, and a human had to close it. The WF creation script now adds a `Prepopulated:` line to the parent body, the Step 1a section tells the overseer to trust it (with a `gh search code` fallback), and the Step 1a / 1b "doesn't apply" guards ask the coder to close the issue itself.
   - Step 1b tells agents to search all of `apis/` for an existing `<Kind>Ref` before generating or adding one: the generator only searches the kind's own package, so it reports `parent-ref-not-modelled` even when the parent's ref exists in another version package (e.g. ArtifactRegistryRule's parent ref is in `apis/artifactregistry/v1beta1/`).
   - The `cnrm.cloud.google.com/stability-level=alpha` label is not required: the bulkgen generator doesn't emit it and the triaged LoggingLogScope doesn't have it.
 - Parent modelling (decided 2026-10-26): child resources use the single-parent rule from `kcc-greenfield-oneParent`, one required, immutable `spec.parentRef` (`*<ParentKind>Ref`); top-level resources keep the bulkgen shape, a project/folder/organization reference plus `location` (inlined `*parent.ProjectAndLocationRef` for `projects/{p}/locations/{l}`). Notes:
   - `generate-identity` supports this: `matchParentRefField` matches a field named `parentRef` for non-root ancestors and builds the identity from the parent's external reference.
-  - `TestCRDsHaveParentRefs` flags any ref field starting with `parent`, so each child CRD adds one line to `crds_have_parent_refs.txt`. On #14016 the test was skipped instead, reviewbot-robot rejected that and had `parentRef` renamed to `agentRef`; the Step 1b review instructions now say the name and the line are intentional. Relaxing the test to allow a bare `parentRef` would remove the need for the lines.
+  - `TestCRDsHaveParentRefs` flags any ref field starting with `parent`. On #14016 the oneParent trial was pushed into `agentRef` by reviewbot-robot; since #14462 (ArtifactRegistryRule, 2026-10-27) the test is skipped on master ("parent refs are allowed in Greenfield"), so Step 1b tells agents not to add `crds_have_parent_refs.txt` lines and not to touch the test.
   - Stop conditions from oneParent kept: parents of several different kinds, or a parent no KCC kind can create.
 - When editing a body: keep its start/end marker comments and the 4-backtick fence, never use a 4-backtick fence inside a body, and only use the placeholders `{kind}`, `{kind_lowercase}` and `{parent_issue}` (the overseer substitutes them; everything in angle brackets is for the coder).
 -->
@@ -260,6 +261,12 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
 *   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
 *   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
 
+**How to check.** Read the parent workflow issue body first. If it has a line starting with `Prepopulated:` (the WF creation script adds it when `{kind}` already has an open `untriaged-bulk-generation` entry on `master`), Step 1a is done: mark it `Completed (Bulk Prepopulated)` and go straight to Step 1b. **Don't open a Step 1a issue.** Without that line, check `master` without a checkout: list candidate queue files, then confirm an exact `  - kind: {kind}` line in one of them:
+```bash
+gh search code "kind: {kind}" --repo GoogleCloudPlatform/k8s-config-connector --filename judgement_queue.yaml --json path --jq '.[].path'
+gh api "repos/GoogleCloudPlatform/k8s-config-connector/contents/<path>" -H "Accept: application/vnd.github.raw" | grep -qx "  - kind: {kind}" && echo prepopulated
+```
+
 **GitHub Issue Details for Step 1a (Prepopulate):**
 *   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
@@ -287,7 +294,7 @@ Step 1a scaffolds `{kind}` mechanically with `controllerbuilder`: KRM types, ide
 
 ## Guardrails
 
-- **Already done?** Run `git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`. A hit means `{kind}` was bulk-prepopulated: don't open a PR, comment that on this issue, and stop.
+- **Already done?** Run `git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`. A hit means `{kind}` was bulk-prepopulated, so don't open a PR. Comment what you found on this issue and close it (`gh issue close <this issue's number> --comment "<what you found>"`); the overseer then moves on to Step 1b. If you can't close it, leave the comment and stop.
 - **No hand edits** to `{kind_lowercase}_types.go`, `types.generated.go`, `{kind_lowercase}_identity.generated.go`, `{kind_lowercase}_reference.generated.go` or `apis/<group>/judgement_queue.yaml`. (Section 4.3 has the one exception.)
 - **Resolve no queue entries.** `untriaged-bulk-generation` for `{kind}` must stay `status: open`.
 - **No `--allow-non-ga-proto`.** If the resource only exists in a non-GA proto (`v1alpha*`, `v1beta*`), stop and comment on this issue.
@@ -505,7 +512,7 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 
 ## Guardrails
 
-- **Legacy check.** If `{kind_lowercase}_types.go` exists but the queue has no open `untriaged-bulk-generation` entry for `{kind}`, this step doesn't apply. Comment that on this issue and stop.
+- **Legacy check.** If `{kind_lowercase}_types.go` exists but the queue has no open `untriaged-bulk-generation` entry for `{kind}`, this step doesn't apply. Comment what you found on this issue and close it (`gh issue close <this issue's number> --comment "<what you found>"`). If you can't close it, leave the comment and stop.
 - **Stay in scope.** Touch only `{kind}`'s files, the shared files named below, and parent or target identity/reference files when a section says so. Don't refactor other kinds.
 - **Don't edit any `SKILL.md`.** Put general learnings in the PR's "Workflow feedback" section.
 
@@ -569,7 +576,7 @@ Other top-level parents keep the generated root field: `projects/{project}` keep
    - Project, location and every ancestor ID come from the parent once the reference is resolved, never from the `cnrm.cloud.google.com/project-id` annotation, the namespace, `refs.ResolveProjectID` or `refs.GetLocation`.
    - If the proto message has its own `parent` field, don't add a spec field for it; the controller fills it from the identity.
 3. **Regenerate.** Re-run `./apis/<group>/generate.sh`. `generate-identity` recognizes a field named `parentRef`: the generated `getIdentityFrom{kind}Spec` normalizes `spec.parentRef` and builds the identity from the parent's external reference plus the resource ID. This also resolves `identity-root-unknown`. Check that the generated function reads nothing from the spec except `parentRef` and `resourceID`.
-4. **`TestCRDsHaveParentRefs`.** It flags every reference field whose name starts with `parent`, so `parentRef` trips it. That is intentional under the single-parent design: run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/ -run TestCRDsHaveParentRefs` and commit exactly the one new line it writes for `{kind}`'s CRD to `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt`. Don't skip or edit the test, and don't rename the field after the parent kind, even if a review asks; point to this issue instead. Say so in the PR description.
+4. **`TestCRDsHaveParentRefs`.** It flags reference fields whose name starts with `parent`, but it is skipped on master because greenfield parent refs are allowed. Don't add lines to `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt`, don't un-skip or edit the test, and don't rename the field after the parent kind, even if a review asks; point to this issue instead. (If the test is ever un-skipped on master, commit the one line `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/ -run TestCRDsHaveParentRefs` writes for `{kind}`'s CRD, and nothing else.)
 5. **Resolve** the `parent-ref-*`, `location-or-parent-ref` and `identity-root-unknown` entries as `edited`, note `modelled as spec.parentRef (*<ParentKind>Ref) per the single-parent rule; removed projectRef and location`.
 6. **Stop and comment on this issue** instead of improvising if:
    - the resource has several name patterns whose parents are different kinds: there is no shared multi-kind reference type yet; or
@@ -708,7 +715,7 @@ scripts/validate-prereqs.sh
 
 `scripts/validate-prereqs.sh` runs fmt/generate/manifests and fails on any unstaged diff; its output includes hints. Commit again if it changes files.
 
-Only these exception files may grow: `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt` (exactly one line, for a child resource's `spec.parentRef`; section 2, case B), `pkg/gcpurls/registry_test.go` (verified templates missing from CAI) and `testdata/exceptions/naming_violations.txt` (new external-only identity/reference files). Never `missingrefs.txt`.
+Only these exception files may grow: `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, `pkg/gcpurls/registry_test.go` (verified templates missing from CAI) and `testdata/exceptions/naming_violations.txt` (new external-only identity/reference files). Never `missingrefs.txt` or `crds_have_parent_refs.txt`.
 
 ## Done when
 
@@ -735,7 +742,7 @@ Write service-specific quirks to `.gemini/journals/<service_name>.md` (create it
 - **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types and identity for {kind}`
 - **Labels:** the labels on this issue.
 - **Push and open it** with `./dev/tasks/validate-and-push origin <branch>` (it runs the presubmits and pushes only if they pass), then `./.gemini/skills/send-pr/scripts/send-pr.sh --title "<title>" --body <file> --labels "<labels>"`. Write the body to a temp file outside the repo and never commit it.
-- **Body:** `Fixes #<this issue's number>`; a table of `{kind}`'s entries (reason, field, resolution, one-line reason); the parent pattern, whether `{kind}` is top-level or a child, the parent field you modelled (section 2) and why; for a child resource, a note that the new `crds_have_parent_refs.txt` line is the intentional single-parent exception; any parent or target identity/reference files you added; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
+- **Body:** `Fixes #<this issue's number>`; a table of `{kind}`'s entries (reason, field, resolution, one-line reason); the parent pattern, whether `{kind}` is top-level or a child, the parent field you modelled (section 2) and why; any parent or target identity/reference files you added; the checks you ran and their results; the journal entries you wrote (paths); and a `## Workflow feedback` section listing anything in this issue that was unclear, wrong or missing. End it with this release-note block:
 
 ```release-note
 NONE
@@ -756,7 +763,7 @@ Check every item, cross-checking against the proto in `.build/third_party/google
 3. **Parent, identity and references** (against `option (google.api.resource)` and `Create<ProtoMessage>Request`).
    - **Top-level resources** (the parent pattern is `projects/{project}`, `folders/{folder}` or `organizations/{organization}`, optionally plus `locations/{location}`) keep the root reference plus `location`. A project+location parent is an embedded `*parent.ProjectAndLocationRef` with `json:",inline"`, not separate `ProjectRef` and `Location` fields; its `Location string` is not a pointer violation. A global resource has no `Location`. A multi-root resource has optional `ProjectRef`/`FolderRef`/`OrganizationRef` and an identity that accepts every root.
    - **Child resources** (the parent pattern ends in another resource) have exactly one hierarchy field, `ParentRef *<ParentKind>Ref` with `json:"parentRef"`, marked `+required` and carrying the `self == oldSelf` CEL immutability rule. No `projectRef`, `folderRef`, `organizationRef`, `location`, `region`, `zone` or grandparent reference anywhere in the spec, no `json:",inline"` on it, and no other `parent<Something>Ref` field. The identity takes project, location and ancestor IDs only from the resolved `spec.parentRef` (no `refs.ResolveProjectID`, `refs.GetLocation` or annotations).
-   - **The `parentRef` name is intentional** (single-parent design). Don't ask to rename it after the parent kind, and don't fail the PR for the one new `crds_have_parent_refs.txt` line it requires. Do fail it if `TestCRDsHaveParentRefs` was skipped or edited, or if more than that one line was added.
+   - **The `parentRef` name is intentional** (single-parent design; `TestCRDsHaveParentRefs` is skipped on master for greenfield parent refs). Don't ask to rename it after the parent kind. Fail the PR if it adds lines to `crds_have_parent_refs.txt` or changes `TestCRDsHaveParentRefs`.
    - `generate.sh` runs `generate-identity`. Hand-written identity/reference code appears only where the generator can't express the pattern. Singleton templates keep the literal suffix.
    - `{kind}Identity` is `ServerGeneratedIdentity` exactly when `Create<ProtoMessage>Request` has no `<resource>_id` field; otherwise `IdentityV2`.
    - Every new `<TargetKind>Ref` lives in its own `<targetkind>_reference*.go` with a matching identity file, never in `_types.go` or under `apis/refs/v1beta1/`. No new ref type duplicates one that already exists elsewhere in `apis/` (check with `git grep "type <TargetKind>Ref struct" -- apis/`). Targets with a full CRD use `refs.Normalize` (never `NormalizeWithFallback`); external-only references validate `External`.
@@ -769,13 +776,13 @@ Check every item, cross-checking against the proto in `.build/third_party/google
    - `{kind}` is still in `BLOCKED_KINDS`.
    - `generate.sh` has `generate-mapper --prepopulate-resource` (plus `--multiversion` / `--proto-source-path` where needed), or `{kind}`'s mappers are isolated in `{kind_lowercase}_mapper.go`. `types.generated.go`, the mappers, `zz_generated.deepcopy.go` and the CRD are in sync with `{kind_lowercase}_types.go`. `{kind}Spec` has no top-level `Labels`.
    - **Gate:** if a controller or fuzzer already exists for `{kind}`, it still builds (`go build ./pkg/controller/direct/<group>/...`) and passes `FOCUS={kind} go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`. If not, fail the review and ask for the controller and fuzzer to be regenerated with `generate-controller` / `generate-fuzzer --prepopulate-resource` and fixed.
-   - Only `alpha-missingfields.txt`, `crds_have_parent_refs.txt` (one line, child resources only), `pkg/gcpurls/registry_test.go` (verified non-CAI templates) and `naming_violations.txt` (new external-only files) may grow. `missingrefs.txt` is untouched.
+   - Only `alpha-missingfields.txt`, `pkg/gcpurls/registry_test.go` (verified non-CAI templates) and `naming_violations.txt` (new external-only files) may grow. `missingrefs.txt` and `crds_have_parent_refs.txt` are untouched.
 
 ```markdown
 ### KCC Greenfield Step 1b (Judgement Queue) Auto-Review Results
 * **Judgement Queue Completeness**: [Pass/Fail] - (all {kind} entries resolved, none deleted, no +kcc:guess left)
 * **Queue Resolution Accuracy**: [Pass/Fail] - (wrong not-applicable/accepted; etag or top-level labels in Spec; doc comments stripped)
-* **Parent, Identity & References**: [Pass/Fail] - (top-level: root ref + location / ProjectAndLocationRef; child: single required, immutable spec.parentRef plus one crds_have_parent_refs.txt line; generate-identity; singleton/multi-pattern templates; ServerGeneratedIdentity vs IdentityV2; refs.Normalize)
+* **Parent, Identity & References**: [Pass/Fail] - (top-level: root ref + location / ProjectAndLocationRef; child: single required, immutable spec.parentRef; generate-identity; singleton/multi-pattern templates; ServerGeneratedIdentity vs IdentityV2; refs.Normalize)
 * **Unflagged Proto-vs-KRM Audit & Struct Isolation**: [Pass/Fail] - (unflagged refs; missing +kcc:proto; shared structs mutated; non-pointer scalars; empty ObservedState)
 * **Generated Files, Controller/Fuzzer Sync & `BLOCKED_KINDS`**: [Pass/Fail] - (CRD/mapper/deepcopy in sync; pre-existing controller/fuzzer regenerated and passing; BLOCKED_KINDS; missingrefs.txt untouched)
 
