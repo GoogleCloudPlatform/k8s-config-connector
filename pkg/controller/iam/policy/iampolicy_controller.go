@@ -84,7 +84,8 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 		return err
 	}
 	opt := controller.Options{
-		SkipNameValidation: ptr.To(deps.SkipNameValidation),
+		SkipNameValidation:      ptr.To(deps.SkipNameValidation),
+		MaxConcurrentReconciles: deps.MaxConcurrentReconciles,
 	}
 	return add(mgr, reconciler, opt)
 }
@@ -116,6 +117,7 @@ func add(mgr manager.Manager, r *ReconcileIAMPolicy, opt controller.Options) err
 	if opt.MaxConcurrentReconciles == 0 {
 		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
 	}
+	r.ReconcilerMetrics.MaxConcurrentReconciles = int64(opt.MaxConcurrentReconciles)
 	if opt.RateLimiter == nil {
 		opt.RateLimiter = ratelimiter.NewRateLimiter()
 	}

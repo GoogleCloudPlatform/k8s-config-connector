@@ -76,6 +76,13 @@ spec:
                       The format for the entries should follow the format as Kind.group :
                       e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
                     type: object
+                  maxConcurrentReconcilesOverrides:
+                    additionalProperties:
+                      type: integer
+                    description: |-
+                      MaxConcurrentReconcilesOverrides allows specifying the maximum number of concurrent reconciles
+                      for a given resource kind in this namespace. Keyed by Kind.group (e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: 50).
+                    type: object
                   resourceSettings:
                     description: |-
                       ResourceSettings allows specifying which resources to enable or disable in this namespace.

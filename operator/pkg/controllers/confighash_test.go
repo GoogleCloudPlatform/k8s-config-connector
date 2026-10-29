@@ -24,13 +24,69 @@ import (
 )
 
 func TestComputeCCConfigHash(t *testing.T) {
-	t.Run("nil or unset ResourceSettings returns empty string", func(t *testing.T) {
+	t.Run("nil or unset config returns empty string", func(t *testing.T) {
 		if got := ComputeCCConfigHash(nil); got != "" {
 			t.Errorf("expected empty hash for nil CC, got %q", got)
 		}
 		cc := &corev1beta1.ConfigConnector{}
 		if got := ComputeCCConfigHash(cc); got != "" {
 			t.Errorf("expected empty hash for CC without experiments, got %q", got)
+		}
+		ccNonRestartExp := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{"BigQueryDataset.bigquery.cnrm.cloud.google.com": 0},
+				},
+			},
+		}
+		if got := ComputeCCConfigHash(ccNonRestartExp); got != "" {
+			t.Errorf("expected empty hash for CC with non-positive concurrency override, got %q", got)
+		}
+	})
+
+	t.Run("maxConcurrentReconcilesOverrides produce deterministic hash", func(t *testing.T) {
+		cc1 := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{
+						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
+						"StorageBucket.storage.cnrm.cloud.google.com":    10,
+					},
+				},
+			},
+		}
+		cc2 := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{
+						"StorageBucket.storage.cnrm.cloud.google.com":    10,
+						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
+						"IgnoredZero.storage.cnrm.cloud.google.com":      0,
+					},
+				},
+			},
+		}
+		cc3 := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{
+						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 25,
+						"StorageBucket.storage.cnrm.cloud.google.com":    10,
+					},
+				},
+			},
+		}
+		h1 := ComputeCCConfigHash(cc1)
+		h2 := ComputeCCConfigHash(cc2)
+		h3 := ComputeCCConfigHash(cc3)
+		if h1 == "" {
+			t.Fatal("expected non-empty hash for maxConcurrentReconcilesOverrides")
+		}
+		if h1 != h2 {
+			t.Errorf("expected identical hashes, got %q vs %q", h1, h2)
+		}
+		if h1 == h3 {
+			t.Errorf("expected distinct hash when concurrency value changes")
 		}
 	})
 
@@ -134,35 +190,66 @@ func TestComputeCCConfigHash(t *testing.T) {
 }
 
 func TestComputeCCCConfigHash(t *testing.T) {
-	ccc1 := &corev1beta1.ConfigConnectorContext{
-		Spec: corev1beta1.ConfigConnectorContextSpec{
-			Experiments: &corev1beta1.Experiments{
-				ResourceSettings: &corev1beta1.ResourceSettings{
-					Mode: corev1beta1.ResourceSettingsModeExclude,
-					Resources: []corev1beta1.ResourceFilter{
-						{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
-						{Group: ptr.To("bigquery.cnrm.cloud.google.com"), Kind: ptr.To("BigQueryDataset")},
+	t.Run("reordered resources produce identical hash", func(t *testing.T) {
+		ccc1 := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					ResourceSettings: &corev1beta1.ResourceSettings{
+						Mode: corev1beta1.ResourceSettingsModeExclude,
+						Resources: []corev1beta1.ResourceFilter{
+							{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
+							{Group: ptr.To("bigquery.cnrm.cloud.google.com"), Kind: ptr.To("BigQueryDataset")},
+						},
 					},
 				},
 			},
-		},
-	}
-	ccc2 := &corev1beta1.ConfigConnectorContext{
-		Spec: corev1beta1.ConfigConnectorContextSpec{
-			Experiments: &corev1beta1.Experiments{
-				ResourceSettings: &corev1beta1.ResourceSettings{
-					Mode: corev1beta1.ResourceSettingsModeExclude,
-					Resources: []corev1beta1.ResourceFilter{
-						{Group: ptr.To("bigquery.cnrm.cloud.google.com"), Kind: ptr.To("BigQueryDataset")},
-						{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
+		}
+		ccc2 := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					ResourceSettings: &corev1beta1.ResourceSettings{
+						Mode: corev1beta1.ResourceSettingsModeExclude,
+						Resources: []corev1beta1.ResourceFilter{
+							{Group: ptr.To("bigquery.cnrm.cloud.google.com"), Kind: ptr.To("BigQueryDataset")},
+							{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
+						},
 					},
 				},
 			},
-		},
-	}
-	if ComputeCCCConfigHash(ccc1) != ComputeCCCConfigHash(ccc2) {
-		t.Errorf("expected identical CCC hashes for reordered resources")
-	}
+		}
+		if ComputeCCCConfigHash(ccc1) != ComputeCCCConfigHash(ccc2) {
+			t.Errorf("expected identical CCC hashes for reordered resources")
+		}
+	})
+
+	t.Run("maxConcurrentReconcilesOverrides produce deterministic hash", func(t *testing.T) {
+		ccc1 := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{
+						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 50,
+					},
+				},
+			},
+		}
+		ccc2 := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					MaxConcurrentReconcilesOverrides: map[string]int{
+						"BigQueryDataset.bigquery.cnrm.cloud.google.com": 100,
+					},
+				},
+			},
+		}
+		h1 := ComputeCCCConfigHash(ccc1)
+		h2 := ComputeCCCConfigHash(ccc2)
+		if h1 == "" {
+			t.Fatal("expected non-empty hash")
+		}
+		if h1 == h2 {
+			t.Errorf("expected distinct hash when maxConcurrentReconcilesOverrides changes")
+		}
+	})
 }
 
 func TestSetPodTemplateAnnotation(t *testing.T) {

@@ -69,9 +69,23 @@ type RegistrationControllerOptions struct {
 	ControllerName string
 }
 
+type defaultControllerOptions struct {
+	scopedNamespace                  string
+	cccSettings                      *operatorv1beta1.ResourceSettings
+	ccSettings                       *operatorv1beta1.ResourceSettings
+	maxConcurrentReconcilesOverrides map[schema.GroupKind]int
+}
+
+func (o *defaultControllerOptions) maxConcurrentReconcilesForGVK(gvk schema.GroupVersionKind) int {
+	if v, ok := o.maxConcurrentReconcilesOverrides[gvk.GroupKind()]; ok {
+		return v
+	}
+	return k8s.ControllerMaxConcurrentReconciles
+}
+
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
-func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig, scopedNamespace string) error {
+func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, _ *config.ControllerConfig, scopedNamespace string) error {
 	opt := RegistrationControllerOptions{
 		ControllerName: "registration-controller",
 	}
@@ -85,6 +99,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
 	// resources at runtime will not be reflected until the manager process is restarted.
 	var cccSettings *operatorv1beta1.ResourceSettings
+	var cccMaxConcurrentReconcilesOverrides map[string]int
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
@@ -94,6 +109,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
 		} else if ccc.Spec.Experiments != nil {
 			cccSettings = ccc.Spec.Experiments.ResourceSettings
+			cccMaxConcurrentReconcilesOverrides = ccc.Spec.Experiments.MaxConcurrentReconcilesOverrides
 			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
 		}
 	} else {
@@ -101,6 +117,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	}
 
 	var ccSettings *operatorv1beta1.ResourceSettings
+	var ccMaxConcurrentReconcilesOverrides map[string]int
 	cc := &operatorv1beta1.ConfigConnector{}
 	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
 		if !errors.IsNotFound(err) {
@@ -108,6 +125,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		}
 	} else if cc.Spec.Experiments != nil {
 		ccSettings = cc.Spec.Experiments.ResourceSettings
+		ccMaxConcurrentReconcilesOverrides = cc.Spec.Experiments.MaxConcurrentReconcilesOverrides
 	}
 
 	if ccSettings != nil && cccSettings != nil {
@@ -122,8 +140,14 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
 	}
 
-	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
+	regOpts := &defaultControllerOptions{
+		scopedNamespace:                  scopedNamespace,
+		cccSettings:                      cccSettings,
+		ccSettings:                       ccSettings,
+		maxConcurrentReconcilesOverrides: mergeMaxConcurrentReconcilesOverrides(ctx, ccMaxConcurrentReconcilesOverrides, cccMaxConcurrentReconcilesOverrides),
+	}
+
+	if err := add(mgr, rd, registerDefaultControllers(ctx, regOpts), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -303,23 +327,25 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, opts *defaultControllerOptions) registrationFunc {
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
+		return registerDefaultController(ctx, r, crd, gvk, opts)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, opts *defaultControllerOptions) (k8s.SchemaReferenceUpdater, error) {
 	logger := log.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
 
 	// Check if the resource is disabled by configuration (ConfigConnector or ConfigConnectorContext).
-	if disabled := isResourceDisabled(ctx, gvk, scopedNamespace, cccSettings, ccSettings); disabled {
+	if disabled := isResourceDisabled(ctx, gvk, opts.scopedNamespace, opts.cccSettings, opts.ccSettings); disabled {
 		logger.Info("Skipping controller registration because resource is disabled in ConfigConnector or ConfigConnectorContext", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 		return nil, nil
 	}
+
+	maxConcurrentReconciles := opts.maxConcurrentReconcilesForGVK(gvk)
 
 	cds := controller.Deps{
 		TFProvider:   r.provider,
@@ -329,7 +355,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 		//DependencyTracker: r.dependencyTracker,
-		SkipNameValidation: r.SkipNameValidation,
+		SkipNameValidation:      r.SkipNameValidation,
+		MaxConcurrentReconciles: maxConcurrentReconciles,
 	}
 
 	// todo acpana house in KCC mgr flag
@@ -378,6 +405,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 					if err != nil {
 						return nil, err
 					}
+					reconciler.ReconcilerMetrics.MaxConcurrentReconciles = int64(maxConcurrentReconciles)
 					reconcilers.Custom = &parent.CustomReconciler{
 						Type:       k8s.ReconcilerTypeIAMPartialPolicy,
 						Reconciler: reconciler,
@@ -420,7 +448,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			}
 			r.reconcilers[gvk] = reconcilers
 			opt := crcontroller.Options{
-				SkipNameValidation: ptr.To(r.SkipNameValidation),
+				SkipNameValidation:      ptr.To(r.SkipNameValidation),
+				MaxConcurrentReconciles: maxConcurrentReconciles,
 			}
 			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
@@ -428,6 +457,30 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		}
 	}
 	return schemaUpdater, nil
+}
+
+func mergeMaxConcurrentReconcilesOverrides(ctx context.Context, ccOverrides, cccOverrides map[string]int) map[schema.GroupKind]int {
+	if len(ccOverrides) == 0 && len(cccOverrides) == 0 {
+		return nil
+	}
+	logger := log.FromContext(ctx)
+	supportedResources := resourceconfig.LoadConfig()
+	merged := make(map[schema.GroupKind]int, len(ccOverrides)+len(cccOverrides))
+	for _, overrides := range []map[string]int{ccOverrides, cccOverrides} {
+		for k, v := range overrides {
+			gk := schema.ParseGroupKind(k)
+			if _, ok := supportedResources[gk]; !ok {
+				logger.Info("Warning: unrecognized GroupKind in maxConcurrentReconcilesOverrides; ignoring entry", "groupKind", k)
+				continue
+			}
+			if v <= 0 {
+				logger.Info("Warning: non-positive value in maxConcurrentReconcilesOverrides; ignoring entry", "groupKind", k, "value", v)
+				continue
+			}
+			merged[gk] = v
+		}
+	}
+	return merged
 }
 
 func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
