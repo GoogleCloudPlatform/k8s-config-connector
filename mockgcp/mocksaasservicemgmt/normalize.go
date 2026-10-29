@@ -30,12 +30,23 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath("createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("etag", "abcdef0123A=")
-	replacements.ReplacePath("conditions[].lastTransitionTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".etag", "abcdef0123A=")
-	replacements.ReplacePath(".conditions[].lastTransitionTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// Remove internal or asynchronously-populated fields to ensure deterministic golden logs
+	replacements.RemovePath("flagConfigName")
+	replacements.RemovePath(".flagConfigName")
+	replacements.RemovePath(".response.flagConfigName")
+
+	replacements.RemovePath("conditions")
+	replacements.RemovePath(".conditions")
+	replacements.RemovePath(".response.conditions")
+
+	replacements.RemovePath("state")
+	replacements.RemovePath(".state")
+	replacements.RemovePath(".response.state")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
