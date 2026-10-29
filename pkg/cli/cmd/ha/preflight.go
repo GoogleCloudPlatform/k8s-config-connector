@@ -28,7 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/validation"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -131,10 +130,8 @@ func validateClusterLeaseSpec(contextName string, mcl *operatorv1beta1.MultiClus
 	if mcl.Namespace == "" {
 		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.namespace; set it to the shared lease namespace (e.g. %q) across all HA clusters", contextName, defaultLeaseNamespace))
 	}
-	if mcl.ClusterCandidateIdentity == "" {
-		errs = append(errs, fmt.Errorf("cluster %q has an empty spec.experiments.multiClusterLease.clusterCandidateIdentity; set a unique DNS-1123 subdomain identity per cluster", contextName))
-	} else if dnsErrs := validation.IsDNS1123Subdomain(mcl.ClusterCandidateIdentity); len(dnsErrs) > 0 {
-		errs = append(errs, fmt.Errorf("cluster %q has an invalid spec.experiments.multiClusterLease.clusterCandidateIdentity %q (used as the peer kubeconfig Secret name, must be a valid DNS-1123 subdomain: %s)", contextName, mcl.ClusterCandidateIdentity, strings.Join(dnsErrs, "; ")))
+	if _, err := mcl.CandidateIdentity(); err != nil {
+		errs = append(errs, fmt.Errorf("cluster %q: %w", contextName, err))
 	}
 	return errors.Join(errs...)
 }
@@ -171,7 +168,7 @@ func isResourceOrKindAbsent(err error) bool {
 }
 
 // validateMultiClusterLeaseConfigs checks that all clusters have consistent MultiClusterLease
-// settings (identical leaseName and namespace, and unique clusterCandidateIdentity per cluster).
+// settings (identical leaseName and namespace, and a unique gkeCluster per cluster).
 func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 	if len(states) < 2 {
 		return fmt.Errorf("at least 2 clusters are required for multi-cluster HA validation, got %d", len(states))
@@ -194,7 +191,9 @@ func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 		}
 		leaseNames[mcl.LeaseName] = append(leaseNames[mcl.LeaseName], s.contextName)
 		namespaces[mcl.Namespace] = append(namespaces[mcl.Namespace], s.contextName)
-		identities[mcl.ClusterCandidateIdentity] = append(identities[mcl.ClusterCandidateIdentity], s.contextName)
+		// validateClusterLeaseSpec checked that the identity is valid.
+		identity, _ := mcl.CandidateIdentity()
+		identities[identity] = append(identities[identity], s.contextName)
 	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
@@ -214,7 +213,7 @@ func validateMultiClusterLeaseConfigs(states []*clusterHAState) error {
 	}
 	if len(identities) != len(states) {
 		errs = append(errs, fmt.Errorf(
-			"duplicate clusterCandidateIdentity across clusters (%s): set a unique spec.experiments.multiClusterLease.clusterCandidateIdentity on each cluster",
+			"duplicate gkeCluster across clusters (%s): set spec.experiments.multiClusterLease.gkeCluster on each cluster to the GKE cluster that its Config Connector runs in",
 			formatDuplicateIdentities(identities),
 		))
 	}
