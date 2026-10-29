@@ -26,6 +26,11 @@ entries:
     reason: identity-root-unknown
     detail: pattern "apps/{app}/firewall/ingressRules/{ingress_rule}" contains ancestor segment(s) apps/{app} with no matching reference or field on AppEngineFirewallRuleSpec
     status: open
+  - kind: AppEngineFlexibleAppVersion
+    group: appengine.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AppEngineFlexibleAppVersionIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
   - kind: AppEngineServiceSplitTraffic
     group: appengine.cnrm.cloud.google.com
     reason: identity-root-unknown

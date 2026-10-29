@@ -451,20 +451,6 @@ type AppEngineFlexibleAppVersionResources struct {
 	Volumes []AppEngineFlexibleAppVersionVolumes `json:"volumes,omitempty"`
 }
 
-type AppEngineFlexibleAppVersionServiceRef struct {
-	// Allowed value: The `name` field of an `AppEngineService` resource.
-	// +optional
-	External *string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	// +optional
-	Namespace *string `json:"namespace,omitempty"`
-}
-
 type AppEngineFlexibleAppVersionVpcAccessConnector struct {
 	// Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.
 	// +required
@@ -585,7 +571,7 @@ type AppEngineFlexibleAppVersionSpec struct {
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
 	// +required
-	ServiceRef *AppEngineFlexibleAppVersionServiceRef `json:"serviceRef"`
+	ServiceRef *AppEngineServiceRef `json:"serviceRef"`
 
 	// Current serving status of this version. Only the versions with a SERVING status create instances and can be billed. Default value: "SERVING" Possible values: ["SERVING", "STOPPED"].
 	// +optional
