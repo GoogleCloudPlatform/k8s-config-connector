@@ -37,41 +37,6 @@ type DataEncryptionState struct {
 }
 */
 
-// +kcc:proto=google.cloud.dataform.v1.InvocationConfig
-type InvocationConfig struct {
-	// Optional. The set of action identifiers to include.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_targets
-	IncludedTargets []Target `json:"includedTargets,omitempty"`
-
-	// Optional. The set of tags to include.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_tags
-	IncludedTags []string `json:"includedTags,omitempty"`
-
-	// Optional. When set to true, transitive dependencies of included actions
-	//  will be executed.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependencies_included
-	TransitiveDependenciesIncluded *bool `json:"transitiveDependenciesIncluded,omitempty"`
-
-	// Optional. When set to true, transitive dependents of included actions will
-	//  be executed.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependents_included
-	TransitiveDependentsIncluded *bool `json:"transitiveDependentsIncluded,omitempty"`
-
-	// Optional. When set to true, any incremental tables will be fully refreshed.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.fully_refresh_incremental_tables_enabled
-	FullyRefreshIncrementalTablesEnabled *bool `json:"fullyRefreshIncrementalTablesEnabled,omitempty"`
-
-	// Optional. The service account to run workflow invocations under.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Optional. Specifies the priority for query execution in BigQuery.
-	//  More information can be found at
-	//  https://cloud.google.com/bigquery/docs/running-queries#queries.
-	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.query_priority
-	QueryPriority *string `json:"queryPriority,omitempty"`
-}
-
 /* unreachable type PrivateResourceMetadata
 // +kcc:proto=google.cloud.dataform.v1.PrivateResourceMetadata
 type PrivateResourceMetadata struct {

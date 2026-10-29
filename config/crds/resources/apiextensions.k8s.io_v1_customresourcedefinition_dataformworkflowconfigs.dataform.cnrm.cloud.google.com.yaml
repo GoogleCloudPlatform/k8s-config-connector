@@ -104,10 +104,34 @@ spec:
                     description: Optional. Specifies the priority for query execution
                       in BigQuery. More information can be found at https://cloud.google.com/bigquery/docs/running-queries#queries.
                     type: string
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Optional. The service account to run workflow invocations
                       under.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   transitiveDependenciesIncluded:
                     description: Optional. When set to true, transitive dependencies
                       of included actions will be executed.
@@ -117,11 +141,9 @@ spec:
                       of included actions will be executed.
                     type: boolean
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The DataformRepository this DataformWorkflowConfig is
+                  created under.
                 oneOf:
                 - not:
                     required:
@@ -138,24 +160,48 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataformRepository
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataformRepository resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataformRepository resource.
                     type: string
                 type: object
-              releaseConfig:
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
+              releaseConfigRef:
                 description: Required. The name of the release config whose release_compilation_result
                   should be executed. Must be in the format `projects/*/locations/*/repositories/*/releaseConfigs/*`.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataformReleaseConfig
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}/releaseConfigs/{{releaseConfigID}}".
+                    type: string
+                  name:
+                    description: The name of a DataformReleaseConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataformReleaseConfig resource.
+                    type: string
+                type: object
               resourceID:
                 description: The DataformWorkflowConfig name. If not given, the metadata.name
                   will be used.
@@ -167,9 +213,8 @@ spec:
                   If left unspecified, the default is UTC.
                 type: string
             required:
-            - location
-            - projectRef
-            - releaseConfig
+            - parentRef
+            - releaseConfigRef
             type: object
           status:
             description: DataformWorkflowConfigStatus defines the config connector
