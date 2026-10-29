@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -70,7 +71,7 @@ type APIAuth_APIKeyConfig struct {
 type VertexAiSearchConfig struct {
 	// Vertex AI Search Serving Config resource.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAiSearchConfig.serving_config
-	ServingConfigRef *DiscoveryEngineServingConfigRef `json:"servingConfigRef,omitempty"`
+	ServingConfigRef *discoveryenginev1alpha1.DiscoveryEngineServingConfigRef `json:"servingConfigRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.RagEmbeddingModelConfig.VertexPredictionEndpoint

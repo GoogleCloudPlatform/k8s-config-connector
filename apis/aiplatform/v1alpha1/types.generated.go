@@ -30,12 +30,20 @@
 // resource: AIPlatformReasoningEngine:ReasoningEngine
 // resource: AIPlatformFeatureView:FeatureView
 // resource: AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
+// resource: VertexAIRagCorpus:RagCorpus
 
 package v1alpha1
 
 import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
+
+// +kcc:proto=google.cloud.aiplatform.v1.ApiAuth
+type APIAuth struct {
+	// The API secret.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ApiAuth.api_key_config
+	APIKeyConfig *APIAuth_APIKeyConfig `json:"apiKeyConfig,omitempty"`
+}
 
 /* unreachable type Artifact
 // +kcc:proto=google.cloud.aiplatform.v1.Artifact
@@ -213,6 +221,12 @@ type Content struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
 	Parts []Part `json:"parts,omitempty"`
 }
+
+/* unreachable type CorpusStatus
+// +kcc:proto=google.cloud.aiplatform.v1.CorpusStatus
+type CorpusStatus struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.DeployedModelRef
 type DeployedModelRef struct {
@@ -1796,6 +1810,84 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.RagEmbeddingModelConfig
+type RagEmbeddingModelConfig struct {
+	// The Vertex AI Prediction Endpoint that either refers to a publisher model
+	//  or an endpoint that is hosting a 1P fine-tuned text embedding model.
+	//  Endpoints hosting non-1P fine-tuned text embedding models are
+	//  currently not supported.
+	//  This is used for dense vector search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagEmbeddingModelConfig.vertex_prediction_endpoint
+	VertexPredictionEndpoint *RagEmbeddingModelConfig_VertexPredictionEndpoint `json:"vertexPredictionEndpoint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig
+type RagVectorDbConfig struct {
+	// The config for the RAG-managed Vector DB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.rag_managed_db
+	RagManagedDb *RagVectorDbConfig_RagManagedDb `json:"ragManagedDb,omitempty"`
+
+	// The config for the Pinecone.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.pinecone
+	Pinecone *RagVectorDbConfig_Pinecone `json:"pinecone,omitempty"`
+
+	// The config for the Vertex Vector Search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.vertex_vector_search
+	VertexVectorSearch *RagVectorDbConfig_VertexVectorSearch `json:"vertexVectorSearch,omitempty"`
+
+	// Authentication config for the chosen Vector DB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.api_auth
+	APIAuth *APIAuth `json:"apiAuth,omitempty"`
+
+	// Optional. Immutable. The embedding model config of the Vector DB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.rag_embedding_model_config
+	RagEmbeddingModelConfig *RagEmbeddingModelConfig `json:"ragEmbeddingModelConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig.Pinecone
+type RagVectorDbConfig_Pinecone struct {
+	// Pinecone index name.
+	//  This value cannot be changed after it's set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.Pinecone.index_name
+	IndexName *string `json:"indexName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb
+type RagVectorDbConfig_RagManagedDb struct {
+	// Performs a KNN search on RagCorpus.
+	//  Default choice if not specified.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.knn
+	Knn *RagVectorDbConfig_RagManagedDb_Knn `json:"knn,omitempty"`
+
+	// Performs an ANN search on RagCorpus. Use this if you have a lot of
+	//  files (> 10K) in your RagCorpus and want to reduce the search latency.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.ann
+	Ann *RagVectorDbConfig_RagManagedDb_Ann `json:"ann,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.ANN
+type RagVectorDbConfig_RagManagedDb_Ann struct {
+	// The depth of the tree-based structure. Only depth values of 2 and 3 are
+	//  supported.
+	//
+	//  Recommended value is 2 if you have if you have O(10K) files in the
+	//  RagCorpus and set this to 3 if more than that.
+	//
+	//  Default value is 2.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.ANN.tree_depth
+	TreeDepth *int32 `json:"treeDepth,omitempty"`
+
+	// Number of leaf nodes in the tree-based structure. Each leaf node
+	//  contains groups of closely related vectors along with their
+	//  corresponding centroid.
+	//
+	//  Recommended value is 10 * sqrt(num of RagFiles in your RagCorpus).
+	//
+	//  Default value is 500.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.ANN.leaf_count
+	LeafCount *int32 `json:"leafCount,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.RayLogsSpec
 type RayLogsSpec struct {
 	// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
@@ -2563,6 +2655,17 @@ type ColabImageObservedState struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CorpusStatus
+type CorpusStatusObservedState struct {
+	// Output only. RagCorpus life state.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CorpusStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Only when the `state` field is ERROR.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CorpusStatus.error_status
+	ErrorStatus *string `json:"errorStatus,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata
 type FeatureView_BigtableMetadataObservedState struct {
 	// The Bigtable App Profile to use for reading from Bigtable.
@@ -2632,6 +2735,24 @@ type NotebookSoftwareConfigObservedState struct {
 	// Optional. Google-managed NotebookRuntime colab image.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.colab_image
 	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.RagEmbeddingModelConfig
+type RagEmbeddingModelConfigObservedState struct {
+	// The Vertex AI Prediction Endpoint that either refers to a publisher model
+	//  or an endpoint that is hosting a 1P fine-tuned text embedding model.
+	//  Endpoints hosting non-1P fine-tuned text embedding models are
+	//  currently not supported.
+	//  This is used for dense vector search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagEmbeddingModelConfig.vertex_prediction_endpoint
+	VertexPredictionEndpoint *RagEmbeddingModelConfig_VertexPredictionEndpointObservedState `json:"vertexPredictionEndpoint,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.RagVectorDbConfig
+type RagVectorDbConfigObservedState struct {
+	// Optional. Immutable. The embedding model config of the Vector DB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.rag_embedding_model_config
+	RagEmbeddingModelConfig *RagEmbeddingModelConfigObservedState `json:"ragEmbeddingModelConfig,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool

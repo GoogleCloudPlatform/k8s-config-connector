@@ -356,8 +356,7 @@ spec:
                     properties:
                       external:
                         description: A reference to an externally managed DiscoveryEngineServingConfig
-                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/engines/{{engineID}}/servingConfigs/{{servingConfigID}}"
-                          or "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/dataStores/{{dataStoreID}}/servingConfigs/{{servingConfigID}}".
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}}/servingConfigs/{{servingConfigID}}"
                         type: string
                       name:
                         description: The name of a DiscoveryEngineServingConfig resource.

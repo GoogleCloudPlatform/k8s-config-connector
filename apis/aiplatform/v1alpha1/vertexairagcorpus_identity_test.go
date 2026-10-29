@@ -17,8 +17,23 @@ package v1alpha1
 import (
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestVertexAIRagCorpusIdentity_Conformance(t *testing.T) {
+	identity.AssertConformance(t, identity.ConformanceCase[VertexAIRagCorpusIdentity]{
+		SampleExternal: "projects/my-project/locations/us-central1/ragCorpora/my-rag-corpus",
+		WantHost:       "aiplatform.googleapis.com",
+		WantParent:     "projects/my-project/locations/us-central1",
+		WantIdentity: &VertexAIRagCorpusIdentity{
+			Project:   "my-project",
+			Location:  "us-central1",
+			RagCorpus: "my-rag-corpus",
+		},
+		Ref: &VertexAIRagCorpusRef{},
+	})
+}
 
 func TestVertexAIRagCorpusIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
@@ -67,4 +82,36 @@ func TestVertexAIRagCorpusIdentity_FromExternal(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestExternalReferences_ValidateExternal(t *testing.T) {
+	t.Run("VertexAIIndexEndpointRef", func(t *testing.T) {
+		r := &VertexAIIndexEndpointRef{}
+		if err := r.ValidateExternal("projects/p/locations/l/indexEndpoints/ie"); err != nil {
+			t.Errorf("ValidateExternal() failed: %v", err)
+		}
+		if err := r.ValidateExternal("invalid/ie"); err == nil {
+			t.Errorf("ValidateExternal() expected error for invalid external ref, got nil")
+		}
+	})
+
+	t.Run("VertexAIIndexRef", func(t *testing.T) {
+		r := &VertexAIIndexRef{}
+		if err := r.ValidateExternal("projects/p/locations/l/indexes/i"); err != nil {
+			t.Errorf("ValidateExternal() failed: %v", err)
+		}
+		if err := r.ValidateExternal("invalid/i"); err == nil {
+			t.Errorf("ValidateExternal() expected error for invalid external ref, got nil")
+		}
+	})
+
+	t.Run("VertexAIEndpointRef", func(t *testing.T) {
+		r := &VertexAIEndpointRef{}
+		if err := r.ValidateExternal("projects/p/locations/l/endpoints/e"); err != nil {
+			t.Errorf("ValidateExternal() failed: %v", err)
+		}
+		if err := r.ValidateExternal("invalid/e"); err == nil {
+			t.Errorf("ValidateExternal() expected error for invalid external ref, got nil")
+		}
+	})
 }
