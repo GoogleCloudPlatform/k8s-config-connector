@@ -17,6 +17,7 @@ kind: BeyondCorpAppGateway
 metadata:
   name: beyondcorpappgateway-${uniqueId}
 spec:
+  displayName: Sample Gateway
   hostType: GCP_REGIONAL_MIG
   projectRef:
     external: ${projectId}
