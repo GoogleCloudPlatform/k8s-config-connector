@@ -35,6 +35,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".etag", "abcdef0123A=")
 
+	replacements.ReplacePath("stateTransitionTime", "2026-10-14T05:08:31.280704410Z")
+	replacements.ReplacePath(".stateTransitionTime", "2026-10-14T05:08:31.280704410Z")
+	replacements.ReplacePath(".response.stateTransitionTime", "2026-10-14T05:08:31.280704410Z")
+
 	if strings.Contains(url, "/units") {
 		// Remove internal or asynchronously-populated fields to ensure deterministic golden logs
 		replacements.RemovePath("flagConfigName")

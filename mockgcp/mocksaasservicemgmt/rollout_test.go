@@ -69,6 +69,24 @@ func TestRolloutLifecycle(t *testing.T) {
 		t.Errorf("CreateRollout response should not have CreateTime/UpdateTime/Etag")
 	}
 
+	// 2b. Create duplicate Rollout -> AlreadyExists
+	_, err = server.CreateRollout(ctx, &pb.CreateRolloutRequest{
+		Parent:    parent,
+		RolloutId: rolloutID,
+		Rollout: &pb.Rollout{
+			Release:                      parent + "/releases/test-release",
+			RolloutKind:                  parent + "/rolloutKinds/test-rollout-kind",
+			RolloutOrchestrationStrategy: "Google.Cloud.Simple.AllAtOnce",
+		},
+	})
+	if status.Code(err) != codes.AlreadyExists {
+		t.Fatalf("expected AlreadyExists on duplicate create, got %v", err)
+	}
+	expectedErrMsg := "Resource '" + expectedName + "' already exists"
+	if status.Convert(err).Message() != expectedErrMsg {
+		t.Errorf("expected error message %q, got %q", expectedErrMsg, status.Convert(err).Message())
+	}
+
 	// 3. Get Rollout after create
 	got, err := server.GetRollout(ctx, &pb.GetRolloutRequest{Name: expectedName})
 	if err != nil {
@@ -116,6 +134,9 @@ func TestRolloutLifecycle(t *testing.T) {
 	}
 	if gotAfterUpdate.State != pb.Rollout_ROLLOUT_STATE_RUNNING {
 		t.Errorf("expected state RUNNING, got %v", gotAfterUpdate.State)
+	}
+	if gotAfterUpdate.StateTransitionTime == nil {
+		t.Errorf("expected StateTransitionTime to be set")
 	}
 
 	// 6. List Rollouts

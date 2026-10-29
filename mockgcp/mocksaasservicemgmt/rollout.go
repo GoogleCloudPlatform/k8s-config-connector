@@ -17,7 +17,6 @@ package mocksaasservicemgmt
 import (
 	"context"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -109,6 +108,9 @@ func (s *SaasRolloutsServer) CreateRollout(ctx context.Context, req *pb.CreateRo
 	obj.Etag = "mock-etag"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -164,8 +166,7 @@ func (s *SaasRolloutsServer) UpdateRollout(ctx context.Context, req *pb.UpdateRo
 		}
 		obj.State = pb.Rollout_ROLLOUT_STATE_RUNNING
 		obj.StateMessage = "Root Rollout set to RUNNING, child rollouts are being created."
-		t, _ := time.Parse(time.RFC3339Nano, "2026-10-14T05:08:31.280704410Z")
-		obj.StateTransitionTime = timestamppb.New(t)
+		obj.StateTransitionTime = now
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

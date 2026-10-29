@@ -1,3 +1,10 @@
+### [2026-10-29] MockGCP Alignment with RealGCP for SaaSServiceMgmtRollout
+- **Context**: Aligning MockGCP logs and behavior with authentic Real GCP HTTP logs for `SaaSServiceMgmtRollout`.
+- **Observations**:
+  - **Error Formatting**: Formatted `AlreadyExists` errors in `CreateRollout` to conform with standard GCP error conventions (`Resource '%s' already exists`).
+  - **Dynamic StateTransitionTime Normalization**: Removed hardcoded timestamp parsing in MockGCP `UpdateRollout` and set `obj.StateTransitionTime = now`. Normalized `stateTransitionTime` in `mocksaasservicemgmt/normalize.go` to the golden log timestamp (`2026-10-14T05:08:31.280704410Z`).
+  - **Verification**: Confirmed all MockGCP unit tests and `TestGoldenLogAlignment` pass cleanly with zero discrepancies across all fixtures.
+
 ### [2026-10-21] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtRolloutKind
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtRolloutKind`.
 - **Observations**:
