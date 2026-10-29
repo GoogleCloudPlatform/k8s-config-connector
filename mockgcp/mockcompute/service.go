@@ -135,6 +135,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRoutersServer(grpcServer, &RoutersV1{MockService: s})
 
 	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
+	pb.RegisterMachineImagesServer(grpcServer, &MachineImagesV1{MockService: s})
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
@@ -354,6 +355,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterImagesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterMachineImagesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterInstancesHandler(ctx, mux.ServeMux, conn); err != nil {
