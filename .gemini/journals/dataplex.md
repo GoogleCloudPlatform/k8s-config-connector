@@ -68,3 +68,14 @@
   3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
   4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
 - **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
+
+### [2026-10-29] Triage Judgement Queue and Finalize Direct KRM Types for DataplexEntry
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexEntry` under `v1alpha1`.
+- **Problem**: `DataplexEntry` is a child resource under `DataplexEntryGroup` (`projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`). Initially scaffolded with `projectRef` and `location`, it required consolidation into a single required immutable `parentRef` (`*EntryGroupRef`). Additionally, `entryType` and `parentEntry` referenced `DataplexEntryType` and `DataplexEntry` respectively, but were raw string fields. In `mapper.generated.go`, `filemerge.go` prevented automatic replacement of `DataplexEntrySpec_FromProto` due to the `make(map[` preservation rule for hand-written map helpers.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with `parentRef *EntryGroupRef` (`+required`, immutable via `self == oldSelf` CEL rule).
+  2. Converted `entryType` to `entryTypeRef *EntryTypeRef` (`+required`) and `parentEntry` to `parentEntryRef *DataplexEntryRef`.
+  3. Added `generate-controller` and `generate-fuzzer` to `apis/dataplex/generate.sh` and regenerated code.
+  4. Updated `DataplexEntrySpec_FromProto` and `DataplexEntrySpec_ToProto` in `mapper.generated.go` to map `EntryTypeRef` and `ParentEntryRef` using the existing `Aspects_FromProto`/`Aspects_ToProto` helpers.
+  5. Resolved all 8 judgement queue entries for `DataplexEntry`.
+- **Impact**: Cleanly conforms to Greenfield single-parent and reference conventions, passes all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexEntry`).

@@ -2501,9 +2501,13 @@ func DataplexEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.D
 	}
 	out := &krm.DataplexEntrySpec{}
 	// MISSING: Name
-	out.EntryType = direct.LazyPtr(in.GetEntryType())
+	if in.GetEntryType() != "" {
+		out.EntryTypeRef = &krm.EntryTypeRef{External: in.GetEntryType()}
+	}
 	out.Aspects = Aspects_FromProto(mapCtx, in.Aspects)
-	out.ParentEntry = direct.LazyPtr(in.GetParentEntry())
+	if in.GetParentEntry() != "" {
+		out.ParentEntryRef = &krm.DataplexEntryRef{External: in.GetParentEntry()}
+	}
 	out.FullyQualifiedName = direct.LazyPtr(in.GetFullyQualifiedName())
 	out.EntrySource = EntrySource_FromProto(mapCtx, in.GetEntrySource())
 	return out
@@ -2515,9 +2519,13 @@ func DataplexEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryS
 	}
 	out := &pb.Entry{}
 	// MISSING: Name
-	out.EntryType = direct.ValueOf(in.EntryType)
+	if in.EntryTypeRef != nil {
+		out.EntryType = in.EntryTypeRef.External
+	}
 	out.Aspects = Aspects_ToProto(mapCtx, in.Aspects)
-	out.ParentEntry = direct.ValueOf(in.ParentEntry)
+	if in.ParentEntryRef != nil {
+		out.ParentEntry = in.ParentEntryRef.External
+	}
 	out.FullyQualifiedName = direct.ValueOf(in.FullyQualifiedName)
 	out.EntrySource = EntrySource_ToProto(mapCtx, in.EntrySource)
 	return out
