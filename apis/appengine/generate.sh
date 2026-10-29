@@ -44,6 +44,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.appengine.v1 \
   --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
   --resource AppEngineFirewallRule:FirewallRule \
+  --resource AppEngineFlexibleAppVersion:Version \
   --resource AppEngineServiceSplitTraffic:Service \
   --resource AppEngineStandardAppVersion:Version
 
