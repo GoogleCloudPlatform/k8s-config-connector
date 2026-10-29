@@ -45,6 +45,7 @@ type MockService struct {
 	catalogService      *CatalogService
 	dataTaxonomyService *DataTaxonomyService
 	dataProductService  *DataProductService
+	dataScanService     *DataScanService
 }
 
 type DataplexService struct {
@@ -63,6 +64,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s.catalogService = &CatalogService{MockService: s}
 	s.dataTaxonomyService = &DataTaxonomyService{MockService: s}
 	s.dataProductService = &DataProductService{MockService: s}
+	s.dataScanService = &DataScanService{MockService: s}
 	return s
 }
 
@@ -79,6 +81,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
 	pb.RegisterDataTaxonomyServiceServer(grpcServer, s.dataTaxonomyService)
 	pb.RegisterDataProductServiceServer(grpcServer, s.dataProductService)
+	pb.RegisterDataScanServiceServer(grpcServer, s.dataScanService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -91,6 +94,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddService(pb.NewCatalogServiceClient(conn))
 	grpcMux.AddService(pb.NewDataTaxonomyServiceClient(conn))
 	grpcMux.AddService(pb.NewDataProductServiceClient(conn))
+	grpcMux.AddService(pb.NewDataScanServiceClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
