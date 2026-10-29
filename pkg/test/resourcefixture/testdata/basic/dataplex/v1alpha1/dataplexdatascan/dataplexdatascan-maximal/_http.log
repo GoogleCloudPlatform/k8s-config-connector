@@ -1,0 +1,846 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "satisfiesPzs": false,
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "friendlyName": "bigquerytable-sample",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "id",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "id",
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "id",
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataScans%2Fdataplexdatascan-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans?%24alt=json%3Benum-encoding%3Dint&dataScanId=dataplexdatascan-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "data": {
+    "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+  },
+  "dataProfileSpec": {
+    "rowFilter": "id IS NOT NULL",
+    "samplingPercent": 50.5
+  },
+  "description": "Maximal description",
+  "displayName": "Maximal Data Scan",
+  "executionSpec": {
+    "field": "id",
+    "trigger": {
+      "onDemand": {}
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.DataScan",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "data": {
+      "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+    },
+    "dataProfileSpec": {
+      "rowFilter": "id IS NOT NULL",
+      "samplingPercent": 50.5
+    },
+    "description": "Maximal description",
+    "displayName": "Maximal Data Scan",
+    "executionSpec": {
+      "field": "id",
+      "trigger": {
+        "onDemand": {}
+      }
+    },
+    "executionStatus": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "state": "ACTIVE",
+    "type": "DATA_PROFILE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataScans%2Fdataplexdatascan-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "data": {
+    "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+  },
+  "dataProfileSpec": {
+    "rowFilter": "id IS NOT NULL",
+    "samplingPercent": 50.5
+  },
+  "description": "Maximal description",
+  "displayName": "Maximal Data Scan",
+  "executionSpec": {
+    "field": "id",
+    "trigger": {
+      "onDemand": {}
+    }
+  },
+  "executionStatus": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+  "state": 1,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dataProfileSpec%2Cdescription%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: data_scan.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataScans%2Fdataplexdatascan-maximal-${uniqueId}
+
+{
+  "data": {
+    "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+  },
+  "dataProfileSpec": {
+    "rowFilter": "id IS NOT NULL AND TRUE",
+    "samplingPercent": 80
+  },
+  "description": "Maximal description updated",
+  "displayName": "Maximal Data Scan Updated",
+  "executionSpec": {
+    "field": "id",
+    "trigger": {
+      "onDemand": {}
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.DataScan",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "data": {
+      "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+    },
+    "dataProfileSpec": {
+      "rowFilter": "id IS NOT NULL AND TRUE",
+      "samplingPercent": 80
+    },
+    "description": "Maximal description updated",
+    "displayName": "Maximal Data Scan Updated",
+    "executionSpec": {
+      "field": "id",
+      "trigger": {
+        "onDemand": {}
+      }
+    },
+    "executionStatus": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "state": "ACTIVE",
+    "type": "DATA_PROFILE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataScans%2Fdataplexdatascan-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "data": {
+    "resource": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
+  },
+  "dataProfileSpec": {
+    "rowFilter": "id IS NOT NULL AND TRUE",
+    "samplingPercent": 80
+  },
+  "description": "Maximal description updated",
+  "displayName": "Maximal Data Scan Updated",
+  "executionSpec": {
+    "field": "id",
+    "trigger": {
+      "onDemand": {}
+    }
+  },
+  "executionStatus": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+  "state": 1,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataScans%2Fdataplexdatascan-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "id",
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "type": "TABLE"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
