@@ -30,6 +30,7 @@ import (
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -232,14 +233,20 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.actual.GetName()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	paths := []string{}
-	// TODO
-	// The current proto file doesn't have mutable fields
+
+	if !proto.Equal(desiredPb.GetSchedulingPolicy(), a.actual.GetSchedulingPolicy()) {
+		report.AddField("scheduling_policy", a.actual.GetSchedulingPolicy(), desiredPb.GetSchedulingPolicy())
+		paths = append(paths, "scheduling_policy")
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationAssignmentStatus{}
+		status.ExternalRef = direct.LazyPtr(a.actual.GetName())
 		status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -247,14 +254,11 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for _, path := range paths {
-		report.AddField(path, nil, nil)
-	}
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: paths}
+		Paths: paths,
+	}
 
 	req := &pb.UpdateAssignmentRequest{
 		UpdateMask: updateMask,
@@ -268,6 +272,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("successfully updated assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
+	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
