@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -34,18 +35,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation"
 )
 
-const (
-	contextsFlag = "contexts"
-	dryRunFlag   = "dry-run"
-)
+const contextsFlag = "contexts"
 
 // baseOptions holds shared configuration across `config-connector ha` subcommands.
 type baseOptions struct {
 	// contexts is the list of kubeconfig context names participating in the HA setup.
 	contexts []string
-
-	// dryRun indicates that mutating subcommands should print planned actions without applying them.
-	dryRun bool
 
 	// stdout and stderr are populated from the Cobra command streams before execution.
 	stdout io.Writer
@@ -54,7 +49,6 @@ type baseOptions struct {
 
 func (o *baseOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringSliceVar(&o.contexts, contextsFlag, o.contexts, "Comma-separated list of kubeconfig contexts participating in the HA group (at least 2 required).")
-	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without making changes.")
 }
 
 // validate checks that the shared base options are valid for multi-cluster HA operations
@@ -100,7 +94,7 @@ func validateUniqueContextNames(names []string) error {
 
 // sanitizeClusterIdentity derives a DNS-1123 subdomain identity from a kubeconfig context name
 // (e.g. "gke_my-proj_us-central1_cluster-a" -> "gke-my-proj-us-central1-cluster-a") so it can be
-// used as both clusterCandidateIdentity and the peer kubeconfig Secret name.
+// used as clusterCandidateIdentity.
 func sanitizeClusterIdentity(contextName string) (string, error) {
 	identity := strings.ToLower(strings.ReplaceAll(strings.TrimSpace(contextName), "_", "-"))
 	if dnsErrs := validation.IsDNS1123Subdomain(identity); len(dnsErrs) > 0 {
@@ -114,6 +108,15 @@ func normalizeBucketName(bucket string) string {
 	trimmed = strings.TrimPrefix(trimmed, "gs://")
 	trimmed = strings.TrimSuffix(trimmed, "/")
 	return strings.TrimSpace(trimmed)
+}
+
+var gcsBucketNameRegex = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$`)
+
+func validateBucketName(bucket string) error {
+	if !gcsBucketNameRegex.MatchString(bucket) {
+		return fmt.Errorf("invalid GCS bucket name %q; bucket names must be 3-63 characters of lowercase letters, numbers, '-', '_', or '.', starting and ending with a letter or number", bucket)
+	}
+	return nil
 }
 
 // clusterHandle wraps a kubeconfig context name and its initialized Kubernetes client.

@@ -27,26 +27,6 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-const (
-	manifestSystemNamespace     = "cnrm-system"
-	manifestSystemSAGroup       = "system:serviceaccounts:cnrm-system"
-	workloadIdentityGSAAnnot    = "iam.gke.io/gcp-service-account"
-	manifestComponentLabelKey   = "cnrm.cloud.google.com/component"
-	manifestConfigConnectorName = "configconnector.core.cnrm.cloud.google.com"
-
-	mclServiceAccountName    = "kcc-mcl"
-	syncerServiceAccountName = "kcc-syncer"
-
-	mclClusterRoleName    = "cnrm-mcl-controller"
-	syncerClusterRoleName = "cnrm-syncer-controller"
-
-	mclDeploymentName    = "multiclusterlease-controller-manager"
-	syncerDeploymentName = "syncer-controller-manager"
-
-	mclBinaryPath    = "/configconnector/mcl-manager"
-	syncerBinaryPath = "/configconnector/krmsyncer"
-)
-
 // manifestBuilder constructs and renders the Kubernetes manifests required for multi-cluster HA on a single cluster.
 type manifestBuilder struct {
 	contextName     string
@@ -79,9 +59,19 @@ func newManifestBuilder(contextName, clusterIdentity, project, controllerImage, 
 	}
 }
 
-func (b *manifestBuilder) leaseKey() string {
-	return b.leaseNamespace + "/" + b.leaseName
-}
+const (
+	mclServiceAccountName    = "kcc-mcl"
+	syncerServiceAccountName = "kcc-syncer"
+
+	mclClusterRoleName    = "cnrm-mcl-controller"
+	syncerClusterRoleName = "cnrm-syncer-controller"
+
+	mclDeploymentName    = "multiclusterlease-controller-manager"
+	syncerDeploymentName = "syncer-controller-manager"
+
+	mclBinaryPath    = "/configconnector/mcl-manager"
+	syncerBinaryPath = "/configconnector/krmsyncer"
+)
 
 func (b *manifestBuilder) buildClusterObjects() []client.Object {
 	mclComponent := controllerComponent{
@@ -133,56 +123,12 @@ func (b *manifestBuilder) buildClusterObjects() []client.Object {
 	return objs
 }
 
-func (b *manifestBuilder) renderClusterYAML(cc *operatorv1beta1.ConfigConnector) (string, error) {
-	objs := b.buildClusterObjects()
-	objs = append(objs, b.buildRenderedConfigConnector(cc))
-
-	var out strings.Builder
-	fmt.Fprintf(&out, "# Cluster context: %s\n", b.contextName)
-	for _, obj := range objs {
-		raw, err := yaml.Marshal(obj)
-		if err != nil {
-			return "", fmt.Errorf("marshaling %s %q to YAML: %w", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), err)
-		}
-
-		out.WriteString("---\n")
-		out.Write(raw)
-	}
-
-	return out.String(), nil
-}
-
-func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.ConfigConnectorSpec) {
-	if spec.Experiments == nil {
-		spec.Experiments = &operatorv1beta1.CCExperiments{}
-	}
-
-	spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{
-		LeaseName:                b.leaseName,
-		Namespace:                b.leaseNamespace,
-		ClusterCandidateIdentity: b.clusterIdentity,
-		ResourceReplicationMode:  "Status",
-	}
-}
-
-func (b *manifestBuilder) buildRenderedConfigConnector(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1.ConfigConnector {
-	var spec operatorv1beta1.ConfigConnectorSpec
-	if cc != nil {
-		spec = *cc.Spec.DeepCopy()
-	}
-
-	b.configureMultiClusterLease(&spec)
-	return &operatorv1beta1.ConfigConnector{
-		TypeMeta: metav1.TypeMeta{
-			APIVersion: "core.cnrm.cloud.google.com/v1beta1",
-			Kind:       "ConfigConnector",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: manifestConfigConnectorName,
-		},
-		Spec: spec,
-	}
-}
+const (
+	manifestSystemNamespace   = "cnrm-system"
+	manifestSystemSAGroup     = "system:serviceaccounts:cnrm-system"
+	workloadIdentityGSAAnnot  = "iam.gke.io/gcp-service-account"
+	manifestComponentLabelKey = "cnrm.cloud.google.com/component"
+)
 
 func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []client.Object {
 	gsaEmail := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", comp.serviceAccountName, b.project)
@@ -249,4 +195,61 @@ func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []clie
 	}
 
 	return []client.Object{sa, role, binding, deployment}
+}
+
+func (b *manifestBuilder) renderClusterYAML(cc *operatorv1beta1.ConfigConnector) (string, error) {
+	objs := b.buildClusterObjects()
+	objs = append(objs, b.buildRenderedConfigConnector(cc))
+
+	var out strings.Builder
+	fmt.Fprintf(&out, "# Cluster context: %s\n", b.contextName)
+	for _, obj := range objs {
+		raw, err := yaml.Marshal(obj)
+		if err != nil {
+			return "", fmt.Errorf("marshaling %s %q to YAML: %w", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), err)
+		}
+
+		out.WriteString("---\n")
+		out.Write(raw)
+	}
+
+	return out.String(), nil
+}
+
+const manifestConfigConnectorName = "configconnector.core.cnrm.cloud.google.com"
+
+func (b *manifestBuilder) buildRenderedConfigConnector(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1.ConfigConnector {
+	var spec operatorv1beta1.ConfigConnectorSpec
+	if cc != nil {
+		spec = *cc.Spec.DeepCopy()
+	}
+
+	b.configureMultiClusterLease(&spec)
+	return &operatorv1beta1.ConfigConnector{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "core.cnrm.cloud.google.com/v1beta1",
+			Kind:       "ConfigConnector",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name: manifestConfigConnectorName,
+		},
+		Spec: spec,
+	}
+}
+
+func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.ConfigConnectorSpec) {
+	if spec.Experiments == nil {
+		spec.Experiments = &operatorv1beta1.CCExperiments{}
+	}
+
+	spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{
+		LeaseName:                b.leaseName,
+		Namespace:                b.leaseNamespace,
+		ClusterCandidateIdentity: b.clusterIdentity,
+		ResourceReplicationMode:  "Status",
+	}
+}
+
+func (b *manifestBuilder) leaseKey() string {
+	return b.leaseNamespace + "/" + b.leaseName
 }

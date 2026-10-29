@@ -20,12 +20,6 @@ import (
 	"strings"
 )
 
-const (
-	gcpWorkloadIdentityNamespace = "cnrm-system"
-	gcpMCLServiceAccountName     = "kcc-mcl"
-	gcpSyncerServiceAccountName  = "kcc-syncer"
-)
-
 // gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
 type gcpProvisioner struct {
 	runner    commandRunner
@@ -63,50 +57,6 @@ func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClust
 	return nil
 }
 
-func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
-	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
-	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
-		"--member=serviceAccount:"+mclGSA,
-		"--role=roles/storage.objectAdmin",
-	); err != nil {
-		return fmt.Errorf("granting storage.objectAdmin on %q to %q: %w", p.bucketURI, mclGSA, err)
-	}
-
-	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
-	bindings := []struct {
-		gsa string
-		ksa string
-	}{
-		{gsa: mclGSA, ksa: gcpMCLServiceAccountName},
-		{gsa: syncerGSA, ksa: gcpSyncerServiceAccountName},
-	}
-	for _, b := range bindings {
-		wiMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]", projectID, gcpWorkloadIdentityNamespace, b.ksa)
-		if err := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "add-iam-policy-binding", b.gsa,
-			"--project="+projectID,
-			"--role=roles/iam.workloadIdentityUser",
-			"--member="+wiMember,
-		); err != nil {
-			return fmt.Errorf("binding Workload Identity on %q for %q: %w", b.gsa, wiMember, err)
-		}
-	}
-
-	for _, peer := range allProjects {
-		if err := p.runner.run(ctx, "gcloud", "projects", "add-iam-policy-binding", peer.project,
-			"--member=serviceAccount:"+syncerGSA,
-			"--role=roles/container.viewer",
-		); err != nil {
-			return fmt.Errorf("granting container.viewer on project %q to %q: %w", peer.project, syncerGSA, err)
-		}
-	}
-
-	return nil
-}
-
-func gsaEmail(serviceAccountName, projectID string) string {
-	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
-}
-
 // gcsBucketLocation returns a valid GCS bucket region derived from a GKE cluster location.
 // If the GKE cluster is zonal (e.g. "us-central1-a"), the zone suffix is stripped ("us-central1").
 func gcsBucketLocation(location string) string {
@@ -128,7 +78,6 @@ func isZonalGKELocation(location string) bool {
 	return len(suffix) == 1 && suffix[0] >= 'a' && suffix[0] <= 'z'
 }
 
-// dedupeProjects returns the first gkeClusterInfo per unique GCP project while preserving order.
 func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
 	seen := make(map[string]bool, len(clusters))
 	unique := make([]gkeClusterInfo, 0, len(clusters))
@@ -140,4 +89,71 @@ func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
 	}
 
 	return unique
+}
+
+const (
+	gcpWorkloadIdentityNamespace = "cnrm-system"
+	gcpMCLServiceAccountName     = "kcc-mcl"
+	gcpSyncerServiceAccountName  = "kcc-syncer"
+)
+
+func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
+	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
+	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
+		"--member=serviceAccount:"+mclGSA,
+		"--role=roles/storage.objectAdmin",
+	); err != nil {
+		return fmt.Errorf("granting storage.objectAdmin on %q to %q: %w", p.bucketURI, mclGSA, err)
+	}
+
+	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
+
+	if err := p.configureIAMForWorkloadIdentity(ctx, projectID, mclGSA, syncerGSA); err != nil {
+		return err
+	}
+
+	if err := p.configureIAMForServiceAccounts(ctx, allProjects, syncerGSA); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func gsaEmail(serviceAccountName, projectID string) string {
+	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
+}
+
+func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, projectID, mclGSA, syncerGSA string) error {
+	bindings := []struct {
+		gsa string
+		ksa string
+	}{
+		{gsa: mclGSA, ksa: gcpMCLServiceAccountName},
+		{gsa: syncerGSA, ksa: gcpSyncerServiceAccountName},
+	}
+
+	for _, b := range bindings {
+		wiMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]", projectID, gcpWorkloadIdentityNamespace, b.ksa)
+		if err := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "add-iam-policy-binding", b.gsa,
+			"--project="+projectID,
+			"--role=roles/iam.workloadIdentityUser",
+			"--member="+wiMember,
+		); err != nil {
+			return fmt.Errorf("binding Workload Identity on %q for %q: %w", b.gsa, wiMember, err)
+		}
+	}
+	return nil
+}
+
+func (p *gcpProvisioner) configureIAMForServiceAccounts(ctx context.Context, allProjects []gkeClusterInfo, syncerGSA string) error {
+	for _, peer := range allProjects {
+		if err := p.runner.run(ctx, "gcloud", "projects", "add-iam-policy-binding", peer.project,
+			"--member=serviceAccount:"+syncerGSA,
+			"--role=roles/container.viewer",
+		); err != nil {
+			return fmt.Errorf("granting container.viewer on project %q to %q: %w", peer.project, syncerGSA, err)
+		}
+	}
+
+	return nil
 }

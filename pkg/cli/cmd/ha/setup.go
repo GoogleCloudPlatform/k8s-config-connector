@@ -18,21 +18,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/util/validation"
-)
-
-const (
-	bucketFlag         = "bucket"
-	leaseNameFlag      = "lease-name"
-	leaseNamespaceFlag = "lease-namespace"
-	yamlOnlyFlag       = "yaml-only"
-
-	defaultLeaseName      = "kcc-multicluster-lease"
-	defaultLeaseNamespace = "cnrm-system"
 )
 
 // setupOptions holds flags and configuration for `config-connector ha setup`.
@@ -43,7 +34,13 @@ type setupOptions struct {
 	leaseName      string
 	leaseNamespace string
 	yamlOnly       bool
+	dryRun         bool
 }
+
+const (
+	defaultLeaseName      = "kcc-multicluster-lease"
+	defaultLeaseNamespace = "cnrm-system"
+)
 
 func newSetupOptions() setupOptions {
 	return setupOptions{
@@ -72,12 +69,21 @@ func NewSetupCmd() *cobra.Command {
 	return cmd
 }
 
+const (
+	bucketFlag         = "bucket"
+	leaseNameFlag      = "lease-name"
+	leaseNamespaceFlag = "lease-namespace"
+	yamlOnlyFlag       = "yaml-only"
+	dryRunFlag         = "dry-run"
+)
+
 func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	o.baseOptions.addFlags(flags)
 	flags.StringVar(&o.bucket, bucketFlag, o.bucket, "GCS bucket name used to store the multi-cluster leader election lock.")
 	flags.StringVar(&o.leaseName, leaseNameFlag, o.leaseName, "Name of the MultiClusterLease object across all clusters.")
 	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
+	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
 }
 
 func (o *setupOptions) validate() error {
@@ -92,6 +98,8 @@ func (o *setupOptions) validate() error {
 
 	if o.bucket == "" {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a GCS bucket name for the multi-cluster lease lock, e.g. --%s=my-kcc-ha-bucket", bucketFlag, bucketFlag))
+	} else if err := validateBucketName(o.bucket); err != nil {
+		errs = append(errs, err)
 	}
 
 	if o.leaseName == "" {
@@ -126,18 +134,7 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 	}
 
 	if opts.yamlOnly {
-		for _, cfg := range configurers {
-			rendered, err := cfg.renderYAML()
-			if err != nil {
-				return err
-			}
-
-			if opts.stdout != nil {
-				fmt.Fprint(opts.stdout, rendered)
-			}
-		}
-
-		return nil
+		return renderClusterYAMLs(configurers, opts.stdout)
 	}
 
 	provisioner := newGCPProvisioner(runner, opts.bucket)
@@ -145,14 +142,7 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 		return err
 	}
 
-	var errs []error
-	for _, cfg := range configurers {
-		if err := cfg.apply(ctx, opts.stdout, opts.dryRun); err != nil {
-			errs = append(errs, err)
-		}
-	}
-
-	return errors.Join(errs...)
+	return applyClusterConfigs(ctx, configurers, opts.stdout, opts.dryRun)
 }
 
 func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts setupOptions) ([]*clusterConfigurer, []gkeClusterInfo, error) {
@@ -179,4 +169,30 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 	}
 
 	return configurers, gkeClusters, nil
+}
+
+func renderClusterYAMLs(configurers []*clusterConfigurer, stdout io.Writer) error {
+	for _, cfg := range configurers {
+		rendered, err := cfg.renderYAML()
+		if err != nil {
+			return err
+		}
+
+		if stdout != nil {
+			fmt.Fprint(stdout, rendered)
+		}
+	}
+
+	return nil
+}
+
+func applyClusterConfigs(ctx context.Context, configurers []*clusterConfigurer, stdout io.Writer, dryRun bool) error {
+	var errs []error
+	for _, cfg := range configurers {
+		if err := cfg.apply(ctx, stdout, dryRun); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	return errors.Join(errs...)
 }

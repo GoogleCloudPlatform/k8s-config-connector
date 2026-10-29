@@ -29,12 +29,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 )
 
-const (
-	controllerManagerNamespace   = "cnrm-system"
-	controllerComponentLabelKey  = "cnrm.cloud.google.com/component"
-	controllerManagerStatefulSet = "cnrm-controller-manager"
-)
-
 // clusterConfigurer inspects a target GKE cluster and applies multi-cluster HA Kubernetes configuration to it.
 type clusterConfigurer struct {
 	handle          *clusterHandle
@@ -72,59 +66,11 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName,
 	}, nil
 }
 
-func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
-	return c.gkeInfo
-}
-
-func (c *clusterConfigurer) renderYAML() (string, error) {
-	return c.manifests.renderClusterYAML(c.configConnector)
-}
-
-func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
-	objs := c.manifests.buildClusterObjects()
-	if dryRun {
-		if stdout != nil {
-			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (identity=%q, lease=%s)\n",
-				c.handle.contextName, len(objs), c.gkeInfo.identity, c.manifests.leaseKey())
-		}
-
-		return nil
-	}
-
-	var errs []error
-	for _, obj := range objs {
-		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
-			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
-		}
-	}
-
-	if err := c.updateConfigConnector(ctx); err != nil {
-		errs = append(errs, err)
-	}
-
-	return errors.Join(errs...)
-}
-
-func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
-	cc, err := fetchConfigConnector(ctx, c.handle)
-	if err != nil {
-		return err
-	}
-
-	c.manifests.configureMultiClusterLease(&cc.Spec)
-	if err := c.handle.client.Update(ctx, cc); err != nil {
-		return fmt.Errorf("updating ConfigConnector %q on cluster %q: %w", cc.Name, c.handle.contextName, err)
-	}
-
-	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
-		return fmt.Errorf(
-			"ConfigConnector %q on cluster %q silently dropped spec.experiments.multiClusterLease during update; the cluster's ConfigConnector CRD schema is too old (requires KCC v1.148.0+)",
-			cc.Name, c.handle.contextName,
-		)
-	}
-
-	return nil
-}
+const (
+	controllerManagerNamespace   = "cnrm-system"
+	controllerComponentLabelKey  = "cnrm.cloud.google.com/component"
+	controllerManagerStatefulSet = "cnrm-controller-manager"
+)
 
 func discoverControllerImage(ctx context.Context, handle *clusterHandle) (string, error) {
 	stsList := &appsv1.StatefulSetList{}
@@ -160,6 +106,31 @@ func discoverControllerImage(ctx context.Context, handle *clusterHandle) (string
 		"could not find running Config Connector manager container image on cluster %q (expected StatefulSet with label %s=%s in namespace %q); verify Config Connector is installed and healthy",
 		handle.contextName, controllerComponentLabelKey, controllerManagerStatefulSet, controllerManagerNamespace,
 	)
+}
+
+func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun bool) error {
+	objs := c.manifests.buildClusterObjects()
+	if dryRun {
+		if stdout != nil {
+			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (identity=%q, lease=%s)\n",
+				c.handle.contextName, len(objs), c.gkeInfo.identity, c.manifests.leaseKey())
+		}
+
+		return nil
+	}
+
+	var errs []error
+	for _, obj := range objs {
+		if err := upsertObject(ctx, c.handle.client.Client, obj); err != nil {
+			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
+		}
+	}
+
+	if err := c.updateConfigConnector(ctx); err != nil {
+		errs = append(errs, err)
+	}
+
+	return errors.Join(errs...)
 }
 
 func upsertObject(ctx context.Context, k8sClient client.Client, obj client.Object) error {
@@ -201,4 +172,33 @@ func formatObjectID(k8sClient client.Client, obj client.Object) string {
 	}
 
 	return fmt.Sprintf("%s %q", kind, obj.GetName())
+}
+
+func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
+	cc, err := fetchConfigConnector(ctx, c.handle)
+	if err != nil {
+		return err
+	}
+
+	c.manifests.configureMultiClusterLease(&cc.Spec)
+	if err := c.handle.client.Update(ctx, cc); err != nil {
+		return fmt.Errorf("updating ConfigConnector %q on cluster %q: %w", cc.Name, c.handle.contextName, err)
+	}
+
+	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
+		return fmt.Errorf(
+			"ConfigConnector %q on cluster %q silently dropped spec.experiments.multiClusterLease during update; the cluster's ConfigConnector CRD schema is too old (requires KCC v1.148.0+)",
+			cc.Name, c.handle.contextName,
+		)
+	}
+
+	return nil
+}
+
+func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
+	return c.gkeInfo
+}
+
+func (c *clusterConfigurer) renderYAML() (string, error) {
+	return c.manifests.renderClusterYAML(c.configConnector)
 }
