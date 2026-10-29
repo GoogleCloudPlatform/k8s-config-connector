@@ -22,14 +22,29 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
+const (
+	PlaceholderUID = "111111111111111111111"
+)
+
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(url, "beyondcorp.googleapis.com") {
 		return
 	}
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(event.URL(), "beyondcorp.googleapis.com") {
 		return
 	}
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".uid" || path == ".response.uid" {
+			replacements.ReplaceStringValue(value, PlaceholderUID)
+		}
+	})
 }

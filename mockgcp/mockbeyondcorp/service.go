@@ -17,14 +17,17 @@ package mockbeyondcorp
 // +tool:mockgcp-service
 // http.host: beyondcorp.googleapis.com
 // proto.service: google.cloud.beyondcorp.appgateways.v1.AppGatewaysService
+// proto.service: google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/beyondcorp/appgateways/apiv1/appgatewayspb"
+	pbAppConnectors "cloud.google.com/go/beyondcorp/appconnectors/apiv1/appconnectorspb"
+	pbAppGateways "cloud.google.com/go/beyondcorp/appgateways/apiv1/appgatewayspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -43,7 +46,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *AppGatewaysV1
+	v1            *AppGatewaysV1
+	appConnectors *appConnectorServer
 }
 
 // New creates a MockService.
@@ -54,6 +58,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &AppGatewaysV1{MockService: s}
+	s.appConnectors = &appConnectorServer{MockService: s}
 	return s
 }
 
@@ -62,16 +67,18 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterAppGatewaysServiceServer(grpcServer, s.v1)
+	pbAppGateways.RegisterAppGatewaysServiceServer(grpcServer, s.v1)
+	pbAppConnectors.RegisterAppConnectorsServiceServer(grpcServer, s.appConnectors)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	mux.AddService(pb.NewAppGatewaysServiceClient(conn))
+	mux.AddService(pbAppGateways.NewAppGatewaysServiceClient(conn))
+	mux.AddService(pbAppConnectors.NewAppConnectorsServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil

@@ -1,4 +1,4 @@
-- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/iamserviceaccount${uniqueId}
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/sa${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: iamserviceaccount-${uniqueId}
