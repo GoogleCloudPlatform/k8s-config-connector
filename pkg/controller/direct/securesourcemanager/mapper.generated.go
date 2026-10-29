@@ -196,6 +196,7 @@ func SecureSourceManagerBranchRuleObservedState_v1alpha1_FromProto(mapCtx *direc
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func SecureSourceManagerBranchRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleObservedState) *pb.BranchRule {
@@ -207,6 +208,7 @@ func SecureSourceManagerBranchRuleObservedState_v1alpha1_ToProto(mapCtx *direct.
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func SecureSourceManagerBranchRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BranchRule) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleSpec {
@@ -216,7 +218,6 @@ func SecureSourceManagerBranchRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapCont
 	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleSpec{}
 	// MISSING: Name
 	out.Annotations = in.Annotations
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.IncludePattern = direct.LazyPtr(in.GetIncludePattern())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	out.RequirePullRequest = direct.LazyPtr(in.GetRequirePullRequest())
@@ -235,7 +236,6 @@ func SecureSourceManagerBranchRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out := &pb.BranchRule{}
 	// MISSING: Name
 	out.Annotations = in.Annotations
-	out.Etag = direct.ValueOf(in.Etag)
 	out.IncludePattern = direct.ValueOf(in.IncludePattern)
 	out.Disabled = direct.ValueOf(in.Disabled)
 	out.RequirePullRequest = direct.ValueOf(in.RequirePullRequest)

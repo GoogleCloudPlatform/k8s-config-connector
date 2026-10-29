@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var SecureSourceManagerBranchRuleGVK = GroupVersion.WithKind("SecureSourceManage
 // +kcc:spec:proto=google.cloud.securesourcemanager.v1.BranchRule
 // +kcc:required-from-proto
 type SecureSourceManagerBranchRuleSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The SecureSourceManagerRepository this SecureSourceManagerBranchRule is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *securesourcemanagerv1beta1.SecureSourceManagerRepositoryRef `json:"parentRef"`
 
 	// The SecureSourceManagerBranchRule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -44,12 +43,6 @@ type SecureSourceManagerBranchRuleSpec struct {
 	//  as format and size limitations.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.BranchRule.annotations
 	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// Optional. This checksum is computed by the server based on the value of
-	//  other fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.securesourcemanager.v1.BranchRule.etag
-	Etag *string `json:"etag,omitempty"`
 
 	// Optional. The pattern of the branch that can match to this BranchRule.
 	//  Specified as regex.
@@ -126,6 +119,12 @@ type SecureSourceManagerBranchRuleObservedState struct {
 	// Output only. Update timestamp.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.BranchRule.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. This checksum is computed by the server based on the value of
+	//  other fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.BranchRule.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
