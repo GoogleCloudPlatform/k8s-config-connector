@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeManagedSSLCertificate
   name: computemanagedsslcertificate-${uniqueId}
