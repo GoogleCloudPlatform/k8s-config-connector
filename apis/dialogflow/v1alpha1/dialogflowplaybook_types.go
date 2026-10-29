@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,13 +30,12 @@ var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
 // +kcc:spec:proto=google.cloud.dialogflow.cx.v3.Playbook
 // +kcc:required-from-proto
 type DialogflowPlaybookSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// The DialogflowCXAgent this DialogflowPlaybook is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DialogflowCXAgentRef `json:"parentRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// The DialogflowPlaybook name. If not given, the metadata.name will be used.
+	// The DialogflowPlaybook name. The server-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The human-readable name of the playbook, unique within an agent.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Playbook.display_name
