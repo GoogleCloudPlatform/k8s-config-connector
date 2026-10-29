@@ -41,6 +41,37 @@ func TestParseGKEContext(t *testing.T) {
 	}
 }
 
+func TestGCSBucketLocation(t *testing.T) {
+	tests := []struct {
+		name     string
+		location string
+		want     string
+	}{
+		{
+			name:     "regional GKE location is unchanged",
+			location: "us-central1",
+			want:     "us-central1",
+		},
+		{
+			name:     "zonal GKE location strips zone suffix",
+			location: "us-central1-a",
+			want:     "us-central1",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			info := gkeClusterInfo{location: tc.location}
+
+			got := info.gcsBucketLocation()
+
+			if got != tc.want {
+				t.Fatalf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestParseGKEContextErrors(t *testing.T) {
 	tests := []struct {
 		name              string
@@ -79,7 +110,7 @@ func TestParseGKEContextErrors(t *testing.T) {
 
 func TestExecCommandRunnerDryRun(t *testing.T) {
 	var stdout, stderr bytes.Buffer
-	runner := newExecCommandRunner(&stdout, &stderr, true)
+	runner := newExecCommandRunner(&stdout, &stderr /* dryRun= */, true)
 
 	err := runner.run(context.Background(), "nonexistent-binary-for-dry-run", "storage", "buckets", "create", "gs://my-bucket")
 

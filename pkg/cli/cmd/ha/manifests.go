@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -27,13 +28,17 @@ import (
 )
 
 const (
-	cnrmSystemNamespace      = "cnrm-system"
-	workloadIdentityGSAAnnot = "iam.gke.io/gcp-service-account"
-	componentLabelKey        = "cnrm.cloud.google.com/component"
+	cnrmSystemNamespace         = "cnrm-system"
+	cnrmSystemSAGroup           = "system:serviceaccounts:cnrm-system"
+	workloadIdentityGSAAnnot    = "iam.gke.io/gcp-service-account"
+	componentLabelKey           = "cnrm.cloud.google.com/component"
 	managerStatefulSetComponent = "cnrm-controller-manager"
 
 	mclServiceAccountName    = "kcc-mcl"
 	syncerServiceAccountName = "kcc-syncer"
+
+	mclClusterRoleName    = "cnrm-mcl-controller"
+	syncerClusterRoleName = "cnrm-syncer-controller"
 
 	mclDeploymentName    = "multiclusterlease-controller-manager"
 	syncerDeploymentName = "syncer-controller-manager"
@@ -54,36 +59,25 @@ type clusterManifestParams struct {
 // buildClusterHAManifests constructs the Kubernetes ServiceAccounts, RBAC, and Deployments
 // needed to run MultiClusterLease and KRMSyncer on a cluster.
 func buildClusterHAManifests(params clusterManifestParams) []client.Object {
-	mclGSA := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", mclServiceAccountName, params.project)
-	syncerGSA := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", syncerServiceAccountName, params.project)
+	objs := make([]client.Object, 0, 8)
+	objs = append(objs, buildMCLManifests(params)...)
+	objs = append(objs, buildSyncerManifests(params)...)
+	return objs
+}
 
-	mclSA := &corev1.ServiceAccount{
-		TypeMeta: metav1.TypeMeta{APIVersion: "v1", Kind: "ServiceAccount"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      mclServiceAccountName,
-			Namespace: cnrmSystemNamespace,
-			Annotations: map[string]string{
-				workloadIdentityGSAAnnot: mclGSA,
-			},
-		},
+func buildMCLManifests(params clusterManifestParams) []client.Object {
+	return []client.Object{
+		buildWorkloadIdentityServiceAccount(mclServiceAccountName, params.project),
+		buildMCLClusterRole(),
+		buildClusterRoleBinding(mclClusterRoleName, mclServiceAccountName),
+		buildMCLDeployment(params),
 	}
+}
 
-	syncerSA := &corev1.ServiceAccount{
-		TypeMeta: metav1.TypeMeta{APIVersion: "v1", Kind: "ServiceAccount"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      syncerServiceAccountName,
-			Namespace: cnrmSystemNamespace,
-			Annotations: map[string]string{
-				workloadIdentityGSAAnnot: syncerGSA,
-			},
-		},
-	}
-
-	mclClusterRole := &rbacv1.ClusterRole{
-		TypeMeta: metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "cnrm-mcl-controller",
-		},
+func buildMCLClusterRole() *rbacv1.ClusterRole {
+	return &rbacv1.ClusterRole{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
+		ObjectMeta: metav1.ObjectMeta{Name: mclClusterRoleName},
 		Rules: []rbacv1.PolicyRule{
 			{
 				APIGroups: []string{"multicluster.core.cnrm.cloud.google.com"},
@@ -92,31 +86,26 @@ func buildClusterHAManifests(params clusterManifestParams) []client.Object {
 			},
 		},
 	}
+}
 
-	mclClusterRoleBinding := &rbacv1.ClusterRoleBinding{
-		TypeMeta: metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "cnrm-mcl-controller",
-		},
-		RoleRef: rbacv1.RoleRef{
-			APIGroup: "rbac.authorization.k8s.io",
-			Kind:     "ClusterRole",
-			Name:     mclClusterRole.Name,
-		},
-		Subjects: []rbacv1.Subject{
-			{
-				Kind:      "ServiceAccount",
-				Name:      mclServiceAccountName,
-				Namespace: cnrmSystemNamespace,
-			},
-		},
+func buildMCLDeployment(params clusterManifestParams) *appsv1.Deployment {
+	command := []string{mclBinaryPath, fmt.Sprintf("--gcs-bucket=%s", params.bucket)}
+	return buildControllerDeployment(mclDeploymentName, "mcl-controller", mclServiceAccountName, params.controllerImage, command)
+}
+
+func buildSyncerManifests(params clusterManifestParams) []client.Object {
+	return []client.Object{
+		buildWorkloadIdentityServiceAccount(syncerServiceAccountName, params.project),
+		buildSyncerClusterRole(),
+		buildClusterRoleBinding(syncerClusterRoleName, syncerServiceAccountName),
+		buildSyncerDeployment(params),
 	}
+}
 
-	syncerClusterRole := &rbacv1.ClusterRole{
-		TypeMeta: metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "cnrm-syncer-controller",
-		},
+func buildSyncerClusterRole() *rbacv1.ClusterRole {
+	return &rbacv1.ClusterRole{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
+		ObjectMeta: metav1.ObjectMeta{Name: syncerClusterRoleName},
 		Rules: []rbacv1.PolicyRule{
 			{
 				APIGroups: []string{"syncer.gkelabs.io"},
@@ -130,117 +119,125 @@ func buildClusterHAManifests(params clusterManifestParams) []client.Object {
 			},
 		},
 	}
-
-	syncerClusterRoleBinding := &rbacv1.ClusterRoleBinding{
-		TypeMeta: metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "cnrm-syncer-controller",
-		},
-		RoleRef: rbacv1.RoleRef{
-			APIGroup: "rbac.authorization.k8s.io",
-			Kind:     "ClusterRole",
-			Name:     syncerClusterRole.Name,
-		},
-		Subjects: []rbacv1.Subject{
-			{
-				Kind:      "ServiceAccount",
-				Name:      syncerServiceAccountName,
-				Namespace: cnrmSystemNamespace,
-			},
-		},
-	}
-
-	mclLabels := map[string]string{"app": "mcl-controller"}
-	mclDeploy := &appsv1.Deployment{
-		TypeMeta: metav1.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      mclDeploymentName,
-			Namespace: cnrmSystemNamespace,
-			Labels: map[string]string{
-				componentLabelKey: "mcl-controller",
-			},
-		},
-		Spec: appsv1.DeploymentSpec{
-			Selector: &metav1.LabelSelector{MatchLabels: mclLabels},
-			Template: corev1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{Labels: mclLabels},
-				Spec: corev1.PodSpec{
-					ServiceAccountName: mclServiceAccountName,
-					Containers: []corev1.Container{
-						{
-							Name:    "manager",
-							Image:   params.controllerImage,
-							Command: []string{mclBinaryPath, fmt.Sprintf("--gcs-bucket=%s", params.bucket)},
-						},
-					},
-				},
-			},
-		},
-	}
-
-	syncerLabels := map[string]string{"app": "syncer-controller"}
-	syncerDeploy := &appsv1.Deployment{
-		TypeMeta: metav1.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      syncerDeploymentName,
-			Namespace: cnrmSystemNamespace,
-			Labels: map[string]string{
-				componentLabelKey: "syncer-controller",
-			},
-		},
-		Spec: appsv1.DeploymentSpec{
-			Selector: &metav1.LabelSelector{MatchLabels: syncerLabels},
-			Template: corev1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{Labels: syncerLabels},
-				Spec: corev1.PodSpec{
-					ServiceAccountName: syncerServiceAccountName,
-					Containers: []corev1.Container{
-						{
-							Name:    "manager",
-							Image:   params.controllerImage,
-							Command: []string{syncerBinaryPath},
-						},
-					},
-				},
-			},
-		},
-	}
-
-	return []client.Object{
-		mclSA,
-		syncerSA,
-		mclClusterRole,
-		mclClusterRoleBinding,
-		syncerClusterRole,
-		syncerClusterRoleBinding,
-		mclDeploy,
-		syncerDeploy,
-	}
 }
 
-func renderClusterYAML(contextName string, objs []client.Object, params clusterManifestParams) (string, error) {
+func buildSyncerDeployment(params clusterManifestParams) *appsv1.Deployment {
+	command := []string{syncerBinaryPath}
+	return buildControllerDeployment(syncerDeploymentName, "syncer-controller", syncerServiceAccountName, params.controllerImage, command)
+}
+
+func renderClusterYAML(contextName string, objs []client.Object, cc *operatorv1beta1.ConfigConnector, params clusterManifestParams) (string, error) {
+	allObjects := make([]client.Object, 0, len(objs)+1)
+	allObjects = append(allObjects, objs...)
+	allObjects = append(allObjects, buildRenderedConfigConnector(cc, params))
+
 	var b strings.Builder
 	fmt.Fprintf(&b, "# Cluster context: %s\n", contextName)
-	for _, obj := range objs {
+	for _, obj := range allObjects {
 		raw, err := yaml.Marshal(obj)
 		if err != nil {
-			return "", fmt.Errorf("marshaling %s/%s to YAML: %w", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), err)
+			return "", fmt.Errorf("marshaling %s %q to YAML: %w", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), err)
 		}
 		b.WriteString("---\n")
 		b.Write(raw)
 	}
-	b.WriteString("---\n")
-	fmt.Fprintf(&b, `apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnector
-metadata:
-  name: %s
-spec:
-  experiments:
-    multiClusterLease:
-      leaseName: %s
-      namespace: %s
-      clusterCandidateIdentity: %s
-      resourceReplicationMode: Status
-`, configConnectorResourceName, params.leaseName, params.leaseNamespace, params.clusterIdentity)
 	return b.String(), nil
+}
+
+func buildRenderedConfigConnector(cc *operatorv1beta1.ConfigConnector, params clusterManifestParams) *operatorv1beta1.ConfigConnector {
+	var spec operatorv1beta1.ConfigConnectorSpec
+	if cc != nil {
+		spec = *cc.Spec.DeepCopy()
+	}
+	setMultiClusterLeaseSpec(&spec, params)
+	return &operatorv1beta1.ConfigConnector{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "core.cnrm.cloud.google.com/v1beta1",
+			Kind:       "ConfigConnector",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name: configConnectorResourceName,
+		},
+		Spec: spec,
+	}
+}
+
+func setMultiClusterLeaseSpec(spec *operatorv1beta1.ConfigConnectorSpec, params clusterManifestParams) {
+	if spec.Experiments == nil {
+		spec.Experiments = &operatorv1beta1.CCExperiments{}
+	}
+	spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{
+		LeaseName:                params.leaseName,
+		Namespace:                params.leaseNamespace,
+		ClusterCandidateIdentity: params.clusterIdentity,
+		ResourceReplicationMode:  "Status",
+	}
+}
+
+func buildWorkloadIdentityServiceAccount(saName, project string) *corev1.ServiceAccount {
+	gsaEmail := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", saName, project)
+	return &corev1.ServiceAccount{
+		TypeMeta: metav1.TypeMeta{APIVersion: "v1", Kind: "ServiceAccount"},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      saName,
+			Namespace: cnrmSystemNamespace,
+			Annotations: map[string]string{
+				workloadIdentityGSAAnnot: gsaEmail,
+			},
+		},
+	}
+}
+
+func buildClusterRoleBinding(roleName, saName string) *rbacv1.ClusterRoleBinding {
+	return &rbacv1.ClusterRoleBinding{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
+		ObjectMeta: metav1.ObjectMeta{Name: roleName},
+		RoleRef: rbacv1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Kind:     "ClusterRole",
+			Name:     roleName,
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:      "ServiceAccount",
+				Name:      saName,
+				Namespace: cnrmSystemNamespace,
+			},
+			{
+				Kind:     "Group",
+				APIGroup: "rbac.authorization.k8s.io",
+				Name:     cnrmSystemSAGroup,
+			},
+		},
+	}
+}
+
+func buildControllerDeployment(name, component, saName, image string, command []string) *appsv1.Deployment {
+	podLabels := map[string]string{"app": component}
+	return &appsv1.Deployment{
+		TypeMeta: metav1.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: cnrmSystemNamespace,
+			Labels: map[string]string{
+				componentLabelKey: component,
+			},
+		},
+		Spec: appsv1.DeploymentSpec{
+			Selector: &metav1.LabelSelector{MatchLabels: podLabels},
+			Template: corev1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{Labels: podLabels},
+				Spec: corev1.PodSpec{
+					ServiceAccountName: saName,
+					Containers: []corev1.Container{
+						{
+							Name:    "manager",
+							Image:   image,
+							Command: command,
+						},
+					},
+				},
+			},
+		},
+	}
 }

@@ -52,6 +52,8 @@ func TestSetupValidateErrors(t *testing.T) {
 		name              string
 		contexts          []string
 		bucket            string
+		leaseName         string
+		leaseNamespace    string
 		wantErrSubstrings []string
 	}{
 		{
@@ -85,6 +87,14 @@ func TestSetupValidateErrors(t *testing.T) {
 			wantErrSubstrings: []string{"--bucket is required"},
 		},
 		{
+			name:              "invalid DNS-1123 lease-name and lease-namespace",
+			contexts:          []string{"cluster-a", "cluster-b"},
+			bucket:            "my-bucket",
+			leaseName:         "INVALID_LEASE!",
+			leaseNamespace:    "BAD_NAMESPACE!",
+			wantErrSubstrings: []string{"--lease-name \"INVALID_LEASE!\" is not a valid DNS-1123 subdomain", "--lease-namespace \"BAD_NAMESPACE!\" is not a valid DNS-1123 namespace label"},
+		},
+		{
 			name:              "accumulates multiple flag errors",
 			contexts:          []string{"cluster-a"},
 			bucket:            "",
@@ -97,6 +107,12 @@ func TestSetupValidateErrors(t *testing.T) {
 			opts := newSetupOptions()
 			opts.contexts = slices.Clone(tc.contexts)
 			opts.bucket = tc.bucket
+			if tc.leaseName != "" {
+				opts.leaseName = tc.leaseName
+			}
+			if tc.leaseNamespace != "" {
+				opts.leaseNamespace = tc.leaseNamespace
+			}
 
 			err := opts.validate()
 
@@ -139,8 +155,11 @@ func TestExecuteSetupAppliesManifestsAndConfiguresClusters(t *testing.T) {
 			t.Fatalf("got MCL image %q on %s, want %q", gotImage, h.contextName, kccImage)
 		}
 		cc, err := fetchConfigConnector(context.Background(), h)
-		if err != nil || cc == nil || cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
-			t.Fatalf("expected MultiClusterLease to be configured on %s, got %+v (err=%v)", h.contextName, cc, err)
+		if err != nil {
+			t.Fatalf("fetching ConfigConnector on %s: %v", h.contextName, err)
+		}
+		if !hasMultiClusterLeaseConfigured(cc) {
+			t.Fatalf("expected MultiClusterLease to be configured on %s, got %+v", h.contextName, cc)
 		}
 	}
 }
@@ -166,8 +185,16 @@ func TestExecuteSetupYAMLOnlyRendersWithoutMutating(t *testing.T) {
 	if len(runner.commands) != 0 {
 		t.Fatalf("expected 0 gcloud commands in --yaml-only mode, got %d", len(runner.commands))
 	}
-	if !strings.Contains(stdout.String(), mclDeploymentName) || !strings.Contains(stdout.String(), "gke-proj-a-us-central1-cluster-a") {
-		t.Fatalf("expected rendered YAML to contain %q and cluster identity, got:\n%s", mclDeploymentName, stdout.String())
+	rendered := stdout.String()
+	for _, wantSnippet := range []string{
+		mclDeploymentName,
+		"gke-proj-a-us-central1-cluster-a",
+		"mode: cluster",
+		cnrmSystemSAGroup,
+	} {
+		if !strings.Contains(rendered, wantSnippet) {
+			t.Fatalf("expected rendered YAML to contain %q, got:\n%s", wantSnippet, rendered)
+		}
 	}
 }
 
