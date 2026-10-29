@@ -42,6 +42,8 @@ func AIPlatformFeatureViewObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	out.ServiceAccountEmail = direct.LazyPtr(in.GetServiceAccountEmail())
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
@@ -55,6 +57,8 @@ func AIPlatformFeatureViewObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.ServiceAccountEmail = direct.ValueOf(in.ServiceAccountEmail)
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
@@ -69,8 +73,7 @@ func AIPlatformFeatureViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featu
 	out.FeatureRegistrySource = FeatureView_FeatureRegistrySource_FromProto(mapCtx, in.GetFeatureRegistrySource())
 	out.VertexRagSource = FeatureView_VertexRagSource_FromProto(mapCtx, in.GetVertexRagSource())
 	// MISSING: Name
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SyncConfig = FeatureView_SyncConfig_FromProto(mapCtx, in.GetSyncConfig())
 	out.IndexConfig = FeatureView_IndexConfig_FromProto(mapCtx, in.GetIndexConfig())
 	out.OptimizedConfig = FeatureView_OptimizedConfig_FromProto(mapCtx, in.GetOptimizedConfig())
@@ -92,8 +95,7 @@ func AIPlatformFeatureViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlat
 		out.Source = &pb.FeatureView_VertexRagSource_{VertexRagSource: oneof}
 	}
 	// MISSING: Name
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SyncConfig = FeatureView_SyncConfig_ToProto(mapCtx, in.SyncConfig)
 	out.IndexConfig = FeatureView_IndexConfig_ToProto(mapCtx, in.IndexConfig)
 	out.OptimizedConfig = FeatureView_OptimizedConfig_ToProto(mapCtx, in.OptimizedConfig)

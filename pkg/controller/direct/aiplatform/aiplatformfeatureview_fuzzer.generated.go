@@ -41,10 +41,8 @@ func aiPlatformFeatureViewFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".big_query_source")
-	f.SpecField(".etag")
 	f.SpecField(".feature_registry_source")
 	f.SpecField(".index_config")
-	f.SpecField(".labels")
 	f.SpecField(".optimized_config")
 	f.SpecField(".service_agent_type")
 	f.SpecField(".sync_config")
@@ -52,6 +50,7 @@ func aiPlatformFeatureViewFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".satisfies_pzi")
 	f.StatusField(".satisfies_pzs")
 	f.StatusField(".service_account_email")
@@ -59,6 +58,7 @@ func aiPlatformFeatureViewFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".bigtable_metadata")

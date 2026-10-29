@@ -65,4 +65,16 @@
   During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateSpecialistPool` API returned `rpc error: code = FailedPrecondition desc = Data labeling service is shutdown` (audited via Cloud Audit Logs `SpecialistPoolService.CreateSpecialistPool`). Google Cloud deprecated and shut down the Vertex AI Data Labeling Service (and its associated human labeling SpecialistPool backend) on July 1, 2024.
 - **Impact**: Controller implementation and CRD structures are complete, idiomatic, and verified with unit tests and fuzzer roundtripping.
 
+### [2026-10-29] Triaging Judgement Queue and Modelling Child Hierarchy for AIPlatformFeatureView
+- **Context**: Triaging judgement queue and finalizing types/identity for `AIPlatformFeatureView` (Issue #14600).
+- **Problem**: `AIPlatformFeatureView` was generated with separate `ProjectRef` and `Location` fields and open `identity-root-unknown` and `parent-ref-not-modelled` entries in `judgement_queue.yaml`. It is a child resource of `VertexAIFeatureOnlineStore` (`projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`). Additionally, `VertexAIFeatureOnlineStore` had no `VertexAIFeatureOnlineStoreRef` reference type defined in the package, and `etag` and top-level `labels` were placed in `AIPlatformFeatureViewSpec`.
+- **Solution**:
+  1. Implemented `VertexAIFeatureOnlineStoreRef` in `apis/aiplatform/v1alpha1/vertexaifeatureonlinestore_reference.go` referencing `FeatureOnlineStoreIdentity`.
+  2. Modelled `spec.parentRef` (`*VertexAIFeatureOnlineStoreRef`) with `+required` and immutable CEL rule `self == oldSelf` on `AIPlatformFeatureViewSpec`, and removed `projectRef` and `location`.
+  3. Removed `labels` from `AIPlatformFeatureViewSpec`, moved `etag` to `AIPlatformFeatureViewObservedState`, and updated the REST resource docs URL.
+  4. Added `generate-controller` and `generate-fuzzer` for `AIPlatformFeatureView` in `apis/aiplatform/generate.sh`, and updated the controller to resolve location via `id.Location`.
+  5. Resolved all 10 judgement queue entries for `AIPlatformFeatureView`.
+- **Impact**: Enables clean identity resolution from `spec.parentRef`, maintains KRM standards, and ensures mapper and fuzzer tests round-trip seamlessly.
+
+
 
