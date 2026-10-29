@@ -1,0 +1,285 @@
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aN-YCBBj77CEJS0eCwvqlHEdXrTwYzV_VQPznBi1LILpfPxg8v3y_gpxuAXV2a-Mc7u_oKRFtQlBCb_VAl95UlCQI5-lIFCm-MvHU5q1yFi",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aN-QTnS05cQfc0eyvmKAoj5VEtW_eWRJPufhtSrUaQf2wACaTuRyXwkp5em9e-Y0vaLKQhTRlpNBQGq0RLQQev7OYUQNtvRomLHpWJpUUJZ",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?alt=json&keyId=apikeyskey${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "Example Display Name",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/akmf.p7-${projectNumber}-e3932eec-a7d8-416c-9eea-7d7c093fd214"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/akmf.p7-${projectNumber}-e3932eec-a7d8-416c-9eea-7d7c093fd214",
+  "response": {
+    "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Example Display Name",
+    "etag": "abcdef0123A=",
+    "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M",
+    "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+    "restrictions": {
+      "apiTargets": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "service": "translate.googleapis.com"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Example Display Name",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Example Display Name",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Example Display Name",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyString": "AIzaSyBAdc85bb2WyggY6A-Z5u1YxlktLGiaF8M"
+}

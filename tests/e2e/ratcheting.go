@@ -68,7 +68,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 		// ApigeeSyncAuthorization uses POST for its read endpoint (organizations/{org}:getSyncAuthorization),
 		// which the generic re-reconciliation checker flags as a non-read-only method.
 		return false
-	case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaAdjusterSettings"}:
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaPreference"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineDomainMapping"}:

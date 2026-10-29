@@ -14,7 +14,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found",
+    "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aMZVrGQqa-yHU78qDJoHijN5wdfdsGANlsHSlEHsE_hf_rBBqqL0hr8S242YJbgg7CBuFFKxIrNpajjfnCgb13xXKwO5diqb_PKBSTf276O",
     "status": "NOT_FOUND"
   }
 }
@@ -49,8 +49,47 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "name": "operations/akmf.p7-${projectNumber}-d0e18016-bcab-441d-a810-d35b3929d958"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "done": true,
-  "name": "operations/${operationID}"
+  "name": "operations/akmf.p7-${projectNumber}-d0e18016-bcab-441d-a810-d35b3929d958",
+  "response": {
+    "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Example Display Name",
+    "etag": "abcdef0123A=",
+    "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
+    "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+    "restrictions": {
+      "apiTargets": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "service": "translate.googleapis.com"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -69,8 +108,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Example Display Name",
-  "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
   "restrictions": {
     "apiTargets": [
       {
@@ -80,7 +121,9 @@ X-Xss-Protection: 0
         "service": "translate.googleapis.com"
       }
     ]
-  }
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -115,8 +158,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "name": "operations/${operationID}"
+  "name": "operations/akmf.p10-${projectNumber}-71306357-06a3-4191-a960-ad87288c95e1"
 }
 
 ---
@@ -135,8 +177,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Example Display Name - Updated",
-  "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
   "restrictions": {
     "apiTargets": [
       {
@@ -147,7 +191,9 @@ X-Xss-Protection: 0
         "service": "translate.googleapis.com"
       }
     ]
-  }
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -166,7 +212,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
+  "name": "operations/akmf.p12-${projectNumber}-43417db1-f099-4466-9596-7b009e9c0064"
 }
 
 ---
@@ -186,11 +232,15 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
+  "name": "operations/akmf.p12-${projectNumber}-43417db1-f099-4466-9596-7b009e9c0064",
   "response": {
     "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Example Display Name - Updated",
-    "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+    "etag": "abcdef0123A=",
+    "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
+    "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
     "restrictions": {
       "apiTargets": [
         {
@@ -201,6 +251,8 @@ X-Xss-Protection: 0
           "service": "translate.googleapis.com"
         }
       ]
-    }
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }

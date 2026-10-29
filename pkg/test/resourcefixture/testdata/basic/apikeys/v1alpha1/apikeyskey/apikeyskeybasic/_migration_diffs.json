@@ -1,0 +1,59 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "APIKeysKey/apikeyskey-${uniqueId}",
+    "fields": [
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "Example Display Name"
+      },
+      {
+        "id": "key_string",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "apikeyskey${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "restrictions.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "restrictions.0.api_targets.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "restrictions.0.api_targets.0.methods.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "restrictions.0.api_targets.0.methods.0",
+        "old": "",
+        "new": "GET"
+      },
+      {
+        "id": "restrictions.0.api_targets.0.service",
+        "old": "",
+        "new": "translate.googleapis.com"
+      },
+      {
+        "id": "uid",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
