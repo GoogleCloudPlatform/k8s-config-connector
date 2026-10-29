@@ -123,6 +123,7 @@ require (
 	cloud.google.com/go/visionai v1.3.0
 	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
+	cloud.google.com/go/websecurityscanner v1.12.0
 	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workloadmanager v1.1.0
 	cloud.google.com/go/workstations v1.1.6
