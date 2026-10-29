@@ -369,6 +369,8 @@ func NetAppKMSConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Net
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	return out
 }
+
+/* found existing non-generated mapping function "NetAppKMSConfigSpec_FromProto", skipping
 func NetAppKMSConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetAppKMSConfigSpec {
 	if in == nil {
 		return nil
@@ -380,17 +382,23 @@ func NetAppKMSConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) 
 	// MISSING: Labels
 	return out
 }
-func NetAppKMSConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigSpec) *pb.KmsConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NetAppKMSConfigSpec_ToProto", skipping
+
+	func NetAppKMSConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigSpec) *pb.KmsConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KmsConfig{}
+		// MISSING: Name
+		// MISSING: CryptoKeyName
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: Labels
+		return out
 	}
-	out := &pb.KmsConfig{}
-	// MISSING: Name
-	// MISSING: CryptoKeyName
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
-	return out
-}
+*/
 func NetappQuotaRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaRule) *krm.NetappQuotaRuleObservedState {
 	if in == nil {
 		return nil
