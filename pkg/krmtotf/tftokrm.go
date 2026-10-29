@@ -595,7 +595,7 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 			if len(list) == 0 {
 				continue
 			}
-			if schema.MaxItems == 1 {
+			if _, isResource := schema.Elem.(*tfschema.Resource); isResource && schema.MaxItems == 1 {
 				// A list with MaxItems == 1 is actually a nested object due to limitations with TF schemas.
 				tfObjMap := list[0].(map[string]interface{})
 				tfObjSchema := schema.Elem.(*tfschema.Resource).Schema
