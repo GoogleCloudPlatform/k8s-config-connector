@@ -22,6 +22,8 @@ package mocklogging
 import (
 	"context"
 	"net/http"
+	"strings"
+	"sync"
 
 	"google.golang.org/grpc"
 
@@ -43,6 +45,9 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
+
+	logScopesMutex sync.Mutex
+	logScopes      map[string]*logScopeEntity
 }
 
 type configServiceV2 struct {
@@ -61,6 +66,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		MockEnvironment: env,
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
+		logScopes:       make(map[string]*logScopeEntity),
 	}
 	return s
 }
@@ -84,5 +90,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddService(pb.NewConfigServiceV2Client(conn))
 	grpcMux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)
 
-	return grpcMux, nil
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Path, "/logScopes") {
+			if s.serveLogScope(w, r) {
+				return
+			}
+		}
+		grpcMux.ServeHTTP(w, r)
+	}), nil
 }
