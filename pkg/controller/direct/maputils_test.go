@@ -22,6 +22,7 @@ import (
 	"google.golang.org/api/googleapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -244,6 +245,67 @@ func TestIsBadRequest(t *testing.T) {
 			got := IsBadRequest(tc.err)
 			if got != tc.want {
 				t.Errorf("IsBadRequest(%v) = %v, want %v", tc.err, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestEnumPtr_ToProto(t *testing.T) {
+	type testEnum = descriptorpb.GeneratedCodeInfo_Annotation_Semantic
+	setVal := descriptorpb.GeneratedCodeInfo_Annotation_SET
+
+	tests := []struct {
+		name    string
+		in      *string
+		want    *testEnum
+		wantErr bool
+	}{
+		{
+			name: "nil input returns nil",
+			in:   nil,
+			want: nil,
+		},
+		{
+			name: "empty string returns nil",
+			in:   PtrTo(""),
+			want: nil,
+		},
+		{
+			name: "zero enum value (NONE=0) returns nil",
+			in:   PtrTo("NONE"),
+			want: nil,
+		},
+		{
+			name: "valid non-zero enum value returns pointer and round-trips",
+			in:   PtrTo("SET"),
+			want: &setVal,
+		},
+		{
+			name:    "unknown enum value records error and returns nil",
+			in:      PtrTo("UNKNOWN_VALUE"),
+			want:    nil,
+			wantErr: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &MapContext{}
+			got := EnumPtr_ToProto[testEnum](mapCtx, tc.in)
+			if (mapCtx.Err() != nil) != tc.wantErr {
+				t.Fatalf("mapCtx.Err() = %v, wantErr %v", mapCtx.Err(), tc.wantErr)
+			}
+			if (got == nil) != (tc.want == nil) {
+				t.Fatalf("EnumPtr_ToProto(%v) = %v, want %v", ValueOf(tc.in), got, tc.want)
+			}
+			if got != nil && *got != *tc.want {
+				t.Errorf("*EnumPtr_ToProto(%v) = %v, want %v", ValueOf(tc.in), *got, *tc.want)
+			}
+			if got != nil {
+				roundTrip := Enum_FromProto(mapCtx, *got)
+				if ValueOf(roundTrip) != ValueOf(tc.in) {
+					t.Errorf("round-trip Enum_FromProto(*got) = %q, want %q", ValueOf(roundTrip), ValueOf(tc.in))
+				}
 			}
 		})
 	}

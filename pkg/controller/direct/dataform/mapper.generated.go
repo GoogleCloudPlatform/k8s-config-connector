@@ -367,9 +367,7 @@ func InvocationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatafor
 	out.TransitiveDependentsIncluded = direct.ValueOf(in.TransitiveDependentsIncluded)
 	out.FullyRefreshIncrementalTablesEnabled = direct.ValueOf(in.FullyRefreshIncrementalTablesEnabled)
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	if oneof := InvocationConfig_QueryPriority_ToProto(mapCtx, in.QueryPriority); oneof != nil {
-		out.QueryPriority = oneof
-	}
+	out.QueryPriority = direct.EnumPtr_ToProto[pb.InvocationConfig_QueryPriority](mapCtx, in.QueryPriority)
 	return out
 }
 func NotebookRuntimeOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeOptions) *krmdataformv1alpha1.NotebookRuntimeOptions {

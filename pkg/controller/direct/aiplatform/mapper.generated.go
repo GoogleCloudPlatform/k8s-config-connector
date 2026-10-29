@@ -2434,9 +2434,7 @@ func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
 		return nil
 	}
 	out := &pb.Presets{}
-	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
-		out.Query = oneof
-	}
+	out.Query = direct.EnumPtr_ToProto[pb.Presets_Query](mapCtx, in.Query)
 	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
 	return out
 }

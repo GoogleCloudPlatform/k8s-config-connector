@@ -43,9 +43,7 @@ func DedicatedInfrastructure_ToProto(mapCtx *direct.MapContext, in *krm.Dedicate
 		return nil
 	}
 	out := &pb.DedicatedInfrastructure{}
-	if oneof := DedicatedInfrastructure_Mode_ToProto(mapCtx, in.Mode); oneof != nil {
-		out.Mode = oneof
-	}
+	out.Mode = direct.EnumPtr_ToProto[pb.DedicatedInfrastructure_Mode](mapCtx, in.Mode)
 	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
 	return out
 }
