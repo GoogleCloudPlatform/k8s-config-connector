@@ -15,7 +15,6 @@
 [spec_etag] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=kmsekmconnections.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
-[spec_etag] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag

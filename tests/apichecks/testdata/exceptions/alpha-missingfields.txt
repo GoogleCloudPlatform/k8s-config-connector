@@ -4821,11 +4821,8 @@
 [missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].asn" is not set in unstructured objects
 [missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].csp" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipPrefix" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipCIDRRange" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" is not set in unstructured objects
