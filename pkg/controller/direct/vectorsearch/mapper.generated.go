@@ -29,15 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DedicatedInfrastructure_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure) *krm.DedicatedInfrastructure {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DedicatedInfrastructure{}
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
-	return out
-}
 func DedicatedInfrastructure_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedInfrastructure) *pb.DedicatedInfrastructure {
 	if in == nil {
 		return nil
@@ -49,6 +40,7 @@ func DedicatedInfrastructure_ToProto(mapCtx *direct.MapContext, in *krm.Dedicate
 	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
 	return out
 }
+
 func DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure_AutoscalingSpec) *krm.DedicatedInfrastructure_AutoscalingSpec {
 	if in == nil {
 		return nil
@@ -58,6 +50,7 @@ func DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx *direct.MapContext
 	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
 	return out
 }
+
 func DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedInfrastructure_AutoscalingSpec) *pb.DedicatedInfrastructure_AutoscalingSpec {
 	if in == nil {
 		return nil
@@ -67,6 +60,7 @@ func DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, 
 	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
 	return out
 }
+
 func DenseScannIndex_FromProto(mapCtx *direct.MapContext, in *pb.DenseScannIndex) *krm.DenseScannIndex {
 	if in == nil {
 		return nil
@@ -75,6 +69,7 @@ func DenseScannIndex_FromProto(mapCtx *direct.MapContext, in *pb.DenseScannIndex
 	out.FeatureNormType = direct.Enum_FromProto(mapCtx, in.GetFeatureNormType())
 	return out
 }
+
 func DenseScannIndex_ToProto(mapCtx *direct.MapContext, in *krm.DenseScannIndex) *pb.DenseScannIndex {
 	if in == nil {
 		return nil
@@ -83,6 +78,7 @@ func DenseScannIndex_ToProto(mapCtx *direct.MapContext, in *krm.DenseScannIndex)
 	out.FeatureNormType = direct.Enum_ToProto[pb.DenseScannIndex_FeatureNormType](mapCtx, in.FeatureNormType)
 	return out
 }
+
 func DenseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.DenseVectorField) *krm.DenseVectorField {
 	if in == nil {
 		return nil
@@ -92,6 +88,7 @@ func DenseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.DenseVectorFie
 	out.VertexEmbeddingConfig = VertexEmbeddingConfig_FromProto(mapCtx, in.GetVertexEmbeddingConfig())
 	return out
 }
+
 func DenseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.DenseVectorField) *pb.DenseVectorField {
 	if in == nil {
 		return nil
@@ -101,6 +98,7 @@ func DenseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.DenseVectorFiel
 	out.VertexEmbeddingConfig = VertexEmbeddingConfig_ToProto(mapCtx, in.VertexEmbeddingConfig)
 	return out
 }
+
 func SparseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.SparseVectorField) *krm.SparseVectorField {
 	if in == nil {
 		return nil
@@ -108,6 +106,7 @@ func SparseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.SparseVectorF
 	out := &krm.SparseVectorField{}
 	return out
 }
+
 func SparseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.SparseVectorField) *pb.SparseVectorField {
 	if in == nil {
 		return nil
@@ -115,6 +114,7 @@ func SparseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.SparseVectorFi
 	out := &pb.SparseVectorField{}
 	return out
 }
+
 func VectorField_FromProto(mapCtx *direct.MapContext, in *pb.VectorField) *krm.VectorField {
 	if in == nil {
 		return nil
@@ -124,6 +124,7 @@ func VectorField_FromProto(mapCtx *direct.MapContext, in *pb.VectorField) *krm.V
 	out.SparseVector = SparseVectorField_FromProto(mapCtx, in.GetSparseVector())
 	return out
 }
+
 func VectorField_ToProto(mapCtx *direct.MapContext, in *krm.VectorField) *pb.VectorField {
 	if in == nil {
 		return nil
@@ -137,6 +138,7 @@ func VectorField_ToProto(mapCtx *direct.MapContext, in *krm.VectorField) *pb.Vec
 	}
 	return out
 }
+
 func VectorSearchCollectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Collection) *krm.VectorSearchCollectionObservedState {
 	if in == nil {
 		return nil
@@ -147,6 +149,7 @@ func VectorSearchCollectionObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func VectorSearchCollectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VectorSearchCollectionObservedState) *pb.Collection {
 	if in == nil {
 		return nil
@@ -157,6 +160,7 @@ func VectorSearchCollectionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func VectorSearchCollectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Collection) *krm.VectorSearchCollectionSpec {
 	if in == nil {
 		return nil
@@ -170,6 +174,7 @@ func VectorSearchCollectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Coll
 	out.DataSchema = direct.Struct_FromProto(mapCtx, in.GetDataSchema())
 	return out
 }
+
 func VectorSearchCollectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.VectorSearchCollectionSpec) *pb.Collection {
 	if in == nil {
 		return nil
@@ -183,26 +188,31 @@ func VectorSearchCollectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vecto
 	out.DataSchema = direct.Struct_ToProto(mapCtx, in.DataSchema)
 	return out
 }
+
 func VectorsearchIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VectorsearchIndexObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.VectorsearchIndexObservedState{}
 	// MISSING: Name
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func VectorsearchIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VectorsearchIndexObservedState) *pb.Index {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Index{}
 	// MISSING: Name
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func VectorsearchIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VectorsearchIndexSpec {
 	if in == nil {
 		return nil
@@ -213,13 +223,14 @@ func VectorsearchIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *k
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.DistanceMetric = direct.Enum_FromProto(mapCtx, in.GetDistanceMetric())
 	out.IndexField = direct.LazyPtr(in.GetIndexField())
 	out.FilterFields = in.FilterFields
 	out.StoreFields = in.StoreFields
 	return out
 }
+
 func VectorsearchIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.VectorsearchIndexSpec) *pb.Index {
 	if in == nil {
 		return nil
@@ -234,13 +245,14 @@ func VectorsearchIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vectorsear
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.DistanceMetric = direct.Enum_ToProto[pb.DistanceMetric](mapCtx, in.DistanceMetric)
 	out.IndexField = direct.ValueOf(in.IndexField)
 	out.FilterFields = in.FilterFields
 	out.StoreFields = in.StoreFields
 	return out
 }
+
 func VertexEmbeddingConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexEmbeddingConfig) *krm.VertexEmbeddingConfig {
 	if in == nil {
 		return nil
@@ -251,6 +263,7 @@ func VertexEmbeddingConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexEmb
 	out.TaskType = direct.Enum_FromProto(mapCtx, in.GetTaskType())
 	return out
 }
+
 func VertexEmbeddingConfig_ToProto(mapCtx *direct.MapContext, in *krm.VertexEmbeddingConfig) *pb.VertexEmbeddingConfig {
 	if in == nil {
 		return nil

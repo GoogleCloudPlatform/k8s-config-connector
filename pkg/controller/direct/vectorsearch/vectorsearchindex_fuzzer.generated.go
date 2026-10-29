@@ -47,7 +47,6 @@ func vectorsearchIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".distance_metric")
 	f.SpecField(".filter_fields")
 	f.SpecField(".index_field")
-	f.SpecField(".labels")
 	f.SpecField(".store_fields")
 
 	// Status fields
@@ -56,9 +55,7 @@ func vectorsearchIndexFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
-
-	// Unimplemented fields
-	f.Unimplemented_NotYetTriaged(".dedicated_infrastructure.mode")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

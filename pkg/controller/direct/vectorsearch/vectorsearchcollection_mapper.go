@@ -49,6 +49,18 @@ func VectorSchema_ToProto(mapCtx *direct.MapContext, in map[string]krm.VectorFie
 	return out
 }
 
+func DedicatedInfrastructure_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure) *krm.DedicatedInfrastructure {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedInfrastructure{}
+	if in.Mode != nil {
+		out.Mode = direct.LazyPtr(in.GetMode().String())
+	}
+	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
+	return out
+}
+
 func DedicatedInfrastructure_Mode_ToProto(mapCtx *direct.MapContext, in *string) *pb.DedicatedInfrastructure_Mode {
 	if in == nil {
 		return nil

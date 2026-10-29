@@ -25,25 +25,35 @@ entries:
     group: vectorsearch.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged parent, identity, and references; removed top-level labels; updated controller and fuzzer
   - kind: VectorsearchIndex
     group: vectorsearch.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}" contains ancestor segment(s) collections/{collection} with no matching reference or field on VectorsearchIndexSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*VectorSearchCollectionRef) per the single-parent rule; removed projectRef and location
   - kind: VectorsearchIndex
     group: vectorsearch.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/collections/{collection}, and no CollectionRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*VectorSearchCollectionRef) per the single-parent rule; removed projectRef and location
   - kind: VectorsearchIndex
     group: vectorsearch.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
+    status: resolved
+    resolution: edited
+    note: added service docs link for Vertex AI Vector Search
   - kind: VectorsearchIndex
     group: vectorsearch.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/collections/{collection}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*VectorSearchCollectionRef) per the single-parent rule; removed projectRef and location

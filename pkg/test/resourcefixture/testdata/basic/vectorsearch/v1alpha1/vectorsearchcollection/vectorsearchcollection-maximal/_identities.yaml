@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //vectorsearch.googleapis.com/projects/${projectId}/locations/us-central1/collections/vsc-max-${uniqueId}
   group: vectorsearch.cnrm.cloud.google.com
   kind: VectorSearchCollection
   name: vsc-max-${uniqueId}
