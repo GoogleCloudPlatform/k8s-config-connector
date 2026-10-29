@@ -21,6 +21,7 @@ import (
 	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
 	"google.golang.org/genproto/googleapis/type/expr"
 
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1alpha1"
 	acm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -169,4 +170,20 @@ func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapC
 
 func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *acm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
 	return AccessContextManagerAccessPolicyObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerGCPUserAccessBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krmv1alpha1.AccessContextManagerGCPUserAccessBindingSpec {
+	return AccessContextManagerGCPUserAccessBindingSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerGCPUserAccessBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AccessContextManagerGCPUserAccessBindingSpec) *pb.GcpUserAccessBinding {
+	return AccessContextManagerGCPUserAccessBindingSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func AccessContextManagerGCPUserAccessBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krmv1alpha1.AccessContextManagerGCPUserAccessBindingObservedState {
+	return AccessContextManagerGCPUserAccessBindingObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func AccessContextManagerGCPUserAccessBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AccessContextManagerGCPUserAccessBindingObservedState) *pb.GcpUserAccessBinding {
+	return AccessContextManagerGCPUserAccessBindingObservedState_v1alpha1_ToProto(mapCtx, in)
 }
