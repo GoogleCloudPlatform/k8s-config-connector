@@ -49,3 +49,33 @@
   3. Updated `mirroringendpointgroup` and new `mirroringdeploymentgroup` to use `NewMirroringRESTClient` with `RESTClientOptions()`.
 - **Impact**: Enables smooth multi-network Packet Mirroring setups and stable golden file recording for Network Security mirroring resources.
 
+### [2026-10-17] Direct Controller & E2E Testing for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `NetworkSecurityInterceptDeploymentGroup` (Issue #14052).
+- **Details**:
+  1. Utilized GAPIC REST client `networksecurity.NewInterceptRESTClient` with `RESTClientOptions()`.
+  2. Registered `NetworkSecurityInterceptDeploymentGroup` in `pkg/controller/resourceconfig/static_config.go` with `ReconcilerTypeDirect`.
+  3. Created minimal and maximal fixtures referencing a `ComputeNetwork` dependency.
+  4. Successfully recorded golden files against live GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` in project `cnrm-barni-4`.
+  5. Verified audit logs showing `CreateInterceptDeploymentGroup`, `UpdateInterceptDeploymentGroup`, and `DeleteInterceptDeploymentGroup` calls.
+  6. Verified fuzzer with `fuzz-roundtrippers` presubmit.
+- **Impact**: Fully implements direct reconciliation, round-trip fuzz testing, and real GCP E2E validation for `NetworkSecurityInterceptDeploymentGroup`.
+
+### [2026-10-27] MockGCP Implementation and Alignment for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Implementing Phase 3 MockGCP and Alignment for `NetworkSecurityInterceptDeploymentGroup` (Issue #14476).
+- **Details**:
+  1. Implemented `CreateInterceptDeploymentGroup`, `GetInterceptDeploymentGroup`, `UpdateInterceptDeploymentGroup`, and `DeleteInterceptDeploymentGroup` on `InterceptServer` in `mockgcp/mocknetworksecurity/interceptdeploymentgroup.go`.
+  2. Registered `NetworkSecurityInterceptDeploymentGroup` in the mock GCP supported GK list in `config/tests/samples/create/harness.go`.
+  3. Generated and aligned mock HTTP logs (`_http_mock.log`) for both minimal and maximal fixtures.
+  4. Verified all tests pass with zero diff and re-reconciliation succeeds.
+- **Impact**: Enables hermetic and CI testing for `NetworkSecurityInterceptDeploymentGroup` against MockGCP.
+
+### [2026-10-28] MockGCP Log Alignment for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Aligning MockGCP logs with RealGCP for `NetworkSecurityInterceptDeploymentGroup` (Issue #14491).
+- **Details**:
+  1. Real GCP omits `labels` in the LRO Operation response body for `CreateInterceptDeploymentGroup` and `UpdateInterceptDeploymentGroup`. Updated MockGCP's LRO completion callbacks to set `result.Labels = nil`.
+  2. Formatted `AlreadyExists` errors in `CreateInterceptDeploymentGroup` to align with standard GCP error conventions (`Resource '%s' already exists`).
+  3. Documented proto3 zero-value behavior for `reconciling: false`.
+  4. Regenerated aligned `_http_mock.log` for `networksecurityinterceptdeploymentgroup-maximal`.
+- **Impact**: Aligns MockGCP behavior with Real GCP golden logs and ensures test fixtures and `TestGoldenLogAlignment` pass with zero discrepancies.
+
+

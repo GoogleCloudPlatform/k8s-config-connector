@@ -126,7 +126,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 // Helper to normalize GKE-generated Instance Group Manager names
 func normalizeGKEInstanceGroupNames(value string, replacements mockgcpregistry.NormalizingVisitor) {
-	igmRegex := regexp.MustCompile(`gke-[a-z0-9-]+-[a-f0-9]+-grp`)
+	igmRegex := regexp.MustCompile(`gke-[a-zA-Z0-9-${}]+-[a-f0-9]+-grp`)
 	if igmRegex.MatchString(value) {
 		match := igmRegex.FindString(value)
 		replacements.ReplaceStringValue(match, "gke-containercluster-abcdef-normalized-grp")

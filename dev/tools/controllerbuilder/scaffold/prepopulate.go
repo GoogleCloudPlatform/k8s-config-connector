@@ -37,6 +37,34 @@ var identityFields = map[string]bool{
 	"name": true,
 }
 
+var possibleStatusFieldNames = map[string]bool{
+	"state":             true,
+	"status":            true,
+	"createTime":        true,
+	"updateTime":        true,
+	"deleteTime":        true,
+	"lastUpdateTime":    true,
+	"creationTimestamp": true,
+	"startTime":         true,
+	"endTime":           true,
+	"uid":               true,
+	"id":                true,
+	"selfLink":          true,
+	"selfLinkWithID":    true,
+	"reconciling":       true,
+}
+
+var topLevelLocationFieldNames = map[string]bool{
+	"location": true,
+	"region":   true,
+	"zone":     true,
+}
+
+var nestedLocationFieldNames = map[string]bool{
+	"region": true,
+	"zone":   true,
+}
+
 // JudgementItem represents a finding or field needing human review, recorded in
 // the service's judgement_queue.yaml.
 type JudgementItem struct {
@@ -212,11 +240,25 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if item, ok := judgementFor(field, fieldPath); ok {
 			out.Judgement = append(out.Judgement, item)
 		}
+		jsonName := codegen.GetJSONForKRM(field, opts)
 		if string(field.Name()) == "etag" {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: fieldPath,
 				Reason:    judgement.ReasonEtagInSpec,
 				Detail:    "etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState",
+			})
+		} else if possibleStatusFieldNames[jsonName] && !codegen.IsFieldBehavior(field, annotations.FieldBehavior_REQUIRED) {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: fieldPath,
+				Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+				Detail:    fmt.Sprintf("%s was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState", jsonName),
+			})
+		}
+		if topLevelLocationFieldNames[jsonName] && field.Kind() == protoreflect.StringKind && !field.IsList() {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: fieldPath,
+				Reason:    judgement.ReasonLocationOrParentRef,
+				Detail:    fmt.Sprintf("proto defines a %s field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string", jsonName),
 			})
 		}
 		if !unsupported {
@@ -256,9 +298,8 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 		switch {
 		case n.Skipped:
 			items = append(items, JudgementItem{
-				FieldPath: ".status.observedState." + n.JSONName,
-				Reason:    judgement.ReasonObservedStateIdentityFieldOmitted,
-				Detail:    "proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource",
+				Reason: judgement.ReasonIdentityServerGeneratedID,
+				Detail: "proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter",
 			})
 		default:
 			if _, reason, ok := codegen.UnsupportedFieldMarker(n.Rendered); ok {
@@ -325,7 +366,7 @@ func judgementFor(field protoreflect.FieldDescriptor, path string) (JudgementIte
 
 	return JudgementItem{
 		FieldPath: path,
-		Reason:    judgement.ReasonPossibleReference,
+		Reason:    judgement.ReasonAuthoritativeProtoReference,
 		Detail:    detail,
 	}, true
 }
@@ -577,6 +618,14 @@ func walkNestedSpecJudgements(field protoreflect.FieldDescriptor, path string, o
 					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", mapGoType, protoMsg),
 				})
 			}
+		}
+		childJSONName := codegen.GetJSONForKRM(child, opts)
+		if nestedLocationFieldNames[childJSONName] && child.Kind() == protoreflect.StringKind && !child.IsList() {
+			*out = append(*out, JudgementItem{
+				FieldPath: childPath,
+				Reason:    judgement.ReasonLocationOrParentRef,
+				Detail:    fmt.Sprintf("proto defines a %s field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string", childJSONName),
+			})
 		}
 		walkNestedSpecJudgements(child, childPath, opts, onPath, out)
 	}

@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"unicode"
 
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -69,6 +70,10 @@ func (s *WorkloadManagerV1) CreateEvaluation(ctx context.Context, req *pb.Create
 	if evaluationID == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "EvaluationId is required")
 	}
+	// Matches real GCP's validation of the evaluation ID.
+	if len(evaluationID) < 3 || len(evaluationID) > 36 || !unicode.IsLetter(rune(evaluationID[0])) || strings.HasSuffix(evaluationID, "-") {
+		return nil, status.Errorf(codes.InvalidArgument, "The request was invalid: Evaluation name must start with a letter and must not end with hyphen, and minimum 3 and maximum 36 characters.")
+	}
 
 	reqName := req.Parent + "/evaluations/" + evaluationID
 	name, err := s.parseEvaluationName(reqName)
@@ -100,9 +105,17 @@ func (s *WorkloadManagerV1) CreateEvaluation(ctx context.Context, req *pb.Create
 		ApiVersion: "v1",
 	}
 
+	// Real GCP's create LRO result reports the evaluation as still CREATING and omits labels;
+	// a subsequent GET returns it as ACTIVE with labels.
+	result := proto.Clone(obj).(*pb.Evaluation)
+	result.Labels = nil
+	result.ResourceStatus = &pb.ResourceStatus{
+		State: pb.ResourceStatus_CREATING,
+	}
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		return result, nil
 	})
 }
 
@@ -117,7 +130,7 @@ func (s *WorkloadManagerV1) GetEvaluation(ctx context.Context, req *pb.GetEvalua
 	obj := &pb.Evaluation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Evaluation %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -136,6 +149,13 @@ func (s *WorkloadManagerV1) UpdateEvaluation(ctx context.Context, req *pb.Update
 	existing := &pb.Evaluation{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
+	}
+
+	// Real GCP does not support updating labels on an evaluation.
+	for _, path := range req.GetUpdateMask().GetPaths() {
+		if path == "labels" {
+			return nil, status.Errorf(codes.InvalidArgument, "The request was invalid: updating labels is not unsupported")
+		}
 	}
 
 	updated := proto.Clone(existing).(*pb.Evaluation)
@@ -158,9 +178,13 @@ func (s *WorkloadManagerV1) UpdateEvaluation(ctx context.Context, req *pb.Update
 		ApiVersion: "v1",
 	}
 
+	// Like the create LRO result, real GCP's update LRO result omits labels.
+	result := proto.Clone(updated).(*pb.Evaluation)
+	result.Labels = nil
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return updated, nil
+		return result, nil
 	})
 }
 

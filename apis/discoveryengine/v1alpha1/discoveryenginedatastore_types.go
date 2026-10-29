@@ -62,6 +62,14 @@ type DiscoveryEngineDataStoreSpec struct {
 	DocumentProcessingConfig *DocumentProcessingConfig `json:"documentProcessingConfig,omitempty"`
 	*/
 
+	// Immutable. A boolean flag indicating whether to skip the default schema
+	// creation for the data store. Only enable this flag if you are certain that
+	// the default schema is incompatible with your use case.
+	// If set to true, you must manually create a schema for the data store before
+	// any documents can be ingested.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SkipDefaultSchemaCreation field is immutable"
+	SkipDefaultSchemaCreation *bool `json:"skipDefaultSchemaCreation,omitempty"`
+
 	/* The ID of the project in which the resource belongs.*/
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 

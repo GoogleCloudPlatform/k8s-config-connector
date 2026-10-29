@@ -29,6 +29,126 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSSource{}
+	out.InputURI = direct.LazyPtr(in.GetInputUri())
+	return out
+}
+func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsSource{}
+	out.InputUri = direct.ValueOf(in.InputURI)
+	return out
+}
+func GlossaryEntry_GlossaryTermsPair_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryEntry_GlossaryTermsPair) *krm.GlossaryEntry_GlossaryTermsPair {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryEntry_GlossaryTermsPair{}
+	out.SourceTerm = GlossaryTerm_FromProto(mapCtx, in.GetSourceTerm())
+	out.TargetTerm = GlossaryTerm_FromProto(mapCtx, in.GetTargetTerm())
+	return out
+}
+func GlossaryEntry_GlossaryTermsPair_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryEntry_GlossaryTermsPair) *pb.GlossaryEntry_GlossaryTermsPair {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryEntry_GlossaryTermsPair{}
+	out.SourceTerm = GlossaryTerm_ToProto(mapCtx, in.SourceTerm)
+	out.TargetTerm = GlossaryTerm_ToProto(mapCtx, in.TargetTerm)
+	return out
+}
+func GlossaryEntry_GlossaryTermsSet_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryEntry_GlossaryTermsSet) *krm.GlossaryEntry_GlossaryTermsSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryEntry_GlossaryTermsSet{}
+	out.Terms = direct.Slice_FromProto(mapCtx, in.Terms, GlossaryTerm_FromProto)
+	return out
+}
+func GlossaryEntry_GlossaryTermsSet_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryEntry_GlossaryTermsSet) *pb.GlossaryEntry_GlossaryTermsSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryEntry_GlossaryTermsSet{}
+	out.Terms = direct.Slice_ToProto(mapCtx, in.Terms, GlossaryTerm_ToProto)
+	return out
+}
+func GlossaryInputConfig_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryInputConfig) *krm.GlossaryInputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryInputConfig{}
+	out.GCSSource = GCSSource_FromProto(mapCtx, in.GetGcsSource())
+	return out
+}
+func GlossaryInputConfig_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryInputConfig) *pb.GlossaryInputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryInputConfig{}
+	if oneof := GCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = &pb.GlossaryInputConfig_GcsSource{GcsSource: oneof}
+	}
+	return out
+}
+func GlossaryTerm_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryTerm{}
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.Text = direct.LazyPtr(in.GetText())
+	return out
+}
+func GlossaryTerm_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryTerm) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.Text = direct.ValueOf(in.Text)
+	return out
+}
+func Glossary_LanguageCodePair_FromProto(mapCtx *direct.MapContext, in *pb.Glossary_LanguageCodePair) *krm.Glossary_LanguageCodePair {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Glossary_LanguageCodePair{}
+	out.SourceLanguageCode = direct.LazyPtr(in.GetSourceLanguageCode())
+	out.TargetLanguageCode = direct.LazyPtr(in.GetTargetLanguageCode())
+	return out
+}
+func Glossary_LanguageCodePair_ToProto(mapCtx *direct.MapContext, in *krm.Glossary_LanguageCodePair) *pb.Glossary_LanguageCodePair {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary_LanguageCodePair{}
+	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
+	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
+	return out
+}
+func Glossary_LanguageCodesSet_FromProto(mapCtx *direct.MapContext, in *pb.Glossary_LanguageCodesSet) *krm.Glossary_LanguageCodesSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Glossary_LanguageCodesSet{}
+	out.LanguageCodes = in.LanguageCodes
+	return out
+}
+func Glossary_LanguageCodesSet_ToProto(mapCtx *direct.MapContext, in *krm.Glossary_LanguageCodesSet) *pb.Glossary_LanguageCodesSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary_LanguageCodesSet{}
+	out.LanguageCodes = in.LanguageCodes
+	return out
+}
 func TranslateAdaptiveMtDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AdaptiveMtDataset) *krm.TranslateAdaptiveMtDatasetObservedState {
 	if in == nil {
 		return nil
@@ -71,5 +191,181 @@ func TranslateAdaptiveMtDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.T
 	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
 	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
 	out.ExampleCount = direct.ValueOf(in.ExampleCount)
+	return out
+}
+func TranslateDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.TranslateDatasetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateDatasetObservedState{}
+	// MISSING: Name
+	out.ExampleCount = direct.LazyPtr(in.GetExampleCount())
+	out.TrainExampleCount = direct.LazyPtr(in.GetTrainExampleCount())
+	out.ValidateExampleCount = direct.LazyPtr(in.GetValidateExampleCount())
+	out.TestExampleCount = direct.LazyPtr(in.GetTestExampleCount())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func TranslateDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TranslateDatasetObservedState) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	out.ExampleCount = direct.ValueOf(in.ExampleCount)
+	out.TrainExampleCount = direct.ValueOf(in.TrainExampleCount)
+	out.ValidateExampleCount = direct.ValueOf(in.ValidateExampleCount)
+	out.TestExampleCount = direct.ValueOf(in.TestExampleCount)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func TranslateDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.TranslateDatasetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateDatasetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SourceLanguageCode = direct.LazyPtr(in.GetSourceLanguageCode())
+	out.TargetLanguageCode = direct.LazyPtr(in.GetTargetLanguageCode())
+	return out
+}
+func TranslateDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslateDatasetSpec) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
+	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
+	return out
+}
+func TranslateGlossaryEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryEntry) *krm.TranslateGlossaryEntrySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateGlossaryEntrySpec{}
+	// MISSING: Name
+	out.TermsPair = GlossaryEntry_GlossaryTermsPair_FromProto(mapCtx, in.GetTermsPair())
+	out.TermsSet = GlossaryEntry_GlossaryTermsSet_FromProto(mapCtx, in.GetTermsSet())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func TranslateGlossaryEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslateGlossaryEntrySpec) *pb.GlossaryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryEntry{}
+	// MISSING: Name
+	if oneof := GlossaryEntry_GlossaryTermsPair_ToProto(mapCtx, in.TermsPair); oneof != nil {
+		out.Data = &pb.GlossaryEntry_TermsPair{TermsPair: oneof}
+	}
+	if oneof := GlossaryEntry_GlossaryTermsSet_ToProto(mapCtx, in.TermsSet); oneof != nil {
+		out.Data = &pb.GlossaryEntry_TermsSet{TermsSet: oneof}
+	}
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func TranslateGlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.TranslateGlossaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateGlossaryObservedState{}
+	// MISSING: Name
+	out.EntryCount = direct.LazyPtr(in.GetEntryCount())
+	out.SubmitTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSubmitTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func TranslateGlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TranslateGlossaryObservedState) *pb.Glossary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary{}
+	// MISSING: Name
+	out.EntryCount = direct.ValueOf(in.EntryCount)
+	out.SubmitTime = direct.StringTimestamp_ToProto(mapCtx, in.SubmitTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func TranslateGlossarySpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.TranslateGlossarySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateGlossarySpec{}
+	// MISSING: Name
+	out.LanguagePair = Glossary_LanguageCodePair_FromProto(mapCtx, in.GetLanguagePair())
+	out.LanguageCodesSet = Glossary_LanguageCodesSet_FromProto(mapCtx, in.GetLanguageCodesSet())
+	out.InputConfig = GlossaryInputConfig_FromProto(mapCtx, in.GetInputConfig())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func TranslateGlossarySpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslateGlossarySpec) *pb.Glossary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Glossary{}
+	// MISSING: Name
+	if oneof := Glossary_LanguageCodePair_ToProto(mapCtx, in.LanguagePair); oneof != nil {
+		out.Languages = &pb.Glossary_LanguagePair{LanguagePair: oneof}
+	}
+	if oneof := Glossary_LanguageCodesSet_ToProto(mapCtx, in.LanguageCodesSet); oneof != nil {
+		out.Languages = &pb.Glossary_LanguageCodesSet_{LanguageCodesSet: oneof}
+	}
+	out.InputConfig = GlossaryInputConfig_ToProto(mapCtx, in.InputConfig)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func TranslateModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.TranslateModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateModelObservedState{}
+	// MISSING: Name
+	out.SourceLanguageCode = direct.LazyPtr(in.GetSourceLanguageCode())
+	out.TargetLanguageCode = direct.LazyPtr(in.GetTargetLanguageCode())
+	out.TrainExampleCount = direct.LazyPtr(in.GetTrainExampleCount())
+	out.ValidateExampleCount = direct.LazyPtr(in.GetValidateExampleCount())
+	out.TestExampleCount = direct.LazyPtr(in.GetTestExampleCount())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func TranslateModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TranslateModelObservedState) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
+	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
+	out.TrainExampleCount = direct.ValueOf(in.TrainExampleCount)
+	out.ValidateExampleCount = direct.ValueOf(in.ValidateExampleCount)
+	out.TestExampleCount = direct.ValueOf(in.TestExampleCount)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func TranslateModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.TranslateModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranslateModelSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	return out
+}
+func TranslateModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslateModelSpec) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Dataset = direct.ValueOf(in.Dataset)
 	return out
 }

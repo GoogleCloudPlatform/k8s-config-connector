@@ -3,11 +3,10 @@ kind: ComputeNetworkFirewallPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: ${firewallPolicyID}
@@ -16,7 +15,6 @@ spec:
   description: A sample network firewall policy - Updated
   projectRef:
     external: ${projectId}
-  resourceID: ${firewallPolicyID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,7 +25,7 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   fingerprint: abcdef0123A=
   networkFirewallPolicyId: ${firewallPolicyID}
-  observedGeneration: 3
+  observedGeneration: 2
   ruleTupleCount: 8
-  selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}
-  selfLinkWithId: https://www.googleapis.com/compute/beta/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}
+  selfLinkWithId: https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}

@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.documentai.v1
 // resource: DocumentAIProcessor:Processor
+// resource: DocumentAIProcessorDefaultVersion:SetDefaultProcessorVersionRequest
 
 package v1alpha1
 

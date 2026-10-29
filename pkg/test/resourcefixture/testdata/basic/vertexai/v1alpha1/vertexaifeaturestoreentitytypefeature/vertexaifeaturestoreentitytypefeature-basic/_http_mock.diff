@@ -1,0 +1,50 @@
+205c205
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+228c228
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features?alt=json&featureId=feature${uniqueId}
+---
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features?%24alt=json%3Benum-encoding%3Dint&featureId=feature${uniqueId}
+238c238
+<   "valueType": "INT64"
+---
+>   "valueType": 9
+264c264
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}/operations/${operationID}
+295c295
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+320c320
+<   "valueType": "INT64"
+---
+>   "valueType": 9
+325c325
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json&updateMask=labels%2Cdescription
+---
+> PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+334c334,336
+<   }
+---
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}",
+>   "valueType": 9
+359c361
+<   "valueType": "INT64"
+---
+>   "valueType": 9
+364c366
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+389c391
+<   "valueType": "INT64"
+---
+>   "valueType": 9
+394c396
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?alt=json
+---
+> DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/features/feature${uniqueId}?%24alt=json%3Benum-encoding%3Dint

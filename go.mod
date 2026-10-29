@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector
 
 go 1.26.0
 
-toolchain go1.26.4
+toolchain go1.26.10
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
@@ -20,6 +20,7 @@ require (
 	cloud.google.com/go/apigeeregistry v1.0.0
 	cloud.google.com/go/apihub v1.0.0
 	cloud.google.com/go/apikeys v1.2.7
+	cloud.google.com/go/appengine v1.14.0
 	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/artifactregistry v1.25.0
 	cloud.google.com/go/asset v1.27.0
@@ -31,6 +32,7 @@ require (
 	cloud.google.com/go/bigquery v1.77.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
+	cloud.google.com/go/channel v1.26.0
 	cloud.google.com/go/chronicle v1.5.0
 	cloud.google.com/go/cloudbuild v1.30.0
 	cloud.google.com/go/clouddms v1.13.0
@@ -56,6 +58,7 @@ require (
 	cloud.google.com/go/discoveryengine v1.32.0
 	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
+	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.12.0
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/filestore v1.15.0
@@ -65,6 +68,7 @@ require (
 	cloud.google.com/go/gkebackup v1.13.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/grafeas v0.3.17
+	cloud.google.com/go/gsuiteaddons v1.12.0
 	cloud.google.com/go/hypercomputecluster v1.1.0
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
@@ -72,7 +76,7 @@ require (
 	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/managedkafka v0.8.1
-	cloud.google.com/go/maps v1.39.0
+	cloud.google.com/go/maps v1.43.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/metastore v1.19.0
 	cloud.google.com/go/migrationcenter v1.6.0
@@ -96,6 +100,7 @@ require (
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
 	cloud.google.com/go/redis v1.25.0
 	cloud.google.com/go/resourcemanager v1.15.0
+	cloud.google.com/go/retail v1.31.0
 	cloud.google.com/go/run v1.21.0
 	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
@@ -110,6 +115,7 @@ require (
 	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/support v1.14.0
 	cloud.google.com/go/talent v1.13.0
+	cloud.google.com/go/telcoautomation v1.8.0
 	cloud.google.com/go/translate v1.17.0
 	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
@@ -186,7 +192,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.16.0 // indirect
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
@@ -226,8 +231,13 @@ require (
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/bigtable v1.58.0
+	cloud.google.com/go/ces v1.0.0
+	cloud.google.com/go/cloudcontrolspartner v1.4.0
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/longrunning v1.2.0
+	cloud.google.com/go/networkconnectivity v1.27.0
+	cloud.google.com/go/parallelstore v1.2.0
+	cloud.google.com/go/securityposture v1.2.0
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect; indsirect

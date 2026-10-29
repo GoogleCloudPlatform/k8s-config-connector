@@ -20,6 +20,7 @@
 // krm.group: datamigration.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.clouddms.v1
+// proto.service: google.protobuf
 
 package datamigration
 
@@ -30,8 +31,427 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datamigration/v1alpha1"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
+func AlloyDbConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krm.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbConnectionProfile{}
+	out.ClusterID = direct.LazyPtr(in.GetClusterId())
+	out.Settings = AlloyDbSettings_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+func AlloyDbConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbConnectionProfile) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	out.ClusterId = direct.ValueOf(in.ClusterID)
+	out.Settings = AlloyDbSettings_ToProto(mapCtx, in.Settings)
+	return out
+}
+func AlloyDbConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krm.AlloyDbConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbConnectionProfileObservedState{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+func AlloyDbConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbConnectionProfileObservedState) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_ToProto(mapCtx, in.Settings)
+	return out
+}
+func AlloyDbSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krm.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPassword_FromProto(mapCtx, in.GetInitialUser())
+	out.VPCNetwork = direct.LazyPtr(in.GetVpcNetwork())
+	out.Labels = in.Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
+	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
+	return out
+}
+func AlloyDbSettings_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings) *pb.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPassword_ToProto(mapCtx, in.InitialUser)
+	out.VpcNetwork = direct.ValueOf(in.VPCNetwork)
+	out.Labels = in.Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx, in.PrimaryInstanceSettings)
+	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
+	return out
+}
+func AlloyDbSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krm.AlloyDbSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettingsObservedState{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx, in.GetInitialUser())
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
+	// MISSING: EncryptionConfig
+	return out
+}
+func AlloyDbSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettingsObservedState) *pb.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx, in.InitialUser)
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx, in.PrimaryInstanceSettings)
+	// MISSING: EncryptionConfig
+	return out
+}
+func AlloyDbSettings_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_EncryptionConfig) *krm.AlloyDbSettings_EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_EncryptionConfig{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func AlloyDbSettings_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_EncryptionConfig) *pb.AlloyDbSettings_EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_EncryptionConfig{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krm.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_PrimaryInstanceSettings{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.MachineConfig = AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_FromProto(mapCtx, in.GetMachineConfig())
+	out.DatabaseFlags = in.DatabaseFlags
+	out.Labels = in.Labels
+	// MISSING: PrivateIP
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_PrimaryInstanceSettings) *pb.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings{}
+	out.Id = direct.ValueOf(in.ID)
+	out.MachineConfig = AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_ToProto(mapCtx, in.MachineConfig)
+	out.DatabaseFlags = in.DatabaseFlags
+	out.Labels = in.Labels
+	// MISSING: PrivateIP
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIP = direct.LazyPtr(in.GetPrivateIp())
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState) *pb.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIp = direct.ValueOf(in.PrivateIP)
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig) *krm.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig{}
+	out.CPUCount = direct.LazyPtr(in.GetCpuCount())
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig) *pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig{}
+	out.CpuCount = direct.ValueOf(in.CPUCount)
+	return out
+}
+func AlloyDbSettings_UserPassword_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_UserPassword) *krm.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_UserPassword{}
+	out.User = direct.LazyPtr(in.GetUser())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	return out
+}
+func AlloyDbSettings_UserPassword_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_UserPassword) *pb.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_UserPassword{}
+	out.User = direct.ValueOf(in.User)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_UserPassword) *krm.AlloyDbSettings_UserPasswordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_UserPasswordObservedState{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_UserPasswordObservedState) *pb.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_UserPassword{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	return out
+}
+func ApplyHash_FromProto(mapCtx *direct.MapContext, in *pb.ApplyHash) *krm.ApplyHash {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplyHash{}
+	out.UuidFromBytes = Empty_FromProto(mapCtx, in.GetUuidFromBytes())
+	return out
+}
+func ApplyHash_ToProto(mapCtx *direct.MapContext, in *krm.ApplyHash) *pb.ApplyHash {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplyHash{}
+	if oneof := Empty_ToProto(mapCtx, in.UuidFromBytes); oneof != nil {
+		out.HashFunction = &pb.ApplyHash_UuidFromBytes{UuidFromBytes: oneof}
+	}
+	return out
+}
+func AssignSpecificValue_FromProto(mapCtx *direct.MapContext, in *pb.AssignSpecificValue) *krm.AssignSpecificValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssignSpecificValue{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func AssignSpecificValue_ToProto(mapCtx *direct.MapContext, in *krm.AssignSpecificValue) *pb.AssignSpecificValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssignSpecificValue{}
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func CloudSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krm.CloudSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLConnectionProfile{}
+	// MISSING: CloudSQLID
+	out.Settings = CloudSQLSettings_FromProto(mapCtx, in.GetSettings())
+	// MISSING: PrivateIP
+	// MISSING: PublicIP
+	// MISSING: AdditionalPublicIP
+	return out
+}
+func CloudSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLConnectionProfile) *pb.CloudSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlConnectionProfile{}
+	// MISSING: CloudSQLID
+	out.Settings = CloudSQLSettings_ToProto(mapCtx, in.Settings)
+	// MISSING: PrivateIP
+	// MISSING: PublicIP
+	// MISSING: AdditionalPublicIP
+	return out
+}
+func CloudSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krm.CloudSQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLConnectionProfileObservedState{}
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	out.Settings = CloudSQLSettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	out.PrivateIP = direct.LazyPtr(in.GetPrivateIp())
+	out.PublicIP = direct.LazyPtr(in.GetPublicIp())
+	out.AdditionalPublicIP = direct.LazyPtr(in.GetAdditionalPublicIp())
+	return out
+}
+func CloudSQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLConnectionProfileObservedState) *pb.CloudSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlConnectionProfile{}
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	out.Settings = CloudSQLSettingsObservedState_ToProto(mapCtx, in.Settings)
+	out.PrivateIp = direct.ValueOf(in.PrivateIP)
+	out.PublicIp = direct.ValueOf(in.PublicIP)
+	out.AdditionalPublicIp = direct.ValueOf(in.AdditionalPublicIP)
+	return out
+}
+func CloudSQLSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlSettings) *krm.CloudSQLSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLSettings{}
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
+	out.UserLabels = in.UserLabels
+	out.Tier = direct.LazyPtr(in.GetTier())
+	out.StorageAutoResizeLimit = direct.Int64Value_FromProto(mapCtx, in.GetStorageAutoResizeLimit())
+	out.ActivationPolicy = direct.Enum_FromProto(mapCtx, in.GetActivationPolicy())
+	out.IPConfig = SQLIPConfig_FromProto(mapCtx, in.GetIpConfig())
+	out.AutoStorageIncrease = direct.BoolValue_FromProto(mapCtx, in.GetAutoStorageIncrease())
+	out.DatabaseFlags = in.DatabaseFlags
+	out.DataDiskType = direct.Enum_FromProto(mapCtx, in.GetDataDiskType())
+	out.DataDiskSizeGB = direct.Int64Value_FromProto(mapCtx, in.GetDataDiskSizeGb())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.SecondaryZone = direct.LazyPtr(in.GetSecondaryZone())
+	out.SourceID = direct.LazyPtr(in.GetSourceId())
+	out.RootPassword = direct.LazyPtr(in.GetRootPassword())
+	// MISSING: RootPasswordSet
+	out.Collation = direct.LazyPtr(in.GetCollation())
+	out.CmekKeyName = direct.LazyPtr(in.GetCmekKeyName())
+	out.AvailabilityType = direct.Enum_FromProto(mapCtx, in.GetAvailabilityType())
+	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
+	return out
+}
+func CloudSQLSettings_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLSettings) *pb.CloudSqlSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlSettings{}
+	out.DatabaseVersion = direct.Enum_ToProto[pb.CloudSqlSettings_SqlDatabaseVersion](mapCtx, in.DatabaseVersion)
+	out.UserLabels = in.UserLabels
+	out.Tier = direct.ValueOf(in.Tier)
+	out.StorageAutoResizeLimit = direct.Int64Value_ToProto(mapCtx, in.StorageAutoResizeLimit)
+	out.ActivationPolicy = direct.Enum_ToProto[pb.CloudSqlSettings_SqlActivationPolicy](mapCtx, in.ActivationPolicy)
+	out.IpConfig = SQLIPConfig_ToProto(mapCtx, in.IPConfig)
+	out.AutoStorageIncrease = direct.BoolValue_ToProto(mapCtx, in.AutoStorageIncrease)
+	out.DatabaseFlags = in.DatabaseFlags
+	out.DataDiskType = direct.Enum_ToProto[pb.CloudSqlSettings_SqlDataDiskType](mapCtx, in.DataDiskType)
+	out.DataDiskSizeGb = direct.Int64Value_ToProto(mapCtx, in.DataDiskSizeGB)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.SecondaryZone = direct.ValueOf(in.SecondaryZone)
+	out.SourceId = direct.ValueOf(in.SourceID)
+	out.RootPassword = direct.ValueOf(in.RootPassword)
+	// MISSING: RootPasswordSet
+	out.Collation = direct.ValueOf(in.Collation)
+	out.CmekKeyName = direct.ValueOf(in.CmekKeyName)
+	out.AvailabilityType = direct.Enum_ToProto[pb.CloudSqlSettings_SqlAvailabilityType](mapCtx, in.AvailabilityType)
+	out.Edition = direct.Enum_ToProto[pb.CloudSqlSettings_Edition](mapCtx, in.Edition)
+	return out
+}
+func CloudSQLSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlSettings) *krm.CloudSQLSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLSettingsObservedState{}
+	// MISSING: DatabaseVersion
+	// MISSING: UserLabels
+	// MISSING: Tier
+	// MISSING: StorageAutoResizeLimit
+	// MISSING: ActivationPolicy
+	// MISSING: IPConfig
+	// MISSING: AutoStorageIncrease
+	// MISSING: DatabaseFlags
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: Zone
+	// MISSING: SecondaryZone
+	// MISSING: SourceID
+	// MISSING: RootPassword
+	out.RootPasswordSet = direct.LazyPtr(in.GetRootPasswordSet())
+	// MISSING: Collation
+	// MISSING: CmekKeyName
+	// MISSING: AvailabilityType
+	// MISSING: Edition
+	return out
+}
+func CloudSQLSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLSettingsObservedState) *pb.CloudSqlSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlSettings{}
+	// MISSING: DatabaseVersion
+	// MISSING: UserLabels
+	// MISSING: Tier
+	// MISSING: StorageAutoResizeLimit
+	// MISSING: ActivationPolicy
+	// MISSING: IPConfig
+	// MISSING: AutoStorageIncrease
+	// MISSING: DatabaseFlags
+	// MISSING: DataDiskType
+	// MISSING: DataDiskSizeGB
+	// MISSING: Zone
+	// MISSING: SecondaryZone
+	// MISSING: SourceID
+	// MISSING: RootPassword
+	out.RootPasswordSet = direct.ValueOf(in.RootPasswordSet)
+	// MISSING: Collation
+	// MISSING: CmekKeyName
+	// MISSING: AvailabilityType
+	// MISSING: Edition
+	return out
+}
+func ConditionalColumnSetValue_FromProto(mapCtx *direct.MapContext, in *pb.ConditionalColumnSetValue) *krm.ConditionalColumnSetValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConditionalColumnSetValue{}
+	out.SourceTextFilter = SourceTextFilter_FromProto(mapCtx, in.GetSourceTextFilter())
+	out.SourceNumericFilter = SourceNumericFilter_FromProto(mapCtx, in.GetSourceNumericFilter())
+	out.ValueTransformation = ValueTransformation_FromProto(mapCtx, in.GetValueTransformation())
+	if v := direct.Struct_FromProto(mapCtx, in.GetCustomFeatures()); v != nil {
+		out.CustomFeatures = *v
+	}
+	return out
+}
+func ConditionalColumnSetValue_ToProto(mapCtx *direct.MapContext, in *krm.ConditionalColumnSetValue) *pb.ConditionalColumnSetValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConditionalColumnSetValue{}
+	if oneof := SourceTextFilter_ToProto(mapCtx, in.SourceTextFilter); oneof != nil {
+		out.SourceFilter = &pb.ConditionalColumnSetValue_SourceTextFilter{SourceTextFilter: oneof}
+	}
+	if oneof := SourceNumericFilter_ToProto(mapCtx, in.SourceNumericFilter); oneof != nil {
+		out.SourceFilter = &pb.ConditionalColumnSetValue_SourceNumericFilter{SourceNumericFilter: oneof}
+	}
+	out.ValueTransformation = ValueTransformation_ToProto(mapCtx, in.ValueTransformation)
+	out.CustomFeatures = direct.Struct_ToProto(mapCtx, &in.CustomFeatures)
+	return out
+}
 func ConversionWorkspaceInfo_FromProto(mapCtx *direct.MapContext, in *pb.ConversionWorkspaceInfo) *krm.ConversionWorkspaceInfo {
 	if in == nil {
 		return nil
@@ -48,6 +468,112 @@ func ConversionWorkspaceInfo_ToProto(mapCtx *direct.MapContext, in *krm.Conversi
 	out := &pb.ConversionWorkspaceInfo{}
 	out.Name = direct.ValueOf(in.Name)
 	out.CommitId = direct.ValueOf(in.CommitID)
+	return out
+}
+func ConvertRowIDToColumn_FromProto(mapCtx *direct.MapContext, in *pb.ConvertRowIdToColumn) *krm.ConvertRowIDToColumn {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConvertRowIDToColumn{}
+	out.OnlyIfNoPrimaryKey = direct.LazyPtr(in.GetOnlyIfNoPrimaryKey())
+	return out
+}
+func ConvertRowIDToColumn_ToProto(mapCtx *direct.MapContext, in *krm.ConvertRowIDToColumn) *pb.ConvertRowIdToColumn {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConvertRowIdToColumn{}
+	out.OnlyIfNoPrimaryKey = direct.ValueOf(in.OnlyIfNoPrimaryKey)
+	return out
+}
+func DataMigrationMappingRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MappingRule) *krm.DataMigrationMappingRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataMigrationMappingRuleObservedState{}
+	// MISSING: Name
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	return out
+}
+func DataMigrationMappingRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataMigrationMappingRuleObservedState) *pb.MappingRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MappingRule{}
+	// MISSING: Name
+	out.RevisionId = direct.ValueOf(in.RevisionID)
+	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	return out
+}
+func DataMigrationMappingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.MappingRule) *krm.DataMigrationMappingRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataMigrationMappingRuleSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.RuleScope = direct.Enum_FromProto(mapCtx, in.GetRuleScope())
+	out.Filter = MappingRuleFilter_FromProto(mapCtx, in.GetFilter())
+	out.RuleOrder = direct.LazyPtr(in.GetRuleOrder())
+	out.SingleEntityRename = SingleEntityRename_FromProto(mapCtx, in.GetSingleEntityRename())
+	out.MultiEntityRename = MultiEntityRename_FromProto(mapCtx, in.GetMultiEntityRename())
+	out.EntityMove = EntityMove_FromProto(mapCtx, in.GetEntityMove())
+	out.SingleColumnChange = SingleColumnChange_FromProto(mapCtx, in.GetSingleColumnChange())
+	out.MultiColumnDataTypeChange = MultiColumnDatatypeChange_FromProto(mapCtx, in.GetMultiColumnDataTypeChange())
+	out.ConditionalColumnSetValue = ConditionalColumnSetValue_FromProto(mapCtx, in.GetConditionalColumnSetValue())
+	out.ConvertRowidColumn = ConvertRowIDToColumn_FromProto(mapCtx, in.GetConvertRowidColumn())
+	out.SetTablePrimaryKey = SetTablePrimaryKey_FromProto(mapCtx, in.GetSetTablePrimaryKey())
+	out.SinglePackageChange = SinglePackageChange_FromProto(mapCtx, in.GetSinglePackageChange())
+	out.SourceSQLChange = SourceSQLChange_FromProto(mapCtx, in.GetSourceSqlChange())
+	out.FilterTableColumns = FilterTableColumns_FromProto(mapCtx, in.GetFilterTableColumns())
+	return out
+}
+func DataMigrationMappingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataMigrationMappingRuleSpec) *pb.MappingRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MappingRule{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.State = direct.Enum_ToProto[pb.MappingRule_State](mapCtx, in.State)
+	out.RuleScope = direct.Enum_ToProto[pb.DatabaseEntityType](mapCtx, in.RuleScope)
+	out.Filter = MappingRuleFilter_ToProto(mapCtx, in.Filter)
+	out.RuleOrder = direct.ValueOf(in.RuleOrder)
+	if oneof := SingleEntityRename_ToProto(mapCtx, in.SingleEntityRename); oneof != nil {
+		out.Details = &pb.MappingRule_SingleEntityRename{SingleEntityRename: oneof}
+	}
+	if oneof := MultiEntityRename_ToProto(mapCtx, in.MultiEntityRename); oneof != nil {
+		out.Details = &pb.MappingRule_MultiEntityRename{MultiEntityRename: oneof}
+	}
+	if oneof := EntityMove_ToProto(mapCtx, in.EntityMove); oneof != nil {
+		out.Details = &pb.MappingRule_EntityMove{EntityMove: oneof}
+	}
+	if oneof := SingleColumnChange_ToProto(mapCtx, in.SingleColumnChange); oneof != nil {
+		out.Details = &pb.MappingRule_SingleColumnChange{SingleColumnChange: oneof}
+	}
+	if oneof := MultiColumnDatatypeChange_ToProto(mapCtx, in.MultiColumnDataTypeChange); oneof != nil {
+		out.Details = &pb.MappingRule_MultiColumnDataTypeChange{MultiColumnDataTypeChange: oneof}
+	}
+	if oneof := ConditionalColumnSetValue_ToProto(mapCtx, in.ConditionalColumnSetValue); oneof != nil {
+		out.Details = &pb.MappingRule_ConditionalColumnSetValue{ConditionalColumnSetValue: oneof}
+	}
+	if oneof := ConvertRowIDToColumn_ToProto(mapCtx, in.ConvertRowidColumn); oneof != nil {
+		out.Details = &pb.MappingRule_ConvertRowidColumn{ConvertRowidColumn: oneof}
+	}
+	if oneof := SetTablePrimaryKey_ToProto(mapCtx, in.SetTablePrimaryKey); oneof != nil {
+		out.Details = &pb.MappingRule_SetTablePrimaryKey{SetTablePrimaryKey: oneof}
+	}
+	if oneof := SinglePackageChange_ToProto(mapCtx, in.SinglePackageChange); oneof != nil {
+		out.Details = &pb.MappingRule_SinglePackageChange{SinglePackageChange: oneof}
+	}
+	if oneof := SourceSQLChange_ToProto(mapCtx, in.SourceSQLChange); oneof != nil {
+		out.Details = &pb.MappingRule_SourceSqlChange{SourceSqlChange: oneof}
+	}
+	if oneof := FilterTableColumns_ToProto(mapCtx, in.FilterTableColumns); oneof != nil {
+		out.Details = &pb.MappingRule_FilterTableColumns{FilterTableColumns: oneof}
+	}
 	return out
 }
 func DatabaseEngineInfo_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseEngineInfo) *krm.DatabaseEngineInfo {
@@ -282,6 +808,240 @@ func DatabaseType_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseType) *pb.D
 	out.Engine = direct.Enum_ToProto[pb.DatabaseEngine](mapCtx, in.Engine)
 	return out
 }
+func DatamigrationConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krm.DatamigrationConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatamigrationConnectionProfileObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Mysql = MySQLConnectionProfileObservedState_FromProto(mapCtx, in.GetMysql())
+	out.Postgresql = PostgreSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetPostgresql())
+	out.Oracle = OracleConnectionProfileObservedState_FromProto(mapCtx, in.GetOracle())
+	out.Cloudsql = CloudSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetCloudsql())
+	out.Alloydb = AlloyDbConnectionProfileObservedState_FromProto(mapCtx, in.GetAlloydb())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func DatamigrationConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatamigrationConnectionProfileObservedState) *pb.ConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionProfile{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := MySQLConnectionProfileObservedState_ToProto(mapCtx, in.Mysql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
+	}
+	if oneof := PostgreSQLConnectionProfileObservedState_ToProto(mapCtx, in.Postgresql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Postgresql{Postgresql: oneof}
+	}
+	if oneof := OracleConnectionProfileObservedState_ToProto(mapCtx, in.Oracle); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Oracle{Oracle: oneof}
+	}
+	if oneof := CloudSQLConnectionProfileObservedState_ToProto(mapCtx, in.Cloudsql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}
+	}
+	if oneof := AlloyDbConnectionProfileObservedState_ToProto(mapCtx, in.Alloydb); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Alloydb{Alloydb: oneof}
+	}
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	return out
+}
+func DatamigrationConnectionProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krm.DatamigrationConnectionProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatamigrationConnectionProfileSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Mysql = MySQLConnectionProfile_FromProto(mapCtx, in.GetMysql())
+	out.Postgresql = PostgreSQLConnectionProfile_FromProto(mapCtx, in.GetPostgresql())
+	out.Oracle = OracleConnectionProfile_FromProto(mapCtx, in.GetOracle())
+	out.Cloudsql = CloudSQLConnectionProfile_FromProto(mapCtx, in.GetCloudsql())
+	out.Alloydb = AlloyDbConnectionProfile_FromProto(mapCtx, in.GetAlloydb())
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	return out
+}
+func DatamigrationConnectionProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatamigrationConnectionProfileSpec) *pb.ConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionProfile{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.State = direct.Enum_ToProto[pb.ConnectionProfile_State](mapCtx, in.State)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := MySQLConnectionProfile_ToProto(mapCtx, in.Mysql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Mysql{Mysql: oneof}
+	}
+	if oneof := PostgreSQLConnectionProfile_ToProto(mapCtx, in.Postgresql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Postgresql{Postgresql: oneof}
+	}
+	if oneof := OracleConnectionProfile_ToProto(mapCtx, in.Oracle); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Oracle{Oracle: oneof}
+	}
+	if oneof := CloudSQLConnectionProfile_ToProto(mapCtx, in.Cloudsql); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}
+	}
+	if oneof := AlloyDbConnectionProfile_ToProto(mapCtx, in.Alloydb); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Alloydb{Alloydb: oneof}
+	}
+	out.Provider = direct.Enum_ToProto[pb.DatabaseProvider](mapCtx, in.Provider)
+	return out
+}
+func DoubleComparisonFilter_FromProto(mapCtx *direct.MapContext, in *pb.DoubleComparisonFilter) *krm.DoubleComparisonFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DoubleComparisonFilter{}
+	out.ValueComparison = direct.Enum_FromProto(mapCtx, in.GetValueComparison())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func DoubleComparisonFilter_ToProto(mapCtx *direct.MapContext, in *krm.DoubleComparisonFilter) *pb.DoubleComparisonFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DoubleComparisonFilter{}
+	out.ValueComparison = direct.Enum_ToProto[pb.ValueComparison](mapCtx, in.ValueComparison)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func Empty_FromProto(mapCtx *direct.MapContext, in *emptypb.Empty) *krm.Empty {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Empty{}
+	return out
+}
+func Empty_ToProto(mapCtx *direct.MapContext, in *krm.Empty) *emptypb.Empty {
+	if in == nil {
+		return nil
+	}
+	out := &emptypb.Empty{}
+	return out
+}
+func EntityMove_FromProto(mapCtx *direct.MapContext, in *pb.EntityMove) *krm.EntityMove {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntityMove{}
+	out.NewSchema = direct.LazyPtr(in.GetNewSchema())
+	return out
+}
+func EntityMove_ToProto(mapCtx *direct.MapContext, in *krm.EntityMove) *pb.EntityMove {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityMove{}
+	out.NewSchema = direct.ValueOf(in.NewSchema)
+	return out
+}
+func FilterTableColumns_FromProto(mapCtx *direct.MapContext, in *pb.FilterTableColumns) *krm.FilterTableColumns {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FilterTableColumns{}
+	out.IncludeColumns = in.IncludeColumns
+	out.ExcludeColumns = in.ExcludeColumns
+	return out
+}
+func FilterTableColumns_ToProto(mapCtx *direct.MapContext, in *krm.FilterTableColumns) *pb.FilterTableColumns {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FilterTableColumns{}
+	out.IncludeColumns = in.IncludeColumns
+	out.ExcludeColumns = in.ExcludeColumns
+	return out
+}
+func ForwardSSHTunnelConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ForwardSshTunnelConnectivity) *krm.ForwardSSHTunnelConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ForwardSSHTunnelConnectivity{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	return out
+}
+func ForwardSSHTunnelConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ForwardSSHTunnelConnectivity) *pb.ForwardSshTunnelConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ForwardSshTunnelConnectivity{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Username = direct.ValueOf(in.Username)
+	out.Port = direct.ValueOf(in.Port)
+	if oneof := ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx, in.Password); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	if oneof := ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx, in.PrivateKey); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	return out
+}
+func ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_Password {
+	if in == nil {
+		return nil
+	}
+	return &pb.ForwardSshTunnelConnectivity_Password{Password: *in}
+}
+func ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_PrivateKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.ForwardSshTunnelConnectivity_PrivateKey{PrivateKey: *in}
+}
+func IntComparisonFilter_FromProto(mapCtx *direct.MapContext, in *pb.IntComparisonFilter) *krm.IntComparisonFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IntComparisonFilter{}
+	out.ValueComparison = direct.Enum_FromProto(mapCtx, in.GetValueComparison())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func IntComparisonFilter_ToProto(mapCtx *direct.MapContext, in *krm.IntComparisonFilter) *pb.IntComparisonFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IntComparisonFilter{}
+	out.ValueComparison = direct.Enum_ToProto[pb.ValueComparison](mapCtx, in.ValueComparison)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func MappingRuleFilter_FromProto(mapCtx *direct.MapContext, in *pb.MappingRuleFilter) *krm.MappingRuleFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MappingRuleFilter{}
+	out.ParentEntity = direct.LazyPtr(in.GetParentEntity())
+	out.EntityNamePrefix = direct.LazyPtr(in.GetEntityNamePrefix())
+	out.EntityNameSuffix = direct.LazyPtr(in.GetEntityNameSuffix())
+	out.EntityNameContains = direct.LazyPtr(in.GetEntityNameContains())
+	out.Entities = in.Entities
+	return out
+}
+func MappingRuleFilter_ToProto(mapCtx *direct.MapContext, in *krm.MappingRuleFilter) *pb.MappingRuleFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MappingRuleFilter{}
+	out.ParentEntity = direct.ValueOf(in.ParentEntity)
+	out.EntityNamePrefix = direct.ValueOf(in.EntityNamePrefix)
+	out.EntityNameSuffix = direct.ValueOf(in.EntityNameSuffix)
+	out.EntityNameContains = direct.ValueOf(in.EntityNameContains)
+	out.Entities = in.Entities
+	return out
+}
 func MigrationJob_DumpFlag_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob_DumpFlag) *krm.MigrationJob_DumpFlag {
 	if in == nil {
 		return nil
@@ -332,6 +1092,296 @@ func MigrationJob_PerformanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out.DumpParallelLevel = direct.Enum_ToProto[pb.MigrationJob_PerformanceConfig_DumpParallelLevel](mapCtx, in.DumpParallelLevel)
 	return out
 }
+func MultiColumnDatatypeChange_FromProto(mapCtx *direct.MapContext, in *pb.MultiColumnDatatypeChange) *krm.MultiColumnDatatypeChange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiColumnDatatypeChange{}
+	out.SourceDataTypeFilter = direct.LazyPtr(in.GetSourceDataTypeFilter())
+	out.SourceTextFilter = SourceTextFilter_FromProto(mapCtx, in.GetSourceTextFilter())
+	out.SourceNumericFilter = SourceNumericFilter_FromProto(mapCtx, in.GetSourceNumericFilter())
+	out.NewDataType = direct.LazyPtr(in.GetNewDataType())
+	out.OverrideLength = direct.LazyPtr(in.GetOverrideLength())
+	out.OverrideScale = direct.LazyPtr(in.GetOverrideScale())
+	out.OverridePrecision = direct.LazyPtr(in.GetOverridePrecision())
+	out.OverrideFractionalSecondsPrecision = direct.LazyPtr(in.GetOverrideFractionalSecondsPrecision())
+	if v := direct.Struct_FromProto(mapCtx, in.GetCustomFeatures()); v != nil {
+		out.CustomFeatures = *v
+	}
+	return out
+}
+func MultiColumnDatatypeChange_ToProto(mapCtx *direct.MapContext, in *krm.MultiColumnDatatypeChange) *pb.MultiColumnDatatypeChange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiColumnDatatypeChange{}
+	out.SourceDataTypeFilter = direct.ValueOf(in.SourceDataTypeFilter)
+	if oneof := SourceTextFilter_ToProto(mapCtx, in.SourceTextFilter); oneof != nil {
+		out.SourceFilter = &pb.MultiColumnDatatypeChange_SourceTextFilter{SourceTextFilter: oneof}
+	}
+	if oneof := SourceNumericFilter_ToProto(mapCtx, in.SourceNumericFilter); oneof != nil {
+		out.SourceFilter = &pb.MultiColumnDatatypeChange_SourceNumericFilter{SourceNumericFilter: oneof}
+	}
+	out.NewDataType = direct.ValueOf(in.NewDataType)
+	out.OverrideLength = direct.ValueOf(in.OverrideLength)
+	out.OverrideScale = direct.ValueOf(in.OverrideScale)
+	out.OverridePrecision = direct.ValueOf(in.OverridePrecision)
+	out.OverrideFractionalSecondsPrecision = direct.ValueOf(in.OverrideFractionalSecondsPrecision)
+	out.CustomFeatures = direct.Struct_ToProto(mapCtx, &in.CustomFeatures)
+	return out
+}
+func MultiEntityRename_FromProto(mapCtx *direct.MapContext, in *pb.MultiEntityRename) *krm.MultiEntityRename {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiEntityRename{}
+	out.NewNamePattern = direct.LazyPtr(in.GetNewNamePattern())
+	out.SourceNameTransformation = direct.Enum_FromProto(mapCtx, in.GetSourceNameTransformation())
+	return out
+}
+func MultiEntityRename_ToProto(mapCtx *direct.MapContext, in *krm.MultiEntityRename) *pb.MultiEntityRename {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiEntityRename{}
+	out.NewNamePattern = direct.ValueOf(in.NewNamePattern)
+	out.SourceNameTransformation = direct.Enum_ToProto[pb.EntityNameTransformation](mapCtx, in.SourceNameTransformation)
+	return out
+}
+func MySQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krm.MySQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MySQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	return out
+}
+func MySQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.MySQLConnectionProfile) *pb.MySqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MySqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	return out
+}
+func MySQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krm.MySQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MySQLConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: CloudSQLID
+	return out
+}
+func MySQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MySQLConnectionProfileObservedState) *pb.MySqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MySqlConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: CloudSQLID
+	return out
+}
+func OracleConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.OracleConnectionProfile) *krm.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OracleConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.DatabaseService = direct.LazyPtr(in.GetDatabaseService())
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.StaticServiceIPConnectivity = StaticServiceIPConnectivity_FromProto(mapCtx, in.GetStaticServiceIpConnectivity())
+	out.ForwardSSHConnectivity = ForwardSSHTunnelConnectivity_FromProto(mapCtx, in.GetForwardSshConnectivity())
+	out.PrivateConnectivity = PrivateConnectivity_FromProto(mapCtx, in.GetPrivateConnectivity())
+	return out
+}
+func OracleConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleConnectionProfile) *pb.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OracleConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.DatabaseService = direct.ValueOf(in.DatabaseService)
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	if oneof := StaticServiceIPConnectivity_ToProto(mapCtx, in.StaticServiceIPConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_StaticServiceIpConnectivity{StaticServiceIpConnectivity: oneof}
+	}
+	if oneof := ForwardSSHTunnelConnectivity_ToProto(mapCtx, in.ForwardSSHConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_ForwardSshConnectivity{ForwardSshConnectivity: oneof}
+	}
+	if oneof := PrivateConnectivity_ToProto(mapCtx, in.PrivateConnectivity); oneof != nil {
+		out.Connectivity = &pb.OracleConnectionProfile_PrivateConnectivity{PrivateConnectivity: oneof}
+	}
+	return out
+}
+func OracleConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleConnectionProfile) *krm.OracleConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OracleConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	// MISSING: DatabaseService
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
+func OracleConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OracleConnectionProfileObservedState) *pb.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OracleConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	// MISSING: DatabaseService
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
+func PostgreSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krm.PostgreSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PostgreSQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	// MISSING: PasswordSet
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
+	// MISSING: NetworkArchitecture
+	out.StaticIPConnectivity = StaticIPConnectivity_FromProto(mapCtx, in.GetStaticIpConnectivity())
+	out.PrivateServiceConnectConnectivity = PrivateServiceConnectConnectivity_FromProto(mapCtx, in.GetPrivateServiceConnectConnectivity())
+	return out
+}
+func PostgreSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.PostgreSQLConnectionProfile) *pb.PostgreSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgreSqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	// MISSING: PasswordSet
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
+	// MISSING: NetworkArchitecture
+	if oneof := StaticIPConnectivity_ToProto(mapCtx, in.StaticIPConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_StaticIpConnectivity{StaticIpConnectivity: oneof}
+	}
+	if oneof := PrivateServiceConnectConnectivity_ToProto(mapCtx, in.PrivateServiceConnectConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_PrivateServiceConnectConnectivity{PrivateServiceConnectConnectivity: oneof}
+	}
+	return out
+}
+func PostgreSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krm.PostgreSQLConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PostgreSQLConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	out.SSL = SSLConfigObservedState_FromProto(mapCtx, in.GetSsl())
+	// MISSING: CloudSQLID
+	out.NetworkArchitecture = direct.Enum_FromProto(mapCtx, in.GetNetworkArchitecture())
+	// MISSING: StaticIPConnectivity
+	// MISSING: PrivateServiceConnectConnectivity
+	return out
+}
+func PostgreSQLConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PostgreSQLConnectionProfileObservedState) *pb.PostgreSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgreSqlConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	out.Ssl = SSLConfigObservedState_ToProto(mapCtx, in.SSL)
+	// MISSING: CloudSQLID
+	out.NetworkArchitecture = direct.Enum_ToProto[pb.NetworkArchitecture](mapCtx, in.NetworkArchitecture)
+	// MISSING: StaticIPConnectivity
+	// MISSING: PrivateServiceConnectConnectivity
+	return out
+}
+func PrivateConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnectivity) *krm.PrivateConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateConnectivity{}
+	out.PrivateConnection = direct.LazyPtr(in.GetPrivateConnection())
+	return out
+}
+func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnectivity) *pb.PrivateConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnectivity{}
+	out.PrivateConnection = direct.ValueOf(in.PrivateConnection)
+	return out
+}
+func PrivateServiceConnectConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateServiceConnectConnectivity) *krm.PrivateServiceConnectConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateServiceConnectConnectivity{}
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConnectivity) *pb.PrivateServiceConnectConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateServiceConnectConnectivity{}
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	return out
+}
 func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivity {
 	if in == nil {
 		return nil
@@ -362,6 +1412,272 @@ func ReverseSSHConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSS
 	}
 	return out
 }
+func RoundToScale_FromProto(mapCtx *direct.MapContext, in *pb.RoundToScale) *krm.RoundToScale {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RoundToScale{}
+	out.Scale = direct.LazyPtr(in.GetScale())
+	return out
+}
+func RoundToScale_ToProto(mapCtx *direct.MapContext, in *krm.RoundToScale) *pb.RoundToScale {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RoundToScale{}
+	out.Scale = direct.ValueOf(in.Scale)
+	return out
+}
+func SQLAclEntry_FromProto(mapCtx *direct.MapContext, in *pb.SqlAclEntry) *krm.SQLAclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SQLAclEntry{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+func SQLAclEntry_ToProto(mapCtx *direct.MapContext, in *krm.SQLAclEntry) *pb.SqlAclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlAclEntry{}
+	out.Value = direct.ValueOf(in.Value)
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.SqlAclEntry_ExpireTime{ExpireTime: oneof}
+	}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.TTL); oneof != nil {
+		out.Expiration = &pb.SqlAclEntry_Ttl{Ttl: oneof}
+	}
+	out.Label = direct.ValueOf(in.Label)
+	return out
+}
+func SQLIPConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlIpConfig) *krm.SQLIPConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SQLIPConfig{}
+	out.EnableIPV4 = direct.BoolValue_FromProto(mapCtx, in.GetEnableIpv4())
+	out.PrivateNetwork = direct.LazyPtr(in.GetPrivateNetwork())
+	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
+	out.RequireSSL = direct.BoolValue_FromProto(mapCtx, in.GetRequireSsl())
+	out.AuthorizedNetworks = direct.Slice_FromProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_FromProto)
+	return out
+}
+func SQLIPConfig_ToProto(mapCtx *direct.MapContext, in *krm.SQLIPConfig) *pb.SqlIpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlIpConfig{}
+	out.EnableIpv4 = direct.BoolValue_ToProto(mapCtx, in.EnableIPV4)
+	out.PrivateNetwork = direct.ValueOf(in.PrivateNetwork)
+	out.AllocatedIpRange = direct.ValueOf(in.AllocatedIPRange)
+	out.RequireSsl = direct.BoolValue_ToProto(mapCtx, in.RequireSSL)
+	out.AuthorizedNetworks = direct.Slice_ToProto(mapCtx, in.AuthorizedNetworks, SQLAclEntry_ToProto)
+	return out
+}
+func SSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krm.SSLConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SSLConfig{}
+	// MISSING: Type
+	out.ClientKey = direct.LazyPtr(in.GetClientKey())
+	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
+	out.CACertificate = direct.LazyPtr(in.GetCaCertificate())
+	return out
+}
+func SSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.SSLConfig) *pb.SslConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslConfig{}
+	// MISSING: Type
+	out.ClientKey = direct.ValueOf(in.ClientKey)
+	out.ClientCertificate = direct.ValueOf(in.ClientCertificate)
+	out.CaCertificate = direct.ValueOf(in.CACertificate)
+	return out
+}
+func SSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SslConfig) *krm.SSLConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SSLConfigObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: ClientKey
+	// MISSING: ClientCertificate
+	// MISSING: CACertificate
+	return out
+}
+func SSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SSLConfigObservedState) *pb.SslConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslConfig{}
+	out.Type = direct.Enum_ToProto[pb.SslConfig_SslType](mapCtx, in.Type)
+	// MISSING: ClientKey
+	// MISSING: ClientCertificate
+	// MISSING: CACertificate
+	return out
+}
+func SetTablePrimaryKey_FromProto(mapCtx *direct.MapContext, in *pb.SetTablePrimaryKey) *krm.SetTablePrimaryKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SetTablePrimaryKey{}
+	out.PrimaryKeyColumns = in.PrimaryKeyColumns
+	out.PrimaryKey = direct.LazyPtr(in.GetPrimaryKey())
+	return out
+}
+func SetTablePrimaryKey_ToProto(mapCtx *direct.MapContext, in *krm.SetTablePrimaryKey) *pb.SetTablePrimaryKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SetTablePrimaryKey{}
+	out.PrimaryKeyColumns = in.PrimaryKeyColumns
+	out.PrimaryKey = direct.ValueOf(in.PrimaryKey)
+	return out
+}
+func SingleColumnChange_FromProto(mapCtx *direct.MapContext, in *pb.SingleColumnChange) *krm.SingleColumnChange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SingleColumnChange{}
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	out.Charset = direct.LazyPtr(in.GetCharset())
+	out.Collation = direct.LazyPtr(in.GetCollation())
+	out.Length = direct.LazyPtr(in.GetLength())
+	out.Precision = direct.LazyPtr(in.GetPrecision())
+	out.Scale = direct.LazyPtr(in.GetScale())
+	out.FractionalSecondsPrecision = direct.LazyPtr(in.GetFractionalSecondsPrecision())
+	out.Array = direct.LazyPtr(in.GetArray())
+	out.ArrayLength = direct.LazyPtr(in.GetArrayLength())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.AutoGenerated = direct.LazyPtr(in.GetAutoGenerated())
+	out.Udt = direct.LazyPtr(in.GetUdt())
+	if v := direct.Struct_FromProto(mapCtx, in.GetCustomFeatures()); v != nil {
+		out.CustomFeatures = *v
+	}
+	out.SetValues = in.SetValues
+	out.Comment = direct.LazyPtr(in.GetComment())
+	return out
+}
+func SingleColumnChange_ToProto(mapCtx *direct.MapContext, in *krm.SingleColumnChange) *pb.SingleColumnChange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleColumnChange{}
+	out.DataType = direct.ValueOf(in.DataType)
+	out.Charset = direct.ValueOf(in.Charset)
+	out.Collation = direct.ValueOf(in.Collation)
+	out.Length = direct.ValueOf(in.Length)
+	out.Precision = direct.ValueOf(in.Precision)
+	out.Scale = direct.ValueOf(in.Scale)
+	out.FractionalSecondsPrecision = direct.ValueOf(in.FractionalSecondsPrecision)
+	out.Array = direct.ValueOf(in.Array)
+	out.ArrayLength = direct.ValueOf(in.ArrayLength)
+	out.Nullable = direct.ValueOf(in.Nullable)
+	out.AutoGenerated = direct.ValueOf(in.AutoGenerated)
+	out.Udt = direct.ValueOf(in.Udt)
+	out.CustomFeatures = direct.Struct_ToProto(mapCtx, &in.CustomFeatures)
+	out.SetValues = in.SetValues
+	out.Comment = direct.ValueOf(in.Comment)
+	return out
+}
+func SingleEntityRename_FromProto(mapCtx *direct.MapContext, in *pb.SingleEntityRename) *krm.SingleEntityRename {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SingleEntityRename{}
+	out.NewName = direct.LazyPtr(in.GetNewName())
+	return out
+}
+func SingleEntityRename_ToProto(mapCtx *direct.MapContext, in *krm.SingleEntityRename) *pb.SingleEntityRename {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleEntityRename{}
+	out.NewName = direct.ValueOf(in.NewName)
+	return out
+}
+func SinglePackageChange_FromProto(mapCtx *direct.MapContext, in *pb.SinglePackageChange) *krm.SinglePackageChange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SinglePackageChange{}
+	out.PackageDescription = direct.LazyPtr(in.GetPackageDescription())
+	out.PackageBody = direct.LazyPtr(in.GetPackageBody())
+	return out
+}
+func SinglePackageChange_ToProto(mapCtx *direct.MapContext, in *krm.SinglePackageChange) *pb.SinglePackageChange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SinglePackageChange{}
+	out.PackageDescription = direct.ValueOf(in.PackageDescription)
+	out.PackageBody = direct.ValueOf(in.PackageBody)
+	return out
+}
+func SourceNumericFilter_FromProto(mapCtx *direct.MapContext, in *pb.SourceNumericFilter) *krm.SourceNumericFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceNumericFilter{}
+	out.SourceMinScaleFilter = direct.LazyPtr(in.GetSourceMinScaleFilter())
+	out.SourceMaxScaleFilter = direct.LazyPtr(in.GetSourceMaxScaleFilter())
+	out.SourceMinPrecisionFilter = direct.LazyPtr(in.GetSourceMinPrecisionFilter())
+	out.SourceMaxPrecisionFilter = direct.LazyPtr(in.GetSourceMaxPrecisionFilter())
+	out.NumericFilterOption = direct.Enum_FromProto(mapCtx, in.GetNumericFilterOption())
+	return out
+}
+func SourceNumericFilter_ToProto(mapCtx *direct.MapContext, in *krm.SourceNumericFilter) *pb.SourceNumericFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceNumericFilter{}
+	out.SourceMinScaleFilter = direct.ValueOf(in.SourceMinScaleFilter)
+	out.SourceMaxScaleFilter = direct.ValueOf(in.SourceMaxScaleFilter)
+	out.SourceMinPrecisionFilter = direct.ValueOf(in.SourceMinPrecisionFilter)
+	out.SourceMaxPrecisionFilter = direct.ValueOf(in.SourceMaxPrecisionFilter)
+	out.NumericFilterOption = direct.Enum_ToProto[pb.NumericFilterOption](mapCtx, in.NumericFilterOption)
+	return out
+}
+func SourceSQLChange_FromProto(mapCtx *direct.MapContext, in *pb.SourceSqlChange) *krm.SourceSQLChange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceSQLChange{}
+	out.SQLCode = direct.LazyPtr(in.GetSqlCode())
+	return out
+}
+func SourceSQLChange_ToProto(mapCtx *direct.MapContext, in *krm.SourceSQLChange) *pb.SourceSqlChange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceSqlChange{}
+	out.SqlCode = direct.ValueOf(in.SQLCode)
+	return out
+}
+func SourceTextFilter_FromProto(mapCtx *direct.MapContext, in *pb.SourceTextFilter) *krm.SourceTextFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceTextFilter{}
+	out.SourceMinLengthFilter = direct.LazyPtr(in.GetSourceMinLengthFilter())
+	out.SourceMaxLengthFilter = direct.LazyPtr(in.GetSourceMaxLengthFilter())
+	return out
+}
+func SourceTextFilter_ToProto(mapCtx *direct.MapContext, in *krm.SourceTextFilter) *pb.SourceTextFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceTextFilter{}
+	out.SourceMinLengthFilter = direct.ValueOf(in.SourceMinLengthFilter)
+	out.SourceMaxLengthFilter = direct.ValueOf(in.SourceMaxLengthFilter)
+	return out
+}
 func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krm.StaticIPConnectivity {
 	if in == nil {
 		return nil
@@ -374,6 +1690,20 @@ func StaticIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.StaticIPCon
 		return nil
 	}
 	out := &pb.StaticIpConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krm.StaticServiceIPConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StaticServiceIPConnectivity{}
+	return out
+}
+func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.StaticServiceIPConnectivity) *pb.StaticServiceIpConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StaticServiceIpConnectivity{}
 	return out
 }
 func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConnectivity) *krm.VPCPeeringConnectivity {
@@ -393,6 +1723,80 @@ func VPCPeeringConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeerin
 	out := &pb.VpcPeeringConnectivity{}
 	if in.VPCRef != nil {
 		out.Vpc = in.VPCRef.External
+	}
+	return out
+}
+func ValueListFilter_FromProto(mapCtx *direct.MapContext, in *pb.ValueListFilter) *krm.ValueListFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValueListFilter{}
+	out.ValuePresentList = direct.Enum_FromProto(mapCtx, in.GetValuePresentList())
+	out.Values = in.Values
+	out.IgnoreCase = direct.LazyPtr(in.GetIgnoreCase())
+	return out
+}
+func ValueListFilter_ToProto(mapCtx *direct.MapContext, in *krm.ValueListFilter) *pb.ValueListFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValueListFilter{}
+	out.ValuePresentList = direct.Enum_ToProto[pb.ValuePresentInList](mapCtx, in.ValuePresentList)
+	out.Values = in.Values
+	out.IgnoreCase = direct.ValueOf(in.IgnoreCase)
+	return out
+}
+func ValueTransformation_FromProto(mapCtx *direct.MapContext, in *pb.ValueTransformation) *krm.ValueTransformation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValueTransformation{}
+	out.IsNull = Empty_FromProto(mapCtx, in.GetIsNull())
+	out.ValueList = ValueListFilter_FromProto(mapCtx, in.GetValueList())
+	out.IntComparison = IntComparisonFilter_FromProto(mapCtx, in.GetIntComparison())
+	out.DoubleComparison = DoubleComparisonFilter_FromProto(mapCtx, in.GetDoubleComparison())
+	out.AssignNull = Empty_FromProto(mapCtx, in.GetAssignNull())
+	out.AssignSpecificValue = AssignSpecificValue_FromProto(mapCtx, in.GetAssignSpecificValue())
+	out.AssignMinValue = Empty_FromProto(mapCtx, in.GetAssignMinValue())
+	out.AssignMaxValue = Empty_FromProto(mapCtx, in.GetAssignMaxValue())
+	out.RoundScale = RoundToScale_FromProto(mapCtx, in.GetRoundScale())
+	out.ApplyHash = ApplyHash_FromProto(mapCtx, in.GetApplyHash())
+	return out
+}
+func ValueTransformation_ToProto(mapCtx *direct.MapContext, in *krm.ValueTransformation) *pb.ValueTransformation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValueTransformation{}
+	if oneof := Empty_ToProto(mapCtx, in.IsNull); oneof != nil {
+		out.Filter = &pb.ValueTransformation_IsNull{IsNull: oneof}
+	}
+	if oneof := ValueListFilter_ToProto(mapCtx, in.ValueList); oneof != nil {
+		out.Filter = &pb.ValueTransformation_ValueList{ValueList: oneof}
+	}
+	if oneof := IntComparisonFilter_ToProto(mapCtx, in.IntComparison); oneof != nil {
+		out.Filter = &pb.ValueTransformation_IntComparison{IntComparison: oneof}
+	}
+	if oneof := DoubleComparisonFilter_ToProto(mapCtx, in.DoubleComparison); oneof != nil {
+		out.Filter = &pb.ValueTransformation_DoubleComparison{DoubleComparison: oneof}
+	}
+	if oneof := Empty_ToProto(mapCtx, in.AssignNull); oneof != nil {
+		out.Action = &pb.ValueTransformation_AssignNull{AssignNull: oneof}
+	}
+	if oneof := AssignSpecificValue_ToProto(mapCtx, in.AssignSpecificValue); oneof != nil {
+		out.Action = &pb.ValueTransformation_AssignSpecificValue{AssignSpecificValue: oneof}
+	}
+	if oneof := Empty_ToProto(mapCtx, in.AssignMinValue); oneof != nil {
+		out.Action = &pb.ValueTransformation_AssignMinValue{AssignMinValue: oneof}
+	}
+	if oneof := Empty_ToProto(mapCtx, in.AssignMaxValue); oneof != nil {
+		out.Action = &pb.ValueTransformation_AssignMaxValue{AssignMaxValue: oneof}
+	}
+	if oneof := RoundToScale_ToProto(mapCtx, in.RoundScale); oneof != nil {
+		out.Action = &pb.ValueTransformation_RoundScale{RoundScale: oneof}
+	}
+	if oneof := ApplyHash_ToProto(mapCtx, in.ApplyHash); oneof != nil {
+		out.Action = &pb.ValueTransformation_ApplyHash{ApplyHash: oneof}
 	}
 	return out
 }

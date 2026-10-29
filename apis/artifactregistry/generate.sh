@@ -31,30 +31,54 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.devtools.artifactregistry.v1 \
-  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1  \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource ArtifactRegistryVPCSCConfig:VPCSCConfig \
   --skip-scaffold-files
 
-
-
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.devtools.artifactregistry.v1 \
-  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1  \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource ArtifactRegistryRepository:Repository
 
-${CONTROLLERBUILDER} generate-mapper \
+${CONTROLLERBUILDER} generate-types \
   --service google.devtools.artifactregistry.v1 \
-  --api-version "artifactregistry.cnrm.cloud.google.com/v1beta1" \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryAttachment:Attachment \
+  --resource ArtifactRegistryRule:Rule
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource ArtifactRegistryAttachment:Attachment \
+  --resource ArtifactRegistryRule:Rule
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.devtools.artifactregistry.v1,google.type \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-controller \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryRule:Rule
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryRule:Rule
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/artifactregistry" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/artifactregistry/

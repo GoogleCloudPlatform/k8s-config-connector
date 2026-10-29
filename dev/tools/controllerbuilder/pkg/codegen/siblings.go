@@ -20,6 +20,8 @@ import (
 	"regexp"
 	"strings"
 
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -28,8 +30,21 @@ import (
 // before the CRD is published and it cannot affect the schema.
 const SiblingGuessMarker = "+kcc:guess=possible-reference target="
 
+// HasAuthoritativeProtoReference reports whether field carries a non-empty
+// google.api.resource_reference annotation (either type or child_type).
+func HasAuthoritativeProtoReference(field protoreflect.FieldDescriptor) bool {
+	if field == nil || field.Options() == nil {
+		return false
+	}
+	v := proto.GetExtension(field.Options(), annotations.E_ResourceReference)
+	rr, _ := v.(*annotations.ResourceReference)
+	return rr != nil && (rr.GetType() != "" || rr.GetChildType() != "")
+}
+
 // SiblingResource reports the resource this service declares whose name matches
-// the field's, if any.
+// the field's, if any. When google.api.resource_reference is already present on
+// the field, the heuristic sibling match is suppressed in favor of
+// authoritative-proto-reference.
 //
 // siblings maps a lowercased Kind suffix to the Kind: DiscoveryEngineDataStore
 // is keyed "datastore", so a field called dataStore matches it. The rule keeps
@@ -37,7 +52,7 @@ const SiblingGuessMarker = "+kcc:guess=possible-reference target="
 //
 // The field name must match the key exactly (or match after singularizing plural forms).
 func SiblingResource(field protoreflect.FieldDescriptor, opts WriteOptions) (string, bool) {
-	if len(opts.Siblings) == 0 || field.Kind() != protoreflect.StringKind {
+	if len(opts.Siblings) == 0 || field == nil || field.Kind() != protoreflect.StringKind || HasAuthoritativeProtoReference(field) {
 		return "", false
 	}
 	return SiblingResourceByName(GetJSONForKRM(field, opts), opts.Siblings)

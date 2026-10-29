@@ -44,7 +44,24 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetAppActiveDirectory:ActiveDirectory \
   --resource NetAppBackupPolicy:BackupPolicy \
   --resource NetAppBackupVault:BackupVault \
-  --resource NetAppHostGroup:HostGroup
+  --resource NetAppHostGroup:HostGroup \
+  --resource NetAppKMSConfig:KmsConfig
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource NetappQuotaRule:QuotaRule \
+  --resource NetappReplication:Replication
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetappQuotaRule:QuotaRule \
+  --resource NetappReplication:Replication
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

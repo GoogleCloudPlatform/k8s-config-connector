@@ -74,6 +74,7 @@ func TestDirectResourceFileNaming(t *testing.T) {
 		"_mapper.go",
 		"_mapper_test.go",
 		"_fuzzer.go",
+		"_fuzzer.generated.go",
 		"_fuzzer_test.go",
 		"_controller.go",
 		"_controller_test.go",

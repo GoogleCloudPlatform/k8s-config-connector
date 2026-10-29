@@ -25,22 +25,23 @@ package accesscontextmanager
 
 import (
 	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
+	krmaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1alpha1"
+	krmaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	typepb "google.golang.org/genproto/googleapis/identity/accesscontextmanager/type"
 )
 
-func AccessContextManagerAccessLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessContextManagerAccessLevelObservedState {
+func AccessContextManagerAccessLevelObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessContextManagerAccessLevelObservedState{}
+	out := &krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelObservedState{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
 }
-func AccessContextManagerAccessLevelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessLevelObservedState) *pb.AccessLevel {
+func AccessContextManagerAccessLevelObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelObservedState) *pb.AccessLevel {
 	if in == nil {
 		return nil
 	}
@@ -50,21 +51,21 @@ func AccessContextManagerAccessLevelObservedState_ToProto(mapCtx *direct.MapCont
 	// MISSING: UpdateTime
 	return out
 }
-func AccessContextManagerAccessLevelSpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessContextManagerAccessLevelSpec {
+func AccessContextManagerAccessLevelSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessContextManagerAccessLevelSpec{}
+	out := &krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelSpec{}
 	// MISSING: Name
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Basic = BasicLevel_FromProto(mapCtx, in.GetBasic())
-	out.Custom = AccessLevelCustom_FromProto(mapCtx, in.GetCustom())
+	out.Basic = BasicLevel_v1beta1_FromProto(mapCtx, in.GetBasic())
+	out.Custom = AccessLevelCustom_v1beta1_FromProto(mapCtx, in.GetCustom())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
 }
-func AccessContextManagerAccessLevelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessLevelSpec) *pb.AccessLevel {
+func AccessContextManagerAccessLevelSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessLevelSpec) *pb.AccessLevel {
 	if in == nil {
 		return nil
 	}
@@ -72,21 +73,21 @@ func AccessContextManagerAccessLevelSpec_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
-	if oneof := BasicLevel_ToProto(mapCtx, in.Basic); oneof != nil {
+	if oneof := BasicLevel_v1beta1_ToProto(mapCtx, in.Basic); oneof != nil {
 		out.Level = &pb.AccessLevel_Basic{Basic: oneof}
 	}
-	if oneof := AccessLevelCustom_ToProto(mapCtx, in.Custom); oneof != nil {
+	if oneof := AccessLevelCustom_v1beta1_ToProto(mapCtx, in.Custom); oneof != nil {
 		out.Level = &pb.AccessLevel_Custom{Custom: oneof}
 	}
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
 }
-func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicyObservedState {
+func AccessContextManagerAccessPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessContextManagerAccessPolicyObservedState{}
+	out := &krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicyObservedState{}
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: Scopes
@@ -95,7 +96,7 @@ func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapC
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
+func AccessContextManagerAccessPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
 	if in == nil {
 		return nil
 	}
@@ -108,11 +109,11 @@ func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapCon
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicySpec {
+func AccessContextManagerAccessPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessContextManagerAccessPolicySpec{}
+	out := &krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicySpec{}
 	// MISSING: Name
 	// MISSING: Parent
 	out.Title = direct.LazyPtr(in.GetTitle())
@@ -122,7 +123,7 @@ func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
+func AccessContextManagerAccessPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
 	if in == nil {
 		return nil
 	}
@@ -136,73 +137,109 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Etag
 	return out
 }
-func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.AccessLevelCustom {
+func AccessContextManagerGCPUserAccessBindingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessLevelCustom{}
-	out.Expr = AccessLevelExpr_FromProto(mapCtx, in.GetExpr())
+	out := &krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingObservedState{}
+	// MISSING: Name
 	return out
 }
-func AccessLevelCustom_ToProto(mapCtx *direct.MapContext, in *krm.AccessLevelCustom) *pb.CustomLevel {
+func AccessContextManagerGCPUserAccessBindingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingObservedState) *pb.GcpUserAccessBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpUserAccessBinding{}
+	// MISSING: Name
+	return out
+}
+func AccessContextManagerGCPUserAccessBindingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcpUserAccessBinding) *krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingSpec{}
+	// MISSING: Name
+	out.GroupKey = in.GetGroupKey()
+	out.AccessLevels = in.AccessLevels
+	return out
+}
+func AccessContextManagerGCPUserAccessBindingSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1alpha1.AccessContextManagerGCPUserAccessBindingSpec) *pb.GcpUserAccessBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcpUserAccessBinding{}
+	// MISSING: Name
+	out.GroupKey = AccessContextManagerGCPUserAccessBindingSpec_GroupKey_ToProto(mapCtx, in.GroupKey)
+	out.AccessLevels = in.AccessLevels
+	return out
+}
+func AccessLevelCustom_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krmaccesscontextmanagerv1beta1.AccessLevelCustom {
+	if in == nil {
+		return nil
+	}
+	out := &krmaccesscontextmanagerv1beta1.AccessLevelCustom{}
+	out.Expr = AccessLevelExpr_v1beta1_FromProto(mapCtx, in.GetExpr())
+	return out
+}
+func AccessLevelCustom_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.AccessLevelCustom) *pb.CustomLevel {
 	if in == nil {
 		return nil
 	}
 	out := &pb.CustomLevel{}
-	out.Expr = AccessLevelExpr_ToProto(mapCtx, in.Expr)
+	out.Expr = AccessLevelExpr_v1beta1_ToProto(mapCtx, in.Expr)
 	return out
 }
-func BasicLevel_FromProto(mapCtx *direct.MapContext, in *pb.BasicLevel) *krm.BasicLevel {
+func BasicLevel_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BasicLevel) *krmaccesscontextmanagerv1beta1.BasicLevel {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BasicLevel{}
-	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, Condition_FromProto)
+	out := &krmaccesscontextmanagerv1beta1.BasicLevel{}
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, Condition_v1beta1_FromProto)
 	out.CombiningFunction = direct.Enum_FromProto(mapCtx, in.GetCombiningFunction())
 	return out
 }
-func BasicLevel_ToProto(mapCtx *direct.MapContext, in *krm.BasicLevel) *pb.BasicLevel {
+func BasicLevel_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.BasicLevel) *pb.BasicLevel {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BasicLevel{}
-	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, Condition_ToProto)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, Condition_v1beta1_ToProto)
 	out.CombiningFunction = direct.Enum_ToProto[pb.BasicLevel_ConditionCombiningFunction](mapCtx, in.CombiningFunction)
 	return out
 }
-func Condition_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condition {
+func Condition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krmaccesscontextmanagerv1beta1.Condition {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Condition{}
+	out := &krmaccesscontextmanagerv1beta1.Condition{}
 	// MISSING: IPSubnetworks
 	// (near miss): "IPSubnetworks" vs "IpSubnetworks"
-	out.DevicePolicy = DevicePolicy_FromProto(mapCtx, in.GetDevicePolicy())
+	out.DevicePolicy = DevicePolicy_v1beta1_FromProto(mapCtx, in.GetDevicePolicy())
 	out.RequiredAccessLevels = Condition_RequiredAccessLevels_FromProto(mapCtx, in.RequiredAccessLevels)
 	out.Negate = direct.LazyPtr(in.GetNegate())
 	out.Members = Condition_Members_FromProto(mapCtx, in.Members)
 	out.Regions = in.Regions
 	return out
 }
-func Condition_ToProto(mapCtx *direct.MapContext, in *krm.Condition) *pb.Condition {
+func Condition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.Condition) *pb.Condition {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Condition{}
 	// MISSING: IPSubnetworks
 	// (near miss): "IPSubnetworks" vs "IpSubnetworks"
-	out.DevicePolicy = DevicePolicy_ToProto(mapCtx, in.DevicePolicy)
+	out.DevicePolicy = DevicePolicy_v1beta1_ToProto(mapCtx, in.DevicePolicy)
 	out.RequiredAccessLevels = Condition_RequiredAccessLevels_ToProto(mapCtx, in.RequiredAccessLevels)
 	out.Negate = direct.ValueOf(in.Negate)
 	out.Members = Condition_Members_ToProto(mapCtx, in.Members)
 	out.Regions = in.Regions
 	return out
 }
-func DevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm.DevicePolicy {
+func DevicePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krmaccesscontextmanagerv1beta1.DevicePolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DevicePolicy{}
+	out := &krmaccesscontextmanagerv1beta1.DevicePolicy{}
 	// MISSING: RequireScreenlock
 	// (near miss): "RequireScreenlock" vs "RequireScreenLock"
 	out.AllowedEncryptionStatuses = direct.EnumSlice_FromProto(mapCtx, in.AllowedEncryptionStatuses)
@@ -213,7 +250,7 @@ func DevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm
 	out.RequireCorpOwned = direct.LazyPtr(in.GetRequireCorpOwned())
 	return out
 }
-func DevicePolicy_ToProto(mapCtx *direct.MapContext, in *krm.DevicePolicy) *pb.DevicePolicy {
+func DevicePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.DevicePolicy) *pb.DevicePolicy {
 	if in == nil {
 		return nil
 	}
@@ -228,11 +265,11 @@ func DevicePolicy_ToProto(mapCtx *direct.MapContext, in *krm.DevicePolicy) *pb.D
 	out.RequireCorpOwned = direct.ValueOf(in.RequireCorpOwned)
 	return out
 }
-func OsConstraints_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krm.OsConstraints {
+func OsConstraints_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krmaccesscontextmanagerv1beta1.OsConstraints {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OsConstraints{}
+	out := &krmaccesscontextmanagerv1beta1.OsConstraints{}
 	// MISSING: OSType
 	// (near miss): "OSType" vs "OsType"
 	out.MinimumVersion = direct.LazyPtr(in.GetMinimumVersion())
@@ -240,7 +277,7 @@ func OsConstraints_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *kr
 	// (near miss): "RequireVerifiedChromeOS" vs "RequireVerifiedChromeOs"
 	return out
 }
-func OsConstraints_ToProto(mapCtx *direct.MapContext, in *krm.OsConstraints) *pb.OsConstraint {
+func OsConstraints_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1beta1.OsConstraints) *pb.OsConstraint {
 	if in == nil {
 		return nil
 	}

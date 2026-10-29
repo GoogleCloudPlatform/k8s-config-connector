@@ -32,6 +32,58 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func Aspect_FromProto(mapCtx *direct.MapContext, in *pb.Aspect) *krm.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Aspect{}
+	// MISSING: AspectType
+	// MISSING: Path
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	if v := direct.Struct_FromProto(mapCtx, in.GetData()); v != nil {
+		out.Data = *v
+	}
+	out.AspectSource = AspectSource_FromProto(mapCtx, in.GetAspectSource())
+	return out
+}
+
+func Aspect_ToProto(mapCtx *direct.MapContext, in *krm.Aspect) *pb.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aspect{}
+	// MISSING: AspectType
+	// MISSING: Path
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Data = direct.Struct_ToProto(mapCtx, &in.Data)
+	out.AspectSource = AspectSource_ToProto(mapCtx, in.AspectSource)
+	return out
+}
+
+func AspectSource_FromProto(mapCtx *direct.MapContext, in *pb.AspectSource) *krm.AspectSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AspectSource{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DataVersion = direct.LazyPtr(in.GetDataVersion())
+	return out
+}
+
+func AspectSource_ToProto(mapCtx *direct.MapContext, in *krm.AspectSource) *pb.AspectSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AspectSource{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DataVersion = direct.ValueOf(in.DataVersion)
+	return out
+}
+
 func AspectType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_Authorization) *krm.AspectType_Authorization {
 	if in == nil {
 		return nil
@@ -40,6 +92,7 @@ func AspectType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.Aspect
 	out.AlternateUsePermission = direct.LazyPtr(in.GetAlternateUsePermission())
 	return out
 }
+
 func AspectType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_Authorization) *pb.AspectType_Authorization {
 	if in == nil {
 		return nil
@@ -48,6 +101,7 @@ func AspectType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.AspectT
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
+
 func AspectType_MetadataTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate) *krm.AspectType_MetadataTemplate {
 	if in == nil {
 		return nil
@@ -66,6 +120,7 @@ func AspectType_MetadataTemplate_FromProto(mapCtx *direct.MapContext, in *pb.Asp
 	out.Annotations = AspectType_MetadataTemplate_Annotations_FromProto(mapCtx, in.GetAnnotations())
 	return out
 }
+
 func AspectType_MetadataTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_MetadataTemplate) *pb.AspectType_MetadataTemplate {
 	if in == nil {
 		return nil
@@ -84,6 +139,7 @@ func AspectType_MetadataTemplate_ToProto(mapCtx *direct.MapContext, in *krm.Aspe
 	out.Annotations = AspectType_MetadataTemplate_Annotations_ToProto(mapCtx, in.Annotations)
 	return out
 }
+
 func AspectType_MetadataTemplate_Annotations_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate_Annotations) *krm.AspectType_MetadataTemplate_Annotations {
 	if in == nil {
 		return nil
@@ -97,6 +153,7 @@ func AspectType_MetadataTemplate_Annotations_FromProto(mapCtx *direct.MapContext
 	out.StringValues = in.StringValues
 	return out
 }
+
 func AspectType_MetadataTemplate_Annotations_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_MetadataTemplate_Annotations) *pb.AspectType_MetadataTemplate_Annotations {
 	if in == nil {
 		return nil
@@ -110,6 +167,7 @@ func AspectType_MetadataTemplate_Annotations_ToProto(mapCtx *direct.MapContext, 
 	out.StringValues = in.StringValues
 	return out
 }
+
 func AspectType_MetadataTemplate_Constraints_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate_Constraints) *krm.AspectType_MetadataTemplate_Constraints {
 	if in == nil {
 		return nil
@@ -118,6 +176,7 @@ func AspectType_MetadataTemplate_Constraints_FromProto(mapCtx *direct.MapContext
 	out.Required = direct.LazyPtr(in.GetRequired())
 	return out
 }
+
 func AspectType_MetadataTemplate_Constraints_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_MetadataTemplate_Constraints) *pb.AspectType_MetadataTemplate_Constraints {
 	if in == nil {
 		return nil
@@ -126,6 +185,7 @@ func AspectType_MetadataTemplate_Constraints_ToProto(mapCtx *direct.MapContext, 
 	out.Required = direct.ValueOf(in.Required)
 	return out
 }
+
 func AspectType_MetadataTemplate_EnumValue_FromProto(mapCtx *direct.MapContext, in *pb.AspectType_MetadataTemplate_EnumValue) *krm.AspectType_MetadataTemplate_EnumValue {
 	if in == nil {
 		return nil
@@ -136,6 +196,7 @@ func AspectType_MetadataTemplate_EnumValue_FromProto(mapCtx *direct.MapContext, 
 	out.Deprecated = direct.LazyPtr(in.GetDeprecated())
 	return out
 }
+
 func AspectType_MetadataTemplate_EnumValue_ToProto(mapCtx *direct.MapContext, in *krm.AspectType_MetadataTemplate_EnumValue) *pb.AspectType_MetadataTemplate_EnumValue {
 	if in == nil {
 		return nil
@@ -146,6 +207,7 @@ func AspectType_MetadataTemplate_EnumValue_ToProto(mapCtx *direct.MapContext, in
 	out.Deprecated = direct.ValueOf(in.Deprecated)
 	return out
 }
+
 func AssetStatus_FromProto(mapCtx *direct.MapContext, in *pb.AssetStatus) *krm.AssetStatus {
 	if in == nil {
 		return nil
@@ -156,6 +218,7 @@ func AssetStatus_FromProto(mapCtx *direct.MapContext, in *pb.AssetStatus) *krm.A
 	out.SecurityPolicyApplyingAssets = direct.LazyPtr(in.GetSecurityPolicyApplyingAssets())
 	return out
 }
+
 func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.AssetStatus {
 	if in == nil {
 		return nil
@@ -166,6 +229,280 @@ func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.Ass
 	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
 	return out
 }
+
+func Asset_DiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec) *krm.Asset_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Asset_DiscoverySpec_CsvOptions_FromProto(mapCtx, in.GetCsvOptions())
+	out.JsonOptions = Asset_DiscoverySpec_JsonOptions_FromProto(mapCtx, in.GetJsonOptions())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	return out
+}
+
+func Asset_DiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec) *pb.Asset_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Asset_DiscoverySpec_CsvOptions_ToProto(mapCtx, in.CsvOptions)
+	out.JsonOptions = Asset_DiscoverySpec_JsonOptions_ToProto(mapCtx, in.JsonOptions)
+	if oneof := Asset_DiscoverySpec_Schedule_ToProto(mapCtx, in.Schedule); oneof != nil {
+		out.Trigger = oneof
+	}
+	return out
+}
+
+func Asset_DiscoverySpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Asset_DiscoverySpec_Schedule {
+	if in == nil {
+		return nil
+	}
+	return &pb.Asset_DiscoverySpec_Schedule{Schedule: *in}
+}
+
+func Asset_DiscoverySpec_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec_CsvOptions) *krm.Asset_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.LazyPtr(in.GetHeaderRows())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+
+func Asset_DiscoverySpec_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec_CsvOptions) *pb.Asset_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.ValueOf(in.HeaderRows)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+
+func Asset_DiscoverySpec_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec_JsonOptions) *krm.Asset_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+
+func Asset_DiscoverySpec_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec_JsonOptions) *pb.Asset_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+
+func Asset_DiscoveryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoveryStatus) *krm.Asset_DiscoveryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoveryStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastRunTime())
+	out.Stats = Asset_DiscoveryStatus_Stats_FromProto(mapCtx, in.GetStats())
+	out.LastRunDuration = direct.StringDuration_FromProto(mapCtx, in.GetLastRunDuration())
+	return out
+}
+
+func Asset_DiscoveryStatus_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoveryStatus) *pb.Asset_DiscoveryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoveryStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_DiscoveryStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastRunTime = direct.StringTimestamp_ToProto(mapCtx, in.LastRunTime)
+	out.Stats = Asset_DiscoveryStatus_Stats_ToProto(mapCtx, in.Stats)
+	out.LastRunDuration = direct.StringDuration_ToProto(mapCtx, in.LastRunDuration)
+	return out
+}
+
+func Asset_DiscoveryStatus_Stats_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoveryStatus_Stats) *krm.Asset_DiscoveryStatus_Stats {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoveryStatus_Stats{}
+	out.DataItems = direct.LazyPtr(in.GetDataItems())
+	out.DataSize = direct.LazyPtr(in.GetDataSize())
+	out.Tables = direct.LazyPtr(in.GetTables())
+	out.Filesets = direct.LazyPtr(in.GetFilesets())
+	return out
+}
+
+func Asset_DiscoveryStatus_Stats_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoveryStatus_Stats) *pb.Asset_DiscoveryStatus_Stats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoveryStatus_Stats{}
+	out.DataItems = direct.ValueOf(in.DataItems)
+	out.DataSize = direct.ValueOf(in.DataSize)
+	out.Tables = direct.ValueOf(in.Tables)
+	out.Filesets = direct.ValueOf(in.Filesets)
+	return out
+}
+
+func Asset_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceSpec) *krm.Asset_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_ResourceSpec{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.ReadAccessMode = direct.Enum_FromProto(mapCtx, in.GetReadAccessMode())
+	return out
+}
+
+func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceSpec) *pb.Asset_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_ResourceSpec{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
+	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
+	return out
+}
+
+func Asset_ResourceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceStatus) *krm.Asset_ResourceStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_ResourceStatusObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ManagedAccessIdentity = direct.LazyPtr(in.GetManagedAccessIdentity())
+	return out
+}
+
+func Asset_ResourceStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceStatusObservedState) *pb.Asset_ResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_ResourceStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_ResourceStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ManagedAccessIdentity = direct.ValueOf(in.ManagedAccessIdentity)
+	return out
+}
+
+func Asset_SecurityStatus_FromProto(mapCtx *direct.MapContext, in *pb.Asset_SecurityStatus) *krm.Asset_SecurityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_SecurityStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func Asset_SecurityStatus_ToProto(mapCtx *direct.MapContext, in *krm.Asset_SecurityStatus) *pb.Asset_SecurityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_SecurityStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_SecurityStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func Content_Notebook_FromProto(mapCtx *direct.MapContext, in *pb.Content_Notebook) *krm.Content_Notebook {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Content_Notebook{}
+	out.KernelType = direct.Enum_FromProto(mapCtx, in.GetKernelType())
+	return out
+}
+
+func Content_Notebook_ToProto(mapCtx *direct.MapContext, in *krm.Content_Notebook) *pb.Content_Notebook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content_Notebook{}
+	out.KernelType = direct.Enum_ToProto[pb.Content_Notebook_KernelType](mapCtx, in.KernelType)
+	return out
+}
+
+func Content_SQLScript_FromProto(mapCtx *direct.MapContext, in *pb.Content_SqlScript) *krm.Content_SQLScript {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Content_SQLScript{}
+	out.Engine = direct.Enum_FromProto(mapCtx, in.GetEngine())
+	return out
+}
+
+func Content_SQLScript_ToProto(mapCtx *direct.MapContext, in *krm.Content_SQLScript) *pb.Content_SqlScript {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content_SqlScript{}
+	out.Engine = direct.Enum_ToProto[pb.Content_SqlScript_QueryEngine](mapCtx, in.Engine)
+	return out
+}
+
+func DataAccessSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAccessSpec) *krm.DataAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataAccessSpec{}
+	out.Readers = in.Readers
+	return out
+}
+
+func DataAccessSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataAccessSpec) *pb.DataAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAccessSpec{}
+	out.Readers = in.Readers
+	return out
+}
+
+func DataAsset_AccessGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset_AccessGroupConfig) *krm.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataAsset_AccessGroupConfig{}
+	out.IAMRoles = in.IamRoles
+	return out
+}
+
+func DataAsset_AccessGroupConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataAsset_AccessGroupConfig) *pb.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset_AccessGroupConfig{}
+	out.IamRoles = in.IAMRoles
+	return out
+}
+
 func DataAttributeBindingPath_FromProto(mapCtx *direct.MapContext, in *pb.DataAttributeBinding_Path) *krm.DataAttributeBindingPath {
 	if in == nil {
 		return nil
@@ -181,6 +518,7 @@ func DataAttributeBindingPath_FromProto(mapCtx *direct.MapContext, in *pb.DataAt
 
 	return out
 }
+
 func DataAttributeBindingPath_ToProto(mapCtx *direct.MapContext, in *krm.DataAttributeBindingPath) *pb.DataAttributeBinding_Path {
 	if in == nil {
 		return nil
@@ -196,6 +534,7 @@ func DataAttributeBindingPath_ToProto(mapCtx *direct.MapContext, in *krm.DataAtt
 
 	return out
 }
+
 func DataDiscoveryResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoveryResult) *krm.DataDiscoveryResultObservedState {
 	if in == nil {
 		return nil
@@ -205,6 +544,7 @@ func DataDiscoveryResultObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.ScanStatistics = DataDiscoveryResult_ScanStatistics_FromProto(mapCtx, in.GetScanStatistics())
 	return out
 }
+
 func DataDiscoveryResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoveryResultObservedState) *pb.DataDiscoveryResult {
 	if in == nil {
 		return nil
@@ -214,6 +554,7 @@ func DataDiscoveryResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.ScanStatistics = DataDiscoveryResult_ScanStatistics_ToProto(mapCtx, in.ScanStatistics)
 	return out
 }
+
 func DataDiscoveryResult_BigQueryPublishingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoveryResult_BigQueryPublishing) *krm.DataDiscoveryResult_BigQueryPublishingObservedState {
 	if in == nil {
 		return nil
@@ -223,6 +564,7 @@ func DataDiscoveryResult_BigQueryPublishingObservedState_FromProto(mapCtx *direc
 	// MISSING: Location
 	return out
 }
+
 func DataDiscoveryResult_BigQueryPublishingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoveryResult_BigQueryPublishingObservedState) *pb.DataDiscoveryResult_BigQueryPublishing {
 	if in == nil {
 		return nil
@@ -232,6 +574,7 @@ func DataDiscoveryResult_BigQueryPublishingObservedState_ToProto(mapCtx *direct.
 	// MISSING: Location
 	return out
 }
+
 func DataDiscoveryResult_ScanStatistics_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoveryResult_ScanStatistics) *krm.DataDiscoveryResult_ScanStatistics {
 	if in == nil {
 		return nil
@@ -248,6 +591,7 @@ func DataDiscoveryResult_ScanStatistics_FromProto(mapCtx *direct.MapContext, in 
 	out.FilesetsUpdated = direct.LazyPtr(in.GetFilesetsUpdated())
 	return out
 }
+
 func DataDiscoveryResult_ScanStatistics_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoveryResult_ScanStatistics) *pb.DataDiscoveryResult_ScanStatistics {
 	if in == nil {
 		return nil
@@ -264,6 +608,7 @@ func DataDiscoveryResult_ScanStatistics_ToProto(mapCtx *direct.MapContext, in *k
 	out.FilesetsUpdated = direct.ValueOf(in.FilesetsUpdated)
 	return out
 }
+
 func DataDiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec) *krm.DataDiscoverySpec {
 	if in == nil {
 		return nil
@@ -273,6 +618,7 @@ func DataDiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscovery
 	out.StorageConfig = DataDiscoverySpec_StorageConfig_FromProto(mapCtx, in.GetStorageConfig())
 	return out
 }
+
 func DataDiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec) *pb.DataDiscoverySpec {
 	if in == nil {
 		return nil
@@ -284,6 +630,7 @@ func DataDiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoveryS
 	}
 	return out
 }
+
 func DataDiscoverySpec_BigQueryPublishingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_BigQueryPublishingConfig) *krm.DataDiscoverySpec_BigQueryPublishingConfig {
 	if in == nil {
 		return nil
@@ -297,6 +644,7 @@ func DataDiscoverySpec_BigQueryPublishingConfig_FromProto(mapCtx *direct.MapCont
 	// MISSING: Project
 	return out
 }
+
 func DataDiscoverySpec_BigQueryPublishingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_BigQueryPublishingConfig) *pb.DataDiscoverySpec_BigQueryPublishingConfig {
 	if in == nil {
 		return nil
@@ -310,6 +658,7 @@ func DataDiscoverySpec_BigQueryPublishingConfig_ToProto(mapCtx *direct.MapContex
 	// MISSING: Project
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig) *krm.DataDiscoverySpec_StorageConfig {
 	if in == nil {
 		return nil
@@ -322,6 +671,7 @@ func DataDiscoverySpec_StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: UnstructuredDataOptions
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig) *pb.DataDiscoverySpec_StorageConfig {
 	if in == nil {
 		return nil
@@ -334,6 +684,7 @@ func DataDiscoverySpec_StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: UnstructuredDataOptions
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_CsvOptions) *krm.DataDiscoverySpec_StorageConfig_CsvOptions {
 	if in == nil {
 		return nil
@@ -346,6 +697,7 @@ func DataDiscoverySpec_StorageConfig_CsvOptions_FromProto(mapCtx *direct.MapCont
 	out.Quote = direct.LazyPtr(in.GetQuote())
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig_CsvOptions) *pb.DataDiscoverySpec_StorageConfig_CsvOptions {
 	if in == nil {
 		return nil
@@ -358,6 +710,7 @@ func DataDiscoverySpec_StorageConfig_CsvOptions_ToProto(mapCtx *direct.MapContex
 	out.Quote = direct.ValueOf(in.Quote)
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_JsonOptions) *krm.DataDiscoverySpec_StorageConfig_JsonOptions {
 	if in == nil {
 		return nil
@@ -367,6 +720,7 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_FromProto(mapCtx *direct.MapCon
 	out.TypeInferenceDisabled = direct.LazyPtr(in.GetTypeInferenceDisabled())
 	return out
 }
+
 func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig_JsonOptions) *pb.DataDiscoverySpec_StorageConfig_JsonOptions {
 	if in == nil {
 		return nil
@@ -376,6 +730,7 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapConte
 	out.TypeInferenceDisabled = direct.ValueOf(in.TypeInferenceDisabled)
 	return out
 }
+
 func DataProduct_AccessApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_AccessApprovalConfig) *krm.DataProduct_AccessApprovalConfig {
 	if in == nil {
 		return nil
@@ -384,6 +739,7 @@ func DataProduct_AccessApprovalConfig_FromProto(mapCtx *direct.MapContext, in *p
 	out.ApproverEmails = in.ApproverEmails
 	return out
 }
+
 func DataProduct_AccessApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_AccessApprovalConfig) *pb.DataProduct_AccessApprovalConfig {
 	if in == nil {
 		return nil
@@ -392,6 +748,7 @@ func DataProduct_AccessApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm
 	out.ApproverEmails = in.ApproverEmails
 	return out
 }
+
 func DataProduct_AccessGroup_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_AccessGroup) *krm.DataProduct_AccessGroup {
 	if in == nil {
 		return nil
@@ -403,6 +760,7 @@ func DataProduct_AccessGroup_FromProto(mapCtx *direct.MapContext, in *pb.DataPro
 	out.Principal = DataProduct_Principal_FromProto(mapCtx, in.GetPrincipal())
 	return out
 }
+
 func DataProduct_AccessGroup_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_AccessGroup) *pb.DataProduct_AccessGroup {
 	if in == nil {
 		return nil
@@ -414,6 +772,7 @@ func DataProduct_AccessGroup_ToProto(mapCtx *direct.MapContext, in *krm.DataProd
 	out.Principal = DataProduct_Principal_ToProto(mapCtx, in.Principal)
 	return out
 }
+
 func DataProduct_Principal_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_Principal) *krm.DataProduct_Principal {
 	if in == nil {
 		return nil
@@ -423,6 +782,7 @@ func DataProduct_Principal_FromProto(mapCtx *direct.MapContext, in *pb.DataProdu
 	// MISSING: ServiceAccount
 	return out
 }
+
 func DataProduct_Principal_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_Principal) *pb.DataProduct_Principal {
 	if in == nil {
 		return nil
@@ -434,12 +794,14 @@ func DataProduct_Principal_ToProto(mapCtx *direct.MapContext, in *krm.DataProduc
 	// MISSING: ServiceAccount
 	return out
 }
+
 func DataProduct_Principal_GoogleGroup_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataProduct_Principal_GoogleGroup {
 	if in == nil {
 		return nil
 	}
 	return &pb.DataProduct_Principal_GoogleGroup{GoogleGroup: *in}
 }
+
 func DataProfileResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult) *krm.DataProfileResultObservedState {
 	if in == nil {
 		return nil
@@ -452,6 +814,7 @@ func DataProfileResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: CatalogPublishingStatus
 	return out
 }
+
 func DataProfileResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResultObservedState) *pb.DataProfileResult {
 	if in == nil {
 		return nil
@@ -464,6 +827,7 @@ func DataProfileResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	// MISSING: CatalogPublishingStatus
 	return out
 }
+
 func DataProfileResult_PostScanActionsResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_PostScanActionsResult) *krm.DataProfileResult_PostScanActionsResultObservedState {
 	if in == nil {
 		return nil
@@ -472,6 +836,7 @@ func DataProfileResult_PostScanActionsResultObservedState_FromProto(mapCtx *dire
 	// MISSING: BigqueryExportResult
 	return out
 }
+
 func DataProfileResult_PostScanActionsResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_PostScanActionsResultObservedState) *pb.DataProfileResult_PostScanActionsResult {
 	if in == nil {
 		return nil
@@ -480,6 +845,7 @@ func DataProfileResult_PostScanActionsResultObservedState_ToProto(mapCtx *direct
 	// MISSING: BigqueryExportResult
 	return out
 }
+
 func DataProfileResult_Profile_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile) *krm.DataProfileResult_Profile {
 	if in == nil {
 		return nil
@@ -488,6 +854,7 @@ func DataProfileResult_Profile_FromProto(mapCtx *direct.MapContext, in *pb.DataP
 	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, DataProfileResult_Profile_Field_FromProto)
 	return out
 }
+
 func DataProfileResult_Profile_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile) *pb.DataProfileResult_Profile {
 	if in == nil {
 		return nil
@@ -496,6 +863,7 @@ func DataProfileResult_Profile_ToProto(mapCtx *direct.MapContext, in *krm.DataPr
 	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, DataProfileResult_Profile_Field_ToProto)
 	return out
 }
+
 func DataProfileResult_Profile_Field_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field) *krm.DataProfileResult_Profile_Field {
 	if in == nil {
 		return nil
@@ -507,6 +875,7 @@ func DataProfileResult_Profile_Field_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Profile = DataProfileResult_Profile_Field_ProfileInfo_FromProto(mapCtx, in.GetProfile())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field) *pb.DataProfileResult_Profile_Field {
 	if in == nil {
 		return nil
@@ -518,6 +887,7 @@ func DataProfileResult_Profile_Field_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Profile = DataProfileResult_Profile_Field_ProfileInfo_ToProto(mapCtx, in.Profile)
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo {
 	if in == nil {
 		return nil
@@ -531,6 +901,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_FromProto(mapCtx *direct.MapCon
 	out.DoubleProfile = DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_FromProto(mapCtx, in.GetDoubleProfile())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo) *pb.DataProfileResult_Profile_Field_ProfileInfo {
 	if in == nil {
 		return nil
@@ -550,6 +921,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_ToProto(mapCtx *direct.MapConte
 	}
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo {
 	if in == nil {
 		return nil
@@ -562,6 +934,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_FromProto(mapCt
 	out.Max = direct.LazyPtr(in.GetMax())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo) *pb.DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo {
 	if in == nil {
 		return nil
@@ -574,6 +947,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo_ToProto(mapCtx 
 	out.Max = direct.ValueOf(in.Max)
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo {
 	if in == nil {
 		return nil
@@ -586,6 +960,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo_FromProto(mapC
 	out.Max = direct.LazyPtr(in.GetMax())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo) *pb.DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo {
 	if in == nil {
 		return nil
@@ -598,6 +973,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo_ToProto(mapCtx
 	out.Max = direct.ValueOf(in.Max)
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo) *krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo {
 	if in == nil {
 		return nil
@@ -608,6 +984,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_FromProto(mapCt
 	out.AverageLength = direct.LazyPtr(in.GetAverageLength())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo) *pb.DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo {
 	if in == nil {
 		return nil
@@ -618,6 +995,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo_ToProto(mapCtx 
 	out.AverageLength = direct.ValueOf(in.AverageLength)
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue) *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValue {
 	if in == nil {
 		return nil
@@ -628,6 +1006,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_FromProto(mapCtx *dir
 	out.Ratio = direct.LazyPtr(in.GetRatio())
 	return out
 }
+
 func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileResult_Profile_Field_ProfileInfo_TopNValue) *pb.DataProfileResult_Profile_Field_ProfileInfo_TopNValue {
 	if in == nil {
 		return nil
@@ -638,6 +1017,7 @@ func DataProfileResult_Profile_Field_ProfileInfo_TopNValue_ToProto(mapCtx *direc
 	out.Ratio = direct.ValueOf(in.Ratio)
 	return out
 }
+
 func DataProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec) *krm.DataProfileSpec {
 	if in == nil {
 		return nil
@@ -652,6 +1032,7 @@ func DataProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec
 	// MISSING: Mode
 	return out
 }
+
 func DataProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec) *pb.DataProfileSpec {
 	if in == nil {
 		return nil
@@ -666,6 +1047,7 @@ func DataProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec)
 	// MISSING: Mode
 	return out
 }
+
 func DataProfileSpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec_PostScanActions) *krm.DataProfileSpec_PostScanActions {
 	if in == nil {
 		return nil
@@ -674,6 +1056,7 @@ func DataProfileSpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb
 	out.BigqueryExport = DataProfileSpec_PostScanActions_BigQueryExport_FromProto(mapCtx, in.GetBigqueryExport())
 	return out
 }
+
 func DataProfileSpec_PostScanActions_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec_PostScanActions) *pb.DataProfileSpec_PostScanActions {
 	if in == nil {
 		return nil
@@ -682,6 +1065,7 @@ func DataProfileSpec_PostScanActions_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.BigqueryExport = DataProfileSpec_PostScanActions_BigQueryExport_ToProto(mapCtx, in.BigqueryExport)
 	return out
 }
+
 func DataProfileSpec_PostScanActions_BigQueryExport_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec_PostScanActions_BigQueryExport) *krm.DataProfileSpec_PostScanActions_BigQueryExport {
 	if in == nil {
 		return nil
@@ -692,6 +1076,7 @@ func DataProfileSpec_PostScanActions_BigQueryExport_FromProto(mapCtx *direct.Map
 	}
 	return out
 }
+
 func DataProfileSpec_PostScanActions_BigQueryExport_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec_PostScanActions_BigQueryExport) *pb.DataProfileSpec_PostScanActions_BigQueryExport {
 	if in == nil {
 		return nil
@@ -702,6 +1087,7 @@ func DataProfileSpec_PostScanActions_BigQueryExport_ToProto(mapCtx *direct.MapCo
 	}
 	return out
 }
+
 func DataProfileSpec_SelectedFields_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec_SelectedFields) *krm.DataProfileSpec_SelectedFields {
 	if in == nil {
 		return nil
@@ -710,6 +1096,7 @@ func DataProfileSpec_SelectedFields_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.FieldNames = in.FieldNames
 	return out
 }
+
 func DataProfileSpec_SelectedFields_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec_SelectedFields) *pb.DataProfileSpec_SelectedFields {
 	if in == nil {
 		return nil
@@ -718,6 +1105,7 @@ func DataProfileSpec_SelectedFields_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.FieldNames = in.FieldNames
 	return out
 }
+
 func DataQualityColumnResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityColumnResult) *krm.DataQualityColumnResultObservedState {
 	if in == nil {
 		return nil
@@ -729,6 +1117,7 @@ func DataQualityColumnResultObservedState_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Dimensions
 	return out
 }
+
 func DataQualityColumnResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityColumnResultObservedState) *pb.DataQualityColumnResult {
 	if in == nil {
 		return nil
@@ -740,6 +1129,7 @@ func DataQualityColumnResultObservedState_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Dimensions
 	return out
 }
+
 func DataQualityDimensionResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityDimensionResult) *krm.DataQualityDimensionResultObservedState {
 	if in == nil {
 		return nil
@@ -750,6 +1140,7 @@ func DataQualityDimensionResultObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: Score
 	return out
 }
+
 func DataQualityDimensionResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityDimensionResultObservedState) *pb.DataQualityDimensionResult {
 	if in == nil {
 		return nil
@@ -760,6 +1151,7 @@ func DataQualityDimensionResultObservedState_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Score
 	return out
 }
+
 func DataQualityResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityResult) *krm.DataQualityResultObservedState {
 	if in == nil {
 		return nil
@@ -777,6 +1169,7 @@ func DataQualityResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: AnomalyDetectionGeneratedAssets
 	return out
 }
+
 func DataQualityResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityResultObservedState) *pb.DataQualityResult {
 	if in == nil {
 		return nil
@@ -794,6 +1187,7 @@ func DataQualityResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	// MISSING: AnomalyDetectionGeneratedAssets
 	return out
 }
+
 func DataQualityResult_PostScanActionsResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityResult_PostScanActionsResult) *krm.DataQualityResult_PostScanActionsResultObservedState {
 	if in == nil {
 		return nil
@@ -802,6 +1196,7 @@ func DataQualityResult_PostScanActionsResultObservedState_FromProto(mapCtx *dire
 	// MISSING: BigqueryExportResult
 	return out
 }
+
 func DataQualityResult_PostScanActionsResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityResult_PostScanActionsResultObservedState) *pb.DataQualityResult_PostScanActionsResult {
 	if in == nil {
 		return nil
@@ -810,6 +1205,7 @@ func DataQualityResult_PostScanActionsResultObservedState_ToProto(mapCtx *direct
 	// MISSING: BigqueryExportResult
 	return out
 }
+
 func DataQualityRule_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule) *krm.DataQualityRule {
 	if in == nil {
 		return nil
@@ -837,6 +1233,7 @@ func DataQualityRule_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule
 	// MISSING: DebugQueries
 	return out
 }
+
 func DataQualityRule_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule) *pb.DataQualityRule {
 	if in == nil {
 		return nil
@@ -882,6 +1279,7 @@ func DataQualityRule_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule)
 	// MISSING: DebugQueries
 	return out
 }
+
 func DataQualityRuleResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRuleResult) *krm.DataQualityRuleResultObservedState {
 	if in == nil {
 		return nil
@@ -898,6 +1296,7 @@ func DataQualityRuleResultObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: DebugQueriesResultSets
 	return out
 }
+
 func DataQualityRuleResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRuleResultObservedState) *pb.DataQualityRuleResult {
 	if in == nil {
 		return nil
@@ -914,6 +1313,7 @@ func DataQualityRuleResultObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: DebugQueriesResultSets
 	return out
 }
+
 func DataQualityRule_NonNullExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_NonNullExpectation) *krm.DataQualityRule_NonNullExpectation {
 	if in == nil {
 		return nil
@@ -921,6 +1321,7 @@ func DataQualityRule_NonNullExpectation_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.DataQualityRule_NonNullExpectation{}
 	return out
 }
+
 func DataQualityRule_NonNullExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_NonNullExpectation) *pb.DataQualityRule_NonNullExpectation {
 	if in == nil {
 		return nil
@@ -928,6 +1329,7 @@ func DataQualityRule_NonNullExpectation_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.DataQualityRule_NonNullExpectation{}
 	return out
 }
+
 func DataQualityRule_RangeExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_RangeExpectation) *krm.DataQualityRule_RangeExpectation {
 	if in == nil {
 		return nil
@@ -939,6 +1341,7 @@ func DataQualityRule_RangeExpectation_FromProto(mapCtx *direct.MapContext, in *p
 	out.StrictMaxEnabled = direct.LazyPtr(in.GetStrictMaxEnabled())
 	return out
 }
+
 func DataQualityRule_RangeExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_RangeExpectation) *pb.DataQualityRule_RangeExpectation {
 	if in == nil {
 		return nil
@@ -950,6 +1353,7 @@ func DataQualityRule_RangeExpectation_ToProto(mapCtx *direct.MapContext, in *krm
 	out.StrictMaxEnabled = direct.ValueOf(in.StrictMaxEnabled)
 	return out
 }
+
 func DataQualityRule_RegexExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_RegexExpectation) *krm.DataQualityRule_RegexExpectation {
 	if in == nil {
 		return nil
@@ -958,6 +1362,7 @@ func DataQualityRule_RegexExpectation_FromProto(mapCtx *direct.MapContext, in *p
 	out.Regex = direct.LazyPtr(in.GetRegex())
 	return out
 }
+
 func DataQualityRule_RegexExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_RegexExpectation) *pb.DataQualityRule_RegexExpectation {
 	if in == nil {
 		return nil
@@ -966,6 +1371,7 @@ func DataQualityRule_RegexExpectation_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Regex = direct.ValueOf(in.Regex)
 	return out
 }
+
 func DataQualityRule_RowConditionExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_RowConditionExpectation) *krm.DataQualityRule_RowConditionExpectation {
 	if in == nil {
 		return nil
@@ -974,6 +1380,7 @@ func DataQualityRule_RowConditionExpectation_FromProto(mapCtx *direct.MapContext
 	out.SQLExpression = direct.LazyPtr(in.GetSqlExpression())
 	return out
 }
+
 func DataQualityRule_RowConditionExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_RowConditionExpectation) *pb.DataQualityRule_RowConditionExpectation {
 	if in == nil {
 		return nil
@@ -982,6 +1389,7 @@ func DataQualityRule_RowConditionExpectation_ToProto(mapCtx *direct.MapContext, 
 	out.SqlExpression = direct.ValueOf(in.SQLExpression)
 	return out
 }
+
 func DataQualityRule_SQLAssertion_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_SqlAssertion) *krm.DataQualityRule_SQLAssertion {
 	if in == nil {
 		return nil
@@ -990,6 +1398,7 @@ func DataQualityRule_SQLAssertion_FromProto(mapCtx *direct.MapContext, in *pb.Da
 	out.SQLStatement = direct.LazyPtr(in.GetSqlStatement())
 	return out
 }
+
 func DataQualityRule_SQLAssertion_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_SQLAssertion) *pb.DataQualityRule_SqlAssertion {
 	if in == nil {
 		return nil
@@ -998,6 +1407,7 @@ func DataQualityRule_SQLAssertion_ToProto(mapCtx *direct.MapContext, in *krm.Dat
 	out.SqlStatement = direct.ValueOf(in.SQLStatement)
 	return out
 }
+
 func DataQualityRule_SetExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_SetExpectation) *krm.DataQualityRule_SetExpectation {
 	if in == nil {
 		return nil
@@ -1006,6 +1416,7 @@ func DataQualityRule_SetExpectation_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Values = in.Values
 	return out
 }
+
 func DataQualityRule_SetExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_SetExpectation) *pb.DataQualityRule_SetExpectation {
 	if in == nil {
 		return nil
@@ -1014,6 +1425,7 @@ func DataQualityRule_SetExpectation_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Values = in.Values
 	return out
 }
+
 func DataQualityRule_StatisticRangeExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_StatisticRangeExpectation) *krm.DataQualityRule_StatisticRangeExpectation {
 	if in == nil {
 		return nil
@@ -1026,6 +1438,7 @@ func DataQualityRule_StatisticRangeExpectation_FromProto(mapCtx *direct.MapConte
 	out.StrictMaxEnabled = direct.LazyPtr(in.GetStrictMaxEnabled())
 	return out
 }
+
 func DataQualityRule_StatisticRangeExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_StatisticRangeExpectation) *pb.DataQualityRule_StatisticRangeExpectation {
 	if in == nil {
 		return nil
@@ -1038,6 +1451,7 @@ func DataQualityRule_StatisticRangeExpectation_ToProto(mapCtx *direct.MapContext
 	out.StrictMaxEnabled = direct.ValueOf(in.StrictMaxEnabled)
 	return out
 }
+
 func DataQualityRule_TableConditionExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_TableConditionExpectation) *krm.DataQualityRule_TableConditionExpectation {
 	if in == nil {
 		return nil
@@ -1046,6 +1460,7 @@ func DataQualityRule_TableConditionExpectation_FromProto(mapCtx *direct.MapConte
 	out.SQLExpression = direct.LazyPtr(in.GetSqlExpression())
 	return out
 }
+
 func DataQualityRule_TableConditionExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_TableConditionExpectation) *pb.DataQualityRule_TableConditionExpectation {
 	if in == nil {
 		return nil
@@ -1054,6 +1469,7 @@ func DataQualityRule_TableConditionExpectation_ToProto(mapCtx *direct.MapContext
 	out.SqlExpression = direct.ValueOf(in.SQLExpression)
 	return out
 }
+
 func DataQualityRule_UniquenessExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_UniquenessExpectation) *krm.DataQualityRule_UniquenessExpectation {
 	if in == nil {
 		return nil
@@ -1061,6 +1477,7 @@ func DataQualityRule_UniquenessExpectation_FromProto(mapCtx *direct.MapContext, 
 	out := &krm.DataQualityRule_UniquenessExpectation{}
 	return out
 }
+
 func DataQualityRule_UniquenessExpectation_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_UniquenessExpectation) *pb.DataQualityRule_UniquenessExpectation {
 	if in == nil {
 		return nil
@@ -1068,6 +1485,7 @@ func DataQualityRule_UniquenessExpectation_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.DataQualityRule_UniquenessExpectation{}
 	return out
 }
+
 func DataQualitySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec) *krm.DataQualitySpec {
 	if in == nil {
 		return nil
@@ -1082,6 +1500,7 @@ func DataQualitySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec
 	// MISSING: Filter
 	return out
 }
+
 func DataQualitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec) *pb.DataQualitySpec {
 	if in == nil {
 		return nil
@@ -1096,6 +1515,7 @@ func DataQualitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec)
 	// MISSING: Filter
 	return out
 }
+
 func DataQualitySpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions) *krm.DataQualitySpec_PostScanActions {
 	if in == nil {
 		return nil
@@ -1105,6 +1525,7 @@ func DataQualitySpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb
 	out.NotificationReport = DataQualitySpec_PostScanActions_NotificationReport_FromProto(mapCtx, in.GetNotificationReport())
 	return out
 }
+
 func DataQualitySpec_PostScanActions_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions) *pb.DataQualitySpec_PostScanActions {
 	if in == nil {
 		return nil
@@ -1114,6 +1535,7 @@ func DataQualitySpec_PostScanActions_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.NotificationReport = DataQualitySpec_PostScanActions_NotificationReport_ToProto(mapCtx, in.NotificationReport)
 	return out
 }
+
 func DataQualitySpec_PostScanActions_BigQueryExport_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_BigQueryExport) *krm.DataQualitySpec_PostScanActions_BigQueryExport {
 	if in == nil {
 		return nil
@@ -1124,6 +1546,7 @@ func DataQualitySpec_PostScanActions_BigQueryExport_FromProto(mapCtx *direct.Map
 	}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_BigQueryExport_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_BigQueryExport) *pb.DataQualitySpec_PostScanActions_BigQueryExport {
 	if in == nil {
 		return nil
@@ -1134,6 +1557,7 @@ func DataQualitySpec_PostScanActions_BigQueryExport_ToProto(mapCtx *direct.MapCo
 	}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_JobEndTrigger_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_JobEndTrigger) *krm.DataQualitySpec_PostScanActions_JobEndTrigger {
 	if in == nil {
 		return nil
@@ -1141,6 +1565,7 @@ func DataQualitySpec_PostScanActions_JobEndTrigger_FromProto(mapCtx *direct.MapC
 	out := &krm.DataQualitySpec_PostScanActions_JobEndTrigger{}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_JobEndTrigger_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_JobEndTrigger) *pb.DataQualitySpec_PostScanActions_JobEndTrigger {
 	if in == nil {
 		return nil
@@ -1148,6 +1573,7 @@ func DataQualitySpec_PostScanActions_JobEndTrigger_ToProto(mapCtx *direct.MapCon
 	out := &pb.DataQualitySpec_PostScanActions_JobEndTrigger{}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_JobFailureTrigger_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_JobFailureTrigger) *krm.DataQualitySpec_PostScanActions_JobFailureTrigger {
 	if in == nil {
 		return nil
@@ -1155,6 +1581,7 @@ func DataQualitySpec_PostScanActions_JobFailureTrigger_FromProto(mapCtx *direct.
 	out := &krm.DataQualitySpec_PostScanActions_JobFailureTrigger{}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_JobFailureTrigger_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_JobFailureTrigger) *pb.DataQualitySpec_PostScanActions_JobFailureTrigger {
 	if in == nil {
 		return nil
@@ -1162,6 +1589,7 @@ func DataQualitySpec_PostScanActions_JobFailureTrigger_ToProto(mapCtx *direct.Ma
 	out := &pb.DataQualitySpec_PostScanActions_JobFailureTrigger{}
 	return out
 }
+
 func DataQualitySpec_PostScanActions_NotificationReport_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_NotificationReport) *krm.DataQualitySpec_PostScanActions_NotificationReport {
 	if in == nil {
 		return nil
@@ -1173,6 +1601,7 @@ func DataQualitySpec_PostScanActions_NotificationReport_FromProto(mapCtx *direct
 	out.JobEndTrigger = DataQualitySpec_PostScanActions_JobEndTrigger_FromProto(mapCtx, in.GetJobEndTrigger())
 	return out
 }
+
 func DataQualitySpec_PostScanActions_NotificationReport_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_NotificationReport) *pb.DataQualitySpec_PostScanActions_NotificationReport {
 	if in == nil {
 		return nil
@@ -1184,6 +1613,7 @@ func DataQualitySpec_PostScanActions_NotificationReport_ToProto(mapCtx *direct.M
 	out.JobEndTrigger = DataQualitySpec_PostScanActions_JobEndTrigger_ToProto(mapCtx, in.JobEndTrigger)
 	return out
 }
+
 func DataQualitySpec_PostScanActions_Recipients_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_Recipients) *krm.DataQualitySpec_PostScanActions_Recipients {
 	if in == nil {
 		return nil
@@ -1192,6 +1622,7 @@ func DataQualitySpec_PostScanActions_Recipients_FromProto(mapCtx *direct.MapCont
 	out.Emails = in.Emails
 	return out
 }
+
 func DataQualitySpec_PostScanActions_Recipients_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_Recipients) *pb.DataQualitySpec_PostScanActions_Recipients {
 	if in == nil {
 		return nil
@@ -1200,6 +1631,7 @@ func DataQualitySpec_PostScanActions_Recipients_ToProto(mapCtx *direct.MapContex
 	out.Emails = in.Emails
 	return out
 }
+
 func DataQualitySpec_PostScanActions_ScoreThresholdTrigger_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions_ScoreThresholdTrigger) *krm.DataQualitySpec_PostScanActions_ScoreThresholdTrigger {
 	if in == nil {
 		return nil
@@ -1208,6 +1640,7 @@ func DataQualitySpec_PostScanActions_ScoreThresholdTrigger_FromProto(mapCtx *dir
 	out.ScoreThreshold = direct.LazyPtr(in.GetScoreThreshold())
 	return out
 }
+
 func DataQualitySpec_PostScanActions_ScoreThresholdTrigger_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec_PostScanActions_ScoreThresholdTrigger) *pb.DataQualitySpec_PostScanActions_ScoreThresholdTrigger {
 	if in == nil {
 		return nil
@@ -1216,6 +1649,7 @@ func DataQualitySpec_PostScanActions_ScoreThresholdTrigger_ToProto(mapCtx *direc
 	out.ScoreThreshold = direct.ValueOf(in.ScoreThreshold)
 	return out
 }
+
 func DataScan_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataScan_ExecutionSpec) *krm.DataScan_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -1225,6 +1659,7 @@ func DataScan_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataScan
 	out.Field = direct.LazyPtr(in.GetField())
 	return out
 }
+
 func DataScan_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataScan_ExecutionSpec) *pb.DataScan_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -1236,12 +1671,14 @@ func DataScan_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataScan_
 	}
 	return out
 }
+
 func DataScan_ExecutionSpec_Field_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataScan_ExecutionSpec_Field {
 	if in == nil {
 		return nil
 	}
 	return &pb.DataScan_ExecutionSpec_Field{Field: *in}
 }
+
 func DataScan_ExecutionStatus_FromProto(mapCtx *direct.MapContext, in *pb.DataScan_ExecutionStatus) *krm.DataScan_ExecutionStatus {
 	if in == nil {
 		return nil
@@ -1252,6 +1689,7 @@ func DataScan_ExecutionStatus_FromProto(mapCtx *direct.MapContext, in *pb.DataSc
 	out.LatestJobCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLatestJobCreateTime())
 	return out
 }
+
 func DataScan_ExecutionStatus_ToProto(mapCtx *direct.MapContext, in *krm.DataScan_ExecutionStatus) *pb.DataScan_ExecutionStatus {
 	if in == nil {
 		return nil
@@ -1262,12 +1700,14 @@ func DataScan_ExecutionStatus_ToProto(mapCtx *direct.MapContext, in *krm.DataSca
 	out.LatestJobCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.LatestJobCreateTime)
 	return out
 }
+
 func DataSource_Resource_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataSource_Resource {
 	if in == nil {
 		return nil
 	}
 	return &pb.DataSource_Resource{Resource: *in}
 }
+
 func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeObservedState {
 	if in == nil {
 		return nil
@@ -1283,6 +1723,7 @@ func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
+
 func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeObservedState) *pb.AspectType {
 	if in == nil {
 		return nil
@@ -1298,6 +1739,7 @@ func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
 	return out
 }
+
 func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeSpec {
 	if in == nil {
 		return nil
@@ -1312,6 +1754,7 @@ func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectTy
 	out.MetadataTemplate = AspectType_MetadataTemplate_FromProto(mapCtx, in.GetMetadataTemplate())
 	return out
 }
+
 func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAspectTypeSpec) *pb.AspectType {
 	if in == nil {
 		return nil
@@ -1326,6 +1769,184 @@ func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexA
 	out.MetadataTemplate = AspectType_MetadataTemplate_ToProto(mapCtx, in.MetadataTemplate)
 	return out
 }
+
+func DataplexAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.DataplexAssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexAssetObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ResourceStatus = Asset_ResourceStatusObservedState_FromProto(mapCtx, in.GetResourceStatus())
+	out.SecurityStatus = Asset_SecurityStatus_FromProto(mapCtx, in.GetSecurityStatus())
+	out.DiscoveryStatus = Asset_DiscoveryStatus_FromProto(mapCtx, in.GetDiscoveryStatus())
+	return out
+}
+
+func DataplexAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetObservedState) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ResourceStatus = Asset_ResourceStatusObservedState_ToProto(mapCtx, in.ResourceStatus)
+	out.SecurityStatus = Asset_SecurityStatus_ToProto(mapCtx, in.SecurityStatus)
+	out.DiscoveryStatus = Asset_DiscoveryStatus_ToProto(mapCtx, in.DiscoveryStatus)
+	return out
+}
+
+func DataplexAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.DataplexAssetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexAssetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ResourceSpec = Asset_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
+	out.DiscoverySpec = Asset_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
+	return out
+}
+
+func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetSpec) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.ResourceSpec = Asset_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
+	out.DiscoverySpec = Asset_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)
+	return out
+}
+
+func DataplexContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexContentObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentObservedState) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexContentSpec{}
+	// MISSING: Name
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataText = direct.LazyPtr(in.GetDataText())
+	out.SQLScript = Content_SQLScript_FromProto(mapCtx, in.GetSqlScript())
+	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
+	return out
+}
+
+func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentSpec) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	out.Path = direct.ValueOf(in.Path)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := DataplexContentSpec_DataText_ToProto(mapCtx, in.DataText); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Content_SQLScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Content = &pb.Content_SqlScript_{SqlScript: oneof}
+	}
+	if oneof := Content_Notebook_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Content = &pb.Content_Notebook_{Notebook: oneof}
+	}
+	return out
+}
+
+func DataplexContentSpec_DataText_ToProto(mapCtx *direct.MapContext, in *string) *pb.Content_DataText {
+	if in == nil {
+		return nil
+	}
+	return &pb.Content_DataText{DataText: *in}
+}
+
+func DataplexDataAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAssetObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexDataAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAssetObservedState) *pb.DataAsset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexDataAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAssetSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.Resource = direct.LazyPtr(in.GetResource())
+	out.AccessGroupConfigs = AccessGroupConfigs_FromProto(mapCtx, in.AccessGroupConfigs)
+	return out
+}
+
+func DataplexDataAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAssetSpec) *pb.DataAsset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.Resource = direct.ValueOf(in.Resource)
+	out.AccessGroupConfigs = AccessGroupConfigs_ToProto(mapCtx, in.AccessGroupConfigs)
+	return out
+}
+
 func DataplexDataAttributeBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAttributeBinding) *krm.DataplexDataAttributeBindingObservedState {
 	if in == nil {
 		return nil
@@ -1339,6 +1960,7 @@ func DataplexDataAttributeBindingObservedState_FromProto(mapCtx *direct.MapConte
 	// MISSING: Attributes
 	return out
 }
+
 func DataplexDataAttributeBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeBindingObservedState) *pb.DataAttributeBinding {
 	if in == nil {
 		return nil
@@ -1352,6 +1974,65 @@ func DataplexDataAttributeBindingObservedState_ToProto(mapCtx *direct.MapContext
 	// MISSING: Attributes
 	return out
 }
+
+func DataplexDataAttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAttribute) *krm.DataplexDataAttributeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAttributeObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.AttributeCount = direct.LazyPtr(in.GetAttributeCount())
+	return out
+}
+
+func DataplexDataAttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeObservedState) *pb.DataAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttribute{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.AttributeCount = direct.ValueOf(in.AttributeCount)
+	return out
+}
+
+func DataplexDataAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAttribute) *krm.DataplexDataAttributeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAttributeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.ParentID = direct.LazyPtr(in.GetParentId())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ResourceAccessSpec = ResourceAccessSpec_FromProto(mapCtx, in.GetResourceAccessSpec())
+	out.DataAccessSpec = DataAccessSpec_FromProto(mapCtx, in.GetDataAccessSpec())
+	return out
+}
+
+func DataplexDataAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeSpec) *pb.DataAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttribute{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.ParentId = direct.ValueOf(in.ParentID)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ResourceAccessSpec = ResourceAccessSpec_ToProto(mapCtx, in.ResourceAccessSpec)
+	out.DataAccessSpec = DataAccessSpec_ToProto(mapCtx, in.DataAccessSpec)
+	return out
+}
+
 func DataplexDataProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct) *krm.DataplexDataProductObservedState {
 	if in == nil {
 		return nil
@@ -1366,6 +2047,7 @@ func DataplexDataProductObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.AssetCount = direct.LazyPtr(in.GetAssetCount())
 	return out
 }
+
 func DataplexDataProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataProductObservedState) *pb.DataProduct {
 	if in == nil {
 		return nil
@@ -1380,6 +2062,7 @@ func DataplexDataProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.AssetCount = direct.ValueOf(in.AssetCount)
 	return out
 }
+
 func DataplexDataProductSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct) *krm.DataplexDataProductSpec {
 	if in == nil {
 		return nil
@@ -1395,6 +2078,7 @@ func DataplexDataProductSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPro
 	out.AccessApprovalConfig = DataProduct_AccessApprovalConfig_FromProto(mapCtx, in.GetAccessApprovalConfig())
 	return out
 }
+
 func DataplexDataProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataProductSpec) *pb.DataProduct {
 	if in == nil {
 		return nil
@@ -1410,6 +2094,7 @@ func DataplexDataProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataplex
 	out.AccessApprovalConfig = DataProduct_AccessApprovalConfig_ToProto(mapCtx, in.AccessApprovalConfig)
 	return out
 }
+
 func DataplexDataScanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataScan) *krm.DataplexDataScanObservedState {
 	if in == nil {
 		return nil
@@ -1430,6 +2115,7 @@ func DataplexDataScanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: ExecutionIdentity
 	return out
 }
+
 func DataplexDataScanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataScanObservedState) *pb.DataScan {
 	if in == nil {
 		return nil
@@ -1456,6 +2142,7 @@ func DataplexDataScanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	// MISSING: ExecutionIdentity
 	return out
 }
+
 func DataplexDataScanSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataScan) *krm.DataplexDataScanSpec {
 	if in == nil {
 		return nil
@@ -1475,6 +2162,7 @@ func DataplexDataScanSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataScan) 
 	// MISSING: ExecutionIdentity
 	return out
 }
+
 func DataplexDataScanSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataScanSpec) *pb.DataScan {
 	if in == nil {
 		return nil
@@ -1500,6 +2188,7 @@ func DataplexDataScanSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDat
 	// MISSING: ExecutionIdentity
 	return out
 }
+
 func DataplexDataTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataTaxonomy) *krm.DataplexDataTaxonomyObservedState {
 	if in == nil {
 		return nil
@@ -1515,6 +2204,7 @@ func DataplexDataTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.ClassCount = direct.LazyPtr(in.GetClassCount())
 	return out
 }
+
 func DataplexDataTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataTaxonomyObservedState) *pb.DataTaxonomy {
 	if in == nil {
 		return nil
@@ -1530,6 +2220,7 @@ func DataplexDataTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.ClassCount = direct.ValueOf(in.ClassCount)
 	return out
 }
+
 func DataplexDataTaxonomySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataTaxonomy) *krm.DataplexDataTaxonomySpec {
 	if in == nil {
 		return nil
@@ -1542,6 +2233,7 @@ func DataplexDataTaxonomySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataTa
 	// MISSING: Etag
 	return out
 }
+
 func DataplexDataTaxonomySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataTaxonomySpec) *pb.DataTaxonomy {
 	if in == nil {
 		return nil
@@ -1554,6 +2246,129 @@ func DataplexDataTaxonomySpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataple
 	// MISSING: Etag
 	return out
 }
+
+func DataplexEncryptionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.DataplexEncryptionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEncryptionConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.EncryptionState = direct.Enum_FromProto(mapCtx, in.GetEncryptionState())
+	out.FailureDetails = EncryptionConfig_FailureDetailsObservedState_FromProto(mapCtx, in.GetFailureDetails())
+	return out
+}
+
+func DataplexEncryptionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEncryptionConfigObservedState) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.EncryptionState = direct.Enum_ToProto[pb.EncryptionConfig_EncryptionState](mapCtx, in.EncryptionState)
+	out.FailureDetails = EncryptionConfig_FailureDetailsObservedState_ToProto(mapCtx, in.FailureDetails)
+	return out
+}
+
+func DataplexEncryptionConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.DataplexEncryptionConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEncryptionConfigSpec{}
+	// MISSING: Name
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.EnableMetastoreEncryption = direct.LazyPtr(in.GetEnableMetastoreEncryption())
+	return out
+}
+
+func DataplexEncryptionConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEncryptionConfigSpec) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	// MISSING: Name
+	out.Key = direct.ValueOf(in.Key)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.EnableMetastoreEncryption = direct.ValueOf(in.EnableMetastoreEncryption)
+	return out
+}
+
+func DataplexEntityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntityObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CatalogEntry = direct.LazyPtr(in.GetCatalogEntry())
+	out.Format = StorageFormatObservedState_FromProto(mapCtx, in.GetFormat())
+	out.Compatibility = Entity_CompatibilityStatusObservedState_FromProto(mapCtx, in.GetCompatibility())
+	out.Access = StorageAccessObservedState_FromProto(mapCtx, in.GetAccess())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+
+func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntityObservedState) *pb.Entity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CatalogEntry = direct.ValueOf(in.CatalogEntry)
+	out.Format = StorageFormatObservedState_ToProto(mapCtx, in.Format)
+	out.Compatibility = Entity_CompatibilityStatusObservedState_ToProto(mapCtx, in.Compatibility)
+	out.Access = StorageAccessObservedState_ToProto(mapCtx, in.Access)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+
+func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntitySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntitySpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Asset = direct.LazyPtr(in.GetAsset())
+	out.DataPath = direct.LazyPtr(in.GetDataPath())
+	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
+	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
+	out.Format = StorageFormat_FromProto(mapCtx, in.GetFormat())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntitySpec) *pb.Entity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Id = direct.ValueOf(in.ID)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
+	out.Asset = direct.ValueOf(in.Asset)
+	out.DataPath = direct.ValueOf(in.DataPath)
+	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
+	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
+	out.Format = StorageFormat_ToProto(mapCtx, in.Format)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
 func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupObservedState {
 	if in == nil {
 		return nil
@@ -1568,6 +2383,7 @@ func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
+
 func DataplexEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupObservedState) *pb.EntryGroup {
 	if in == nil {
 		return nil
@@ -1582,6 +2398,7 @@ func DataplexEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
 	return out
 }
+
 func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupSpec {
 	if in == nil {
 		return nil
@@ -1594,6 +2411,7 @@ func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGro
 	// MISSING: Etag
 	return out
 }
+
 func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupSpec) *pb.EntryGroup {
 	if in == nil {
 		return nil
@@ -1606,6 +2424,105 @@ func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexE
 	// MISSING: Etag
 	return out
 }
+
+func DataplexEntryLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink) *krm.DataplexEntryLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryLinkObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexEntryLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryLinkObservedState) *pb.EntryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexEntryLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink) *krm.DataplexEntryLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryLinkSpec{}
+	// MISSING: Name
+	out.EntryLinkType = direct.LazyPtr(in.GetEntryLinkType())
+	out.Aspects = Aspects_FromProto(mapCtx, in.Aspects)
+	out.EntryReferences = direct.Slice_FromProto(mapCtx, in.EntryReferences, EntryLink_EntryReference_FromProto)
+	return out
+}
+
+func DataplexEntryLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryLinkSpec) *pb.EntryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink{}
+	// MISSING: Name
+	out.EntryLinkType = direct.ValueOf(in.EntryLinkType)
+	out.Aspects = Aspects_ToProto(mapCtx, in.Aspects)
+	out.EntryReferences = direct.Slice_ToProto(mapCtx, in.EntryReferences, EntryLink_EntryReference_ToProto)
+	return out
+}
+
+func DataplexEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataplexEntryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.EntrySource = EntrySourceObservedState_FromProto(mapCtx, in.GetEntrySource())
+	return out
+}
+
+func DataplexEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryObservedState) *pb.Entry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entry{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.EntrySource = EntrySourceObservedState_ToProto(mapCtx, in.EntrySource)
+	return out
+}
+
+func DataplexEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataplexEntrySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntrySpec{}
+	// MISSING: Name
+	out.EntryType = direct.LazyPtr(in.GetEntryType())
+	out.Aspects = Aspects_FromProto(mapCtx, in.Aspects)
+	out.ParentEntry = direct.LazyPtr(in.GetParentEntry())
+	out.FullyQualifiedName = direct.LazyPtr(in.GetFullyQualifiedName())
+	out.EntrySource = EntrySource_FromProto(mapCtx, in.GetEntrySource())
+	return out
+}
+
+func DataplexEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntrySpec) *pb.Entry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entry{}
+	// MISSING: Name
+	out.EntryType = direct.ValueOf(in.EntryType)
+	out.Aspects = Aspects_ToProto(mapCtx, in.Aspects)
+	out.ParentEntry = direct.ValueOf(in.ParentEntry)
+	out.FullyQualifiedName = direct.ValueOf(in.FullyQualifiedName)
+	out.EntrySource = EntrySource_ToProto(mapCtx, in.EntrySource)
+	return out
+}
+
 func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeObservedState {
 	if in == nil {
 		return nil
@@ -1619,6 +2536,7 @@ func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
+
 func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeObservedState) *pb.EntryType {
 	if in == nil {
 		return nil
@@ -1632,6 +2550,7 @@ func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
+
 func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeSpec {
 	if in == nil {
 		return nil
@@ -1648,6 +2567,7 @@ func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType
 	out.Authorization = EntryType_Authorization_FromProto(mapCtx, in.GetAuthorization())
 	return out
 }
+
 func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeSpec) *pb.EntryType {
 	if in == nil {
 		return nil
@@ -1664,6 +2584,115 @@ func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEn
 	out.Authorization = EntryType_Authorization_ToProto(mapCtx, in.Authorization)
 	return out
 }
+
+func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEnvironmentObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
+	return out
+}
+
+func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
+	return out
+}
+
+func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEnvironmentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.InfrastructureSpec = Environment_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.SessionSpec = Environment_SessionSpec_FromProto(mapCtx, in.GetSessionSpec())
+	return out
+}
+
+func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentSpec) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.InfrastructureSpec = Environment_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.SessionSpec = Environment_SessionSpec_ToProto(mapCtx, in.SessionSpec)
+	return out
+}
+
+func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryCategory) *krm.DataplexGlossaryCategoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryCategoryObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexGlossaryCategoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryCategoryObservedState) *pb.GlossaryCategory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryCategory{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexGlossaryCategorySpec_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryCategory) *krm.DataplexGlossaryCategorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryCategorySpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Parent = direct.LazyPtr(in.GetParent())
+	return out
+}
+
+func DataplexGlossaryCategorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryCategorySpec) *pb.GlossaryCategory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryCategory{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Parent = direct.ValueOf(in.Parent)
+	return out
+}
+
 func DataplexGlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.DataplexGlossaryObservedState {
 	if in == nil {
 		return nil
@@ -1678,6 +2707,7 @@ func DataplexGlossaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.G
 	// MISSING: Etag
 	return out
 }
+
 func DataplexGlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryObservedState) *pb.Glossary {
 	if in == nil {
 		return nil
@@ -1692,6 +2722,7 @@ func DataplexGlossaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	// MISSING: Etag
 	return out
 }
+
 func DataplexGlossarySpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) *krm.DataplexGlossarySpec {
 	if in == nil {
 		return nil
@@ -1704,6 +2735,7 @@ func DataplexGlossarySpec_FromProto(mapCtx *direct.MapContext, in *pb.Glossary) 
 	// MISSING: Etag
 	return out
 }
+
 func DataplexGlossarySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossarySpec) *pb.Glossary {
 	if in == nil {
 		return nil
@@ -1716,6 +2748,57 @@ func DataplexGlossarySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlo
 	// MISSING: Etag
 	return out
 }
+
+func DataplexGlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.DataplexGlossaryTermObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryTermObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexGlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryTermObservedState) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexGlossaryTermSpec_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.DataplexGlossaryTermSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryTermSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Parent = direct.LazyPtr(in.GetParent())
+	return out
+}
+
+func DataplexGlossaryTermSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryTermSpec) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Parent = direct.ValueOf(in.Parent)
+	return out
+}
+
 func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeObservedState {
 	if in == nil {
 		return nil
@@ -1732,6 +2815,7 @@ func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake)
 	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
 	return out
 }
+
 func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeObservedState) *pb.Lake {
 	if in == nil {
 		return nil
@@ -1748,6 +2832,7 @@ func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapl
 	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
 	return out
 }
+
 func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeSpec {
 	if in == nil {
 		return nil
@@ -1760,6 +2845,7 @@ func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Dat
 	out.Metastore = Lake_Metastore_FromProto(mapCtx, in.GetMetastore())
 	return out
 }
+
 func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpec) *pb.Lake {
 	if in == nil {
 		return nil
@@ -1772,6 +2858,7 @@ func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpe
 	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
 	return out
 }
+
 func DataplexMetadataFeedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed) *krm.DataplexMetadataFeedObservedState {
 	if in == nil {
 		return nil
@@ -1783,6 +2870,7 @@ func DataplexMetadataFeedObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func DataplexMetadataFeedObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataFeedObservedState) *pb.MetadataFeed {
 	if in == nil {
 		return nil
@@ -1794,6 +2882,7 @@ func DataplexMetadataFeedObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
 func DataplexMetadataJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob) *krm.DataplexMetadataJobObservedState {
 	if in == nil {
 		return nil
@@ -1808,6 +2897,7 @@ func DataplexMetadataJobObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Status = MetadataJobStatusObservedState_FromProto(mapCtx, in.GetStatus())
 	return out
 }
+
 func DataplexMetadataJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataJobObservedState) *pb.MetadataJob {
 	if in == nil {
 		return nil
@@ -1826,6 +2916,7 @@ func DataplexMetadataJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Status = MetadataJobStatusObservedState_ToProto(mapCtx, in.Status)
 	return out
 }
+
 func DataplexMetadataJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob) *krm.DataplexMetadataJobSpec {
 	if in == nil {
 		return nil
@@ -1838,6 +2929,7 @@ func DataplexMetadataJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Metadat
 	out.ExportSpec = MetadataJobExportJobSpec_FromProto(mapCtx, in.GetExportSpec())
 	return out
 }
+
 func DataplexMetadataJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataJobSpec) *pb.MetadataJob {
 	if in == nil {
 		return nil
@@ -1854,6 +2946,7 @@ func DataplexMetadataJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dataplex
 	}
 	return out
 }
+
 func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskSpec {
 	if in == nil {
 		return nil
@@ -1874,6 +2967,7 @@ func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Dat
 	out.Notebook = Task_NotebookTaskConfig_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
+
 func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexTaskSpec) *pb.Task {
 	if in == nil {
 		return nil
@@ -1898,6 +2992,7 @@ func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexTaskSpe
 	}
 	return out
 }
+
 func DataplexZoneObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.DataplexZoneObservedState {
 	if in == nil {
 		return nil
@@ -1912,6 +3007,7 @@ func DataplexZoneObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Zone)
 	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
 	return out
 }
+
 func DataplexZoneObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneObservedState) *pb.Zone {
 	if in == nil {
 		return nil
@@ -1926,6 +3022,7 @@ func DataplexZoneObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapl
 	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
 	return out
 }
+
 func DataplexZoneSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.DataplexZoneSpec {
 	if in == nil {
 		return nil
@@ -1940,6 +3037,7 @@ func DataplexZoneSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.Dat
 	out.ResourceSpec = Zone_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
 	return out
 }
+
 func DataplexZoneSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneSpec) *pb.Zone {
 	if in == nil {
 		return nil
@@ -1954,6 +3052,181 @@ func DataplexZoneSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneSpe
 	out.ResourceSpec = Zone_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
 	return out
 }
+
+func EncryptionConfig_FailureDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig_FailureDetails) *krm.EncryptionConfig_FailureDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfig_FailureDetailsObservedState{}
+	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+
+func EncryptionConfig_FailureDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig_FailureDetailsObservedState) *pb.EncryptionConfig_FailureDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig_FailureDetails{}
+	out.ErrorCode = direct.Enum_ToProto[pb.EncryptionConfig_FailureDetails_ErrorCode](mapCtx, in.ErrorCode)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+
+func Entity_CompatibilityStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity_CompatibilityStatus) *krm.Entity_CompatibilityStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Entity_CompatibilityStatusObservedState{}
+	out.HiveMetastore = Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx, in.GetHiveMetastore())
+	out.Bigquery = Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx, in.GetBigquery())
+	return out
+}
+
+func Entity_CompatibilityStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Entity_CompatibilityStatusObservedState) *pb.Entity_CompatibilityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity_CompatibilityStatus{}
+	out.HiveMetastore = Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx, in.HiveMetastore)
+	out.Bigquery = Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx, in.Bigquery)
+	return out
+}
+
+func Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity_CompatibilityStatus_Compatibility) *krm.Entity_CompatibilityStatus_CompatibilityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Entity_CompatibilityStatus_CompatibilityObservedState{}
+	out.Compatible = direct.LazyPtr(in.GetCompatible())
+	out.Reason = direct.LazyPtr(in.GetReason())
+	return out
+}
+
+func Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Entity_CompatibilityStatus_CompatibilityObservedState) *pb.Entity_CompatibilityStatus_Compatibility {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity_CompatibilityStatus_Compatibility{}
+	out.Compatible = direct.ValueOf(in.Compatible)
+	out.Reason = direct.ValueOf(in.Reason)
+	return out
+}
+
+func EntryLink_EntryReference_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink_EntryReference) *krm.EntryLink_EntryReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntryLink_EntryReference{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func EntryLink_EntryReference_ToProto(mapCtx *direct.MapContext, in *krm.EntryLink_EntryReference) *pb.EntryLink_EntryReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink_EntryReference{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Path = direct.ValueOf(in.Path)
+	out.Type = direct.Enum_ToProto[pb.EntryLink_EntryReference_Type](mapCtx, in.Type)
+	return out
+}
+
+func EntrySource_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource) *krm.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySource{}
+	out.Resource = direct.LazyPtr(in.GetResource())
+	out.System = direct.LazyPtr(in.GetSystem())
+	out.Platform = direct.LazyPtr(in.GetPlatform())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Ancestors = direct.Slice_FromProto(mapCtx, in.Ancestors, EntrySource_Ancestor_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Location
+	return out
+}
+
+func EntrySource_ToProto(mapCtx *direct.MapContext, in *krm.EntrySource) *pb.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource{}
+	out.Resource = direct.ValueOf(in.Resource)
+	out.System = direct.ValueOf(in.System)
+	out.Platform = direct.ValueOf(in.Platform)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Ancestors = direct.Slice_ToProto(mapCtx, in.Ancestors, EntrySource_Ancestor_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Location
+	return out
+}
+
+func EntrySourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource) *krm.EntrySourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySourceObservedState{}
+	// MISSING: Resource
+	// MISSING: System
+	// MISSING: Platform
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Ancestors
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+
+func EntrySourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntrySourceObservedState) *pb.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource{}
+	// MISSING: Resource
+	// MISSING: System
+	// MISSING: Platform
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Ancestors
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func EntrySource_Ancestor_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource_Ancestor) *krm.EntrySource_Ancestor {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySource_Ancestor{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	return out
+}
+
+func EntrySource_Ancestor_ToProto(mapCtx *direct.MapContext, in *krm.EntrySource_Ancestor) *pb.EntrySource_Ancestor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource_Ancestor{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	return out
+}
+
 func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_AspectInfo) *krm.EntryType_AspectInfo {
 	if in == nil {
 		return nil
@@ -1964,6 +3237,7 @@ func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_
 	}
 	return out
 }
+
 func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
 	if in == nil {
 		return nil
@@ -1974,6 +3248,7 @@ func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_A
 	}
 	return out
 }
+
 func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krm.EntryType_Authorization {
 	if in == nil {
 		return nil
@@ -1982,6 +3257,7 @@ func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryTy
 	out.AlternateUsePermission = direct.LazyPtr(in.GetAlternateUsePermission())
 	return out
 }
+
 func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_Authorization) *pb.EntryType_Authorization {
 	if in == nil {
 		return nil
@@ -1990,6 +3266,135 @@ func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryTyp
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
+
+func Environment_EndpointsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krm.Environment_EndpointsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_EndpointsObservedState{}
+	out.Notebooks = direct.LazyPtr(in.GetNotebooks())
+	out.SQL = direct.LazyPtr(in.GetSql())
+	return out
+}
+
+func Environment_EndpointsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environment_EndpointsObservedState) *pb.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_Endpoints{}
+	out.Notebooks = direct.ValueOf(in.Notebooks)
+	out.Sql = direct.ValueOf(in.SQL)
+	return out
+}
+
+func Environment_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec) *krm.Environment_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec{}
+	out.Compute = Environment_InfrastructureSpec_ComputeResources_FromProto(mapCtx, in.GetCompute())
+	out.OSImage = Environment_InfrastructureSpec_OSImageRuntime_FromProto(mapCtx, in.GetOsImage())
+	return out
+}
+
+func Environment_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec) *pb.Environment_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec{}
+	if oneof := Environment_InfrastructureSpec_ComputeResources_ToProto(mapCtx, in.Compute); oneof != nil {
+		out.Resources = &pb.Environment_InfrastructureSpec_Compute{Compute: oneof}
+	}
+	if oneof := Environment_InfrastructureSpec_OSImageRuntime_ToProto(mapCtx, in.OSImage); oneof != nil {
+		out.Runtime = &pb.Environment_InfrastructureSpec_OsImage{OsImage: oneof}
+	}
+	return out
+}
+
+func Environment_InfrastructureSpec_ComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec_ComputeResources) *krm.Environment_InfrastructureSpec_ComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec_ComputeResources{}
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	return out
+}
+
+func Environment_InfrastructureSpec_ComputeResources_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec_ComputeResources) *pb.Environment_InfrastructureSpec_ComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec_ComputeResources{}
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	return out
+}
+
+func Environment_InfrastructureSpec_OSImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Environment_InfrastructureSpec_OsImageRuntime) *krm.Environment_InfrastructureSpec_OSImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_InfrastructureSpec_OSImageRuntime{}
+	out.ImageVersion = direct.LazyPtr(in.GetImageVersion())
+	out.JavaLibraries = in.JavaLibraries
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+
+func Environment_InfrastructureSpec_OSImageRuntime_ToProto(mapCtx *direct.MapContext, in *krm.Environment_InfrastructureSpec_OSImageRuntime) *pb.Environment_InfrastructureSpec_OsImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_InfrastructureSpec_OsImageRuntime{}
+	out.ImageVersion = direct.ValueOf(in.ImageVersion)
+	out.JavaLibraries = in.JavaLibraries
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+
+func Environment_SessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionSpec) *krm.Environment_SessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_SessionSpec{}
+	out.MaxIdleDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxIdleDuration())
+	out.EnableFastStartup = direct.LazyPtr(in.GetEnableFastStartup())
+	return out
+}
+
+func Environment_SessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment_SessionSpec) *pb.Environment_SessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionSpec{}
+	out.MaxIdleDuration = direct.StringDuration_ToProto(mapCtx, in.MaxIdleDuration)
+	out.EnableFastStartup = direct.ValueOf(in.EnableFastStartup)
+	return out
+}
+
+func Environment_SessionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krm.Environment_SessionStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_SessionStatusObservedState{}
+	out.Active = direct.LazyPtr(in.GetActive())
+	return out
+}
+
+func Environment_SessionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Environment_SessionStatusObservedState) *pb.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionStatus{}
+	out.Active = direct.ValueOf(in.Active)
+	return out
+}
+
 func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
 	if in == nil {
 		return nil
@@ -2009,6 +3414,7 @@ func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobO
 	out.ExecutionSpec = Task_ExecutionSpecObservedState_FromProto(mapCtx, in.GetExecutionSpec())
 	return out
 }
+
 func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
 	if in == nil {
 		return nil
@@ -2028,6 +3434,7 @@ func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedStat
 	out.ExecutionSpec = Task_ExecutionSpecObservedState_ToProto(mapCtx, in.ExecutionSpec)
 	return out
 }
+
 func Lake_Metastore_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metastore) *krm.Lake_Metastore {
 	if in == nil {
 		return nil
@@ -2038,6 +3445,7 @@ func Lake_Metastore_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metastore) 
 	}
 	return out
 }
+
 func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *pb.Lake_Metastore {
 	if in == nil {
 		return nil
@@ -2048,6 +3456,7 @@ func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *
 	}
 	return out
 }
+
 func Lake_MetastoreStatus_FromProto(mapCtx *direct.MapContext, in *pb.Lake_MetastoreStatus) *krm.Lake_MetastoreStatus {
 	if in == nil {
 		return nil
@@ -2059,6 +3468,7 @@ func Lake_MetastoreStatus_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metas
 	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
 	return out
 }
+
 func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_MetastoreStatus) *pb.Lake_MetastoreStatus {
 	if in == nil {
 		return nil
@@ -2070,6 +3480,7 @@ func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metast
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	return out
 }
+
 func MetadataFeedFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed_Filters) *krm.MetadataFeedFilters {
 	if in == nil {
 		return nil
@@ -2091,6 +3502,7 @@ func MetadataFeedFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFee
 	out.ChangeTypes = direct.EnumSlice_FromProto(mapCtx, in.ChangeTypes)
 	return out
 }
+
 func MetadataFeedFilters_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeedFilters) *pb.MetadataFeed_Filters {
 	if in == nil {
 		return nil
@@ -2112,6 +3524,7 @@ func MetadataFeedFilters_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeed
 	out.ChangeTypes = direct.EnumSlice_ToProto[pb.MetadataFeed_Filters_ChangeType](mapCtx, in.ChangeTypes)
 	return out
 }
+
 func MetadataFeedScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed_Scope) *krm.MetadataFeedScope {
 	if in == nil {
 		return nil
@@ -2133,6 +3546,7 @@ func MetadataFeedScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed_
 
 	return out
 }
+
 func MetadataFeedScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeedScope) *pb.MetadataFeed_Scope {
 	if in == nil {
 		return nil
@@ -2154,6 +3568,7 @@ func MetadataFeedScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeedSc
 
 	return out
 }
+
 func MetadataJobExportJobResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobResult) *krm.MetadataJobExportJobResultObservedState {
 	if in == nil {
 		return nil
@@ -2163,6 +3578,7 @@ func MetadataJobExportJobResultObservedState_FromProto(mapCtx *direct.MapContext
 	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
 	return out
 }
+
 func MetadataJobExportJobResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobResultObservedState) *pb.MetadataJob_ExportJobResult {
 	if in == nil {
 		return nil
@@ -2172,6 +3588,7 @@ func MetadataJobExportJobResultObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
 	return out
 }
+
 func MetadataJobExportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobSpec) *krm.MetadataJobExportJobSpec {
 	if in == nil {
 		return nil
@@ -2181,6 +3598,7 @@ func MetadataJobExportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Metada
 	out.OutputPath = direct.LazyPtr(in.GetOutputPath())
 	return out
 }
+
 func MetadataJobExportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobSpec) *pb.MetadataJob_ExportJobSpec {
 	if in == nil {
 		return nil
@@ -2190,6 +3608,7 @@ func MetadataJobExportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metadat
 	out.OutputPath = direct.ValueOf(in.OutputPath)
 	return out
 }
+
 func MetadataJobExportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobSpec_ExportJobScope) *krm.MetadataJobExportJobSpecScope {
 	if in == nil {
 		return nil
@@ -2223,6 +3642,7 @@ func MetadataJobExportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.M
 
 	return out
 }
+
 func MetadataJobExportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobSpecScope) *pb.MetadataJob_ExportJobSpec_ExportJobScope {
 	if in == nil {
 		return nil
@@ -2256,6 +3676,7 @@ func MetadataJobExportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.Me
 
 	return out
 }
+
 func MetadataJobImportJobResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobResult) *krm.MetadataJobImportJobResultObservedState {
 	if in == nil {
 		return nil
@@ -2272,6 +3693,7 @@ func MetadataJobImportJobResultObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: UnchangedEntryLinks
 	return out
 }
+
 func MetadataJobImportJobResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobResultObservedState) *pb.MetadataJob_ImportJobResult {
 	if in == nil {
 		return nil
@@ -2288,6 +3710,7 @@ func MetadataJobImportJobResultObservedState_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: UnchangedEntryLinks
 	return out
 }
+
 func MetadataJobImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobSpec) *krm.MetadataJobImportJobSpec {
 	if in == nil {
 		return nil
@@ -2301,6 +3724,7 @@ func MetadataJobImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Metada
 	out.LogLevel = direct.Enum_FromProto(mapCtx, in.GetLogLevel())
 	return out
 }
+
 func MetadataJobImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobSpec) *pb.MetadataJob_ImportJobSpec {
 	if in == nil {
 		return nil
@@ -2314,6 +3738,7 @@ func MetadataJobImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metadat
 	out.LogLevel = direct.Enum_ToProto[pb.MetadataJob_ImportJobSpec_LogLevel](mapCtx, in.LogLevel)
 	return out
 }
+
 func MetadataJobImportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobSpec_ImportJobScope) *krm.MetadataJobImportJobSpecScope {
 	if in == nil {
 		return nil
@@ -2343,6 +3768,7 @@ func MetadataJobImportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.M
 	// MISSING: ReferencedEntryScopes
 	return out
 }
+
 func MetadataJobImportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobSpecScope) *pb.MetadataJob_ImportJobSpec_ImportJobScope {
 	if in == nil {
 		return nil
@@ -2372,6 +3798,7 @@ func MetadataJobImportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.Me
 	// MISSING: ReferencedEntryScopes
 	return out
 }
+
 func MetadataJobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_Status) *krm.MetadataJobStatusObservedState {
 	if in == nil {
 		return nil
@@ -2383,6 +3810,7 @@ func MetadataJobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+
 func MetadataJobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobStatusObservedState) *pb.MetadataJob_Status {
 	if in == nil {
 		return nil
@@ -2394,6 +3822,29 @@ func MetadataJobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+
+func ResourceAccessSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceAccessSpec) *krm.ResourceAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceAccessSpec{}
+	out.Readers = in.Readers
+	out.Writers = in.Writers
+	out.Owners = in.Owners
+	return out
+}
+
+func ResourceAccessSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceAccessSpec) *pb.ResourceAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceAccessSpec{}
+	out.Readers = in.Readers
+	out.Writers = in.Writers
+	out.Owners = in.Owners
+	return out
+}
+
 func ScannedData_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData) *krm.ScannedData {
 	if in == nil {
 		return nil
@@ -2402,6 +3853,7 @@ func ScannedData_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData) *krm.S
 	out.IncrementalField = ScannedData_IncrementalField_FromProto(mapCtx, in.GetIncrementalField())
 	return out
 }
+
 func ScannedData_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData) *pb.ScannedData {
 	if in == nil {
 		return nil
@@ -2412,6 +3864,7 @@ func ScannedData_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData) *pb.Sca
 	}
 	return out
 }
+
 func ScannedData_IncrementalField_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData_IncrementalField) *krm.ScannedData_IncrementalField {
 	if in == nil {
 		return nil
@@ -2422,6 +3875,7 @@ func ScannedData_IncrementalField_FromProto(mapCtx *direct.MapContext, in *pb.Sc
 	out.End = direct.LazyPtr(in.GetEnd())
 	return out
 }
+
 func ScannedData_IncrementalField_ToProto(mapCtx *direct.MapContext, in *krm.ScannedData_IncrementalField) *pb.ScannedData_IncrementalField {
 	if in == nil {
 		return nil
@@ -2432,6 +3886,217 @@ func ScannedData_IncrementalField_ToProto(mapCtx *direct.MapContext, in *krm.Sca
 	out.End = direct.ValueOf(in.End)
 	return out
 }
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.UserManaged = direct.LazyPtr(in.GetUserManaged())
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Schema_SchemaField_FromProto)
+	out.PartitionFields = direct.Slice_FromProto(mapCtx, in.PartitionFields, Schema_PartitionField_FromProto)
+	out.PartitionStyle = direct.Enum_FromProto(mapCtx, in.GetPartitionStyle())
+	return out
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.UserManaged = direct.ValueOf(in.UserManaged)
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Schema_SchemaField_ToProto)
+	out.PartitionFields = direct.Slice_ToProto(mapCtx, in.PartitionFields, Schema_PartitionField_ToProto)
+	out.PartitionStyle = direct.Enum_ToProto[pb.Schema_PartitionStyle](mapCtx, in.PartitionStyle)
+	return out
+}
+
+func Schema_PartitionField_FromProto(mapCtx *direct.MapContext, in *pb.Schema_PartitionField) *krm.Schema_PartitionField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema_PartitionField{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func Schema_PartitionField_ToProto(mapCtx *direct.MapContext, in *krm.Schema_PartitionField) *pb.Schema_PartitionField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema_PartitionField{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	return out
+}
+
+func Schema_SchemaField_FromProto(mapCtx *direct.MapContext, in *pb.Schema_SchemaField) *krm.Schema_SchemaField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema_SchemaField{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Schema_SchemaField_FromProto)
+	return out
+}
+
+func Schema_SchemaField_ToProto(mapCtx *direct.MapContext, in *krm.Schema_SchemaField) *pb.Schema_SchemaField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema_SchemaField{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	out.Mode = direct.Enum_ToProto[pb.Schema_Mode](mapCtx, in.Mode)
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Schema_SchemaField_ToProto)
+	return out
+}
+
+func StorageAccessObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageAccess) *krm.StorageAccessObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageAccessObservedState{}
+	out.Read = direct.Enum_FromProto(mapCtx, in.GetRead())
+	return out
+}
+
+func StorageAccessObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageAccessObservedState) *pb.StorageAccess {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageAccess{}
+	out.Read = direct.Enum_ToProto[pb.StorageAccess_AccessMode](mapCtx, in.Read)
+	return out
+}
+
+func StorageFormat_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat) *krm.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat{}
+	// MISSING: Format
+	out.CompressionFormat = direct.Enum_FromProto(mapCtx, in.GetCompressionFormat())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Csv = StorageFormat_CsvOptions_FromProto(mapCtx, in.GetCsv())
+	out.Json = StorageFormat_JsonOptions_FromProto(mapCtx, in.GetJson())
+	out.Iceberg = StorageFormat_IcebergOptions_FromProto(mapCtx, in.GetIceberg())
+	return out
+}
+
+func StorageFormat_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat) *pb.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat{}
+	// MISSING: Format
+	out.CompressionFormat = direct.Enum_ToProto[pb.StorageFormat_CompressionFormat](mapCtx, in.CompressionFormat)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	if oneof := StorageFormat_CsvOptions_ToProto(mapCtx, in.Csv); oneof != nil {
+		out.Options = &pb.StorageFormat_Csv{Csv: oneof}
+	}
+	if oneof := StorageFormat_JsonOptions_ToProto(mapCtx, in.Json); oneof != nil {
+		out.Options = &pb.StorageFormat_Json{Json: oneof}
+	}
+	if oneof := StorageFormat_IcebergOptions_ToProto(mapCtx, in.Iceberg); oneof != nil {
+		out.Options = &pb.StorageFormat_Iceberg{Iceberg: oneof}
+	}
+	return out
+}
+
+func StorageFormatObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat) *krm.StorageFormatObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormatObservedState{}
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	// MISSING: CompressionFormat
+	// MISSING: MimeType
+	// MISSING: Csv
+	// MISSING: Json
+	// MISSING: Iceberg
+	return out
+}
+
+func StorageFormatObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormatObservedState) *pb.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat{}
+	out.Format = direct.Enum_ToProto[pb.StorageFormat_Format](mapCtx, in.Format)
+	// MISSING: CompressionFormat
+	// MISSING: MimeType
+	// MISSING: Csv
+	// MISSING: Json
+	// MISSING: Iceberg
+	return out
+}
+
+func StorageFormat_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_CsvOptions) *krm.StorageFormat_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_CsvOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.HeaderRows = direct.LazyPtr(in.GetHeaderRows())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.Quote = direct.LazyPtr(in.GetQuote())
+	return out
+}
+
+func StorageFormat_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_CsvOptions) *pb.StorageFormat_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_CsvOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.HeaderRows = direct.ValueOf(in.HeaderRows)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.Quote = direct.ValueOf(in.Quote)
+	return out
+}
+
+func StorageFormat_IcebergOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_IcebergOptions) *krm.StorageFormat_IcebergOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_IcebergOptions{}
+	out.MetadataLocation = direct.LazyPtr(in.GetMetadataLocation())
+	return out
+}
+
+func StorageFormat_IcebergOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_IcebergOptions) *pb.StorageFormat_IcebergOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_IcebergOptions{}
+	out.MetadataLocation = direct.ValueOf(in.MetadataLocation)
+	return out
+}
+
+func StorageFormat_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_JsonOptions) *krm.StorageFormat_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_JsonOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	return out
+}
+
+func StorageFormat_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_JsonOptions) *pb.StorageFormat_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_JsonOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	return out
+}
+
 func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -2450,6 +4115,7 @@ func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_Executi
 	}
 	return out
 }
+
 func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionSpec) *pb.Task_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -2468,6 +4134,7 @@ func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_Executio
 	}
 	return out
 }
+
 func Task_ExecutionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpecObservedState {
 	if in == nil {
 		return nil
@@ -2480,6 +4147,7 @@ func Task_ExecutionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
 	return out
 }
+
 func Task_ExecutionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionSpecObservedState) *pb.Task_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -2492,6 +4160,7 @@ func Task_ExecutionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.KmsKey = direct.ValueOf(in.KMSKey)
 	return out
 }
+
 func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatusObservedState {
 	if in == nil {
 		return nil
@@ -2501,6 +4170,7 @@ func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.LatestJob = JobObservedState_FromProto(mapCtx, in.GetLatestJob())
 	return out
 }
+
 func Task_ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionStatusObservedState) *pb.Task_ExecutionStatus {
 	if in == nil {
 		return nil
@@ -2510,6 +4180,7 @@ func Task_ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.LatestJob = JobObservedState_ToProto(mapCtx, in.LatestJob)
 	return out
 }
+
 func Task_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec) *krm.Task_InfrastructureSpec {
 	if in == nil {
 		return nil
@@ -2520,6 +4191,7 @@ func Task_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_In
 	out.VPCNetwork = Task_InfrastructureSpec_VPCNetwork_FromProto(mapCtx, in.GetVpcNetwork())
 	return out
 }
+
 func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec) *pb.Task_InfrastructureSpec {
 	if in == nil {
 		return nil
@@ -2536,6 +4208,7 @@ func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_Inf
 	}
 	return out
 }
+
 func Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_BatchComputeResources) *krm.Task_InfrastructureSpec_BatchComputeResources {
 	if in == nil {
 		return nil
@@ -2545,6 +4218,7 @@ func Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx *direct.MapC
 	out.MaxExecutorsCount = direct.LazyPtr(in.GetMaxExecutorsCount())
 	return out
 }
+
 func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_BatchComputeResources) *pb.Task_InfrastructureSpec_BatchComputeResources {
 	if in == nil {
 		return nil
@@ -2554,6 +4228,7 @@ func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapCon
 	out.MaxExecutorsCount = direct.ValueOf(in.MaxExecutorsCount)
 	return out
 }
+
 func Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_ContainerImageRuntime) *krm.Task_InfrastructureSpec_ContainerImageRuntime {
 	if in == nil {
 		return nil
@@ -2565,6 +4240,7 @@ func Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx *direct.MapC
 	out.Properties = in.Properties
 	return out
 }
+
 func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_ContainerImageRuntime) *pb.Task_InfrastructureSpec_ContainerImageRuntime {
 	if in == nil {
 		return nil
@@ -2576,6 +4252,7 @@ func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapCon
 	out.Properties = in.Properties
 	return out
 }
+
 func Task_InfrastructureSpec_VPCNetwork_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_VpcNetwork) *krm.Task_InfrastructureSpec_VPCNetwork {
 	if in == nil {
 		return nil
@@ -2586,6 +4263,7 @@ func Task_InfrastructureSpec_VPCNetwork_FromProto(mapCtx *direct.MapContext, in 
 	out.NetworkTags = in.NetworkTags
 	return out
 }
+
 func Task_InfrastructureSpec_VPCNetwork_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_VPCNetwork) *pb.Task_InfrastructureSpec_VpcNetwork {
 	if in == nil {
 		return nil
@@ -2600,18 +4278,21 @@ func Task_InfrastructureSpec_VPCNetwork_ToProto(mapCtx *direct.MapContext, in *k
 	out.NetworkTags = in.NetworkTags
 	return out
 }
+
 func Task_InfrastructureSpec_VPCNetwork_Network_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_InfrastructureSpec_VpcNetwork_Network {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_InfrastructureSpec_VpcNetwork_Network{Network: *in}
 }
+
 func Task_InfrastructureSpec_VPCNetwork_SubNetwork_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_InfrastructureSpec_VpcNetwork_SubNetwork {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_InfrastructureSpec_VpcNetwork_SubNetwork{SubNetwork: *in}
 }
+
 func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_NotebookTaskConfig) *krm.Task_NotebookTaskConfig {
 	if in == nil {
 		return nil
@@ -2623,6 +4304,7 @@ func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_No
 	out.ArchiveUris = in.ArchiveUris
 	return out
 }
+
 func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_NotebookTaskConfig) *pb.Task_NotebookTaskConfig {
 	if in == nil {
 		return nil
@@ -2634,6 +4316,7 @@ func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_Not
 	out.ArchiveUris = in.ArchiveUris
 	return out
 }
+
 func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_SparkTaskConfig) *krm.Task_SparkTaskConfig {
 	if in == nil {
 		return nil
@@ -2649,6 +4332,7 @@ func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_Spark
 	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
 	return out
 }
+
 func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_SparkTaskConfig) *pb.Task_SparkTaskConfig {
 	if in == nil {
 		return nil
@@ -2674,36 +4358,42 @@ func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_SparkT
 	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
 	return out
 }
+
 func Task_SparkTaskConfig_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_MainJarFileUri {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_SparkTaskConfig_MainJarFileUri{MainJarFileUri: *in}
 }
+
 func Task_SparkTaskConfig_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_MainClass {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_SparkTaskConfig_MainClass{MainClass: *in}
 }
+
 func Task_SparkTaskConfig_PythonScriptFile_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_PythonScriptFile {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_SparkTaskConfig_PythonScriptFile{PythonScriptFile: *in}
 }
+
 func Task_SparkTaskConfig_SqlScriptFile_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_SqlScriptFile {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_SparkTaskConfig_SqlScriptFile{SqlScriptFile: *in}
 }
+
 func Task_SparkTaskConfig_SqlScript_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_SqlScript {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_SparkTaskConfig_SqlScript{SqlScript: *in}
 }
+
 func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSpec) *krm.Task_TriggerSpec {
 	if in == nil {
 		return nil
@@ -2716,6 +4406,7 @@ func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSp
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	return out
 }
+
 func Task_TriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_TriggerSpec) *pb.Task_TriggerSpec {
 	if in == nil {
 		return nil
@@ -2730,12 +4421,14 @@ func Task_TriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_TriggerSpe
 	}
 	return out
 }
+
 func Task_TriggerSpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_TriggerSpec_Schedule {
 	if in == nil {
 		return nil
 	}
 	return &pb.Task_TriggerSpec_Schedule{Schedule: *in}
 }
+
 func Trigger_FromProto(mapCtx *direct.MapContext, in *pb.Trigger) *krm.Trigger {
 	if in == nil {
 		return nil
@@ -2746,6 +4439,7 @@ func Trigger_FromProto(mapCtx *direct.MapContext, in *pb.Trigger) *krm.Trigger {
 	// MISSING: OneTime
 	return out
 }
+
 func Trigger_ToProto(mapCtx *direct.MapContext, in *krm.Trigger) *pb.Trigger {
 	if in == nil {
 		return nil
@@ -2760,6 +4454,7 @@ func Trigger_ToProto(mapCtx *direct.MapContext, in *krm.Trigger) *pb.Trigger {
 	// MISSING: OneTime
 	return out
 }
+
 func Trigger_OnDemand_FromProto(mapCtx *direct.MapContext, in *pb.Trigger_OnDemand) *krm.Trigger_OnDemand {
 	if in == nil {
 		return nil
@@ -2767,6 +4462,7 @@ func Trigger_OnDemand_FromProto(mapCtx *direct.MapContext, in *pb.Trigger_OnDema
 	out := &krm.Trigger_OnDemand{}
 	return out
 }
+
 func Trigger_OnDemand_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_OnDemand) *pb.Trigger_OnDemand {
 	if in == nil {
 		return nil
@@ -2774,6 +4470,7 @@ func Trigger_OnDemand_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_OnDeman
 	out := &pb.Trigger_OnDemand{}
 	return out
 }
+
 func Trigger_Schedule_FromProto(mapCtx *direct.MapContext, in *pb.Trigger_Schedule) *krm.Trigger_Schedule {
 	if in == nil {
 		return nil
@@ -2782,6 +4479,7 @@ func Trigger_Schedule_FromProto(mapCtx *direct.MapContext, in *pb.Trigger_Schedu
 	out.Cron = direct.LazyPtr(in.GetCron())
 	return out
 }
+
 func Trigger_Schedule_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_Schedule) *pb.Trigger_Schedule {
 	if in == nil {
 		return nil
@@ -2790,6 +4488,7 @@ func Trigger_Schedule_ToProto(mapCtx *direct.MapContext, in *krm.Trigger_Schedul
 	out.Cron = direct.ValueOf(in.Cron)
 	return out
 }
+
 func Zone_DiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec) *krm.Zone_DiscoverySpec {
 	if in == nil {
 		return nil
@@ -2803,6 +4502,7 @@ func Zone_DiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_Discove
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	return out
 }
+
 func Zone_DiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec) *pb.Zone_DiscoverySpec {
 	if in == nil {
 		return nil
@@ -2818,12 +4518,14 @@ func Zone_DiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_Discover
 	}
 	return out
 }
+
 func Zone_DiscoverySpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Zone_DiscoverySpec_Schedule {
 	if in == nil {
 		return nil
 	}
 	return &pb.Zone_DiscoverySpec_Schedule{Schedule: *in}
 }
+
 func Zone_DiscoverySpec_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec_CsvOptions) *krm.Zone_DiscoverySpec_CsvOptions {
 	if in == nil {
 		return nil
@@ -2835,6 +4537,7 @@ func Zone_DiscoverySpec_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.Z
 	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
 	return out
 }
+
 func Zone_DiscoverySpec_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec_CsvOptions) *pb.Zone_DiscoverySpec_CsvOptions {
 	if in == nil {
 		return nil
@@ -2846,6 +4549,7 @@ func Zone_DiscoverySpec_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.Zo
 	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
 	return out
 }
+
 func Zone_DiscoverySpec_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec_JsonOptions) *krm.Zone_DiscoverySpec_JsonOptions {
 	if in == nil {
 		return nil
@@ -2855,6 +4559,7 @@ func Zone_DiscoverySpec_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
 	return out
 }
+
 func Zone_DiscoverySpec_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec_JsonOptions) *pb.Zone_DiscoverySpec_JsonOptions {
 	if in == nil {
 		return nil
@@ -2864,6 +4569,7 @@ func Zone_DiscoverySpec_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.Z
 	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
 	return out
 }
+
 func Zone_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_ResourceSpec) *krm.Zone_ResourceSpec {
 	if in == nil {
 		return nil
@@ -2872,6 +4578,7 @@ func Zone_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_Resource
 	out.LocationType = direct.Enum_FromProto(mapCtx, in.GetLocationType())
 	return out
 }
+
 func Zone_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_ResourceSpec) *pb.Zone_ResourceSpec {
 	if in == nil {
 		return nil

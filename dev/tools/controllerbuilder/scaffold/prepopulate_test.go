@@ -195,12 +195,12 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 			}
 			var paths []string
 			for _, j := range got.Judgement {
-				if j.Reason == "possible-reference" {
+				if j.Reason == "authoritative-proto-reference" {
 					paths = append(paths, j.FieldPath)
 				}
 			}
 			if len(paths) != 1 || paths[0] != tc.wantPath {
-				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+				t.Errorf("authoritative-proto-reference paths = %v, want [%s]", paths, tc.wantPath)
 			}
 			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
 			if !strings.Contains(got.SpecFields, tag) {
@@ -210,10 +210,12 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 	}
 }
 
-// TestPrepopulateSpecQueuesResourceReferences checks the possible-reference
-// entry for a top-level field with google.api.resource_reference, once with
-// type and once with child_type. ReferenceHints queues the nested ones; see
-// TestReferenceHintsQueuesNestedResourceReferences.
+// TestPrepopulateSpecQueuesResourceReferences checks the
+// authoritative-proto-reference entry for a top-level field with
+// google.api.resource_reference, once with type and once with child_type, and
+// verifies that heuristic sibling matching is suppressed when
+// google.api.resource_reference is present. ReferenceHints queues the nested
+// ones; see TestReferenceHintsQueuesNestedResourceReferences.
 func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	// Arrange
 	msg := ragStoreMessage(t)
@@ -224,18 +226,20 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 		},
 		{
 			FieldPath: ".spec.corpus",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
 			FieldPath: ".spec.parent",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}
 
 	// Act
-	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{
+		Siblings: map[string]string{"corpus": "AIPlatformRagCorpus"},
+	})
 
 	// Assert
 	if err != nil {
@@ -243,6 +247,9 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	}
 	if diff := cmp.Diff(want, got.Judgement); diff != "" {
 		t.Errorf("PrepopulateSpec() Judgement mismatch (-want +got):\n%s", diff)
+	}
+	if strings.Contains(got.SpecFields, codegen.SiblingGuessMarker) {
+		t.Errorf("expected no %s comment when google.api.resource_reference is present:\n%s", codegen.SiblingGuessMarker, got.SpecFields)
 	}
 }
 
@@ -945,6 +952,118 @@ func TestPrepopulateSpecAndObservedStateQueueNestedJudgements(t *testing.T) {
 	}
 	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
 		t.Errorf("PrepopulateObservedState() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateObservedStateQueuesOutputOnlyNameAsIdentityServerGeneratedID(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("output_only_name.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Artifact"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("name"), Number: i32Ptr(1), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+					{Name: strPtr("create_time"), Number: i32Ptr(2), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Artifact")
+	details := &codegen.OutputMessageDetails{
+		Message: msg,
+		OutputFields: []protoreflect.FieldDescriptor{
+			msg.Fields().ByName("name"),
+			msg.Fields().ByName("create_time"),
+		},
+	}
+
+	fields, got := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
+	if strings.Contains(fields, "Name *string") {
+		t.Errorf("expected name to be omitted from ObservedState, got:\n%s", fields)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonIdentityServerGeneratedID,
+			Detail: "proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter",
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("PrepopulateObservedState() judgement mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateSpecQueuesPossibleStatusFieldsAndLocations(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("status_and_location.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Settings"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("region"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("id"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("state"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("start_time"), Number: i32Ptr(3), Type: str, Options: behaviorOptions(annotations.FieldBehavior_REQUIRED)},
+					{Name: strPtr("end_time"), Number: i32Ptr(4), Type: str},
+					{Name: strPtr("zone"), Number: i32Ptr(5), Type: str},
+					{Name: strPtr("settings"), Number: i32Ptr(6), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Settings")},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitRequired: true})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.id",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "id was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.state",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.endTime",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "endTime was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.zone",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+		{
+			FieldPath: ".spec.settings.region",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+	}
+	if diff := cmp.Diff(want, got.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() judgement mismatch (-want +got):\n%s", diff)
 	}
 }
 

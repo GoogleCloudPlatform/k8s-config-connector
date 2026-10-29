@@ -1,0 +1,98 @@
+GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "dataset \"projects/${projectId}/locations/us-central1/datasets/healthcaredataset${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "dataset \"projects/${projectId}/locations/us-central1/datasets/healthcaredataset${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json&datasetId=${datasetID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "name": "healthcaredataset${uniqueId}",
+  "timeZone": "UTC"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/datasets/healthcaredataset${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.healthcare.v1.Dataset",
+    "name": "projects/${projectId}/locations/us-central1/datasets/healthcaredataset${uniqueId}",
+    "timeZone": "UTC"
+  }
+}
+
+---
+
+GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/datasets/healthcaredataset${uniqueId}",
+  "timeZone": "UTC"
+}
+
+---
+
+DELETE https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -2012,6 +2012,11 @@ func (in *DiscoveryEngineDataStoreSpec) DeepCopyInto(out *DiscoveryEngineDataSto
 		*out = new(WorkspaceConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SkipDefaultSchemaCreation != nil {
+		in, out := &in.SkipDefaultSchemaCreation, &out.SkipDefaultSchemaCreation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
 		*out = new(v1beta1.ProjectRef)

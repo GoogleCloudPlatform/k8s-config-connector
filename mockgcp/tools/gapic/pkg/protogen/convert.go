@@ -315,10 +315,15 @@ func ToProtoIdentifier(s string) string {
 
 func StartWithUpper(s string) string {
 	var b []byte
-	for i, c := range s {
-		if i == 0 {
+	upperNext := true
+	for _, c := range s {
+		switch {
+		case c == '_' || c == '-':
+			upperNext = true
+		case upperNext:
 			b = append(b, byte(unicode.ToUpper(c)))
-		} else {
+			upperNext = false
+		default:
 			b = append(b, byte(c))
 		}
 	}

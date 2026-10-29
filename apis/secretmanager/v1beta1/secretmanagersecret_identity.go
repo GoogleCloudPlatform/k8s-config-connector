@@ -33,6 +33,15 @@ func (i *SecretIdentity) String() string {
 	return i.parent.String() + "/secrets/" + i.id
 }
 
+func (i *SecretIdentity) FromExternal(ref string) error {
+	id, err := ParseSecretExternal(ref)
+	if err != nil {
+		return err
+	}
+	*i = *id
+	return nil
+}
+
 func (r *SecretIdentity) Parent() *SecretParent {
 	return r.parent
 }

@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	cctemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
 )
@@ -32,14 +33,12 @@ import (
 type GenerateControllerOptions struct {
 	*options.GenerateOptions
 
-	ServiceName string
-
-	Resource options.Resource
-}
-
-func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.")
-	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", "", "the GCP service name")
+	ServiceName         string
+	Resources           options.ResourceList
+	PrepopulateResource bool
+	PlaceholderOnly     bool
+	RegionalEndpoint    string
+	Overwrite           bool
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -51,7 +50,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "generate-controller",
 		Short: "generate the direct controller",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if opt.Resource == (options.Resource{}) {
+			if len(opt.Resources) == 0 {
 				return fmt.Errorf("--resource flag is required")
 			}
 
@@ -69,7 +68,6 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			ctx := cmd.Context()
 			if err := RunController(ctx, opt); err != nil {
 				return err
@@ -82,21 +80,28 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	return cmd
 }
 
+func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon. e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`. Can be specified multiple times.")
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", "", "the GCP service name")
+	cmd.Flags().BoolVar(&o.PrepopulateResource, "prepopulate-resource", false, "if true, run proto- and KRM-driven deterministic passes to generate a complete direct controller (leaving existing handwritten controllers unmodified unless --overwrite is passed)")
+	cmd.Flags().BoolVar(&o.PlaceholderOnly, "placeholder-only", false, "if true, only generate the Pass 1 base CRUD placeholder without proto-driven deterministic specialization passes")
+	cmd.Flags().StringVar(&o.RegionalEndpoint, "regional-endpoint", "", "optional regional endpoint pattern ('prefix' for {loc}-{service} or 'rep' for {service}.{loc}.rep.googleapis.com)")
+	cmd.Flags().BoolVar(&o.Overwrite, "overwrite", false, "if true, overwrite an existing controller file")
+}
+
 func RunController(ctx context.Context, o *GenerateControllerOptions) error {
-	gv, _ := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
-	gcpTokens := strings.Split(o.ServiceName, ".")
-	version := gcpTokens[len(gcpTokens)-1]
-	if version[0] != 'v' {
+	gv, err := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
+	if err != nil {
+		return fmt.Errorf("unable to parse --api-version: %w", err)
+	}
+	gcpTokens := strings.Split(o.ServiceName, ",")
+	firstService := strings.TrimSpace(gcpTokens[0])
+	svcParts := strings.Split(firstService, ".")
+	version := svcParts[len(svcParts)-1]
+	if len(version) == 0 || version[0] != 'v' {
 		return fmt.Errorf("--service does not contain GCP version")
 	}
 	serviceName := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
-	cArgs := &cctemplate.ControllerArgs{
-		KCCService:    serviceName,
-		KCCVersion:    gv.Version,
-		Kind:          o.Resource.Kind,
-		ProtoResource: o.Resource.ProtoName,
-		ProtoVersion:  version,
-	}
 	root, err := options.RepoRoot()
 	if err != nil {
 		return err
@@ -108,37 +113,96 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		GoPackage:       goPackage,
 		Group:           gv.Group,
 		Version:         gv.Version,
-		PackageProtoTag: o.ServiceName,
+		PackageProtoTag: firstService,
 	}
 
-	// Optional: lets the scaffolder read google.api.resource for the real
-	// collection segment and parent shape. If the proto cannot be loaded we carry
-	// on with the old guesses rather than failing the command.
+	var loadedProto *protoapi.Proto
 	if api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath, o.GenerateOptions.ProtoOverlayPath); err != nil {
 		klog.Warningf("could not load proto %q, scaffolding will guess the resource name shape: %v",
 			o.GenerateOptions.ProtoSourcePath, err)
 	} else {
+		loadedProto = api
 		scaffolder.Proto = api
 	}
-	if scaffolder.RefsFileExist(o.Resource) {
-		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(o.Resource))
-	} else {
-		err := scaffolder.AddRefsFile(o.Resource)
-		if err != nil {
-			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(o.Resource), err)
+
+	var allErrs error
+	for _, resource := range o.Resources {
+		if err := runControllerForResource(o, scaffolder, loadedProto, root, serviceName, gv.Version, version, resource); err != nil {
+			allErrs = errors.Join(allErrs, err)
 		}
 	}
-	if scaffolder.IdentityFileExist(o.Resource) {
-		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(o.Resource))
-	} else {
-		err := scaffolder.AddIdentityFile(o.Resource)
-		if err != nil {
-			return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(o.Resource), err)
+	return allErrs
+}
+
+func runControllerForResource(
+	o *GenerateControllerOptions,
+	scaffolder *scaffold.APIScaffolder,
+	loadedProto *protoapi.Proto,
+	root, serviceName, krmVersion, gcpVersion string,
+	resource options.Resource,
+) error {
+	cArgs := cctemplate.NewBaseControllerArgs(
+		serviceName,
+		krmVersion,
+		resource.Kind,
+		resource.ProtoMessageName(),
+		gcpVersion,
+	)
+
+	if !o.PrepopulateResource && !o.PlaceholderOnly {
+		if scaffolder.RefsFileExist(resource) {
+			klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(resource))
+		} else if err := scaffolder.AddRefsFile(resource); err != nil {
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(resource), err)
+		}
+		if scaffolder.IdentityFileExist(resource) {
+			klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(resource))
+		} else if err := scaffolder.AddIdentityFile(resource); err != nil {
+			return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(resource), err)
 		}
 	}
 
-	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.Kind)
+	prepopulate := o.PrepopulateResource && !o.PlaceholderOnly
+	if prepopulate {
+		krmInfo := scaffold.InspectKRMPackageForController(
+			root,
+			serviceName,
+			krmVersion,
+			resource.Kind,
+			resource.ProtoMessageName(),
+		)
+		resAPI := resolveResourceAPI(loadedProto, o.ServiceName, resource.ProtoName)
+		scaffold.ApplyDeterministicPasses(cArgs, resAPI, krmInfo, o.RegionalEndpoint)
+	}
+
+	c := scaffold.NewControllerBuilder(root, serviceName, resource.Kind).
+		WithOverwrite(o.Overwrite).
+		WithPrepopulateResource(prepopulate)
+	var err error
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
 	return err
+}
+
+func resolveResourceAPI(p *protoapi.Proto, servicePkgTag, protoName string) *protoapi.ResourceAPI {
+	if p == nil || protoName == "" {
+		return nil
+	}
+	var candidates []string
+	if strings.Contains(protoName, ".") {
+		candidates = append(candidates, protoName)
+	} else {
+		for _, rawPkg := range strings.Split(servicePkgTag, ",") {
+			pkg := strings.TrimSpace(rawPkg)
+			if pkg != "" {
+				candidates = append(candidates, pkg+"."+protoName)
+			}
+		}
+	}
+	for _, fullName := range candidates {
+		if api, err := p.ResourceAPIByName(protoreflect.FullName(fullName)); err == nil {
+			return api
+		}
+	}
+	return nil
 }

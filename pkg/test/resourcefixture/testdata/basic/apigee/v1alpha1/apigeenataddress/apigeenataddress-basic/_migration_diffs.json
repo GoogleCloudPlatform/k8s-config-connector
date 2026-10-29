@@ -1,0 +1,34 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "ApigeeInstance/apgi-${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ApigeeNATAddress/apigeenataddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "instance_id",
+        "old": "",
+        "new": "organizations/${projectId}/instances/apgi-${uniqueId}"
+      },
+      {
+        "id": "ip_address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "apigeenataddress-${uniqueId}"
+      },
+      {
+        "id": "state",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

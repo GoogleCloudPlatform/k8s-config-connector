@@ -91,6 +91,123 @@ func ComputeOrganizationSecurityPolicyStatus_v1alpha1_ToProto(mapCtx *direct.Map
 	return out
 }
 
+// ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto maps a GCP proto SecurityPolicyAssociation to a KRM spec.
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec{}
+	out.AttachmentID = in.GetAttachmentId()
+	if in.SecurityPolicyId != nil {
+		out.PolicyID = in.SecurityPolicyId
+	}
+	if in.GetName() != "" {
+		out.ResourceID = direct.LazyPtr(in.GetName())
+	}
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto SecurityPolicyAssociation.
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	if in.AttachmentID != "" {
+		out.AttachmentId = direct.LazyPtr(in.AttachmentID)
+	}
+	if in.PolicyID != nil && *in.PolicyID != "" {
+		out.SecurityPolicyId = in.PolicyID
+	}
+	if in.ResourceID != nil {
+		out.Name = in.ResourceID
+	}
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto maps a GCP proto SecurityPolicyAssociation to a KRM status.
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus{}
+	out.DisplayName = in.DisplayName
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto maps a KRM status to a GCP proto SecurityPolicyAssociation.
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	out.DisplayName = in.DisplayName
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto maps a GCP proto SecurityPolicyRule to a KRM spec.
+// We hand-code this function because Action is a required string in KRM but *string in proto,
+// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and several fields
+// (Direction, EnableLogging, TargetResources, TargetServiceAccounts) exist in GCP organization security policy rules
+// but are not present on pb.SecurityPolicyRule in computepb.
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
+	out.Action = in.GetAction()
+	out.Description = in.Description
+	out.Preview = in.Preview
+	if in.Priority != nil {
+		priorityStr := strconv.FormatInt(int64(*in.Priority), 10)
+		out.ResourceID = &priorityStr
+	}
+	if in.Match != nil {
+		out.Match = &krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatch{}
+		out.Match.VersionedExpr = in.Match.VersionedExpr
+		if in.Match.Config != nil {
+			out.Match.Config = &krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatchConfig{}
+			out.Match.Config.SrcIPRanges = in.Match.Config.SrcIpRanges
+		}
+	}
+	return out
+}
+
+// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto SecurityPolicyRule.
+// We hand-code this function because Action is a required string in KRM but *string in proto,
+// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and several fields
+// (Direction, EnableLogging, TargetResources, TargetServiceAccounts) exist in GCP organization security policy rules
+// but are not present on pb.SecurityPolicyRule in computepb.
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.SecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRule{}
+	if in.Action != "" {
+		out.Action = &in.Action
+	}
+	out.Description = in.Description
+	out.Preview = in.Preview
+	if in.ResourceID != nil {
+		priorityVal, err := strconv.ParseInt(*in.ResourceID, 10, 32)
+		if err != nil {
+			mapCtx.Errorf("parsing resourceID as priority %q: %v", *in.ResourceID, err)
+		} else {
+			p := int32(priorityVal)
+			out.Priority = &p
+		}
+	}
+	if in.Match != nil {
+		out.Match = &pb.SecurityPolicyRuleMatcher{}
+		out.Match.VersionedExpr = in.Match.VersionedExpr
+		if in.Match.Config != nil {
+			out.Match.Config = &pb.SecurityPolicyRuleMatcherConfig{}
+			out.Match.Config.SrcIpRanges = in.Match.Config.SrcIPRanges
+		}
+	}
+	return out
+}
+
 // ComputeExternalVPNGatewayInterface_v1beta1_FromProto maps a pb.ExternalVpnGatewayInterface to a krm.ComputeExternalVPNGatewayInterface.
 // It is handcoded here because of type mismatches: KRM ID is *int64, while Proto ID is *uint32.
 func ComputeExternalVPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalVpnGatewayInterface) *krm.ComputeExternalVPNGatewayInterface {

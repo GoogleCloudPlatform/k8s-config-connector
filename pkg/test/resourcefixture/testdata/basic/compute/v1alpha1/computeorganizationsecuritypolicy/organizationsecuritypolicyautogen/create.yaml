@@ -19,4 +19,4 @@ metadata:
 spec:
   displayName: tf-test${uniqueId}
   parent: organizations/${TEST_ORG_ID}
-  resourceID: computeorganizationsecuritypolicy${uniqueId}
+  type: CLOUD_ARMOR

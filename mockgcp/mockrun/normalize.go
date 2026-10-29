@@ -15,16 +15,27 @@
 package mockrun
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "run.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".metadata.terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".response.terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".metadata.etag", "abcdef0123A=")
+	replacements.ReplacePath(".metadata.deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".deleteTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

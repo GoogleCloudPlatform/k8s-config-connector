@@ -145,55 +145,55 @@ func TestDynamicRateLimiter_NextDelayAndForget(t *testing.T) {
 	nn1 := types.NamespacedName{Namespace: "default", Name: "res1"}
 	nn2 := types.NamespacedName{Namespace: "default", Name: "res2"}
 
-	baseDelay := 1 * time.Second
-	maxDelay := 10 * time.Second
+	baseDelay := k8s.DefaultBackoffBaseDelay // 250ms
+	maxDelay := 2 * time.Second
 
-	// 1st failure for nn1: 1 * 2^0 = 1s
+	// 1st failure for nn1: 250ms * 2^0 = 250ms
+	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 250*time.Millisecond {
+		t.Fatalf("expected 250ms on first failure, got %v", delay)
+	}
+
+	// 2nd failure for nn1: 250ms * 2^1 = 500ms
+	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 500*time.Millisecond {
+		t.Fatalf("expected 500ms on second failure, got %v", delay)
+	}
+
+	// 1st failure for nn2 (isolated from nn1): 250ms * 2^0 = 250ms
+	if delay := rl.NextDelay(nn2, baseDelay, maxDelay); delay != 250*time.Millisecond {
+		t.Fatalf("expected 250ms for nn2 first failure, got %v", delay)
+	}
+
+	// 3rd failure for nn1: 250ms * 2^2 = 1s
 	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 1*time.Second {
-		t.Fatalf("expected 1s on first failure, got %v", delay)
+		t.Fatalf("expected 1s on third failure, got %v", delay)
 	}
 
-	// 2nd failure for nn1: 1 * 2^1 = 2s
+	// 4th failure for nn1: 250ms * 2^3 = 2s
 	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 2*time.Second {
-		t.Fatalf("expected 2s on second failure, got %v", delay)
+		t.Fatalf("expected 2s on fourth failure, got %v", delay)
 	}
 
-	// 1st failure for nn2 (isolated from nn1): 1 * 2^0 = 1s
-	if delay := rl.NextDelay(nn2, baseDelay, maxDelay); delay != 1*time.Second {
-		t.Fatalf("expected 1s for nn2 first failure, got %v", delay)
+	// 5th failure for nn1: 250ms * 2^4 = 4s -> capped at 2s
+	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 2*time.Second {
+		t.Fatalf("expected 2s (capped) on fifth failure, got %v", delay)
 	}
 
-	// 3rd failure for nn1: 1 * 2^2 = 4s
-	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 4*time.Second {
-		t.Fatalf("expected 4s on third failure, got %v", delay)
-	}
-
-	// 4th failure for nn1: 1 * 2^3 = 8s
-	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 8*time.Second {
-		t.Fatalf("expected 8s on fourth failure, got %v", delay)
-	}
-
-	// 5th failure for nn1: 1 * 2^4 = 16s -> capped at 10s
-	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 10*time.Second {
-		t.Fatalf("expected 10s (capped) on fifth failure, got %v", delay)
-	}
-
-	// 6th failure for nn1: capped at 10s
-	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 10*time.Second {
-		t.Fatalf("expected 10s (capped) on sixth failure, got %v", delay)
+	// 6th failure for nn1: capped at 2s
+	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 2*time.Second {
+		t.Fatalf("expected 2s (capped) on sixth failure, got %v", delay)
 	}
 
 	// Forget nn1 on success
 	rl.Forget(nn1)
 
-	// After forget, failure count is reset to 0: next delay is 1s
-	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 1*time.Second {
-		t.Fatalf("expected 1s after forget, got %v", delay)
+	// After forget, failure count is reset to 0: next delay is 250ms
+	if delay := rl.NextDelay(nn1, baseDelay, maxDelay); delay != 250*time.Millisecond {
+		t.Fatalf("expected 250ms after forget, got %v", delay)
 	}
 
-	// nn2 was not forgotten: 2nd failure for nn2 should be 2s
-	if delay := rl.NextDelay(nn2, baseDelay, maxDelay); delay != 2*time.Second {
-		t.Fatalf("expected 2s for nn2 second failure, got %v", delay)
+	// nn2 was not forgotten: 2nd failure for nn2 should be 500ms
+	if delay := rl.NextDelay(nn2, baseDelay, maxDelay); delay != 500*time.Millisecond {
+		t.Fatalf("expected 500ms for nn2 second failure, got %v", delay)
 	}
 }
 
@@ -201,8 +201,8 @@ func TestDynamicRateLimiter_OverflowProtection(t *testing.T) {
 	rl := NewDynamicRateLimiter()
 	nn := types.NamespacedName{Namespace: "default", Name: "overflow-test"}
 
-	baseDelay := 1 * time.Second
-	maxDelay := 120 * time.Second
+	baseDelay := k8s.DefaultBackoffBaseDelay
+	maxDelay := k8s.DefaultBackoffMaxDelay
 
 	// Simulate 100 consecutive failures
 	for i := 0; i < 100; i++ {

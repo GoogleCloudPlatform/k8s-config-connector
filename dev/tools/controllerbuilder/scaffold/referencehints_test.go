@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -45,24 +46,24 @@ func TestReferenceHints(t *testing.T) {
 			name: "message maps off leaves the map out of the Spec",
 			opts: codegen.WriteOptions{},
 			want: []JudgementItem{
-				{FieldPath: ".spec.network", Reason: "possible-reference-by-name", Detail: "ComputeNetworkRef"},
-				{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description", Detail: templateRule},
-				{FieldPath: ".spec.config.profile", Reason: "possible-reference-by-description-loose"},
-				{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description", Detail: templateRule},
-				{FieldPath: ".spec.peers[].profile", Reason: "possible-reference-by-description-loose"},
+				{FieldPath: ".spec.network", Reason: judgement.ReasonPossibleReferenceByName, Detail: "ComputeNetworkRef"},
+				{FieldPath: ".spec.config.target", Reason: judgement.ReasonPossibleReferenceByDescription, Detail: templateRule},
+				{FieldPath: ".spec.config.profile", Reason: judgement.ReasonPossibleReferenceByDescriptionLoose},
+				{FieldPath: ".spec.peers[].target", Reason: judgement.ReasonPossibleReferenceByDescription, Detail: templateRule},
+				{FieldPath: ".spec.peers[].profile", Reason: judgement.ReasonPossibleReferenceByDescriptionLoose},
 			},
 		},
 		{
 			name: "message maps on puts the map's fields under KEY",
 			opts: codegen.WriteOptions{EmitMessageMaps: true},
 			want: []JudgementItem{
-				{FieldPath: ".spec.network", Reason: "possible-reference-by-name", Detail: "ComputeNetworkRef"},
-				{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description", Detail: templateRule},
-				{FieldPath: ".spec.config.profile", Reason: "possible-reference-by-description-loose"},
-				{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description", Detail: templateRule},
-				{FieldPath: ".spec.peers[].profile", Reason: "possible-reference-by-description-loose"},
-				{FieldPath: ".spec.byKey.KEY.target", Reason: "possible-reference-by-description", Detail: templateRule},
-				{FieldPath: ".spec.byKey.KEY.profile", Reason: "possible-reference-by-description-loose"},
+				{FieldPath: ".spec.network", Reason: judgement.ReasonPossibleReferenceByName, Detail: "ComputeNetworkRef"},
+				{FieldPath: ".spec.config.target", Reason: judgement.ReasonPossibleReferenceByDescription, Detail: templateRule},
+				{FieldPath: ".spec.config.profile", Reason: judgement.ReasonPossibleReferenceByDescriptionLoose},
+				{FieldPath: ".spec.peers[].target", Reason: judgement.ReasonPossibleReferenceByDescription, Detail: templateRule},
+				{FieldPath: ".spec.peers[].profile", Reason: judgement.ReasonPossibleReferenceByDescriptionLoose},
+				{FieldPath: ".spec.byKey.KEY.target", Reason: judgement.ReasonPossibleReferenceByDescription, Detail: templateRule},
+				{FieldPath: ".spec.byKey.KEY.profile", Reason: judgement.ReasonPossibleReferenceByDescriptionLoose},
 			},
 		},
 	} {
@@ -91,12 +92,12 @@ func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
 	want := []JudgementItem{
 		{
 			FieldPath: ".spec.outputURI",
-			Reason:    "reference-not-representable",
+			Reason:    judgement.ReasonReferenceNotRepresentable,
 			Detail:    "gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
 		},
 		{
 			FieldPath: ".spec.gcsSource",
-			Reason:    "reference-not-representable",
+			Reason:    judgement.ReasonReferenceNotRepresentable,
 			Detail:    "gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
 		},
 	}
@@ -118,9 +119,9 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 	msg := scanConfigMessage(t)
 	const detail = "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets"
 	want := []JudgementItem{
-		{FieldPath: ".spec.authentication.googleAccount.password", Reason: "sensitive-field", Detail: detail},
-		{FieldPath: ".spec.authentication.customAccount.password", Reason: "sensitive-field", Detail: detail},
-		{FieldPath: ".spec.rootPassword", Reason: "sensitive-field", Detail: detail},
+		{FieldPath: ".spec.authentication.googleAccount.password", Reason: judgement.ReasonSensitiveField, Detail: detail},
+		{FieldPath: ".spec.authentication.customAccount.password", Reason: judgement.ReasonSensitiveField, Detail: detail},
+		{FieldPath: ".spec.rootPassword", Reason: judgement.ReasonSensitiveField, Detail: detail},
 	}
 
 	// Act
@@ -134,28 +135,24 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 
 // TestReferenceHintsQueuesNestedResourceReferences checks the entry for a
 // nested field with google.api.resource_reference. It gets the same
-// possible-reference detail PrepopulateSpec gives a top-level field.
-// ragCorpus's description also matches Classify, and both entries stay
-// because they are separate signals. The top-level corpus and parent fields
-// get no entry here, since PrepopulateSpec queues them; see
-// TestPrepopulateSpecQueuesResourceReferences.
+// authoritative-proto-reference detail PrepopulateSpec gives a top-level field.
+// ragCorpus's description also matches Classify, and heuristic hints are
+// suppressed when google.api.resource_reference is present so that
+// authoritative-proto-reference is the sole reference finding. The top-level
+// corpus and parent fields get no entry here, since PrepopulateSpec queues
+// them; see TestPrepopulateSpecQueuesResourceReferences.
 func TestReferenceHintsQueuesNestedResourceReferences(t *testing.T) {
 	// Arrange
 	msg := ragStoreMessage(t)
 	want := []JudgementItem{
 		{
 			FieldPath: ".spec.ragResources[].ragCorpus",
-			Reason:    "possible-reference",
+			Reason:    judgement.ReasonAuthoritativeProtoReference,
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
-			FieldPath: ".spec.ragResources[].ragCorpus",
-			Reason:    "possible-reference-by-description",
-			Detail:    `the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"`,
-		},
-		{
 			FieldPath: ".spec.ragResources[].parent",
-			Reason:    "possible-reference",
+			Reason:    judgement.ReasonAuthoritativeProtoReference,
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}
@@ -240,12 +237,12 @@ func TestReferenceHintsQueuesFieldsEndingInID(t *testing.T) {
 	want := []JudgementItem{
 		{
 			FieldPath: ".spec.authConfigID",
-			Reason:    "possible-reference-by-name",
+			Reason:    judgement.ReasonPossibleReferenceByName,
 			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
 		},
 		{
 			FieldPath: ".spec.targetPluginIDs",
-			Reason:    "possible-reference-by-name",
+			Reason:    judgement.ReasonPossibleReferenceByName,
 			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
 		},
 	}

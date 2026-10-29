@@ -18,11 +18,12 @@ metadata:
   name: beyondcorpappconnection-${uniqueId}
 spec:
   applicationEndpoint:
-  - host: foo-host
+    host: foo-host
     port: 8080
   connectors:
   - ${google_beyondcorp_app_connector.app_connector.id}
   projectRef:
     external: ${projectId}
+  region: us-central1
   resourceID: beyondcorpappconnection${uniqueId}
   type: TCP_PROXY

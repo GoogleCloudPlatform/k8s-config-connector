@@ -15,7 +15,7 @@ You MUST run the **4-Step Development Sequence** in exact sequential order (Step
 
 * **NEVER skip Step 1.** You must always run the migration test against real GCP first. This is required to exercise the actual GCP APIs, generate GCP project audit logs, and produce a baseline `_migration_diffs.json` from real GCP behavior. **Note that the automated agent has full access to a real GCP project in its environment (pre-configured inside the runtime container/sandbox via Application Default Credentials or environment variables) and is fully expected and required to run `./hack/record-gcp` against live GCP.**
 * **NEVER jump straight to Step 3 or Step 4.** Writing code or testing solely against MockGCP without first diagnosing on real GCP violates this workflow.
-* **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic logs baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+* **WHENEVER A TEST CASE OR CONTROLLER CODE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or **the controller code itself (including comparison logic, mappers, or adapter methods)**, you **MUST** run the migration test against real GCP (`./hack/record-gcp TestMigrationToDirect/fixtures/...` or with `E2E_GCP_TARGET=real`) to regenerate authentic golden logs and verify clean, 0-write takeover. Do not attempt to manually edit the logs or bypass recording live traffic.
 * **Do NOT Re-Run Real GCP for Normalization or Iterative Adapter Logic Fixes**: Once the Step 1 baseline is recorded against real GCP, do not repeatedly re-record against live GCP while adjusting comparison logic, defaults, or normalizers. Run-to-run variations in HTTP calls should be handled via normalizers.
 
 ---
@@ -54,6 +54,11 @@ Before writing any code or making any changes, you must diagnose the behavior ag
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
    ```
    *Note on `TEST_DEPENDENT_ORG_PROJECT_ID`:* If the fixture defines dependencies using `${TEST_DEPENDENT_ORG_PROJECT_ID}` (e.g., singleton resources like `ComputeProjectMetadata`), ensure `TEST_DEPENDENT_ORG_PROJECT_ID` is exported with a valid project ID (e.g. `TEST_DEPENDENT_ORG_PROJECT_ID=$GCP_PROJECT_ID`) if project creation permissions under the organization are not available to the test credentials.
+
+   *Note on external dependencies:* If the fixture references external pre-existing GCP resources (e.g., secrets in Secret Manager or KMS keys via `external: projects/${projectId}/...`), verify that these dependencies exist in the target GCP project before running `./hack/record-gcp`.
+
+   *Note on Allowlist-Gated Services & Credential Restrictions:* If live GCP API calls fail because a service is allowlist-gated (e.g., Media CDN / Edge Cache returning `404 Method not found`), requires human end-user credentials (e.g., OS Login `403 End user credentials must match`), or requires unavailable project permissions, document the specific command, full error message, and root cause in the PR description and a journal file under `.gemini/skills/solve-migration-diff-issues/journal/<kind>.md`. Fall back to validating migration hermetically against MockGCP, and do not check in mock-generated migration logs as real GCP golden logs.
+
 2. Open the recorded structured diff file:
    `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<resource>/<fixture-name>/_migration_diffs.json`
 3. Look for blocks containing `"isNewObject": false`. Note that diffs may appear from legacy re-reconciliation (Phase 2), Direct takeover (Phase 3), or Direct re-reconciliation (Phase 4). Diffs occurring during **Phase 3** or **Phase 4** indicate mismatches or re-reconciliation bugs where the Direct controller attempts to modify fields on an unchanged resource.
@@ -69,8 +74,9 @@ Using the diff produced in Step 1, identify why the Direct controller sees a dif
 * **Legacy Controller Bugs (Phase 2 Writes):** If there is an unexpected write in Phase 2, that means there is a bug in the legacy controller. If Phase 3 and Phase 4 have the same write as Phase 2, it is not a breaking change.
 
 ### Step 3: Formulate the Fix in the Direct Controller
-1. Locate the comparison logic for the resource:
+1. Locate or Refactor the comparison logic for the resource:
    * For most resources, the comparison is done directly inside the `Update` method (or helper functions) in the controller file: `pkg/controller/direct/<service>/<resource>_controller.go`.
+   * **BROWNFIELD COMPARISON REQUIREMENT:** Whenever there is a diff in state comparison for a brownfield resource, the controller comparison logic must be refactored using the standard **`common.CompareBrownfieldSpec`** (or **`common.CompareBrownfieldSpecAndLabels`** if label comparison is involved) utility instead of hand-writing custom comparison, defaulting, `MergeUnsetFields`, or slice sorting logic. This standardizes the 5-step brownfield comparison workflow (converting specs to protos, merging actual unset fields, sorting repeated lists, and producing field masks and top-level diffs automatically). A lightweight `normalize` hook should be passed for any reference/compute link formatting.
    * For extremely large or complex resources (like BigQuery Table), it may be split out into a separate file: `pkg/controller/direct/<service>/<resource>_compare.go`.
 2. **Prevent Parameter Swap Bugs:** When writing or editing comparison functions, **always** explicitly name the parameters `actual` and `desired` instead of `a` and `b`. This prevents accidentally swapping them during comparison and diff reporting.
 3. **Ignore Undesired Optional Fields:** If a field is optional in KRM and is omitted from the spec (desired is `nil`), the comparison logic should **ignore** the actual value returned by GCP rather than attempting to delete it.

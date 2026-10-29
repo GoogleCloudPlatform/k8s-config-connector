@@ -194,6 +194,7 @@ func compareResponsePolicy(ctx context.Context, actual, desired *api.ResponsePol
 	if err != nil {
 		return nil, err
 	}
+	maskedActual.ResponsePolicyName = desired.ResponsePolicyName
 
 	desired = common.DeepCopy(desired)
 
@@ -202,8 +203,14 @@ func compareResponsePolicy(ctx context.Context, actual, desired *api.ResponsePol
 			return err
 		}
 		p.Kind = "dns#responsePolicy"
+		if len(p.GkeClusters) == 0 {
+			p.GkeClusters = nil
+		}
 		for i := range p.GkeClusters {
 			p.GkeClusters[i].Kind = "dns#responsePolicyGKECluster"
+		}
+		if len(p.Networks) == 0 {
+			p.Networks = nil
 		}
 		for i := range p.Networks {
 			p.Networks[i].Kind = "dns#responsePolicyNetwork"
@@ -216,6 +223,10 @@ func compareResponsePolicy(ctx context.Context, actual, desired *api.ResponsePol
 	}
 	if err := setDefaults(desired); err != nil {
 		return nil, fmt.Errorf("normalizing desired network URLs: %w", err)
+	}
+
+	if desired.GkeClusters == nil {
+		maskedActual.GkeClusters = nil
 	}
 
 	diffs, _, err := diffs.GoogleAPI.Diff(ctx, maskedActual, desired)

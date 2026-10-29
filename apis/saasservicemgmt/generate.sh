@@ -38,6 +38,7 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource SaasServiceMgmtRelease:Release \
   --resource SaaSServiceMgmtRollout:Rollout \
+  --resource SaaSServiceMgmtRolloutKind:RolloutKind \
   --resource SaaSServiceMgmtTenant:Tenant \
   --resource SaaSServiceMgmtUnit:Unit
 

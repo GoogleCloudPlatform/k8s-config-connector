@@ -17,6 +17,38 @@
 // krm.group: vectorsearch.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.vectorsearch.v1
-// resource: VectorSearchCollection:Collection
+// resource: VectorsearchIndex:Index
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.vectorsearch.v1.DedicatedInfrastructure
+type DedicatedInfrastructure struct {
+	// Optional. Mode of the dedicated infrastructure.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DedicatedInfrastructure.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Autoscaling specification.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DedicatedInfrastructure.autoscaling_spec
+	AutoscalingSpec *DedicatedInfrastructure_AutoscalingSpec `json:"autoscalingSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vectorsearch.v1.DedicatedInfrastructure.AutoscalingSpec
+type DedicatedInfrastructure_AutoscalingSpec struct {
+	// Optional. The minimum number of replicas. If not set or set to `0`,
+	//  defaults to `2`. Must be >= `2` and <= `1000`.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DedicatedInfrastructure.AutoscalingSpec.min_replica_count
+	MinReplicaCount *int32 `json:"minReplicaCount,omitempty"`
+
+	// Optional. The maximum number of replicas. If not set or set to `0`,
+	//  defaults to the greater of `min_replica_count` and `5`. Must be >=
+	//  `min_replica_count` and <= `1000`.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DedicatedInfrastructure.AutoscalingSpec.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vectorsearch.v1.DenseScannIndex
+type DenseScannIndex struct {
+	// Optional. Feature norm type.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DenseScannIndex.feature_norm_type
+	FeatureNormType *string `json:"featureNormType,omitempty"`
+}

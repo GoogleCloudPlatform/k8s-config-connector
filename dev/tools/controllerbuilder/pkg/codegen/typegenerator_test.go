@@ -21,6 +21,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -1486,3 +1487,100 @@ func TestTypeGeneratorDerivedMessageMaps(t *testing.T) {
 		t.Errorf("got[1] = %+v, want tasks TargetMessage", got[1])
 	}
 }
+
+func TestGoTypeForProtoKindSignedAndFixedInts(t *testing.T) {
+	cases := []struct {
+		kind protoreflect.Kind
+		want string
+	}{
+		{protoreflect.Sint32Kind, "int32"},
+		{protoreflect.Sfixed32Kind, "int32"},
+		{protoreflect.Sint64Kind, "int64"},
+		{protoreflect.Sfixed64Kind, "int64"},
+		{protoreflect.Fixed32Kind, "uint32"},
+		{protoreflect.Fixed64Kind, "uint64"},
+	}
+	for _, tc := range cases {
+		if got := goTypeForProtoKind(tc.kind); got != tc.want {
+			t.Errorf("goTypeForProtoKind(%v) = %q, want %q", tc.kind, got, tc.want)
+		}
+	}
+}
+
+func TestMapperGeneratorSignedAndFixedInts(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("google/cloud/test/v1/test.proto"),
+		Package: protoPtr("google.cloud.test.v1"),
+		Syntax:  protoPtr("proto3"),
+		Options: &descriptorpb.FileOptions{
+			GoPackage: protoPtr("cloud.google.com/go/test/apiv1/testpb;testpb"),
+		},
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("IntKindsMessage"),
+				OneofDecl: []*descriptorpb.OneofDescriptorProto{
+					{Name: protoPtr("choice")},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: protoPtr("sint32_val"), JsonName: protoPtr("sint32Val"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SINT32)},
+					{Name: protoPtr("sfixed32_val"), JsonName: protoPtr("sfixed32Val"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SFIXED32)},
+					{Name: protoPtr("sint64_val"), JsonName: protoPtr("sint64Val"), Number: protoPtr(int32(3)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SINT64)},
+					{Name: protoPtr("sfixed64_val"), JsonName: protoPtr("sfixed64Val"), Number: protoPtr(int32(4)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SFIXED64)},
+					{Name: protoPtr("fixed32_val"), JsonName: protoPtr("fixed32Val"), Number: protoPtr(int32(5)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_FIXED32)},
+					{Name: protoPtr("sint32_list"), JsonName: protoPtr("sint32List"), Number: protoPtr(int32(6)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SINT32), Label: labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED)},
+					{Name: protoPtr("fixed64_list"), JsonName: protoPtr("fixed64List"), Number: protoPtr(int32(7)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_FIXED64), Label: labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED)},
+					{Name: protoPtr("oneof_sint32"), JsonName: protoPtr("oneofSint32"), Number: protoPtr(int32(8)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_SINT32), OneofIndex: protoPtr(int32(0))},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("protodesc.NewFile: %v", err)
+	}
+	msg := fd.Messages().ByName("IntKindsMessage")
+
+	mg := NewMapperGenerator(func(m protoreflect.MessageDescriptor) (string, bool) {
+		return "test", true
+	}, t.TempDir(), nil, false)
+	mg.AddGoImportAlias("cloud.google.com/go/test/apiv1/testpb", "pb")
+
+	pair := &typePair{
+		ProtoPackage:   fd.Package(),
+		ProtoGoPackage: "cloud.google.com/go/test/apiv1/testpb",
+		Proto:          msg,
+		KRMType: &gocode.GoStruct{
+			GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/test/v1alpha1",
+			Name:      "IntKindsMessage",
+			Fields: []*gocode.StructField{
+				{Name: "Sint32Val", Type: "*int32"},
+				{Name: "Sfixed32Val", Type: "*int32"},
+				{Name: "Sint64Val", Type: "*int64"},
+				{Name: "Sfixed64Val", Type: "*int64"},
+				{Name: "Fixed32Val", Type: "*uint32"},
+				{Name: "Sint32List", Type: "[]int32"},
+				{Name: "Fixed64List", Type: "[]uint64"},
+				{Name: "OneofSint32", Type: "*int32"},
+			},
+		},
+	}
+
+	var buf bytes.Buffer
+	mg.writeMapFunctionsForPair(&buf, t.TempDir(), pair)
+	got := buf.String()
+	for _, want := range []string{
+		"out.Sint32Val = direct.LazyPtr(in.GetSint32Val())",
+		"out.Sfixed64Val = direct.LazyPtr(in.GetSfixed64Val())",
+		"out.Fixed32Val = direct.LazyPtr(in.GetFixed32Val())",
+		"out.Sint32List = in.Sint32List",
+		"out.Fixed64List = in.Fixed64List",
+		"out.Sint32Val = direct.ValueOf(in.Sint32Val)",
+		"func IntKindsMessage_OneofSint32_ToProto",
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("expected generated mapper to contain %q, got:\n%s", want, got)
+		}
+	}
+}
+
+

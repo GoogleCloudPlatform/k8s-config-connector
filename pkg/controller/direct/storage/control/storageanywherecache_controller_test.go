@@ -23,12 +23,17 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 type ProtoMatcher struct {
@@ -308,7 +313,7 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("State change requested: RUNNING to PAUSED", func(t *testing.T) {
+	t.Run("State change requested: RUNNING to PAUSED - should set Ready to False without API calls", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -324,13 +329,8 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 			t.Fatalf("unexpected error creating actualPb: %v", mapCtx.Err())
 		}
 
-		// Setup Mocks
-		mockClient.EXPECT().PauseAnywhereCache(ctx, ProtoEq(&pb.PauseAnywhereCacheRequest{Name: anywhereCacheName})).Return(nil, nil).Times(1)
-		mockClient.EXPECT().GetAnywhereCache(ctx, ProtoEq(&pb.GetAnywhereCacheRequest{Name: anywhereCacheName}), gomock.Any()).Return(getActualPB(mapCtx, anywhereCacheStatePaused, "admit-on-first-miss", "86400s", false), nil).Times(1)
-		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage)).Return(nil).Times(1)
-		if mapCtx.Err() != nil {
-			t.Fatalf("unexpected error while setting mocks: %v", mapCtx.Err())
-		}
+		// Setup Mocks - no API calls should be made, status set to UpdateFailed
+		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionFalse, k8s.UpdateFailed, pausedStateNotSupportedMessage)).Return(nil).Times(1)
 
 		// Assert and Execute
 		err := getAdapter(mockClient, desiredKrm, actualPb).UpdateCache(ctx, mockUpdateOp)
@@ -367,7 +367,7 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("State change requested: DISABLED to PAUSED + Metadata Changes Requested", func(t *testing.T) {
+	t.Run("State change requested: DISABLED to PAUSED + Metadata Changes Requested - should set Ready to False without API calls", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
@@ -383,15 +383,8 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 			t.Fatalf("unexpected error creating actualPb: %v", mapCtx.Err())
 		}
 
-		// Setup Mocks
-		mockClient.EXPECT().ResumeAnywhereCache(ctx, ProtoEq(&pb.ResumeAnywhereCacheRequest{Name: anywhereCacheName})).Return(nil, nil).Times(1)
-		mockClient.EXPECT().PauseAnywhereCache(ctx, ProtoEq(&pb.PauseAnywhereCacheRequest{Name: anywhereCacheName})).Return(nil, nil).Times(1)
-		mockClient.EXPECT().GetAnywhereCache(ctx, ProtoEq(&pb.GetAnywhereCacheRequest{Name: anywhereCacheName}), gomock.Any()).Return(getActualPB(mapCtx, anywhereCacheStatePaused, "admit-on-first-miss", "86400s", true), nil).Times(1)
-		mockUpdateOp.EXPECT().RequestRequeue().Return().Times(1)
-		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage)).Return(nil).Times(1)
-		if mapCtx.Err() != nil {
-			t.Fatalf("unexpected error while setting mocks: %v", mapCtx.Err())
-		}
+		// Setup Mocks - no API calls should be made, status set to UpdateFailed
+		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionFalse, k8s.UpdateFailed, pausedStateNotSupportedMessage)).Return(nil).Times(1)
 
 		// Assert and Execute
 		err := getAdapter(mockClient, desiredKrm, actualPb).UpdateCache(ctx, mockUpdateOp)
@@ -435,7 +428,7 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 		mockClient := NewMockAnywhereCacheAPI(ctrl)
 		mockUpdateOp := NewMockDirectBaseUpdateOperation(ctrl)
 
-		desiredKrm := getDesiredKRM(anywhereCacheStateDisabled, "admit-on-second-miss", "86400s")
+		desiredKrm := getDesiredKRM(anywhereCacheStateDisabled, "admit-on-second-miss", "56400s")
 
 		desiredPb := StorageAnywhereCacheSpec_ToProto(mapCtx, &desiredKrm.Spec)
 		desiredPb.Name = anywhereCacheName
@@ -451,5 +444,120 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 		// Assert and Execute
 		err := getAdapter(mockClient, desiredKrm, actualPb).UpdateCache(ctx, mockUpdateOp)
 		assert.ErrorContains(t, err, "AnywhereCache cannot be updated in 'paused' or 'disabled' state. Please change the cache state to 'running' to apply metadata updates")
+	})
+
+	t.Run("admit-on-second-miss with actual admit-on-first-miss: steady state produces zero write calls", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		mapCtx := &direct.MapContext{}
+		mockClient := NewMockAnywhereCacheAPI(ctrl)
+		mockUpdateOp := NewMockDirectBaseUpdateOperation(ctrl)
+
+		// Spec has admit-on-second-miss, actual has admit-on-first-miss, same ttl
+		desiredKrm := getDesiredKRM(anywhereCacheStateRunning, "admit-on-second-miss", "86400s")
+		actualPb := getActualPB(mapCtx, anywhereCacheStateRunning, "admit-on-first-miss", "86400s", false)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error creating actualPb: %v", mapCtx.Err())
+		}
+
+		// No UpdateAnywhereCache call expected; status set to UpToDate
+		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage)).Return(nil).Times(1)
+
+		err := getAdapter(mockClient, desiredKrm, actualPb).UpdateCache(ctx, mockUpdateOp)
+		assert.NoError(t, err)
+	})
+
+	t.Run("admit-on-second-miss with actual admit-on-first-miss: updateMask contains only ttl when ttl changed", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		mapCtx := &direct.MapContext{}
+		mockClient := NewMockAnywhereCacheAPI(ctrl)
+		mockUpdateOp := NewMockDirectBaseUpdateOperation(ctrl)
+
+		desiredKrm := getDesiredKRM(anywhereCacheStateRunning, "admit-on-second-miss", "56400s")
+		desiredPb := StorageAnywhereCacheSpec_ToProto(mapCtx, &desiredKrm.Spec)
+		desiredPb.Name = anywhereCacheName
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		actualPb := getActualPB(mapCtx, anywhereCacheStateRunning, "admit-on-first-miss", "86400s", false)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error creating actualPb: %v", mapCtx.Err())
+		}
+
+		// updateMask MUST only contain "ttl", not "admission_policy"
+		expectedUpdateReq := &pb.UpdateAnywhereCacheRequest{
+			UpdateMask:    &fieldmaskpb.FieldMask{Paths: []string{"ttl"}},
+			AnywhereCache: desiredPb,
+		}
+
+		updatedActualPb := getActualPB(mapCtx, anywhereCacheStateRunning, "admit-on-first-miss", "56400s", true)
+		mockClient.EXPECT().UpdateAnywhereCache(ctx, ProtoEq(expectedUpdateReq)).Return(nil, nil).Times(1)
+		mockClient.EXPECT().GetAnywhereCache(ctx, ProtoEq(&pb.GetAnywhereCacheRequest{Name: anywhereCacheName}), gomock.Any()).Return(updatedActualPb, nil).Times(1)
+		mockUpdateOp.EXPECT().UpdateStatus(ctx, gomock.Any(), getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage)).Return(nil).Times(1)
+
+		err := getAdapter(mockClient, desiredKrm, actualPb).UpdateCache(ctx, mockUpdateOp)
+		assert.NoError(t, err)
+	})
+
+	t.Run("UpdateState directly with desiredState paused returns error", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		mapCtx := &direct.MapContext{}
+		mockClient := NewMockAnywhereCacheAPI(ctrl)
+
+		desiredKrm := getDesiredKRM(anywhereCacheStatePaused, "admit-on-first-miss", "86400s")
+		actualPb := getActualPB(mapCtx, anywhereCacheStateRunning, "admit-on-first-miss", "86400s", false)
+
+		adapter := getAdapter(mockClient, desiredKrm, actualPb)
+		err := adapter.UpdateState(ctx)
+		assert.ErrorContains(t, err, "desiredState 'paused' is no longer supported by the Cloud Storage API. Set desiredState to 'running' or 'disabled'.")
+	})
+
+	t.Run("Create with desiredState paused does not call GCP and sets Ready condition to False", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		mockClient := NewMockAnywhereCacheAPI(ctrl)
+		// Expect NO calls on mockClient
+
+		scheme := runtime.NewScheme()
+		assert.NoError(t, v1.AddToScheme(scheme))
+		assert.NoError(t, storagev1beta1.AddToScheme(scheme))
+
+		desiredKrm := getDesiredKRM(anywhereCacheStatePaused, "admit-on-first-miss", "86400s")
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(storagev1beta1.StorageAnywhereCacheGVK)
+		u.SetName("test-cache")
+		u.SetNamespace("test-ns")
+
+		k8sClient := fake.NewClientBuilder().
+			WithScheme(scheme).
+			WithStatusSubresource(u).
+			WithRuntimeObjects(u).
+			Build()
+
+		createOp := directbase.NewCreateOperation(lifecyclehandler.LifecycleHandler{}, k8sClient, u)
+		adapter := getAdapter(mockClient, desiredKrm, nil)
+
+		err := adapter.Create(ctx, createOp)
+		assert.NoError(t, err)
+		assert.True(t, createOp.HasSetReadyCondition)
+
+		status, found, err := unstructured.NestedMap(u.Object, "status")
+		assert.NoError(t, err)
+		assert.True(t, found)
+		conditions, found, err := unstructured.NestedSlice(status, "conditions")
+		assert.NoError(t, err)
+		assert.True(t, found)
+		assert.Len(t, conditions, 1)
+		cond := conditions[0].(map[string]any)
+		assert.Equal(t, string(v1.ConditionFalse), cond["status"])
+		assert.Equal(t, k8s.UpdateFailed, cond["reason"])
+		assert.Equal(t, pausedStateNotSupportedMessage, cond["message"])
 	})
 }

@@ -29,7 +29,6 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
@@ -38,12 +37,36 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource VMMigrationGroup:Group
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.vmmigration.v1 \
+  --api-version vmmigration.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource VMMigrationDatacenterConnector:DatacenterConnector \
+  --resource VMMigrationMigratingVM:MigratingVm \
+  --resource VMMigrationSource:Source \
+  --resource VMMigrationTargetProject:TargetProject
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.vmmigration.v1 \
+  --api-version vmmigration.cnrm.cloud.google.com/v1alpha1 \
+  --resource VMMigrationDatacenterConnector:DatacenterConnector \
+  --resource VMMigrationMigratingVM:MigratingVm \
+  --resource VMMigrationSource:Source \
+  --resource VMMigrationTargetProject:TargetProject
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.vmmigration.v1 \
   --api-version vmmigration.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/vmmigration/
+if [ -d "${REPO_ROOT}/pkg/controller/direct/vmmigration" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vmmigration/
+fi

@@ -1,0 +1,7 @@
+When implementing VertexAIFeaturestoreEntityTypeFeature, I found:
+1. `VertexAIFeaturestoreEntityTypeFeature` is a child resource under `VertexAIFeaturestoreEntityType`, with canonical GCP URL: `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entityType}/features/{feature}`.
+2. In KRM, its parent is specified via `spec.entitytype` (in the format `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entitytype}`) rather than having separate `projectRef` or `location` fields.
+3. We parse `spec.entitytype` using an internal `entityTypeParentFormat` `gcpurls.Template`, which cleanly handles both plain resource paths (`projects/...`) and fully-qualified URLs (`https://aiplatform.googleapis.com/...`).
+4. Its status does not contain `externalRef` or `name`, so per SKILL.md, no status cross-check was implemented in `GetIdentity`, and no schema changes were made.
+5. In `Normalize`, since it is a legacy Terraform-managed resource without `status.externalRef`, we use `refs.NormalizeWithFallback`, checking that the `Ready` condition is `True` before building the external string via `getIdentityFromVertexAIFeaturestoreEntityTypeFeatureSpec`.
+6. Both the full resource URL and parent entityType URLs are present in `docs/ai/metadata/discovery_names.jsonl`, allowing `TestRegisteredTemplatesMatchCAI` to pass without adding exceptions to `pkg/gcpurls/registry_test.go`.

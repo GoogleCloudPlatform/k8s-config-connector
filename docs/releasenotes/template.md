@@ -15,6 +15,7 @@
 # 6. Do NOT include smoke test changes or SMOKETEST phase additions.
 # 7. If a resource is listed in "Reconciliation Improvements" (e.g. opt-in direct reconciler), it MUST NOT be mentioned in "New Alpha Resources".
 # 8. Only release note resources whose controllers have been merged.
+# 9. Do NOT include resources whose Kind is in BLOCKED_KINDS in dev/tasks/build-release-bundle; their CRDs are excluded from the release bundle. Verify with `./dev/tasks/gather-release-notes <previous_tag> <current_tag> --check-notes <this file>`.
 
 ** This version is not yet released; this document is gathering release notes
 for the future release **

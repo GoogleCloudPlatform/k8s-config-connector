@@ -32,6 +32,56 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CodeCompilationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CodeCompilationConfig) *krmdataformv1alpha1.CodeCompilationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.CodeCompilationConfig{}
+	out.DefaultDatabase = direct.LazyPtr(in.GetDefaultDatabase())
+	out.DefaultSchema = direct.LazyPtr(in.GetDefaultSchema())
+	out.DefaultLocation = direct.LazyPtr(in.GetDefaultLocation())
+	out.AssertionSchema = direct.LazyPtr(in.GetAssertionSchema())
+	out.Vars = in.Vars
+	out.DatabaseSuffix = direct.LazyPtr(in.GetDatabaseSuffix())
+	out.SchemaSuffix = direct.LazyPtr(in.GetSchemaSuffix())
+	out.TablePrefix = direct.LazyPtr(in.GetTablePrefix())
+	out.BuiltinAssertionNamePrefix = direct.LazyPtr(in.GetBuiltinAssertionNamePrefix())
+	out.DefaultNotebookRuntimeOptions = NotebookRuntimeOptions_v1alpha1_FromProto(mapCtx, in.GetDefaultNotebookRuntimeOptions())
+	return out
+}
+func CodeCompilationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.CodeCompilationConfig) *pb.CodeCompilationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeCompilationConfig{}
+	out.DefaultDatabase = direct.ValueOf(in.DefaultDatabase)
+	out.DefaultSchema = direct.ValueOf(in.DefaultSchema)
+	out.DefaultLocation = direct.ValueOf(in.DefaultLocation)
+	out.AssertionSchema = direct.ValueOf(in.AssertionSchema)
+	out.Vars = in.Vars
+	out.DatabaseSuffix = direct.ValueOf(in.DatabaseSuffix)
+	out.SchemaSuffix = direct.ValueOf(in.SchemaSuffix)
+	out.TablePrefix = direct.ValueOf(in.TablePrefix)
+	out.BuiltinAssertionNamePrefix = direct.ValueOf(in.BuiltinAssertionNamePrefix)
+	out.DefaultNotebookRuntimeOptions = NotebookRuntimeOptions_v1alpha1_ToProto(mapCtx, in.DefaultNotebookRuntimeOptions)
+	return out
+}
+func DataEncryptionStateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataEncryptionState) *krmdataformv1alpha1.DataEncryptionStateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataEncryptionStateObservedState{}
+	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	return out
+}
+func DataEncryptionStateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataEncryptionStateObservedState) *pb.DataEncryptionState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataEncryptionState{}
+	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
+	return out
+}
 func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
 	if in == nil {
 		return nil
@@ -78,6 +128,54 @@ func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataf
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: ContainingFolder
+	return out
+}
+func DataformReleaseConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig) *krmdataformv1alpha1.DataformReleaseConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformReleaseConfigObservedState{}
+	// MISSING: Name
+	out.RecentScheduledReleaseRecords = direct.Slice_FromProto(mapCtx, in.RecentScheduledReleaseRecords, ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_FromProto)
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformReleaseConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformReleaseConfigObservedState) *pb.ReleaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig{}
+	// MISSING: Name
+	out.RecentScheduledReleaseRecords = direct.Slice_ToProto(mapCtx, in.RecentScheduledReleaseRecords, ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_ToProto)
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformReleaseConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig) *krmdataformv1alpha1.DataformReleaseConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformReleaseConfigSpec{}
+	// MISSING: Name
+	out.GitCommitish = direct.LazyPtr(in.GetGitCommitish())
+	out.CodeCompilationConfig = CodeCompilationConfig_v1alpha1_FromProto(mapCtx, in.GetCodeCompilationConfig())
+	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.ReleaseCompilationResult = direct.LazyPtr(in.GetReleaseCompilationResult())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataformReleaseConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformReleaseConfigSpec) *pb.ReleaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig{}
+	// MISSING: Name
+	out.GitCommitish = direct.ValueOf(in.GitCommitish)
+	out.CodeCompilationConfig = CodeCompilationConfig_v1alpha1_ToProto(mapCtx, in.CodeCompilationConfig)
+	out.CronSchedule = direct.ValueOf(in.CronSchedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.ReleaseCompilationResult = direct.ValueOf(in.ReleaseCompilationResult)
+	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
 func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
@@ -151,4 +249,232 @@ func DataformTeamFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmd
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
+}
+func DataformWorkflowConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkflowConfig) *krmdataformv1alpha1.DataformWorkflowConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformWorkflowConfigObservedState{}
+	// MISSING: Name
+	out.RecentScheduledExecutionRecords = direct.Slice_FromProto(mapCtx, in.RecentScheduledExecutionRecords, WorkflowConfig_ScheduledExecutionRecordObservedState_v1alpha1_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformWorkflowConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformWorkflowConfigObservedState) *pb.WorkflowConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkflowConfig{}
+	// MISSING: Name
+	out.RecentScheduledExecutionRecords = direct.Slice_ToProto(mapCtx, in.RecentScheduledExecutionRecords, WorkflowConfig_ScheduledExecutionRecordObservedState_v1alpha1_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformWorkflowConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkflowConfig) *krmdataformv1alpha1.DataformWorkflowConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformWorkflowConfigSpec{}
+	// MISSING: Name
+	out.ReleaseConfig = direct.LazyPtr(in.GetReleaseConfig())
+	out.InvocationConfig = InvocationConfig_v1alpha1_FromProto(mapCtx, in.GetInvocationConfig())
+	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataformWorkflowConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformWorkflowConfigSpec) *pb.WorkflowConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkflowConfig{}
+	// MISSING: Name
+	out.ReleaseConfig = direct.ValueOf(in.ReleaseConfig)
+	out.InvocationConfig = InvocationConfig_v1alpha1_ToProto(mapCtx, in.InvocationConfig)
+	out.CronSchedule = direct.ValueOf(in.CronSchedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func DataformWorkspaceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Workspace) *krmdataformv1alpha1.DataformWorkspaceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformWorkspaceObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DataEncryptionState = DataEncryptionStateObservedState_v1alpha1_FromProto(mapCtx, in.GetDataEncryptionState())
+	out.InternalMetadata = in.InternalMetadata
+	out.PrivateResourceMetadata = PrivateResourceMetadataObservedState_v1alpha1_FromProto(mapCtx, in.GetPrivateResourceMetadata())
+	return out
+}
+func DataformWorkspaceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformWorkspaceObservedState) *pb.Workspace {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workspace{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DataEncryptionState = DataEncryptionStateObservedState_v1alpha1_ToProto(mapCtx, in.DataEncryptionState)
+	out.InternalMetadata = in.InternalMetadata
+	out.PrivateResourceMetadata = PrivateResourceMetadataObservedState_v1alpha1_ToProto(mapCtx, in.PrivateResourceMetadata)
+	return out
+}
+func DataformWorkspaceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Workspace) *krmdataformv1alpha1.DataformWorkspaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformWorkspaceSpec{}
+	// MISSING: Name
+	out.DisableMoves = in.DisableMoves
+	return out
+}
+func DataformWorkspaceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformWorkspaceSpec) *pb.Workspace {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workspace{}
+	// MISSING: Name
+	out.DisableMoves = in.DisableMoves
+	return out
+}
+func InvocationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InvocationConfig) *krmdataformv1alpha1.InvocationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.InvocationConfig{}
+	out.IncludedTargets = direct.Slice_FromProto(mapCtx, in.IncludedTargets, Target_v1alpha1_FromProto)
+	out.IncludedTags = in.IncludedTags
+	out.TransitiveDependenciesIncluded = direct.LazyPtr(in.GetTransitiveDependenciesIncluded())
+	out.TransitiveDependentsIncluded = direct.LazyPtr(in.GetTransitiveDependentsIncluded())
+	out.FullyRefreshIncrementalTablesEnabled = direct.LazyPtr(in.GetFullyRefreshIncrementalTablesEnabled())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.QueryPriority = direct.Enum_FromProto(mapCtx, in.GetQueryPriority())
+	return out
+}
+func InvocationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.InvocationConfig) *pb.InvocationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InvocationConfig{}
+	out.IncludedTargets = direct.Slice_ToProto(mapCtx, in.IncludedTargets, Target_v1alpha1_ToProto)
+	out.IncludedTags = in.IncludedTags
+	out.TransitiveDependenciesIncluded = direct.ValueOf(in.TransitiveDependenciesIncluded)
+	out.TransitiveDependentsIncluded = direct.ValueOf(in.TransitiveDependentsIncluded)
+	out.FullyRefreshIncrementalTablesEnabled = direct.ValueOf(in.FullyRefreshIncrementalTablesEnabled)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if oneof := InvocationConfig_QueryPriority_ToProto(mapCtx, in.QueryPriority); oneof != nil {
+		out.QueryPriority = oneof
+	}
+	return out
+}
+func NotebookRuntimeOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeOptions) *krmdataformv1alpha1.NotebookRuntimeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.NotebookRuntimeOptions{}
+	out.GCSOutputBucket = direct.LazyPtr(in.GetGcsOutputBucket())
+	out.AiPlatformNotebookRuntimeTemplate = direct.LazyPtr(in.GetAiPlatformNotebookRuntimeTemplate())
+	return out
+}
+func NotebookRuntimeOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.NotebookRuntimeOptions) *pb.NotebookRuntimeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntimeOptions{}
+	if oneof := NotebookRuntimeOptions_GcsOutputBucket_ToProto(mapCtx, in.GCSOutputBucket); oneof != nil {
+		out.ExecutionSink = oneof
+	}
+	out.AiPlatformNotebookRuntimeTemplate = direct.ValueOf(in.AiPlatformNotebookRuntimeTemplate)
+	return out
+}
+func NotebookRuntimeOptions_GcsOutputBucket_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookRuntimeOptions_GcsOutputBucket {
+	if in == nil {
+		return nil
+	}
+	return &pb.NotebookRuntimeOptions_GcsOutputBucket{GcsOutputBucket: *in}
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig_ScheduledReleaseRecord) *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState{}
+	out.CompilationResult = direct.LazyPtr(in.GetCompilationResult())
+	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
+	out.ReleaseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetReleaseTime())
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState) *pb.ReleaseConfig_ScheduledReleaseRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig_ScheduledReleaseRecord{}
+	if oneof := ReleaseConfig_ScheduledReleaseRecordObservedState_CompilationResult_ToProto(mapCtx, in.CompilationResult); oneof != nil {
+		out.Result = oneof
+	}
+	if oneof := direct.Status_ToProto(mapCtx, in.ErrorStatus); oneof != nil {
+		out.Result = &pb.ReleaseConfig_ScheduledReleaseRecord_ErrorStatus{ErrorStatus: oneof}
+	}
+	out.ReleaseTime = direct.StringTimestamp_ToProto(mapCtx, in.ReleaseTime)
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_CompilationResult_ToProto(mapCtx *direct.MapContext, in *string) *pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult {
+	if in == nil {
+		return nil
+	}
+	return &pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult{CompilationResult: *in}
+}
+func Target_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krmdataformv1alpha1.Target {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.Target{}
+	out.Database = direct.LazyPtr(in.GetDatabase())
+	out.Schema = direct.LazyPtr(in.GetSchema())
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func Target_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.Target) *pb.Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Target{}
+	out.Database = direct.ValueOf(in.Database)
+	out.Schema = direct.ValueOf(in.Schema)
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func WorkflowConfig_ScheduledExecutionRecordObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkflowConfig_ScheduledExecutionRecord) *krmdataformv1alpha1.WorkflowConfig_ScheduledExecutionRecordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.WorkflowConfig_ScheduledExecutionRecordObservedState{}
+	out.WorkflowInvocation = direct.LazyPtr(in.GetWorkflowInvocation())
+	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
+	out.ExecutionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExecutionTime())
+	return out
+}
+func WorkflowConfig_ScheduledExecutionRecordObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.WorkflowConfig_ScheduledExecutionRecordObservedState) *pb.WorkflowConfig_ScheduledExecutionRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkflowConfig_ScheduledExecutionRecord{}
+	if oneof := WorkflowConfig_ScheduledExecutionRecordObservedState_WorkflowInvocation_ToProto(mapCtx, in.WorkflowInvocation); oneof != nil {
+		out.Result = oneof
+	}
+	if oneof := direct.Status_ToProto(mapCtx, in.ErrorStatus); oneof != nil {
+		out.Result = &pb.WorkflowConfig_ScheduledExecutionRecord_ErrorStatus{ErrorStatus: oneof}
+	}
+	out.ExecutionTime = direct.StringTimestamp_ToProto(mapCtx, in.ExecutionTime)
+	return out
+}
+func WorkflowConfig_ScheduledExecutionRecordObservedState_WorkflowInvocation_ToProto(mapCtx *direct.MapContext, in *string) *pb.WorkflowConfig_ScheduledExecutionRecord_WorkflowInvocation {
+	if in == nil {
+		return nil
+	}
+	return &pb.WorkflowConfig_ScheduledExecutionRecord_WorkflowInvocation{WorkflowInvocation: *in}
 }

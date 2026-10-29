@@ -18,8 +18,9 @@ metadata:
   name: beyondcorpappconnector-${uniqueId}
 spec:
   principalInfo:
-  - serviceAccount:
-    - email: ${google_service_account.service_account.email}
+    serviceAccount:
+      email: ${google_service_account.service_account.email}
   projectRef:
     external: ${projectId}
+  region: us-central1
   resourceID: beyondcorpappconnector${uniqueId}

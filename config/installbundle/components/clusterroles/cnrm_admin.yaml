@@ -392,6 +392,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -441,6 +453,30 @@ rules:
   - delete
 - apiGroups:
   - cloudbuild.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudchannel.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudcontrolspartner.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1208,6 +1244,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gsuiteaddons.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1544,6 +1592,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - parallelstore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - parametermanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1652,6 +1712,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - retail.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - run.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1713,6 +1785,18 @@ rules:
   - delete
 - apiGroups:
   - securitycentermanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - securityposture.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1868,6 +1952,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - testing.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2001,6 +2097,18 @@ rules:
   - delete
 - apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - websecurityscanner.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -36,6 +36,9 @@ go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto 
   };
 EOF
 
+sed -i 's/{project=projects\/\*}:addFirebase/{name=projects\/\*}:addFirebase/' ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/firebase/v1beta1/service.proto
+
+
 # SQL patches
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message BackupConfiguration --mode append <<EOF
@@ -287,6 +290,136 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1b
 
   // DesiredPrivilegedAdmissionConfig is the desired privileged admission control.
   optional PrivilegedAdmissionConfig desired_privileged_admission_config = 157;
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message ContainerdConfig --mode append <<'EOF'
+
+  // Defines writable cgroups configuration.
+  message WritableCgroups {
+    // Optional. Whether writable cgroups is enabled.
+    bool enabled = 1 [(google.api.field_behavior) = OPTIONAL];
+  }
+
+  // RegistryHostConfig configures the top-level structure for a single
+  // containerd registry server's configuration, which represents one hosts.toml
+  // file on the node. It will override the same fqdns in
+  // PrivateRegistryAccessConfig.
+  message RegistryHostConfig {
+    // CertificateConfig configures certificate for the registry.
+    message CertificateConfig {
+      // One of the methods to configure the certificate.
+      oneof certificate {
+        // The URI configures a secret from
+        // [Secret Manager](https://cloud.google.com/secret-manager)
+        // in the format
+        // "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION" for
+        // global secret or
+        // "projects/$PROJECT_ID/locations/$REGION/secrets/$SECRET_NAME/versions/$VERSION"
+        // for regional secret. Version can be fixed (e.g. "2") or "latest"
+        string gcp_secret_manager_secret_uri = 1;
+      }
+    }
+
+    // CertificateConfigPair configures pairs of certificates, which is used for
+    // client certificate and key pairs under a registry.
+    message CertificateConfigPair {
+      // Cert configures the client certificate.
+      CertificateConfig cert = 1;
+
+      // Key configures the client private key. Optional.
+      CertificateConfig key = 2;
+    }
+
+    // RegistryHeader configures headers for the registry.
+    message RegistryHeader {
+      // Key configures the header key.
+      string key = 1;
+
+      // Value configures the header value.
+      repeated string value = 2;
+    }
+
+    // HostCapability configures capabilities for the registry host.
+    enum HostCapability {
+      // UNKNOWN should never be set.
+      HOST_CAPABILITY_UNSPECIFIED = 0;
+
+      // Pull represents the capability to fetch manifests and blobs by digest.
+      HOST_CAPABILITY_PULL = 1;
+
+      // Resolve represents the capability to fetch manifests by name.
+      HOST_CAPABILITY_RESOLVE = 2;
+
+      // Push represents the capability to push blobs and manifests.
+      HOST_CAPABILITY_PUSH = 3;
+    }
+
+    // HostConfig configures the registry host under a given Server.
+    message HostConfig {
+      // Host configures the registry host/mirror.
+      // It supports fully qualified domain names (FQDNs) and IP addresses.
+      // Specifying scheme, port or path is supported. Scheme can only be http
+      // or https.
+      // Wildcards are NOT supported.
+      // Examples:
+      // - `my.customdomain.com`
+      // - `https://my.customdomain.com/path`
+      // - `10.0.1.2:5000`
+      string host = 1;
+
+      // Capabilities represent the capabilities of the registry host,
+      // specifying what operations a host is capable of performing.
+      // If not set, containerd enables all capabilities by default.
+      repeated HostCapability capabilities = 2;
+
+      // OverridePath is used to indicate the host's API root endpoint is
+      // defined in the URL path rather than by the API specification. This may
+      // be used with non-compliant OCI registries which are missing the /v2
+      // prefix.
+      // If not set, containerd sets default false.
+      bool override_path = 3;
+
+      // Header configures the registry host headers.
+      repeated RegistryHeader header = 4;
+
+      // CA configures the registry host certificate.
+      repeated CertificateConfig ca = 5;
+
+      // Client configures the registry host client certificate and key.
+      repeated CertificateConfigPair client = 6;
+
+      // Specifies the maximum duration allowed for a connection attempt to
+      // complete. A shorter timeout helps reduce delays when falling back to
+      // the original registry if the mirror is unreachable.
+      // Maximum allowed value is 180s. If not set, containerd sets default 30s.
+      // The value should be a decimal number of seconds with an `s` suffix.
+      google.protobuf.Duration dial_timeout = 7;
+    }
+
+    // Defines the host name of the registry server, which will be used to
+    // create configuration file as /etc/containerd/hosts.d/<server>/hosts.toml.
+    // It supports fully qualified domain names (FQDN) and IP addresses:
+    // Specifying port is supported, while scheme and path are NOT supported.
+    // Wildcards are NOT supported.
+    // Examples:
+    // - `my.customdomain.com`
+    // - `10.0.1.2:5000`
+    string server = 1;
+
+    // HostConfig configures a list of host-specific configurations for the
+    // server.
+    // Each server can have at most 10 host configurations.
+    repeated HostConfig hosts = 2;
+  }
+
+  // Optional. WritableCgroups defines writable cgroups configuration for the
+  // node pool.
+  WritableCgroups writable_cgroups = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // RegistryHostConfig configures containerd registry host configuration.
+  // Each registry_hosts represents a hosts.toml file.
+  // At most 25 registry_hosts are allowed.
+  repeated RegistryHostConfig registry_hosts = 3;
 EOF
 
 

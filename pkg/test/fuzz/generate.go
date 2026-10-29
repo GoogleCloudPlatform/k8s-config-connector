@@ -17,6 +17,7 @@ package fuzz
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"testing"
 
 	"google.golang.org/protobuf/proto"
@@ -230,6 +231,27 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randStream.Int31()
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "string->double":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randStream.NormFloat64()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOfFloat64(v))
+				}
+			case "string->float":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					v := randStream.Float32()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOfFloat32(v))
+				}
+			case "int64->string":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randStream.Int63()
+					v := randomString(randStream)
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
 
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
@@ -322,26 +344,51 @@ type ClearFields struct {
 	Paths sets.Set[string]
 }
 
-func (v *ClearFields) VisitPrimitive(path string, val protoreflect.Value, setter func(v protoreflect.Value)) {
+func (v *ClearFields) hasPath(path string) bool {
 	if v.Paths.Has(path) {
+		return true
+	}
+	if strings.Contains(path, "[") {
+		var sb strings.Builder
+		inBracket := false
+		for _, r := range path {
+			if r == '[' {
+				inBracket = true
+				sb.WriteRune('[')
+			} else if r == ']' {
+				inBracket = false
+				sb.WriteRune(']')
+			} else if !inBracket {
+				sb.WriteRune(r)
+			}
+		}
+		if v.Paths.Has(sb.String()) {
+			return true
+		}
+	}
+	return false
+}
+
+func (v *ClearFields) VisitPrimitive(path string, val protoreflect.Value, setter func(v protoreflect.Value)) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitMessage(path string, msg protoreflect.Message, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitList(path string, msg protoreflect.List, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
 
 func (v *ClearFields) VisitMap(path string, msg protoreflect.Map, setter func(v protoreflect.Value)) {
-	if v.Paths.Has(path) {
+	if v.hasPath(path) {
 		setter(protoreflect.Value{})
 	}
 }
@@ -504,7 +551,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 
 					return true
 				})
-			case "string->bytes":
+			case "string->bytes", "int64->string":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {
@@ -525,7 +572,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
-			case "string->int32", "string->int64", "string->uint32", "string->uint64":
+			case "string->int32", "string->int64", "string->uint32", "string->uint64", "string->float", "string->double":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {

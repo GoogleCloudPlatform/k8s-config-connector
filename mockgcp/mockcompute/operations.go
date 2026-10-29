@@ -101,12 +101,12 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.InsertTime = PtrTo(formatTime(now))
 	op.Id = PtrTo(uint64(nanos))
 
-	// Specific to ComputeFirewallPolicy
+	// Specific to ComputeFirewallPolicy and ComputeOrganizationSecurityPolicy
 	// Remove targetId and targetLink when status is RUNNING to match realGCP operation
 	// ref: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2800/commits/32fdacd53d59c36626fce16f2b0125a8a455f3d6#r1783642429
 	targetId := op.TargetId
 	targetLink := op.TargetLink
-	if op.OperationType != nil && *op.OperationType == "createFirewallPolicy" {
+	if op.OperationType != nil && (*op.OperationType == "createFirewallPolicy" || *op.OperationType == "createOrganizationSecurityPolicy") {
 		op.TargetId = nil
 		op.TargetLink = nil
 	}
@@ -138,9 +138,9 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	finished.Status = PtrTo(pb.Operation_DONE)
 	finished.EndTime = PtrTo(formatTime(time.Now()))
 
-	// Specific to ComputeFirewallPolicy
+	// Specific to ComputeFirewallPolicy and ComputeOrganizationSecurityPolicy
 	// Add targetId and targetLink back when status is DONE to match realGCP operation
-	if op.OperationType != nil && *op.OperationType == "createFirewallPolicy" {
+	if op.OperationType != nil && (*op.OperationType == "createFirewallPolicy" || *op.OperationType == "createOrganizationSecurityPolicy") {
 		finished.TargetId = targetId
 		finished.TargetLink = targetLink
 	}

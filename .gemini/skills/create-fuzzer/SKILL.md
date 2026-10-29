@@ -43,6 +43,11 @@ This skill guides an automated agent through the process of implementing a round
      - The Spec ToProto mapper
      - The Status ObservedState FromProto mapper
      - The Status ObservedState ToProto mapper
+   - **Spec-Only Resources (No ObservedState or RPC Request Messages):**
+     - If the resource does not have an `ObservedState` in its Status (e.g., resources that only have `conditions` and `observedGeneration`, or resources that map to RPC request messages such as `SetDefaultProcessorVersionRequest` or `AddResourcePoliciesDiskRequest`):
+       - Note that `controllerbuilder generate-mapper` skips messages ending in `*Request`, so `Spec_FromProto` and `Spec_ToProto` should be implemented manually in a dedicated `<kind>_mapper.go` file (e.g., `pkg/controller/direct/<service>/<kind>_mapper.go`) rather than inside the fuzzer file.
+       - Instantiate using `fuzztesting.NewKRMTypedSpecFuzzer`, passing the zero-value proto and the Spec FromProto/ToProto mappers.
+       - Register the fuzzer using `fuzztesting.RegisterKRMSpecFuzzer` instead of `RegisterKRMFuzzer`.
    - Ensure the direct package is registered in `pkg/controller/direct/register/register.go` by adding an anonymous import in alphabetical order (e.g., `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"`), otherwise its `init()` function will not be executed by the fuzz test suite.
 
 4. **Map Fuzzed Proto Fields**
@@ -51,8 +56,12 @@ This skill guides an automated agent through the process of implementing a round
      - **Status Fields:** Call `f.StatusField(".proto_field_name")` for fields mapped in Status/Observed State. The fuzzer will ignore them during the Spec round-trip.
      - **Unimplemented/Identity Fields:** Call `f.Unimplemented_Identity(".name")` for the resource name/ID GCP fields that are not part of the standard KCC resource's Spec or Status.
      - **Not Yet Triaged/Unimplemented Fields:** Call `f.Unimplemented_NotYetTriaged(".field_name")` or other unimplemented helpers for fields that are not yet implemented by KCC.
+     - **Nested Fields in Lists/Maps:** For repeated fields or maps of messages with untriaged subfields, use bracket wildcard notation, e.g. `f.Unimplemented_NotYetTriaged(".handlers[].api_endpoint")` or `f.Unimplemented_NotYetTriaged(".deployment.files[].mime_type")`.
    - **Document Field Comparison**: Always add detailed comparison comments in the fuzzer file (just above `f.SpecField` calls) that explicitly compare the KRM Spec type fields with their corresponding fuzzer/proto field mapping status. This helps reviewers verify that every field in the KRM Spec was accounted for, especially when fields map to nested untriaged proto structures (e.g. `lifecycleRule` maps to `f.Unimplemented_NotYetTriaged(".lifecycle")`).
    - **CRITICAL - Helper Wrappers Only**: Always use the wrapper helper functions (such as `f.SpecField()`, `f.StatusField()`, `f.Unimplemented_Identity()`) instead of directly manipulating the fields sets via `.Insert()` (e.g. do NOT use `f.SpecFields.Insert()`, `f.StatusFields.Insert()`, or `f.UnimplementedFields.Insert()`). This maintains clean api patterns and safety checks.
+   - **Proto State Invariants and Normalization (`f.FilterSpec` / `f.FilterStatus`)**:
+     - When KRM defines required or non-pointer primitive fields (e.g., required non-pointer `float64` or `int32`), an unset proto field or protobuf `oneof` in the randomly generated proto can default to its zero value in KRM and serialize back into the proto as an explicitly set zero-value branch.
+     - When this happens, configure `f.FilterSpec = func(in *pb.Resource) { ... }` (or `f.FilterStatus`) to normalize the randomly fuzzed proto message before round-tripping (e.g., populating an unset oneof branch with its zero value).
 
 5. **Verify with Fuzzer Tests**
    - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
@@ -117,6 +126,11 @@ func dnsManagedZoneFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	return f
 }
 ```
+
+- **Spec-Only No-Proto Resources (No ObservedState or Status Fields):**
+  - If the resource does not have an `ObservedState` or status fields in its Status:
+    - Instantiate using `fuzztesting.NewKRMTypedSpecFuzzer_NoProto`, passing the zero-value API struct and the Spec FromAPI/ToAPI mappers.
+    - Register the fuzzer using `fuzztesting.RegisterKRMSpecFuzzer_NoProto` instead of `RegisterKRMFuzzer_NoProto`.
 
 ### 4. Register the Direct Package
 Ensure `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"` is imported in `pkg/controller/direct/register/register.go` so the fuzzer registers itself centrally.

@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strconv"
 	"testing"
+
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 // This is a placeholder struct for all possible types, native or not,
@@ -195,5 +197,34 @@ func TestRandomFillerFields(t *testing.T) {
 				t.Fatalf("Field %s was not filled as expected; struct: %s", tt.name, string(jsonData))
 			}
 		})
+	}
+}
+
+func TestClearFieldsHasPath(t *testing.T) {
+	cf := &ClearFields{
+		Paths: sets.New[string](
+			".deployment.files[].mime_type",
+			".simple_field",
+			".list_field[]",
+		),
+	}
+
+	tests := []struct {
+		path string
+		want bool
+	}{
+		{".simple_field", true},
+		{".unknown_field", false},
+		{".list_field[]", true},
+		{".deployment.files[foo].mime_type", true},
+		{".deployment.files[123456].mime_type", true},
+		{".deployment.files[foo].other_field", false},
+	}
+
+	for _, tt := range tests {
+		got := cf.hasPath(tt.path)
+		if got != tt.want {
+			t.Errorf("hasPath(%q) = %v, want %v", tt.path, got, tt.want)
+		}
 	}
 }

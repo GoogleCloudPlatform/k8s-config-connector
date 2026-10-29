@@ -154,7 +154,28 @@ func inspectKRMTypeSpec(s *ast.TypeSpec, kind string, isGenerated bool, info *kr
 		info.Overrides.HasIdentityStruct = true
 	case kind + "Ref":
 		info.Overrides.HasRefStruct = true
+		if st, ok := s.Type.(*ast.StructType); ok && !structHasNameAndNamespace(st) {
+			info.Overrides.RefStructMissingNameNamespace = true
+		}
 	}
+}
+
+func structHasNameAndNamespace(st *ast.StructType) bool {
+	if st == nil || st.Fields == nil {
+		return false
+	}
+	var hasName, hasNamespace bool
+	for _, f := range st.Fields.List {
+		for _, n := range f.Names {
+			switch n.Name {
+			case "Name":
+				hasName = true
+			case "Namespace":
+				hasNamespace = true
+			}
+		}
+	}
+	return hasName && hasNamespace
 }
 
 func inspectKRMValueSpec(s *ast.ValueSpec, kind string, info *krmTypeInfo) {
@@ -404,9 +425,39 @@ func (g *IdentityGenerator) resolveSpecAncestors(plan *IdentityPlan, typeInfo *k
 		}
 	}
 
-	var unknownAncestors []string
+	locCount := 0
+	hasExactLocMatch := false
 	for _, af := range ancestorFields {
-		res, known := resolveSingleAncestor(af, typeInfo)
+		if isLocationCollection(af.Collection) {
+			locCount++
+			if typeInfo.HasLocation && strings.EqualFold(typeInfo.LocationGoName, Singular(af.Collection)) {
+				hasExactLocMatch = true
+			}
+		}
+	}
+
+	var unknownAncestors []string
+	usedPrimaryLocation := false
+	usedSpecFields := make(map[string]bool)
+	for _, af := range ancestorFields {
+		var res AncestorResolution
+		var known bool
+		if isLocationCollection(af.Collection) {
+			isPrimaryLoc := !usedPrimaryLocation && (!hasExactLocMatch || strings.EqualFold(typeInfo.LocationGoName, Singular(af.Collection)) || locCount == 1)
+			if isPrimaryLoc {
+				res, known = resolveSingleAncestor(af, typeInfo)
+				if res.Source == AncestorLocation {
+					usedPrimaryLocation = true
+				}
+			} else {
+				res, known = resolveCustomCollectionAncestor(af, filterUnusedSpecFields(typeInfo.SpecFields, usedSpecFields))
+			}
+		} else {
+			res, known = resolveSingleAncestor(af, typeInfo)
+		}
+		if res.SpecFieldName != "" {
+			usedSpecFields[res.SpecFieldName] = true
+		}
 		plan.Ancestors = append(plan.Ancestors, res)
 		if !known {
 			unknownAncestors = append(unknownAncestors, af.Collection+"/{"+af.RawPlaceholder+"}")
@@ -558,4 +609,17 @@ func matchPlainSpecField(af IdentityField, fields []krmSpecField) *krmSpecField 
 		}
 	}
 	return nil
+}
+
+func filterUnusedSpecFields(fields []krmSpecField, used map[string]bool) []krmSpecField {
+	if len(used) == 0 {
+		return fields
+	}
+	out := make([]krmSpecField, 0, len(fields))
+	for _, f := range fields {
+		if !used[f.GoName] {
+			out = append(out, f)
+		}
+	}
+	return out
 }

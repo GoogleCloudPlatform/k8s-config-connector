@@ -41,16 +41,28 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NotebooksSchedule:Schedule \
   --resource NotebookInstanceV2:Instance
 
-${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.notebooks.v2 \
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.notebooks.v1 \
   --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --prepopulate-resource \
+  --resource NotebooksRuntime:Runtime
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.notebooks.v1 \
+  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
+  --resource NotebooksRuntime:Runtime
+
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.notebooks.v1 \
   --api-version notebooks.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource NotebookInstance:Instance
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.notebooks.v2 \
+  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \

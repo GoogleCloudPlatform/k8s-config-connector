@@ -20,6 +20,7 @@ import (
 
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -130,6 +131,156 @@ func TestRunJob_NormalizeReferences(t *testing.T) {
 		}
 		if protoObj.EncryptionKey != externalKey {
 			t.Errorf("protoObj EncryptionKey = %q, want %q", protoObj.EncryptionKey, externalKey)
+		}
+	})
+}
+
+func TestRunJob_NormalizeReferences_SecretRef(t *testing.T) {
+	ctx := context.Background()
+
+	readySecret := &unstructured.Unstructured{}
+	readySecret.SetGroupVersionKind(secretmanagerv1beta1.SecretManagerSecretGVK)
+	readySecret.SetName("test-secret")
+	readySecret.SetNamespace("test-ns")
+	secretExternal := "projects/test-project/secrets/test-secret"
+	if err := unstructured.SetNestedField(readySecret.Object, secretExternal, "status", "externalRef"); err != nil {
+		t.Fatalf("failed to set status.externalRef: %v", err)
+	}
+
+	readyVersion := &unstructured.Unstructured{}
+	readyVersion.SetGroupVersionKind(secretmanagerv1beta1.SecretManagerSecretVersionGVK)
+	readyVersion.SetName("test-version")
+	readyVersion.SetNamespace("test-ns")
+	versionExternal := "projects/test-project/secrets/test-secret/versions/1"
+	if err := unstructured.SetNestedField(readyVersion.Object, versionExternal, "status", "externalRef"); err != nil {
+		t.Fatalf("failed to set status.externalRef: %v", err)
+	}
+
+	scheme := runtime.NewScheme()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readySecret, readyVersion).Build()
+
+	t.Run("resolves SecretKeySelector secretRef and versionRef by name", func(t *testing.T) {
+		obj := &krm.RunJob{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-job",
+				Namespace: "test-ns",
+			},
+			Spec: krm.RunJobSpec{
+				Template: &krm.ExecutionTemplate{
+					Template: &krm.TaskTemplate{
+						Containers: []krm.Container{
+							{
+								Env: []krm.EnvVar{
+									{
+										Name: direct.LazyPtr("MY_SECRET"),
+										ValueSource: &krm.EnvVarSource{
+											SecretKeyRef: &krm.SecretKeySelector{
+												SecretRef: &secretmanagerv1beta1.SecretRef{
+													Name: "test-secret",
+												},
+												VersionRef: &secretmanagerv1beta1.SecretVersionRef{
+													Name: "test-version",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if err := ResolveRunJobRefs(ctx, reader, obj); err != nil {
+			t.Fatalf("ResolveRunJobRefs() unexpected error: %v", err)
+		}
+
+		skr := obj.Spec.Template.Template.Containers[0].Env[0].ValueSource.SecretKeyRef
+		if skr.SecretRef.External != secretExternal {
+			t.Errorf("SecretRef.External = %q, want %q", skr.SecretRef.External, secretExternal)
+		}
+		if skr.VersionRef.External != "1" {
+			t.Errorf("VersionRef.External = %q, want \"1\"", skr.VersionRef.External)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := TaskTemplate_v1beta1_ToProto(mapCtx, obj.Spec.Template.Template)
+		if mapCtx.Err() != nil {
+			t.Fatalf("TaskTemplate_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		protoSKR := protoObj.Containers[0].Env[0].GetValueSource().GetSecretKeyRef()
+		if protoSKR.GetSecret() != secretExternal {
+			t.Errorf("protoSKR.Secret = %q, want %q", protoSKR.GetSecret(), secretExternal)
+		}
+		if protoSKR.GetVersion() != "1" {
+			t.Errorf("protoSKR.Version = %q, want \"1\"", protoSKR.GetVersion())
+		}
+	})
+
+	t.Run("resolves SecretVolumeSource secretRef and versionRef by name", func(t *testing.T) {
+		obj := &krm.RunJob{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-job",
+				Namespace: "test-ns",
+			},
+			Spec: krm.RunJobSpec{
+				Template: &krm.ExecutionTemplate{
+					Template: &krm.TaskTemplate{
+						Volumes: []krm.Volume{
+							{
+								Name: direct.LazyPtr("secret-vol"),
+								Secret: &krm.SecretVolumeSource{
+									SecretRef: &secretmanagerv1beta1.SecretRef{
+										Name: "test-secret",
+									},
+									Items: []krm.VersionToPath{
+										{
+											Path: direct.LazyPtr("token"),
+											VersionRef: &secretmanagerv1beta1.SecretVersionRef{
+												Name: "test-version",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if err := ResolveRunJobRefs(ctx, reader, obj); err != nil {
+			t.Fatalf("ResolveRunJobRefs() unexpected error: %v", err)
+		}
+
+		sv := obj.Spec.Template.Template.Volumes[0].Secret
+		if sv.SecretRef.External != secretExternal {
+			t.Errorf("SecretRef.External = %q, want %q", sv.SecretRef.External, secretExternal)
+		}
+		if sv.Items[0].VersionRef.External != "1" {
+			t.Errorf("Items[0].VersionRef.External = %q, want \"1\"", sv.Items[0].VersionRef.External)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := TaskTemplate_v1beta1_ToProto(mapCtx, obj.Spec.Template.Template)
+		if mapCtx.Err() != nil {
+			t.Fatalf("TaskTemplate_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		protoSecretVol := protoObj.Volumes[0].GetSecret()
+		if protoSecretVol.GetSecret() != secretExternal {
+			t.Errorf("protoSecretVol.Secret = %q, want %q", protoSecretVol.GetSecret(), secretExternal)
+		}
+		if protoSecretVol.GetItems()[0].GetVersion() != "1" {
+			t.Errorf("protoSecretVol.Items[0].Version = %q, want \"1\"", protoSecretVol.GetItems()[0].GetVersion())
 		}
 	})
 }

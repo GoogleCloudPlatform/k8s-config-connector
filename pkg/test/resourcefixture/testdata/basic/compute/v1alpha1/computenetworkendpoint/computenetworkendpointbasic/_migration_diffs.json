@@ -1,0 +1,452 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeInstance/computenetworkendpoint-instance-${uniqueId}",
+    "fields": [
+      {
+        "id": "boot_disk.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "boot_disk.0.auto_delete",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "boot_disk.0.device_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.disk_encryption_key_sha256",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.initialize_params.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "boot_disk.0.initialize_params.0.image",
+        "old": "",
+        "new": "debian-cloud/debian-12"
+      },
+      {
+        "id": "boot_disk.0.initialize_params.0.labels.%",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.initialize_params.0.size",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.initialize_params.0.type",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.kms_key_self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "boot_disk.0.mode",
+        "old": "",
+        "new": "READ_WRITE"
+      },
+      {
+        "id": "can_ip_forward",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "confidential_instance_config.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "cpu_platform",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "current_status",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "deletion_protection",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "guest_accelerator.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "instance_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "machine_type",
+        "old": "",
+        "new": "e2-medium"
+      },
+      {
+        "id": "metadata_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "min_cpu_platform",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetworkendpoint-instance-${uniqueId}"
+      },
+      {
+        "id": "network_interface.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "network_interface.0.internal_ipv6_prefix_length",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "network_interface.0.ipv6_access_type",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "network_interface.0.name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "network_interface.0.network_ip",
+        "old": "",
+        "new": "10.0.0.2"
+      },
+      {
+        "id": "network_interface.0.stack_type",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "network_interface.0.subnetwork",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computenetworkendpoint-subnetwork-${uniqueId}"
+      },
+      {
+        "id": "network_interface.0.subnetwork_project",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "reservation_affinity.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "scheduling.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "tags_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNetwork/computenetworkendpoint-network-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_subnetworks",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "delete_default_routes_on_create",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Network for ComputeNetworkEndpoint test"
+      },
+      {
+        "id": "gateway_ipv4",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "mtu",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetworkendpoint-network-${uniqueId}"
+      },
+      {
+        "id": "network_firewall_policy_enforcement_order",
+        "old": "",
+        "new": "AFTER_CLASSIC_FIREWALL"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "routing_mode",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNetworkEndpoint/computenetworkendpoint-${uniqueId}",
+    "fields": [
+      {
+        "id": "instance",
+        "old": "",
+        "new": "computenetworkendpoint-instance-${uniqueId}"
+      },
+      {
+        "id": "ip_address",
+        "old": "",
+        "new": "10.0.0.2"
+      },
+      {
+        "id": "network_endpoint_group",
+        "old": "",
+        "new": "computenetworkendpointgroup-${uniqueId}"
+      },
+      {
+        "id": "port",
+        "old": "",
+        "new": "90"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNetworkEndpointGroup/computenetworkendpointgroup-${uniqueId}",
+    "fields": [
+      {
+        "id": "default_port",
+        "old": "",
+        "new": "90"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetworkendpointgroup-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetworkendpoint-network-${uniqueId}"
+      },
+      {
+        "id": "network_endpoint_type",
+        "old": "",
+        "new": "GCE_VM_IP_PORT"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "size",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computenetworkendpoint-subnetwork-${uniqueId}"
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeSubnetwork/computenetworkendpoint-subnetwork-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "external_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "gateway_address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "ip_cidr_range",
+        "old": "",
+        "new": "10.0.0.0/24"
+      },
+      {
+        "id": "ipv6_cidr_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetworkendpoint-subnetwork-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetworkendpoint-network-${uniqueId}"
+      },
+      {
+        "id": "private_ip_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "private_ipv6_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "secondary_ip_range.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "stack_type",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

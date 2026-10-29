@@ -15,8 +15,7 @@
 package ratelimiter
 
 import (
-	"time"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"golang.org/x/time/rate"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/util/flowcontrol"
@@ -31,13 +30,13 @@ func NewRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
 
 	// We have both overall and per-item rate limiting.
 	// The overall is a token bucket and the per-item is exponential
-	// The per-item rate limiter initially retries much more slowly (2 seconds vs 2 milliseconds),
+	// The per-item rate limiter initially retries much more slowly (250 milliseconds vs 5 milliseconds),
 	// and a much faster ultimate limit (120 seconds instead of 1000 seconds).
 
 	// If we implement b/190097904 we should revisit these values, in particular the max delay could
 	// likely be much higher again.
 	return workqueue.NewTypedMaxOfRateLimiter(
-		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](250*time.Millisecond, 120*time.Second),
+		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](k8s.DefaultBackoffBaseDelay, k8s.DefaultBackoffMaxDelay),
 		// 10 qps, 100 bucket size.  This is only for retry speed and its only the overall factor (not per item)
 		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
 	)

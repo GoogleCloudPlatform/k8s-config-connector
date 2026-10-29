@@ -716,3 +716,181 @@ func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
 	}
 }
 
+func TestRunGenerateCRDScaffoldsBeforeWriteVisitedMessages(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	msgType := descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{
+		{
+			Name:    proto.String("google/cloud/example/v1/widget.proto"),
+			Package: proto.String("google.cloud.example.v1"),
+			Syntax:  proto.String("proto3"),
+			MessageType: []*descriptorpb.DescriptorProto{
+				{
+					Name: proto.String("WidgetSettings"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("mode"), Number: proto.Int32(1), Type: str},
+					},
+				},
+				{
+					Name: proto.String("Widget"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+						{Name: proto.String("settings"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.WidgetSettings")},
+					},
+				},
+			},
+		},
+	}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(dir, "widget.pb")
+	writeFile(t, pbPath, string(b))
+
+	runV1 := func() {
+		o1 := &GenerateCRDOptions{
+			GenerateOptions: &options.GenerateOptions{
+				ProtoSourcePath: pbPath,
+				APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+			},
+			ServiceName:         "google.cloud.example.v1",
+			OutputAPIDirectory:  apiDir,
+			Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+			PrepopulateResource: true,
+		}
+		if err := RunGenerateCRD(context.Background(), o1); err != nil {
+			t.Fatalf("RunGenerateCRD(v1) error: %v", err)
+		}
+	}
+
+	runV1()
+
+	genPath := filepath.Join(apiDir, "example", "v1alpha1", "types.generated.go")
+	afterFirstPass := readFile(t, genPath)
+	for _, wantSubstr := range []string{
+		"// proto.service: google.cloud.example.v1",
+		"// resource: ExampleWidget:Widget",
+		"type WidgetSettings struct",
+	} {
+		if !strings.Contains(afterFirstPass, wantSubstr) {
+			t.Errorf("expected types.generated.go to contain %q, got:\n%s", wantSubstr, afterFirstPass)
+		}
+	}
+	if strings.Contains(afterFirstPass, "type Widget struct") {
+		t.Errorf("expected types.generated.go not to contain top-level resource struct \"type Widget struct\" during fresh scaffolding, got:\n%s", afterFirstPass)
+	}
+
+	// Re-running v1 must be idempotent from the very first pass.
+	runV1()
+	afterSecondPass := readFile(t, genPath)
+	if diff := cmp.Diff(afterFirstPass, afterSecondPass); diff != "" {
+		t.Errorf("re-running RunGenerateCRD was not idempotent (-first +second):\n%s", diff)
+	}
+}
+
+// TestRunGenerateCRDRecoversMissingQueueForPrepopulatedKind verifies that when
+// a prepopulated <kind>_types.go file (carrying +kcc:required-from-proto)
+// already exists on disk, but its entries in judgement_queue.yaml were lost
+// (for example, clobbered during an add/add rebase conflict when another
+// resource was generated in the same service), re-running RunGenerateCRD
+// recovers both the spec/reference entries and the parent/location entries
+// without rewriting <kind>_types.go.
+func TestRunGenerateCRDRecoversMissingQueueForPrepopulatedKind(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+	typesPath := filepath.Join(apiDir, "example", "v1alpha1", "examplewidget_types.go")
+	queuePath := filepath.Join(apiDir, "example", judgement.FileName)
+
+	prepopulatedTypesFile := `// API sources for ExampleWidget, recorded by generate-types:
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/master/google/cloud/example/v1/widget.proto
+// +kcc:guess=source-link reason=verify-service-docs-link
+// +kcc:source:service-docs=
+
+package v1alpha1
+
+// ExampleWidgetSpec was scaffolded with --prepopulate-resource and later edited.
+// +kcc:spec:proto=google.cloud.example.v1.Widget
+// +kcc:required-from-proto
+type ExampleWidgetSpec struct{}
+`
+	writeFile(t, typesPath, prepopulatedTypesFile)
+	// Simulate a rebase conflict where only another Kind's entry survived in
+	// judgement_queue.yaml and ExampleWidget's entries were lost.
+	writeFile(t, queuePath, `entries:
+- kind: ExampleOther
+  group: example.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+`)
+
+	o := &GenerateCRDOptions{
+		GenerateOptions: &options.GenerateOptions{
+			ProtoSourcePath: writeWidgetProto(t, dir),
+			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+		},
+		ServiceName:         "google.cloud.example.v1",
+		OutputAPIDirectory:  apiDir,
+		Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+		PrepopulateResource: true,
+	}
+
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+	if diff := cmp.Diff(prepopulatedTypesFile, readFile(t, typesPath)); diff != "" {
+		t.Errorf("RunGenerateCRD() changed the types file (-want +got):\n%s", diff)
+	}
+
+	want := []judgement.Entry{
+		{
+			Kind:   "ExampleOther",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "untriaged-bulk-generation",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "untriaged-bulk-generation",
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "empty-observedstate",
+			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "verify-service-docs-link",
+			Detail: "neither the Discovery directory nor the service config names a docs page; add one",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.location",
+			Reason: "location-parent-unknown",
+			Detail: "the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.network",
+			Reason: "possible-reference-by-description",
+			Detail: `the description has the resource-name template "projects/{project}/global/networks/{network}"`,
+			Status: judgement.StatusOpen,
+		},
+	}
+	if diff := cmp.Diff(want, readQueueEntries(t, queuePath)); diff != "" {
+		t.Errorf("queue entries mismatch (-want +got):\n%s", diff)
+	}
+}

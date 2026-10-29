@@ -52,6 +52,17 @@ ${CONTROLLERBUILDER} generate-types \
   --resource KMSKeyHandle:KeyHandle \
   --resource KMSKeyRing:KeyRing
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.kms.v1 \
+  --api-version kms.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource KMSEkmConnection:EkmConnection
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.kms.v1 \
+  --api-version kms.cnrm.cloud.google.com/v1alpha1 \
+  --resource KMSEkmConnection:EkmConnection
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.kms.v1 \
   --api-version "kms.cnrm.cloud.google.com/v1beta1" \

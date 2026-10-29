@@ -72,6 +72,10 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 
 	r.populateDefaultsForCryptoKey(name, obj)
 
+	if err := r.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
 	if !req.SkipInitialVersionCreation {
 		var primary *pb.CryptoKeyVersion
 
@@ -105,9 +109,9 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 			Algorithm:       createdVersion.Algorithm,
 			ProtectionLevel: createdVersion.ProtectionLevel,
 		}
-	}
-	if err := r.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
+		if err := r.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 	}
 
 	return obj, nil

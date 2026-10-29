@@ -242,3 +242,121 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 	}
 	return out
 }
+
+// VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto maps a protobuf Feature to VertexAIFeaturestoreEntityTypeFeatureSpec.
+// Handcoded because ValueType is a required string in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is an enum (pb.Feature_ValueType) which requires converting between string and *string
+// for direct.Enum_FromProto and direct.Enum_ToProto.
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if v := direct.Enum_FromProto(mapCtx, in.GetValueType()); v != nil {
+		out.ValueType = *v
+	}
+	return out
+}
+
+// VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto maps a VertexAIFeaturestoreEntityTypeFeatureSpec to protobuf Feature.
+// Handcoded because ValueType is a required string in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is an enum (pb.Feature_ValueType) which requires converting between string and *string
+// for direct.Enum_FromProto and direct.Enum_ToProto.
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	out.Description = direct.ValueOf(in.Description)
+	out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, &in.ValueType)
+	return out
+}
+
+// FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto maps a protobuf FeaturestoreMonitoringConfig_ThresholdConfig to FeaturestoreMonitoringConfig_ThresholdConfig.
+// Handcoded because Value is a required float64 in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto Value is an optional float64 within a oneof (Threshold) which requires converting between float64 and *float64.
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ThresholdConfig) *krmv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	out.Value = in.GetValue()
+	return out
+}
+
+// FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto maps a FeaturestoreMonitoringConfig_ThresholdConfig to protobuf FeaturestoreMonitoringConfig_ThresholdConfig.
+// Handcoded because Value is a required float64 in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto Value is an optional float64 within a oneof (Threshold) which requires converting between float64 and *float64.
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig) *pb.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	out.Threshold = &pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value{
+		Value: in.Value,
+	}
+	return out
+}
+
+func FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx *direct.MapContext, in float64) *pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value {
+	return &pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value{Value: in}
+}
+
+// FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto maps a protobuf FeaturestoreMonitoringConfig_SnapshotAnalysis to FeaturestoreMonitoringConfig_SnapshotAnalysis.
+// Handcoded because monitoringIntervalDays and stalenessDays are unformatted integers (*int) in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto they are int32.
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis) *krmv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MonitoringInterval = direct.StringDuration_FromProto(mapCtx, in.GetMonitoringInterval())
+	out.MonitoringIntervalDays = direct.LazyPtr(int(in.GetMonitoringIntervalDays()))
+	out.StalenessDays = direct.LazyPtr(int(in.GetStalenessDays()))
+	return out
+}
+
+// FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto maps a FeaturestoreMonitoringConfig_SnapshotAnalysis to protobuf FeaturestoreMonitoringConfig_SnapshotAnalysis.
+// Handcoded because monitoringIntervalDays and stalenessDays are unformatted integers (*int) in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto they are int32.
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis) *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MonitoringInterval = direct.StringDuration_ToProto(mapCtx, in.MonitoringInterval)
+	out.MonitoringIntervalDays = int32(direct.ValueOf(in.MonitoringIntervalDays))
+	out.StalenessDays = int32(direct.ValueOf(in.StalenessDays))
+	return out
+}
+
+// VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto maps a protobuf EntityType to VertexAIFeaturestoreEntityTypeSpec.
+// Handcoded because offlineStorageTtlDays is an unformatted integer (*int) in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is int32.
+func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krmv1alpha1.VertexAIFeaturestoreEntityTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VertexAIFeaturestoreEntityTypeSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_FromProto(mapCtx, in.GetMonitoringConfig())
+	out.OfflineStorageTTLDays = direct.LazyPtr(int(in.GetOfflineStorageTtlDays()))
+	return out
+}
+
+// VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto maps a VertexAIFeaturestoreEntityTypeSpec to protobuf EntityType.
+// Handcoded because offlineStorageTtlDays is an unformatted integer (*int) in KRM to maintain strict baseline CRD schema compatibility,
+// whereas in proto it is int32.
+func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAIFeaturestoreEntityTypeSpec) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	out.Description = direct.ValueOf(in.Description)
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_ToProto(mapCtx, in.MonitoringConfig)
+	out.OfflineStorageTtlDays = int32(direct.ValueOf(in.OfflineStorageTTLDays))
+	return out
+}

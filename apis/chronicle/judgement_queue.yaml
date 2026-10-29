@@ -21,6 +21,257 @@
 # file does not have.
 
 entries:
+  - kind: ChronicleDataAccessLabel
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleDataAccessLabel
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/dataAccessLabels/{data_access_label}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleDataAccessLabel
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/dataAccessLabels/{data_access_label}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleDataAccessLabelSpec
+    status: open
+  - kind: ChronicleDataAccessLabel
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleDataAccessLabel
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{data_access_scope}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{data_access_scope}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleDataAccessScopeSpec
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.allowedDataAccessLabels[].dataAccessLabel
+    reason: possible-reference-by-sibling
+    detail: the name matches ChronicleDataAccessLabel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.deniedDataAccessLabels[].dataAccessLabel
+    reason: possible-reference-by-sibling
+    detail: the name matches ChronicleDataAccessLabel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: ChronicleDataAccessScope
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleDataTableSpec
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleDataTable
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.scopeInfo.dataAccessScopes
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to chronicle.googleapis.com/DataAccessScope (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleFindingsRefinementSpec
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated ChronicleFindingsRefinementIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleFindingsRefinement
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/nativeDashboards/{dashboard}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/nativeDashboards/{dashboard}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleNativeDashboardSpec
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated ChronicleNativeDashboardIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.definition.charts[].filtersIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.definition.filters[].chartIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: ChronicleNativeDashboard
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleReferenceListSpec
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleReferenceList
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.scopeInfo.referenceListScope.scopeNames
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{scope_name}"
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/rules/{rule}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/rules/{rule}" contains ancestor segment(s) instances/{instance} with no matching reference or field on ChronicleRuleSpec
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated ChronicleRuleIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ChronicleRule
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.scope
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to chronicle.googleapis.com/DataAccessScope (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
   - kind: ChronicleWatchlist
     group: chronicle.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

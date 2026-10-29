@@ -34,20 +34,45 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.chronicle.v1 \
   --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
-  --resource ChronicleWatchlist:Watchlist \
-  --prepopulate-resource
-
-${CONTROLLERBUILDER} generate-identity \
-  --service google.cloud.chronicle.v1 \
-  --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
   --resource ChronicleWatchlist:Watchlist
 
-${CONTROLLERBUILDER} generate-mapper \
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.chronicle.v1 \
+  --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ChronicleDataTable:DataTable \
+  --resource ChronicleNativeDashboard:NativeDashboard \
+  --resource ChronicleFindingsRefinement:FindingsRefinement \
+  --resource ChronicleReferenceList:ReferenceList \
+  --resource ChronicleDataAccessLabel:DataAccessLabel \
+  --resource ChronicleDataAccessScope:DataAccessScope \
+  --resource ChronicleRule:Rule
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.chronicle.v1 \
+  --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
+  --resource ChronicleDataTable:DataTable \
+  --resource ChronicleNativeDashboard:NativeDashboard \
+  --resource ChronicleFindingsRefinement:FindingsRefinement \
+  --resource ChronicleReferenceList:ReferenceList \
+  --resource ChronicleDataAccessLabel:DataAccessLabel \
+  --resource ChronicleDataAccessScope:DataAccessScope \
+  --resource ChronicleRule:Rule
+
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.chronicle.v1,google.type \
   --api-version chronicle.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource
 
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/chronicle/
+cd ${REPO_ROOT}
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/chronicle" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/chronicle/
+fi

@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: healthcare.cnrm.cloud.google.com
+  kind: HealthcareDataset
+  name: healthcareconsentstore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //healthcare.googleapis.com/projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/consentStores/healthcareconsentstore-${uniqueId}
+  group: healthcare.cnrm.cloud.google.com
+  kind: HealthcareConsentStore
+  name: healthcareconsentstore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

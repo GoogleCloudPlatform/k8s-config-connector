@@ -17,6 +17,225 @@
 // krm.group: dataform.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.dataform.v1
-// resource: DataformTeamFolder:TeamFolder
+// resource: DataformWorkflowConfig:WorkflowConfig
+// resource: DataformReleaseConfig:ReleaseConfig
+// resource: DataformWorkspace:Workspace
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
+// +kcc:proto=google.cloud.dataform.v1.CodeCompilationConfig
+type CodeCompilationConfig struct {
+	// Optional. The default database (Google Cloud project ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_database
+	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_schema
+	DefaultSchema *string `json:"defaultSchema,omitempty"`
+
+	// Optional. The default BigQuery location to use. Defaults to "US".
+	//  See the BigQuery docs for a full list of locations:
+	//  https://cloud.google.com/bigquery/docs/locations.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_location
+	DefaultLocation *string `json:"defaultLocation,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID) for assertions.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.assertion_schema
+	AssertionSchema *string `json:"assertionSchema,omitempty"`
+
+	// Optional. User-defined variables that are made available to project code
+	//  during compilation.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.vars
+	Vars map[string]string `json:"vars,omitempty"`
+
+	// Optional. The suffix that should be appended to all database (Google Cloud
+	//  project ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.database_suffix
+	DatabaseSuffix *string `json:"databaseSuffix,omitempty"`
+
+	// Optional. The suffix that should be appended to all schema (BigQuery
+	//  dataset ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.schema_suffix
+	SchemaSuffix *string `json:"schemaSuffix,omitempty"`
+
+	// Optional. The prefix that should be prepended to all table names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.table_prefix
+	TablePrefix *string `json:"tablePrefix,omitempty"`
+
+	// Optional. The prefix to prepend to built-in assertion names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.builtin_assertion_name_prefix
+	BuiltinAssertionNamePrefix *string `json:"builtinAssertionNamePrefix,omitempty"`
+
+	// Optional. The default notebook runtime options.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_notebook_runtime_options
+	DefaultNotebookRuntimeOptions *NotebookRuntimeOptions `json:"defaultNotebookRuntimeOptions,omitempty"`
+}
+
+/* unreachable type DataEncryptionState
+// +kcc:proto=google.cloud.dataform.v1.DataEncryptionState
+type DataEncryptionState struct {
+	// Required. The KMS key version name with which data of a resource is
+	//  encrypted.
+	// +kcc:proto:field=google.cloud.dataform.v1.DataEncryptionState.kms_key_version_name
+	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dataform.v1.InvocationConfig
+type InvocationConfig struct {
+	// Optional. The set of action identifiers to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_targets
+	IncludedTargets []Target `json:"includedTargets,omitempty"`
+
+	// Optional. The set of tags to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_tags
+	IncludedTags []string `json:"includedTags,omitempty"`
+
+	// Optional. When set to true, transitive dependencies of included actions
+	//  will be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependencies_included
+	TransitiveDependenciesIncluded *bool `json:"transitiveDependenciesIncluded,omitempty"`
+
+	// Optional. When set to true, transitive dependents of included actions will
+	//  be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependents_included
+	TransitiveDependentsIncluded *bool `json:"transitiveDependentsIncluded,omitempty"`
+
+	// Optional. When set to true, any incremental tables will be fully refreshed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.fully_refresh_incremental_tables_enabled
+	FullyRefreshIncrementalTablesEnabled *bool `json:"fullyRefreshIncrementalTablesEnabled,omitempty"`
+
+	// Optional. The service account to run workflow invocations under.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Specifies the priority for query execution in BigQuery.
+	//  More information can be found at
+	//  https://cloud.google.com/bigquery/docs/running-queries#queries.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.query_priority
+	QueryPriority *string `json:"queryPriority,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.NotebookRuntimeOptions
+type NotebookRuntimeOptions struct {
+	// Optional. The Google Cloud Storage location to upload the result to.
+	//  Format: `gs://bucket-name`.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.gcs_output_bucket
+	GCSOutputBucket *string `json:"gcsOutputBucket,omitempty"`
+
+	// Optional. The resource name of the [Colab runtime template]
+	//  (https://cloud.google.com/colab/docs/runtimes), from which a runtime is
+	//  created for notebook executions. If not specified, a runtime is created
+	//  with Colab's default specifications.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.ai_platform_notebook_runtime_template
+	AiPlatformNotebookRuntimeTemplate *string `json:"aiPlatformNotebookRuntimeTemplate,omitempty"`
+}
+
+/* unreachable type PrivateResourceMetadata
+// +kcc:proto=google.cloud.dataform.v1.PrivateResourceMetadata
+type PrivateResourceMetadata struct {
+}
+*/
+
+/* unreachable type ReleaseConfig_ScheduledReleaseRecord
+// +kcc:proto=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord
+type ReleaseConfig_ScheduledReleaseRecord struct {
+	// The name of the created compilation result, if one was successfully
+	//  created. Must be in the format
+	//  `projects/-*-/locations/-*-/repositories/-*-/compilationResults/-*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.compilation_result
+	CompilationResult *string `json:"compilationResult,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  compilation result, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dataform.v1.Target
+type Target struct {
+	// Optional. The action's database (Google Cloud project ID) .
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.database
+	Database *string `json:"database,omitempty"`
+
+	// Optional. The action's schema (BigQuery dataset ID), within `database`.
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.schema
+	Schema *string `json:"schema,omitempty"`
+
+	// Optional. The action's name, within `database` and `schema`.
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.name
+	Name *string `json:"name,omitempty"`
+}
+
+/* unreachable type WorkflowConfig_ScheduledExecutionRecord
+// +kcc:proto=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord
+type WorkflowConfig_ScheduledExecutionRecord struct {
+	// The name of the created workflow invocation, if one was successfully
+	//  created. Must be in the format
+	//  `projects/-*-/locations/-*-/repositories/-*-/workflowInvocations/-*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.workflow_invocation
+	WorkflowInvocation *string `json:"workflowInvocation,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  workflow invocation, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.DataEncryptionState
+type DataEncryptionStateObservedState struct {
+	// Required. The KMS key version name with which data of a resource is
+	//  encrypted.
+	// +kcc:proto:field=google.cloud.dataform.v1.DataEncryptionState.kms_key_version_name
+	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.PrivateResourceMetadata
+type PrivateResourceMetadataObservedState struct {
+	// Output only. If true, this resource is user-scoped, meaning it is either a
+	//  workspace or sourced from a workspace.
+	// +kcc:proto:field=google.cloud.dataform.v1.PrivateResourceMetadata.user_scoped
+	UserScoped *bool `json:"userScoped,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord
+type ReleaseConfig_ScheduledReleaseRecordObservedState struct {
+	// The name of the created compilation result, if one was successfully
+	//  created. Must be in the format
+	//  `projects/*/locations/*/repositories/*/compilationResults/*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.compilation_result
+	CompilationResult *string `json:"compilationResult,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  compilation result, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+
+	// Output only. The timestamp of this release attempt.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.release_time
+	ReleaseTime *string `json:"releaseTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord
+type WorkflowConfig_ScheduledExecutionRecordObservedState struct {
+	// The name of the created workflow invocation, if one was successfully
+	//  created. Must be in the format
+	//  `projects/*/locations/*/repositories/*/workflowInvocations/*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.workflow_invocation
+	WorkflowInvocation *string `json:"workflowInvocation,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  workflow invocation, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+
+	// Output only. The timestamp of this execution attempt.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.execution_time
+	ExecutionTime *string `json:"executionTime,omitempty"`
+}

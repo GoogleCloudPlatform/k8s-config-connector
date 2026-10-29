@@ -1,0 +1,176 @@
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "KeyRing projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings?alt=json&keyRingId=kmskeyringimportjob-${uniqueId}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}"
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs?alt=json&importJobId=kmskeyringimportjob-${uniqueId}
+Content-Type: application/json
+
+{
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "protectionLevel": "HSM"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "name": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}",
+  "protectionLevel": "HSM",
+  "state": "PENDING_GENERATION"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "certChains": {
+      "caviumCerts": [
+        "-----BEGIN CERTIFICATE-----\nMIIDbTCCAlWgAwIBAgIBATANBgkqhkiG9w0BAQsFADB2MUQwCQYDVQQGEwJVUzAJ\nBgNVBAgMAkNBMA0GA1UECgwGQ2F2aXVtMA0GA1UECwwGTjNGSVBTMA4GA1UEBwwH\nU2FuSm9zZTEuMCwGA1UEAwwlSFNNOjUuMkcxOTA4LUlDTTAwMDE3MSwgZm9yIEZJ\nUFMgbW9kZTAeFw0yNjAzMDMxNjAwMzdaFw0zNjAyMjkxNjAwMzdaMH4xRDAJBgNV\nBAYTAlVTMAkGA1UECAwCQ0EwDQYDVQQKDAZDYXZpdW0wDQYDVQQLDAZOM0ZJUFMw\nDgYDVQQHDAdTYW5Kb3NlMTYwNAYDVQQDDC1IU006NS4yRzE5MDgtSUNNMDAwMTcx\nOlBBUlROOjEsIGZvciBGSVBTIG1vZGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw\nggEKAoIBAQC8SNVJgW+4zaOJe05TU58EMynToof0EQemV/nm170AbEardshn89K/\neTmJ7LuatC3oZMkcnUvHj/+ttrkJzgpo49Vb1sOsvk90GYDpLqbuGiw84YONw8SB\na1NwztuDEF9kdWVav6a4U/LL6SxBEG/0MF+tuH1uE1pQHypLqCOaOqBCuHj65Un0\nUiLg8Uk07D5KxMB0VYhmY1nAFr4139IxaIaqEvTN34YUUSa3U7FE7Y1oMkSIfXM1\ndnYaJG3P8CrJq3SFhSy4Y2Fl5+U6ICA7EK3AJrCI7qm1eHuWrNCNh9ZTUhkwg717\nWffwKYn4oHGtQw8rgPLExziTJ+jLf5vpAgMBAAEwDQYJKoZIhvcNAQELBQADggEB\nAEXXw/OfcOCKbfsZCsnSV3A08WYuJHHkHzdpMDW3k2cjFCKZvu23sD12b6+vTZE1\nFgRA1rDjeQ2AFAsdFoCSCrEFCuk9Twsi7o1ZzbSt7/Vm2c6kBQMlOKMFkLY1gVPe\nyS9kwfWvGvZ7D/YK5Vak6BNxDI31gKDBNB2wc25GUjGsp2FuINZrYycaNcOX3UFH\nL4LnrG4nftwoOD5G4VFlF4/BnXCNxCZq6k3KgXgumy2KA/AMv5GZgvSm9qXA6DJz\n+lRgp79PwDQxB7n2hC67s41HEhBLgwd9aDbzAEGrl1v4+s+jG0+v0Wd7hgEee1sf\nZc7FJ4QjFHIjjhW+81ZmrYA=\n-----END CERTIFICATE-----\n",
+        "-----BEGIN CERTIFICATE-----\nMIIDhDCCAmwCCQDdP5IaPS2wljANBgkqhkiG9w0BAQsFADCBkTELMAkGA1UEBhMC\nVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExETAPBgNVBAcMCFNhbiBKb3NlMRUwEwYD\nVQQKDAxDYXZpdW0sIEluYy4xFzAVBgNVBAsMDkxpcXVpZFNlY3VyaXR5MSowKAYD\nVQQDDCFsb2NhbGNhLmxpcXVpZHNlY3VyaXR5LmNhdml1bS5jb20wHhcNMTkwMzI5\nMjIzMTIxWhcNMjkwMzI2MjIzMTIxWjB2MUQwCQYDVQQGEwJVUzAJBgNVBAgMAkNB\nMA0GA1UECgwGQ2F2aXVtMA0GA1UECwwGTjNGSVBTMA4GA1UEBwwHU2FuSm9zZTEu\nMCwGA1UEAwwlSFNNOjUuMkcxOTA4LUlDTTAwMDE3MSwgZm9yIEZJUFMgbW9kZTCC\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALLGJGARiTQzwJsJmP3chOJm\nPel9VzkiwxOl36e8Vli+hsbp9k5QOsQDLGT+j4yMozTNkDyM1ajq2iqzHeQ7cjrb\nyokqE9l0OZ61QoTN2t706cXK6uUN80nCUyiLc5ti8l+WK3hqYz1ubQoz1qeVazxd\nUQFklWRKjxE2Vxz/EaLwQB7A9qyChTZAyrNHJAvkmW/zrZTsh1mcMmcFfPoHqqj0\nX8p4neBNRyggsku9EdL/kq3ATDGVCJzvgmWM5XaQY8G3y6jYO5+0mmPiyahr0WOv\nkhbJQ5z8CGgMVMsIMMIwngrM3ebUyGmm3ZJjshQzdiyjOTdV5cUwV5kWqP8rUOsC\nAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAcwWdrcsfCEU87bO/w+72Wjkx4717qoX4\nXMylNLcqY4yl9Ttl8lxh/LBZMy6/LhTuiN5pIRmcHwqVUE3tcL74H8yFxLneOVpo\nQJRhdxVQdhNgfqqR6ddogFBSKpRoE0WmsHW9rWU4GbuZ5ApvmNLBKnaYuYgTViiP\n1hAOpyuZxPAYzL5eXgr6cDSZS/n5Xaaes4yhHXR//o2QdEAzoyFeOgWJ1MeLZjtk\ndGceiselBs7DA0dl7dYTMVmyHLSiGjMXaf49QbCMonotMg7Jjt/lE2DMJfiWxfi3\nAWi8D6I9nSM56Kwx8hJyB0tbQ1VpUdE0VAbly/5bQ4Tq9+glKB02HA==\n-----END CERTIFICATE-----\n"
+      ],
+      "googleCardCerts": [
+        "-----BEGIN CERTIFICATE-----\nMIIDyTCCArGgAwIBAgIUb3c4TKXEwODutreD8CQ+slJc6wgwDQYJKoZIhvcNAQEL\nBQAwaDELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRYwFAYDVQQHDA1Nb3VudGFp\nbiBWaWV3MRMwEQYDVQQKDApHb29nbGUgSW5jMR8wHQYDVQQDDBZIYXdrc2JpbGwg\nUm9vdCB2MSBwcm9kMB4XDTI2MDMwMzE2MDEwOVoXDTMwMDEwMTAwMDAwMFowdjFE\nMAkGA1UEBhMCVVMwCQYDVQQIDAJDQTANBgNVBAoMBkNhdml1bTANBgNVBAsMBk4z\nRklQUzAOBgNVBAcMB1Nhbkpvc2UxLjAsBgNVBAMMJUhTTTo1LjJHMTkwOC1JQ00w\nMDAxNzEsIGZvciBGSVBTIG1vZGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK\nAoIBAQCyxiRgEYk0M8CbCZj93ITiZj3pfVc5IsMTpd+nvFZYvobG6fZOUDrEAyxk\n/o+MjKM0zZA8jNWo6toqsx3kO3I628qJKhPZdDmetUKEzdre9OnFyurlDfNJwlMo\ni3ObYvJflit4amM9bm0KM9anlWs8XVEBZJVkSo8RNlcc/xGi8EAewPasgoU2QMqz\nRyQL5Jlv862U7IdZnDJnBXz6B6qo9F/KeJ3gTUcoILJLvRHS/5KtwEwxlQic74Jl\njOV2kGPBt8uo2DuftJpj4smoa9Fjr5IWyUOc/AhoDFTLCDDCMJ4KzN3m1Mhppt2S\nY7IUM3Ysozk3VeXFMFeZFqj/K1DrAgMBAAGjXTBbMAkGA1UdEwQCMAAwDgYDVR0P\nAQH/BAQDAgWgMB0GA1UdDgQWBBT6j4dkwRkJoFnQwAOPkms7nOHrODAfBgNVHSME\nGDAWgBQx6FLf4Un4Ent8budOkXqXdbyorjANBgkqhkiG9w0BAQsFAAOCAQEAolP9\nUw2oM25Xd8dezqkK9xfAsjjEqqJ7Ml+MKkRcaoZsl1buJsxmMFo/T3f3TsJ4kMlV\nZQNlds7cFi0zL5dHdE3Q5Gob/jC+FRIVPBWpjicVgNSeTpOkGxprL2o5b/dxaZcl\nnjUg6FccanfBQVkTdwZ+JjWtDVTzp26cpICcXKF9vRGOCZ+2tqi6a3DZYNdMj94s\nwmWC9G39e3SmsDk4fAKdxtgRIeUYVdWqZMMIOOS0Z/hvA+bOYiioFxuDYt+MEkad\nSHAWyfAV8Nb/tf09VTjD0wz+oYDZ+6wJIlLabmpMvCW3JCRPDrdgpiet7vqnzq4B\n5JFH0ZwuYH68lFX+SQ==\n-----END CERTIFICATE-----\n"
+      ],
+      "googlePartitionCerts": [
+        "-----BEGIN CERTIFICATE-----\nMIID0TCCArmgAwIBAgIURqLnMNmsv91ZJuL6FpJqKZkFwKMwDQYJKoZIhvcNAQEL\nBQAwaDELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRYwFAYDVQQHDA1Nb3VudGFp\nbiBWaWV3MRMwEQYDVQQKDApHb29nbGUgSW5jMR8wHQYDVQQDDBZIYXdrc2JpbGwg\nUm9vdCB2MSBwcm9kMB4XDTI2MDMwMzE2MDI0MFoXDTMwMDEwMTAwMDAwMFowfjFE\nMAkGA1UEBhMCVVMwCQYDVQQIDAJDQTANBgNVBAoMBkNhdml1bTANBgNVBAsMBk4z\nRklQUzAOBgNVBAcMB1Nhbkpvc2UxNjA0BgNVBAMMLUhTTTo1LjJHMTkwOC1JQ00w\nMDAxNzE6UEFSVE46MSwgZm9yIEZJUFMgbW9kZTCCASIwDQYJKoZIhvcNAQEBBQAD\nggEPADCCAQoCggEBALxI1UmBb7jNo4l7TlNTnwQzKdOih/QRB6ZX+ebXvQBsRqt2\nyGfz0r95OYnsu5q0LehkyRydS8eP/622uQnOCmjj1VvWw6y+T3QZgOkupu4aLDzh\ng43DxIFrU3DO24MQX2R1ZVq/prhT8svpLEEQb/QwX624fW4TWlAfKkuoI5o6oEK4\nePrlSfRSIuDxSTTsPkrEwHRViGZjWcAWvjXf0jFohqoS9M3fhhRRJrdTsUTtjWgy\nRIh9czV2dhokbc/wKsmrdIWFLLhjYWXn5TogIDsQrcAmsIjuqbV4e5as0I2H1lNS\nGTCDvXtZ9/Apifigca1DDyuA8sTHOJMn6Mt/m+kCAwEAAaNdMFswCQYDVR0TBAIw\nADAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0OBBYEFC2gs7XI2P0f0gatebdO7tGcJnum\nMB8GA1UdIwQYMBaAFDHoUt/hSfgSe3xu506Repd1vKiuMA0GCSqGSIb3DQEBCwUA\nA4IBAQCELxj1BMT+ir4Df+tbrbFJHpSbvTJZJCCGXXYqHxkB+GwooRIphlqwFxan\nc/wU7xqIj8Nj0htuHb6uK2eX2lM8dD6Lxs0oSZECY4RDl8oBkfHPrnZyoC3IbBWV\nwubIrt7keOt6TVoJ0joPTgGwRhjAroCPrRJggc54Rq2r5M1BxI1qOlyCU5mDsl5T\n4Fikc1WuyWRSc5GtkzXAQ3bkTZ5wkSnyHT3jsKa1Jd8sgA2qK3Z5LWbQ0qaktQY6\n8JF9lvfTbIRczfJZkdyRc2HiKj/FD5Ite69rbZ8gnHVXLVzOUNGibeotF+Kkwd2S\nAPUm5BjBjRW0JN0+fjsLpvxVZTJp\n-----END CERTIFICATE-----\n"
+      ]
+    },
+    "content": "H4sIAAAAAAAAAGNgAANmBgbWfwwMLK/AmJGBgYEDJMzJxcDAoMrAwHINooyBkZkBLIsgGJkYGBhAmJGRgYGRBSbKChNhg4mww0Q4YAwumFQyTIQZxkiCWQESaUgsKIjPTq1kGDgA9mWDcaKFiWmqsUWKoaFhYlqaQZqBQapZSnKqYUqapalJokGKaUqaSbJZqoW5iaFFipmRaZqpcWKKeapJqkGahaGpoUGiYZqFZaq5pVmSiYllsmmKhUFqkqVlSkqimZGFoZmBgYGZmWVqskGymYGJZYplampaolFqslmamUVyoplBSioDA2MiAwMDCwMDOxMDA2MxKHzO+PxhYBAABZPCVKdjItO4wl+71IiX6Wnl7Jou82KvScqJc771Gw4eNghZxcAgwACLWVCkNTAwloD0EfD7/wYGxlIi1ZURqa6cSHUVRKqrJFJdAzHqGBgYFRgYGBvm/jjxIdr38tPFD285fph6LvTCG/2TfzMD2ZZsXL/QeFIgi8Y6t00P069Ma/LYMfGue+iJ3X+C7De3dcxm0GadxR6q9EKhkq3ZpFS9Ui314gxveacvYlyyK4MbzigELv5YfEor6aJ/QJ8A/9NG82uyCx59P6XK5PJ86zWGyoUFZm9TVpUHqm9VnJzw3O1VQsmyg3lSd/s/1K46Fqwf/qOUnU+Qve269DkLMR0J+19lVmvz5Jek9nl7vBGa7nEnvGXd59yFIYKWXyb/cVNqZ5OSNRYWb9h9nL/vHd9LJ6t7X27kTjS/cb3u+p9TEY+/1HaeYI34dPO/2uGDSx+6pa2W3GizSFb4hql3w0r5oI7Fz8RuiDzfd/Dq0lmz57Pfc5/CcFWBW/2Tx9PZkt4n3s6c2FuoVhpTcXdKZdxbO9E74YV1v8TZ503c6HI9XevgglQ5xduxVYrfFh9I45N6tvmghP+CX7NDvLYWKrl+5z+3bnnztb7GYKHilLhGS95d7NNd1t1utWS/wpjewMMo4+V3LT6Az5KBgVERktx5QFlQCZTcGSFxCBFmPsDAwNAGLSqYBGDFCVg1CKeCi5MGaPnE0AApTsBSKWApuRfb1i8qWLjuaNuTH8JzPMoWeoqvnXfN//isvsdbxJ+3rFp8+myf8rPdj/wy9Y021AoUlmoVNawtVNlvOO///pbwAL7pDLtyNM/0PJrHHFJwIuaVClPYnsMvJbjCrHfGRh/Yl9E5ZcMRZ3Xlh2YXHUw9/55aZX/WKGXLvOQ2n42yJk+urvwuWP/r4ct3/8zcbkj7iZ5zYdrgYih7/PFLg28mxXtKJ4dt1T018aUYa+jlCJet+zb/29jpl6d4SGhluUndRDG2m3avzFVEcyMm8i6cu2Pt7+srknRCMm0O/J+deNimNm6FWa7SJoM9T+Kusy89WTFN4tCnuP+ubOFil4Mvab/60KicEBKWsSzCCQAJ/aXF/gUAAA==",
+    "format": "CAVIUM_V2_COMPRESSED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "name": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}",
+  "protectionLevel": "HSM",
+  "publicKey": {
+    "pem": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAnfjI8FtN0+Wj4dpB8JXO\nVdDsL8n9aVEGpLGvoTOSUQQorkay4WfUloJIuJHdR1XIu/xSP7OGiJsAKwWaB1Ui\n6CB5BoM0dSd5JmXRmEsfQvQWCh2pU4DMIFGj8XPKKmLRT1COEA/lgTfWHaDi98ol\nAkTntdYAeaFwNu1kqndRJ7Uhk2DnRupgdKbBbhrdj/B9qsZTL1f4dQcOEQeG1xvO\nOBYsGD/6djqtbh+kZY5LSOwSl0jcV4Su822hVBE59JP8RiKHBhodMxMXgLvHD47u\nDulCOt702G2RN9jXftf8yljj9H2JyAVY8tn/JsPBpeFGZqsZsTyiHRPYNUuAqR9S\niKPmFtgU577B1aWam58H3keUANUgCyfySOWbGUvI7ZmRjXEmdVx43ZR5Xu0+FdxX\ncX76FweekbFE12cqwaBlHiHbXXoh9qPAZg4a5rPBGE+g+ptUSrVxIkX3D86up4PW\njoFTEnNkXoE5DboHl0Su24U5B9QBZ4AMARxKTtZfUA45AgMBAAE=\n-----END PUBLIC KEY-----\n"
+  },
+  "state": "ACTIVE"
+}
+
+---
+
+DELETE https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Method not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}"
+}

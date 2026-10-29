@@ -1,10 +1,4 @@
-- caisURL: //cloudresourcemanager.googleapis.com/projects/project-${uniqueId}
-  group: resourcemanager.cnrm.cloud.google.com
-  kind: Project
-  name: project-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1
-- caisURL: unknown
+- caisURL: //firebase.googleapis.com/projects/${projectId}
   group: firebase.cnrm.cloud.google.com
   kind: FirebaseProject
   name: firebaseproject-${uniqueId}

@@ -1,0 +1,11 @@
+- pre: gcloud kms keyrings create test-keyring-${uniqueId} --location=us-central1
+- pre: gcloud kms keys create test-key-${uniqueId} --location=us-central1 --keyring=test-keyring-${uniqueId} --purpose=encryption
+- exec: gcloud kms keys versions create --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions describe 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions list --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions disable 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions enable 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions destroy 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- exec: gcloud kms keys versions restore 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- post: gcloud kms keys versions destroy 2 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}
+- post: gcloud kms keys versions destroy 1 --location=us-central1 --keyring=test-keyring-${uniqueId} --key=test-key-${uniqueId}

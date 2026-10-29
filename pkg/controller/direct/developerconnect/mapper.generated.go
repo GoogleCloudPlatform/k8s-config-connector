@@ -318,6 +318,60 @@ func DevConnectConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.DevConn
 	out.GitProxyConfig = GitProxyConfig_ToProto(mapCtx, in.GitProxyConfig)
 	return out
 }
+func DeveloperConnectGitRepositoryLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GitRepositoryLink) *krm.DeveloperConnectGitRepositoryLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectGitRepositoryLinkObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.WebhookID = direct.LazyPtr(in.GetWebhookId())
+	out.GitProxyURI = direct.LazyPtr(in.GetGitProxyUri())
+	return out
+}
+func DeveloperConnectGitRepositoryLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectGitRepositoryLinkObservedState) *pb.GitRepositoryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitRepositoryLink{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.WebhookId = direct.ValueOf(in.WebhookID)
+	out.GitProxyUri = direct.ValueOf(in.GitProxyURI)
+	return out
+}
+func DeveloperConnectGitRepositoryLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.GitRepositoryLink) *krm.DeveloperConnectGitRepositoryLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeveloperConnectGitRepositoryLinkSpec{}
+	// MISSING: Name
+	out.CloneURI = direct.LazyPtr(in.GetCloneUri())
+	out.Labels = in.Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Annotations = in.Annotations
+	return out
+}
+func DeveloperConnectGitRepositoryLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeveloperConnectGitRepositoryLinkSpec) *pb.GitRepositoryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitRepositoryLink{}
+	// MISSING: Name
+	out.CloneUri = direct.ValueOf(in.CloneURI)
+	out.Labels = in.Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Annotations = in.Annotations
+	return out
+}
 func GKEWorkload_FromProto(mapCtx *direct.MapContext, in *pb.GKEWorkload) *krm.GKEWorkload {
 	if in == nil {
 		return nil

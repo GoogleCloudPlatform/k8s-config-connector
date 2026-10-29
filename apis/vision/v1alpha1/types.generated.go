@@ -17,6 +17,40 @@
 // krm.group: vision.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.vision.v1
-// resource: VisionProduct:Product
+// resource: VisionProductSet:ProductSet
+// resource: VisionReferenceImage:ReferenceImage
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.vision.v1.BoundingPoly
+type BoundingPoly struct {
+	// The bounding polygon vertices.
+	// +kcc:proto:field=google.cloud.vision.v1.BoundingPoly.vertices
+	Vertices []Vertex `json:"vertices,omitempty"`
+
+	// The bounding polygon normalized vertices.
+	// +kcc:proto:field=google.cloud.vision.v1.BoundingPoly.normalized_vertices
+	NormalizedVertices []NormalizedVertex `json:"normalizedVertices,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vision.v1.NormalizedVertex
+type NormalizedVertex struct {
+	// X coordinate.
+	// +kcc:proto:field=google.cloud.vision.v1.NormalizedVertex.x
+	X *float32 `json:"x,omitempty"`
+
+	// Y coordinate.
+	// +kcc:proto:field=google.cloud.vision.v1.NormalizedVertex.y
+	Y *float32 `json:"y,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vision.v1.Vertex
+type Vertex struct {
+	// X coordinate.
+	// +kcc:proto:field=google.cloud.vision.v1.Vertex.x
+	X *int32 `json:"x,omitempty"`
+
+	// Y coordinate.
+	// +kcc:proto:field=google.cloud.vision.v1.Vertex.y
+	Y *int32 `json:"y,omitempty"`
+}

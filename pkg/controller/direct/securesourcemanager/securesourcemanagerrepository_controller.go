@@ -140,7 +140,7 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 		return err
 	}
 
-	resource := SecureSourceManagerRepositorySpec_ToProto(mapCtx, &desired.Spec)
+	resource := SecureSourceManagerRepositorySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -164,7 +164,7 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 	log.V(2).Info("successfully created Repository", "name", a.id)
 
 	status := &krm.SecureSourceManagerRepositoryStatus{}
-	status.ObservedState = SecureSourceManagerRepositoryObservedState_FromProto(mapCtx, created)
+	status.ObservedState = SecureSourceManagerRepositoryObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -187,7 +187,7 @@ func (a *SecureSourceManagerRepositoryAdapter) Export(ctx context.Context) (*uns
 
 	obj := &krm.SecureSourceManagerRepository{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SecureSourceManagerRepositorySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(SecureSourceManagerRepositorySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

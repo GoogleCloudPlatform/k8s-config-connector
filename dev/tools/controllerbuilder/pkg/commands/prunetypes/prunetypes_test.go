@@ -17,12 +17,67 @@ package prunetypes
 import (
 	"go/parser"
 	"go/token"
+	"go/types"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestCollectDirectControllerRefsOnlyMatchesTargetAPIPackage(t *testing.T) {
+	repoRoot := t.TempDir()
+	apiDir := filepath.Join(repoRoot, "apis", "foo", "v1alpha1")
+	controllerDir := filepath.Join(repoRoot, "pkg", "controller", "direct", "foo")
+	if err := os.MkdirAll(apiDir, 0755); err != nil {
+		t.Fatalf("mkdir apiDir: %v", err)
+	}
+	if err := os.MkdirAll(controllerDir, 0755); err != nil {
+		t.Fatalf("mkdir controllerDir: %v", err)
+	}
+
+	controllerSrc := `package foo
+
+import (
+	pb "cloud.google.com/go/foo/apiv1/foopb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1beta1"
+)
+
+func Map(in *pb.ProtoOnlyType) *krm.UsedByController {
+	_ = &krmv1beta1.OtherVersionType{}
+	return &krm.UsedByController{}
+}
+`
+	if err := os.WriteFile(filepath.Join(controllerDir, "mapper.go"), []byte(controllerSrc), 0644); err != nil {
+		t.Fatalf("write mapper.go: %v", err)
+	}
+
+	usedType := types.NewTypeName(token.NoPos, nil, "UsedByController", nil)
+	protoOnlyType := types.NewTypeName(token.NoPos, nil, "ProtoOnlyType", nil)
+	otherVersionType := types.NewTypeName(token.NoPos, nil, "OtherVersionType", nil)
+
+	typeToFile := map[*types.TypeName]string{
+		usedType:         filepath.Join(apiDir, "types.generated.go"),
+		protoOnlyType:    filepath.Join(apiDir, "types.generated.go"),
+		otherVersionType: filepath.Join(apiDir, "types.generated.go"),
+	}
+	handwrittenRefs := make(map[*types.TypeName]bool)
+
+	collectDirectControllerRefs(apiDir, typeToFile, handwrittenRefs)
+
+	if !handwrittenRefs[usedType] {
+		t.Errorf("expected UsedByController to be marked reachable")
+	}
+	if handwrittenRefs[protoOnlyType] {
+		t.Errorf("expected ProtoOnlyType (pb.ProtoOnlyType) not to be marked reachable")
+	}
+	if handwrittenRefs[otherVersionType] {
+		t.Errorf("expected OtherVersionType (krmv1beta1.OtherVersionType) not to be marked reachable")
+	}
+}
 
 func TestDropUnusedImports(t *testing.T) {
 	tests := []struct {

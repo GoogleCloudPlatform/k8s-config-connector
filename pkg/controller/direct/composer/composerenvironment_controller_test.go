@@ -72,7 +72,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -108,7 +108,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -151,7 +151,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -190,7 +190,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -225,7 +225,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -313,7 +313,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -364,7 +364,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -397,7 +397,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -430,7 +430,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -466,7 +466,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		sameDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &sameDesired.Spec)
+		sameDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &sameDesired.Spec)
 		if updates := buildPatches(sameDesired, sameDesiredPb, actual); len(updates) != 0 {
 			t.Fatalf("expected 0 updates when only URI prefix differs, got %v", updates)
 		}
@@ -483,7 +483,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 				},
 			},
 		}
-		changedDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &changedDesired.Spec)
+		changedDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &changedDesired.Spec)
 		updates := buildPatches(changedDesired, changedDesiredPb, actual)
 		patch, ok := updates["config.node_config.composer_network_attachment"]
 		if !ok {
@@ -519,7 +519,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		sameDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &sameDesired.Spec)
+		sameDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &sameDesired.Spec)
 		if updates := buildPatches(sameDesired, sameDesiredPb, actual); len(updates) != 0 {
 			t.Fatalf("expected 0 updates when only URI prefixes differ, got %v", updates)
 		}
@@ -539,7 +539,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 				},
 			},
 		}
-		changedDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &changedDesired.Spec)
+		changedDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &changedDesired.Spec)
 		updates := buildPatches(changedDesired, changedDesiredPb, actual)
 		patch, ok := updates["config.node_config.network,config.node_config.subnetwork"]
 		if !ok {
@@ -571,7 +571,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -624,7 +624,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -653,7 +653,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -684,7 +684,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -719,7 +719,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -752,7 +752,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -799,7 +799,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
@@ -1101,7 +1101,7 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	createPb := ComposerEnvironmentSpec_ToProto(mapCtx, &createSpec.Spec)
+	createPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &createSpec.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("failed to convert maximum createSpec to proto: %v", mapCtx.Err())
 	}
@@ -1130,7 +1130,7 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 	}
 
 	// Verify roundtrip Spec_FromProto
-	roundtripSpec := ComposerEnvironmentSpec_FromProto(mapCtx, createPb)
+	roundtripSpec := ComposerEnvironmentSpec_v1beta1_FromProto(mapCtx, createPb)
 	if mapCtx.Err() != nil {
 		t.Fatalf("failed to convert proto back to Spec: %v", mapCtx.Err())
 	}
@@ -1285,7 +1285,7 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 		},
 	}
 
-	updatePb := ComposerEnvironmentSpec_ToProto(mapCtx, &updateSpec.Spec)
+	updatePb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &updateSpec.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("failed to convert updateSpec to proto: %v", mapCtx.Err())
 	}
@@ -1355,7 +1355,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1379,7 +1379,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1442,7 +1442,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1486,7 +1486,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		rawDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1519,7 +1519,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		rawDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1557,7 +1557,7 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 			},
 		}
 		mapCtx := &direct.MapContext{}
-		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		rawDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 		if mapCtx.Err() != nil {
 			t.Fatalf("unexpected error: %v", mapCtx.Err())
 		}
@@ -1619,7 +1619,7 @@ func TestReconcile_AcquisitionAndPartialImmutableFields(t *testing.T) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	rawDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 	}

@@ -1,0 +1,192 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}/mappingRules/{mapping_rule}" contains ancestor segment(s) conversionWorkspaces/{conversion_workspace} with no matching reference or field on DataMigrationMappingRuleSpec
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}, and no ConversionWorkspaceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.conditionalColumnSetValue.valueTransformation.applyHash.uuidFromBytes
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.conditionalColumnSetValue.valueTransformation.assignMaxValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.conditionalColumnSetValue.valueTransformation.assignMinValue
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.conditionalColumnSetValue.valueTransformation.assignNull
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.conditionalColumnSetValue.valueTransformation.isNull
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: DataMigrationMappingRule
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.alloydb.clusterID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.alloydb.settings.encryptionConfig.kmsKeyName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]"
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.alloydb.settings.initialUser.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.alloydb.settings.vpcNetwork
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_number}/global/networks/{network_id}"
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.cmekKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.rootPassword
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.sourceID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.cloudsql.settings.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.mysql.cloudSQLID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.mysql.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.oracle.forwardSSHConnectivity.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.oracle.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.oracle.privateConnectivity.privateConnection
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.postgresql.cloudSQLID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.postgresql.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.postgresql.privateServiceConnectConnectivity.serviceAttachment
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}"
+    status: open
+  - kind: DatamigrationConnectionProfile
+    group: datamigration.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: open

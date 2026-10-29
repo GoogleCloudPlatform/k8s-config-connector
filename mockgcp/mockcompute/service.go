@@ -119,6 +119,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
 
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
+	pb.RegisterNetworkEndpointGroupsServer(grpcServer, &NetworkEndpointGroupsV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
@@ -126,6 +127,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterFirewallPoliciesServer(grpcServer, &FirewallPoliciesV1{MockService: s})
 	pb.RegisterNetworkFirewallPoliciesServer(grpcServer, &NetworkFirewallPoliciesV1{MockService: s})
+	pb.RegisterOrganizationSecurityPoliciesServer(grpcServer, &OrganizationSecurityPoliciesV1{MockService: s})
 
 	pb.RegisterGlobalForwardingRulesServer(grpcServer, &GlobalForwardingRulesV1{MockService: s})
 	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
@@ -290,6 +292,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterOrganizationSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -339,6 +345,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
@@ -364,6 +373,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
 		error.Status = ""
+		if error.Code == 400 && len(error.Errors) == 0 {
+			error.Errors = append(error.Errors, httpmux.ErrorResponseDetails{
+				Domain:  "global",
+				Message: error.Message,
+				Reason:  "invalid",
+			})
+		}
 	}
 
 	// Does not return Cache-Control header

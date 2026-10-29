@@ -260,6 +260,17 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef and status.policyId for ComputeOrganizationSecurityPolicy to simulate a reconciled security policy in static unit tests.
+			if u.GetKind() == "ComputeOrganizationSecurityPolicy" && u.GroupVersionKind().Group == "compute.cnrm.cloud.google.com" {
+				policyID := "${securityPolicyID}"
+				if err := unstructured.SetNestedField(u.Object, "locations/global/securityPolicies/"+policyID, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for ComputeOrganizationSecurityPolicy %s: %v", u.GetName(), err)
+				}
+				if err := unstructured.SetNestedField(u.Object, policyID, "status", "policyId"); err != nil {
+					t.Fatalf("failed to inject status.policyId for ComputeOrganizationSecurityPolicy %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {

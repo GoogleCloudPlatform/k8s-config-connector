@@ -22,4 +22,4 @@ spec:
   zone: us-central1-a
   ttl: 56400s
   admissionPolicy: admit-on-second-miss
-  desiredState: paused
+  desiredState: running

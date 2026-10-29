@@ -31,19 +31,35 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.talent.v4 \
+  --api-version cloudtalentsolution.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource CloudTalentSolutionCompany:Company
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.talent.v4 \
   --api-version cloudtalentsolution.cnrm.cloud.google.com/v1alpha1 \
-  --resource CloudTalentSolutionCompany:Company
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource CloudTalentSolutionTenant:Tenant
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.talent.v4 \
+  --api-version cloudtalentsolution.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudTalentSolutionTenant:Tenant
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.talent.v4 \
   --api-version cloudtalentsolution.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/cloudtalentsolution" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/cloudtalentsolution/

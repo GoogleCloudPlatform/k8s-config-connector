@@ -106,7 +106,10 @@ if [[ "${E2E_GCP_TARGET}" == "real" ]]; then
   echo "Using GCP_PROJECT_ID: ${GCP_PROJECT_ID}"
   export GCP_PROJECT_ID
 
-  TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+  parent_type=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.type)')
+  if [[ "${parent_type}" == "folder" ]]; then
+    TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+  fi
   export TEST_FOLDER_ID
 
   TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')

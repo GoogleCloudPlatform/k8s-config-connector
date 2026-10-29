@@ -129,8 +129,27 @@ func (r *kmsServer) CreateCryptoKeyVersion(ctx context.Context, req *pb.CreateCr
 	obj.CreateTime = timestamppb.New(now)
 	obj.GenerateTime = timestamppb.New(now)
 	obj.State = pb.CryptoKeyVersion_ENABLED
+
+	var parent *pb.CryptoKey
+	{
+		get := &pb.GetCryptoKeyRequest{
+			Name: name.CryptoKeyName.String(),
+		}
+		cryptoKey, err := r.GetCryptoKey(ctx, get)
+		if err != nil {
+			return nil, err
+		}
+		parent = cryptoKey
+	}
+
 	obj.Algorithm = req.GetCryptoKeyVersion().GetAlgorithm()
+	if obj.Algorithm == pb.CryptoKeyVersion_CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED && parent.VersionTemplate != nil {
+		obj.Algorithm = parent.VersionTemplate.Algorithm
+	}
 	obj.ProtectionLevel = req.GetCryptoKeyVersion().GetProtectionLevel()
+	if obj.ProtectionLevel == pb.ProtectionLevel_PROTECTION_LEVEL_UNSPECIFIED && parent.VersionTemplate != nil {
+		obj.ProtectionLevel = parent.VersionTemplate.ProtectionLevel
+	}
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -204,7 +223,10 @@ func (r *kmsServer) RestoreCryptoKeyVersion(ctx context.Context, req *pb.Restore
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	// TODO:  set appropriate state and fields
+
+	obj.State = pb.CryptoKeyVersion_DISABLED
+	obj.DestroyTime = nil
+
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

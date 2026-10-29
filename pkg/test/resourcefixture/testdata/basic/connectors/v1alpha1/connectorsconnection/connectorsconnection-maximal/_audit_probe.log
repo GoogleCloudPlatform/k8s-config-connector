@@ -1,0 +1,57 @@
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/connectorsconnection-${uniqueId}?alt=json&prettyPrint=false&view=FULL
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "billingConfig": {
+    "billingCategory": "GCP_AND_TECHNICAL_CONNECTOR"
+  },
+  "configVariables": [
+    {
+      "key": "project_id",
+      "stringValue": "${projectId}"
+    }
+  ],
+  "connectionRevision": "1234567890",
+  "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/gcs/versions/1",
+  "connectorVersionInfraConfig": {
+    "deploymentModel": "CLOUD_RUN_MST",
+    "deploymentModelMigrationState": "COMPLETED",
+    "maxInstanceRequestConcurrency": 11,
+    "ratelimitThreshold": "10",
+    "resourceLimits": {
+      "cpu": "4.0",
+      "memory": "3.5Gi"
+    },
+    "resourceRequests": {
+      "cpu": "1.2",
+      "memory": "3.0Gi"
+    }
+  },
+  "connectorVersionLaunchStage": "GA",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal ConnectorsConnection update",
+  "envoyImageLocation": "us.gcr.io/apigee-saas-prod-repo/thirdparty/connectors-envoy/master:1.0.12",
+  "host": "10.1.2.3",
+  "imageLocation": "us-docker.pkg.dev/connectors-producer-prod/connectors-platform/connectors-service-gcp-gcs@sha256:65be052f7049a25dfc0e9e137b1d13533212a50c6e61b5d0c6d9e12334783f0b",
+  "labels": {
+    "label-one": "value-two"
+  },
+  "lockConfig": {},
+  "name": "projects/${projectId}/locations/us-central1/connections/connectorsconnection-${uniqueId}",
+  "nodeConfig": {
+    "maxNodeCount": 3,
+    "minNodeCount": 2
+  },
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceDirectory": "projects/p47055cd3e3e1c55d-tp/locations/us-central1/namespaces/cloudrun/services/runtime",
+  "status": {
+    "description": "Unable to create a connector instance.",
+    "state": "ERROR"
+  },
+  "subscriptionType": "PAY_G",
+  "tlsServiceDirectory": "projects/p47055cd3e3e1c55d-tp/locations/us-central1/namespaces/cloudrun/services/runtime-tls",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

@@ -469,3 +469,27 @@ func (m *gcpClient) newProjectsClient(ctx context.Context) (*compute.ProjectsCli
 	}
 	return client, err
 }
+
+func (m *gcpClient) newNetworkFirewallPoliciesClient(ctx context.Context) (*compute.NetworkFirewallPoliciesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkFirewallPoliciesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeNetworkFirewallPolicies client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworkEndpointGroupsClient(ctx context.Context) (*compute.NetworkEndpointGroupsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkEndpointGroupsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute NetworkEndpointGroups client: %w", err)
+	}
+	return client, err
+}

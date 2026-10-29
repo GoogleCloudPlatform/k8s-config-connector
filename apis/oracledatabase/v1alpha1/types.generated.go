@@ -19,6 +19,8 @@
 // proto.service: google.cloud.oracledatabase.v1
 // resource: OracleDatabaseExadbVMCluster:ExadbVmCluster
 // resource: OracleDatabaseAutonomousDatabase:AutonomousDatabase
+// resource: OracleDatabaseCloudExadataInfrastructure:CloudExadataInfrastructure
+// resource: OracleDatabaseCloudVMCluster:CloudVmCluster
 
 package v1alpha1
 
@@ -46,12 +48,174 @@ type AutonomousDatabaseStandbySummary struct {
 }
 */
 
+// +kcc:proto=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties
+type CloudExadataInfrastructureProperties struct {
+
+	// Optional. The number of compute servers for the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.compute_count
+	ComputeCount *int32 `json:"computeCount,omitempty"`
+
+	// Optional. The number of Cloud Exadata storage servers for the Exadata
+	//  Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.storage_count
+	StorageCount *int32 `json:"storageCount,omitempty"`
+
+	// Optional. The total storage allocated to the Exadata Infrastructure
+	//  resource, in gigabytes (GB).
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.total_storage_size_gb
+	TotalStorageSizeGB *int32 `json:"totalStorageSizeGB,omitempty"`
+
+	// Optional. Maintenance window for repair.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.maintenance_window
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
+	// Required. The shape of the Exadata Infrastructure. The shape determines the
+	//  amount of CPU, storage, and memory resources allocated to the instance.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.shape
+	// +required
+	Shape *string `json:"shape,omitempty"`
+
+	// Optional. The list of customer contacts.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.customer_contacts
+	CustomerContacts []CustomerContactWithRequired `json:"customerContacts,omitempty"`
+
+	// Optional. The database server type of the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.database_server_type
+	DatabaseServerType *string `json:"databaseServerType,omitempty"`
+
+	// Optional. The storage server type of the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.storage_server_type
+	StorageServerType *string `json:"storageServerType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.oracledatabase.v1.CloudVmClusterProperties
+type CloudVMClusterProperties struct {
+
+	// Required. License type of VM Cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.license_type
+	// +required
+	LicenseType *string `json:"licenseType,omitempty"`
+
+	// Optional. Grid Infrastructure Version.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.gi_version
+	GiVersion *string `json:"giVersion,omitempty"`
+
+	// Optional. Time zone of VM Cluster to set. Defaults to UTC if not specified.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.time_zone
+	TimeZone *TimeZone `json:"timeZone,omitempty"`
+
+	// Optional. SSH public keys to be stored with cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.ssh_public_keys
+	SSHPublicKeys []string `json:"sshPublicKeys,omitempty"`
+
+	// Optional. Number of database servers.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Optional. OCPU count per VM. Minimum is 0.1.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.ocpu_count
+	OcpuCount *float32 `json:"ocpuCount,omitempty"`
+
+	// Optional. Memory allocated in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.memory_size_gb
+	MemorySizeGB *int32 `json:"memorySizeGB,omitempty"`
+
+	// Optional. Local storage per VM.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.db_node_storage_size_gb
+	DbNodeStorageSizeGB *int32 `json:"dbNodeStorageSizeGB,omitempty"`
+
+	// Optional. The data disk group size to be allocated in TBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.data_storage_size_tb
+	DataStorageSizeTb *float64 `json:"dataStorageSizeTb,omitempty"`
+
+	// Optional. The type of redundancy.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.disk_redundancy
+	DiskRedundancy *string `json:"diskRedundancy,omitempty"`
+
+	// Optional. Use exadata sparse snapshots.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.sparse_diskgroup_enabled
+	SparseDiskgroupEnabled *bool `json:"sparseDiskgroupEnabled,omitempty"`
+
+	// Optional. Use local backup.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.local_backup_enabled
+	LocalBackupEnabled *bool `json:"localBackupEnabled,omitempty"`
+
+	// Optional. Prefix for VM cluster host names.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.hostname_prefix
+	HostnamePrefix *string `json:"hostnamePrefix,omitempty"`
+
+	// Optional. Data collection options for diagnostics.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.diagnostics_data_collection_options
+	DiagnosticsDataCollectionOptions *DataCollectionOptions `json:"diagnosticsDataCollectionOptions,omitempty"`
+
+	// Optional. SCAN listener port - TCP
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.scan_listener_port_tcp
+	ScanListenerPortTCP *int32 `json:"scanListenerPortTCP,omitempty"`
+
+	// Optional. SCAN listener port - TLS
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.scan_listener_port_tcp_ssl
+	ScanListenerPortTCPSSL *int32 `json:"scanListenerPortTCPSSL,omitempty"`
+
+	// Required. Number of enabled CPU cores.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.cpu_core_count
+	// +required
+	CPUCoreCount *int32 `json:"cpuCoreCount,omitempty"`
+
+	// Optional. Operating system version of the image.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.system_version
+	SystemVersion *string `json:"systemVersion,omitempty"`
+
+	// Optional. OCID of database servers.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.db_server_ocids
+	DbServerOcids []string `json:"dbServerOcids,omitempty"`
+
+	// Optional. OCI Cluster name.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.cluster_name
+	ClusterName *string `json:"clusterName,omitempty"`
+
+	// Optional. Specifies whether VM file system storage / VM images are stored
+	//  on local DB server storage or Exascale storage.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.vm_file_system_storage_type
+	VMFileSystemStorageType *string `json:"vmFileSystemStorageType,omitempty"`
+
+	// Optional. Specifies whether VM backups are stored on local DB server
+	//  storage or Exascale storage.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.vm_backup_storage_type
+	VMBackupStorageType *string `json:"vmBackupStorageType,omitempty"`
+}
+
 // +kcc:proto=google.cloud.oracledatabase.v1.CustomerContact
 type CustomerContact struct {
 	// Required. The email address used by Oracle to send notifications regarding
 	//  databases and infrastructure.
 	// +kcc:proto:field=google.cloud.oracledatabase.v1.CustomerContact.email
 	Email *string `json:"email,omitempty"`
+}
+
+// +kcc:proto=google.cloud.oracledatabase.v1.CustomerContact
+type CustomerContactWithRequired struct {
+	// Required. The email address used by Oracle to send notifications regarding
+	//  databases and infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CustomerContact.email
+	// +required
+	Email *string `json:"email,omitempty"`
+}
+
+// +kcc:proto=google.cloud.oracledatabase.v1.DataCollectionOptions
+type DataCollectionOptions struct {
+	// Optional. Indicates whether diagnostic collection is enabled for the VM
+	//  cluster
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DataCollectionOptions.diagnostics_events_enabled
+	DiagnosticsEventsEnabled *bool `json:"diagnosticsEventsEnabled,omitempty"`
+
+	// Optional. Indicates whether health monitoring is enabled for the VM cluster
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DataCollectionOptions.health_monitoring_enabled
+	HealthMonitoringEnabled *bool `json:"healthMonitoringEnabled,omitempty"`
+
+	// Optional. Indicates whether incident logs and trace collection are enabled
+	//  for the VM cluster
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DataCollectionOptions.incident_logs_enabled
+	IncidentLogsEnabled *bool `json:"incidentLogsEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.oracledatabase.v1.DataCollectionOptionsCommon
@@ -75,11 +239,71 @@ type DatabaseConnectionStringProfile struct {
 }
 */
 
+/* unreachable type ExascaleConfig
+// +kcc:proto=google.cloud.oracledatabase.v1.ExascaleConfig
+type ExascaleConfig struct {
+}
+*/
+
 /* unreachable type IdentityConnector
 // +kcc:proto=google.cloud.oracledatabase.v1.IdentityConnector
 type IdentityConnector struct {
 }
 */
+
+// +kcc:proto=google.cloud.oracledatabase.v1.MaintenanceWindow
+type MaintenanceWindow struct {
+	// Optional. The maintenance window scheduling preference.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.preference
+	Preference *string `json:"preference,omitempty"`
+
+	// Optional. Months during the year when maintenance should be performed.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.months
+	Months []string `json:"months,omitempty"`
+
+	// Optional. Weeks during the month when maintenance should be performed.
+	//  Weeks start on the 1st, 8th, 15th, and 22nd days of the month, and have a
+	//  duration of 7 days. Weeks start and end based on calendar dates, not days
+	//  of the week.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.weeks_of_month
+	WeeksOfMonth []int32 `json:"weeksOfMonth,omitempty"`
+
+	// Optional. Days during the week when maintenance should be performed.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.days_of_week
+	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
+
+	// Optional. The window of hours during the day when maintenance should be
+	//  performed. The window is a 4 hour slot. Valid values are:
+	//    0 - represents time slot 0:00 - 3:59 UTC
+	//    4 - represents time slot 4:00 - 7:59 UTC
+	//    8 - represents time slot 8:00 - 11:59 UTC
+	//    12 - represents time slot 12:00 - 15:59 UTC
+	//    16 - represents time slot 16:00 - 19:59 UTC
+	//    20 - represents time slot 20:00 - 23:59 UTC
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.hours_of_day
+	HoursOfDay []int32 `json:"hoursOfDay,omitempty"`
+
+	// Optional. Lead time window allows user to set a lead time to prepare for a
+	//  down time. The lead time is in weeks and valid value is between 1 to 4.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.lead_time_week
+	LeadTimeWeek *int32 `json:"leadTimeWeek,omitempty"`
+
+	// Optional. Cloud CloudExadataInfrastructure node patching method, either
+	//  "ROLLING" or "NONROLLING". Default value is ROLLING.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.patching_mode
+	PatchingMode *string `json:"patchingMode,omitempty"`
+
+	// Optional. Determines the amount of time the system will wait before the
+	//  start of each database server patching operation. Custom action timeout is
+	//  in minutes and valid value is between 15 to 120 (inclusive).
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.custom_action_timeout_mins
+	CustomActionTimeoutMins *int32 `json:"customActionTimeoutMins,omitempty"`
+
+	// Optional. If true, enables the configuration of a custom action timeout
+	//  (waiting period) between database server patching operations.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.MaintenanceWindow.is_custom_action_timeout_enabled
+	IsCustomActionTimeoutEnabled *bool `json:"isCustomActionTimeoutEnabled,omitempty"`
+}
 
 /* unreachable type ScheduledOperationDetails
 // +kcc:proto=google.cloud.oracledatabase.v1.ScheduledOperationDetails
@@ -213,6 +437,172 @@ type AutonomousDatabaseStandbySummaryObservedState struct {
 	DisasterRecoveryRoleChangedTime *string `json:"disasterRecoveryRoleChangedTime,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties
+type CloudExadataInfrastructurePropertiesObservedState struct {
+	// Output only. OCID of created infra.
+	//  https://docs.oracle.com/en-us/iaas/Content/General/Concepts/identifiers.htm#Oracle
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.ocid
+	Ocid *string `json:"ocid,omitempty"`
+
+	// Output only. The available storage can be allocated to the Exadata
+	//  Infrastructure resource, in gigabytes (GB).
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.available_storage_size_gb
+	AvailableStorageSizeGB *int32 `json:"availableStorageSizeGB,omitempty"`
+
+	// Output only. The current lifecycle state of the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Deep link to the OCI console to view this resource.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.oci_url
+	OciURL *string `json:"ociURL,omitempty"`
+
+	// Output only. The number of enabled CPU cores.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.cpu_count
+	CPUCount *int32 `json:"cpuCount,omitempty"`
+
+	// Output only. The total number of CPU cores available.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.max_cpu_count
+	MaxCPUCount *int32 `json:"maxCPUCount,omitempty"`
+
+	// Output only. The memory allocated in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.memory_size_gb
+	MemorySizeGB *int32 `json:"memorySizeGB,omitempty"`
+
+	// Output only. The total memory available in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.max_memory_gb
+	MaxMemoryGB *int32 `json:"maxMemoryGB,omitempty"`
+
+	// Output only. The local node storage allocated in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.db_node_storage_size_gb
+	DbNodeStorageSizeGB *int32 `json:"dbNodeStorageSizeGB,omitempty"`
+
+	// Output only. The total local node storage available in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.max_db_node_storage_size_gb
+	MaxDbNodeStorageSizeGB *int32 `json:"maxDbNodeStorageSizeGB,omitempty"`
+
+	// Output only. Size, in terabytes, of the DATA disk group.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.data_storage_size_tb
+	DataStorageSizeTb *float64 `json:"dataStorageSizeTb,omitempty"`
+
+	// Output only. The total available DATA disk group size.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.max_data_storage_tb
+	MaxDataStorageTb *float64 `json:"maxDataStorageTb,omitempty"`
+
+	// Output only. The requested number of additional storage servers activated
+	//  for the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.activated_storage_count
+	ActivatedStorageCount *int32 `json:"activatedStorageCount,omitempty"`
+
+	// Output only. The requested number of additional storage servers for the
+	//  Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.additional_storage_count
+	AdditionalStorageCount *int32 `json:"additionalStorageCount,omitempty"`
+
+	// Output only. The software version of the database servers (dom0) in the
+	//  Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.db_server_version
+	DbServerVersion *string `json:"dbServerVersion,omitempty"`
+
+	// Output only. The software version of the storage servers (cells) in the
+	//  Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.storage_server_version
+	StorageServerVersion *string `json:"storageServerVersion,omitempty"`
+
+	// Output only. The OCID of the next maintenance run.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.next_maintenance_run_id
+	NextMaintenanceRunID *string `json:"nextMaintenanceRunID,omitempty"`
+
+	// Output only. The time when the next maintenance run will occur.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.next_maintenance_run_time
+	NextMaintenanceRunTime *string `json:"nextMaintenanceRunTime,omitempty"`
+
+	// Output only. The time when the next security maintenance run will occur.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.next_security_maintenance_run_time
+	NextSecurityMaintenanceRunTime *string `json:"nextSecurityMaintenanceRunTime,omitempty"`
+
+	// Output only. The monthly software version of the storage servers (cells)
+	//  in the Exadata Infrastructure. Example: 20.1.15
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.monthly_storage_server_version
+	MonthlyStorageServerVersion *string `json:"monthlyStorageServerVersion,omitempty"`
+
+	// Output only. The monthly software version of the database servers (dom0)
+	//  in the Exadata Infrastructure. Example: 20.1.15
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.monthly_db_server_version
+	MonthlyDbServerVersion *string `json:"monthlyDbServerVersion,omitempty"`
+
+	// Output only. The compute model of the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.compute_model
+	ComputeModel *string `json:"computeModel,omitempty"`
+
+	// Output only. The Exascale configuration for the Exadata Infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties.exascale_config
+	ExascaleConfig *ExascaleConfigObservedState `json:"exascaleConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.CloudVmClusterProperties
+type CloudVMClusterPropertiesObservedState struct {
+	// Output only. Oracle Cloud Infrastructure ID of VM Cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.ocid
+	Ocid *string `json:"ocid,omitempty"`
+
+	// Output only. Shape of VM Cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.shape
+	Shape *string `json:"shape,omitempty"`
+
+	// Output only. The storage allocation for the disk group, in gigabytes (GB).
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.storage_size_gb
+	StorageSizeGB *int32 `json:"storageSizeGB,omitempty"`
+
+	// Output only. State of the cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Parent DNS domain where SCAN DNS and hosts names are
+	//  qualified. ex: ocispdelegated.ocisp10jvnet.oraclevcn.com
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.domain
+	Domain *string `json:"domain,omitempty"`
+
+	// Output only. SCAN DNS name.
+	//  ex: sp2-yi0xq-scan.ocispdelegated.ocisp10jvnet.oraclevcn.com
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.scan_dns
+	ScanDNS *string `json:"scanDNS,omitempty"`
+
+	// Output only. host name without domain.
+	//  format: "<hostname_prefix>-" with some suffix.
+	//  ex: sp2-yi0xq where "sp2" is the hostname_prefix.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.hostname
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Output only. OCIDs of scan IPs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.scan_ip_ids
+	ScanIPIDs []string `json:"scanIPIDs,omitempty"`
+
+	// Output only. OCID of scan DNS record.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.scan_dns_record_id
+	ScanDNSRecordID *string `json:"scanDNSRecordID,omitempty"`
+
+	// Output only. Deep link to the OCI console to view this resource.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.oci_url
+	OciURL *string `json:"ociURL,omitempty"`
+
+	// Output only. Compartment ID of cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.compartment_id
+	CompartmentID *string `json:"compartmentID,omitempty"`
+
+	// Output only. DNS listener IP.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.dns_listener_ip
+	DNSListenerIP *string `json:"dnsListenerIP,omitempty"`
+
+	// Output only. The compute model of the VM Cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.compute_model
+	ComputeModel *string `json:"computeModel,omitempty"`
+
+	// Output only. The storage management type of the VM Cluster.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CloudVmClusterProperties.storage_management_type
+	StorageManagementType *string `json:"storageManagementType,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile
 type DatabaseConnectionStringProfileObservedState struct {
 	// Output only. The current consumer group being used by the connection.
@@ -253,6 +643,25 @@ type DatabaseConnectionStringProfileObservedState struct {
 	// Output only. The value of the connection string.
 	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.value
 	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.ExascaleConfig
+type ExascaleConfigObservedState struct {
+	// Output only. Total storage size needed for Exascale in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ExascaleConfig.total_storage_size_gb
+	TotalStorageSizeGB *int32 `json:"totalStorageSizeGB,omitempty"`
+
+	// Output only. Available storage size for Exascale in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ExascaleConfig.available_storage_size_gb
+	AvailableStorageSizeGB *int32 `json:"availableStorageSizeGB,omitempty"`
+
+	// Output only. Storage size needed for VM storage on Exascale in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ExascaleConfig.total_vm_storage_size_gb
+	TotalVMStorageSizeGB *int32 `json:"totalVMStorageSizeGB,omitempty"`
+
+	// Output only. Available storage size for VM storage on Exascale in GBs.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ExascaleConfig.available_vm_storage_size_gb
+	AvailableVMStorageSizeGB *int32 `json:"availableVMStorageSizeGB,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.oracledatabase.v1.IdentityConnector

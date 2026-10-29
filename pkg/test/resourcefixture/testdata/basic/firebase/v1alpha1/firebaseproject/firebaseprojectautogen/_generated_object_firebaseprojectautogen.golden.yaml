@@ -1,0 +1,27 @@
+apiVersion: firebase.cnrm.cloud.google.com/v1alpha1
+kind: FirebaseProject
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: firebaseproject-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: firebaseproject${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  displayName: ${projectId}
+  observedGeneration: 1
+  projectNumber: ${projectNumber}

@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptEndpointGroupAssociation
+metadata:
+  name: interceptega-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  interceptEndpointGroupRef:
+    external: "projects/${projectId}/locations/global/interceptEndpointGroups/shared-eg"
+  networkRef:
+    name: consumer-net-min-${uniqueId}

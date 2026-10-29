@@ -63,6 +63,8 @@ type GenerateCRDOptions struct {
 	EmitPluralAcronyms  bool
 	EmitMessageMaps     bool
 	AllowNonGAProto     bool
+	AllowDeprecated     bool
+	AllowNonDeclarative bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -86,6 +88,8 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "case plural acronyms as KRM conventions want, so related_uris becomes relatedURIs rather than relatedUris (enabled automatically by --prepopulate-resource)")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out (enabled automatically by --prepopulate-resource)")
 	cmd.Flags().BoolVar(&o.AllowNonGAProto, "allow-non-ga-proto", false, "allow scaffolding new resources backed by non-GA (alpha or beta) proto packages")
+	cmd.Flags().BoolVar(&o.AllowDeprecated, "allow-deprecated", false, "allow scaffolding new resources backed by a deprecated proto service")
+	cmd.Flags().BoolVar(&o.AllowNonDeclarative, "allow-non-declarative", false, "allow scaffolding new resources whose resource pattern indicates an ephemeral, data-plane, version-snapshot, or point-in-time backup resource")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -149,14 +153,56 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		RequiredFromProto: o.PrepopulateResource,
 	}
 	if !o.AllowNonGAProto && !o.SkipScaffoldFiles {
+		var rejected []string
 		for _, resource := range o.Resources {
 			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
 				continue
 			}
 			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
 			if isNonGAProto(resourceProtoFullName) {
-				return fmt.Errorf("resource %s resolves to non-GA proto %q; use a GA proto package or pass --allow-non-ga-proto", resource.Kind, resourceProtoFullName)
+				rejected = append(rejected, fmt.Sprintf("  - resource %s resolves to non-GA proto %q", resource.Kind, resourceProtoFullName))
 			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d non-GA resource(s) (use a GA proto package or pass --allow-non-ga-proto):\n%s", len(rejected), strings.Join(rejected, "\n"))
+		}
+	}
+	if !o.AllowDeprecated && !o.SkipScaffoldFiles {
+		var rejected []string
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			msg, err := resourceMessage(api, resourceProtoFullName)
+			if err != nil {
+				return err
+			}
+			if reason, ok := deprecatedResourceReason(api, msg); ok {
+				rejected = append(rejected, fmt.Sprintf("  - resource %s (%s) is deprecated (%s)", resource.Kind, resourceProtoFullName, reason))
+			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d deprecated resource(s) (pass --allow-deprecated to scaffold anyway):\n%s", len(rejected), strings.Join(rejected, "\n"))
+		}
+	}
+	if !o.AllowNonDeclarative && !o.SkipScaffoldFiles {
+		var rejected []string
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			msg, err := resourceMessage(api, resourceProtoFullName)
+			if err != nil {
+				return err
+			}
+			if reason, ok := nonDeclarativeResourceReason(api, msg); ok {
+				rejected = append(rejected, fmt.Sprintf("  - resource %s (%s) appears non-declarative (%s)", resource.Kind, resourceProtoFullName, reason))
+			}
+		}
+		if len(rejected) > 0 {
+			return fmt.Errorf("rejected %d suspected non-declarative resource(s) (see docs/ai/declarative-resource-criteria.md or pass --allow-non-declarative):\n%s", len(rejected), strings.Join(rejected, "\n"))
 		}
 	}
 	if scaffolder.DocFileNotExist() {
@@ -240,7 +286,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			continue
 		}
 		if o.PrepopulateResource {
-			untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
+			untriaged, _, err := untriagedState(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group, scaffolder.PathToTypeFile(resource))
 			if err != nil {
 				return fmt.Errorf("reading judgement queue: %w", err)
 			}
@@ -320,15 +366,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
 
-	if err := typeGenerator.WriteVisitedMessages(); err != nil {
-		return err
-	}
-
-	if err := typeGenerator.WriteOutputMessages(); err != nil {
-		return err
-	}
-
-	for _, resource := range o.Resources { // A separate loop is needed to scaffold files AFTER all the visited messages have been generated.
+	for _, resource := range o.Resources { // A separate loop is needed to scaffold files AFTER all the visited messages have been traversed.
 		skipScaffold := o.SkipScaffoldFiles || resource.SkipScaffoldFiles
 		if skipScaffold {
 			log.Info("skipping scaffolding type, refs and identity files", "resource", resource.ProtoName)
@@ -343,7 +381,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				// after a generator change they can name a field the types file
 				// does not have.
 				if o.PrepopulateResource {
-					untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
+					untriaged, missingFromQueue, err := untriagedState(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group, scaffolder.PathToTypeFile(resource))
 					if err != nil {
 						return fmt.Errorf("reading judgement queue: %w", err)
 					}
@@ -355,6 +393,28 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						prepopulated, err := prepopulate(msg, typeGenerator, writeOptions, specOptions)
 						if err != nil {
 							return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
+						}
+						if missingFromQueue {
+							prepopulated.Judgement = append(prepopulated.Judgement, scaffolder.ParentJudgement(resource)...)
+							if linkResolver != nil {
+								if data, err := os.ReadFile(scaffolder.PathToTypeFile(resource)); err == nil {
+									if guesses := sourcelinks.Parse(data).Guesses(); len(guesses) > 0 {
+										_, linkEntries, err := resolveSourceLinks(ctx, linkResolver, api, resource.Kind, gv.Group, protoFullNames[resource.Kind])
+										if err != nil {
+											return err
+										}
+										wantReasons := make(map[string]bool, len(guesses))
+										for _, g := range guesses {
+											wantReasons[g] = true
+										}
+										for _, le := range linkEntries {
+											if wantReasons[le.Reason] {
+												queued = append(queued, le)
+											}
+										}
+									}
+								}
+							}
 						}
 						queued = append(queued, scaffold.JudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement)...)
 					}
@@ -390,6 +450,14 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 				}
 			}
 		}
+	}
+
+	if err := typeGenerator.WriteVisitedMessages(); err != nil {
+		return err
+	}
+
+	if err := typeGenerator.WriteOutputMessages(); err != nil {
+		return err
 	}
 
 	addCopyright := true
@@ -544,22 +612,33 @@ func resourceMessage(api *protoapi.Proto, fullName string) (protoreflect.Message
 	return msg, nil
 }
 
-// isUntriaged reports whether the service's judgement queue still has an open
-// untriaged-bulk-generation entry for the Kind. PrepopulateSpec queues that
-// entry when it scaffolds the Kind, and a reviewer resolves it once they have
-// looked the Kind over.
-func isUntriaged(apiDir, goPackage, kind, group string) (bool, error) {
+// untriagedState reports whether the service's judgement queue still has an
+// open untriaged-bulk-generation entry for the Kind, or whether the Kind's
+// <kind>_types.go file was scaffolded with --prepopulate-resource (carries
+// +kcc:required-from-proto) and its untriaged-bulk-generation entry was lost
+// from judgement_queue.yaml (for example, during a rebase conflict).
+func untriagedState(apiDir, goPackage, kind, group, typeFilePath string) (untriaged bool, missingFromQueue bool, err error) {
 	q, err := judgement.Read(judgementQueuePath(apiDir, goPackage))
 	if err != nil {
-		return false, err
+		return false, false, err
 	}
 	for _, e := range q.Entries {
 		if e.Kind == kind && e.Group == group && e.Field == "" &&
-			e.Reason == judgement.ReasonUntriagedBulkGeneration && e.IsOpen() {
-			return true, nil
+			e.Reason == judgement.ReasonUntriagedBulkGeneration {
+			return e.IsOpen(), false, nil
 		}
 	}
-	return false, nil
+	b, err := os.ReadFile(typeFilePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, false, nil
+		}
+		return false, false, err
+	}
+	if strings.Contains(string(b), codegen.RequiredFromProtoMarker) {
+		return true, true, nil
+	}
+	return false, false, nil
 }
 
 // prepopulate fills in the Spec and ObservedState for a new <kind>_types.go
@@ -693,3 +772,4 @@ func isNonGAProto(fullName string) bool {
 	}
 	return false
 }
+

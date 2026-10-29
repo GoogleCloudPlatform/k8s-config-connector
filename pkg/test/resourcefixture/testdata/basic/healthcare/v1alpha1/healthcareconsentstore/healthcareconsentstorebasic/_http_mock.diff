@@ -1,0 +1,103 @@
+31c31
+< GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
+---
+> POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json&datasetId=${datasetID}
+34c34,38
+< 404 Not Found
+---
+> {
+>   "name": "healthcareconsentstore${uniqueId}"
+> }
+> 
+> 200 OK
+45,55c49,53
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "consentStore \"projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/consentStores/healthcareconsentstore-${uniqueId}\" not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "consentStore \"projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/consentStores/healthcareconsentstore-${uniqueId}\" not found",
+<     "status": "NOT_FOUND"
+---
+>   "done": true,
+>   "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/operations/${operationID}",
+>   "response": {
+>     "@type": "type.googleapis.com/google.cloud.healthcare.v1.Dataset",
+>     "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}"
+61c59
+< POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json&datasetId=${datasetID}
+---
+> GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+64,67d61
+< {
+<   "name": "healthcareconsentstore${uniqueId}"
+< }
+< 
+79,84c73
+<   "done": true,
+<   "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/operations/${operationID}",
+<   "response": {
+<     "@type": "type.googleapis.com/google.cloud.healthcare.v1.Dataset",
+<     "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}"
+<   }
+---
+>   "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}"
+89,90c78
+< GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
+92c80
+< 200 OK
+---
+> 404 Not Found
+103c91,102
+<   "name": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}"
+---
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "consentStore \"projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/consentStores/healthcareconsentstore-${uniqueId}\" not found",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "consentStore \"projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}/consentStores/healthcareconsentstore-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+108c107
+< POST https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores?alt=json&consentStoreId=healthcareconsentstore-${uniqueId}
+---
+> POST https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores?alt=json&consentStoreId=healthcareconsentstore-${uniqueId}&prettyPrint=false
+142,143c141
+< GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
+167c165
+< PATCH https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&updateMask=defaultConsentTtl%2CenableConsentCreateOnUpdate
+---
+> PATCH https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false&updateMask=defaultConsentTtl%2CenableConsentCreateOnUpdate
+171,175c169
+<   "defaultConsentTtl": "100000s",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "defaultConsentTtl": "100000s"
+199,200c193
+< GET https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false
+223,224c216
+< DELETE https://healthcare.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> DELETE https://healthcare.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}/consentStores/healthcareconsentstore-${uniqueId}?alt=json&prettyPrint=false

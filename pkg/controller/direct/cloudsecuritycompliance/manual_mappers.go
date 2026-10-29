@@ -105,3 +105,79 @@ func Framework_CloudControlGroupDetailsObservedState_FromProto(mapCtx *direct.Ma
 func Framework_CloudControlGroupDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Framework_CloudControlGroupDetailsObservedState) interface{} {
 	return nil
 }
+
+func CloudSecurityComplianceFrameworkDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeployment) *krm.CloudSecurityComplianceFrameworkDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkDeploymentObservedState{}
+	out.ComputedTargetResource = direct.LazyPtr(in.GetComputedTargetResource())
+	out.DeploymentState = direct.Enum_FromProto(mapCtx, in.GetDeploymentState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.TargetResourceDisplayName = direct.LazyPtr(in.GetTargetResourceDisplayName())
+	out.CloudControlDeploymentReferences = direct.Slice_FromProto(mapCtx, in.CloudControlDeploymentReferences, CloudControlDeploymentReferenceObservedState_FromProto)
+	return out
+}
+
+func CloudSecurityComplianceFrameworkDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkDeploymentObservedState) *pb.FrameworkDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkDeployment{}
+	out.ComputedTargetResource = direct.ValueOf(in.ComputedTargetResource)
+	out.DeploymentState = direct.Enum_ToProto[pb.DeploymentState](mapCtx, in.DeploymentState)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.TargetResourceDisplayName = direct.ValueOf(in.TargetResourceDisplayName)
+	out.CloudControlDeploymentReferences = direct.Slice_ToProto(mapCtx, in.CloudControlDeploymentReferences, CloudControlDeploymentReferenceObservedState_ToProto)
+	return out
+}
+
+func CloudControlGroupDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.CloudControlGroupDeploymentObservedState {
+	return nil
+}
+
+func CloudControlGroupDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlGroupDeploymentObservedState) interface{} {
+	return nil
+}
+
+func CloudControlMetadata_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlMetadata) *krm.CloudControlMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlMetadata{}
+	out.CloudControlDetails = CloudControlDetails_FromProto(mapCtx, in.GetCloudControlDetails())
+	out.EnforcementMode = direct.Enum_FromProto(mapCtx, in.GetEnforcementMode())
+	return out
+}
+
+func CloudControlMetadata_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlMetadata) *pb.CloudControlMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlMetadata{}
+	out.CloudControlDetails = CloudControlDetails_ToProto(mapCtx, in.CloudControlDetails)
+	out.EnforcementMode = direct.Enum_ToProto[pb.EnforcementMode](mapCtx, in.EnforcementMode)
+	return out
+}
+
+func CloudControlMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlMetadata) *krm.CloudControlMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlMetadataObservedState{}
+	out.CloudControlDetails = CloudControlDetailsObservedState_FromProto(mapCtx, in.GetCloudControlDetails())
+	out.EnforcementMode = direct.Enum_FromProto(mapCtx, in.GetEnforcementMode())
+	return out
+}
+
+func CloudControlMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlMetadataObservedState) *pb.CloudControlMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlMetadata{}
+	out.CloudControlDetails = CloudControlDetailsObservedState_ToProto(mapCtx, in.CloudControlDetails)
+	out.EnforcementMode = direct.Enum_ToProto[pb.EnforcementMode](mapCtx, in.EnforcementMode)
+	return out
+}

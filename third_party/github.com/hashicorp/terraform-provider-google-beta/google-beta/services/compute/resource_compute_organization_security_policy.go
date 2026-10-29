@@ -70,10 +70,10 @@ Format: organizations/{organization_id} or folders/{folder_id}`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: verify.ValidateEnum([]string{"FIREWALL", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"FIREWALL", "CLOUD_ARMOR", ""}),
 				Description: `The type indicates the intended use of the security policy.
 For organization security policies, the only supported type
-is "FIREWALL". Default value: "FIREWALL" Possible values: ["FIREWALL"]`,
+is "FIREWALL" or "CLOUD_ARMOR". Default value: "FIREWALL" Possible values: ["FIREWALL", "CLOUD_ARMOR"]`,
 				Default: "FIREWALL",
 			},
 			"fingerprint": {
@@ -105,6 +105,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 		return err
 	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
+		obj["shortName"] = displayNameProp
 	}
 	descriptionProp, err := expandComputeOrganizationSecurityPolicyDescription(d.Get("description"), d, config)
 	if err != nil {
@@ -226,7 +227,11 @@ func resourceComputeOrganizationSecurityPolicyRead(d *schema.ResourceData, meta 
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Id()))
 	}
 
-	if err := d.Set("display_name", flattenComputeOrganizationSecurityPolicyDisplayName(res["displayName"], d, config)); err != nil {
+	displayName := res["displayName"]
+	if displayName == nil {
+		displayName = res["shortName"]
+	}
+	if err := d.Set("display_name", flattenComputeOrganizationSecurityPolicyDisplayName(displayName, d, config)); err != nil {
 		return fmt.Errorf("Error reading OrganizationSecurityPolicy: %s", err)
 	}
 	if err := d.Set("description", flattenComputeOrganizationSecurityPolicyDescription(res["description"], d, config)); err != nil {

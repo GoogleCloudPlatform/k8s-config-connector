@@ -20,6 +20,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+CALLER_DIR="$(pwd)"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -41,6 +42,9 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
+if [[ "${OUTPUT_PATH}" != /* ]]; then
+    OUTPUT_PATH="$(realpath -m "${CALLER_DIR}/${OUTPUT_PATH}")"
+fi
 
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
@@ -108,6 +112,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
+# Overwrite logging_config.proto with the updated version that has LogScope
+mkdir -p google/logging/v2
+cp ${REPO_ROOT}/mockgcp/apis/google/logging/v2/logging_config.proto google/logging/v2/logging_config.proto
+
 # Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
 sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
 cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF
@@ -118,6 +126,36 @@ message OpsAnalyticsQuery {
   string sql = 2;
 }
 EOF
+
+# Patch compute v1 compute.proto to include SecurityPolicyAssociation (which exists in apiv1/computepb) if missing
+if ! grep -q "message SecurityPolicyAssociation" google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// The SecurityPolicyAssociation message
+message SecurityPolicyAssociation {
+  // The resource that the security policy is attached to.
+  optional string attachment_id = 103768503;
+
+  // Output only. [Output Only] The display name of the security policy of the association.
+  optional string display_name = 4473832;
+
+  // A list of folders to exclude from the security policy.
+  repeated string excluded_folders = 310611024;
+
+  // A list of projects to exclude from the security policy.
+  repeated string excluded_projects = 283070287;
+
+  // The name for an association.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] The security policy ID of the association.
+  optional string security_policy_id = 203671817;
+
+  // Output only. [Output Only] The short name of the security policy of the association.
+  optional string short_name = 492051566;
+}
+EOF
+fi
 
 
 if (which protoc); then
@@ -158,6 +196,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/google/api/*.proto
     ${VERSION_DIR}/google/api/*/*/*.proto
+    ${VERSION_DIR}/google/appengine/*/*.proto
     ${VERSION_DIR}/google/bigtable/*/*/*.proto
     ${VERSION_DIR}/google/cloud/bigquery/*/*.proto
     ${VERSION_DIR}/google/cloud/*/*/*.proto
@@ -185,6 +224,8 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/container/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/grafeas/v1/*.proto
+    ${VERSION_DIR}/google/iam/v3/*.proto
+    ${VERSION_DIR}/google/identity/*/*/*.proto
 )
 # Disable nullglob shell option to restore the default shell globbing behavior
 shopt -u nullglob

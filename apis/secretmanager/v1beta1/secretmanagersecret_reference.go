@@ -19,20 +19,23 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
+var _ refsv1beta1.Ref = &SecretManagerSecretRef{}
 
-// SecretRef is a reference to a SecretManagerSecret.
-type SecretRef struct {
+// SecretManagerSecretRef is a reference to a SecretManagerSecret.
+// +k8s:deepcopy-gen=true
+type SecretManagerSecretRef struct {
 	// A reference to an externally managed SecretManagerSecret resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecretManagerSecret resource.
@@ -42,10 +45,66 @@ type SecretRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// +k8s:deepcopy-gen=false
+// TODO(kcc): SecretRef is deprecated; use SecretManagerSecretRef instead. Kept for backward compatibility with existing callers.
+type SecretRef = SecretManagerSecretRef
+
+// TODO(kcc): Legacy check to ensure the deprecated SecretRef continues to satisfy ExternalNormalizer for older callers.
+var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
+
+func init() {
+	refsv1beta1.Register(&SecretManagerSecretRef{}, &SecretManagerSecret{})
+}
+
+func (r *SecretManagerSecretRef) GetGVK() schema.GroupVersionKind {
+	return SecretManagerSecretGVK
+}
+
+func (r *SecretManagerSecretRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *SecretManagerSecretRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecretManagerSecretRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecretManagerSecretRef) ValidateExternal(ref string) error {
+	_, err := ParseSecretExternal(ref)
+	return err
+}
+
+func (r *SecretManagerSecretRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &SecretIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *SecretManagerSecretRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "name")
+		if err == nil {
+			return actualExternalRef
+		}
+		return ""
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
 // NormalizedExternal provision the "External" value for other resource that depends on SecretManagerSecret.
 // If the "External" is given in the other resource's spec.SecretManagerSecretRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual SecretManagerSecret object from the cluster.
-func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *SecretManagerSecretRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", SecretManagerSecretGVK.Kind)
 	}

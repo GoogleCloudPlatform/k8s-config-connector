@@ -75,17 +75,17 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		protoObj := SecureSourceManagerInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.KmsKey != selfLink {
 			t.Errorf("protoObj KmsKey = %q, want %q", protoObj.KmsKey, selfLink)
 		}
 
-		fromProto := SecureSourceManagerInstanceSpec_FromProto(mapCtx, protoObj)
+		fromProto := SecureSourceManagerInstanceSpec_v1beta1_FromProto(mapCtx, protoObj)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_FromProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_FromProto unexpected error: %v", mapCtx.Err())
 		}
 		if fromProto.KMSKeyRef == nil || fromProto.KMSKeyRef.External != selfLink {
 			t.Errorf("fromProto KMSKeyRef.External = %v, want %q", fromProto.KMSKeyRef, selfLink)
@@ -115,17 +115,17 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		protoObj := SecureSourceManagerInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.KmsKey != externalKey {
 			t.Errorf("protoObj KmsKey = %q, want %q", protoObj.KmsKey, externalKey)
 		}
 
-		fromProto := SecureSourceManagerInstanceSpec_FromProto(mapCtx, protoObj)
+		fromProto := SecureSourceManagerInstanceSpec_v1beta1_FromProto(mapCtx, protoObj)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_FromProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_FromProto unexpected error: %v", mapCtx.Err())
 		}
 		if fromProto.KMSKeyRef == nil || fromProto.KMSKeyRef.External != externalKey {
 			t.Errorf("fromProto KMSKeyRef.External = %v, want %q", fromProto.KMSKeyRef, externalKey)
@@ -146,9 +146,9 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		protoObj := SecureSourceManagerInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.KmsKey != "" {
 			t.Errorf("protoObj KmsKey = %q, want empty", protoObj.KmsKey)
@@ -179,9 +179,9 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		}
 
 		mapCtx := &direct.MapContext{}
-		protoObj := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		protoObj := SecureSourceManagerInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 		if mapCtx.Err() != nil {
-			t.Fatalf("SecureSourceManagerInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+			t.Fatalf("SecureSourceManagerInstanceSpec_v1beta1_ToProto unexpected error: %v", mapCtx.Err())
 		}
 		if protoObj.PrivateConfig == nil || protoObj.PrivateConfig.CaPool != caPoolLink {
 			t.Errorf("protoObj CaPool = %v, want %q", protoObj.PrivateConfig, caPoolLink)

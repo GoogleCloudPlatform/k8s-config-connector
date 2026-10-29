@@ -1,0 +1,100 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: NetworkConnectivityDestination
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetworkConnectivityDestination
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}" contains ancestor segment(s) multicloudDataTransferConfigs/{multicloud_data_transfer_config} with no matching reference or field on NetworkConnectivityDestinationSpec
+    status: open
+  - kind: NetworkConnectivityDestination
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, and no MulticloudDataTransferConfigRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: NetworkConnectivityDestination
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: NetworkConnectivityDestination
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: NetworkConnectivityPolicyBasedRoute
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetworkConnectivityPolicyBasedRoute
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.networkconnectivity.v1.PolicyBasedRoute declares 2 resource name patterns (projects/{project}/locations/global/PolicyBasedRoutes/{policy_based_route}, projects/{projectsid}/locations/global/policyBasedRoutes/{policybasedroutesid}); generated identity uses "projects/{projectsid}/locations/global/policyBasedRoutes/{policybasedroutesid}" (pass --pattern NetworkConnectivityPolicyBasedRoute=<pattern> to override)
+    status: open
+  - kind: NetworkConnectivityPolicyBasedRoute
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.global.PolicyBasedRoutes: https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/reference/rest/v1/projects.locations.global.PolicyBasedRoutes, https://docs.cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.PolicyBasedRoutes'
+    status: open
+  - kind: NetworkConnectivityPolicyBasedRoute
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.interconnectAttachment.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
+  - kind: NetworkConnectivityPolicyBasedRoute
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetworkConnectivityServiceConnectionToken
+    group: networkconnectivity.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetworkConnectivityServiceConnectionToken
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: NetworkConnectivityServiceConnectionToken
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: NetworkConnectivityServiceConnectionToken
+    group: networkconnectivity.cnrm.cloud.google.com
+    field: .spec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open

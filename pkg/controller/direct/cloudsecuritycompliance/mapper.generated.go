@@ -45,6 +45,22 @@ func AllowedValues_ToProto(mapCtx *direct.MapContext, in *krm.AllowedValues) *pb
 	out.Values = direct.Slice_ToProto(mapCtx, in.Values, ParamValue_ToProto)
 	return out
 }
+func AllowedValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllowedValues) *krm.AllowedValuesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllowedValuesObservedState{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, ParamValueObservedState_FromProto)
+	return out
+}
+func AllowedValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllowedValuesObservedState) *pb.AllowedValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllowedValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, ParamValueObservedState_ToProto)
+	return out
+}
 func AttributeSubstitutionRule_FromProto(mapCtx *direct.MapContext, in *pb.AttributeSubstitutionRule) *krm.AttributeSubstitutionRule {
 	if in == nil {
 		return nil
@@ -81,6 +97,80 @@ func CelExpression_ToProto(mapCtx *direct.MapContext, in *krm.CelExpression) *pb
 	out.Expression = direct.ValueOf(in.Expression)
 	return out
 }
+func CelExpressionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CELExpression) *krm.CelExpressionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CelExpressionObservedState{}
+	out.ResourceTypesValues = StringListObservedState_FromProto(mapCtx, in.GetResourceTypesValues())
+	out.Expression = direct.LazyPtr(in.GetExpression())
+	return out
+}
+func CelExpressionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CelExpressionObservedState) *pb.CELExpression {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CELExpression{}
+	if oneof := StringListObservedState_ToProto(mapCtx, in.ResourceTypesValues); oneof != nil {
+		out.Criteria = &pb.CELExpression_ResourceTypesValues{ResourceTypesValues: oneof}
+	}
+	out.Expression = direct.ValueOf(in.Expression)
+	return out
+}
+func CloudControlDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDeployment) *krm.CloudControlDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlDeploymentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.TargetResourceConfig = TargetResourceConfigObservedState_FromProto(mapCtx, in.GetTargetResourceConfig())
+	out.TargetResource = direct.LazyPtr(in.GetTargetResource())
+	out.CloudControlMetadata = CloudControlMetadataObservedState_FromProto(mapCtx, in.GetCloudControlMetadata())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DeploymentState = direct.Enum_FromProto(mapCtx, in.GetDeploymentState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ParameterSubstitutedCloudControl = CloudControlObservedState_FromProto(mapCtx, in.GetParameterSubstitutedCloudControl())
+	out.FrameworkDeploymentReferences = direct.Slice_FromProto(mapCtx, in.FrameworkDeploymentReferences, FrameworkDeploymentReferenceObservedState_FromProto)
+	out.TargetResourceDisplayName = direct.LazyPtr(in.GetTargetResourceDisplayName())
+	return out
+}
+func CloudControlDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDeploymentObservedState) *pb.CloudControlDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlDeployment{}
+	out.Name = direct.ValueOf(in.Name)
+	out.TargetResourceConfig = TargetResourceConfigObservedState_ToProto(mapCtx, in.TargetResourceConfig)
+	out.TargetResource = direct.ValueOf(in.TargetResource)
+	out.CloudControlMetadata = CloudControlMetadataObservedState_ToProto(mapCtx, in.CloudControlMetadata)
+	out.Description = direct.ValueOf(in.Description)
+	out.DeploymentState = direct.Enum_ToProto[pb.DeploymentState](mapCtx, in.DeploymentState)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ParameterSubstitutedCloudControl = CloudControlObservedState_ToProto(mapCtx, in.ParameterSubstitutedCloudControl)
+	out.FrameworkDeploymentReferences = direct.Slice_ToProto(mapCtx, in.FrameworkDeploymentReferences, FrameworkDeploymentReferenceObservedState_ToProto)
+	out.TargetResourceDisplayName = direct.ValueOf(in.TargetResourceDisplayName)
+	return out
+}
+func CloudControlDeploymentReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDeploymentReference) *krm.CloudControlDeploymentReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlDeploymentReferenceObservedState{}
+	out.CloudControlDeployment = direct.LazyPtr(in.GetCloudControlDeployment())
+	return out
+}
+func CloudControlDeploymentReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDeploymentReferenceObservedState) *pb.CloudControlDeploymentReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlDeploymentReference{}
+	out.CloudControlDeployment = direct.ValueOf(in.CloudControlDeployment)
+	return out
+}
 func CloudControlDetails_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDetails) *krm.CloudControlDetails {
 	if in == nil {
 		return nil
@@ -99,6 +189,98 @@ func CloudControlDetails_ToProto(mapCtx *direct.MapContext, in *krm.CloudControl
 	// MISSING: Name
 	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
 	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
+	return out
+}
+func CloudControlDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDetails) *krm.CloudControlDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlDetailsObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.MajorRevisionID = direct.LazyPtr(in.GetMajorRevisionId())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, ParameterObservedState_FromProto)
+	return out
+}
+func CloudControlDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDetailsObservedState) *pb.CloudControlDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlDetails{}
+	out.Name = direct.ValueOf(in.Name)
+	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, ParameterObservedState_ToProto)
+	return out
+}
+
+/* found existing non-generated mapping function "CloudControlGroupDeploymentObservedState_FromProto", skipping
+func CloudControlGroupDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlGroupDeployment) *krm.CloudControlGroupDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlGroupDeploymentObservedState{}
+	out.CloudControlGroup = CloudControlGroupObservedState_FromProto(mapCtx, in.GetCloudControlGroup())
+	out.CcDeployments = direct.Slice_FromProto(mapCtx, in.CcDeployments, CloudControlDeploymentObservedState_FromProto)
+	out.CcDeploymentReferences = direct.Slice_FromProto(mapCtx, in.CcDeploymentReferences, CloudControlDeploymentReferenceObservedState_FromProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudControlGroupDeploymentObservedState_ToProto", skipping
+
+	func CloudControlGroupDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlGroupDeploymentObservedState) *pb.CloudControlGroupDeployment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CloudControlGroupDeployment{}
+		out.CloudControlGroup = CloudControlGroupObservedState_ToProto(mapCtx, in.CloudControlGroup)
+		out.CcDeployments = direct.Slice_ToProto(mapCtx, in.CcDeployments, CloudControlDeploymentObservedState_ToProto)
+		out.CcDeploymentReferences = direct.Slice_ToProto(mapCtx, in.CcDeploymentReferences, CloudControlDeploymentReferenceObservedState_ToProto)
+		return out
+	}
+*/
+func CloudControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControl) *krm.CloudControlObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.MajorRevisionID = direct.LazyPtr(in.GetMajorRevisionId())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SupportedEnforcementModes = direct.EnumSlice_FromProto(mapCtx, in.SupportedEnforcementModes)
+	out.ParameterSpec = direct.Slice_FromProto(mapCtx, in.ParameterSpec, ParameterSpecObservedState_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RuleObservedState_FromProto)
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.FindingCategory = direct.LazyPtr(in.GetFindingCategory())
+	out.SupportedCloudProviders = direct.EnumSlice_FromProto(mapCtx, in.SupportedCloudProviders)
+	out.RelatedFrameworks = in.RelatedFrameworks
+	out.RemediationSteps = direct.LazyPtr(in.GetRemediationSteps())
+	out.Categories = direct.EnumSlice_FromProto(mapCtx, in.Categories)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.SupportedTargetResourceTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedTargetResourceTypes)
+	return out
+}
+func CloudControlObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlObservedState) *pb.CloudControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControl{}
+	out.Name = direct.ValueOf(in.Name)
+	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SupportedEnforcementModes = direct.EnumSlice_ToProto[pb.EnforcementMode](mapCtx, in.SupportedEnforcementModes)
+	out.ParameterSpec = direct.Slice_ToProto(mapCtx, in.ParameterSpec, ParameterSpecObservedState_ToProto)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RuleObservedState_ToProto)
+	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
+	out.FindingCategory = direct.ValueOf(in.FindingCategory)
+	out.SupportedCloudProviders = direct.EnumSlice_ToProto[pb.CloudProvider](mapCtx, in.SupportedCloudProviders)
+	out.RelatedFrameworks = in.RelatedFrameworks
+	out.RemediationSteps = direct.ValueOf(in.RemediationSteps)
+	out.Categories = direct.EnumSlice_ToProto[pb.CloudControlCategory](mapCtx, in.Categories)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
 	return out
 }
 func CloudSecurityComplianceCloudControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControl) *krm.CloudSecurityComplianceCloudControlObservedState {
@@ -162,6 +344,72 @@ func CloudSecurityComplianceCloudControlSpec_ToProto(mapCtx *direct.MapContext, 
 	return out
 }
 
+/* found existing non-generated mapping function "CloudSecurityComplianceFrameworkDeploymentObservedState_FromProto", skipping
+func CloudSecurityComplianceFrameworkDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeployment) *krm.CloudSecurityComplianceFrameworkDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkDeploymentObservedState{}
+	// MISSING: Name
+	out.ComputedTargetResource = direct.LazyPtr(in.GetComputedTargetResource())
+	out.DeploymentState = direct.Enum_FromProto(mapCtx, in.GetDeploymentState())
+	out.CcDeployments = direct.Slice_FromProto(mapCtx, in.CcDeployments, CloudControlDeploymentObservedState_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CcGroupDeployments = direct.Slice_FromProto(mapCtx, in.CcGroupDeployments, CloudControlGroupDeploymentObservedState_FromProto)
+	out.TargetResourceDisplayName = direct.LazyPtr(in.GetTargetResourceDisplayName())
+	out.CloudControlDeploymentReferences = direct.Slice_FromProto(mapCtx, in.CloudControlDeploymentReferences, CloudControlDeploymentReferenceObservedState_FromProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudSecurityComplianceFrameworkDeploymentObservedState_ToProto", skipping
+
+	func CloudSecurityComplianceFrameworkDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkDeploymentObservedState) *pb.FrameworkDeployment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FrameworkDeployment{}
+		// MISSING: Name
+		out.ComputedTargetResource = direct.ValueOf(in.ComputedTargetResource)
+		out.DeploymentState = direct.Enum_ToProto[pb.DeploymentState](mapCtx, in.DeploymentState)
+		out.CcDeployments = direct.Slice_ToProto(mapCtx, in.CcDeployments, CloudControlDeploymentObservedState_ToProto)
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		out.CcGroupDeployments = direct.Slice_ToProto(mapCtx, in.CcGroupDeployments, CloudControlGroupDeploymentObservedState_ToProto)
+		out.TargetResourceDisplayName = direct.ValueOf(in.TargetResourceDisplayName)
+		out.CloudControlDeploymentReferences = direct.Slice_ToProto(mapCtx, in.CloudControlDeploymentReferences, CloudControlDeploymentReferenceObservedState_ToProto)
+		return out
+	}
+*/
+func CloudSecurityComplianceFrameworkDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeployment) *krm.CloudSecurityComplianceFrameworkDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkDeploymentSpec{}
+	// MISSING: Name
+	out.TargetResourceConfig = TargetResourceConfig_FromProto(mapCtx, in.GetTargetResourceConfig())
+	out.Framework = FrameworkReference_FromProto(mapCtx, in.GetFramework())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CloudControlMetadata = direct.Slice_FromProto(mapCtx, in.CloudControlMetadata, CloudControlMetadata_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func CloudSecurityComplianceFrameworkDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkDeploymentSpec) *pb.FrameworkDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkDeployment{}
+	// MISSING: Name
+	out.TargetResourceConfig = TargetResourceConfig_ToProto(mapCtx, in.TargetResourceConfig)
+	out.Framework = FrameworkReference_ToProto(mapCtx, in.Framework)
+	out.Description = direct.ValueOf(in.Description)
+	out.CloudControlMetadata = direct.Slice_ToProto(mapCtx, in.CloudControlMetadata, CloudControlMetadata_ToProto)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
 /* found existing non-generated mapping function "CloudSecurityComplianceFrameworkObservedState_FromProto", skipping
 func CloudSecurityComplianceFrameworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityComplianceFrameworkObservedState {
 	if in == nil {
@@ -210,21 +458,115 @@ func CloudSecurityComplianceFrameworkSpec_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/* found existing non-generated mapping function "CloudSecurityComplianceFrameworkSpec_ToProto", skipping
-func CloudSecurityComplianceFrameworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkSpec) *pb.Framework {
+/*
+found existing non-generated mapping function "CloudSecurityComplianceFrameworkSpec_ToProto", skipping
+
+	func CloudSecurityComplianceFrameworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkSpec) *pb.Framework {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Framework{}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.CloudControlGroupDetails = direct.Slice_ToProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetails_ToProto)
+		out.CloudControlDetails = direct.Slice_ToProto(mapCtx, in.CloudControlDetails, CloudControlDetails_ToProto)
+		out.Category = direct.EnumSlice_ToProto[pb.FrameworkCategory](mapCtx, in.Category)
+		return out
+	}
+*/
+func FolderCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.FolderCreationConfig) *krm.FolderCreationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Framework{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.CloudControlGroupDetails = direct.Slice_ToProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetails_ToProto)
-	out.CloudControlDetails = direct.Slice_ToProto(mapCtx, in.CloudControlDetails, CloudControlDetails_ToProto)
-	out.Category = direct.EnumSlice_ToProto[pb.FrameworkCategory](mapCtx, in.Category)
+	out := &krm.FolderCreationConfig{}
+	out.Parent = direct.LazyPtr(in.GetParent())
+	out.FolderDisplayName = direct.LazyPtr(in.GetFolderDisplayName())
 	return out
 }
-*/
+func FolderCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.FolderCreationConfig) *pb.FolderCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FolderCreationConfig{}
+	out.Parent = direct.ValueOf(in.Parent)
+	out.FolderDisplayName = direct.ValueOf(in.FolderDisplayName)
+	return out
+}
+func FolderCreationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FolderCreationConfig) *krm.FolderCreationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FolderCreationConfigObservedState{}
+	out.Parent = direct.LazyPtr(in.GetParent())
+	out.FolderDisplayName = direct.LazyPtr(in.GetFolderDisplayName())
+	return out
+}
+func FolderCreationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FolderCreationConfigObservedState) *pb.FolderCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FolderCreationConfig{}
+	out.Parent = direct.ValueOf(in.Parent)
+	out.FolderDisplayName = direct.ValueOf(in.FolderDisplayName)
+	return out
+}
+func FrameworkDeploymentReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeploymentReference) *krm.FrameworkDeploymentReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FrameworkDeploymentReferenceObservedState{}
+	out.FrameworkDeployment = direct.LazyPtr(in.GetFrameworkDeployment())
+	out.FrameworkReference = FrameworkReferenceObservedState_FromProto(mapCtx, in.GetFrameworkReference())
+	out.FrameworkDisplayName = direct.LazyPtr(in.GetFrameworkDisplayName())
+	return out
+}
+func FrameworkDeploymentReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FrameworkDeploymentReferenceObservedState) *pb.FrameworkDeploymentReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkDeploymentReference{}
+	out.FrameworkDeployment = direct.ValueOf(in.FrameworkDeployment)
+	out.FrameworkReference = FrameworkReferenceObservedState_ToProto(mapCtx, in.FrameworkReference)
+	out.FrameworkDisplayName = direct.ValueOf(in.FrameworkDisplayName)
+	return out
+}
+func FrameworkReference_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkReference) *krm.FrameworkReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FrameworkReference{}
+	out.Framework = direct.LazyPtr(in.GetFramework())
+	out.MajorRevisionID = in.MajorRevisionId
+	return out
+}
+func FrameworkReference_ToProto(mapCtx *direct.MapContext, in *krm.FrameworkReference) *pb.FrameworkReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkReference{}
+	out.Framework = direct.ValueOf(in.Framework)
+	out.MajorRevisionId = in.MajorRevisionID
+	return out
+}
+func FrameworkReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkReference) *krm.FrameworkReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FrameworkReferenceObservedState{}
+	out.Framework = direct.LazyPtr(in.GetFramework())
+	out.MajorRevisionID = in.MajorRevisionId
+	return out
+}
+func FrameworkReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FrameworkReferenceObservedState) *pb.FrameworkReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkReference{}
+	out.Framework = direct.ValueOf(in.Framework)
+	out.MajorRevisionId = in.MajorRevisionID
+	return out
+}
 
 /* found existing non-generated mapping function "Framework_CloudControlGroupDetails_FromProto", skipping
 func Framework_CloudControlGroupDetails_FromProto(mapCtx *direct.MapContext, in *pb.Framework_CloudControlGroupDetails) *krm.Framework_CloudControlGroupDetails {
@@ -293,6 +635,24 @@ func IntRange_ToProto(mapCtx *direct.MapContext, in *krm.IntRange) *pb.IntRange 
 	out.Max = direct.ValueOf(in.Max)
 	return out
 }
+func IntRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IntRange) *krm.IntRangeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IntRangeObservedState{}
+	out.Min = direct.LazyPtr(in.GetMin())
+	out.Max = direct.LazyPtr(in.GetMax())
+	return out
+}
+func IntRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IntRangeObservedState) *pb.IntRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IntRange{}
+	out.Min = direct.ValueOf(in.Min)
+	out.Max = direct.ValueOf(in.Max)
+	return out
+}
 func ParamValue_FromProto(mapCtx *direct.MapContext, in *pb.ParamValue) *krm.ParamValue {
 	if in == nil {
 		return nil
@@ -345,6 +705,58 @@ func ParamValue_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.
 	}
 	return &pb.ParamValue_NumberValue{NumberValue: *in}
 }
+func ParamValueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ParamValue) *krm.ParamValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParamValueObservedState{}
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.StringListValue = StringListObservedState_FromProto(mapCtx, in.GetStringListValue())
+	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
+	out.OneofValue = ParameterObservedState_FromProto(mapCtx, in.GetOneofValue())
+	return out
+}
+func ParamValueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParamValueObservedState) *pb.ParamValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParamValue{}
+	if oneof := ParamValueObservedState_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := ParamValueObservedState_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := StringListObservedState_ToProto(mapCtx, in.StringListValue); oneof != nil {
+		out.Kind = &pb.ParamValue_StringListValue{StringListValue: oneof}
+	}
+	if oneof := ParamValueObservedState_NumberValue_ToProto(mapCtx, in.NumberValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := ParameterObservedState_ToProto(mapCtx, in.OneofValue); oneof != nil {
+		out.Kind = &pb.ParamValue_OneofValue{OneofValue: oneof}
+	}
+	return out
+}
+func ParamValueObservedState_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.ParamValue_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ParamValue_StringValue{StringValue: *in}
+}
+func ParamValueObservedState_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.ParamValue_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ParamValue_BoolValue{BoolValue: *in}
+}
+func ParamValueObservedState_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.ParamValue_NumberValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ParamValue_NumberValue{NumberValue: *in}
+}
 func Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.Parameter {
 	if in == nil {
 		return nil
@@ -361,6 +773,24 @@ func Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Parameter) *pb.Paramet
 	out := &pb.Parameter{}
 	out.Name = direct.ValueOf(in.Name)
 	out.ParameterValue = ParamValue_ToProto(mapCtx, in.ParameterValue)
+	return out
+}
+func ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.ParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ParameterValue = ParamValueObservedState_FromProto(mapCtx, in.GetParameterValue())
+	return out
+}
+func ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterObservedState) *pb.Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Parameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ParameterValue = ParamValueObservedState_ToProto(mapCtx, in.ParameterValue)
 	return out
 }
 func ParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.ParameterSpec) *krm.ParameterSpec {
@@ -393,6 +823,38 @@ func ParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParameterSpec) *pb
 	out.SubstitutionRules = direct.Slice_ToProto(mapCtx, in.SubstitutionRules, ParameterSubstitutionRule_ToProto)
 	out.SubParameters = direct.Slice_ToProto(mapCtx, in.SubParameters, SubParameterSpec_ToProto)
 	out.Validation = Validation_ToProto(mapCtx, in.Validation)
+	return out
+}
+func ParameterSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ParameterSpec) *krm.ParameterSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterSpecObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.DefaultValue = ParamValueObservedState_FromProto(mapCtx, in.GetDefaultValue())
+	out.SubstitutionRules = direct.Slice_FromProto(mapCtx, in.SubstitutionRules, ParameterSubstitutionRule_FromProto)
+	out.SubParameters = direct.Slice_FromProto(mapCtx, in.SubParameters, ParameterSpecObservedState_FromProto)
+	out.Validation = ValidationObservedState_FromProto(mapCtx, in.GetValidation())
+	return out
+}
+func ParameterSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterSpecObservedState) *pb.ParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParameterSpec{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.IsRequired = direct.ValueOf(in.IsRequired)
+	out.ValueType = direct.Enum_ToProto[pb.ParameterSpec_ValueType](mapCtx, in.ValueType)
+	out.DefaultValue = ParamValueObservedState_ToProto(mapCtx, in.DefaultValue)
+	out.SubstitutionRules = direct.Slice_ToProto(mapCtx, in.SubstitutionRules, ParameterSubstitutionRule_ToProto)
+	out.SubParameters = direct.Slice_ToProto(mapCtx, in.SubParameters, ParameterSpecObservedState_ToProto)
+	out.Validation = ValidationObservedState_ToProto(mapCtx, in.Validation)
 	return out
 }
 func ParameterSubstitutionRule_FromProto(mapCtx *direct.MapContext, in *pb.ParameterSubstitutionRule) *krm.ParameterSubstitutionRule {
@@ -433,6 +895,46 @@ func PlaceholderSubstitutionRule_ToProto(mapCtx *direct.MapContext, in *krm.Plac
 	out.Attribute = direct.ValueOf(in.Attribute)
 	return out
 }
+func ProjectCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProjectCreationConfig) *krm.ProjectCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProjectCreationConfig{}
+	out.Parent = direct.LazyPtr(in.GetParent())
+	out.ProjectDisplayName = direct.LazyPtr(in.GetProjectDisplayName())
+	out.BillingAccountID = direct.LazyPtr(in.GetBillingAccountId())
+	return out
+}
+func ProjectCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProjectCreationConfig) *pb.ProjectCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProjectCreationConfig{}
+	out.Parent = direct.ValueOf(in.Parent)
+	out.ProjectDisplayName = direct.ValueOf(in.ProjectDisplayName)
+	out.BillingAccountId = direct.ValueOf(in.BillingAccountID)
+	return out
+}
+func ProjectCreationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProjectCreationConfig) *krm.ProjectCreationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProjectCreationConfigObservedState{}
+	out.Parent = direct.LazyPtr(in.GetParent())
+	out.ProjectDisplayName = direct.LazyPtr(in.GetProjectDisplayName())
+	out.BillingAccountID = direct.LazyPtr(in.GetBillingAccountId())
+	return out
+}
+func ProjectCreationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProjectCreationConfigObservedState) *pb.ProjectCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProjectCreationConfig{}
+	out.Parent = direct.ValueOf(in.Parent)
+	out.ProjectDisplayName = direct.ValueOf(in.ProjectDisplayName)
+	out.BillingAccountId = direct.ValueOf(in.BillingAccountID)
+	return out
+}
 func RegexpPattern_FromProto(mapCtx *direct.MapContext, in *pb.RegexpPattern) *krm.RegexpPattern {
 	if in == nil {
 		return nil
@@ -442,6 +944,22 @@ func RegexpPattern_FromProto(mapCtx *direct.MapContext, in *pb.RegexpPattern) *k
 	return out
 }
 func RegexpPattern_ToProto(mapCtx *direct.MapContext, in *krm.RegexpPattern) *pb.RegexpPattern {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RegexpPattern{}
+	out.Pattern = direct.ValueOf(in.Pattern)
+	return out
+}
+func RegexpPatternObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegexpPattern) *krm.RegexpPatternObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegexpPatternObservedState{}
+	out.Pattern = direct.LazyPtr(in.GetPattern())
+	return out
+}
+func RegexpPatternObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RegexpPatternObservedState) *pb.RegexpPattern {
 	if in == nil {
 		return nil
 	}
@@ -471,6 +989,28 @@ func Rule_ToProto(mapCtx *direct.MapContext, in *krm.Rule) *pb.Rule {
 	out.RuleActionTypes = direct.EnumSlice_ToProto[pb.RuleActionType](mapCtx, in.RuleActionTypes)
 	return out
 }
+func RuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rule) *krm.RuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RuleObservedState{}
+	out.CelExpression = CelExpressionObservedState_FromProto(mapCtx, in.GetCelExpression())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.RuleActionTypes = direct.EnumSlice_FromProto(mapCtx, in.RuleActionTypes)
+	return out
+}
+func RuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuleObservedState) *pb.Rule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rule{}
+	if oneof := CelExpressionObservedState_ToProto(mapCtx, in.CelExpression); oneof != nil {
+		out.Implementation = &pb.Rule_CelExpression{CelExpression: oneof}
+	}
+	out.Description = direct.ValueOf(in.Description)
+	out.RuleActionTypes = direct.EnumSlice_ToProto[pb.RuleActionType](mapCtx, in.RuleActionTypes)
+	return out
+}
 func StringList_FromProto(mapCtx *direct.MapContext, in *pb.StringList) *krm.StringList {
 	if in == nil {
 		return nil
@@ -480,6 +1020,22 @@ func StringList_FromProto(mapCtx *direct.MapContext, in *pb.StringList) *krm.Str
 	return out
 }
 func StringList_ToProto(mapCtx *direct.MapContext, in *krm.StringList) *pb.StringList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StringList{}
+	out.Values = in.Values
+	return out
+}
+func StringListObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StringList) *krm.StringListObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StringListObservedState{}
+	out.Values = in.Values
+	return out
+}
+func StringListObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StringListObservedState) *pb.StringList {
 	if in == nil {
 		return nil
 	}
@@ -519,6 +1075,106 @@ func SubParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.SubParameterSpe
 	out.Validation = Validation_ToProto(mapCtx, in.Validation)
 	return out
 }
+func TargetResourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceConfig) *krm.TargetResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceConfig{}
+	out.ExistingTargetResource = direct.LazyPtr(in.GetExistingTargetResource())
+	out.TargetResourceCreationConfig = TargetResourceCreationConfig_FromProto(mapCtx, in.GetTargetResourceCreationConfig())
+	return out
+}
+func TargetResourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceConfig) *pb.TargetResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetResourceConfig{}
+	if oneof := TargetResourceConfig_ExistingTargetResource_ToProto(mapCtx, in.ExistingTargetResource); oneof != nil {
+		out.ResourceConfig = oneof
+	}
+	if oneof := TargetResourceCreationConfig_ToProto(mapCtx, in.TargetResourceCreationConfig); oneof != nil {
+		out.ResourceConfig = &pb.TargetResourceConfig_TargetResourceCreationConfig{TargetResourceCreationConfig: oneof}
+	}
+	return out
+}
+func TargetResourceConfig_ExistingTargetResource_ToProto(mapCtx *direct.MapContext, in *string) *pb.TargetResourceConfig_ExistingTargetResource {
+	if in == nil {
+		return nil
+	}
+	return &pb.TargetResourceConfig_ExistingTargetResource{ExistingTargetResource: *in}
+}
+func TargetResourceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceConfig) *krm.TargetResourceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceConfigObservedState{}
+	out.ExistingTargetResource = direct.LazyPtr(in.GetExistingTargetResource())
+	out.TargetResourceCreationConfig = TargetResourceCreationConfigObservedState_FromProto(mapCtx, in.GetTargetResourceCreationConfig())
+	return out
+}
+func TargetResourceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceConfigObservedState) *pb.TargetResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetResourceConfig{}
+	if oneof := TargetResourceConfigObservedState_ExistingTargetResource_ToProto(mapCtx, in.ExistingTargetResource); oneof != nil {
+		out.ResourceConfig = oneof
+	}
+	if oneof := TargetResourceCreationConfigObservedState_ToProto(mapCtx, in.TargetResourceCreationConfig); oneof != nil {
+		out.ResourceConfig = &pb.TargetResourceConfig_TargetResourceCreationConfig{TargetResourceCreationConfig: oneof}
+	}
+	return out
+}
+func TargetResourceConfigObservedState_ExistingTargetResource_ToProto(mapCtx *direct.MapContext, in *string) *pb.TargetResourceConfig_ExistingTargetResource {
+	if in == nil {
+		return nil
+	}
+	return &pb.TargetResourceConfig_ExistingTargetResource{ExistingTargetResource: *in}
+}
+func TargetResourceCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceCreationConfig) *krm.TargetResourceCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceCreationConfig{}
+	out.FolderCreationConfig = FolderCreationConfig_FromProto(mapCtx, in.GetFolderCreationConfig())
+	out.ProjectCreationConfig = ProjectCreationConfig_FromProto(mapCtx, in.GetProjectCreationConfig())
+	return out
+}
+func TargetResourceCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceCreationConfig) *pb.TargetResourceCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetResourceCreationConfig{}
+	if oneof := FolderCreationConfig_ToProto(mapCtx, in.FolderCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_FolderCreationConfig{FolderCreationConfig: oneof}
+	}
+	if oneof := ProjectCreationConfig_ToProto(mapCtx, in.ProjectCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_ProjectCreationConfig{ProjectCreationConfig: oneof}
+	}
+	return out
+}
+func TargetResourceCreationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceCreationConfig) *krm.TargetResourceCreationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceCreationConfigObservedState{}
+	out.FolderCreationConfig = FolderCreationConfigObservedState_FromProto(mapCtx, in.GetFolderCreationConfig())
+	out.ProjectCreationConfig = ProjectCreationConfigObservedState_FromProto(mapCtx, in.GetProjectCreationConfig())
+	return out
+}
+func TargetResourceCreationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceCreationConfigObservedState) *pb.TargetResourceCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetResourceCreationConfig{}
+	if oneof := FolderCreationConfigObservedState_ToProto(mapCtx, in.FolderCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_FolderCreationConfig{FolderCreationConfig: oneof}
+	}
+	if oneof := ProjectCreationConfigObservedState_ToProto(mapCtx, in.ProjectCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_ProjectCreationConfig{ProjectCreationConfig: oneof}
+	}
+	return out
+}
 func Validation_FromProto(mapCtx *direct.MapContext, in *pb.Validation) *krm.Validation {
 	if in == nil {
 		return nil
@@ -541,6 +1197,32 @@ func Validation_ToProto(mapCtx *direct.MapContext, in *krm.Validation) *pb.Valid
 		out.Constraint = &pb.Validation_IntRange{IntRange: oneof}
 	}
 	if oneof := RegexpPattern_ToProto(mapCtx, in.RegexpPattern); oneof != nil {
+		out.Constraint = &pb.Validation_RegexpPattern{RegexpPattern: oneof}
+	}
+	return out
+}
+func ValidationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Validation) *krm.ValidationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValidationObservedState{}
+	out.AllowedValues = AllowedValuesObservedState_FromProto(mapCtx, in.GetAllowedValues())
+	out.IntRange = IntRangeObservedState_FromProto(mapCtx, in.GetIntRange())
+	out.RegexpPattern = RegexpPatternObservedState_FromProto(mapCtx, in.GetRegexpPattern())
+	return out
+}
+func ValidationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ValidationObservedState) *pb.Validation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Validation{}
+	if oneof := AllowedValuesObservedState_ToProto(mapCtx, in.AllowedValues); oneof != nil {
+		out.Constraint = &pb.Validation_AllowedValues{AllowedValues: oneof}
+	}
+	if oneof := IntRangeObservedState_ToProto(mapCtx, in.IntRange); oneof != nil {
+		out.Constraint = &pb.Validation_IntRange{IntRange: oneof}
+	}
+	if oneof := RegexpPatternObservedState_ToProto(mapCtx, in.RegexpPattern); oneof != nil {
 		out.Constraint = &pb.Validation_RegexpPattern{RegexpPattern: oneof}
 	}
 	return out

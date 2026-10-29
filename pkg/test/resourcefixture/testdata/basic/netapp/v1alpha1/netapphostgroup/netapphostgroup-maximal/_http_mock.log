@@ -1,0 +1,326 @@
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FhostGroups%2Fnetapphostgroup-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups?%24alt=json%3Benum-encoding%3Dint&hostGroupId=netapphostgroup-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "A maximal NetApp host group test resource",
+  "hosts": [
+    "iqn.1994-05.com.redhat:host1",
+    "iqn.1994-05.com.redhat:host2"
+  ],
+  "labels": {
+    "environment": "test",
+    "managed-by": "kcc"
+  },
+  "osType": 1,
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
+    "description": "A maximal NetApp host group test resource",
+    "hosts": [
+      "iqn.1994-05.com.redhat:host1",
+      "iqn.1994-05.com.redhat:host2"
+    ],
+    "labels": {
+      "environment": "test",
+      "managed-by": "kcc"
+    },
+    "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "osType": "LINUX",
+    "state": "READY",
+    "type": "ISCSI_INITIATOR"
+  }
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FhostGroups%2Fnetapphostgroup-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A maximal NetApp host group test resource",
+  "hosts": [
+    "iqn.1994-05.com.redhat:host1",
+    "iqn.1994-05.com.redhat:host2"
+  ],
+  "labels": {
+    "environment": "test",
+    "managed-by": "kcc"
+  },
+  "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+  "osType": 1,
+  "state": 2,
+  "type": 1
+}
+
+---
+
+PATCH https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Chosts%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: host_group.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FhostGroups%2Fnetapphostgroup-maximal-${uniqueId}
+
+{
+  "description": "An updated maximal NetApp host group test resource",
+  "hosts": [
+    "iqn.1994-05.com.redhat:host3",
+    "iqn.1994-05.com.redhat:host4"
+  ],
+  "labels": {
+    "environment": "test-updated",
+    "managed-by": "kcc-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+  "osType": 1,
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.HostGroup",
+    "description": "An updated maximal NetApp host group test resource",
+    "hosts": [
+      "iqn.1994-05.com.redhat:host3",
+      "iqn.1994-05.com.redhat:host4"
+    ],
+    "labels": {
+      "environment": "test-updated",
+      "managed-by": "kcc-updated"
+    },
+    "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "osType": "LINUX",
+    "state": "READY",
+    "type": "ISCSI_INITIATOR"
+  }
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FhostGroups%2Fnetapphostgroup-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated maximal NetApp host group test resource",
+  "hosts": [
+    "iqn.1994-05.com.redhat:host3",
+    "iqn.1994-05.com.redhat:host4"
+  ],
+  "labels": {
+    "environment": "test-updated",
+    "managed-by": "kcc-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+  "osType": 1,
+  "state": 2,
+  "type": 1
+}
+
+---
+
+DELETE https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FhostGroups%2Fnetapphostgroup-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

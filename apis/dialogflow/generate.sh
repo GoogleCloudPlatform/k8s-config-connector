@@ -31,8 +31,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-
-# Generate types for Dialogflow v2 service (KnowledgeBase, Generator)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
@@ -40,24 +38,19 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowGenerator:Generator \
   --resource DialogflowConversationDataset:ConversationDataset
 
-# Generate types for Dialogflow CX v3 service (SecuritySettings)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource DialogflowSecuritySettings:SecuritySettings
-
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
-# Generate types for Dialogflow v1 service (SipTrunk)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowSipTrunk:SipTrunk
-
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/siptrunk_types.generated.go
 
-# Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
@@ -65,44 +58,72 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowGenerator:Generator \
   --resource DialogflowConversationDataset:ConversationDataset
 
-# Generate mapper for Dialogflow CX v3 service
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowConversationModel:ConversationModel
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowConversationModel:ConversationModel
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowEnvironment:Environment \
+  --resource DialogflowPlaybook:Playbook \
+  --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
+  --resource DialogflowFlow:Flow \
+  --resource DialogflowPage:Page
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowEnvironment:Environment \
+  --resource DialogflowPlaybook:Playbook \
+  --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
+  --resource DialogflowFlow:Flow \
+  --resource DialogflowPage:Page
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
 
-# Generate mapper for Dialogflow v1/v2beta1 service (SipTrunk)
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk"
-
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || true
 sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
 
-# Generate mapper for Dialogflow v2 service (Generator, KnowledgeBase, etc.)
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
-
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
 sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
 
-# Generate mapper for Dialogflow v2 service (ConversationDataset)
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
-
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
 sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/dialogflow" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dialogflow/

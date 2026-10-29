@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineDataStore
+  name: datastore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineSchema
+  name: default-schema-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

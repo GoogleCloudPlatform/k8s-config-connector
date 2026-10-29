@@ -22,8 +22,10 @@ import (
 	"regexp"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/commerceproducer/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/healthcare/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/yaml"
@@ -62,6 +64,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// AlloyDB
 
+		// Apigee
+		"//apigee.googleapis.com/organizations/{}/addonsConfig":      true,
+		"//apigee.googleapis.com/organizations/{}/syncAuthorization": true,
+
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
@@ -73,6 +79,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
 
 		// BigLake
+
+		// BigQuery
+		"//bigquery.googleapis.com/projects/{}/datasets/{}/access/{}": true,
 
 		// Bigtable
 		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
@@ -96,7 +105,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Compute
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,
+		"//compute.googleapis.com/locations/global/securityPolicies/{}/associations/{}":   true,
 		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}": true,
+		"//compute.googleapis.com/projects/{}/regions/{}/instanceGroupManagers/{}/{}":     true,
 		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                       true,
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,
 		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/interfaces/{}":        true,
@@ -167,6 +178,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
 
 		// Oracle Database
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/autonomousDatabaseBackups/{}": true,
 
 		// OSLogin
 
@@ -178,6 +190,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
 		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,
+
+		// Translate
+		"//translate.googleapis.com/projects/{}/locations/{}/adaptiveMtDatasets/{}": true,
 
 		// Vision
 

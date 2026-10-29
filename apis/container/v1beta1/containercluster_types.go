@@ -970,7 +970,7 @@ type NodeConfig struct {
 
 	/* Immutable. Enable or disable gvnic in the node pool. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.gvnic
-	VirtualNic *VirtualNic `json:"gvnic,omitempty"`
+	GVNIC *VirtualNic `json:"gvnic,omitempty"`
 
 	/* Immutable. The maintenance policy for the hosts on which the GKE VMs run on. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.host_maintenance_policy

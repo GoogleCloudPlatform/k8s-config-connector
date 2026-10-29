@@ -1,0 +1,4 @@
+apis/aiplatform/v1alpha1/aiplatformfeatureview_types.go:84: comment contains 'a ANN', should be 'an ANN'
+apis/chronicle/v1alpha1/chronicledataaccesslabel_types.go:42: comment contains 'a UDM', should be 'an UDM'
+apis/chronicle/v1alpha1/chroniclefindingsrefinement_types.go:52: comment contains 'a UDM', should be 'an UDM'
+apis/netapp/v1alpha1/netappquotarule_types.go:43: comment contains 'a Unix', should be 'an Unix'

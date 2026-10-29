@@ -22,6 +22,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -446,4 +447,122 @@ func TestJudgementQueueIsWellFormed(t *testing.T) {
 		t.Fatalf("error loading judgement queues: %v", err)
 	}
 	t.Logf("%d entries, %d open reference fields\n%s", len(q.entries), q.openRefFields.Len(), q.summary())
+}
+
+// prepopulatedKindsMissingFromQueue checks that every <Kind>Spec carrying
+// +kcc:required-from-proto in apis/<service>/<version>/ has a corresponding
+// untriaged-bulk-generation entry (open or resolved) in
+// apis/<service>/judgement_queue.yaml. This catches rebase or merge conflicts
+// that accidentally overwrite an existing Kind's judgement_queue.yaml entries.
+func prepopulatedKindsMissingFromQueue(apisDir string) ([]string, error) {
+	type key struct{ service, kind string }
+
+	hasUntriagedMarker := map[key]bool{}
+	queues, err := filepath.Glob(filepath.Join(apisDir, "*", judgement.FileName))
+	if err != nil {
+		return nil, err
+	}
+	for _, path := range queues {
+		q, err := judgement.Read(path)
+		if err != nil {
+			return nil, err
+		}
+		service := filepath.Base(filepath.Dir(path))
+		for _, e := range q.Entries {
+			if e.Kind != "" && e.Reason == judgement.ReasonUntriagedBulkGeneration {
+				hasUntriagedMarker[key{service, e.Kind}] = true
+			}
+		}
+	}
+
+	pkgDirs, err := filepath.Glob(filepath.Join(apisDir, "*", "v*"))
+	if err != nil {
+		return nil, err
+	}
+	var problems []string
+	for _, pkgDir := range pkgDirs {
+		info, err := os.Stat(pkgDir)
+		if err != nil || !info.IsDir() {
+			continue
+		}
+		uses, err := codegen.ScanRequiredUses(pkgDir, "", "")
+		if err != nil {
+			return nil, err
+		}
+		if len(uses.MarkedKinds) == 0 {
+			continue
+		}
+		service := filepath.Base(filepath.Dir(pkgDir))
+		for kind := range uses.MarkedKinds {
+			if !hasUntriagedMarker[key{service, kind}] {
+				problems = append(problems, fmt.Sprintf(
+					"%s: %sSpec has %s but no %s entry in apis/%s/%s; restore the lost queue entries or re-run apis/%s/generate.sh",
+					pkgDir, kind, codegen.RequiredFromProtoMarker, judgement.ReasonUntriagedBulkGeneration, service, judgement.FileName, service))
+			}
+		}
+	}
+	sort.Strings(problems)
+	return problems, nil
+}
+
+func TestPrepopulatedKindsHaveJudgementQueueEntries(t *testing.T) {
+	problems, err := prepopulatedKindsMissingFromQueue("../../apis")
+	if err != nil {
+		t.Fatalf("checking prepopulated kinds against judgement queues: %v", err)
+	}
+	if len(problems) > 0 {
+		t.Errorf("prepopulated kinds missing from %s:\n  %s", judgement.FileName, strings.Join(problems, "\n  "))
+	}
+}
+
+func TestPrepopulatedKindsMissingFromQueue(t *testing.T) {
+	dir := t.TempDir()
+	svcDir := filepath.Join(dir, "chronicle", "v1alpha1")
+	if err := os.MkdirAll(svcDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	writeTypes := func(file, kind string) {
+		content := fmt.Sprintf("package v1alpha1\n\n// +kcc:spec:proto=google.cloud.chronicle.v1.%s\n// +kcc:required-from-proto\ntype %sSpec struct{}\n", kind, kind)
+		if err := os.WriteFile(filepath.Join(svcDir, file), []byte(content), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	writeTypes("chroniclewatchlist_types.go", "ChronicleWatchlist")
+	writeTypes("chronicledatatable_types.go", "ChronicleDataTable")
+
+	// Queue only has ChronicleDataTable; ChronicleWatchlist was lost in a rebase.
+	writeQueueFile(t, dir, "chronicle", `entries:
+- kind: ChronicleDataTable
+  group: chronicle.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+`)
+
+	problems, err := prepopulatedKindsMissingFromQueue(dir)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(problems) != 1 || !strings.Contains(problems[0], "ChronicleWatchlist") {
+		t.Errorf("expected 1 problem for ChronicleWatchlist, got: %v", problems)
+	}
+
+	// Once ChronicleWatchlist has an untriaged-bulk-generation entry (open or resolved), it passes.
+	writeQueueFile(t, dir, "chronicle", `entries:
+- kind: ChronicleDataTable
+  group: chronicle.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+- kind: ChronicleWatchlist
+  group: chronicle.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: resolved
+  resolution: accepted
+`)
+	problems, err = prepopulatedKindsMissingFromQueue(dir)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(problems) != 0 {
+		t.Errorf("expected 0 problems, got: %v", problems)
+	}
 }

@@ -120,7 +120,8 @@ Instead of doing the coding yourself under this skill, you will coordinate and o
 >   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
 >     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels,assignees`
 >   - **When creating a new child issue**, if the parent workflow issue has assignees, inherit them by passing `--assignee "<parent-assignees-comma-separated>"` to `gh issue create`.
->   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse (adopt) the existing issue number in your progress table and journal file!
+>   - **Only adopt issues newer than the parent workflow issue**: An existing issue is eligible for adoption **only if its issue number is strictly greater than the parent workflow issue number** (`${SESSION_ID#issue-}`). Ignore any matching issue whose number is less than or equal to the parent workflow issue number (it predates this workflow and must not be adopted); treat it as if no matching issue exists.
+>   - If an eligible open issue with that title already exists (issue number greater than `${SESSION_ID#issue-}`), **DO NOT run `gh issue create`**. Reuse (adopt) the existing issue number in your progress table and journal file!
 >   - **When reusing (adopting) an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable) AND all assignees from the parent workflow issue (`${SESSION_ID#issue-}`). If any required labels or parent assignees are missing, add them immediately:
 >     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>" --add-assignee "<parent-assignees-comma-separated>"`
 >   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
@@ -178,18 +179,50 @@ Only declare the PR as fully passed/verified if no failures are returned across 
 ## Steps
 
 
-### Step 1: Direct API Types and Identity and Reference Types Pattern
+### Step 1a: Prepopulate Direct API Types, Identity, and Judgement Queue
 
-Open a GitHub issue to coordinate the implementation of direct KRM types, identity files, and reference files for a specific Kubernetes resource.
+Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<service>/v1alpha1/{kind_lowercase}_types.go` exists on `master`, or `apis/<service>/judgement_queue.yaml` on `master` already contains `kind: {kind}`):
+*   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
+*   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
 
-**GitHub Issue Details for Greenfield Resource:**
-*   **Title:** `Greenfield: Implement direct KRM types, identity, and generate.sh for {kind}`
+**GitHub Issue Details for Step 1a (Prepopulate):**
+*   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
-*   **Labels:** `overseer`, `greenfield`,`step/gen-types`, `overseer/review`
+*   **Labels:** `overseer`, `greenfield`, `step/gen-types`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` for generating types for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1a: `prepopulate/SKILL.md`) for prepopulating types and `judgement_queue.yaml` for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
+
+    Validate your changes locally by:
+     * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
+     * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
+
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
+    ## Review Instructions
+    Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
+    ````
+
+### Step 1b: Triage Judgement Queue and Finalize Direct API Types, Identity, and Reference Types
+
+Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or after Step 1a merges):
+*   *Compatibility check for legacy in-flight workflows:* If `apis/<service>/v1alpha1/{kind_lowercase}_types.go` is already on `master` from a legacy Step 1 PR and `apis/<service>/judgement_queue.yaml` does not have an `open` `untriaged-bulk-generation` entry for `{kind}`, mark Step 1b as `Skipped (Legacy Step 1)` and proceed directly to **Step 2**.
+*   Otherwise, open a GitHub issue to triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files (plus the generated controller and fuzzer if already present on `master`) for `{kind}`.
+
+**GitHub Issue Details for Step 1b (Judgement Triage):**
+*   **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types and identity for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
+*   **Body:**
+    ````
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
+    Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {kind}.
 
     Validate your changes locally by:
      * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
@@ -208,7 +241,7 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
 ### Step 2: Direct Controller, E2E fixtures and Fuzzer
 
-Open a GitHub issue to coordinate the implementation of the direct controller and E2E fixtures for a specific Kubernetes resource.
+Open a GitHub issue to coordinate the autogeneration/verification of the direct controller and fuzzer (`generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource`) and E2E fixture recording for `{kind}`.
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
@@ -216,7 +249,7 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 *   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {kind}.
 
     If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 

@@ -254,29 +254,47 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
 		cArgs.ExtraImports = prepopulated.ExtraImports
 		cArgs.PrepopulateSpec = true
-		root, item := a.rootRef(cArgs.ResourcePattern)
-		cArgs.RootRefField = root
-		if item != nil {
-			prepopulated.Judgement = append(prepopulated.Judgement, *item)
-		}
-		location, item := a.locationRef(cArgs.ResourcePattern)
-		cArgs.LocationField = location
-		if item != nil {
-			prepopulated.Judgement = append(prepopulated.Judgement, *item)
-		}
-
-		// The parent field rides on prepopulated because that is the only way its
-		// queue entry reaches the caller. A field emitted without its entry would
-		// leave a +kcc:guess in the Spec that nothing flags.
-		if a.EmitParentRefs {
-			field, item := a.parentRef(cArgs.ResourcePattern)
-			cArgs.ParentRefField = field
-			if item != nil {
-				prepopulated.Judgement = append(prepopulated.Judgement, *item)
-			}
-		}
+		a.applyParentFields(cArgs, prepopulated)
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
+}
+
+// applyParentFields populates RootRefField, LocationField, and ParentRefField
+// on cArgs from cArgs.ResourcePattern and appends any corresponding judgement
+// items to prepopulated.
+func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *PrepopulateResult) {
+	root, item := a.rootRef(cArgs.ResourcePattern)
+	cArgs.RootRefField = root
+	if item != nil {
+		prepopulated.Judgement = append(prepopulated.Judgement, *item)
+	}
+	location, item := a.locationRef(cArgs.ResourcePattern)
+	cArgs.LocationField = location
+	if item != nil {
+		prepopulated.Judgement = append(prepopulated.Judgement, *item)
+	}
+
+	// The parent field rides on prepopulated because that is the only way its
+	// queue entry reaches the caller. A field emitted without its entry would
+	// leave a +kcc:guess in the Spec that nothing flags.
+	if a.EmitParentRefs {
+		field, item := a.parentRef(cArgs.ResourcePattern)
+		cArgs.ParentRefField = field
+		if item != nil {
+			prepopulated.Judgement = append(prepopulated.Judgement, *item)
+		}
+	}
+}
+
+// ParentJudgement returns the judgement queue items that AddTypeFile records
+// from the resource pattern (rootRef, locationRef, and parentRef). It is used
+// when recovering queue entries for an existing prepopulated <kind>_types.go
+// file whose judgement_queue.yaml entries were lost during a rebase or merge.
+func (a *APIScaffolder) ParentJudgement(resource options.Resource) []JudgementItem {
+	cArgs := a.buildAPIArgs(&resource)
+	var res PrepopulateResult
+	a.applyParentFields(cArgs, &res)
+	return res.Judgement
 }
 
 // packageDeclaresGVK reports whether a Go file in dir, other than a

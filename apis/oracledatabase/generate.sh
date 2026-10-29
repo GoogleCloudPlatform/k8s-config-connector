@@ -29,11 +29,10 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+./generate-proto.sh
 
-# We need a newer googleapis to get oracledatabase exadb_vm_cluster
 PROTO_SHA="054c87e45c4683ea5430ab609cbd4a445c4c4c71"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
@@ -43,13 +42,31 @@ ${CONTROLLERBUILDER} generate-types \
   --resource OracleDatabaseAutonomousDatabase:AutonomousDatabase \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.oracledatabase.v1 \
+  --api-version oracledatabase.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource OracleDatabaseCloudExadataInfrastructure:CloudExadataInfrastructure \
+  --resource OracleDatabaseCloudVMCluster:CloudVmCluster
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.oracledatabase.v1 \
+  --api-version oracledatabase.cnrm.cloud.google.com/v1alpha1 \
+  --resource OracleDatabaseCloudExadataInfrastructure:CloudExadataInfrastructure \
+  --resource OracleDatabaseCloudVMCluster:CloudVmCluster
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.oracledatabase.v1 \
   --api-version oracledatabase.cnrm.cloud.google.com/v1alpha1 \
-  --proto-source-path ${PROTO_OUT}
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/oracledatabase" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/oracledatabase/

@@ -17,6 +17,7 @@
 // krm.group: aiplatform.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1
+// proto.service: google.cloud.aiplatform.v1
 // resource: AIPlatformPersistentResource:PersistentResource
 // resource: AIPlatformSpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
@@ -27,10 +28,14 @@
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
 // resource: AIPlatformReasoningEngine:ReasoningEngine
+// resource: AIPlatformFeatureView:FeatureView
+// resource: AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 /* unreachable type Artifact
 // +kcc:proto=google.cloud.aiplatform.v1.Artifact
@@ -95,6 +100,29 @@ type Artifact struct {
 	Description *string `json:"description,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.aiplatform.v1.AutomaticResources
+type AutomaticResources struct {
+	// Immutable. The minimum number of replicas that will be always deployed on.
+	//  If traffic against it increases, it may dynamically be deployed onto more
+	//  replicas up to
+	//  [max_replica_count][google.cloud.aiplatform.v1.AutomaticResources.max_replica_count],
+	//  and as traffic decreases, some of these extra replicas may be freed. If the
+	//  requested value is too large, the deployment will error.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.AutomaticResources.min_replica_count
+	MinReplicaCount *int32 `json:"minReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of replicas that may be deployed on when the
+	//  traffic against it increases. If the requested value is too large, the
+	//  deployment will error, but if deployment succeeds then the ability to scale
+	//  to that many replicas is guaranteed (barring service outages). If traffic
+	//  increases beyond what its replicas at maximum may handle, a portion of the
+	//  traffic will be dropped. If this value is not provided, a no upper bound
+	//  for scaling under heavy traffic will be assume, though Vertex AI may be
+	//  unable to scale beyond certain replica number.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.AutomaticResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1.BigQueryDestination
 type BigQueryDestination struct {
@@ -163,6 +191,14 @@ type CodeExecutionResult struct {
 	Output *string `json:"output,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.ColabImage
+type ColabImage struct {
+	// Optional. The release name of the NotebookRuntime Colab image, e.g.
+	//  "py310". If not specified, detault to the latest release.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.release_name
+	ReleaseName *string `json:"releaseName,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Content
 type Content struct {
 	// Optional. The producer of the content. Must be either 'user' or 'model'.
@@ -216,6 +252,25 @@ type EnvVar struct {
 	//  references will never be expanded, regardless of whether the variable
 	//  exists or not.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.EnvVar
+type EnvVarWithRequired struct {
+	// Required. Name of the environment variable. Must be a valid C identifier.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. Variables that reference a $(VAR_NAME) are expanded
+	//  using the previous defined environment variables in the container and
+	//  any service environment variables. If a variable cannot be resolved,
+	//  the reference in the input string will be unchanged. The $(VAR_NAME)
+	//  syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped
+	//  references will never be expanded, regardless of whether the variable
+	//  exists or not.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
+	// +required
 	Value *string `json:"value,omitempty"`
 }
 
@@ -505,6 +560,159 @@ type FeatureNoiseSigma_NoiseSigmaForFeature struct {
 	//  but represents the noise added to the current feature. Defaults to 0.1.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureNoiseSigma.NoiseSigmaForFeature.sigma
 	Sigma *float32 `json:"sigma,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.BigQuerySource
+type FeatureView_BigQuerySource struct {
+	// Required. The BigQuery view URI that will be materialized on each sync
+	//  trigger based on FeatureView.SyncConfig.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.BigQuerySource.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+
+	// Required. Columns to construct entity_id / row keys.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.BigQuerySource.entity_id_columns
+	// +required
+	EntityIDColumns []string `json:"entityIDColumns,omitempty"`
+}
+
+/* unreachable type FeatureView_BigtableMetadata
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata
+type FeatureView_BigtableMetadata struct {
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource
+type FeatureView_FeatureRegistrySource struct {
+	// Required. List of features that need to be synced to Online Store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource.feature_groups
+	// +required
+	FeatureGroups []FeatureView_FeatureRegistrySource_FeatureGroup `json:"featureGroups,omitempty"`
+
+	// Optional. The project number of the parent project of the Feature Groups.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource.project_number
+	ProjectNumber *int64 `json:"projectNumber,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource.FeatureGroup
+type FeatureView_FeatureRegistrySource_FeatureGroup struct {
+	// Required. Identifier of the feature group.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource.FeatureGroup.feature_group_id
+	// +required
+	FeatureGroupID *string `json:"featureGroupID,omitempty"`
+
+	// Required. Identifiers of features under the feature group.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.FeatureRegistrySource.FeatureGroup.feature_ids
+	// +required
+	FeatureIDs []string `json:"featureIDs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.IndexConfig
+type FeatureView_IndexConfig struct {
+	// Optional. Configuration options for the tree-AH algorithm (Shallow tree
+	//  + Asymmetric Hashing). Please refer to this paper for more details:
+	//  https://arxiv.org/abs/1908.10396
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.tree_ah_config
+	TreeAhConfig *FeatureView_IndexConfig_TreeAhConfig `json:"treeAhConfig,omitempty"`
+
+	// Optional. Configuration options for using brute force search, which
+	//  simply implements the standard linear search in the database for each
+	//  query. It is primarily meant for benchmarking and to generate the
+	//  ground truth for approximate search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.brute_force_config
+	BruteForceConfig *FeatureView_IndexConfig_BruteForceConfig `json:"bruteForceConfig,omitempty"`
+
+	// Optional. Column of embedding. This column contains the source data to
+	//  create index for vector search. embedding_column must be set when using
+	//  vector search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.embedding_column
+	EmbeddingColumn *string `json:"embeddingColumn,omitempty"`
+
+	// Optional. Columns of features that're used to filter vector search
+	//  results.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.filter_columns
+	FilterColumns []string `json:"filterColumns,omitempty"`
+
+	// Optional. Column of crowding. This column contains crowding attribute
+	//  which is a constraint on a neighbor list produced by
+	//  [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities]
+	//  to diversify search results. If
+	//  [NearestNeighborQuery.per_crowding_attribute_neighbor_count][google.cloud.aiplatform.v1.NearestNeighborQuery.per_crowding_attribute_neighbor_count]
+	//  is set to K in
+	//  [SearchNearestEntitiesRequest][google.cloud.aiplatform.v1.SearchNearestEntitiesRequest],
+	//  it's guaranteed that no more than K entities of the same crowding
+	//  attribute are returned in the response.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.crowding_column
+	CrowdingColumn *string `json:"crowdingColumn,omitempty"`
+
+	// Optional. The number of dimensions of the input embedding.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.embedding_dimension
+	EmbeddingDimension *int32 `json:"embeddingDimension,omitempty"`
+
+	// Optional. The distance measure used in nearest neighbor search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.distance_measure_type
+	DistanceMeasureType *string `json:"distanceMeasureType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.IndexConfig.BruteForceConfig
+type FeatureView_IndexConfig_BruteForceConfig struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.IndexConfig.TreeAHConfig
+type FeatureView_IndexConfig_TreeAhConfig struct {
+	// Optional. Number of embeddings on each leaf node. The default value is
+	//  1000 if not set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.IndexConfig.TreeAHConfig.leaf_node_embedding_count
+	LeafNodeEmbeddingCount *int64 `json:"leafNodeEmbeddingCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.OptimizedConfig
+type FeatureView_OptimizedConfig struct {
+	// Optional. A description of resources that the FeatureView uses, which to
+	//  large degree are decided by Vertex AI, and optionally allows only a
+	//  modest additional configuration. If min_replica_count is not set, the
+	//  default value is 2. If max_replica_count is not set, the default value
+	//  is 6. The max allowed replica count is 1000.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.OptimizedConfig.automatic_resources
+	AutomaticResources *AutomaticResources `json:"automaticResources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.SyncConfig
+type FeatureView_SyncConfig struct {
+	// Cron schedule (https://en.wikipedia.org/wiki/Cron) to launch scheduled
+	//  runs. To explicitly set a timezone to the cron tab, apply a prefix in
+	//  the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+	//  The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+	//  database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+	//  "TZ=America/New_York 1 * * * *".
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.SyncConfig.cron
+	Cron *string `json:"cron,omitempty"`
+
+	// Optional. If true, syncs the FeatureView in a continuous manner to Online
+	//  Store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.SyncConfig.continuous
+	Continuous *bool `json:"continuous,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FeatureView.VertexRagSource
+type FeatureView_VertexRagSource struct {
+	// Required. The BigQuery view/table URI that will be materialized on each
+	//  manual sync trigger. The table/view is expected to have the following
+	//  columns and types at least:
+	//   - `corpus_id` (STRING, NULLABLE/REQUIRED)
+	//   - `file_id` (STRING, NULLABLE/REQUIRED)
+	//   - `chunk_id` (STRING, NULLABLE/REQUIRED)
+	//   - `chunk_data_type` (STRING, NULLABLE/REQUIRED)
+	//   - `chunk_data` (STRING, NULLABLE/REQUIRED)
+	//   - `embeddings` (FLOAT, REPEATED)
+	//   - `file_original_uri` (STRING, NULLABLE/REQUIRED)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.VertexRagSource.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+
+	// Optional. The RAG corpus id corresponding to this FeatureView.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.VertexRagSource.rag_corpus_id
+	RagCorpusID *int64 `json:"ragCorpusID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.FileData
@@ -825,6 +1033,23 @@ type MachineSpec struct {
 	// The number of accelerators to attach to the machine.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Optional. Immutable. The Nvidia GPU partition size.
+	//
+	//  When specified, the requested accelerators will be partitioned into
+	//  smaller GPU partitions. For example, if the request is for 8 units of
+	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	//  create 8 * 7 = 56 partitioned MIG instances.
+	//
+	//  The partition size must be a value supported by the requested accelerator.
+	//  Refer to
+	//  [Nvidia GPU
+	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	//  for the available partition sizes.
+	//
+	//  If set, the accelerator_count should be set to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
 
 	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
 	//  available from GKE. (Example: tpu_topology: "2x2x1").
@@ -1185,6 +1410,15 @@ type ModelSourceInfo struct {
 	Copy *bool `json:"copy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEUCConfig struct {
+	// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+	//  In proto3, the default value of a boolean is false. In this way, by default
+	//  EUC will be enabled for NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.euc_disabled
+	EUCDisabled *bool `json:"eucDisabled,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
 type NotebookExecutionJob_CustomEnvironmentSpec struct {
 	// The specification of a single machine for the execution job.
@@ -1209,6 +1443,36 @@ type NotebookExecutionJob_DirectNotebookSource struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime
 type NotebookExecutionJob_WorkbenchRuntime struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig
+type NotebookIdleShutdownConfig struct {
+	// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
+	//  accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
+	//  * 60.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_timeout
+	// +required
+	IdleTimeout *string `json:"idleTimeout,omitempty"`
+
+	// Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookIdleShutdownConfig.idle_shutdown_disabled
+	IdleShutdownDisabled *bool `json:"idleShutdownDisabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookSoftwareConfig
+type NotebookSoftwareConfig struct {
+	// Optional. Google-managed NotebookRuntime colab image.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.colab_image
+	ColabImage *ColabImage `json:"colabImage,omitempty"`
+
+	// Optional. Environment variables to be passed to the container.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.env
+	Env []EnvVarWithRequired `json:"env,omitempty"`
+
+	// Optional. Post startup script config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.post_startup_script_config
+	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.Part
@@ -1301,6 +1565,23 @@ type Port struct {
 	//  Must be a valid port number, between 1 and 65535 inclusive.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Port.container_port
 	ContainerPort *int32 `json:"containerPort,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PostStartupScriptConfig
+type PostStartupScriptConfig struct {
+	// Optional. Post startup script to run after runtime is started.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script
+	PostStartupScript *string `json:"postStartupScript,omitempty"`
+
+	// Optional. Post startup script url to download. Example:
+	//  `gs://bucket/script.sh`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script_url
+	PostStartupScriptURL *string `json:"postStartupScriptURL,omitempty"`
+
+	// Optional. Post startup script behavior that defines download and execution
+	//  behavior.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PostStartupScriptConfig.post_startup_script_behavior
+	PostStartupScriptBehavior *string `json:"postStartupScriptBehavior,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.PredefinedSplit
@@ -1674,6 +1955,19 @@ type SecretEnvVar struct {
 	//  will provide the value for this environment variable.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.secret_ref
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ShieldedVmConfig
+type ShieldedVMConfig struct {
+	// Defines whether the instance has [Secure
+	//  Boot](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot)
+	//  enabled.
+	//
+	//  Secure Boot helps ensure that the system only runs authentic software by
+	//  verifying the digital signature of all boot components, and halting the
+	//  boot process if signature verification fails.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ShieldedVmConfig.enable_secure_boot
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
@@ -2260,6 +2554,22 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ColabImage
+type ColabImageObservedState struct {
+	// Output only. A human-readable description of the specified colab image
+	//  release, populated by the system. Example: "Python 3.10", "Latest - current
+	//  Python 3.11"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata
+type FeatureView_BigtableMetadataObservedState struct {
+	// The Bigtable App Profile to use for reading from Bigtable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata.read_app_profile
+	ReadAppProfile *string `json:"readAppProfile,omitempty"`
+}
+
 /* unreachable type Model_ExportFormatObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.ExportFormat
 type Model_ExportFormatObservedState struct {
@@ -2303,6 +2613,26 @@ type Model_OriginalModelInfoObservedState struct {
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookEucConfig
+type NotebookEUCConfigObservedState struct {
+	// Output only. Whether ActAs check is bypassed for service account attached
+	//  to the VM. If false, we need ActAs check for the default Compute Engine
+	//  Service account. When a Runtime is created, a VM is allocated using Default
+	//  Compute Engine Service Account. Any user requesting to use this Runtime
+	//  requires Service Account User (ActAs) permission over this SA. If true,
+	//  Runtime owner is using EUC and does not require the above permission as VM
+	//  no longer use default Compute Engine SA, but a P4SA.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookEucConfig.bypass_actas_check
+	BypassActasCheck *bool `json:"bypassActasCheck,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookSoftwareConfig
+type NotebookSoftwareConfigObservedState struct {
+	// Optional. Google-managed NotebookRuntime colab image.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookSoftwareConfig.colab_image
+	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool
 type ResourcePoolObservedState struct {

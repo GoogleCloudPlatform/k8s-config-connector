@@ -43,6 +43,25 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CESApp:App \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ces.v1 \
+  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource CesAgent:Agent
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ces.v1 \
+  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --resource CesAgent:Agent
+
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ces.v1 \
+  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

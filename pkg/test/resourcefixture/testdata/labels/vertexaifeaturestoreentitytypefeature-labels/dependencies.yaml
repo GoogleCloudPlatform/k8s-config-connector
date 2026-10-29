@@ -1,0 +1,18 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestore
+metadata:
+  name: featurestore${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  onlineServingConfig:
+    fixedNodeCount: 1
+---
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestoreEntityType
+metadata:
+  name: entitytype${uniqueId}
+spec:
+  featurestore: projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}
+  description: "Test entity type"

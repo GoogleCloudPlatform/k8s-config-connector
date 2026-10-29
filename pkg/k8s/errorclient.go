@@ -24,7 +24,22 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// errorClient embeds client.Client so that downstream consumers importing KCC API packages
+// (which transitively import pkg/k8s) alongside controller-runtime >= v0.22 continue to compile.
+//
+// In controller-runtime >= v0.22, client.Client added:
+//
+//	Apply(ctx context.Context, obj runtime.ApplyConfiguration, opts ...client.ApplyOption) error
+//
+// Because KCC's go.mod is currently pinned to k8s.io/apimachinery v0.33.x and
+// sigs.k8s.io/controller-runtime v0.20.x, neither runtime.ApplyConfiguration nor
+// client.ApplyOption exists in KCC's dependency tree yet, so we cannot explicitly
+// implement Apply until go.mod is upgraded.
+//
+// TODO: Once sigs.k8s.io/controller-runtime (>= v0.22.0) and k8s.io/apimachinery (>= v0.34.0)
+// are bumped in go.mod, remove the embedded client.Client and explicitly implement Apply.
 type errorClient struct {
+	client.Client
 }
 
 // Some packages, like 'gcpclient' make use of krmtotf which is tightly coupled with the controller-runtime client.

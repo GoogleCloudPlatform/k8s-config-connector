@@ -1,0 +1,149 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}" contains ancestor segment(s) featureOnlineStores/{feature_online_store} with no matching reference or field on AIPlatformFeatureViewSpec
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}, and no FeatureOnlineStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.featureOnlineStores.featureViews: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews'
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.bigQuerySource.uri
+    reason: reference-not-representable
+    detail: 'bigquery-uri-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.featureRegistrySource.featureGroups[].featureGroupID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.featureRegistrySource.featureGroups[].featureIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vertexRagSource.uri
+    reason: reference-not-representable
+    detail: 'bigquery-uri-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.notebookRuntimeTemplates: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookRuntimeTemplates, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.notebookRuntimeTemplates'
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformModel, AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAISchedule, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformNotebookRuntimeTemplateSpec.MachineSpec in aiplatformnotebookruntimetemplate_types.go from MachineSpec to MachineSpecWithRequired and run generate.sh again. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.networkSpec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.networkSpec.subnetwork
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Subnetwork (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: AIPlatformNotebookRuntimeTemplate
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.softwareConfig.postStartupScriptConfig.postStartupScriptURL
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open

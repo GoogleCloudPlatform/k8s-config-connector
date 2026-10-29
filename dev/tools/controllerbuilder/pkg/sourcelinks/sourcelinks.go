@@ -191,8 +191,9 @@ func (r *Resolver) links(ctx context.Context, in input) []Link {
 // from mockgcp/apis before compiling. Types generated from them follow the
 // KCC copy, so the link does too.
 var kccProtoOverrides = map[string]bool{
-	"google/cloud/config/v1/config.proto":    true,
-	"google/cloud/dataplex/v1/catalog.proto": true,
+	"google/cloud/config/v1/config.proto":       true,
+	"google/cloud/dataplex/v1/catalog.proto":    true,
+	"google/logging/v2/logging_config.proto":    true,
 }
 
 func (r *Resolver) protoLink(path string) Link {
@@ -281,14 +282,31 @@ func (r *Resolver) resourceDocsLink(ctx context.Context, in input, discoveryLink
 // They are tried last, and using one is logged. The goal is to remove them:
 // an entry whose API now verifies through a derived root is no longer needed.
 var restRootOverrides = map[string]string{
-	"bigtableadmin": "bigtable/docs/reference/admin/rest",
-	"privateca":     "certificate-authority-service/docs/reference/rest",
-	"sqladmin":      "sql/docs/mysql/admin-api/rest",
-	"storage":       "storage/docs/json_api",
+	"analyticshub":         "bigquery/docs/reference/analytics-hub/rest",
+	"artifactregistry":     "artifact-registry/docs/reference/rest",
+	"bigtableadmin":        "bigtable/docs/reference/admin/rest",
+	"ces":                  "customer-engagement-ai/conversational-agents/ps/reference/rest",
+	"cloudcontrolspartner": "sovereign-controls-by-partners/docs/sovereign-partners/reference/rest",
+	"containeranalysis":    "artifact-analysis/docs/reference/rest",
+	"dataform":             "dataform/reference/rest",
+	"datalineage":          "data-catalog/docs/reference/data-lineage/rest",
+	"dialogflow":           "dialogflow/cx/docs/reference/rest",
+	"edgenetwork":          "distributed-cloud/edge/latest/docs/reference/network/rest",
+	"geminidataanalytics":  "gemini/data-agents/reference/rest",
+	"networkconnectivity":  "network-connectivity/docs/reference/networkconnectivity/rest",
+	"notebooks":            "vertex-ai/docs/workbench/reference/rest",
+	"privateca":            "certificate-authority-service/docs/reference/rest",
+	"retail":               "retail/docs/reference/rest",
+	"securityposture":      "security-command-center/docs/reference/securityposture/rest",
+	"sqladmin":             "sql/docs/mysql/admin-api/rest",
+	"storage":              "storage/docs/json_api",
+	"vectorsearch":         "vertex-ai/docs/vector-search-2/reference/rest",
 
-	"networkservices/projects.locations.lbRouteExtensions":   "service-extensions/docs/reference/rest",
-	"networkservices/projects.locations.lbTrafficExtensions": "service-extensions/docs/reference/rest",
-	"networkservices/projects.locations.meshes":              "service-mesh/docs/reference/network-services/rest",
+	"networksecurity/projects.locations.gatewaySecurityPolicies.rules":      "secure-web-proxy/docs/reference/network-security/rest",
+	"networksecurity/projects.locations.interceptEndpointGroupAssociations": "network-security-integration/docs/reference/rest",
+	"networkservices/projects.locations.lbRouteExtensions":                  "service-extensions/docs/reference/rest",
+	"networkservices/projects.locations.lbTrafficExtensions":                "service-extensions/docs/reference/rest",
+	"networkservices/projects.locations.meshes":                             "service-mesh/docs/reference/network-services/rest",
 }
 
 // root is a candidate REST reference root, as

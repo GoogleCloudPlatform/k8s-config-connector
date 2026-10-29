@@ -20,8 +20,319 @@
 // resource: DatabaseMigrationConversionWorkspace:ConversionWorkspace
 // resource: DatabaseMigrationMigrationJob:MigrationJob
 // resource: DatabaseMigrationPrivateConnection:PrivateConnection
+// resource: DatamigrationConnectionProfile:ConnectionProfile
+// resource: DataMigrationMappingRule:MappingRule
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
+type AlloyDbConnectionProfile struct {
+	// Required. The AlloyDB cluster ID that this connection profile is associated
+	//  with.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.cluster_id
+	// +required
+	ClusterID *string `json:"clusterID,omitempty"`
+
+	// Immutable. Metadata used to create the destination AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.settings
+	Settings *AlloyDbSettings `json:"settings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings
+type AlloyDbSettings struct {
+	// Required. Input only. Initial user to setup during cluster creation.
+	//  Required.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
+	// +required
+	InitialUser *AlloyDbSettings_UserPassword `json:"initialUser,omitempty"`
+
+	// Required. The resource link for the VPC network in which cluster resources
+	//  are created and from which they are accessible via Private IP. The network
+	//  must belong to the same project as the cluster. It is specified in the
+	//  form: "projects/{project_number}/global/networks/{network_id}". This is
+	//  required to create a cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.vpc_network
+	// +required
+	VPCNetwork *string `json:"vpcNetwork,omitempty"`
+
+	// Labels for the AlloyDB cluster created by DMS. An object containing a list
+	//  of 'key', 'value' pairs.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.primary_instance_settings
+	PrimaryInstanceSettings *AlloyDbSettings_PrimaryInstanceSettings `json:"primaryInstanceSettings,omitempty"`
+
+	// Optional. The encryption config can be specified to encrypt the data disks
+	//  and other persistent data resources of a cluster with a
+	//  customer-managed encryption key (CMEK). When this field is not
+	//  specified, the cluster will then use default encryption scheme to
+	//  protect the user data.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.encryption_config
+	EncryptionConfig *AlloyDbSettings_EncryptionConfig `json:"encryptionConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.EncryptionConfig
+type AlloyDbSettings_EncryptionConfig struct {
+	// The fully-qualified resource name of the KMS key.
+	//  Each Cloud KMS key is regionalized and has the following format:
+	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.EncryptionConfig.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
+type AlloyDbSettings_PrimaryInstanceSettings struct {
+	// Required. The ID of the AlloyDB primary instance. The ID must satisfy the
+	//  regex expression "[a-z0-9-]+".
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Configuration for the machines that host the underlying
+	//  database engine.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.machine_config
+	MachineConfig *AlloyDbSettings_PrimaryInstanceSettings_MachineConfig `json:"machineConfig,omitempty"`
+
+	// Database flags to pass to AlloyDB when DMS is creating the AlloyDB
+	//  cluster and instances. See the AlloyDB documentation for how these can be
+	//  used.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.database_flags
+	DatabaseFlags map[string]string `json:"databaseFlags,omitempty"`
+
+	// Labels for the AlloyDB primary instance created by DMS. An object
+	//  containing a list of 'key', 'value' pairs.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig
+type AlloyDbSettings_PrimaryInstanceSettings_MachineConfig struct {
+	// The number of CPU's in the VM instance.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig.cpu_count
+	CPUCount *int32 `json:"cpuCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
+type AlloyDbSettings_UserPassword struct {
+	// The database username.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.user
+	User *string `json:"user,omitempty"`
+
+	// The initial password for the user.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
+	Password *string `json:"password,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ApplyHash
+type ApplyHash struct {
+	// Optional. Generate UUID from the data's byte array
+	// +kcc:proto:field=google.cloud.clouddms.v1.ApplyHash.uuid_from_bytes
+	UuidFromBytes *Empty `json:"uuidFromBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AssignSpecificValue
+type AssignSpecificValue struct {
+	// Required. Specific value to be assigned
+	// +kcc:proto:field=google.cloud.clouddms.v1.AssignSpecificValue.value
+	// +required
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
+type CloudSQLConnectionProfile struct {
+
+	// Immutable. Metadata used to create the destination Cloud SQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
+	Settings *CloudSQLSettings `json:"settings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.CloudSqlSettings
+type CloudSQLSettings struct {
+	// The database engine type and version.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.database_version
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	// The resource labels for a Cloud SQL instance to use to annotate any related
+	//  underlying resources such as Compute Engine VMs.
+	//  An object containing a list of "key": "value" pairs.
+	//
+	//  Example: `{ "name": "wrench", "mass": "18kg", "count": "3" }`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
+
+	// The tier (or machine type) for this instance, for example:
+	//  `db-n1-standard-1` (MySQL instances) or
+	//  `db-custom-1-3840` (PostgreSQL instances).
+	//  For more information, see
+	//  [Cloud SQL Instance
+	//  Settings](https://cloud.google.com/sql/docs/mysql/instance-settings).
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.tier
+	Tier *string `json:"tier,omitempty"`
+
+	// The maximum size to which storage capacity can be automatically increased.
+	//  The default value is 0, which specifies that there is no limit.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.storage_auto_resize_limit
+	StorageAutoResizeLimit *int64 `json:"storageAutoResizeLimit,omitempty"`
+
+	// The activation policy specifies when the instance is activated; it is
+	//  applicable only when the instance state is 'RUNNABLE'. Valid values:
+	//
+	//  'ALWAYS': The instance is on, and remains so even in
+	//  the absence of connection requests.
+	//
+	//  `NEVER`: The instance is off; it is not activated, even if a
+	//  connection request arrives.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.activation_policy
+	ActivationPolicy *string `json:"activationPolicy,omitempty"`
+
+	// The settings for IP Management. This allows to enable or disable the
+	//  instance IP and manage which external networks can connect to the instance.
+	//  The IPv4 address cannot be disabled.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.ip_config
+	IPConfig *SQLIPConfig `json:"ipConfig,omitempty"`
+
+	// [default: ON] If you enable this setting, Cloud SQL checks your available
+	//  storage every 30 seconds. If the available storage falls below a threshold
+	//  size, Cloud SQL automatically adds additional storage capacity. If the
+	//  available storage repeatedly falls below the threshold size, Cloud SQL
+	//  continues to add storage until it reaches the maximum of 30 TB.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.auto_storage_increase
+	AutoStorageIncrease *bool `json:"autoStorageIncrease,omitempty"`
+
+	// The database flags passed to the Cloud SQL instance at startup.
+	//  An object containing a list of "key": value pairs.
+	//  Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.database_flags
+	DatabaseFlags map[string]string `json:"databaseFlags,omitempty"`
+
+	// The type of storage: `PD_SSD` (default) or `PD_HDD`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.data_disk_type
+	DataDiskType *string `json:"dataDiskType,omitempty"`
+
+	// The storage capacity available to the database, in GB.
+	//  The minimum (and default) size is 10GB.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.data_disk_size_gb
+	DataDiskSizeGB *int64 `json:"dataDiskSizeGB,omitempty"`
+
+	// The Google Cloud Platform zone where your Cloud SQL database instance is
+	//  located.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.zone
+	Zone *string `json:"zone,omitempty"`
+
+	// Optional. The Google Cloud Platform zone where the failover Cloud SQL
+	//  database instance is located. Used when the Cloud SQL database availability
+	//  type is REGIONAL (i.e. multiple zones / highly available).
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.secondary_zone
+	SecondaryZone *string `json:"secondaryZone,omitempty"`
+
+	// The Database Migration Service source connection profile ID,
+	//  in the format:
+	//  `projects/my_project_name/locations/us-central1/connectionProfiles/connection_profile_ID`
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.source_id
+	SourceID *string `json:"sourceID,omitempty"`
+
+	// Input only. Initial root password.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password
+	RootPassword *string `json:"rootPassword,omitempty"`
+
+	// The Cloud SQL default instance level collation.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.collation
+	Collation *string `json:"collation,omitempty"`
+
+	// The KMS key name used for the csql instance.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.cmek_key_name
+	CmekKeyName *string `json:"cmekKeyName,omitempty"`
+
+	// Optional. Availability type. Potential values:
+	//  *  `ZONAL`: The instance serves data from only one zone. Outages in that
+	//  zone affect data availability.
+	//  *  `REGIONAL`: The instance can serve data from more than one zone in a
+	//  region (it is highly available).
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.availability_type
+	AvailabilityType *string `json:"availabilityType,omitempty"`
+
+	// Optional. The edition of the given Cloud SQL instance.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.edition
+	Edition *string `json:"edition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ConditionalColumnSetValue
+type ConditionalColumnSetValue struct {
+	// Optional. Optional filter on source column length. Used for text based
+	//  data types like varchar.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConditionalColumnSetValue.source_text_filter
+	SourceTextFilter *SourceTextFilter `json:"sourceTextFilter,omitempty"`
+
+	// Optional. Optional filter on source column precision and scale. Used for
+	//  fixed point numbers such as NUMERIC/NUMBER data types.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConditionalColumnSetValue.source_numeric_filter
+	SourceNumericFilter *SourceNumericFilter `json:"sourceNumericFilter,omitempty"`
+
+	// Required. Description of data transformation during migration.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConditionalColumnSetValue.value_transformation
+	// +required
+	ValueTransformation *ValueTransformation `json:"valueTransformation,omitempty"`
+
+	// Optional. Custom engine specific features.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConditionalColumnSetValue.custom_features
+	CustomFeatures apiextensionsv1.JSON `json:"customFeatures,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.ConnectionProfile", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.ConnectionProfile
+type ConnectionProfile struct {
+	// The name of this connection profile resource in the form of
+	//  projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource labels for connection profile to use to annotate any related
+	//  underlying resources such as Compute Engine VMs. An object containing a
+	//  list of "key": "value" pairs.
+	//
+	//  Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The current connection profile state (e.g. DRAFT, READY, or FAILED).
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.state
+	State *string `json:"state,omitempty"`
+
+	// The connection profile display name.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A MySQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.mysql
+	Mysql *MySQLConnectionProfile `json:"mysql,omitempty"`
+
+	// A PostgreSQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.postgresql
+	Postgresql *PostgreSQLConnectionProfile `json:"postgresql,omitempty"`
+
+	// An Oracle database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.oracle
+	Oracle *OracleConnectionProfile `json:"oracle,omitempty"`
+
+	// A CloudSQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.cloudsql
+	Cloudsql *CloudSQLConnectionProfile `json:"cloudsql,omitempty"`
+
+	// An AlloyDB cluster connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.alloydb
+	Alloydb *AlloyDbConnectionProfile `json:"alloydb,omitempty"`
+
+	// The database provider.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.provider
+	Provider *string `json:"provider,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.ConversionWorkspace", skipping
 
@@ -65,6 +376,14 @@ type ConversionWorkspaceInfo struct {
 	CommitID *string `json:"commitID,omitempty"`
 }
 
+// +kcc:proto=google.cloud.clouddms.v1.ConvertRowIdToColumn
+type ConvertRowIDToColumn struct {
+	// Required. Only work on tables without primary key defined
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConvertRowIdToColumn.only_if_no_primary_key
+	// +required
+	OnlyIfNoPrimaryKey *bool `json:"onlyIfNoPrimaryKey,omitempty"`
+}
+
 // +kcc:proto=google.cloud.clouddms.v1.DatabaseEngineInfo
 type DatabaseEngineInfo struct {
 	// Required. Engine type.
@@ -85,6 +404,191 @@ type DatabaseType struct {
 	// The database engine.
 	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseType.engine
 	Engine *string `json:"engine,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.DoubleComparisonFilter
+type DoubleComparisonFilter struct {
+	// Required. Relation between source value and compare value
+	// +kcc:proto:field=google.cloud.clouddms.v1.DoubleComparisonFilter.value_comparison
+	// +required
+	ValueComparison *string `json:"valueComparison,omitempty"`
+
+	// Required. Double compare value to be used
+	// +kcc:proto:field=google.cloud.clouddms.v1.DoubleComparisonFilter.value
+	// +required
+	Value *float64 `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.EntityMove
+type EntityMove struct {
+	// Required. The new schema
+	// +kcc:proto:field=google.cloud.clouddms.v1.EntityMove.new_schema
+	// +required
+	NewSchema *string `json:"newSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.FilterTableColumns
+type FilterTableColumns struct {
+	// Optional. List of columns to be included for a particular table.
+	// +kcc:proto:field=google.cloud.clouddms.v1.FilterTableColumns.include_columns
+	IncludeColumns []string `json:"includeColumns,omitempty"`
+
+	// Optional. List of columns to be excluded for a particular table.
+	// +kcc:proto:field=google.cloud.clouddms.v1.FilterTableColumns.exclude_columns
+	ExcludeColumns []string `json:"excludeColumns,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity
+type ForwardSSHTunnelConnectivity struct {
+	// Required. Hostname for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.hostname
+	// +required
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Required. Username for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Port for the SSH tunnel, default value is 22.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Input only. SSH password.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.password
+	Password *string `json:"password,omitempty"`
+
+	// Input only. SSH private key.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.IntComparisonFilter
+type IntComparisonFilter struct {
+	// Required. Relation between source value and compare value
+	// +kcc:proto:field=google.cloud.clouddms.v1.IntComparisonFilter.value_comparison
+	// +required
+	ValueComparison *string `json:"valueComparison,omitempty"`
+
+	// Required. Integer compare value to be used
+	// +kcc:proto:field=google.cloud.clouddms.v1.IntComparisonFilter.value
+	// +required
+	Value *int64 `json:"value,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MappingRule", skipping
+
+// +kcc:proto=google.cloud.clouddms.v1.MappingRule
+type MappingRule struct {
+	// Full name of the mapping rule resource, in the form of:
+	//  projects/{project}/locations/{location}/conversionWorkspaces/{set}/mappingRule/{rule}.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A human readable name
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The mapping rule state
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.state
+	State *string `json:"state,omitempty"`
+
+	// Required. The rule scope
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.rule_scope
+	RuleScope *string `json:"ruleScope,omitempty"`
+
+	// Required. The rule filter
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.filter
+	Filter *MappingRuleFilter `json:"filter,omitempty"`
+
+	// Required. The order in which the rule is applied. Lower order rules are
+	//  applied before higher value rules so they may end up being overridden.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.rule_order
+	RuleOrder *int64 `json:"ruleOrder,omitempty"`
+
+	// Optional. Rule to specify how a single entity should be renamed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.single_entity_rename
+	SingleEntityRename *SingleEntityRename `json:"singleEntityRename,omitempty"`
+
+	// Optional. Rule to specify how multiple entities should be renamed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.multi_entity_rename
+	MultiEntityRename *MultiEntityRename `json:"multiEntityRename,omitempty"`
+
+	// Optional. Rule to specify how multiple entities should be relocated into
+	//  a different schema.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.entity_move
+	EntityMove *EntityMove `json:"entityMove,omitempty"`
+
+	// Optional. Rule to specify how a single column is converted.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.single_column_change
+	SingleColumnChange *SingleColumnChange `json:"singleColumnChange,omitempty"`
+
+	// Optional. Rule to specify how multiple columns should be converted to a
+	//  different data type.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.multi_column_data_type_change
+	MultiColumnDataTypeChange *MultiColumnDatatypeChange `json:"multiColumnDataTypeChange,omitempty"`
+
+	// Optional. Rule to specify how the data contained in a column should be
+	//  transformed (such as trimmed, rounded, etc) provided that the data meets
+	//  certain criteria.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.conditional_column_set_value
+	ConditionalColumnSetValue *ConditionalColumnSetValue `json:"conditionalColumnSetValue,omitempty"`
+
+	// Optional. Rule to specify how multiple tables should be converted with an
+	//  additional rowid column.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.convert_rowid_column
+	ConvertRowidColumn *ConvertRowIDToColumn `json:"convertRowidColumn,omitempty"`
+
+	// Optional. Rule to specify the primary key for a table
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.set_table_primary_key
+	SetTablePrimaryKey *SetTablePrimaryKey `json:"setTablePrimaryKey,omitempty"`
+
+	// Optional. Rule to specify how a single package is converted.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.single_package_change
+	SinglePackageChange *SinglePackageChange `json:"singlePackageChange,omitempty"`
+
+	// Optional. Rule to change the sql code for an entity, for example,
+	//  function, procedure.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.source_sql_change
+	SourceSQLChange *SourceSQLChange `json:"sourceSQLChange,omitempty"`
+
+	// Optional. Rule to specify the list of columns to include or exclude from
+	//  a table.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.filter_table_columns
+	FilterTableColumns *FilterTableColumns `json:"filterTableColumns,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.clouddms.v1.MappingRuleFilter
+type MappingRuleFilter struct {
+	// Optional. The rule should be applied to entities whose parent entity
+	//  (fully qualified name) matches the given value.
+	//  For example, if the rule applies to a table entity, the expected value
+	//  should be a schema (schema). If the rule applies to a column or index
+	//  entity, the expected value can be either a schema (schema) or a table
+	//  (schema.table)
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRuleFilter.parent_entity
+	ParentEntity *string `json:"parentEntity,omitempty"`
+
+	// Optional. The rule should be applied to entities whose non-qualified name
+	//  starts with the given prefix.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRuleFilter.entity_name_prefix
+	EntityNamePrefix *string `json:"entityNamePrefix,omitempty"`
+
+	// Optional. The rule should be applied to entities whose non-qualified name
+	//  ends with the given suffix.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRuleFilter.entity_name_suffix
+	EntityNameSuffix *string `json:"entityNameSuffix,omitempty"`
+
+	// Optional. The rule should be applied to entities whose non-qualified name
+	//  contains the given string.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRuleFilter.entity_name_contains
+	EntityNameContains *string `json:"entityNameContains,omitempty"`
+
+	// Optional. The rule should be applied to specific entities defined by their
+	//  fully qualified names.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRuleFilter.entities
+	Entities []string `json:"entities,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MigrationJob", skipping
@@ -214,6 +718,205 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
+// +kcc:proto=google.cloud.clouddms.v1.MultiColumnDatatypeChange
+type MultiColumnDatatypeChange struct {
+	// Required. Filter on source data type.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.source_data_type_filter
+	// +required
+	SourceDataTypeFilter *string `json:"sourceDataTypeFilter,omitempty"`
+
+	// Optional. Filter for text-based data types like varchar.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.source_text_filter
+	SourceTextFilter *SourceTextFilter `json:"sourceTextFilter,omitempty"`
+
+	// Optional. Filter for fixed point number data types such as
+	//  NUMERIC/NUMBER.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.source_numeric_filter
+	SourceNumericFilter *SourceNumericFilter `json:"sourceNumericFilter,omitempty"`
+
+	// Required. New data type.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.new_data_type
+	// +required
+	NewDataType *string `json:"newDataType,omitempty"`
+
+	// Optional. Column length - e.g. varchar (50) - if not specified and relevant
+	//  uses the source column length.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.override_length
+	OverrideLength *int64 `json:"overrideLength,omitempty"`
+
+	// Optional. Column scale - when relevant - if not specified and relevant
+	//  uses the source column scale.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.override_scale
+	OverrideScale *int32 `json:"overrideScale,omitempty"`
+
+	// Optional. Column precision - when relevant - if not specified and relevant
+	//  uses the source column precision.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.override_precision
+	OverridePrecision *int32 `json:"overridePrecision,omitempty"`
+
+	// Optional. Column fractional seconds precision - used only for timestamp
+	//  based datatypes - if not specified and relevant uses the source column
+	//  fractional seconds precision.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.override_fractional_seconds_precision
+	OverrideFractionalSecondsPrecision *int32 `json:"overrideFractionalSecondsPrecision,omitempty"`
+
+	// Optional. Custom engine specific features.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiColumnDatatypeChange.custom_features
+	CustomFeatures apiextensionsv1.JSON `json:"customFeatures,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MultiEntityRename
+type MultiEntityRename struct {
+	// Optional. The pattern used to generate the new entity's name. This pattern
+	//  must include the characters '{name}', which will be replaced with the name
+	//  of the original entity. For example, the pattern 't_{name}' for an entity
+	//  name jobs would be converted to 't_jobs'.
+	//
+	//  If unspecified, the default value for this field is '{name}'
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiEntityRename.new_name_pattern
+	NewNamePattern *string `json:"newNamePattern,omitempty"`
+
+	// Optional. Additional transformation that can be done on the source entity
+	//  name before it is being used by the new_name_pattern, for example lower
+	//  case. If no transformation is desired, use NO_TRANSFORMATION
+	// +kcc:proto:field=google.cloud.clouddms.v1.MultiEntityRename.source_name_transformation
+	SourceNameTransformation *string `json:"sourceNameTransformation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
+type MySQLConnectionProfile struct {
+	// Required. The IP or hostname of the source MySQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source MySQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password
+	// +required
+	Password *string `json:"password,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// If the source is a Cloud SQL database, use this field to
+	//  provide the Cloud SQL instance ID of the source.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.OracleConnectionProfile
+type OracleConnectionProfile struct {
+	// Required. The IP or hostname of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password
+	// +required
+	Password *string `json:"password,omitempty"`
+
+	// Required. Database service for the Oracle connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.database_service
+	// +required
+	DatabaseService *string `json:"databaseService,omitempty"`
+
+	// SSL configuration for the connection to the source Oracle database.
+	//
+	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	//   * SSL is supported for Oracle versions 12 and above.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// Static Service IP connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.static_service_ip_connectivity
+	StaticServiceIPConnectivity *StaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
+
+	// Forward SSH tunnel connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.forward_ssh_connectivity
+	ForwardSSHConnectivity *ForwardSSHTunnelConnectivity `json:"forwardSSHConnectivity,omitempty"`
+
+	// Private connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.private_connectivity
+	PrivateConnectivity *PrivateConnectivity `json:"privateConnectivity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
+type PostgreSQLConnectionProfile struct {
+	// Required. The IP or hostname of the source PostgreSQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source PostgreSQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password
+	// +required
+	Password *string `json:"password,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// If the source is a Cloud SQL database, use this field to
+	//  provide the Cloud SQL instance ID of the source.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+
+	// Static ip connectivity data (default, no additional details needed).
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.static_ip_connectivity
+	StaticIPConnectivity *StaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
+
+	// Private service connect connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.private_service_connect_connectivity
+	PrivateServiceConnectConnectivity *PrivateServiceConnectConnectivity `json:"privateServiceConnectConnectivity,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.PrivateConnection
@@ -240,6 +943,24 @@ type PrivateConnection struct {
 }
 */
 
+// +kcc:proto=google.cloud.clouddms.v1.PrivateConnectivity
+type PrivateConnectivity struct {
+	// Required. The resource name (URI) of the private connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnectivity.private_connection
+	// +required
+	PrivateConnection *string `json:"privateConnection,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity
+type PrivateServiceConnectConnectivity struct {
+	// Required. A service attachment that exposes a database, and has the
+	//  following format:
+	//  projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity.service_attachment
+	// +required
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
 /* found existing non-generated go type "ReverseSSHConnectivity", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
@@ -265,12 +986,316 @@ type ReverseSSHConnectivity struct {
 }
 */
 
+// +kcc:proto=google.cloud.clouddms.v1.RoundToScale
+type RoundToScale struct {
+	// Required. Scale value to be used
+	// +kcc:proto:field=google.cloud.clouddms.v1.RoundToScale.scale
+	// +required
+	Scale *int32 `json:"scale,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SetTablePrimaryKey
+type SetTablePrimaryKey struct {
+	// Required. List of column names for the primary key
+	// +kcc:proto:field=google.cloud.clouddms.v1.SetTablePrimaryKey.primary_key_columns
+	// +required
+	PrimaryKeyColumns []string `json:"primaryKeyColumns,omitempty"`
+
+	// Optional. Name for the primary key
+	// +kcc:proto:field=google.cloud.clouddms.v1.SetTablePrimaryKey.primary_key
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SingleColumnChange
+type SingleColumnChange struct {
+	// Optional. Column data type name.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// Optional. Charset override - instead of table level charset.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.charset
+	Charset *string `json:"charset,omitempty"`
+
+	// Optional. Collation override - instead of table level collation.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.collation
+	Collation *string `json:"collation,omitempty"`
+
+	// Optional. Column length - e.g. 50 as in varchar (50) - when relevant.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.length
+	Length *int64 `json:"length,omitempty"`
+
+	// Optional. Column precision - e.g. 8 as in double (8,2) - when relevant.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.precision
+	Precision *int32 `json:"precision,omitempty"`
+
+	// Optional. Column scale - e.g. 2 as in double (8,2) - when relevant.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.scale
+	Scale *int32 `json:"scale,omitempty"`
+
+	// Optional. Column fractional seconds precision - e.g. 2 as in timestamp (2)
+	//  - when relevant.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.fractional_seconds_precision
+	FractionalSecondsPrecision *int32 `json:"fractionalSecondsPrecision,omitempty"`
+
+	// Optional. Is the column of array type.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.array
+	Array *bool `json:"array,omitempty"`
+
+	// Optional. The length of the array, only relevant if the column type is an
+	//  array.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.array_length
+	ArrayLength *int32 `json:"arrayLength,omitempty"`
+
+	// Optional. Is the column nullable.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.nullable
+	Nullable *bool `json:"nullable,omitempty"`
+
+	// Optional. Is the column auto-generated/identity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.auto_generated
+	AutoGenerated *bool `json:"autoGenerated,omitempty"`
+
+	// Optional. Is the column a UDT (User-defined Type).
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.udt
+	Udt *bool `json:"udt,omitempty"`
+
+	// Optional. Custom engine specific features.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.custom_features
+	CustomFeatures apiextensionsv1.JSON `json:"customFeatures,omitempty"`
+
+	// Optional. Specifies the list of values allowed in the column.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.set_values
+	SetValues []string `json:"setValues,omitempty"`
+
+	// Optional. Comment associated with the column.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleColumnChange.comment
+	Comment *string `json:"comment,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SingleEntityRename
+type SingleEntityRename struct {
+	// Required. The new name of the destination entity
+	// +kcc:proto:field=google.cloud.clouddms.v1.SingleEntityRename.new_name
+	// +required
+	NewName *string `json:"newName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SinglePackageChange
+type SinglePackageChange struct {
+	// Optional. Sql code for package description
+	// +kcc:proto:field=google.cloud.clouddms.v1.SinglePackageChange.package_description
+	PackageDescription *string `json:"packageDescription,omitempty"`
+
+	// Optional. Sql code for package body
+	// +kcc:proto:field=google.cloud.clouddms.v1.SinglePackageChange.package_body
+	PackageBody *string `json:"packageBody,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SourceNumericFilter
+type SourceNumericFilter struct {
+	// Optional. The filter will match columns with scale greater than or equal to
+	//  this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceNumericFilter.source_min_scale_filter
+	SourceMinScaleFilter *int32 `json:"sourceMinScaleFilter,omitempty"`
+
+	// Optional. The filter will match columns with scale smaller than or equal to
+	//  this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceNumericFilter.source_max_scale_filter
+	SourceMaxScaleFilter *int32 `json:"sourceMaxScaleFilter,omitempty"`
+
+	// Optional. The filter will match columns with precision greater than or
+	//  equal to this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceNumericFilter.source_min_precision_filter
+	SourceMinPrecisionFilter *int32 `json:"sourceMinPrecisionFilter,omitempty"`
+
+	// Optional. The filter will match columns with precision smaller than or
+	//  equal to this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceNumericFilter.source_max_precision_filter
+	SourceMaxPrecisionFilter *int32 `json:"sourceMaxPrecisionFilter,omitempty"`
+
+	// Required. Enum to set the option defining the datatypes numeric filter has
+	//  to be applied to
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceNumericFilter.numeric_filter_option
+	// +required
+	NumericFilterOption *string `json:"numericFilterOption,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SourceSqlChange
+type SourceSQLChange struct {
+	// Required. Sql code for source (stored procedure, function, trigger or view)
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceSqlChange.sql_code
+	// +required
+	SQLCode *string `json:"sqlCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SourceTextFilter
+type SourceTextFilter struct {
+	// Optional. The filter will match columns with length greater than or equal
+	//  to this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceTextFilter.source_min_length_filter
+	SourceMinLengthFilter *int64 `json:"sourceMinLengthFilter,omitempty"`
+
+	// Optional. The filter will match columns with length smaller than or equal
+	//  to this number.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SourceTextFilter.source_max_length_filter
+	SourceMaxLengthFilter *int64 `json:"sourceMaxLengthFilter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SqlAclEntry
+type SQLAclEntry struct {
+	// The allowlisted value for the access control list.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.value
+	Value *string `json:"value,omitempty"`
+
+	// The time when this access control entry expires in
+	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example:
+	//  `2012-11-15T16:19:00.094Z`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Input only. The time-to-leave of this access control entry.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.ttl
+	TTL *string `json:"ttl,omitempty"`
+
+	// A label to identify this entry.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.label
+	Label *string `json:"label,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SqlIpConfig
+type SQLIPConfig struct {
+	// Whether the instance should be assigned an IPv4 address or not.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.enable_ipv4
+	EnableIPV4 *bool `json:"enableIPV4,omitempty"`
+
+	// The resource link for the VPC network from which the Cloud SQL instance is
+	//  accessible for private IP. For example,
+	//  `projects/myProject/global/networks/default`. This setting can
+	//  be updated, but it cannot be removed after it is set.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.private_network
+	PrivateNetwork *string `json:"privateNetwork,omitempty"`
+
+	// Optional. The name of the allocated IP address range for the private IP
+	//  Cloud SQL instance. This name refers to an already allocated IP range
+	//  address. If set, the instance IP address will be created in the allocated
+	//  range. Note that this IP address range can't be modified after the instance
+	//  is created. If you change the VPC when configuring connectivity settings
+	//  for the migration job, this field is not relevant.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.allocated_ip_range
+	AllocatedIPRange *string `json:"allocatedIPRange,omitempty"`
+
+	// Whether SSL connections over IP should be enforced or not.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.require_ssl
+	RequireSSL *bool `json:"requireSSL,omitempty"`
+
+	// The list of external networks that are allowed to connect to the instance
+	//  using the IP. See
+	//  https://en.wikipedia.org/wiki/CIDR_notation#CIDR_notation, also known as
+	//  'slash' notation (e.g. `192.168.100.0/24`).
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.authorized_networks
+	AuthorizedNetworks []SQLAclEntry `json:"authorizedNetworks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SslConfig
+type SSLConfig struct {
+
+	// Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded private key
+	//  associated with the Client Certificate. If this field is used then the
+	//  'client_certificate' field is mandatory.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_key
+	ClientKey *string `json:"clientKey,omitempty"`
+
+	// Input only. The x509 PEM-encoded certificate that will be used by the
+	//  replica to authenticate against the source database server.If this field is
+	//  used then the 'client_key' field is mandatory.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_certificate
+	ClientCertificate *string `json:"clientCertificate,omitempty"`
+
+	// Required. Input only. The x509 PEM-encoded certificate of the CA that
+	//  signed the source database server's certificate. The replica will use this
+	//  certificate to verify it's connecting to the right host.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.ca_certificate
+	// +required
+	CACertificate *string `json:"caCertificate,omitempty"`
+}
+
 /* found existing non-generated go type "StaticIPConnectivity", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
 type StaticIPConnectivity struct {
 }
 */
+
+// +kcc:proto=google.cloud.clouddms.v1.StaticServiceIpConnectivity
+type StaticServiceIPConnectivity struct {
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ValueListFilter
+type ValueListFilter struct {
+	// Required. Indicates whether the filter matches rows with values that are
+	//  present in the list or those with values not present in it.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueListFilter.value_present_list
+	// +required
+	ValuePresentList *string `json:"valuePresentList,omitempty"`
+
+	// Required. The list to be used to filter by
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueListFilter.values
+	// +required
+	Values []string `json:"values,omitempty"`
+
+	// Required. Whether to ignore case when filtering by values. Defaults to
+	//  false
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueListFilter.ignore_case
+	// +required
+	IgnoreCase *bool `json:"ignoreCase,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ValueTransformation
+type ValueTransformation struct {
+	// Optional. Value is null
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.is_null
+	IsNull *Empty `json:"isNull,omitempty"`
+
+	// Optional. Value is found in the specified list.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.value_list
+	ValueList *ValueListFilter `json:"valueList,omitempty"`
+
+	// Optional. Filter on relation between source value and compare value of
+	//  type integer.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.int_comparison
+	IntComparison *IntComparisonFilter `json:"intComparison,omitempty"`
+
+	// Optional. Filter on relation between source value and compare value of
+	//  type double.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.double_comparison
+	DoubleComparison *DoubleComparisonFilter `json:"doubleComparison,omitempty"`
+
+	// Optional. Set to null
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.assign_null
+	AssignNull *Empty `json:"assignNull,omitempty"`
+
+	// Optional. Set to a specific value (value is converted to fit the target
+	//  data type)
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.assign_specific_value
+	AssignSpecificValue *AssignSpecificValue `json:"assignSpecificValue,omitempty"`
+
+	// Optional. Set to min_value - if integer or numeric, will use
+	//  int.minvalue, etc
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.assign_min_value
+	AssignMinValue *Empty `json:"assignMinValue,omitempty"`
+
+	// Optional. Set to max_value - if integer or numeric, will use
+	//  int.maxvalue, etc
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.assign_max_value
+	AssignMaxValue *Empty `json:"assignMaxValue,omitempty"`
+
+	// Optional. Allows the data to change scale
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.round_scale
+	RoundScale *RoundToScale `json:"roundScale,omitempty"`
+
+	// Optional. Applies a hash function on the data
+	// +kcc:proto:field=google.cloud.clouddms.v1.ValueTransformation.apply_hash
+	ApplyHash *ApplyHash `json:"applyHash,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.VpcPeeringConfig", skipping
 
@@ -294,6 +1319,118 @@ type VPCPeeringConnectivity struct {
 	// The name of the VPC network to peer with the Cloud SQL private network.
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConnectivity.vpc
 	VPC *string `json:"vpc,omitempty"`
+}
+*/
+
+// +kcc:proto=google.protobuf.Empty
+type Empty struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
+type AlloyDbConnectionProfileObservedState struct {
+	// Immutable. Metadata used to create the destination AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.settings
+	Settings *AlloyDbSettingsObservedState `json:"settings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings
+type AlloyDbSettingsObservedState struct {
+	// Required. Input only. Initial user to setup during cluster creation.
+	//  Required.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
+	InitialUser *AlloyDbSettings_UserPasswordObservedState `json:"initialUser,omitempty"`
+
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.primary_instance_settings
+	PrimaryInstanceSettings *AlloyDbSettings_PrimaryInstanceSettingsObservedState `json:"primaryInstanceSettings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
+type AlloyDbSettings_PrimaryInstanceSettingsObservedState struct {
+	// Output only. The private IP address for the Instance.
+	//  This is the connection endpoint for an end-user application.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.private_ip
+	PrivateIP *string `json:"privateIP,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
+type AlloyDbSettings_UserPasswordObservedState struct {
+	// Output only. Indicates if the initial_user.password field has been set.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password_set
+	PasswordSet *bool `json:"passwordSet,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
+type CloudSQLConnectionProfileObservedState struct {
+	// Output only. The Cloud SQL instance ID that this connection profile is
+	//  associated with.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+
+	// Immutable. Metadata used to create the destination Cloud SQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
+	Settings *CloudSQLSettingsObservedState `json:"settings,omitempty"`
+
+	// Output only. The Cloud SQL database instance's private IP.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.private_ip
+	PrivateIP *string `json:"privateIP,omitempty"`
+
+	// Output only. The Cloud SQL database instance's public IP.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.public_ip
+	PublicIP *string `json:"publicIP,omitempty"`
+
+	// Output only. The Cloud SQL database instance's additional (outgoing) public
+	//  IP. Used when the Cloud SQL database availability type is REGIONAL (i.e.
+	//  multiple zones / highly available).
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.additional_public_ip
+	AdditionalPublicIP *string `json:"additionalPublicIP,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlSettings
+type CloudSQLSettingsObservedState struct {
+	// Output only. Indicates If this connection profile root password is stored.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password_set
+	RootPasswordSet *bool `json:"rootPasswordSet,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.ConnectionProfile", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.ConnectionProfile
+type ConnectionProfileObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	//  A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated.
+	//  A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// A MySQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.mysql
+	Mysql *MySQLConnectionProfileObservedState `json:"mysql,omitempty"`
+
+	// A PostgreSQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.postgresql
+	Postgresql *PostgreSQLConnectionProfileObservedState `json:"postgresql,omitempty"`
+
+	// An Oracle database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.oracle
+	Oracle *OracleConnectionProfileObservedState `json:"oracle,omitempty"`
+
+	// A CloudSQL database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.cloudsql
+	Cloudsql *CloudSQLConnectionProfileObservedState `json:"cloudsql,omitempty"`
+
+	// An AlloyDB cluster connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.alloydb
+	Alloydb *AlloyDbConnectionProfileObservedState `json:"alloydb,omitempty"`
+
+	// Output only. The error details in case of state FAILED.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.error
+	Error *common.Status `json:"error,omitempty"`
 }
 */
 
@@ -321,6 +1458,22 @@ type ConversionWorkspaceObservedState struct {
 	// Output only. The timestamp when the workspace resource was last updated.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MappingRule", skipping
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.MappingRule
+type MappingRuleObservedState struct {
+	// Output only. The revision ID of the mapping rule.
+	//  A new revision is committed whenever the mapping rule is changed in any
+	//  way. The format is an 8-character hexadecimal string.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
+
+	// Output only. The timestamp that the revision was created.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MappingRule.revision_create_time
+	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 }
 */
 
@@ -361,6 +1514,47 @@ type MigrationJobObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
+type MySQLConnectionProfileObservedState struct {
+	// Output only. Indicates If this connection profile password is stored.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password_set
+	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
+	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.OracleConnectionProfile
+type OracleConnectionProfileObservedState struct {
+	// Output only. Indicates whether a new password is included in the request.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password_set
+	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	// SSL configuration for the connection to the source Oracle database.
+	//
+	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	//   * SSL is supported for Oracle versions 12 and above.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
+	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
+type PostgreSQLConnectionProfileObservedState struct {
+	// Output only. Indicates If this connection profile password is stored.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password_set
+	PasswordSet *bool `json:"passwordSet,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
+	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
+
+	// Output only. If the source is a Cloud SQL database, this field indicates
+	//  the network architecture it's associated with.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.network_architecture
+	NetworkArchitecture *string `json:"networkArchitecture,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.PrivateConnection
@@ -382,3 +1576,11 @@ type PrivateConnectionObservedState struct {
 	Error *common.Status `json:"error,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.SslConfig
+type SSLConfigObservedState struct {
+	// Output only. The ssl config type according to 'client_key',
+	//  'client_certificate' and 'ca_certificate'.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.type
+	Type *string `json:"type,omitempty"`
+}

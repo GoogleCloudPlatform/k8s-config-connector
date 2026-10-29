@@ -173,6 +173,22 @@ func WithKubeTarget(kubeTarget string) HarnessOption {
 // It locks the window between envtest allocating a free port and the manager binding it.
 var envtestWebhookMutex sync.Mutex
 
+// harnessGlobalMutex guards package-level globals initialized or mutated inside NewHarness.
+var harnessGlobalMutex sync.Mutex
+
+var (
+	cachedCRDsOnce sync.Once
+	cachedCRDs     []apiextensions.CustomResourceDefinition
+	cachedCRDsErr  error
+)
+
+func loadAllCRDsCached() ([]apiextensions.CustomResourceDefinition, error) {
+	cachedCRDsOnce.Do(func() {
+		cachedCRDs, cachedCRDsErr = crdloader.LoadAllCRDs()
+	})
+	return cachedCRDs, cachedCRDsErr
+}
+
 type GCPTargetMode string
 
 const (
@@ -378,7 +394,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	// Set up event sink for logging to a file, if ARTIFACTS env var is set
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
-		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+		if os.Getenv("E2E_PARALLEL") == "true" {
+			outputDir = filepath.Join(outputDir, strings.ReplaceAll(t.Name(), "/", "_"))
+		}
+		dirSink := test.NewDirectoryEventSink(outputDir)
+		ctx = test.AddSinkToContext(ctx, dirSink)
+		eventSinks = append(eventSinks, dirSink)
 	} else {
 		log.Info("env var ARTIFACTS is not set; will not record http log")
 	}
@@ -425,10 +446,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.client = client
 	}
 
+	harnessGlobalMutex.Lock()
 	logging.SetupLogger()
+	harnessGlobalMutex.Unlock()
 
 	if loadCRDs {
-		crds, err := crdloader.LoadAllCRDs()
+		crds, err := loadAllCRDsCached()
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
@@ -521,6 +544,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.GCPTarget == GCPTargetModeMock {
 		// Some fixed-value fake org-ids for testing.
 		// We used fixed values so that the output is predictable (for golden testing)
+		harnessGlobalMutex.Lock()
 		testgcp.TestFolderID.Set("123451001")
 		testgcp.TestFolder2ID.Set("123451002")
 		testgcp.TestOrgID.Set("123450001")
@@ -540,6 +564,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
 		testgcp.TestSharedReservationsProject.Set("shared-reservations-project")
+		harnessGlobalMutex.Unlock()
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		createProject := func(projectID string) *cloudresourcemanagerv1.Project {
@@ -588,6 +613,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			ProjectID:     "example-project",
 			ProjectNumber: 123456789,
 		}
+		harnessGlobalMutex.Lock()
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
@@ -595,6 +621,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestOrgID.Set("123450001")
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
+		harnessGlobalMutex.Unlock()
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
 	}
@@ -636,6 +663,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.VCRRecorderNonTF = r
 		kccConfig.HTTPClient = &http.Client{Transport: h.VCRRecorderNonTF}
 
+		harnessGlobalMutex.Lock()
 		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
@@ -674,6 +702,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			ret = &http.Client{Transport: h.VCRRecorderOauth}
 			return ret
 		}
+		harnessGlobalMutex.Unlock()
 	} else {
 		// Intercept (and log) GRPC requests
 		grpcUnaryInterceptor := func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
@@ -703,13 +732,15 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 				entry.Response.Status = "OK"
 			}
 
-			for _, eventSink := range eventSinks {
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			for _, eventSink := range sinks {
 				eventSink.AddHTTPEvent(ctx, entry)
 			}
 			return err
 		}
-
-		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 
 		kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 
@@ -726,14 +757,21 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			kccConfig.HTTPClient = &http.Client{Transport: t}
 		}
 
+		harnessGlobalMutex.Lock()
+		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
+
 		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
-			if len(eventSinks) != 0 {
-				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			if len(sinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, sinks...)
 				ret = &http.Client{Transport: t}
 			}
 			return ret
@@ -745,12 +783,17 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
-			if len(eventSinks) != 0 {
-				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+			sinks := test.EventSinksFromContext(ctx)
+			if len(sinks) == 0 {
+				sinks = eventSinks
+			}
+			if len(sinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, sinks...)
 				ret = &http.Client{Transport: t}
 			}
 			return ret
 		}
+		harnessGlobalMutex.Unlock()
 	}
 
 	h.kccConfig = kccConfig
@@ -773,7 +816,9 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 	kccConfig.SkipNameValidation = true
 
+	harnessGlobalMutex.Lock()
 	krmtotf.SetUserAgentForTerraformProvider()
+	harnessGlobalMutex.Unlock()
 
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
@@ -954,6 +999,12 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if strings.Contains(testKey, "/livestreamasset/") {
 				t.Skip("skipping livestreamasset as standalone mock alignment is not yet completed")
 			}
+			if strings.Contains(testKey, "networkservicesedgecacheoriginautogen") || strings.Contains(testKey, "networkservicesedgecachekeysetautogen") {
+				t.Skip("fixture does not have golden logs recorded against real GCP")
+			}
+			if strings.HasSuffix(testKey, "basic/compute/v1beta1/computenetworkendpointgroup") {
+				t.Skip("skipping computenetworkendpointgroup fixture as it is not part of this test suite")
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
@@ -983,7 +1034,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeEnvironment"}:
 			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeInstance"}:
 			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeInstanceAttachment"}:
+			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeNATAddress"}:
 			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeOrganization"}:
+			case schema.GroupKind{Group: "apigee.cnrm.cloud.google.com", Kind: "ApigeeSyncAuthorization"}:
 
 			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 
@@ -1004,6 +1057,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackupChannel"}:
 			case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackupPlan"}:
 			case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestore"}:
+			case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestoreChannel"}:
 			case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestorePlan"}:
 
 			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
@@ -1051,6 +1105,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMaterializedView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMemoryLayer"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableSchemaBundle"}:
 
 			case schema.GroupKind{Group: "billing.cnrm.cloud.google.com", Kind: "BillingAccount"}:
@@ -1096,12 +1151,16 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeImage"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkEdgeSecurityService"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeOrganizationSecurityPolicy"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeOrganizationSecurityPolicyAssociation"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSecurityPolicy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeGroup"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeManagedSSLCertificate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeProjectMetadata"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionNetworkEndpointGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkEndpointGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkEndpoint"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeReservation"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouter"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouterInterface"}:
@@ -1161,6 +1220,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexAspectType"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexDataProduct"}:
 
+			case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorDefaultVersion"}:
 			case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorVersion"}:
 
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocCluster"}:
@@ -1181,6 +1241,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSampleQuerySet"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineControl"}:
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSitemap"}:
+			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSchema"}:
 
 			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSManagedZone"}:
 			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSPolicy"}:
@@ -1231,9 +1292,11 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRing"}:
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
+			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKeyVersion"}:
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSAutokeyConfig"}:
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyHandle"}:
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSImportJob"}:
+			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRingImportJob"}:
 
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
@@ -1266,6 +1329,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppActiveDirectory"}:
 			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppBackupPolicy"}:
+			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppHostGroup"}:
 
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityServiceConnectionPolicy"}:
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityInternalRange"}:
@@ -1288,6 +1352,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesHTTPRoute"}:
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesAuthzExtension"}:
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesServiceLBPolicy"}:
+			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesEdgeCacheService"}:
+			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesEdgeCacheOrigin"}:
 
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityAddressGroup"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityAuthorizationPolicy"}:
@@ -1300,6 +1366,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityMirroringEndpointGroupAssociation"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityInterceptEndpointGroup"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityInterceptDeployment"}:
+			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityInterceptDeploymentGroup"}:
+			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityInterceptEndpointGroupAssociation"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecuritySACRealm"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityFirewallEndpoint"}:
 			case schema.GroupKind{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityFirewallEndpointAssociation"}:
@@ -1339,6 +1407,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:
+			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunWorkerPool"}:
 
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteReservation"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteSubscription"}:
@@ -1412,6 +1481,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIEndpoint"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestoreEntityType"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestoreEntityTypeFeature"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIExampleStore"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIDeploymentResourcePool"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "VertexAIFeatureOnlineStore"}:
@@ -1450,6 +1521,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterGroup"}:
 			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterPreferenceSet"}:
+			case schema.GroupKind{Group: "migrationcenter.cnrm.cloud.google.com", Kind: "MigrationCenterSource"}:
 			case schema.GroupKind{Group: "modelarmor.cnrm.cloud.google.com", Kind: "ModelArmorTemplate"}:
 			case schema.GroupKind{Group: "modelarmor.cnrm.cloud.google.com", Kind: "ModelArmorFloorSetting"}:
 			case schema.GroupKind{Group: "rapidmigrationassessment.cnrm.cloud.google.com", Kind: "RapidMigrationAssessmentCollector"}:
@@ -1462,6 +1534,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterBigQueryExport"}:
 			case schema.GroupKind{Group: "securitycenter.cnrm.cloud.google.com", Kind: "SecurityCenterMuteConfig"}:
+			case schema.GroupKind{Group: "securitycentermanagement.cnrm.cloud.google.com", Kind: "SecurityCenterManagementEventThreatDetectionCustomModule"}:
 			case schema.GroupKind{Group: "workloadmanager.cnrm.cloud.google.com", Kind: "WorkloadManagerEvaluation"}:
 			case schema.GroupKind{Group: "devicestreaming.cnrm.cloud.google.com", Kind: "DeviceStreamingSession"}:
 			case schema.GroupKind{Group: "hypercomputecluster.cnrm.cloud.google.com", Kind: "HypercomputeClusterCluster"}:
@@ -1474,12 +1547,15 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "configdelivery.cnrm.cloud.google.com", Kind: "ConfigDeliveryResourceBundle"}:
 
 			case schema.GroupKind{Group: "saasservicemgmt.cnrm.cloud.google.com", Kind: "SaasServiceMgmtRelease"}:
+			case schema.GroupKind{Group: "saasservicemgmt.cnrm.cloud.google.com", Kind: "SaaSServiceMgmtRolloutKind"}:
+			case schema.GroupKind{Group: "saasservicemgmt.cnrm.cloud.google.com", Kind: "SaaSServiceMgmtUnit"}:
 
 			case schema.GroupKind{Group: "vmmigration.cnrm.cloud.google.com", Kind: "VMMigrationGroup"}:
 
 			case schema.GroupKind{Group: "assuredworkloads.cnrm.cloud.google.com", Kind: "AssuredWorkloadsWorkload"}:
 
 			case schema.GroupKind{Group: "storageinsights.cnrm.cloud.google.com", Kind: "StorageInsightsDatasetConfig"}:
+			case schema.GroupKind{Group: "storageinsights.cnrm.cloud.google.com", Kind: "StorageInsightsReportConfig"}:
 
 			case schema.GroupKind{Group: "datalineage.cnrm.cloud.google.com", Kind: "DataLineageProcess"}:
 
@@ -1490,8 +1566,16 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamChannel"}:
 			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamInput"}:
 
+			case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineFirewallRule"}:
+			case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineServiceSplitTraffic"}:
+
 			case schema.GroupKind{Group: "financialservices.cnrm.cloud.google.com", Kind: "FinancialServicesInstance"}:
+			case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseProject"}:
 			case schema.GroupKind{Group: "firebasehosting.cnrm.cloud.google.com", Kind: "FirebaseHostingSite"}:
+			case schema.GroupKind{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareConsentStore"}:
+			case schema.GroupKind{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareDataset"}:
+
+			case schema.GroupKind{Group: "visionai.cnrm.cloud.google.com", Kind: "VisionAIApplication"}:
 
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)

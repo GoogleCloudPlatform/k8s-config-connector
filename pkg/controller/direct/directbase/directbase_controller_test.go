@@ -892,6 +892,8 @@ func TestReconcile_BackoffMaxDelay_Positive(t *testing.T) {
 	}
 
 	expectedDelays := []time.Duration{
+		250 * time.Millisecond,
+		500 * time.Millisecond,
 		1 * time.Second,
 		2 * time.Second,
 		4 * time.Second,
@@ -1035,16 +1037,16 @@ func TestReconcile_BackoffMaxDelay_SuccessReset(t *testing.T) {
 		},
 	}
 
-	// 1st failure: 1s
+	// 1st failure: 250ms
 	res, err := r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected 1s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected 250ms backoff, got err: %v, res: %+v", err, res)
 	}
 
-	// 2nd failure: 2s
+	// 2nd failure: 500ms
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 2*time.Second {
-		t.Fatalf("expected 2s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 500*time.Millisecond {
+		t.Fatalf("expected 500ms backoff, got err: %v, res: %+v", err, res)
 	}
 
 	// Succeeded reconcile
@@ -1054,11 +1056,11 @@ func TestReconcile_BackoffMaxDelay_SuccessReset(t *testing.T) {
 		t.Fatalf("expected successful reconcile, got err: %v", err)
 	}
 
-	// Subsequent failure should reset back to base delay (1s)
+	// Subsequent failure should reset back to base delay (250ms)
 	adapter.createErr = fmt.Errorf("transient error again")
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected reset to 1s backoff after success, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected reset to 250ms backoff after success, got err: %v, res: %+v", err, res)
 	}
 }
 
@@ -1172,16 +1174,16 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		},
 	}
 
-	// 1st failure: 1s
+	// 1st failure: 250ms
 	res, err := r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected 1s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected 250ms backoff, got err: %v, res: %+v", err, res)
 	}
 
-	// 2nd failure: 2s
+	// 2nd failure: 500ms
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 2*time.Second {
-		t.Fatalf("expected 2s backoff, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 500*time.Millisecond {
+		t.Fatalf("expected 500ms backoff, got err: %v, res: %+v", err, res)
 	}
 
 	// Remove finalizers and delete the object from k8s to trigger NotFound
@@ -1202,7 +1204,7 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		t.Fatalf("expected clean exit on NotFound, got err: %v, res: %+v", err, res)
 	}
 
-	// Re-create the object and fail: delay should start back at base delay (1s)
+	// Re-create the object and fail: delay should start back at base delay (250ms)
 	uRecreated := &unstructured.Unstructured{}
 	uRecreated.SetGroupVersionKind(testGVK)
 	uRecreated.SetName("test-resource")
@@ -1214,7 +1216,201 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		t.Fatalf("failed to re-create object in fake client: %v", err)
 	}
 	res, err = r.Reconcile(ctx, req)
-	if err != nil || res.RequeueAfter != 1*time.Second {
-		t.Fatalf("expected reset to 1s backoff after NotFound cleanup, got err: %v, res: %+v", err, res)
+	if err != nil || res.RequeueAfter != 250*time.Millisecond {
+		t.Fatalf("expected reset to 250ms backoff after NotFound cleanup, got err: %v, res: %+v", err, res)
+	}
+}
+
+func TestCompareMBUR(t *testing.T) {
+	tests := []struct {
+		name        string
+		annotations map[string]string
+		computeMBUR func() (string, error)
+		wantMatch   bool
+		wantErr     bool
+	}{
+		{
+			name:        "nil computeMBUR func",
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "somehash"},
+			computeMBUR: nil,
+			wantMatch:   false,
+		},
+		{
+			name: "computeMBUR returns error",
+			computeMBUR: func() (string, error) {
+				return "", fmt.Errorf("computation failed")
+			},
+			wantErr: true,
+		},
+		{
+			name:        "both empty",
+			annotations: nil,
+			computeMBUR: func() (string, error) {
+				return "", nil
+			},
+			wantMatch: true,
+		},
+		{
+			name:        "annotation exists but desired empty",
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "somehash"},
+			computeMBUR: func() (string, error) {
+				return "", nil
+			},
+			wantMatch: false,
+		},
+		{
+			name:        "matching hashes",
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
+			computeMBUR: func() (string, error) {
+				return "hash123", nil
+			},
+			wantMatch: true,
+		},
+		{
+			name:        "different hashes",
+			annotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
+			computeMBUR: func() (string, error) {
+				return "hash456", nil
+			},
+			wantMatch: false,
+		},
+		{
+			name:        "desired has hash but annotation unset",
+			annotations: nil,
+			computeMBUR: func() (string, error) {
+				return "hash123", nil
+			},
+			wantMatch: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			u := &unstructured.Unstructured{}
+			u.SetAnnotations(tc.annotations)
+			op := &operationBase{object: u}
+			gotMatch, err := op.CompareMBUR(tc.computeMBUR)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("CompareMBUR() error = %v, wantErr = %v", err, tc.wantErr)
+			}
+			if gotMatch != tc.wantMatch {
+				t.Errorf("CompareMBUR() = %v, want %v", gotMatch, tc.wantMatch)
+			}
+		})
+	}
+}
+
+func TestSetMBUR(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+
+	tests := []struct {
+		name            string
+		initAnnotations map[string]string
+		computeMBUR     func() (string, error)
+		wantAnnotation  string
+		wantExist       bool
+		wantErr         bool
+	}{
+		{
+			name:            "nil computeMBUR",
+			initAnnotations: map[string]string{"foo": "bar"},
+			computeMBUR:     nil,
+			wantExist:       false,
+		},
+		{
+			name: "computeMBUR error",
+			computeMBUR: func() (string, error) {
+				return "", fmt.Errorf("hash error")
+			},
+			wantErr: true,
+		},
+		{
+			name:            "set new hash",
+			initAnnotations: nil,
+			computeMBUR: func() (string, error) {
+				return "hash123", nil
+			},
+			wantAnnotation: "hash123",
+			wantExist:      true,
+		},
+		{
+			name:            "update existing hash",
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "oldhash"},
+			computeMBUR: func() (string, error) {
+				return "newhash", nil
+			},
+			wantAnnotation: "newhash",
+			wantExist:      true,
+		},
+		{
+			name:            "same hash is no-op",
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "samehash"},
+			computeMBUR: func() (string, error) {
+				return "samehash", nil
+			},
+			wantAnnotation: "samehash",
+			wantExist:      true,
+		},
+		{
+			name:            "clear hash when desired is empty",
+			initAnnotations: map[string]string{k8s.MutableButUnreadableFieldsHashAnnotation: "hash123"},
+			computeMBUR: func() (string, error) {
+				return "", nil
+			},
+			wantExist: false,
+		},
+		{
+			name:            "empty desired and empty annotation is no-op",
+			initAnnotations: nil,
+			computeMBUR: func() (string, error) {
+				return "", nil
+			},
+			wantExist: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(testGVK)
+			u.SetName("test-mbur")
+			u.SetNamespace("test-ns")
+			if tc.initAnnotations != nil {
+				u.SetAnnotations(tc.initAnnotations)
+			}
+			k8sClient := fake.NewClientBuilder().
+				WithScheme(scheme).
+				WithRuntimeObjects(u).
+				Build()
+
+			op := &operationBase{
+				client: k8sClient,
+				object: u,
+			}
+
+			err := op.SetMBUR(ctx, tc.computeMBUR)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("SetMBUR() error = %v, wantErr = %v", err, tc.wantErr)
+			}
+			if tc.wantErr {
+				return
+			}
+
+			gotObj := &unstructured.Unstructured{}
+			gotObj.SetGroupVersionKind(testGVK)
+			if err := k8sClient.Get(ctx, types.NamespacedName{Namespace: "test-ns", Name: "test-mbur"}, gotObj); err != nil {
+				t.Fatalf("failed to fetch updated object: %v", err)
+			}
+
+			val, exists := gotObj.GetAnnotations()[k8s.MutableButUnreadableFieldsHashAnnotation]
+			if exists != tc.wantExist {
+				t.Fatalf("annotation exists = %v, wantExist = %v", exists, tc.wantExist)
+			}
+			if tc.wantExist && val != tc.wantAnnotation {
+				t.Errorf("annotation value = %q, want %q", val, tc.wantAnnotation)
+			}
+		})
 	}
 }

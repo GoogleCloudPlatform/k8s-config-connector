@@ -29,8 +29,8 @@ func init() {
 
 func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Instance{},
-		SecureSourceManagerInstanceSpec_FromProto, SecureSourceManagerInstanceSpec_ToProto,
-		SecureSourceManagerInstanceObservedState_FromProto, SecureSourceManagerInstanceObservedState_ToProto,
+		SecureSourceManagerInstanceSpec_v1beta1_FromProto, SecureSourceManagerInstanceSpec_v1beta1_ToProto,
+		SecureSourceManagerInstanceObservedState_v1beta1_FromProto, SecureSourceManagerInstanceObservedState_v1beta1_ToProto,
 	)
 
 	// Identity Field

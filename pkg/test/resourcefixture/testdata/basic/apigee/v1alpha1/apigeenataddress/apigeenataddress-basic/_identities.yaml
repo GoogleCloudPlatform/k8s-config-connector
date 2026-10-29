@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: apigee.cnrm.cloud.google.com
+  kind: ApigeeInstance
+  name: apgi-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //apigee.googleapis.com/organizations/${projectId}/instances/apgi-${uniqueId}/natAddresses/apigeenataddress-${uniqueId}
+  group: apigee.cnrm.cloud.google.com
+  kind: ApigeeNATAddress
+  name: apigeenataddress-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

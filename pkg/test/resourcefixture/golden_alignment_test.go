@@ -62,6 +62,8 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -631,6 +633,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "parent")
 		}
 
+		// Cloud KMS ImportJob specific fields (HSM attestation and wrapping public key are dynamically generated per job)
+		if _, ok := v["importMethod"]; ok {
+			delete(v, "attestation")
+			delete(v, "publicKey")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
@@ -670,6 +678,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		delete(v, "availableCpuPlatforms")
+		delete(v, "supportsPzs")
+		if _, ok := v["family"]; ok {
+			delete(v, "name")
+		}
 		if rc, ok := v["responseCode"]; ok {
 			if f, ok := rc.(float64); ok {
 				switch f {
@@ -683,6 +696,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					v["responseCode"] = "TEMPORARY_REDIRECT"
 				case 5:
 					v["responseCode"] = "PERMANENT_REDIRECT"
+				}
+			}
+		}
+		if act, ok := v["action"]; ok {
+			if f, ok := act.(float64); ok {
+				switch f {
+				case 1:
+					v["action"] = "ALLOW"
+				case 2:
+					v["action"] = "DENY"
 				}
 			}
 		}
@@ -785,18 +808,34 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
-				delete(containerdConfig, "registryHosts")
-				delete(containerdConfig, "writableCgroups")
 				delete(containerdConfig, "privateRegistryAccessConfig")
 			}
 		}
 		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
-			delete(containerdConfig, "registryHosts")
-			delete(containerdConfig, "writableCgroups")
 			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
+		}
+		if _, isProcessor := v["processorVersionAliases"]; isProcessor {
+			if state, ok := v["state"].(float64); ok {
+				switch state {
+				case 1:
+					v["state"] = "ENABLED"
+				case 2:
+					v["state"] = "DISABLED"
+				case 3:
+					v["state"] = "ENABLING"
+				case 4:
+					v["state"] = "DISABLING"
+				case 5:
+					v["state"] = "CREATING"
+				case 6:
+					v["state"] = "FAILED"
+				case 7:
+					v["state"] = "DELETING"
+				}
+			}
 		}
 		if _, isDnsAuth := v["dnsResourceRecord"]; isDnsAuth {
 			if t, ok := v["type"].(float64); ok && t == 1 {
@@ -829,10 +868,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
 				delete(cfg, "taints")
-				if cc, ok := cfg["containerdConfig"].(map[string]interface{}); ok {
-					delete(cc, "registryHosts")
-					delete(cc, "writableCgroups")
-				}
 			}
 			if nc, ok := v["networkConfig"].(map[string]interface{}); ok {
 				delete(nc, "networkTierConfig")
@@ -965,6 +1000,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "clusterEndpoints")
 		delete(v, "cluster_endpoints")
+
+		// DNSResponsePolicy specific normalization for alignment differences between mock and real GCP responses
+		if v["kind"] == "dns#responsePolicy" {
+			if slice, ok := v["gkeClusters"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "gkeClusters")
+			}
+			if slice, ok := v["networks"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "networks")
+			}
+			delete(v, "description")
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
@@ -1130,6 +1176,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${certificateID}"}
 	case "CertificateManagerDNSAuthorization":
 		return []string{"${dnsAuthorizationID}"}
+	case "HealthcareDataset":
+		return []string{"${datasetID}"}
 	}
 	return nil
 }

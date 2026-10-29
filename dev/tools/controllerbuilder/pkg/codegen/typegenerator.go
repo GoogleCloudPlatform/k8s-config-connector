@@ -1069,19 +1069,16 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	case protoreflect.StringKind:
 		goType = "string"
 
-	case protoreflect.Int32Kind:
+	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
 		goType = "int32"
 
-	case protoreflect.Int64Kind:
+	case protoreflect.Int64Kind, protoreflect.Sint64Kind, protoreflect.Sfixed64Kind:
 		goType = "int64"
 
-	case protoreflect.Uint32Kind:
+	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
 		goType = "uint32"
 
-	case protoreflect.Uint64Kind:
-		goType = "uint64"
-
-	case protoreflect.Fixed64Kind:
+	case protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
 		goType = "uint64"
 
 	case protoreflect.BoolKind:

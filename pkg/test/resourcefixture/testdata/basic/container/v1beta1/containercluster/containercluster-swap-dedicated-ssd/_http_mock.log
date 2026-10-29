@@ -1763,9 +1763,10 @@ X-Xss-Protection: 0
 
 {
   "name": "${operationID}",
+  "operationType": "UPGRADE_NODES",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
+  "status": "PENDING",
   "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/containercluster-${uniqueId}/nodePools/default-pool",
   "zone": "us-central1-a"
 }
@@ -1788,6 +1789,7 @@ X-Xss-Protection: 0
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
   "name": "${operationID}",
+  "operationType": "UPGRADE_NODES",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
