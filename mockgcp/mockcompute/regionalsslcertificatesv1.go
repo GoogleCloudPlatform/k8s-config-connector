@@ -71,7 +71,11 @@ func (s *RegionalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertRe
 	obj.PrivateKey = nil
 
 	if obj.Type == nil {
-		obj.Type = PtrTo("SELF_MANAGED")
+		if obj.Managed != nil {
+			obj.Type = PtrTo("MANAGED")
+		} else {
+			obj.Type = PtrTo("SELF_MANAGED")
+		}
 	}
 	if obj.GetType() == "SELF_MANAGED" {
 		if obj.SelfManaged == nil {
@@ -80,9 +84,31 @@ func (s *RegionalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertRe
 		if obj.SelfManaged.Certificate == nil {
 			obj.SelfManaged.Certificate = obj.Certificate
 		}
+		if obj.ExpireTime == nil {
+			obj.ExpireTime = obj.CreationTimestamp
+		}
 	}
-	if obj.ExpireTime == nil {
-		obj.ExpireTime = obj.CreationTimestamp
+	if obj.GetType() == "MANAGED" {
+		if obj.Managed == nil {
+			obj.Managed = &pb.SslCertificateManagedSslCertificate{}
+		}
+		if obj.Managed.Status == nil {
+			obj.Managed.Status = PtrTo("PROVISIONING")
+		}
+		if len(obj.Managed.Domains) > 0 {
+			var normalizedDomains []string
+			if obj.Managed.DomainStatus == nil {
+				obj.Managed.DomainStatus = make(map[string]string)
+			}
+			for _, d := range obj.Managed.Domains {
+				normalizedDomain := strings.TrimSuffix(d, ".")
+				normalizedDomains = append(normalizedDomains, normalizedDomain)
+				if _, ok := obj.Managed.DomainStatus[normalizedDomain]; !ok {
+					obj.Managed.DomainStatus[normalizedDomain] = "PROVISIONING"
+				}
+			}
+			obj.Managed.Domains = normalizedDomains
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
