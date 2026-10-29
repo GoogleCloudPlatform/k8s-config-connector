@@ -1,0 +1,482 @@
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "parent": "organizations/${organizationID}",
+  "title": "test-binding-policy-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessPolicy",
+    "etag": "abcdef0123A=",
+    "name": "accessPolicies/${accessPolicyID}",
+    "parent": "organizations/${organizationID}",
+    "title": "test-binding-policy-${uniqueId}"
+  }
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+    "title": "test level"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25",
+          "2001:db8::/48"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2",
+  "title": "test level 2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level_2/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25",
+            "2001:db8::/48"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2",
+    "title": "test level 2"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level_2?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25",
+          "2001:db8::/48"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2",
+  "title": "test level 2"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "accessLevels": [
+    "accessPolicies/${accessPolicyID}/accessLevels/basic_level"
+  ],
+  "groupKey": "group-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBindingOperationMetadata"
+  },
+  "name": "operations/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBinding",
+    "accessLevels": [
+      "accessPolicies/${accessPolicyID}/accessLevels/basic_level"
+    ],
+    "groupKey": "group-${uniqueId}",
+    "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessLevels": [
+    "accessPolicies/${accessPolicyID}/accessLevels/basic_level"
+  ],
+  "groupKey": "group-${uniqueId}",
+  "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "gcpUserAccessBindings": [
+    {
+      "accessLevels": [
+        "accessPolicies/${accessPolicyID}/accessLevels/basic_level"
+      ],
+      "groupKey": "group-${uniqueId}",
+      "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+    }
+  ]
+}
+
+---
+
+PATCH https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json&append=False&updateMask=access_levels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "accessLevels": [
+    "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBindingOperationMetadata"
+  },
+  "name": "operations/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}/update/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBinding",
+    "accessLevels": [
+      "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2"
+    ],
+    "groupKey": "group-${uniqueId}",
+    "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessLevels": [
+    "accessPolicies/${accessPolicyID}/accessLevels/basic_level_2"
+  ],
+  "groupKey": "group-${uniqueId}",
+  "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBindingOperationMetadata"
+  },
+  "name": "operations/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level_2?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level_2/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

@@ -1,0 +1,14 @@
+- exec: gcloud access-context-manager policies create --organization=${organizationId} --title="test-binding-policy-${uniqueId}" --format="value(name)"
+  setEnv: accessPolicies/{{POLICY_ID}}
+- exec: gcloud access-context-manager levels create basic_level --policy=${POLICY_ID} --title="test level" --basic-level-spec=basic-level-v1.yaml
+- exec: gcloud access-context-manager levels create basic_level_2 --policy=${POLICY_ID} --title="test level 2" --basic-level-spec=basic-level-v2.yaml
+- exec: gcloud access-context-manager cloud-bindings create --organization=${organizationId} --group-key=group-${uniqueId} --level=accessPolicies/${POLICY_ID}/accessLevels/basic_level --format="value(response.name)"
+  setEnv: organizations/{{organizationId}}/gcpUserAccessBindings/{{BINDING_ID}}
+- exec: gcloud access-context-manager cloud-bindings describe --binding=${BINDING_ID} --organization=${organizationId}
+- exec: gcloud access-context-manager cloud-bindings list --organization=${organizationId}
+- exec: gcloud access-context-manager cloud-bindings update --binding=${BINDING_ID} --organization=${organizationId} --level=accessPolicies/${POLICY_ID}/accessLevels/basic_level_2
+- exec: gcloud access-context-manager cloud-bindings describe --binding=${BINDING_ID} --organization=${organizationId}
+- exec: gcloud access-context-manager cloud-bindings delete --binding=${BINDING_ID} --organization=${organizationId} --quiet
+- exec: gcloud access-context-manager levels delete basic_level_2 --policy=${POLICY_ID} --quiet
+- exec: gcloud access-context-manager levels delete basic_level --policy=${POLICY_ID} --quiet
+- exec: gcloud access-context-manager policies delete ${POLICY_ID} --quiet
