@@ -56,12 +56,18 @@ After running the generator, verify the `_types.go` file meets these requirement
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
   ```
 - **Proto Mapping**: Ensure `+kcc:proto` tags are present on the Spec and ObservedState structs to link them to the GCP API definitions.
-- **Status Fields**: `status.observedGeneration` must be an `*int64`.
+- **Status Fields**:
+  * `status.observedGeneration` must be an `*int64`.
+  * `status.externalRef` must be included in `<Kind>Status`:
+    ```go
+    	// A unique specifier for the <Kind> resource in GCP.
+    	ExternalRef *string `json:"externalRef,omitempty"`
+    ```
 - **Use Existing References**: ALWAYS reuse existing resource reference structures that live in `apis/refs/` instead of hand-coding or defining duplicate types.
   * For example, `ProjectRef` (which lives in `apis/refs/v1beta1/project_ref.go`) and other resource reference types should be imported from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1` rather than being defined locally in `<kind>_types.go`.
 - **Strict Schema Compatibility**: At the initial stage of creating a direct Go type for an existing resource (transitioning from Terraform/DCL), the Go type should be strictly schema-compatible with the existing CRD definition.
-  * Do NOT add new fields like `externalRef` or `observedState` under `Status` yet.
-  * Run `dev/tasks/diff-crds` to verify schema compatibility and ensure no unintended new fields are introduced.
+  * Always include `status.externalRef` as specified above. Do NOT add other new fields like `observedState` under `Status` yet.
+  * Run `dev/tasks/diff-crds --allow-status-external-ref-addition` to verify schema compatibility and ensure no unintended new fields are introduced.
 - **Service-Generated Resource IDs**: If the resource uses service-generated resource IDs, see the `kcc-direct-service-generated-id` skill for mandatory identity design rules, specifically regarding the handling and mapping of `spec.resourceID` (Rule 1).
 
 ### 3. Fuzzers

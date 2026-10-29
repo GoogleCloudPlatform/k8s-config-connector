@@ -108,12 +108,12 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
     Run `apis/datacatalog/generate.sh`. This should create `apis/datacatalog/v1beta1/policytag_types.go`.
 
 - [ ] 4. **Iterate on Types**:
-    Validate the generated CRD by running `./dev/tasks/diff-crds --base master`. This tool prints any differences between the current branch and the master branch for the generated CRD.
+    Validate the generated CRD by running `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition`. This tool prints any differences between the current branch and the master branch for the generated CRD.
     Modify `apis/datacatalog/v1beta1/policytag_types.go` until the CRD matches the existing one. You should aim to minimize or eliminate any diffs detected by the tool. If diffs are found, you may need to add back missing fields or remove incorrectly added fields.
 
     **Critical Acceptance Criteria:**
-    - Running `./dev/tasks/diff-crds --base master` should not show differences (or minimal acceptable ones like descriptions).
-    - Changes to the schema (fields added/removed) are NOT acceptable.
+    - Running `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition` should not show differences (or minimal acceptable ones like descriptions).
+    - Unintended changes to the schema (fields added/removed other than allowed `status.externalRef`) are NOT acceptable.
 
 - [ ] 5. **Copyright Headers**:
     Ensure that new files have the correct copyright header:
@@ -133,7 +133,12 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
     The goal is to maintain these annotations, not add an annotation if it is missing.
 
 - [ ] 7. **Status**:
-    `status.observedGeneration` should be an `int64`.
+    - `status.observedGeneration` should be an `int64`.
+    - Under Status, include `ExternalRef`:
+      ```go
+      	// A unique specifier for the <Kind> resource in GCP.
+      	ExternalRef *string `json:"externalRef,omitempty"`
+      ```
 
 - [ ] 8. **Generate Mappers**:
    - Running `dev/tasks/generate-types-and-mappers` will generate the mapper code once the `apis/datacatalog/v1beta1/policytag_types.go` file is generating an equivalent CRD.
