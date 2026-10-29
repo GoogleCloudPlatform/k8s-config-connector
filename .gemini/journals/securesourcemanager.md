@@ -9,3 +9,10 @@
 - **Observation**: SecureSourceManagerInstance does not have an `UpdateInstance` method in the GCP Go Client, making the resource functionally immutable.
 - **Solution**: Updated `Create` and `Update` methods using standard `compareSecureSourceManagerInstance` and `updateStatus` helper patterns. Implemented explicit immutability check in the `Update` method returning a clean error containing the exact field diffs if any updates are attempted.
 - **Impact**: Fully aligned the controller with direct controller requirements and ensured schema correctness in validation and fuzz-testing.
+
+### [2026-10-29] Triage judgement queue and finalize KRM types for SecureSourceManagerBranchRule
+- **Context**: Triage judgement queue and finalize direct KRM types, identity, and references for `SecureSourceManagerBranchRule` (Step 1b).
+- **Problem**: `SecureSourceManagerRepositoryRef` in `v1beta1` only implemented deprecated `refsv1beta1.ExternalNormalizer` and was missing `refsv1beta1.Ref` methods, which are required for `generate-identity` to normalize `spec.parentRef`.
+- **Solution**: Implemented `refsv1beta1.Ref` on `SecureSourceManagerRepositoryRef` and `FromExternal` on `RepositoryIdentity`. Modelled `spec.parentRef` on `SecureSourceManagerBranchRuleSpec` pointing to `SecureSourceManagerRepositoryRef`, moved `etag` from `spec` to `status.observedState`, and added `generate-controller` and `generate-fuzzer` to `apis/securesourcemanager/generate.sh`.
+- **Impact**: Enables clean single-parent identity resolution for `SecureSourceManagerBranchRule` and ensures controller and fuzzer stay in lockstep.
+
