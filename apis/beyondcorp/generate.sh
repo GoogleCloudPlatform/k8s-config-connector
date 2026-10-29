@@ -88,6 +88,11 @@ mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservi
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/" || true
 sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go"
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
