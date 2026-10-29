@@ -24,6 +24,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -206,6 +207,20 @@ func (s *MockService) parseFeaturestoreName(name string) (*FeaturestoreName, err
 	}
 }
 
+func (s *featurestoreService) populateDefaultsForEntityType(obj *pb.EntityType) {
+	if obj.MonitoringConfig == nil {
+		obj.MonitoringConfig = &pb.FeaturestoreMonitoringConfig{}
+	}
+	if sa := obj.GetMonitoringConfig().GetSnapshotAnalysis(); sa != nil {
+		if sa.MonitoringIntervalDays > 0 && sa.MonitoringInterval == nil {
+			sa.MonitoringInterval = durationpb.New(time.Duration(sa.MonitoringIntervalDays*24) * time.Hour)
+		}
+	}
+	if obj.OfflineStorageTtlDays == 0 {
+		obj.OfflineStorageTtlDays = 4000
+	}
+}
+
 func (s *featurestoreService) GetEntityType(ctx context.Context, req *pb.GetEntityTypeRequest) (*pb.EntityType, error) {
 	name, err := s.parseEntityTypeName(req.Name)
 	if err != nil {
@@ -222,6 +237,7 @@ func (s *featurestoreService) GetEntityType(ctx context.Context, req *pb.GetEnti
 		return nil, err
 	}
 
+	s.populateDefaultsForEntityType(obj)
 	return obj, nil
 }
 
@@ -252,9 +268,7 @@ func (s *featurestoreService) CreateEntityType(ctx context.Context, req *pb.Crea
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = "abcdef0123A="
-	if obj.MonitoringConfig == nil {
-		obj.MonitoringConfig = &pb.FeaturestoreMonitoringConfig{}
-	}
+	s.populateDefaultsForEntityType(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -299,13 +313,25 @@ func (s *featurestoreService) UpdateEntityType(ctx context.Context, req *pb.Upda
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	if err := fields.UpdateByFieldMask(obj, reqObj, paths); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to update EntityType fields: %v", err)
+	// In real GCP, top-level monitoring_config is ignored on UpdateEntityType.
+	var filteredPaths []string
+	for _, p := range paths {
+		if p == "monitoring_config" || p == "monitoringConfig" {
+			continue
+		}
+		filteredPaths = append(filteredPaths, p)
+	}
+
+	if len(filteredPaths) > 0 {
+		if err := fields.UpdateByFieldMask(obj, reqObj, filteredPaths); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update EntityType fields: %v", err)
+		}
 	}
 
 	now := time.Now()
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = "abcdef0123A="
+	s.populateDefaultsForEntityType(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
