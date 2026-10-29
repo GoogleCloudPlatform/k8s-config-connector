@@ -137,7 +137,7 @@ func executeSetup(ctx context.Context, opts setupOptions, handles []*clusterHand
 		return renderClusterYAMLs(configurers, opts.stdout)
 	}
 
-	provisioner := newGCPProvisioner(runner, opts.bucket)
+	provisioner := newGCPProvisioner(runner, opts.bucket, opts.dryRun)
 	if err := provisioner.provision(ctx, gkeClusters); err != nil {
 		return err
 	}
