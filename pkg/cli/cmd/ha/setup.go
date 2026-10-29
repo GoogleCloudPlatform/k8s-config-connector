@@ -35,6 +35,8 @@ type setupOptions struct {
 	leaseNamespace string
 	yamlOnly       bool
 	dryRun         bool
+	mclImage       string
+	syncerImage    string
 }
 
 const (
@@ -75,6 +77,8 @@ const (
 	leaseNamespaceFlag = "lease-namespace"
 	yamlOnlyFlag       = "yaml-only"
 	dryRunFlag         = "dry-run"
+	mclImageFlag       = "mcl-image"
+	syncerImageFlag    = "syncer-image"
 )
 
 func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
@@ -84,6 +88,8 @@ func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
+	flags.StringVar(&o.mclImage, mclImageFlag, o.mclImage, "Optional container image override for the MultiClusterLease controller.")
+	flags.StringVar(&o.syncerImage, syncerImageFlag, o.syncerImage, "Optional container image override for the KRMSyncer controller.")
 }
 
 func (o *setupOptions) validate() error {
@@ -95,6 +101,8 @@ func (o *setupOptions) validate() error {
 	o.bucket = normalizeBucketName(o.bucket)
 	o.leaseName = strings.TrimSpace(o.leaseName)
 	o.leaseNamespace = strings.TrimSpace(o.leaseNamespace)
+	o.mclImage = strings.TrimSpace(o.mclImage)
+	o.syncerImage = strings.TrimSpace(o.syncerImage)
 
 	if o.bucket == "" {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a GCS bucket name for the multi-cluster lease lock, e.g. --%s=my-kcc-ha-bucket", bucketFlag, bucketFlag))
@@ -160,6 +168,7 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 			continue
 		}
 
+		cfg.setImageOverrides(opts.mclImage, opts.syncerImage)
 		configurers = append(configurers, cfg)
 		gkeClusters = append(gkeClusters, cfg.gkeCluster())
 	}

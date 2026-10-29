@@ -22,87 +22,120 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 )
 
-// manifestBuilder constructs and renders the Kubernetes manifests required for multi-cluster HA on a single cluster.
+// manifestBuilder constructs the Kubernetes objects and ConfigConnector mutation for a single HA cluster.
 type manifestBuilder struct {
-	contextName     string
-	clusterIdentity string
-	project         string
-	controllerImage string
-	leaseName       string
-	leaseNamespace  string
-	bucket          string
+	contextName       string
+	candidateIdentity string
+	projectID         string
+	controllerImage   string
+	mclImage          string
+	syncerImage       string
+	leaseName         string
+	leaseNamespace    string
+	bucket            string
 }
 
-type controllerComponent struct {
-	deploymentName     string
-	componentLabel     string
-	serviceAccountName string
-	clusterRoleName    string
-	policyRules        []rbacv1.PolicyRule
-	container          corev1.Container
-}
-
-func newManifestBuilder(contextName, clusterIdentity, project, controllerImage, leaseName, leaseNamespace, bucket string) *manifestBuilder {
+func newManifestBuilder(contextName, candidateIdentity, projectID, controllerImage, leaseName, leaseNamespace, bucket string) *manifestBuilder {
 	return &manifestBuilder{
-		contextName:     contextName,
-		clusterIdentity: clusterIdentity,
-		project:         project,
-		controllerImage: controllerImage,
-		leaseName:       leaseName,
-		leaseNamespace:  leaseNamespace,
-		bucket:          bucket,
+		contextName:       contextName,
+		candidateIdentity: candidateIdentity,
+		projectID:         projectID,
+		controllerImage:   controllerImage,
+		leaseName:         leaseName,
+		leaseNamespace:    leaseNamespace,
+		bucket:            bucket,
 	}
 }
 
+type controllerComponent struct {
+	crd                *apiextensionsv1.CustomResourceDefinition
+	deploymentName     string
+	componentLabel     string
+	serviceAccountName string
+	gsaName            string
+	clusterRoleName    string
+	roleBindingName    string
+	rules              []rbacv1.PolicyRule
+	container          corev1.Container
+}
+
 const (
+	mclCRDName               = "multiclusterleases.multicluster.core.cnrm.cloud.google.com"
+	mclDeploymentName        = "multiclusterlease-controller-manager"
 	mclServiceAccountName    = "kcc-mcl"
+	syncerCRDName            = "krmsyncers.syncer.gkelabs.io"
+	syncerDeploymentName     = "syncer-controller-manager"
 	syncerServiceAccountName = "kcc-syncer"
-
-	mclClusterRoleName    = "cnrm-mcl-controller"
-	syncerClusterRoleName = "cnrm-syncer-controller"
-
-	mclDeploymentName    = "multiclusterlease-controller-manager"
-	syncerDeploymentName = "syncer-controller-manager"
-
-	mclBinaryPath    = "/configconnector/mcl-manager"
-	syncerBinaryPath = "/configconnector/krmsyncer"
 )
 
 func (b *manifestBuilder) buildClusterObjects() []client.Object {
 	mclComponent := controllerComponent{
+		crd: buildPermissiveV1Alpha1CRD(
+			mclCRDName,
+			"multicluster.core.cnrm.cloud.google.com",
+			"MultiClusterLease",
+			"MultiClusterLeaseList",
+			"multiclusterleases",
+			"multiclusterlease",
+		),
 		deploymentName:     mclDeploymentName,
-		componentLabel:     "mcl-controller",
+		componentLabel:     "multiclusterlease-controller",
 		serviceAccountName: mclServiceAccountName,
-		clusterRoleName:    mclClusterRoleName,
-		policyRules: []rbacv1.PolicyRule{
+		gsaName:            mclServiceAccountName,
+		clusterRoleName:    "cnrm-multiclusterlease-controller",
+		roleBindingName:    "cnrm-multiclusterlease-controller",
+		rules: []rbacv1.PolicyRule{
 			{
 				APIGroups: []string{"multicluster.core.cnrm.cloud.google.com"},
 				Resources: []string{"multiclusterleases", "multiclusterleases/status"},
 				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
 			},
+			{
+				APIGroups: []string{""},
+				Resources: []string{"events"},
+				Verbs:     []string{"create", "patch"},
+			},
 		},
-		container: corev1.Container{
-			Name:    "manager",
-			Image:   b.controllerImage,
-			Command: []string{mclBinaryPath, fmt.Sprintf("--gcs-bucket=%s", b.bucket)},
-		},
+		container: b.buildMCLContainer(),
 	}
 
 	syncerComponent := controllerComponent{
+		crd: buildPermissiveV1Alpha1CRD(
+			syncerCRDName,
+			"syncer.gkelabs.io",
+			"KRMSyncer",
+			"KRMSyncerList",
+			"krmsyncers",
+			"krmsyncer",
+		),
 		deploymentName:     syncerDeploymentName,
 		componentLabel:     "syncer-controller",
 		serviceAccountName: syncerServiceAccountName,
-		clusterRoleName:    syncerClusterRoleName,
-		policyRules: []rbacv1.PolicyRule{
+		gsaName:            syncerServiceAccountName,
+		clusterRoleName:    "cnrm-syncer-controller",
+		roleBindingName:    "cnrm-syncer-controller",
+		rules: []rbacv1.PolicyRule{
 			{
 				APIGroups: []string{"syncer.gkelabs.io"},
 				Resources: []string{"krmsyncers", "krmsyncers/status"},
 				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+			},
+			{
+				APIGroups: []string{""},
+				Resources: []string{"secrets", "namespaces", "events"},
+				Verbs:     []string{"get", "list", "watch", "create", "update", "patch"},
+			},
+			{
+				APIGroups: []string{"apiextensions.k8s.io"},
+				Resources: []string{"customresourcedefinitions"},
+				Verbs:     []string{"get", "list", "watch"},
 			},
 			{
 				APIGroups: []string{"*.cnrm.cloud.google.com"},
@@ -110,50 +143,138 @@ func (b *manifestBuilder) buildClusterObjects() []client.Object {
 				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
 			},
 		},
-		container: corev1.Container{
-			Name:    "manager",
-			Image:   b.controllerImage,
-			Command: []string{syncerBinaryPath},
-		},
+		container: b.buildSyncerContainer(),
 	}
 
-	objs := make([]client.Object, 0, 8)
+	objs := make([]client.Object, 0, 10)
 	objs = append(objs, b.buildComponentObjects(mclComponent)...)
 	objs = append(objs, b.buildComponentObjects(syncerComponent)...)
 	return objs
 }
 
+func buildPermissiveV1Alpha1CRD(name, group, kind, listKind, plural, singular string) *apiextensionsv1.CustomResourceDefinition {
+	return &apiextensionsv1.CustomResourceDefinition{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "apiextensions.k8s.io/v1",
+			Kind:       "CustomResourceDefinition",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name: name,
+		},
+		Spec: apiextensionsv1.CustomResourceDefinitionSpec{
+			Group: group,
+			Names: apiextensionsv1.CustomResourceDefinitionNames{
+				Kind:     kind,
+				ListKind: listKind,
+				Plural:   plural,
+				Singular: singular,
+			},
+			Scope: apiextensionsv1.NamespaceScoped,
+			Versions: []apiextensionsv1.CustomResourceDefinitionVersion{
+				{
+					Name:    "v1alpha1",
+					Served:  true,
+					Storage: true,
+					Schema: &apiextensionsv1.CustomResourceValidation{
+						OpenAPIV3Schema: &apiextensionsv1.JSONSchemaProps{
+							Type:                   "object",
+							XPreserveUnknownFields: ptr.To(true),
+						},
+					},
+					Subresources: &apiextensionsv1.CustomResourceSubresources{
+						Status: &apiextensionsv1.CustomResourceSubresourceStatus{},
+					},
+				},
+			},
+		},
+	}
+}
+
+const mclBinaryPath = "/configconnector/mcl-manager"
+
+func (b *manifestBuilder) buildMCLContainer() corev1.Container {
+	if b.mclImage != "" {
+		return corev1.Container{
+			Name:  "manager",
+			Image: b.mclImage,
+			Args:  []string{"--gcs-bucket=" + b.bucket},
+		}
+	}
+
+	return corev1.Container{
+		Name:    "manager",
+		Image:   b.controllerImage,
+		Command: []string{mclBinaryPath, "--gcs-bucket=" + b.bucket},
+	}
+}
+
+const syncerBinaryPath = "/configconnector/syncer-manager"
+
+func (b *manifestBuilder) buildSyncerContainer() corev1.Container {
+	if b.syncerImage != "" {
+		return corev1.Container{
+			Name:  "manager",
+			Image: b.syncerImage,
+			Args:  []string{"--mode=incluster"},
+		}
+	}
+
+	return corev1.Container{
+		Name:    "manager",
+		Image:   b.controllerImage,
+		Command: []string{syncerBinaryPath},
+	}
+}
+
 const (
-	manifestSystemNamespace   = "cnrm-system"
-	manifestSystemSAGroup     = "system:serviceaccounts:cnrm-system"
-	workloadIdentityGSAAnnot  = "iam.gke.io/gcp-service-account"
-	manifestComponentLabelKey = "cnrm.cloud.google.com/component"
+	manifestSystemNamespace       = "cnrm-system"
+	manifestSystemSAGroup         = "system:serviceaccounts:cnrm-system"
+	workloadIdentityGKEAnnotation = "iam.gke.io/gcp-service-account"
 )
 
 func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []client.Object {
-	gsaEmail := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", comp.serviceAccountName, b.project)
-	podLabels := map[string]string{"app": comp.componentLabel}
+	gsa := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", comp.gsaName, b.projectID)
+	labels := map[string]string{
+		"cnrm.cloud.google.com/component": comp.componentLabel,
+		"cnrm.cloud.google.com/system":    "true",
+	}
 
 	sa := &corev1.ServiceAccount{
-		TypeMeta: metav1.TypeMeta{APIVersion: "v1", Kind: "ServiceAccount"},
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "v1",
+			Kind:       "ServiceAccount",
+		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      comp.serviceAccountName,
 			Namespace: manifestSystemNamespace,
 			Annotations: map[string]string{
-				workloadIdentityGSAAnnot: gsaEmail,
+				workloadIdentityGKEAnnotation: gsa,
 			},
+			Labels: labels,
 		},
 	}
 
 	role := &rbacv1.ClusterRole{
-		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
-		ObjectMeta: metav1.ObjectMeta{Name: comp.clusterRoleName},
-		Rules:      comp.policyRules,
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRole",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   comp.clusterRoleName,
+			Labels: labels,
+		},
+		Rules: comp.rules,
 	}
 
 	binding := &rbacv1.ClusterRoleBinding{
-		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
-		ObjectMeta: metav1.ObjectMeta{Name: comp.clusterRoleName},
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRoleBinding",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   comp.roleBindingName,
+			Labels: labels,
+		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
 			Kind:     "ClusterRole",
@@ -167,25 +288,32 @@ func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []clie
 			},
 			{
 				Kind:     "Group",
-				APIGroup: "rbac.authorization.k8s.io",
 				Name:     manifestSystemSAGroup,
+				APIGroup: "rbac.authorization.k8s.io",
 			},
 		},
 	}
 
+	replicas := int32(1)
 	deployment := &appsv1.Deployment{
-		TypeMeta: metav1.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"},
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "apps/v1",
+			Kind:       "Deployment",
+		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      comp.deploymentName,
 			Namespace: manifestSystemNamespace,
-			Labels: map[string]string{
-				manifestComponentLabelKey: comp.componentLabel,
-			},
+			Labels:    labels,
 		},
 		Spec: appsv1.DeploymentSpec{
-			Selector: &metav1.LabelSelector{MatchLabels: podLabels},
+			Replicas: &replicas,
+			Selector: &metav1.LabelSelector{
+				MatchLabels: labels,
+			},
 			Template: corev1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{Labels: podLabels},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: labels,
+				},
 				Spec: corev1.PodSpec{
 					ServiceAccountName: comp.serviceAccountName,
 					Containers:         []corev1.Container{comp.container},
@@ -194,47 +322,56 @@ func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []clie
 		},
 	}
 
-	return []client.Object{sa, role, binding, deployment}
+	return []client.Object{comp.crd, sa, role, binding, deployment}
 }
 
 func (b *manifestBuilder) renderClusterYAML(cc *operatorv1beta1.ConfigConnector) (string, error) {
 	objs := b.buildClusterObjects()
-	objs = append(objs, b.buildRenderedConfigConnector(cc))
 
-	var out strings.Builder
-	fmt.Fprintf(&out, "# Cluster context: %s\n", b.contextName)
+	ccCopy := cc.DeepCopy()
+	ccCopy.TypeMeta = metav1.TypeMeta{
+		APIVersion: operatorv1beta1.GroupVersion.String(),
+		Kind:       "ConfigConnector",
+	}
+	ccCopy.ManagedFields = nil
+	b.configureMultiClusterLease(&ccCopy.Spec)
+	objs = append(objs, ccCopy)
+
+	var sb strings.Builder
+	fmt.Fprintf(&sb, "# Cluster: %s (candidate identity: %s)\n", b.contextName, b.candidateIdentity)
 	for _, obj := range objs {
-		raw, err := yaml.Marshal(obj)
+		rendered, err := serializeObjectYAML(obj)
 		if err != nil {
-			return "", fmt.Errorf("marshaling %s %q to YAML: %w", obj.GetObjectKind().GroupVersionKind().Kind, obj.GetName(), err)
+			return "", fmt.Errorf("marshaling %T to YAML for cluster %q: %w", obj, b.contextName, err)
 		}
 
-		out.WriteString("---\n")
-		out.Write(raw)
+		sb.WriteString("---\n")
+		sb.WriteString(rendered)
 	}
 
-	return out.String(), nil
+	return sb.String(), nil
 }
 
-const manifestConfigConnectorName = "configconnector.core.cnrm.cloud.google.com"
-
-func (b *manifestBuilder) buildRenderedConfigConnector(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1.ConfigConnector {
-	var spec operatorv1beta1.ConfigConnectorSpec
-	if cc != nil {
-		spec = *cc.Spec.DeepCopy()
+func serializeObjectYAML(obj client.Object) (string, error) {
+	raw, err := yaml.Marshal(obj)
+	if err != nil {
+		return "", err
 	}
 
-	b.configureMultiClusterLease(&spec)
-	return &operatorv1beta1.ConfigConnector{
-		TypeMeta: metav1.TypeMeta{
-			APIVersion: "core.cnrm.cloud.google.com/v1beta1",
-			Kind:       "ConfigConnector",
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name: manifestConfigConnectorName,
-		},
-		Spec: spec,
+	var doc map[string]any
+	if err := yaml.Unmarshal(raw, &doc); err != nil {
+		return "", err
 	}
+	delete(doc, "status")
+	if metaMap, ok := doc["metadata"].(map[string]any); ok {
+		delete(metaMap, "creationTimestamp")
+	}
+
+	cleaned, err := yaml.Marshal(doc)
+	if err != nil {
+		return "", err
+	}
+	return string(cleaned), nil
 }
 
 const defaultReplicationMode = "Status"
@@ -251,11 +388,16 @@ func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.Confi
 	mcl.LeaseName = b.leaseName
 	mcl.Namespace = b.leaseNamespace
 	if mcl.ClusterCandidateIdentity == "" {
-		mcl.ClusterCandidateIdentity = b.clusterIdentity
+		mcl.ClusterCandidateIdentity = b.candidateIdentity
 	}
 	if mcl.ResourceReplicationMode == "" {
 		mcl.ResourceReplicationMode = defaultReplicationMode
 	}
+}
+
+func (b *manifestBuilder) setImageOverrides(mclImage, syncerImage string) {
+	b.mclImage = mclImage
+	b.syncerImage = syncerImage
 }
 
 func (b *manifestBuilder) leaseKey() string {

@@ -25,6 +25,7 @@ import (
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 )
@@ -188,8 +189,8 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 	if err != nil {
 		t.Fatalf("executeSetup failed: %v", err)
 	}
-	const wantOutput = `[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply 8 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-a-us-central1-cluster-a", lease=cnrm-system/kcc-multicluster-lease)
-[dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply 8 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-b-us-east1-cluster-b", lease=cnrm-system/kcc-multicluster-lease)
+	const wantOutput = `[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply 10 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-a-us-central1-cluster-a", lease=cnrm-system/kcc-multicluster-lease)
+[dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply 10 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-b-us-east1-cluster-b", lease=cnrm-system/kcc-multicluster-lease)
 `
 	if stdout.String() != wantOutput {
 		t.Fatalf("got dry-run output:\n%s\nwant:\n%s", stdout.String(), wantOutput)
@@ -197,6 +198,57 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 	mclDeploy := &appsv1.Deployment{}
 	if err := handles[0].client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "multiclusterlease-controller-manager"}, mclDeploy); err == nil {
 		t.Fatalf("expected Deployment multiclusterlease-controller-manager not to be created in dry-run mode")
+	}
+}
+
+func TestExecuteSetupWithImageOverridesAndCRDs(t *testing.T) {
+	const (
+		kccImage        = "gcr.io/gke-release/cnrm/controller:1.158.0"
+		customMCLImg    = "us-central1-docker.pkg.dev/proj-a/ha/mcl:test"
+		customSyncerImg = "us-central1-docker.pkg.dev/proj-a/ha/syncer:test"
+	)
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+		newFakeClusterHandle(t, "gke_proj-a_us-east1_cluster-b", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newSetupOptions()
+	opts.bucket = "my-ha-bucket"
+	opts.mclImage = customMCLImg
+	opts.syncerImage = customSyncerImg
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	assertClusterCRDsAndImageOverrides(t, handles[0], customMCLImg, customSyncerImg)
+	assertClusterCRDsAndImageOverrides(t, handles[1], customMCLImg, customSyncerImg)
+}
+
+func assertClusterCRDsAndImageOverrides(t *testing.T, h *clusterHandle, wantMCLImage, wantSyncerImage string) {
+	t.Helper()
+	mclCRD := &apiextensionsv1.CustomResourceDefinition{}
+	if err := h.client.Get(context.Background(), types.NamespacedName{Name: "multiclusterleases.multicluster.core.cnrm.cloud.google.com"}, mclCRD); err != nil {
+		t.Fatalf("expected MultiClusterLease CRD on %s, got error: %v", h.contextName, err)
+	}
+	syncerCRD := &apiextensionsv1.CustomResourceDefinition{}
+	if err := h.client.Get(context.Background(), types.NamespacedName{Name: "krmsyncers.syncer.gkelabs.io"}, syncerCRD); err != nil {
+		t.Fatalf("expected KRMSyncer CRD on %s, got error: %v", h.contextName, err)
+	}
+	mclDeploy := &appsv1.Deployment{}
+	if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "multiclusterlease-controller-manager"}, mclDeploy); err != nil {
+		t.Fatalf("getting multiclusterlease-controller-manager on %s: %v", h.contextName, err)
+	}
+	if got := mclDeploy.Spec.Template.Spec.Containers[0].Image; got != wantMCLImage {
+		t.Fatalf("got MCL image %q, want %q", got, wantMCLImage)
+	}
+	syncerDeploy := &appsv1.Deployment{}
+	if err := h.client.Get(context.Background(), types.NamespacedName{Namespace: "cnrm-system", Name: "syncer-controller-manager"}, syncerDeploy); err != nil {
+		t.Fatalf("getting syncer-controller-manager on %s: %v", h.contextName, err)
+	}
+	if got := syncerDeploy.Spec.Template.Spec.Containers[0].Image; got != wantSyncerImage {
+		t.Fatalf("got Syncer image %q, want %q", got, wantSyncerImage)
 	}
 }
 

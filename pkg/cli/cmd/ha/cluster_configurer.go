@@ -194,6 +194,10 @@ func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
 	return nil
 }
 
+func (c *clusterConfigurer) setImageOverrides(mclImage, syncerImage string) {
+	c.manifests.setImageOverrides(mclImage, syncerImage)
+}
+
 func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
 	return c.gkeInfo
 }
