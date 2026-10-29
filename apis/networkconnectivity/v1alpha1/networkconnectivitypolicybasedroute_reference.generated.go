@@ -36,7 +36,7 @@ var _ refs.Ref = &NetworkConnectivityPolicyBasedRouteRef{}
 // NetworkConnectivityPolicyBasedRouteRef is a reference to a GCP NetworkConnectivityPolicyBasedRoute resource.
 type NetworkConnectivityPolicyBasedRouteRef struct {
 	// A reference to an externally managed NetworkConnectivityPolicyBasedRoute resource.
-	// Should be in the format "projects/{{projectsidID}}/locations/global/policyBasedRoutes/{{policybasedroutesidID}}".
+	// Should be in the format "projects/{{projectID}}/locations/global/policyBasedRoutes/{{policyBasedRouteID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetworkConnectivityPolicyBasedRoute resource.

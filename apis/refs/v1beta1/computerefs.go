@@ -87,6 +87,22 @@ func TrimComputeURIPrefix(ref string) string {
 	return strings.TrimPrefix(ref, "/")
 }
 
+var (
+	ComputeServiceAttachmentGVK = schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeServiceAttachment",
+	}
+	ComputeBackendBucketGVK = schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeBackendBucket",
+	}
+
+	_ Ref = &ComputeServiceAttachmentRef{}
+	_ Ref = &ComputeBackendBucketRef{}
+)
+
 type ComputeServiceAttachmentRef struct {
 	/* The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
@@ -94,6 +110,45 @@ type ComputeServiceAttachmentRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeServiceAttachment` resource. */
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *ComputeServiceAttachmentRef) GetGVK() schema.GroupVersionKind {
+	return ComputeServiceAttachmentGVK
+}
+
+func (r *ComputeServiceAttachmentRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ComputeServiceAttachmentRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeServiceAttachmentRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeServiceAttachmentRef) ValidateExternal(ref string) error {
+	trimmed := TrimComputeURIPrefix(ref)
+	tokens := strings.Split(trimmed, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "serviceAttachments" &&
+		tokens[1] != "" && tokens[3] != "" && tokens[5] != "" {
+		return nil
+	}
+	return fmt.Errorf("format of ComputeServiceAttachment external=%q was not known (use projects/<projectId>/regions/<region>/serviceAttachments/<name>)", ref)
+}
+
+func (r *ComputeServiceAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if err := ResolveComputeServiceAttachment(ctx, reader, defaultNamespace, r); err != nil {
+		return err
+	}
+	r.SetExternal(r.External)
+	return r.ValidateExternal(r.External)
 }
 
 func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, defaultNamespace string, ref *ComputeServiceAttachmentRef) error {
@@ -118,11 +173,7 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 	}
 
 	computeServiceAttachment := &unstructured.Unstructured{}
-	computeServiceAttachment.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeServiceAttachment",
-	})
+	computeServiceAttachment.SetGroupVersionKind(ComputeServiceAttachmentGVK)
 	if err := reader.Get(ctx, key, computeServiceAttachment); err != nil {
 		if apierrors.IsNotFound(err) {
 			return k8s.NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
@@ -130,14 +181,15 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 		return fmt.Errorf("error reading referenced ComputeServiceAttachment %v: %w", key, err)
 	}
 
-	// Read status.selfLink to parse external reference ID. This will need to be updated once we migrate this resource
-	// to direct controller, which uses status.externalRef.
-	selfLink, _, _ := unstructured.NestedString(computeServiceAttachment.Object, "status", "selfLink")
-	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
+	externalRef, _, _ := unstructured.NestedString(computeServiceAttachment.Object, "status", "externalRef")
+	if externalRef == "" {
+		selfLink, _, _ := unstructured.NestedString(computeServiceAttachment.Object, "status", "selfLink")
+		if selfLink == "" {
+			return k8s.NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
+		}
+		externalRef = TrimComputeURIPrefix(selfLink)
 	}
 
-	externalRef := strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/beta/")
 	ref.External = externalRef
 
 	return nil
@@ -218,6 +270,42 @@ type ComputeBackendBucketRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func (r *ComputeBackendBucketRef) GetGVK() schema.GroupVersionKind {
+	return ComputeBackendBucketGVK
+}
+
+func (r *ComputeBackendBucketRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ComputeBackendBucketRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeBackendBucketRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeBackendBucketRef) ValidateExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("external reference cannot be empty")
+	}
+	return nil
+}
+
+func (r *ComputeBackendBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if err := ResolveComputeBackendBucket(ctx, reader, defaultNamespace, r); err != nil {
+		return err
+	}
+	r.SetExternal(r.External)
+	return r.ValidateExternal(r.External)
+}
+
 func ResolveComputeBackendBucket(ctx context.Context, reader client.Reader, defaultNamespace string, ref *ComputeBackendBucketRef) error {
 	if ref == nil {
 		return nil
@@ -240,11 +328,7 @@ func ResolveComputeBackendBucket(ctx context.Context, reader client.Reader, defa
 	}
 
 	computeBackendBucket := &unstructured.Unstructured{}
-	computeBackendBucket.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeBackendBucket",
-	})
+	computeBackendBucket.SetGroupVersionKind(ComputeBackendBucketGVK)
 	if err := reader.Get(ctx, key, computeBackendBucket); err != nil {
 		if apierrors.IsNotFound(err) {
 			return k8s.NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
@@ -252,14 +336,15 @@ func ResolveComputeBackendBucket(ctx context.Context, reader client.Reader, defa
 		return fmt.Errorf("error reading referenced ComputeBackendBucket %v: %w", key, err)
 	}
 
-	// Read status.selfLink to parse external reference ID. This will need to be updated once we migrate this resource
-	// to direct controller, which uses status.externalRef.
-	selfLink, _, _ := unstructured.NestedString(computeBackendBucket.Object, "status", "selfLink")
-	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
+	externalRef, _, _ := unstructured.NestedString(computeBackendBucket.Object, "status", "externalRef")
+	if externalRef == "" {
+		selfLink, _, _ := unstructured.NestedString(computeBackendBucket.Object, "status", "selfLink")
+		if selfLink == "" {
+			return k8s.NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
+		}
+		externalRef = TrimComputeURIPrefix(selfLink)
 	}
 
-	externalRef := TrimComputeURIPrefix(selfLink)
 	ref.External = externalRef
 
 	return nil

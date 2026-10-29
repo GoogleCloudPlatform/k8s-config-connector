@@ -103,15 +103,35 @@ spec:
                       all interconnect attachments.
                     type: string
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: User-defined labels.
-                type: object
-              network:
+              networkRef:
                 description: 'Required. Fully-qualified URL of the network that this
                   route applies to, for example: projects/my-project/global/networks/my-network.'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeNetwork resource.
+                    type: string
+                type: object
               nextHopIlbIP:
                 description: Optional. The IP address of a global-access-enabled L4
                   ILB that is the next hop for matching packets. For this version,
@@ -180,7 +200,7 @@ spec:
                 type: object
             required:
             - filter
-            - network
+            - networkRef
             - projectRef
             type: object
           status:

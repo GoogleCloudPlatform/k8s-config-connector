@@ -20,9 +20,17 @@
 package v1alpha1
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
@@ -31,11 +39,9 @@ var DialogflowPlaybookGVK = GroupVersion.WithKind("DialogflowPlaybook")
 // +kcc:spec:proto=google.cloud.dialogflow.cx.v3.Playbook
 // +kcc:required-from-proto
 type DialogflowPlaybookSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DialogflowCXAgent that this resource belongs to.
+	// +required
+	AgentRef *DialogflowCXAgentRef `json:"agentRef,omitempty"`
 
 	// The DialogflowPlaybook name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -67,7 +73,7 @@ type DialogflowPlaybookSpec struct {
 	//  the instructions. If not provided explicitly, they are will
 	//  be implied using the tool being referenced in goal and steps.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Playbook.referenced_tools
-	ReferencedTools []string `json:"referencedTools,omitempty"`
+	ReferencedToolRefs []DialogflowToolRef `json:"referencedToolRefs,omitempty"`
 
 	// Optional. The playbook's scoped code block, which may implement handlers
 	//  and actions.
@@ -86,6 +92,174 @@ type DialogflowPlaybookSpec struct {
 	// Optional. Type of the playbook.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Playbook.playbook_type
 	PlaybookType *string `json:"playbookType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ParameterDefinition
+type ParameterDefinition struct {
+	// Required. Name of parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Type schema of parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.type_schema
+	TypeSchema *TypeSchema `json:"typeSchema,omitempty"`
+
+	// Human-readable description of the parameter. Limited to 300 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ParameterDefinition.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference
+type TypeSchema_SchemaReference struct {
+	// The tool that contains this schema definition.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.tool
+	ToolRef *DialogflowToolRef `json:"toolRef,omitempty"`
+
+	// The name of the schema.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.schema
+	Schema *string `json:"schema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler
+type Handler struct {
+	// A handler triggered by event.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.event_handler
+	EventHandler *Handler_EventHandler `json:"eventHandler,omitempty"`
+
+	// A handler triggered during specific lifecycle of the playbook execution.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.lifecycle_handler
+	LifecycleHandler *Handler_LifecycleHandler `json:"lifecycleHandler,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.EventHandler
+type Handler_EventHandler struct {
+	// Required. The name of the event that triggers this handler.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.event
+	// +required
+	Event *string `json:"event,omitempty"`
+
+	// Optional. The condition that must be satisfied to trigger this handler.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Required. The fulfillment to call when the event occurs.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.EventHandler.fulfillment
+	// +required
+	Fulfillment *DialogflowCX_Fulfillment `json:"fulfillment,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler
+type Handler_LifecycleHandler struct {
+	// Required. The name of the lifecycle stage that triggers this handler.
+	//  Supported values:
+	//  * `playbook-start`
+	//  * `pre-action-selection`
+	//  * `pre-action-execution`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.lifecycle_stage
+	// +required
+	LifecycleStage *string `json:"lifecycleStage,omitempty"`
+
+	// Optional. The condition that must be satisfied to trigger this handler.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Required. The fulfillment to call when this handler is triggered.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Handler.LifecycleHandler.fulfillment
+	// +required
+	Fulfillment *DialogflowCX_Fulfillment `json:"fulfillment,omitempty"`
+}
+
+var (
+	DialogflowToolIdentityFormat = gcpurls.Template[DialogflowToolIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}")
+)
+
+// +k8s:deepcopy-gen=false
+type DialogflowToolIdentity struct {
+	Project  string
+	Location string
+	Agent    string
+	Tool     string
+}
+
+func (i *DialogflowToolIdentity) String() string {
+	return DialogflowToolIdentityFormat.ToString(*i)
+}
+
+func (i *DialogflowToolIdentity) FromExternal(ref string) error {
+	parsed, match, err := DialogflowToolIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of DialogflowTool external=%q was not known (use %s): %w", ref, DialogflowToolIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of DialogflowTool external=%q was not known (use %s)", ref, DialogflowToolIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *DialogflowToolIdentity) Host() string {
+	return DialogflowToolIdentityFormat.Host()
+}
+
+var (
+	_ refsv1beta1.Ref         = &DialogflowToolRef{}
+	_ refsv1beta1.ExternalRef = &DialogflowToolRef{}
+)
+
+var DialogflowToolGVK = GroupVersion.WithKind("DialogflowTool")
+
+// DialogflowToolRef is a reference to a DialogflowTool resource.
+type DialogflowToolRef struct {
+	// A reference to an externally managed DialogflowTool resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+	External string `json:"external,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&DialogflowToolRef{})
+}
+
+func (r *DialogflowToolRef) GetGVK() schema.GroupVersionKind {
+	return DialogflowToolGVK
+}
+
+func (r *DialogflowToolRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *DialogflowToolRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DialogflowToolRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *DialogflowToolRef) ValidateExternal(ref string) error {
+	id := &DialogflowToolIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *DialogflowToolRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &DialogflowToolIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *DialogflowToolRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External == "" {
+		return fmt.Errorf("external reference must be specified for %s", DialogflowToolGVK.Kind)
+	}
+	return r.ValidateExternal(r.External)
 }
 
 // DialogflowPlaybookStatus defines the config connector machine state of DialogflowPlaybook

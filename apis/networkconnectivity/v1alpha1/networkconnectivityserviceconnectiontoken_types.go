@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,17 +32,10 @@ var NetworkConnectivityServiceConnectionTokenGVK = GroupVersion.WithKind("Networ
 // +kcc:spec:proto=google.cloud.networkconnectivity.v1.ServiceConnectionToken
 // +kcc:required-from-proto
 type NetworkConnectivityServiceConnectionTokenSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The NetworkConnectivityServiceConnectionToken name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// User-defined labels.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// A description of this resource.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.description
@@ -51,13 +45,7 @@ type NetworkConnectivityServiceConnectionTokenSpec struct {
 	//  Example:
 	//  projects/{projectNumOrId}/global/networks/{resourceId}.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.network
-	Network *string `json:"network,omitempty"`
-
-	// Optional. The etag is computed by the server, and may be sent on update and
-	//  delete requests to ensure the client has an up-to-date value before
-	//  proceeding.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.etag
-	Etag *string `json:"etag,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 // NetworkConnectivityServiceConnectionTokenStatus defines the config connector machine state of NetworkConnectivityServiceConnectionToken
@@ -94,6 +82,12 @@ type NetworkConnectivityServiceConnectionTokenObservedState struct {
 	// Output only. The time to which this token is valid.
 	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Optional. The etag is computed by the server, and may be sent on update and
+	//  delete requests to ensure the client has an up-to-date value before
+	//  proceeding.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionToken.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

@@ -29,7 +29,9 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh
+fi
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
@@ -67,7 +69,8 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowConversationModel:ConversationModel
+  --resource DialogflowConversationModel:ConversationModel \
+  --pattern DialogflowConversationModel=projects/{project}/locations/{location}/conversationModels/{conversation_model}
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \

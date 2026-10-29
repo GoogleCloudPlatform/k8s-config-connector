@@ -56,13 +56,13 @@ func transcoderJobTemplateFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".config.overlays")
 	f.SpecField(".config.pubsub_destination")
 	f.SpecField(".config.sprite_sheets")
-	f.SpecField(".labels")
 
 	// Status fields
 	f.StatusField(".config.inputs[].attributes.track_definitions[].detected_languages")
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".config.elementary_streams[].video_stream.h264.gop_frame_count")

@@ -19,8 +19,8 @@
 // +generated:fuzzer
 // krm.group: dataform.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.message: google.cloud.dataform.v1.WorkflowConfig
-// proto.service: google.cloud.dataform.v1
+// proto.message: google.cloud.dataform.v1beta1.WorkflowConfig
+// proto.service: google.cloud.dataform.v1beta1
 
 package dataform
 
@@ -60,6 +60,7 @@ func dataformWorkflowConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".invocation_config.query_priority")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_execution_records[].error_status.details")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_execution_records[].workflow_invocation")
+	f.Unimplemented_NotYetTriaged(".workflow_trigger_config")
 
 	return f
 }

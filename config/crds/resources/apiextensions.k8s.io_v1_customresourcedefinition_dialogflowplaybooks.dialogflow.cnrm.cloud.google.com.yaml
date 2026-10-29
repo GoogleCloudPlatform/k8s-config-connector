@@ -61,6 +61,14 @@ spec:
           spec:
             description: DialogflowPlaybookSpec defines the desired state of DialogflowPlaybook
             properties:
+              agentRef:
+                description: The DialogflowCXAgent that this resource belongs to.
+                properties:
+                  external:
+                    description: A reference to an externally managed DialogflowCXAgent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
+                    type: string
+                type: object
               codeBlock:
                 description: Optional. The playbook's scoped code block, which may
                   implement handlers and actions.
@@ -349,15 +357,23 @@ spec:
                                                         description: Optional. The
                                                           action's input parameters.
                                                         x-kubernetes-preserve-unknown-fields: true
-                                                      tool:
+                                                      toolRef:
                                                         description: 'Required. The
                                                           [tool][google.cloud.dialogflow.cx.v3.Tool]
                                                           associated with this call.
                                                           Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                                                        type: string
+                                                        properties:
+                                                          external:
+                                                            description: A reference
+                                                              to an externally managed
+                                                              DialogflowTool resource.
+                                                              Should be in the format
+                                                              "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                                            type: string
+                                                        type: object
                                                     required:
                                                     - action
-                                                    - tool
+                                                    - toolRef
                                                     type: object
                                                 type: object
                                             type: object
@@ -389,10 +405,38 @@ spec:
                                 this fulfillment.
                               items:
                                 properties:
-                                  generator:
+                                  generatorRef:
                                     description: 'Required. The generator to call.
                                       Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.'
-                                    type: string
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed DialogflowGenerator resource. Should
+                                          be in the format "projects/{{projectID}}/locations/{{location}}/generators/{{generatorID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a DialogflowGenerator
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a DialogflowGenerator
+                                          resource.
+                                        type: string
+                                    type: object
                                   inputParameters:
                                     additionalProperties:
                                       type: string
@@ -414,7 +458,7 @@ spec:
                                       should contain the generator response.
                                     type: string
                                 required:
-                                - generator
+                                - generatorRef
                                 - outputParameter
                                 type: object
                               type: array
@@ -525,13 +569,19 @@ spec:
                                         description: Optional. The action's input
                                           parameters.
                                         x-kubernetes-preserve-unknown-fields: true
-                                      tool:
+                                      toolRef:
                                         description: 'Required. The [tool][google.cloud.dialogflow.cx.v3.Tool]
                                           associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                                        type: string
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed DialogflowTool resource. Should
+                                              be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                            type: string
+                                        type: object
                                     required:
                                     - action
-                                    - tool
+                                    - toolRef
                                     type: object
                                 type: object
                               type: array
@@ -596,9 +646,36 @@ spec:
                                 is being called, but it could be used for other purposes.
                                 This field is required if `webhook` is specified.
                               type: string
-                            webhook:
+                            webhookRef:
                               description: 'The webhook to call. Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.'
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DialogflowWebhook resource. Should be in the format
+                                    "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/webhooks/{{webhookID}}".
+                                  type: string
+                                name:
+                                  description: The name of a DialogflowWebhook resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a DialogflowWebhook
+                                    resource.
+                                  type: string
+                              type: object
                           type: object
                       required:
                       - event
@@ -867,15 +944,23 @@ spec:
                                                         description: Optional. The
                                                           action's input parameters.
                                                         x-kubernetes-preserve-unknown-fields: true
-                                                      tool:
+                                                      toolRef:
                                                         description: 'Required. The
                                                           [tool][google.cloud.dialogflow.cx.v3.Tool]
                                                           associated with this call.
                                                           Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                                                        type: string
+                                                        properties:
+                                                          external:
+                                                            description: A reference
+                                                              to an externally managed
+                                                              DialogflowTool resource.
+                                                              Should be in the format
+                                                              "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                                            type: string
+                                                        type: object
                                                     required:
                                                     - action
-                                                    - tool
+                                                    - toolRef
                                                     type: object
                                                 type: object
                                             type: object
@@ -907,10 +992,38 @@ spec:
                                 this fulfillment.
                               items:
                                 properties:
-                                  generator:
+                                  generatorRef:
                                     description: 'Required. The generator to call.
                                       Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.'
-                                    type: string
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed DialogflowGenerator resource. Should
+                                          be in the format "projects/{{projectID}}/locations/{{location}}/generators/{{generatorID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a DialogflowGenerator
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a DialogflowGenerator
+                                          resource.
+                                        type: string
+                                    type: object
                                   inputParameters:
                                     additionalProperties:
                                       type: string
@@ -932,7 +1045,7 @@ spec:
                                       should contain the generator response.
                                     type: string
                                 required:
-                                - generator
+                                - generatorRef
                                 - outputParameter
                                 type: object
                               type: array
@@ -1043,13 +1156,19 @@ spec:
                                         description: Optional. The action's input
                                           parameters.
                                         x-kubernetes-preserve-unknown-fields: true
-                                      tool:
+                                      toolRef:
                                         description: 'Required. The [tool][google.cloud.dialogflow.cx.v3.Tool]
                                           associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                                        type: string
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed DialogflowTool resource. Should
+                                              be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                            type: string
+                                        type: object
                                     required:
                                     - action
-                                    - tool
+                                    - toolRef
                                     type: object
                                 type: object
                               type: array
@@ -1114,9 +1233,36 @@ spec:
                                 is being called, but it could be used for other purposes.
                                 This field is required if `webhook` is specified.
                               type: string
-                            webhook:
+                            webhookRef:
                               description: 'The webhook to call. Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.'
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DialogflowWebhook resource. Should be in the format
+                                    "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/webhooks/{{webhookID}}".
+                                  type: string
+                                name:
+                                  description: The name of a DialogflowWebhook resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a DialogflowWebhook
+                                    resource.
+                                  type: string
+                              type: object
                           type: object
                         lifecycleStage:
                           description: 'Required. The name of the lifecycle stage
@@ -1141,9 +1287,6 @@ spec:
                     name:
                       description: Required. Name of parameter.
                       type: string
-                    type:
-                      description: Type of parameter.
-                      type: string
                     typeSchema:
                       description: Optional. Type schema of parameter.
                       properties:
@@ -1165,10 +1308,16 @@ spec:
                             schema:
                               description: The name of the schema.
                               type: string
-                            tool:
+                            toolRef:
                               description: 'The tool that contains this schema definition.
                                 Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                              type: string
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DialogflowTool resource. Should be in the format
+                                    "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                  type: string
+                              type: object
                           type: object
                       type: object
                   required:
@@ -1212,9 +1361,6 @@ spec:
                     description: The custom prompt to use.
                     type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               outputParameterDefinitions:
                 description: Optional. Defined structured output parameters for this
                   playbook.
@@ -1226,9 +1372,6 @@ spec:
                       type: string
                     name:
                       description: Required. Name of parameter.
-                      type: string
-                    type:
-                      description: Type of parameter.
                       type: string
                     typeSchema:
                       description: Optional. Type schema of parameter.
@@ -1251,10 +1394,16 @@ spec:
                             schema:
                               description: The name of the schema.
                               type: string
-                            tool:
+                            toolRef:
                               description: 'The tool that contains this schema definition.
                                 Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.'
-                              type: string
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    DialogflowTool resource. Should be in the format
+                                    "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                                  type: string
+                              type: object
                           type: object
                       type: object
                   required:
@@ -1264,55 +1413,29 @@ spec:
               playbookType:
                 description: Optional. Type of the playbook.
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
-              referencedTools:
+              referencedToolRefs:
                 description: Optional. The resource name of tools referenced by the
                   current playbook in the instructions. If not provided explicitly,
                   they are will be implied using the tool being referenced in goal
                   and steps.
                 items:
-                  type: string
+                  description: DialogflowToolRef is a reference to a DialogflowTool
+                    resource.
+                  properties:
+                    external:
+                      description: A reference to an externally managed DialogflowTool
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}/tools/{{toolID}}".
+                      type: string
+                  type: object
                 type: array
               resourceID:
                 description: The DialogflowPlaybook name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
+            - agentRef
             - displayName
             - goal
-            - location
-            - projectRef
             type: object
           status:
             description: DialogflowPlaybookStatus defines the config connector machine

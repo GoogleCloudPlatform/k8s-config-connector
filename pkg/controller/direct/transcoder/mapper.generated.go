@@ -26,6 +26,7 @@ package transcoder
 import (
 	pb "cloud.google.com/go/video/transcoder/apiv1/transcoderpb"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/transcoder/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -376,22 +377,6 @@ func Encryption_SecretManagerSource_ToProto(mapCtx *direct.MapContext, in *krm.E
 	out.SecretVersion = direct.ValueOf(in.SecretVersion)
 	return out
 }
-func Encryption_SecretManagerSourceWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Encryption_SecretManagerSource) *krm.Encryption_SecretManagerSourceWithRequired {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Encryption_SecretManagerSourceWithRequired{}
-	out.SecretVersion = direct.LazyPtr(in.GetSecretVersion())
-	return out
-}
-func Encryption_SecretManagerSourceWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Encryption_SecretManagerSourceWithRequired) *pb.Encryption_SecretManagerSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Encryption_SecretManagerSource{}
-	out.SecretVersion = direct.ValueOf(in.SecretVersion)
-	return out
-}
 func Encryption_Widevine_FromProto(mapCtx *direct.MapContext, in *pb.Encryption_Widevine) *krm.Encryption_Widevine {
 	if in == nil {
 		return nil
@@ -552,42 +537,6 @@ func JobConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobConfig
 	// MISSING: SpriteSheets
 	// MISSING: Overlays
 	// MISSING: Encryptions
-	return out
-}
-func JobConfigWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.JobConfig) *krm.JobConfigWithRequired {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobConfigWithRequired{}
-	out.Inputs = direct.Slice_FromProto(mapCtx, in.Inputs, Input_FromProto)
-	out.EditList = direct.Slice_FromProto(mapCtx, in.EditList, EditAtom_FromProto)
-	out.ElementaryStreams = direct.Slice_FromProto(mapCtx, in.ElementaryStreams, ElementaryStreamWithRequired_FromProto)
-	out.MuxStreams = direct.Slice_FromProto(mapCtx, in.MuxStreams, MuxStreamWithRequired_FromProto)
-	out.Manifests = direct.Slice_FromProto(mapCtx, in.Manifests, ManifestWithRequired_FromProto)
-	out.Output = Output_FromProto(mapCtx, in.GetOutput())
-	out.AdBreaks = direct.Slice_FromProto(mapCtx, in.AdBreaks, AdBreak_FromProto)
-	out.PubsubDestination = PubsubDestination_FromProto(mapCtx, in.GetPubsubDestination())
-	out.SpriteSheets = direct.Slice_FromProto(mapCtx, in.SpriteSheets, SpriteSheetWithRequired_FromProto)
-	out.Overlays = direct.Slice_FromProto(mapCtx, in.Overlays, OverlayWithRequired_FromProto)
-	out.Encryptions = direct.Slice_FromProto(mapCtx, in.Encryptions, EncryptionWithRequired_FromProto)
-	return out
-}
-func JobConfigWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.JobConfigWithRequired) *pb.JobConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.JobConfig{}
-	out.Inputs = direct.Slice_ToProto(mapCtx, in.Inputs, Input_ToProto)
-	out.EditList = direct.Slice_ToProto(mapCtx, in.EditList, EditAtom_ToProto)
-	out.ElementaryStreams = direct.Slice_ToProto(mapCtx, in.ElementaryStreams, ElementaryStreamWithRequired_ToProto)
-	out.MuxStreams = direct.Slice_ToProto(mapCtx, in.MuxStreams, MuxStreamWithRequired_ToProto)
-	out.Manifests = direct.Slice_ToProto(mapCtx, in.Manifests, ManifestWithRequired_ToProto)
-	out.Output = Output_ToProto(mapCtx, in.Output)
-	out.AdBreaks = direct.Slice_ToProto(mapCtx, in.AdBreaks, AdBreak_ToProto)
-	out.PubsubDestination = PubsubDestination_ToProto(mapCtx, in.PubsubDestination)
-	out.SpriteSheets = direct.Slice_ToProto(mapCtx, in.SpriteSheets, SpriteSheetWithRequired_ToProto)
-	out.Overlays = direct.Slice_ToProto(mapCtx, in.Overlays, OverlayWithRequired_ToProto)
-	out.Encryptions = direct.Slice_ToProto(mapCtx, in.Encryptions, EncryptionWithRequired_ToProto)
 	return out
 }
 func Manifest_FromProto(mapCtx *direct.MapContext, in *pb.Manifest) *krm.Manifest {
@@ -1543,6 +1492,7 @@ func TranscoderJobTemplateObservedState_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.TranscoderJobTemplateObservedState{}
 	// MISSING: Name
 	out.Config = JobConfigObservedState_FromProto(mapCtx, in.GetConfig())
+	// MISSING: Labels
 	return out
 }
 func TranscoderJobTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TranscoderJobTemplateObservedState) *pb.JobTemplate {
@@ -1552,6 +1502,7 @@ func TranscoderJobTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.JobTemplate{}
 	// MISSING: Name
 	out.Config = JobConfigObservedState_ToProto(mapCtx, in.Config)
+	// MISSING: Labels
 	return out
 }
 func TranscoderJobTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.JobTemplate) *krm.TranscoderJobTemplateSpec {
@@ -1560,8 +1511,8 @@ func TranscoderJobTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.JobTe
 	}
 	out := &krm.TranscoderJobTemplateSpec{}
 	// MISSING: Name
-	out.Config = JobConfigWithRequired_FromProto(mapCtx, in.GetConfig())
-	out.Labels = in.Labels
+	out.Config = TranscoderJobTemplate_JobConfig_FromProto(mapCtx, in.GetConfig())
+	// MISSING: Labels
 	return out
 }
 func TranscoderJobTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.TranscoderJobTemplateSpec) *pb.JobTemplate {
@@ -1570,8 +1521,64 @@ func TranscoderJobTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.Transc
 	}
 	out := &pb.JobTemplate{}
 	// MISSING: Name
-	out.Config = JobConfigWithRequired_ToProto(mapCtx, in.Config)
-	out.Labels = in.Labels
+	out.Config = TranscoderJobTemplate_JobConfig_ToProto(mapCtx, in.Config)
+	// MISSING: Labels
+	return out
+}
+func TranscoderJobTemplate_Encryption_SecretManagerSource_FromProto(mapCtx *direct.MapContext, in *pb.Encryption_SecretManagerSource) *krm.TranscoderJobTemplate_Encryption_SecretManagerSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranscoderJobTemplate_Encryption_SecretManagerSource{}
+	if in.GetSecretVersion() != "" {
+		out.SecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetSecretVersion()}
+	}
+	return out
+}
+func TranscoderJobTemplate_Encryption_SecretManagerSource_ToProto(mapCtx *direct.MapContext, in *krm.TranscoderJobTemplate_Encryption_SecretManagerSource) *pb.Encryption_SecretManagerSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Encryption_SecretManagerSource{}
+	if in.SecretVersionRef != nil {
+		out.SecretVersion = in.SecretVersionRef.External
+	}
+	return out
+}
+func TranscoderJobTemplate_JobConfig_FromProto(mapCtx *direct.MapContext, in *pb.JobConfig) *krm.TranscoderJobTemplate_JobConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TranscoderJobTemplate_JobConfig{}
+	out.Inputs = direct.Slice_FromProto(mapCtx, in.Inputs, Input_FromProto)
+	out.EditList = direct.Slice_FromProto(mapCtx, in.EditList, EditAtom_FromProto)
+	out.ElementaryStreams = direct.Slice_FromProto(mapCtx, in.ElementaryStreams, ElementaryStreamWithRequired_FromProto)
+	out.MuxStreams = direct.Slice_FromProto(mapCtx, in.MuxStreams, MuxStreamWithRequired_FromProto)
+	out.Manifests = direct.Slice_FromProto(mapCtx, in.Manifests, ManifestWithRequired_FromProto)
+	out.Output = Output_FromProto(mapCtx, in.GetOutput())
+	out.AdBreaks = direct.Slice_FromProto(mapCtx, in.AdBreaks, AdBreak_FromProto)
+	out.PubsubDestination = PubsubDestination_FromProto(mapCtx, in.GetPubsubDestination())
+	out.SpriteSheets = direct.Slice_FromProto(mapCtx, in.SpriteSheets, SpriteSheetWithRequired_FromProto)
+	out.Overlays = direct.Slice_FromProto(mapCtx, in.Overlays, OverlayWithRequired_FromProto)
+	out.Encryptions = direct.Slice_FromProto(mapCtx, in.Encryptions, TranscoderJobTemplate_Encryption_FromProto)
+	return out
+}
+func TranscoderJobTemplate_JobConfig_ToProto(mapCtx *direct.MapContext, in *krm.TranscoderJobTemplate_JobConfig) *pb.JobConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobConfig{}
+	out.Inputs = direct.Slice_ToProto(mapCtx, in.Inputs, Input_ToProto)
+	out.EditList = direct.Slice_ToProto(mapCtx, in.EditList, EditAtom_ToProto)
+	out.ElementaryStreams = direct.Slice_ToProto(mapCtx, in.ElementaryStreams, ElementaryStreamWithRequired_ToProto)
+	out.MuxStreams = direct.Slice_ToProto(mapCtx, in.MuxStreams, MuxStreamWithRequired_ToProto)
+	out.Manifests = direct.Slice_ToProto(mapCtx, in.Manifests, ManifestWithRequired_ToProto)
+	out.Output = Output_ToProto(mapCtx, in.Output)
+	out.AdBreaks = direct.Slice_ToProto(mapCtx, in.AdBreaks, AdBreak_ToProto)
+	out.PubsubDestination = PubsubDestination_ToProto(mapCtx, in.PubsubDestination)
+	out.SpriteSheets = direct.Slice_ToProto(mapCtx, in.SpriteSheets, SpriteSheetWithRequired_ToProto)
+	out.Overlays = direct.Slice_ToProto(mapCtx, in.Overlays, OverlayWithRequired_ToProto)
+	out.Encryptions = direct.Slice_ToProto(mapCtx, in.Encryptions, TranscoderJobTemplate_Encryption_ToProto)
 	return out
 }
 func VideoStream_FromProto(mapCtx *direct.MapContext, in *pb.VideoStream) *krm.VideoStream {

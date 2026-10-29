@@ -43,7 +43,6 @@ func networkConnectivityPolicyBasedRouteFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".description")
 	f.SpecField(".filter")
 	f.SpecField(".interconnect_attachment")
-	f.SpecField(".labels")
 	f.SpecField(".network")
 	f.SpecField(".priority")
 	f.SpecField(".virtual_machine")
@@ -57,6 +56,7 @@ func networkConnectivityPolicyBasedRouteFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".next_hop_ilb_ip")
