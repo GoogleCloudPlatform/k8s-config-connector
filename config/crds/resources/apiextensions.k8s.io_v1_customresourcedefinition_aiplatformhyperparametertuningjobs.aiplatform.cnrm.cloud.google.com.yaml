@@ -575,22 +575,17 @@ spec:
                   baseOutputDirectory:
                     description: |-
                       The Cloud Storage location to store the output of this CustomJob or
-                       HyperparameterTuningJob. For HyperparameterTuningJob,
-                       the baseOutputDirectory of
-                       each child CustomJob backing a Trial is set to a subdirectory of name
-                       [id][google.cloud.aiplatform.v1.Trial.id] under its parent
-                       HyperparameterTuningJob's baseOutputDirectory.
+                       PipelineJob in.
 
-                       The following Vertex AI environment variables will be passed to
-                       containers or python modules when this field is set:
+                       In most cases, this location is because Vertex AI associates a
+                       Google Cloud Storage bucket with every pipeline run in order to store
+                       artifacts. However, some pipeline components may override this value.
 
-                         For CustomJob:
+                       If other output destination is set, self-link will be returned,
+                       and base_output_directory value will be ignored.
 
-                         * AIP_MODEL_DIR = `<base_output_directory>/model/`
-                         * AIP_CHECKPOINT_DIR = `<base_output_directory>/checkpoints/`
-                         * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/logs/`
-
-                         For CustomJob backing a Trial of HyperparameterTuningJob:
+                       API users can configure AIP_BASE_OUTPUT_DIRECTORY to obtain this value.
+                       Additionally, Vertex AI will map the environment variables:
 
                          * AIP_MODEL_DIR = `<base_output_directory>/<trial_id>/model/`
                          * AIP_CHECKPOINT_DIR = `<base_output_directory>/<trial_id>/checkpoints/`
@@ -609,54 +604,126 @@ spec:
                        dashboard in training chief container.
 
                        If set to `true`, you can access the dashboard at the URIs given
-                       by
-                       [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris]
-                       or
-                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris]
-                       (within
+                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris] or
+                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris] (within
                        [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
                     type: boolean
                   enableWebAccess:
                     description: |-
                       Optional. Whether you want Vertex AI to enable [interactive shell
                        access](https://cloud.google.com/vertex-ai/docs/training/monitor-debug-interactive-shell)
-                       to training containers.
+                       for custom training.
 
                        If set to `true`, you can access interactive shells at the URIs given
-                       by
-                       [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris]
-                       or
-                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris]
-                       (within
+                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris] or
+                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris] (within
                        [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
                     type: boolean
-                  experiment:
+                  experimentRef:
                     description: 'Optional. The Experiment associated with this job.
                       Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}`'
-                    type: string
-                  experimentRun:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VertexAIExperiment
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/metadataStores/{{metadataStore}}/contexts/{{experimentID}}".
+                        type: string
+                      name:
+                        description: The name of a VertexAIExperiment resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VertexAIExperiment resource.
+                        type: string
+                    type: object
+                  experimentRunRef:
                     description: 'Optional. The Experiment Run associated with this
                       job. Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}-{experiment-run-name}`'
-                    type: string
-                  models:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VertexAIExperimentRun
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/metadataStores/{{metadataStore}}/contexts/{{experimentRunID}}".
+                        type: string
+                      name:
+                        description: The name of a VertexAIExperimentRun resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VertexAIExperimentRun resource.
+                        type: string
+                    type: object
+                  modelRefs:
                     description: |-
                       Optional. The name of the Model resources for which to generate a mapping
-                       to artifact URIs. Applicable only to some of the Google-provided custom
-                       jobs. Format: `projects/{project}/locations/{location}/models/{model}`
+                       to the trial name formats. Model names should be of the form:
+                       `projects/{project}/locations/{location}/models/{model}`
 
-                       In order to retrieve a specific version of the model, also provide
-                       the version ID or version alias.
-                         Example: `projects/{project}/locations/{location}/models/{model}@2`
-                                    or
-                                  `projects/{project}/locations/{location}/models/{model}@golden`
-                       If no version ID or alias is specified, the "default" version will be
+                       To specify this field, you must have already [configured Model Registry
+                       integration for Vertex
+                       AI](https://cloud.google.com/vertex-ai/docs/model-registry/model-registry-integration).
+
+                       At most 50 model names can be specified. For each specified model, its
+                       version alias is created for the custom job. The alias name format is
+                       `customjob-{job_id}`. The model version alias is deleted when the custom
+                       job is deleted. There will be at most one version alias for each model
                        returned. The "default" version alias is created for the first version of
                        the model, and can be moved to other versions later on. There will be
                        exactly one default version.
                     items:
-                      type: string
+                      description: AIPlatformModelRef is a reference to an AIPlatformModel.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed AIPlatformModel
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
+                          type: string
+                        name:
+                          description: The name of an AIPlatformModel resource.
+                          type: string
+                        namespace:
+                          description: The namespace of an AIPlatformModel resource.
+                          type: string
+                      type: object
                     type: array
-                  network:
+                  networkRef:
                     description: |-
                       Optional. The full name of the Compute Engine
                        [network](/compute/docs/networks-and-firewalls#networks) to which the Job
@@ -671,7 +738,32 @@ spec:
                        AI](https://cloud.google.com/vertex-ai/docs/general/vpc-peering).
 
                        If this field is left unspecified, the job is not peered with any network.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeNetwork resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeNetwork resource.
+                        type: string
+                    type: object
                   persistentResourceID:
                     description: |-
                       Optional. The ID of the PersistentResource in the same Project and Location
@@ -840,18 +932,67 @@ spec:
                           is 7 days.
                         type: string
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Specifies the service account for workload run-as
                       account. Users submitting jobs must have act-as permission on
                       this run-as account. If unspecified, the [Vertex AI Custom Code
                       Service Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
                       for the CustomJob's project is used.
-                    type: string
-                  tensorboard:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  tensorboardRef:
                     description: 'Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1.Tensorboard]
                       resource to which this CustomJob will upload Tensorboard logs.
                       Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VertexAITensorboard
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}".
+                        type: string
+                      name:
+                        description: The name of a VertexAITensorboard resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VertexAITensorboard resource.
+                        type: string
+                    type: object
                   workerPoolSpecs:
                     description: Required. The spec of the worker pools including
                       machine type and Docker image. All worker pools except the first
@@ -895,9 +1036,6 @@ spec:
                                       be expanded, regardless of whether the variable
                                       exists or not.'
                                     type: string
-                                required:
-                                - name
-                                - value
                                 type: object
                               type: array
                             imageURI:
@@ -905,8 +1043,6 @@ spec:
                                 in the Container Registry that is to be run on each
                                 worker replica.
                               type: string
-                          required:
-                          - imageURI
                           type: object
                         diskSpec:
                           description: Disk spec.
@@ -943,11 +1079,6 @@ spec:
                                 description: Required. The unique identifier of the
                                   Lustre volume.
                                 type: string
-                            required:
-                            - filesystem
-                            - instanceIP
-                            - mountPoint
-                            - volumeHandle
                             type: object
                           type: array
                         machineSpec:
@@ -1042,10 +1173,6 @@ spec:
                               server:
                                 description: Required. IP address of the NFS server.
                                 type: string
-                            required:
-                            - mountPoint
-                            - path
-                            - server
                             type: object
                           type: array
                         pythonPackageSpec:
@@ -1057,46 +1184,18 @@ spec:
                               items:
                                 type: string
                               type: array
-                            env:
-                              description: Environment variables to be passed to the
-                                python module. Maximum limit is 100.
-                              items:
-                                properties:
-                                  name:
-                                    description: Required. Name of the environment
-                                      variable. Must be a valid C identifier.
-                                    type: string
-                                  value:
-                                    description: 'Required. Variables that reference
-                                      a $(VAR_NAME) are expanded using the previous
-                                      defined environment variables in the container
-                                      and any service environment variables. If a
-                                      variable cannot be resolved, the reference in
-                                      the input string will be unchanged. The $(VAR_NAME)
-                                      syntax can be escaped with a double $$, ie:
-                                      $$(VAR_NAME). Escaped references will never
-                                      be expanded, regardless of whether the variable
-                                      exists or not.'
-                                    type: string
-                                required:
-                                - name
-                                - value
-                                type: object
-                              type: array
                             executorImageURI:
                               description: Required. The URI of a container image
                                 in Artifact Registry that will run the provided Python
-                                package. Vertex AI provides a wide range of executor
-                                images with pre-installed packages to meet users'
-                                various use cases. See the list of [pre-built containers
-                                for training](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
-                                You must use an image from this list.
+                                package. Vertex AI provides a wide range of custom
+                                pre-built sub-containers to run custom training workloads.
+                                If set, Google Cloud Storage paths inside the pythonPackageSpec
+                                will be mapped to local paths within the partner container.
                               type: string
                             packageURIs:
-                              description: Required. The Google Cloud Storage location
+                              description: Required. The Google Cloud Storage URIs
                                 of the Python package files which are the training
-                                program and its dependent packages. The maximum number
-                                of package URIs is 100.
+                                program and its dependent packages.
                               items:
                                 type: string
                               type: array
@@ -1104,10 +1203,6 @@ spec:
                               description: Required. The Python module name to run
                                 after installing the packages.
                               type: string
-                          required:
-                          - executorImageURI
-                          - packageURIs
-                          - pythonModule
                           type: object
                         replicaCount:
                           description: Optional. The number of worker replicas to
@@ -1116,8 +1211,6 @@ spec:
                           type: integer
                       type: object
                     type: array
-                required:
-                - workerPoolSpecs
                 type: object
             required:
             - displayName

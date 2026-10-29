@@ -1,0 +1,275 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+	"testing"
+
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/google/go-cmp/cmp"
+)
+
+func TestAIPlatformCustomJobIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *AIPlatformCustomJobIdentity
+	}{
+		{
+			name: "valid reference",
+			ref:  "projects/my-project/locations/us-central1/customJobs/my-custom-job",
+			want: &AIPlatformCustomJobIdentity{
+				Project:   "my-project",
+				Location:  "us-central1",
+				CustomJob: "my-custom-job",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full url",
+			ref:  "https://aiplatform.googleapis.com/projects/my-project/locations/us-central1/customJobs/my-custom-job",
+			want: &AIPlatformCustomJobIdentity{
+				Project:   "my-project",
+				Location:  "us-central1",
+				CustomJob: "my-custom-job",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &AIPlatformCustomJobIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
+
+func TestVertexAIExperimentRef_ValidateExternal(t *testing.T) {
+	ref := &VertexAIExperimentRef{}
+	validRef := "projects/my-project/locations/us-central1/metadataStores/default/contexts/my-experiment"
+	if err := ref.ValidateExternal(validRef); err != nil {
+		t.Errorf("ValidateExternal(%q) returned unexpected error: %v", validRef, err)
+	}
+
+	invalidRef := "invalid/format"
+	if err := ref.ValidateExternal(invalidRef); err == nil {
+		t.Errorf("ValidateExternal(%q) expected error, got nil", invalidRef)
+	}
+}
+
+func TestVertexAIExperimentRunRef_ValidateExternal(t *testing.T) {
+	ref := &VertexAIExperimentRunRef{}
+	validRef := "projects/my-project/locations/us-central1/metadataStores/default/contexts/my-experiment-run"
+	if err := ref.ValidateExternal(validRef); err != nil {
+		t.Errorf("ValidateExternal(%q) returned unexpected error: %v", validRef, err)
+	}
+
+	invalidRef := "invalid/format"
+	if err := ref.ValidateExternal(invalidRef); err == nil {
+		t.Errorf("ValidateExternal(%q) expected error, got nil", invalidRef)
+	}
+}
+
+func TestAIPlatformCustomJob_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name        string
+		obj         *AIPlatformCustomJob
+		expected    string
+		expectError bool
+	}{
+		{
+			name: "resolved identity without externalRef and with resourceID",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/my-custom-job",
+		},
+		{
+			name: "resolved identity without externalRef and without resourceID (service-generated ID)",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/",
+		},
+		{
+			name: "resolved identity matching project/location with server-assigned externalRef name (empty resourceID)",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/3877150412133892096",
+		},
+		{
+			name: "resolved identity matching numeric project number in externalRef with alphanumeric project ID in spec",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/1234567890/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expected: "projects/1234567890/locations/us-central1/customJobs/3877150412133892096",
+		},
+		{
+			name: "matching spec resourceID and externalRef",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "3877150412133892096"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/3877150412133892096",
+		},
+		{
+			name: "mismatched spec resourceID and externalRef",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "different-job-id"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "mismatched project in externalRef",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/other-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "mismatched location in externalRef",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-east1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "invalid externalRef format",
+			obj: &AIPlatformCustomJob{
+				Spec: AIPlatformCustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location: func() *string { s := "us-central1"; return &s }(),
+				},
+				Status: AIPlatformCustomJobStatus{
+					ExternalRef: func() *string { s := "invalid-ref"; return &s }(),
+				},
+			},
+			expectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.obj.GetIdentity(ctx, nil)
+			if (err != nil) != tt.expectError {
+				t.Errorf("GetIdentity() error = %v, expectError %v", err, tt.expectError)
+				return
+			}
+			if !tt.expectError {
+				if got.String() != tt.expected {
+					t.Errorf("GetIdentity() = %q, expected %q", got.String(), tt.expected)
+				}
+			}
+		})
+	}
+}

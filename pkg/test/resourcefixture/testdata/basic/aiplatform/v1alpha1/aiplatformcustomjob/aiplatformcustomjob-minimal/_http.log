@@ -1,0 +1,1344 @@
+GRPC /google.cloud.aiplatform.v1.JobService/CreateCustomJob
+
+{
+  "customJob": {
+    "displayName": "minimal-job-${uniqueId}",
+    "jobSpec": {
+      "workerPoolSpecs": [
+        {
+          "containerSpec": {
+            "command": [
+              "sh",
+              "-c",
+              "echo hello world"
+            ],
+            "imageUri": "alpine:latest"
+          },
+          "machineSpec": {
+            "machineType": "n1-standard-4"
+          },
+          "replicaCount": "1"
+        }
+      ]
+    }
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "state": "JOB_STATE_PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_QUEUED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "code": 1,
+    "message": "CANCELED"
+  },
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_CANCELLED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "code": 1,
+    "message": "CANCELED"
+  },
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_CANCELLED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/DeleteCustomJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/${customJobID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

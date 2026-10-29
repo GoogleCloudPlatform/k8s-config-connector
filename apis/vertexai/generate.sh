@@ -41,7 +41,6 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICustomJob:CustomJob \
     --resource VertexAITensorboard:Tensorboard \
     --resource VertexAITensorboardExperiment:TensorboardExperiment \
     --resource VertexAIFeaturestoreEntityTypeFeature:Feature \
