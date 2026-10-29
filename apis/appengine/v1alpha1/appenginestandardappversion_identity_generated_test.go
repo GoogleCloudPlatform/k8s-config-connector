@@ -29,10 +29,9 @@ import (
 
 func TestAppEngineStandardAppVersionIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[AppEngineStandardAppVersionIdentity]{
-		SampleExternal:        "apps/my-app/services/my-service/versions/my-version",
-		WantHost:              "appengine.googleapis.com",
-		WantParent:            "apps/my-app/services/my-service",
-		ExpectServerGenerated: true,
+		SampleExternal: "apps/my-app/services/my-service/versions/my-version",
+		WantHost:       "appengine.googleapis.com",
+		WantParent:     "apps/my-app/services/my-service",
 		WantIdentity: &AppEngineStandardAppVersionIdentity{
 			App:     "my-app",
 			Service: "my-service",

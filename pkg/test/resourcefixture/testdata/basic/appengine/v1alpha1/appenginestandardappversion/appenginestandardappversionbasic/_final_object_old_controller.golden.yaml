@@ -1,0 +1,52 @@
+apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineStandardAppVersion
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: appenginestandardappversion-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  automaticScaling:
+    maxConcurrentRequests: 10
+    maxIdleInstances: 4
+    maxPendingLatency: 5s
+    minIdleInstances: 2
+    minPendingLatency: 1s
+    standardSchedulerSettings:
+      maxInstances: 10
+      minInstances: 2
+      targetCpuUtilization: 0.5
+      targetThroughputUtilization: 0.75
+  deleteServiceOnDestroy: false
+  deployment:
+    files:
+    - name: main.py
+      sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/05e6871e9161335ea72fe540fb798803633b43ba
+    - name: app.yaml
+      sourceUrl: https://storage.googleapis.com/staging.${projectId}.appspot.com/fccc0c6d2e2fcb05c84f69f40c7a613d2338e8d8
+  entrypoint:
+    shell: gunicorn -b :$PORT main:app
+  envVariables:
+    PORT: "8080"
+  instanceClass: F2
+  project: ${projectId}
+  resourceID: v${uniqueId}
+  runtime: python311
+  serviceRef:
+    external: apps/${projectId}/services/default
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: apps/${projectId}/services/default/versions/v${uniqueId}
+  observedGeneration: 2
