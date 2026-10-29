@@ -228,7 +228,8 @@ type Reservation_ReplicationStatus struct {
 }
 */
 
-/* unreachable type SchedulingPolicy
+/* found existing non-generated go type "SchedulingPolicy", skipping
+
 // +kcc:proto=google.cloud.bigquery.reservation.v1.SchedulingPolicy
 type SchedulingPolicy struct {
 	// Optional. If present and > 0, the reservation will attempt to limit the
