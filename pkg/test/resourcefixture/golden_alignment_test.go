@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -706,6 +707,29 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					v["action"] = "ALLOW"
 				case 2:
 					v["action"] = "DENY"
+				}
+			}
+		}
+		if split, ok := v["split"].(map[string]interface{}); ok {
+			if sb, ok := split["shardBy"]; ok {
+				if f, ok := sb.(float64); ok {
+					switch f {
+					case 1:
+						split["shardBy"] = "COOKIE"
+					case 2:
+						split["shardBy"] = "IP"
+					case 3:
+						split["shardBy"] = "RANDOM"
+					}
+				}
+			}
+			if allocs, ok := split["allocations"].(map[string]interface{}); ok {
+				for k, val := range allocs {
+					if s, ok := val.(string); ok {
+						if f, err := strconv.ParseFloat(s, 64); err == nil {
+							allocs[k] = f
+						}
+					}
 				}
 			}
 		}

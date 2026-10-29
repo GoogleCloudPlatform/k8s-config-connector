@@ -1,0 +1,31 @@
+apiVersion: appengine.cnrm.cloud.google.com/v1alpha1
+kind: AppEngineServiceSplitTraffic
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: appengineservicesplittraffic-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  migrateTraffic: false
+  project: ${projectId}
+  resourceID: default
+  split:
+    allocations:
+      v1: "0.8"
+      v2: "0.2"
+    shardBy: IP
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
