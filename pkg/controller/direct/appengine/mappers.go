@@ -794,10 +794,11 @@ func AppEngineFlexibleAppVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	}
 
 	if in.Entrypoint != nil {
-		out.Entrypoint = &pb.Entrypoint{
-			Command: &pb.Entrypoint_Shell{
+		out.Entrypoint = &pb.Entrypoint{}
+		if in.Entrypoint.Shell != "" {
+			out.Entrypoint.Command = &pb.Entrypoint_Shell{
 				Shell: in.Entrypoint.Shell,
-			},
+			}
 		}
 	}
 
