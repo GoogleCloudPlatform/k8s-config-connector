@@ -25,6 +25,10 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
+
 if ! command -v gcloud >/dev/null 2>&1; then
   . ${REPO_ROOT}/dev/tasks/install-gcloud
 fi

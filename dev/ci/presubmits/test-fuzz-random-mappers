@@ -25,5 +25,9 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
+
 echo "Running test-fuzz-random-mappers..."
 go test -v ./pkg/fuzztesting/fuzztests/ -run=^TestSomeMappers$ -parallel 2

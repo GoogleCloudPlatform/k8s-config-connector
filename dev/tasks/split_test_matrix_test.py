@@ -154,5 +154,19 @@ class TestSplitTestMatrix(unittest.TestCase):
         self.assertEqual(sorted(samples), sorted(expected_samples))
         self.assertNotEqual(sorted(samples), sorted(remaining_fixtures))
 
+    def test_md_only_changes(self):
+        """Tests that is_md_only is true when only .md files are modified, and false otherwise."""
+        md_only = "README.md\ndocs/ai/greenfield-bulk-acceleration-plan.md\n.gemini/skills/foo/SKILL.md"
+        outputs = self.run_split_script(md_only)
+        self.assertEqual(outputs["is_md_only"], "true")
+
+        mixed = "README.md\npkg/controller/direct/storage/storagebucket_controller.go"
+        outputs_mixed = self.run_split_script(mixed)
+        self.assertEqual(outputs_mixed["is_md_only"], "false")
+
+        empty = ""
+        outputs_empty = self.run_split_script(empty)
+        self.assertEqual(outputs_empty["is_md_only"], "false")
+
 if __name__ == "__main__":
     unittest.main()

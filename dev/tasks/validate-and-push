@@ -26,26 +26,30 @@ if [[ "${1:-}" == "--validate-only" || "${1:-}" == "-v" ]]; then
   shift
 fi
 
-echo "=== Step 1/4: Running make fmt ==="
-make fmt
+if FORCE_CHECK_SKIP_PRESUBMIT=true "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  echo "Skipping pre-push validation steps for Markdown-only changes."
+else
+  echo "=== Step 1/4: Running make fmt ==="
+  make fmt
 
-echo "=== Step 2/4: Running go vet ./... ==="
-go vet ./...
+  echo "=== Step 2/4: Running go vet ./... ==="
+  go vet ./...
 
-echo "=== Step 3/4: Running dev/ci/presubmits/validate-generated-files ==="
-./dev/ci/presubmits/validate-generated-files
+  echo "=== Step 3/4: Running dev/ci/presubmits/validate-generated-files ==="
+  ./dev/ci/presubmits/validate-generated-files
 
-echo "=== Step 4/4: Running dev/ci/presubmits/unit-tests ==="
-./dev/ci/presubmits/unit-tests
+  echo "=== Step 4/4: Running dev/ci/presubmits/unit-tests ==="
+  ./dev/ci/presubmits/unit-tests
 
-if [[ -n "$(git status --porcelain)" ]]; then
-  echo "ERROR: Working directory is not clean after validation steps. Uncommitted changes detected:"
-  git status --short
-  echo "Please commit or stage these changes before pushing."
-  exit 1
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "ERROR: Working directory is not clean after validation steps. Uncommitted changes detected:"
+    git status --short
+    echo "Please commit or stage these changes before pushing."
+    exit 1
+  fi
+
+  echo "All presubmit checks passed cleanly!"
 fi
-
-echo "All presubmit checks passed cleanly!"
 
 if [[ "${VALIDATE_ONLY}" == "1" ]]; then
   echo "Validation-only mode (--validate-only) requested. Skipping git push."
