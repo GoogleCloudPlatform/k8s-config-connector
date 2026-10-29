@@ -5,8 +5,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  resourceID: dss-${uniqueId}
   ttl: 1200s
   androidDevice:
-    androidModelID: "Pixel8"
+    androidModelID: "shiba"
     androidVersionID: "34"

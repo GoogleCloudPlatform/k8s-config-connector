@@ -64,18 +64,14 @@ func (i *DeviceStreamingSessionIdentity) Host() string {
 }
 
 func getIdentityFromDeviceStreamingSessionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DeviceStreamingSessionIdentity, error) {
-	_, ok := obj.(*DeviceStreamingSession)
-	if !ok {
-		return nil, fmt.Errorf("object is not a DeviceStreamingSession")
-	}
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
-
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
 	identity := &DeviceStreamingSessionIdentity{
