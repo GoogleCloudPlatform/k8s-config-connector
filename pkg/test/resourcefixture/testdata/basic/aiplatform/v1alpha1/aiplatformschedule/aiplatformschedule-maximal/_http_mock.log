@@ -1,5 +1,5 @@
 GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +26,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "iamConfiguration": {
@@ -93,7 +93,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -140,10 +140,10 @@ Vary: X-Origin
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/aiplatformschedule-maximal-${uniqueId}"
 }
 
-error: rpc error: code = InvalidArgument desc = List of found errors:	1.Field: name; Message: Invalid Schedule resource name.	
+error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/aiplatformschedule-maximal-${uniqueId}" not found
 
 {}
 
@@ -274,7 +274,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "1",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -286,7 +286,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -349,7 +349,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "1",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -419,7 +419,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
     "endTime": "2027-12-31T23:59:59Z",
     "maxConcurrentRunCount": "2",
     "maxRunCount": "10",
-    "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+    "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
     "startTime": "2027-01-01T00:00:00Z"
   },
   "updateMask": "allowQueueing,displayName,maxConcurrentRunCount"
@@ -486,7 +486,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "2",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -498,7 +498,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -562,7 +562,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "2",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -574,7 +574,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -638,7 +638,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "2",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -650,7 +650,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -714,7 +714,7 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "maxConcurrentRunCount": "2",
   "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -726,7 +726,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/DeleteSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8054496618528899072"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -734,7 +734,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -749,7 +749,7 @@ OK
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -794,7 +794,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -803,13 +803,17 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 204 No Content
 Content-Type: application/json

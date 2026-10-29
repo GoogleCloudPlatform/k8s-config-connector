@@ -1,5 +1,5 @@
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
-kind: VertexAISchedule
+kind: AIPlatformSchedule
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
@@ -9,7 +9,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: vertexaischedule-maximal-${uniqueId}
+  name: aiplatformschedule-maximal-${uniqueId}
   namespace: ${uniqueId}
 spec:
   allowQueueing: true

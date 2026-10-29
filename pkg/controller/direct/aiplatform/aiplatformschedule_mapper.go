@@ -284,7 +284,7 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
 	if in.GetScheduleResourceName() != "" {
-		out.ScheduleRef = &krm.VertexAIScheduleRef{External: in.GetScheduleResourceName()}
+		out.ScheduleRef = &krm.AIPlatformScheduleRef{External: in.GetScheduleResourceName()}
 	}
 	out.Labels = in.Labels
 	out.KernelName = direct.LazyPtr(in.GetKernelName())

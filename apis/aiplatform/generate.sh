@@ -42,7 +42,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource VertexAITuningJob:TuningJob \
   --resource VertexAIStudy:Study \
   --resource VertexAITrainingPipeline:TrainingPipeline \
-  --resource VertexAISchedule:Schedule \
+  --resource AIPlatformSchedule:Schedule \
   --resource AIPlatformReasoningEngine:ReasoningEngine
 
 ${CONTROLLERBUILDER} generate-types \

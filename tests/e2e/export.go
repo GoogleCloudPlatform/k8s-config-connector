@@ -83,7 +83,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		exportURI = resolveCAISURI(h, obj)
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeImage"}:
 		exportURI = resolveCAISURI(h, obj)
-	case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "VertexAISchedule"}:
+	case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformSchedule"}:
 		exportURI = resolveCAISURI(h, obj)
 	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
 		exportURI = resolveCAISURI(h, obj)

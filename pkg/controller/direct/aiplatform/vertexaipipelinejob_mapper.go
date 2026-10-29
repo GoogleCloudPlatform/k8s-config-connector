@@ -47,6 +47,7 @@ func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.Pipeli
 	}
 	out := &krm.PipelineJobRuntimeConfig{}
 	if in.GetGcsOutputDirectory() != "" {
+		out.GCSOutputDirectory = direct.LazyPtr(in.GetGcsOutputDirectory())
 		out.GCSOutputDirectoryRef = &storagev1beta1.StorageBucketRef{
 			External: in.GetGcsOutputDirectory(),
 		}
@@ -62,6 +63,8 @@ func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.Pipelin
 	out := &pb.PipelineJob_RuntimeConfig{}
 	if in.GCSOutputDirectoryRef != nil {
 		out.GcsOutputDirectory = gcsOutputDirectoryToProto(mapCtx, in.GCSOutputDirectoryRef)
+	} else if in.GCSOutputDirectory != nil {
+		out.GcsOutputDirectory = *in.GCSOutputDirectory
 	}
 	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
 	return out

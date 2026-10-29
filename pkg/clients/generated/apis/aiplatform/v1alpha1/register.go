@@ -71,10 +71,10 @@ var (
 		Kind:    reflect.TypeOf(VertexAIPipelineJob{}).Name(),
 	}
 
-	VertexAIScheduleGVK = schema.GroupVersionKind{
+	AIPlatformScheduleGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAISchedule{}).Name(),
+		Kind:    reflect.TypeOf(AIPlatformSchedule{}).Name(),
 	}
 
 	AIPlatformSpecialistPoolGVK = schema.GroupVersionKind{

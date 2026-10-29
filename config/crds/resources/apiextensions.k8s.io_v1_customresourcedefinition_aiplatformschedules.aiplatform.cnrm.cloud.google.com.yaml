@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: vertexaischedules.aiplatform.cnrm.cloud.google.com
+  name: aiplatformschedules.aiplatform.cnrm.cloud.google.com
 spec:
   group: aiplatform.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: VertexAISchedule
-    listKind: VertexAIScheduleList
-    plural: vertexaischedules
+    kind: AIPlatformSchedule
+    listKind: AIPlatformScheduleList
+    plural: aiplatformschedules
     shortNames:
-    - gcpvertexaischedule
-    - gcpvertexaischedules
-    singular: vertexaischedule
+    - gcpaiplatformschedule
+    - gcpaiplatformschedules
+    singular: aiplatformschedule
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAISchedule is the Schema for the VertexAISchedule API
+        description: AIPlatformSchedule is the Schema for the AIPlatformSchedule API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,7 +60,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAIScheduleSpec defines the desired state of VertexAISchedule
+            description: AIPlatformScheduleSpec defines the desired state of AIPlatformSchedule
             properties:
               allowQueueing:
                 description: Optional. Whether new scheduled runs can be queued when
@@ -425,14 +425,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed VertexAISchedule
+                            description: A reference to an externally managed AIPlatformSchedule
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/schedules/{{scheduleID}}".
                             type: string
                           name:
-                            description: The name of a VertexAISchedule resource.
+                            description: The name of an AIPlatformSchedule resource.
                             type: string
                           namespace:
-                            description: The namespace of a VertexAISchedule resource.
+                            description: The namespace of an AIPlatformSchedule resource.
                             type: string
                         type: object
                       serviceAccountRef:
@@ -739,10 +739,13 @@ spec:
                           failurePolicy:
                             description: Represents the failure policy of a pipeline.
                             type: string
+                          gcsOutputDirectory:
+                            description: A path in a Cloud Storage bucket, which will
+                              be treated as the root output directory of the pipeline.
+                            type: string
                           gcsOutputDirectoryRef:
-                            description: Required. Reference to a GCS bucket, which
-                              will be treated as the root output directory of the
-                              pipeline.
+                            description: Reference to a GCS bucket, which will be
+                              treated as the root output directory of the pipeline.
                             oneOf:
                             - not:
                                 required:
@@ -890,7 +893,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The VertexAISchedule name. If not given, the metadata.name
+                description: The AIPlatformSchedule name. If not given, the metadata.name
                   will be used.
                 type: string
               startTime:
@@ -904,8 +907,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: VertexAIScheduleStatus defines the config connector machine
-              state of VertexAISchedule
+            description: AIPlatformScheduleStatus defines the config connector machine
+              state of AIPlatformSchedule
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -934,7 +937,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAISchedule resource
+                description: A unique specifier for the AIPlatformSchedule resource
                   in GCP.
                 type: string
               observedGeneration:

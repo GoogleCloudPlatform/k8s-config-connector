@@ -1,5 +1,5 @@
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +26,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -42,7 +42,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "rule": []
   },
   "location": "us-central1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "vertexai-schedule-bucket-${uniqueId}",
   "softDeletePolicy": {
     "retentionDurationSeconds": "604800"
   },
@@ -77,10 +77,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "vertexai-schedule-bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -92,8 +92,8 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -122,10 +122,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "vertexai-schedule-bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -140,10 +140,10 @@ Vary: X-Origin
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/aiplatformschedule-minimal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}" not found
+error: rpc error: code = InvalidArgument desc = List of found errors:  1.Field: name; Message: Invalid Schedule resource name.
 
 {}
 
@@ -201,16 +201,13 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
           "schemaVersion": "2.1.0"
         },
         "runtimeConfig": {
-          "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+          "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
         }
       }
     },
     "cron": "0 2 * * *",
-    "displayName": "Maximal Schedule",
-    "endTime": "2027-12-31T23:59:59Z",
-    "maxConcurrentRunCount": "1",
-    "maxRunCount": "10",
-    "startTime": "2027-01-01T00:00:00Z"
+    "displayName": "Minimal Schedule",
+    "maxConcurrentRunCount": "1"
   }
 }
 
@@ -264,17 +261,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule",
   "maxConcurrentRunCount": "1",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -286,7 +281,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
 }
 
 OK
@@ -339,17 +334,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule",
   "maxConcurrentRunCount": "1",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -362,7 +355,6 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
 
 {
   "schedule": {
-    "allowQueueing": true,
     "createPipelineJobRequest": {
       "parent": "projects/${projectNumber}/locations/us-central1",
       "pipelineJob": {
@@ -410,25 +402,21 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
           "schemaVersion": "2.1.0"
         },
         "runtimeConfig": {
-          "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+          "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
         }
       }
     },
     "cron": "0 2 * * *",
-    "displayName": "Maximal Schedule Updated",
-    "endTime": "2027-12-31T23:59:59Z",
+    "displayName": "Minimal Schedule Updated",
     "maxConcurrentRunCount": "2",
-    "maxRunCount": "10",
-    "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
-    "startTime": "2027-01-01T00:00:00Z"
+    "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
   },
-  "updateMask": "allowQueueing,displayName,maxConcurrentRunCount"
+  "updateMask": "displayName,maxConcurrentRunCount"
 }
 
 OK
 
 {
-  "allowQueueing": true,
   "createPipelineJobRequest": {
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
@@ -476,17 +464,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule Updated",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -498,13 +484,12 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
 }
 
 OK
 
 {
-  "allowQueueing": true,
   "createPipelineJobRequest": {
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
@@ -552,17 +537,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule Updated",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -574,13 +557,12 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
 }
 
 OK
 
 {
-  "allowQueueing": true,
   "createPipelineJobRequest": {
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
@@ -628,17 +610,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule Updated",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -650,13 +630,12 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
 }
 
 OK
 
 {
-  "allowQueueing": true,
   "createPipelineJobRequest": {
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
@@ -704,17 +683,15 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
-        "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
+        "gcsOutputDirectory": "gs://vertexai-schedule-bucket-${uniqueId}"
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cron": "0 2 * * *",
-  "displayName": "Maximal Schedule Updated",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "maxRunCount": "10",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -726,7 +703,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/DeleteSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
 }
 
 OK
@@ -734,7 +711,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -748,8 +725,8 @@ OK
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -778,10 +755,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-schedmax-bucket-${uniqueId}",
+  "name": "vertexai-schedule-bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -793,8 +770,8 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -812,8 +789,8 @@ Vary: X-Origin
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/vertexai-schedmax-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+DELETE https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json

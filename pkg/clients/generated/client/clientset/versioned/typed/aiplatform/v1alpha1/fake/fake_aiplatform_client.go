@@ -43,8 +43,8 @@ func (c *FakeAiplatformV1alpha1) VertexAIPipelineJobs(namespace string) v1alpha1
 	return newFakeVertexAIPipelineJobs(c, namespace)
 }
 
-func (c *FakeAiplatformV1alpha1) VertexAISchedules(namespace string) v1alpha1.VertexAIScheduleInterface {
-	return newFakeVertexAISchedules(c, namespace)
+func (c *FakeAiplatformV1alpha1) AIPlatformSchedules(namespace string) v1alpha1.AIPlatformScheduleInterface {
+	return newFakeAIPlatformSchedules(c, namespace)
 }
 
 func (c *FakeAiplatformV1alpha1) AIPlatformSpecialistPools(namespace string) v1alpha1.AIPlatformSpecialistPoolInterface {
