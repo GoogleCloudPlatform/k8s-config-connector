@@ -30,6 +30,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	if !strings.Contains(url, "beyondcorp.googleapis.com") {
 		return
 	}
+
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
