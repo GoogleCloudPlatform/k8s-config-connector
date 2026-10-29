@@ -200,8 +200,8 @@ func TestMultiClusterLeaderElection_TwoManagers(t *testing.T) {
 		}
 
 		// Wait for both lease specs to be updated with identities
-		// We expect mgr1 to set identity="mgr1" in lease1, and mgr2 to set identity="mgr2" in lease2
-		// (Assuming the identity passed to New is what mcleclient uses as candidate ID, which we assume is true after fix)
+		// We expect mgr1 and mgr2 to write their identities (the resource names of their GKE
+		// clusters) to lease1 and lease2.
 
 		if err := waitForCandidate(ctx, kubeClient, leaseNN1); err != nil {
 			t.Fatalf("timed out waiting for lease1 candidate update")
@@ -214,7 +214,7 @@ func TestMultiClusterLeaderElection_TwoManagers(t *testing.T) {
 
 		// Elect mgr1 as the winner (Global Lock Winner)
 		// The mock controller updates ALL leases (in all participating clusters/namespaces) with the winner.
-		winner := "mgr1"
+		winner := testGKECluster("mgr1").ResourceName()
 		if err := leaseController.elect(ctx, winner, testNamespace1, testNamespace2); err != nil {
 			t.Fatalf("error electing candidate: %v", err)
 		}
@@ -259,13 +259,13 @@ func waitForObject(ctx context.Context, c client.Client, nn types.NamespacedName
 	})
 }
 
-func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, identity string, namespace string) (manager.Manager, *startSignal) {
+func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, clusterName string, namespace string) (manager.Manager, *startSignal) {
 	t.Helper()
 
 	mclConfig := &operatorv1beta1.MultiClusterLeaseSpec{
-		LeaseName:                testLeaseName,
-		Namespace:                namespace,
-		ClusterCandidateIdentity: identity,
+		LeaseName:  testLeaseName,
+		Namespace:  namespace,
+		GKECluster: testGKECluster(clusterName),
 	}
 
 	kccCfg := Config{
@@ -276,7 +276,7 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, identity string, n
 			},
 			HealthProbeBindAddress: "0",
 			LeaderElection:         false,
-			LeaderElectionID:       identity,
+			LeaderElectionID:       clusterName,
 		},
 		MultiClusterLease: true,
 		testConfig: testConfig{
@@ -288,15 +288,21 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, identity string, n
 
 	mgr, err := New(context.Background(), cfg, kccCfg)
 	if err != nil {
-		t.Fatalf("error creating new manager for %s: %v", identity, err)
+		t.Fatalf("error creating new manager for %s: %v", clusterName, err)
 	}
 
 	signal := &startSignal{started: make(chan struct{})}
 	if err := mgr.Add(signal); err != nil {
-		t.Fatalf("error adding start signal to manager %s: %v", identity, err)
+		t.Fatalf("error adding start signal to manager %s: %v", clusterName, err)
 	}
 
 	return mgr, signal
+}
+
+// testGKECluster returns the GKE cluster of a test candidate. Its resource name is the
+// candidate's identity in the election.
+func testGKECluster(name string) *operatorv1beta1.GKECluster {
+	return &operatorv1beta1.GKECluster{Project: "test-project", Location: "us-central1", Name: name}
 }
 
 // MockLock implements resourcelock.Interface
@@ -399,7 +405,8 @@ func TestSplitBrainProtection(t *testing.T) {
 			// Use a unique namespace for each test case
 			ns := strings.ReplaceAll(strings.ToLower(tc.name), " ", "-")
 			leaseName := "test-lease"
-			localIdentity := "my-manager"
+			localCluster := testGKECluster("my-manager")
+			localIdentity := localCluster.ResourceName()
 
 			// Create namespace
 			namespaceObj := &corev1.Namespace{
@@ -452,15 +459,15 @@ func TestSplitBrainProtection(t *testing.T) {
 						BindAddress: "0",
 					},
 					LeaderElection:   false,
-					LeaderElectionID: localIdentity,
+					LeaderElectionID: localCluster.Name,
 				},
 				MultiClusterLease: true,
 				testConfig: testConfig{
 					skipControllerRegistration: true,
 					multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
-						LeaseName:                leaseName,
-						Namespace:                ns,
-						ClusterCandidateIdentity: localIdentity,
+						LeaseName:  leaseName,
+						Namespace:  ns,
+						GKECluster: localCluster,
 					},
 					suppressExitOnLeadershipLoss: true,
 				},

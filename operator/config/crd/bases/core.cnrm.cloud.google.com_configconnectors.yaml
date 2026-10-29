@@ -75,9 +75,47 @@ spec:
                     properties:
                       clusterCandidateIdentity:
                         description: |-
-                          The identity of the cluster candidate for the KCC components, hared by all KCC replicas
-                          and workloads across all clusters that are part of the same election.
-                           This name must be unique across all the clusters that you are configuring the multi cluster set up for.
+                          Deprecated: Use gkeCluster instead. Setting this field is rejected, and it will be
+                          removed in a future release.
+                        type: string
+                      gkeCluster:
+                        description: |-
+                          GKECluster is the GKE cluster that this Config Connector runs in. Its resource name,
+                          projects/<project>/locations/<location>/clusters/<name>, is this cluster's identity in
+                          the election, so it must be unique across the clusters in the election. Standby clusters
+                          use the leader's identity to sync resources from the leader's cluster.
+                        properties:
+                          location:
+                            description: Location is the region or zone of the cluster,
+                              for example "us-central1".
+                            minLength: 1
+                            pattern: ^[^/]+$
+                            type: string
+                          name:
+                            description: Name is the name of the cluster.
+                            minLength: 1
+                            pattern: ^[^/]+$
+                            type: string
+                          project:
+                            description: Project is the ID of the Google Cloud project
+                              that hosts the cluster.
+                            minLength: 1
+                            pattern: ^[^/]+$
+                            type: string
+                        required:
+                        - location
+                        - name
+                        - project
+                        type: object
+                      leaderEndpointType:
+                        default: Default
+                        description: |-
+                          LeaderEndpointType selects the control plane endpoint that this cluster uses to reach
+                          the leader's cluster when syncing resources: Default, DNS or PrivateIP.
+                        enum:
+                        - Default
+                        - DNS
+                        - PrivateIP
                         type: string
                       leaseName:
                         description: The name of the MultiClusterLease object that
@@ -101,10 +139,15 @@ spec:
                         - Disabled
                         type: string
                     required:
-                    - clusterCandidateIdentity
+                    - gkeCluster
                     - leaseName
                     - namespace
                     type: object
+                    x-kubernetes-validations:
+                    - message: clusterCandidateIdentity is no longer supported; set
+                        gkeCluster to the GKE cluster that this Config Connector runs
+                        in
+                      rule: '!has(self.clusterCandidateIdentity)'
                   resourceSettings:
                     description: ResourceSettings allows specifying which resources
                       to enable or disable.
