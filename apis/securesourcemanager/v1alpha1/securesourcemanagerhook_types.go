@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var SecureSourceManagerHookGVK = GroupVersion.WithKind("SecureSourceManagerHook"
 // +kcc:spec:proto=google.cloud.securesourcemanager.v1.Hook
 // +kcc:required-from-proto
 type SecureSourceManagerHookSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The SecureSourceManagerRepository this SecureSourceManagerHook is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *securesourcemanagerv1beta1.SecureSourceManagerRepositoryRef `json:"parentRef"`
 
 	// The SecureSourceManagerHook name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

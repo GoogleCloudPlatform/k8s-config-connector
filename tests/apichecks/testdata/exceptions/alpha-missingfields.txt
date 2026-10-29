@@ -5632,8 +5632,7 @@
 [missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredStatusChecks[].context" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.events[]" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.pushOption.branchFilter" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.sensitiveQueryString" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetURI" is not set in unstructured objects
