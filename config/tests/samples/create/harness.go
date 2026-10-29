@@ -1334,6 +1334,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppActiveDirectory"}:
 			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppBackupPolicy"}:
 			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppHostGroup"}:
+			case schema.GroupKind{Group: "netapp.cnrm.cloud.google.com", Kind: "NetAppKMSConfig"}:
 
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityServiceConnectionPolicy"}:
 			case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityInternalRange"}:
