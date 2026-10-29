@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -106,15 +105,7 @@ func (r *ComputeManagedSSLCertificateRef) Normalize(ctx context.Context, reader 
 			}
 		}
 
-		obj, err := common.ToStructuredType[*ComputeManagedSSLCertificate](u)
-		if err != nil {
-			return ""
-		}
-		identity, err := getIdentityFromComputeManagedSSLCertificateSpec(ctx, reader, obj)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
+		return ""
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

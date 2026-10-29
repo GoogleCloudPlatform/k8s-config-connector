@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/go-cmp/cmp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -188,40 +189,100 @@ func TestComputeManagedSSLCertificate_GetIdentity(t *testing.T) {
 func TestComputeManagedSSLCertificateRef_Normalize(t *testing.T) {
 	ctx := context.Background()
 	s := runtime.NewScheme()
-	_ = AddToScheme(s)
 
-	uCert := &unstructured.Unstructured{}
-	uCert.SetGroupVersionKind(ComputeManagedSSLCertificateGVK)
-	uCert.SetName("my-cert")
-	uCert.SetNamespace("my-ns")
-	uCert.SetAnnotations(map[string]string{
+	uCertReady := &unstructured.Unstructured{}
+	uCertReady.SetGroupVersionKind(ComputeManagedSSLCertificateGVK)
+	uCertReady.SetName("my-cert-ready")
+	uCertReady.SetNamespace("my-ns")
+	uCertReady.Object["status"] = map[string]interface{}{
+		"observedState": map[string]interface{}{
+			"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert-ready",
+		},
+	}
+
+	uCertLegacyReady := &unstructured.Unstructured{}
+	uCertLegacyReady.SetGroupVersionKind(ComputeManagedSSLCertificateGVK)
+	uCertLegacyReady.SetName("my-cert-legacy-ready")
+	uCertLegacyReady.SetNamespace("my-ns")
+	uCertLegacyReady.Object["status"] = map[string]interface{}{
+		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert-legacy-ready",
+	}
+
+	uCertUnready := &unstructured.Unstructured{}
+	uCertUnready.SetGroupVersionKind(ComputeManagedSSLCertificateGVK)
+	uCertUnready.SetName("my-cert-unready")
+	uCertUnready.SetNamespace("my-ns")
+	uCertUnready.SetAnnotations(map[string]string{
 		"cnrm.cloud.google.com/project-id": "my-project",
 	})
-	uCert.Object["spec"] = map[string]interface{}{
-		"resourceID": "my-cert",
+	uCertUnready.Object["spec"] = map[string]interface{}{
+		"resourceID": "my-cert-unready",
 		"projectRef": map[string]interface{}{
 			"external": "my-project",
 		},
 	}
-	uCert.Object["status"] = map[string]interface{}{
-		"observedState": map[string]interface{}{
-			"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+
+	client := fake.NewClientBuilder().WithScheme(s).WithObjects(uCertReady, uCertLegacyReady, uCertUnready).Build()
+
+	tests := []struct {
+		name         string
+		ref          *ComputeManagedSSLCertificateRef
+		wantExternal string
+		wantErr      bool
+		wantNotReady bool
+	}{
+		{
+			name: "external reference already set",
+			ref: &ComputeManagedSSLCertificateRef{
+				External: "https://www.googleapis.com/compute/v1/projects/my-project/global/sslCertificates/my-cert",
+			},
+			wantExternal: "projects/my-project/global/sslCertificates/my-cert",
+		},
+		{
+			name: "internal reference resolved from status.observedState.selfLink",
+			ref: &ComputeManagedSSLCertificateRef{
+				Name:      "my-cert-ready",
+				Namespace: "my-ns",
+			},
+			wantExternal: "projects/my-project/global/sslCertificates/my-cert-ready",
+		},
+		{
+			name: "internal reference resolved from status.selfLink",
+			ref: &ComputeManagedSSLCertificateRef{
+				Name:      "my-cert-legacy-ready",
+				Namespace: "my-ns",
+			},
+			wantExternal: "projects/my-project/global/sslCertificates/my-cert-legacy-ready",
+		},
+		{
+			name: "unready resource returns ReferenceNotReadyError",
+			ref: &ComputeManagedSSLCertificateRef{
+				Name:      "my-cert-unready",
+				Namespace: "my-ns",
+			},
+			wantErr:      true,
+			wantNotReady: true,
 		},
 	}
 
-	client := fake.NewClientBuilder().WithScheme(s).WithObjects(uCert).Build()
-
-	r := &ComputeManagedSSLCertificateRef{
-		Name:      "my-cert",
-		Namespace: "my-ns",
-	}
-
-	if err := r.Normalize(ctx, client, "my-ns"); err != nil {
-		t.Fatalf("Normalize() error = %v", err)
-	}
-
-	wantExternal := "projects/my-project/global/sslCertificates/my-cert"
-	if r.External != wantExternal {
-		t.Errorf("Normalize() External = %q, want %q", r.External, wantExternal)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := tc.ref.Normalize(ctx, client, "my-ns")
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("Normalize() expected error, got nil")
+				}
+				if tc.wantNotReady && !k8s.IsReferenceNotReadyError(err) {
+					t.Errorf("Normalize() error = %v, want ReferenceNotReadyError", err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("Normalize() unexpected error: %v", err)
+			}
+			if tc.ref.External != tc.wantExternal {
+				t.Errorf("Normalize() External = %q, want %q", tc.ref.External, tc.wantExternal)
+			}
+		})
 	}
 }
