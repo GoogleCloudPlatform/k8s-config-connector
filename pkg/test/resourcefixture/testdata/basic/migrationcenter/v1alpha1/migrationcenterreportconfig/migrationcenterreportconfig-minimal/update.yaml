@@ -1,0 +1,17 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterReportConfig
+metadata:
+  name: mcrc-${uniqueId}
+  labels:
+    example-label: updated
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: ReportConfig ${uniqueId}
+  description: minimal report config
+  groupPreferencesetAssignments:
+    - groupRef:
+        name: mcg-${uniqueId}
+      preferenceSetRef:
+        name: mcps-${uniqueId}

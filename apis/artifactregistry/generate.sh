@@ -67,12 +67,14 @@ ${CONTROLLERBUILDER} generate-controller \
   --service google.devtools.artifactregistry.v1 \
   --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --resource ArtifactRegistryAttachment:Attachment \
   --resource ArtifactRegistryRule:Rule
 
 ${CONTROLLERBUILDER} generate-fuzzer \
+  --prepopulate-resource \
   --service google.devtools.artifactregistry.v1 \
   --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
+  --resource ArtifactRegistryAttachment:Attachment \
   --resource ArtifactRegistryRule:Rule
 
 cd ${REPO_ROOT}

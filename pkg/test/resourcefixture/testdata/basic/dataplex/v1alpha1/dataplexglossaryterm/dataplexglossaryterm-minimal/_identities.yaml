@@ -1,0 +1,12 @@
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/glossaries/dpg-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexGlossary
+  name: dpg-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/glossaries/dpg-${uniqueId}/terms/dpgt-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexGlossaryTerm
+  name: dpgt-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

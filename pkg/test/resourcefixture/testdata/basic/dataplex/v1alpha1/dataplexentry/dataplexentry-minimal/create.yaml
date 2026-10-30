@@ -1,0 +1,12 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexEntry
+metadata:
+  name: dpe-${uniqueId}
+spec:
+  entryGroupRef:
+    name: dpeg-${uniqueId}
+  entryTypeRef:
+    name: dpet-${uniqueId}
+  entrySource:
+    displayName: Entry ${uniqueId}
+    description: minimal entry

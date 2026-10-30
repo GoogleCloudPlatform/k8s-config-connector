@@ -1,0 +1,40 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: kmsekm-sd-viewer-${uniqueId}
+spec:
+  member: serviceAccount:service-${projectNumber}@gcp-sa-ekms.iam.gserviceaccount.com
+  role: roles/servicedirectory.viewer
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: "${projectId}"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: kmsekm-sd-psc-${uniqueId}
+spec:
+  member: serviceAccount:service-${projectNumber}@gcp-sa-ekms.iam.gserviceaccount.com
+  role: roles/servicedirectory.pscAuthorizedService
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: "${projectId}"
+---
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
+metadata:
+  name: sdn-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: "${projectId}"
+---
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryService
+metadata:
+  name: sds-${uniqueId}
+spec:
+  namespaceRef:
+    name: sdn-${uniqueId}

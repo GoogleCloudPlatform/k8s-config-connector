@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: translate.cnrm.cloud.google.com
+  kind: TranslateDataset
+  name: td-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -41,7 +41,6 @@ func kmsEkmConnectionFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".crypto_space_path")
-	f.SpecField(".etag")
 	f.SpecField(".key_management_mode")
 	f.SpecField(".service_resolvers[].endpoint_filter")
 	f.SpecField(".service_resolvers[].hostname")
@@ -50,6 +49,7 @@ func kmsEkmConnectionFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".service_resolvers[].server_certificates[].issuer")
 	f.StatusField(".service_resolvers[].server_certificates[].not_after_time")
 	f.StatusField(".service_resolvers[].server_certificates[].not_before_time")

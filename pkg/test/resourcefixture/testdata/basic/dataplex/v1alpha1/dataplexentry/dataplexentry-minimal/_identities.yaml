@@ -1,0 +1,20 @@
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dpeg-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexEntryGroup
+  name: dpeg-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //dataplex.googleapis.com/projects/${projectNumber}/locations/us-central1/entryTypes/dpet-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexEntryType
+  name: dpet-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  error: 'resolving spec.entryGroupRef: reference DataplexEntryGroup ${uniqueId}/dpeg-${uniqueId}
+    is not ready'
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexEntry
+  name: dpe-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

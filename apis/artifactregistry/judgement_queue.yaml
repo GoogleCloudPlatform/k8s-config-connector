@@ -25,29 +25,39 @@ entries:
     group: artifactregistry.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with RepositoryRef (*v1beta1.ArtifactRegistryRepositoryRef).
   - kind: ArtifactRegistryAttachment
     group: artifactregistry.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/attachments/{attachment}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on ArtifactRegistryAttachmentSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added RepositoryRef (*v1beta1.ArtifactRegistryRepositoryRef) on ArtifactRegistryAttachmentSpec.
   - kind: ArtifactRegistryAttachment
     group: artifactregistry.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Modelled parent reference as RepositoryRef (*v1beta1.ArtifactRegistryRepositoryRef).
   - kind: ArtifactRegistryAttachment
     group: artifactregistry.cnrm.cloud.google.com
     field: .spec.files
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to artifactregistry.googleapis.com/File (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: artifactregistry.googleapis.com/File is a data-plane uploaded blob inside a repository (not a declarative KCC resource with a Create RPC), so .spec.files remains []string.
   - kind: ArtifactRegistryAttachment
     group: artifactregistry.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with RepositoryRef (*v1beta1.ArtifactRegistryRepositoryRef).
   - kind: ArtifactRegistryRule
     group: artifactregistry.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

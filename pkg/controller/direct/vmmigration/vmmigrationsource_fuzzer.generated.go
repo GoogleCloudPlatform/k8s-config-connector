@@ -46,7 +46,6 @@ func vmMigrationSourceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".aws.inventory_tag_list")
 	f.SpecField(".aws.migration_resources_user_tags")
 	f.SpecField(".description")
-	f.SpecField(".labels")
 	f.SpecField(".vmware")
 
 	// Status fields
@@ -58,6 +57,7 @@ func vmMigrationSourceFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".aws.access_key_creds.session_token")

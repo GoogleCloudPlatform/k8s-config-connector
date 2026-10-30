@@ -1,0 +1,6 @@
+- caisURL: //vision.googleapis.com/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}
+  group: vision.cnrm.cloud.google.com
+  kind: VisionProductSet
+  name: vps-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

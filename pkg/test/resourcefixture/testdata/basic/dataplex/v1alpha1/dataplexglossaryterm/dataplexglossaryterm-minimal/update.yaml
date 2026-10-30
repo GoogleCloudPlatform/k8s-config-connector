@@ -1,0 +1,11 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexGlossaryTerm
+metadata:
+  name: dpgt-${uniqueId}
+spec:
+  glossaryRef:
+    name: dpg-${uniqueId}
+  parentRef:
+    name: dpg-${uniqueId}
+  displayName: Term Updated ${uniqueId}
+  description: updated glossary term

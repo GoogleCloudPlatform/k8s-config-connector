@@ -1,0 +1,14 @@
+- caisURL: //configdelivery.googleapis.com/projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}
+  group: configdelivery.cnrm.cloud.google.com
+  kind: ConfigDeliveryResourceBundle
+  name: cdrbundle-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  error: 'resolving spec.resourceBundleRef: reference ConfigDeliveryResourceBundle
+    ${uniqueId}/cdrbundle-${uniqueId} is not ready'
+  group: configdelivery.cnrm.cloud.google.com
+  kind: ConfigDeliveryRelease
+  name: cdrelease-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

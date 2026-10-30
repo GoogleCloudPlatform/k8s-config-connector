@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +30,9 @@ var DataplexGlossaryTermGVK = GroupVersion.WithKind("DataplexGlossaryTerm")
 // +kcc:spec:proto=google.cloud.dataplex.v1.GlossaryTerm
 // +kcc:required-from-proto
 type DataplexGlossaryTermSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. The Glossary that this GlossaryTerm belongs to.
+	// +required
+	GlossaryRef *GlossaryRef `json:"glossaryRef"`
 
 	// The DataplexGlossaryTerm name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -48,10 +45,6 @@ type DataplexGlossaryTermSpec struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. User-defined labels for the GlossaryTerm.
-	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Required. The immediate parent of the GlossaryTerm in the
 	//  resource-hierarchy. It can either be a Glossary or a GlossaryCategory.
 	//  Format:
@@ -60,7 +53,7 @@ type DataplexGlossaryTermSpec struct {
 	//  projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 	// +kcc:proto:field=google.cloud.dataplex.v1.GlossaryTerm.parent
 	// +required
-	Parent *string `json:"parent,omitempty"`
+	ParentRef *GlossaryRef `json:"parentRef"`
 }
 
 // DataplexGlossaryTermStatus defines the config connector machine state of DataplexGlossaryTerm

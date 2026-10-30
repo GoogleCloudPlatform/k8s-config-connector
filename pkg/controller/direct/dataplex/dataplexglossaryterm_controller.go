@@ -22,6 +22,7 @@ package dataplex
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -67,8 +68,12 @@ func (m *modelGlossaryTerm) AdapterForObject(ctx context.Context, op *directbase
 	}
 	id := i.(*krm.DataplexGlossaryTermIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get dataplex GCP client
-	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.Location))
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +85,21 @@ func (m *modelGlossaryTerm) AdapterForObject(ctx context.Context, op *directbase
 }
 
 func (m *modelGlossaryTerm) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	if !strings.HasPrefix(url, "//dataplex.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.DataplexGlossaryTermIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx, id.Location)
+	if err != nil {
+		return nil, err
+	}
+	return &GlossaryTermAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 func (m *modelGlossaryTerm) client(ctx context.Context, location string) (*gcp.BusinessGlossaryClient, error) {
 	var opts []option.ClientOption

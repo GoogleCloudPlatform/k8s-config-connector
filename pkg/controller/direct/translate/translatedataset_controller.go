@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ func (m *modelDataset) AdapterForObject(ctx context.Context, op *directbase.Adap
 	id := i.(*krm.TranslateDatasetIdentity)
 
 	// Get translate GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (m *modelDataset) AdapterForURL(ctx context.Context, url string) (directbas
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -97,9 +97,9 @@ func (m *modelDataset) AdapterForURL(ctx context.Context, url string) (directbas
 		gcpClient: gcpClient,
 	}, nil
 }
-func (m *modelDataset) client(ctx context.Context) (*gcp.TranslationClient, error) {
+func (m *modelDataset) client(ctx context.Context, projectID string) (*gcp.TranslationClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(projectID))
 	if err != nil {
 		return nil, err
 	}

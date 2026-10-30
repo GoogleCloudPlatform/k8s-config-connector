@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -79,28 +80,19 @@ func getIdentityFromDataplexEntrySpec(ctx context.Context, reader client.Reader,
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.EntryGroupRef == nil {
+		return nil, fmt.Errorf("spec.entryGroupRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.EntryGroupRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.entryGroupRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	entryGroup := ""
-	if entryGroup == "" {
-		return nil, fmt.Errorf("cannot resolve entry_group for DataplexEntry")
+	parsed := &DataplexEntryIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/entries" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.entryGroupRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &DataplexEntryIdentity{
-		Project:    projectID,
-		Location:   location,
-		EntryGroup: entryGroup,
-		Entry:      resourceID,
-	}, nil
+	parsed.Entry = resourceID
+	return parsed, nil
 }
 
 func (obj *DataplexEntry) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

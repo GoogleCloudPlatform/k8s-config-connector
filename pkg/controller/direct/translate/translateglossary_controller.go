@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ func (m *modelGlossary) AdapterForObject(ctx context.Context, op *directbase.Ada
 	id := i.(*krm.TranslateGlossaryIdentity)
 
 	// Get translate GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (m *modelGlossary) AdapterForURL(ctx context.Context, url string) (directba
 	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {
 		return nil, err
 	}
@@ -97,9 +97,9 @@ func (m *modelGlossary) AdapterForURL(ctx context.Context, url string) (directba
 		gcpClient: gcpClient,
 	}, nil
 }
-func (m *modelGlossary) client(ctx context.Context) (*gcp.TranslationClient, error) {
+func (m *modelGlossary) client(ctx context.Context, projectID string) (*gcp.TranslationClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(projectID))
 	if err != nil {
 		return nil, err
 	}
@@ -126,9 +126,6 @@ var _ directbase.Adapter = &GlossaryAdapter{}
 func (a *GlossaryAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Glossary", "name", a.id)
-	if !a.id.HasIdentitySpecified() {
-		return false, nil
-	}
 
 	req := &translatepb.GetGlossaryRequest{
 		Name: a.id.String(),
@@ -156,6 +153,7 @@ func (a *GlossaryAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
 	req := &translatepb.CreateGlossaryRequest{
 		Parent:   a.id.ParentString(),
@@ -176,11 +174,6 @@ func (a *GlossaryAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	parsedID := &krm.TranslateGlossaryIdentity{}
-	if err := parsedID.FromExternal(created.Name); err != nil {
-		return err
-	}
-	a.id.Glossary = parsedID.Glossary
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
