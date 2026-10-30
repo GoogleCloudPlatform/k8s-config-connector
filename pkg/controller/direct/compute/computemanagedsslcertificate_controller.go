@@ -26,9 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -181,18 +179,14 @@ func (a *ComputeManagedSSLCertificateAdapter) Update(ctx context.Context, update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeManagedSSLCertificate", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := ComputeManagedSSLCertificateSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	desired.Name = direct.LazyPtr(a.id.SslCertificate)
-	if desired.Type == nil {
-		desired.Type = direct.LazyPtr("MANAGED")
-	}
-
-	diffs, _, err := compareComputeManagedSSLCertificate(ctx, a.actual, desired)
+	diffs, _, err := common.CompareBrownfieldSpec(
+		ctx,
+		&a.desired.Spec,
+		a.actual,
+		ComputeManagedSSLCertificateSpec_v1beta1_FromProto,
+		ComputeManagedSSLCertificateSpec_v1beta1_ToProto,
+		nil,
+	)
 	if err != nil {
 		return err
 	}
@@ -240,7 +234,6 @@ func (a *ComputeManagedSSLCertificateAdapter) Export(ctx context.Context) (*unst
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.ComputeManagedSSLCertificate{}
 	mapCtx := &direct.MapContext{}
@@ -256,10 +249,10 @@ func (a *ComputeManagedSSLCertificateAdapter) Export(ctx context.Context) (*unst
 		return nil, err
 	}
 
+	u := &unstructured.Unstructured{Object: uObj}
 	u.SetName(a.id.SslCertificate)
 	u.SetGroupVersionKind(krm.ComputeManagedSSLCertificateGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
@@ -274,18 +267,4 @@ func (a *ComputeManagedSSLCertificateAdapter) updateStatus(ctx context.Context, 
 		ObservedState: observedState,
 	}
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func compareComputeManagedSSLCertificate(ctx context.Context, actual, desired *pb.SslCertificate) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ComputeManagedSSLCertificateSpec_v1beta1_FromProto, ComputeManagedSSLCertificateSpec_v1beta1_ToProto)
-	if err != nil {
-		return nil, nil, err
-	}
-	maskedActual.Name = desired.Name
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
-	}
-	return diffs, updateMask, nil
 }
