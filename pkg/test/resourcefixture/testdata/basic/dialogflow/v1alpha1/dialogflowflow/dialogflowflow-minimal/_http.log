@@ -1,0 +1,412 @@
+POST https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "minimal dialogflow cx flow",
+  "displayName": "Flow ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "minimal dialogflow cx flow",
+  "displayName": "Flow ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "a1c2ad29-7c18-48e3-9efa-d80b532c59d4",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "32bafc1f-46ab-4f3a-9532-2135f0642891",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fflows%2F11dcd49c-0880-4b78-b75b-0c85f46c9023
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "minimal dialogflow cx flow",
+  "displayName": "Flow ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "a1c2ad29-7c18-48e3-9efa-d80b532c59d4",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "32bafc1f-46ab-4f3a-9532-2135f0642891",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: flow.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fflows%2F11dcd49c-0880-4b78-b75b-0c85f46c9023
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "updated dialogflow cx flow",
+  "displayName": "Flow Updated ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "updated dialogflow cx flow",
+  "displayName": "Flow Updated ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "a1c2ad29-7c18-48e3-9efa-d80b532c59d4",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "32bafc1f-46ab-4f3a-9532-2135f0642891",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fflows%2F11dcd49c-0880-4b78-b75b-0c85f46c9023
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "updated dialogflow cx flow",
+  "displayName": "Flow Updated ${uniqueId}",
+  "eventHandlers": [
+    {
+      "event": "sys.no-match-default",
+      "name": "a1c2ad29-7c18-48e3-9efa-d80b532c59d4",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": "sys.no-input-default",
+      "name": "32bafc1f-46ab-4f3a-9532-2135f0642891",
+      "triggerFulfillment": {
+        "messages": [
+          {
+            "text": {
+              "text": [
+                "I didn't get that. Can you say it again?",
+                "I missed what you said. What was that?",
+                "Sorry, could you say that again?",
+                "Sorry, can you say that again?",
+                "Can you say that again?",
+                "Sorry, I didn't get that. Can you rephrase?",
+                "Sorry, what was that?",
+                "One more time?",
+                "What was that?",
+                "Say that one more time?",
+                "I didn't get that. Can you repeat?",
+                "I missed that, say that again?"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023",
+  "nluSettings": {
+    "classificationThreshold": 0.3,
+    "modelType": 3
+  }
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/flows/11dcd49c-0880-4b78-b75b-0c85f46c9023?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fflows%2F11dcd49c-0880-4b78-b75b-0c85f46c9023
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

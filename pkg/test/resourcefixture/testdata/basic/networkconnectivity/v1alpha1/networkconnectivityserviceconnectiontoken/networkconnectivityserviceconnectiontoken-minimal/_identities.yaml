@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/ncsct-net-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: ncsct-net-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/us-central1/serviceConnectionTokens/ncsct-${uniqueId}
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivityServiceConnectionToken
+  name: ncsct-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

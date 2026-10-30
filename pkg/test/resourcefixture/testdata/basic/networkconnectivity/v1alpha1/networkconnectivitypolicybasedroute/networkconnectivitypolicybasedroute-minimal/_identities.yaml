@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/ncpbr-net-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: ncpbr-net-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/global/policyBasedRoutes/ncpbr-${uniqueId}
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivityPolicyBasedRoute
+  name: ncpbr-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

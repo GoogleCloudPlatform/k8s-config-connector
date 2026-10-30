@@ -1,0 +1,6 @@
+- caisURL: //ces.googleapis.com/projects/${projectId}/locations/us/apps/kcc-test-app/agents/cesagent-${uniqueId}
+  group: ces.cnrm.cloud.google.com
+  kind: CesAgent
+  name: cesagent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

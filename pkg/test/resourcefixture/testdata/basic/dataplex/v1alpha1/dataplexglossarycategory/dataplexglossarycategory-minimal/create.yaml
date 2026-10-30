@@ -1,0 +1,11 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexGlossaryCategory
+metadata:
+  name: dpgc-${uniqueId}
+spec:
+  glossaryRef:
+    name: dpg-${uniqueId}
+  parentRef:
+    name: dpg-${uniqueId}
+  displayName: Category ${uniqueId}
+  description: minimal glossary category

@@ -1,0 +1,19 @@
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated query template",
+  "displayName": "qt_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/kccdcrde1/queryTemplates/bqahqt${uniqueId}",
+  "primaryContact": "lmadariaga@google.com",
+  "routine": {
+    "definitionBody": "bqahqt${uniqueId}() AS (SELECT 1 AS x)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

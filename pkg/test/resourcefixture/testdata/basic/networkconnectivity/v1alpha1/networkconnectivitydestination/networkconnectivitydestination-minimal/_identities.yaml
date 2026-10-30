@@ -1,0 +1,6 @@
+- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/ncmcdt-74zfugfzrs5qyga/destinations/ncdest-${uniqueId}
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivityDestination
+  name: ncdest-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

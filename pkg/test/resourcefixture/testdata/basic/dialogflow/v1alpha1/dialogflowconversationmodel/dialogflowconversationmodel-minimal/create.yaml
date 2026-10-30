@@ -1,0 +1,14 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowConversationModel
+metadata:
+  name: dfcm-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  displayName: cm-${uniqueId}
+  datasets:
+    - datasetRef:
+        external: projects/${projectId}/locations/global/conversationDatasets/8566897899252744192-fbd243c02f054df8
+  smartReplyModelMetadata:
+    trainingModelType: SMART_REPLY_DUAL_ENCODER_MODEL
