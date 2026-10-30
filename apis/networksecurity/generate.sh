@@ -65,6 +65,19 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkSecurityInterceptEndpointGroupAssociation:InterceptEndpointGroupAssociation \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule \
+  --proto-source-path ${PROTO_OUT}
+
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
@@ -91,7 +104,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
   --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \
   --proto-source-path ${PROTO_OUT} \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 
 
@@ -99,7 +113,9 @@ ${CONTROLLERBUILDER} generate-mapper \
 ${REPO_ROOT}/dev/tasks/fix-gofmt
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/networksecurity" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/networksecurity/
