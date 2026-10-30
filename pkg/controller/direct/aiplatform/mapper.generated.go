@@ -252,6 +252,7 @@ func AIPlatformHyperparameterTuningJobObservedState_FromProto(mapCtx *direct.Map
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
@@ -270,6 +271,7 @@ func AIPlatformHyperparameterTuningJobObservedState_ToProto(mapCtx *direct.MapCo
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
@@ -287,7 +289,7 @@ func AIPlatformHyperparameterTuningJobSpec_FromProto(mapCtx *direct.MapContext, 
 	out.ParallelTrialCount = direct.LazyPtr(in.GetParallelTrialCount())
 	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
 	out.TrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrialJobSpec())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
@@ -304,7 +306,7 @@ func AIPlatformHyperparameterTuningJobSpec_ToProto(mapCtx *direct.MapContext, in
 	out.ParallelTrialCount = direct.ValueOf(in.ParallelTrialCount)
 	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
 	out.TrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrialJobSpec)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }

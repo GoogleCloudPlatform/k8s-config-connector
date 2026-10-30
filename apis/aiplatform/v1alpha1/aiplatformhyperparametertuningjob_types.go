@@ -15,14 +15,13 @@
 // API sources for AIPlatformHyperparameterTuningJob, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/hyperparameter_tuning_job.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,11 +32,7 @@ var AIPlatformHyperparameterTuningJobGVK = GroupVersion.WithKind("AIPlatformHype
 // +kcc:spec:proto=google.cloud.aiplatform.v1.HyperparameterTuningJob
 // +kcc:required-from-proto
 type AIPlatformHyperparameterTuningJobSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -76,16 +71,6 @@ type AIPlatformHyperparameterTuningJobSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.HyperparameterTuningJob.trial_job_spec
 	// +required
 	TrialJobSpec *CustomJobSpec `json:"trialJobSpec,omitempty"`
-
-	// The labels with user-defined metadata to organize HyperparameterTuningJobs.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.HyperparameterTuningJob.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Customer-managed encryption key options for a HyperparameterTuningJob.
 	//  If this is set, then all resources created by the HyperparameterTuningJob
