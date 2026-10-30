@@ -182,6 +182,18 @@ func (m *gcpClient) newSslPoliciesClient(ctx context.Context) (*compute.SslPolic
 	return client, err
 }
 
+func (m *gcpClient) newSslCertificatesClient(ctx context.Context) (*compute.SslCertificatesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewSslCertificatesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute SslCertificates client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newHealthChecksClient(ctx context.Context) (*compute.HealthChecksClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
