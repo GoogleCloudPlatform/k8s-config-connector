@@ -83,5 +83,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
 }
