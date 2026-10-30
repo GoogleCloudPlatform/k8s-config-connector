@@ -17,8 +17,10 @@ package kccmanager
 import (
 	"context"
 	"path/filepath"
+	"strings"
 	"testing"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -77,13 +79,13 @@ func TestSyncerIntegration_RetryOnConflict(t *testing.T) {
 
 	name := types.NamespacedName{Name: "test-syncer-retry", Namespace: "default"}
 
-	// Pre-create the Syncer object
+	// Pre-create the Syncer object, pulling from another cluster.
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(KRMSyncerGVK)
 	u.SetName(name.Name)
 	u.SetNamespace(name.Namespace)
 	_ = unstructured.SetNestedField(u.Object, false, "spec", "suspend")
-	_ = unstructured.SetNestedField(u.Object, "dummy", "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
+	_ = unstructured.SetNestedMap(u.Object, testRemote(testGKECluster("previous-leader"), "Default"), "spec", "remote")
 	_ = unstructured.SetNestedSlice(u.Object, []interface{}{
 		map[string]interface{}{
 			"group":   "example.com",
@@ -96,11 +98,13 @@ func TestSyncerIntegration_RetryOnConflict(t *testing.T) {
 		t.Fatalf("error creating syncer: %v", err)
 	}
 
+	cluster := testGKECluster("test-leader")
 	si := &SyncerIntegration{
 		client:          kubeClient,
 		apiReader:       kubeClient, // use non-cached client directly
 		leaseNN:         name,
 		replicationMode: "Status",
+		cluster:         cluster,
 	}
 
 	// Fetch the object to get its ResourceVersion
@@ -122,14 +126,136 @@ func TestSyncerIntegration_RetryOnConflict(t *testing.T) {
 		t.Fatalf("EnsureSuspended failed on conflict: %v", err)
 	}
 
-	// Verify it was actually suspended
+	// Verify it was actually suspended, and that it names this cluster, the current leader.
 	updated := &unstructured.Unstructured{}
 	updated.SetGroupVersionKind(KRMSyncerGVK)
 	if err := kubeClient.Get(ctx, name, updated); err != nil {
 		t.Fatalf("failed to get updated syncer: %v", err)
 	}
-	suspend, _, _ := unstructured.NestedBool(updated.Object, "spec", "suspend")
-	if !suspend {
-		t.Errorf("expected syncer to be suspended after conflict retry")
+	assertSyncer(t, updated, cluster, "Default", true)
+}
+
+// On a standby, the KRMSyncer pulls from the leader's GKE cluster and follows leader changes.
+// When this cluster becomes the leader, the KRMSyncer is suspended and names this cluster.
+func TestSyncerIntegration_RemoteFollowsLeader(t *testing.T) {
+	ctx := context.Background()
+	_, kubeClient := startSyncerEnvtest(t)
+
+	ns := "cnrm-system"
+	if err := kubeClient.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: ns}}); err != nil {
+		t.Fatalf("error creating namespace: %v", err)
+	}
+
+	self := testGKECluster("cluster-b")
+	nn := types.NamespacedName{Namespace: ns, Name: "test-lease"}
+	si := &SyncerIntegration{
+		client:             kubeClient,
+		apiReader:          kubeClient,
+		leaseNN:            nn,
+		replicationMode:    "Status",
+		cluster:            self,
+		leaderEndpointType: operatorv1beta1.LeaderEndpointTypeDNS,
+	}
+	getSyncer := func() *unstructured.Unstructured {
+		t.Helper()
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(KRMSyncerGVK)
+		if err := kubeClient.Get(ctx, nn, u); err != nil {
+			t.Fatalf("error getting KRMSyncer %s: %v", nn, err)
+		}
+		return u
+	}
+
+	// This cluster is a standby: the KRMSyncer is created and pulls from the leader.
+	leaderA := testGKECluster("cluster-a")
+	if err := si.EnsurePullingFromLeader(ctx, leaderA); err != nil {
+		t.Fatalf("EnsurePullingFromLeader(%s): %v", leaderA.ResourceName(), err)
+	}
+	assertSyncer(t, getSyncer(), leaderA, "DNS", false)
+
+	// Another cluster becomes the leader: the KRMSyncer is updated to pull from it.
+	leaderC := testGKECluster("cluster-c")
+	if err := si.EnsurePullingFromLeader(ctx, leaderC); err != nil {
+		t.Fatalf("EnsurePullingFromLeader(%s): %v", leaderC.ResourceName(), err)
+	}
+	assertSyncer(t, getSyncer(), leaderC, "DNS", false)
+
+	// This cluster becomes the leader: the KRMSyncer is suspended and names this cluster.
+	if err := si.EnsureSuspended(ctx); err != nil {
+		t.Fatalf("EnsureSuspended: %v", err)
+	}
+	suspended := getSyncer()
+	assertSyncer(t, suspended, self, "DNS", true)
+
+	// Suspending again doesn't change the object.
+	if err := si.EnsureSuspended(ctx); err != nil {
+		t.Fatalf("EnsureSuspended: %v", err)
+	}
+	if got, want := getSyncer().GetResourceVersion(), suspended.GetResourceVersion(); got != want {
+		t.Errorf("EnsureSuspended updated an already suspended KRMSyncer: resourceVersion %s, want %s", got, want)
+	}
+}
+
+// The ConfigConnector CRD requires gkeCluster and rejects the deprecated clusterCandidateIdentity.
+func TestMultiClusterLeaseValidation(t *testing.T) {
+	ctx := context.Background()
+	_, kubeClient := startSyncerEnvtest(t)
+
+	newCC := func(lease *operatorv1beta1.MultiClusterLeaseSpec) *operatorv1beta1.ConfigConnector {
+		return &operatorv1beta1.ConfigConnector{
+			ObjectMeta: metav1.ObjectMeta{Name: operatorv1beta1.ConfigConnectorAllowedName},
+			Spec: operatorv1beta1.ConfigConnectorSpec{
+				Mode:        "cluster",
+				Experiments: &operatorv1beta1.CCExperiments{MultiClusterLease: lease},
+			},
+		}
+	}
+
+	for _, tc := range []struct {
+		name    string
+		lease   *operatorv1beta1.MultiClusterLeaseSpec
+		wantErr string
+	}{
+		{
+			name: "clusterCandidateIdentity is rejected",
+			lease: &operatorv1beta1.MultiClusterLeaseSpec{
+				LeaseName: "lease", Namespace: "cnrm-system",
+				ClusterCandidateIdentity: "cluster-a",
+				GKECluster:               testGKECluster("cluster-a"),
+			},
+			wantErr: "clusterCandidateIdentity is no longer supported",
+		},
+		{
+			name:    "gkeCluster is required",
+			lease:   &operatorv1beta1.MultiClusterLeaseSpec{LeaseName: "lease", Namespace: "cnrm-system"},
+			wantErr: "gkeCluster",
+		},
+		{
+			name: "gkeCluster parts can't contain a slash",
+			lease: &operatorv1beta1.MultiClusterLeaseSpec{
+				LeaseName: "lease", Namespace: "cnrm-system",
+				GKECluster: &operatorv1beta1.GKECluster{Project: "test-project", Location: "us-central1", Name: "a/b"},
+			},
+			wantErr: "gkeCluster.name",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			err := kubeClient.Create(ctx, newCC(tc.lease))
+			if err == nil || !strings.Contains(err.Error(), tc.wantErr) {
+				t.Errorf("creating ConfigConnector: got error %v, want an error containing %q", err, tc.wantErr)
+			}
+		})
+	}
+
+	// A valid gkeCluster is accepted, and leaderEndpointType defaults to Default.
+	cc := newCC(&operatorv1beta1.MultiClusterLeaseSpec{
+		LeaseName: "lease", Namespace: "cnrm-system",
+		GKECluster: testGKECluster("cluster-a"),
+	})
+	if err := kubeClient.Create(ctx, cc); err != nil {
+		t.Fatalf("creating ConfigConnector: %v", err)
+	}
+	if got := cc.Spec.Experiments.MultiClusterLease.LeaderEndpointType; got != operatorv1beta1.LeaderEndpointTypeDefault {
+		t.Errorf("leaderEndpointType = %q, want %q", got, operatorv1beta1.LeaderEndpointTypeDefault)
 	}
 }

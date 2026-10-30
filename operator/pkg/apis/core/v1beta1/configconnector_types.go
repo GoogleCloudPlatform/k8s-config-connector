@@ -115,16 +115,31 @@ type ResourceFilter struct {
 }
 
 // MultiClusterLeaseSpec defines the configuration for a multi-cluster lease.
+// +kubebuilder:validation:XValidation:rule="!has(self.clusterCandidateIdentity)",message="clusterCandidateIdentity is no longer supported; set gkeCluster to the GKE cluster that this Config Connector runs in"
 type MultiClusterLeaseSpec struct {
 	// The name of the MultiClusterLease object that KCC will create.
 	LeaseName string `json:"leaseName"`
 	// The namespace where the MultiClusterLease object will be created.
 	Namespace string `json:"namespace"`
-	// The identity of the cluster candidate for the KCC components, hared by all KCC replicas
-	// and workloads across all clusters that are part of the same election.
-	//  This name must be unique across all the clusters that you are configuring the multi cluster set up for.
+
+	// Deprecated: Use gkeCluster instead. Setting this field is rejected, and it will be
+	// removed in a future release.
+	// +optional
+	ClusterCandidateIdentity string `json:"clusterCandidateIdentity,omitempty"`
+
+	// GKECluster is the GKE cluster that this Config Connector runs in. Its resource name,
+	// projects/<project>/locations/<location>/clusters/<name>, is this cluster's identity in
+	// the election, so it must be unique across the clusters in the election. Standby clusters
+	// use the leader's identity to sync resources from the leader's cluster.
 	// +required
-	ClusterCandidateIdentity string `json:"clusterCandidateIdentity"`
+	GKECluster *GKECluster `json:"gkeCluster"`
+
+	// LeaderEndpointType selects the control plane endpoint that this cluster uses to reach
+	// the leader's cluster when syncing resources: Default, DNS or PrivateIP.
+	// +optional
+	// +kubebuilder:validation:Enum=Default;DNS;PrivateIP
+	// +kubebuilder:default=Default
+	LeaderEndpointType string `json:"leaderEndpointType,omitempty"`
 
 	// ResourceReplicationMode specifies how the resources will be synced to the passive clusters.
 	// Can be either 'Status', 'Full', or 'Disabled'.
@@ -136,6 +151,32 @@ type MultiClusterLeaseSpec struct {
 	// +kubebuilder:default=Status
 	ResourceReplicationMode string `json:"resourceReplicationMode,omitempty"`
 }
+
+// GKECluster identifies a GKE cluster.
+type GKECluster struct {
+	// Project is the ID of the Google Cloud project that hosts the cluster.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern=`^[^/]+$`
+	Project string `json:"project"`
+	// Location is the region or zone of the cluster, for example "us-central1".
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern=`^[^/]+$`
+	Location string `json:"location"`
+	// Name is the name of the cluster.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:Pattern=`^[^/]+$`
+	Name string `json:"name"`
+}
+
+// Values of MultiClusterLeaseSpec.LeaderEndpointType.
+const (
+	LeaderEndpointTypeDefault   = "Default"
+	LeaderEndpointTypeDNS       = "DNS"
+	LeaderEndpointTypePrivateIP = "PrivateIP"
+)
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector
 type ConfigConnectorStatus struct {
