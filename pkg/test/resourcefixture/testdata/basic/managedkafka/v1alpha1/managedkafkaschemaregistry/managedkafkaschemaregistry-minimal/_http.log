@@ -1,0 +1,22 @@
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/schemaRegistries/mkschemaregistry_${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FschemaRegistries%2Fmkschemaregistry_${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "At least one Managed Service for Apache Kafka cluster in us-central1 is required to access the Schema Registry service. Please create a cluster in us-central1 and retry.",
+    "status": "FAILED_PRECONDITION"
+  }
+}

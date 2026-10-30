@@ -1,0 +1,247 @@
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FproductSets%2Fvps-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets?%24alt=json%3Benum-encoding%3Dint&productSetId=vps-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "ProductSet ${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Product Search doesn't onboard new projects. For image search, please use Vision Warehouse: https://cloud.google.com/vision-ai/docs/warehouse-overview ",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FproductSets%2Fvps-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets?%24alt=json%3Benum-encoding%3Dint&productSetId=vps-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "ProductSet ${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Product Search doesn't onboard new projects. For image search, please use Vision Warehouse: https://cloud.google.com/vision-ai/docs/warehouse-overview ",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FproductSets%2Fvps-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets?%24alt=json%3Benum-encoding%3Dint&productSetId=vps-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "ProductSet Updated ${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Product Search doesn't onboard new projects. For image search, please use Vision Warehouse: https://cloud.google.com/vision-ai/docs/warehouse-overview ",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FproductSets%2Fvps-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets?%24alt=json%3Benum-encoding%3Dint&productSetId=vps-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "ProductSet Updated ${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Product Search doesn't onboard new projects. For image search, please use Vision Warehouse: https://cloud.google.com/vision-ai/docs/warehouse-overview ",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/productSets/vps-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FproductSets%2Fvps-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found.",
+    "status": "NOT_FOUND"
+  }
+}

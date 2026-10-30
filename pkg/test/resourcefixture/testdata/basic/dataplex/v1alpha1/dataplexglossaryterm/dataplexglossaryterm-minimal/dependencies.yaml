@@ -1,0 +1,9 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexGlossary
+metadata:
+  name: dpg-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Glossary ${uniqueId}

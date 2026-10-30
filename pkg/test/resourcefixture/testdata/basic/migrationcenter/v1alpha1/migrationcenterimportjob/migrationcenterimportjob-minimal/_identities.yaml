@@ -1,0 +1,12 @@
+- caisURL: //migrationcenter.googleapis.com/projects/${projectId}/locations/us-central1/sources/mcs-${uniqueId}
+  group: migrationcenter.cnrm.cloud.google.com
+  kind: MigrationCenterSource
+  name: mcs-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //migrationcenter.googleapis.com/projects/${projectId}/locations/us-central1/importJobs/mcij-${uniqueId}
+  group: migrationcenter.cnrm.cloud.google.com
+  kind: MigrationCenterImportJob
+  name: mcij-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

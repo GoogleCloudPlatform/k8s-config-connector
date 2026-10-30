@@ -1,0 +1,314 @@
+GET https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fglossaries%2Ftg-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Glossary not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "Initial Glossary",
+  "inputConfig": {
+    "gcsSource": {
+      "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+    }
+  },
+  "languageCodesSet": {
+    "languageCodes": [
+      "en",
+      "es"
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.CreateGlossaryMetadata",
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "state": 1,
+    "submitTime": "2026-10-29T18:58:43.253709241Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://translate.googleapis.com/v3/projects/${projectNumber}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.CreateGlossaryMetadata",
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "state": "SUCCEEDED",
+    "submitTime": "2026-10-29T18:58:43.253709241Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.Glossary",
+    "displayName": "tg-${uniqueId}",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "entryCount": 3,
+    "inputConfig": {
+      "gcsSource": {
+        "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+      }
+    },
+    "languageCodesSet": {
+      "languageCodes": [
+        "en",
+        "es"
+      ]
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "submitTime": "2026-10-29T18:58:43.253709241Z"
+  }
+}
+
+---
+
+GET https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fglossaries%2Ftg-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "tg-${uniqueId}",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "entryCount": 3,
+  "inputConfig": {
+    "gcsSource": {
+      "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+    }
+  },
+  "languageCodesSet": {
+    "languageCodes": [
+      "en",
+      "es"
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+  "submitTime": "2026-10-29T18:58:43.253709241Z"
+}
+
+---
+
+PATCH https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: glossary.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fglossaries%2Ftg-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "Updated Glossary",
+  "inputConfig": {
+    "gcsSource": {
+      "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+    }
+  },
+  "languageCodesSet": {
+    "languageCodes": [
+      "en",
+      "es"
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.UpdateGlossaryMetadata",
+    "state": 2,
+    "submitTime": "2026-10-29T18:58:51.181529708Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.Glossary",
+    "displayName": "Updated Glossary",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "entryCount": 3,
+    "inputConfig": {
+      "gcsSource": {
+        "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+      }
+    },
+    "languageCodesSet": {
+      "languageCodes": [
+        "en",
+        "es"
+      ]
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "submitTime": "2026-10-29T18:58:43.253709241Z"
+  }
+}
+
+---
+
+GET https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fglossaries%2Ftg-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Updated Glossary",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "entryCount": 3,
+  "inputConfig": {
+    "gcsSource": {
+      "inputUri": "gs://cloud-samples-data/translation/glossary.csv"
+    }
+  },
+  "languageCodesSet": {
+    "languageCodes": [
+      "en",
+      "es"
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+  "submitTime": "2026-10-29T18:58:43.253709241Z"
+}
+
+---
+
+DELETE https://translate.googleapis.com/v3/projects/${projectId}/locations/us-central1/glossaries/tg-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fglossaries%2Ftg-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.DeleteGlossaryMetadata",
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "state": 2,
+    "submitTime": "2026-10-29T18:58:54.136950945Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://translate.googleapis.com/v3/projects/${projectNumber}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.DeleteGlossaryMetadata",
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "state": "SUCCEEDED",
+    "submitTime": "2026-10-29T18:58:54.136950945Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.translation.v3.DeleteGlossaryResponse",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectNumber}/locations/us-central1/glossaries/tg-${uniqueId}",
+    "submitTime": "2026-10-29T18:58:54.136950945Z"
+  }
+}

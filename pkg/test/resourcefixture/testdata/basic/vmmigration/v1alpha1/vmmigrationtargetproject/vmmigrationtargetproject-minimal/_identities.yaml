@@ -1,0 +1,6 @@
+- caisURL: //vmmigration.googleapis.com/projects/${projectId}/locations/global/targetProjects/vmtp-${uniqueId}
+  group: vmmigration.cnrm.cloud.google.com
+  kind: VMMigrationTargetProject
+  name: vmtp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
