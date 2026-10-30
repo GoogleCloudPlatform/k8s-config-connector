@@ -185,20 +185,28 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
 *   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
 *   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
 
+**How to check.** If the parent workflow issue body has a line starting with `Prepopulated:`, trust it: Step 1a is done, so mark it `Completed (Bulk Prepopulated)` and go straight to Step 1b. **Don't open a Step 1a issue.** Otherwise check `master` without a checkout: list candidate queue files, then confirm an exact `  - kind: {kind}` line in one of them:
+```bash
+gh search code "kind: {kind}" --repo GoogleCloudPlatform/k8s-config-connector --filename judgement_queue.yaml --json path --jq '.[].path'
+gh api "repos/GoogleCloudPlatform/k8s-config-connector/contents/<path>" -H "Accept: application/vnd.github.raw" | grep -qx "  - kind: {kind}" && echo prepopulated
+```
+
 **GitHub Issue Details for Step 1a (Prepopulate):**
 *   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`, `step/gen-types`, `overseer/review`
 *   **Body:**
     ````
+    **First, check that {kind} isn't already prepopulated on `master`**: `git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`. If that finds it, don't change anything: make no commit, and say that {kind} is already prepopulated (naming the file). A maintainer will close this issue.
+
+    Otherwise:
+
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1a: `prepopulate/SKILL.md`) for prepopulating types and `judgement_queue.yaml` for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
 
-    Validate your changes locally by:
-     * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-     * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
+    Validate your changes locally by running `scripts/validate-prereqs.sh`. If it fails, its output contains hints for fixing the errors.
 
-    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+    Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -221,14 +229,17 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 *   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
 *   **Body:**
     ````
+    **First, check that this step applies**: if `apis/<service>/v1alpha1/{kind_lowercase}_types.go` exists on `master` but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for {kind}, it was finalized by a legacy Step 1 PR. Then don't change anything: make no commit, and say so (naming the types file). A maintainer will close this issue.
+
+    Otherwise:
+
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {kind}.
+    If {kind} is a child resource, model its parent as one required, immutable `spec.parentRef`, reusing the parent's existing `<ParentKind>Ref` from wherever it is under `apis/` (`judgement/references/PARENT_AND_IDENTITY.md`, Case B).
 
-    Validate your changes locally by:
-     * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-     * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
+    Validate your changes locally by running `scripts/validate-prereqs.sh`. If it fails, its output contains hints for fixing the errors.
 
-    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+    Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -251,7 +262,7 @@ Open a GitHub issue to coordinate the autogeneration/verification of the direct 
     ````
     Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {kind}.
 
-    If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
+    Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -269,15 +280,18 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
-*   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
+*   **Labels:** `overseer`, `greenfield`, `step/mockgcp`, `overseer/review`
 *   **Body:**
     ````
     Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {kind} to verify behavioral correctness against the simulated GCP services.
 
-    When creating the PR, include the release note block for adding new alpha resources:
+    When creating the PR, include the release note block set to NONE (Step 5 adds the new-resource note):
     ```release-note
-    New Alpha Resources (Direct Reconciler): `{kind}`
+    NONE
     ```
+
+    ## Review Instructions
+    Use .gemini/skills/reviewgen-greenfield-mockgcp/SKILL.md to conduct the review.
     ````
 
 ### Step 4: MockGCP Alignment with RealGCP
@@ -287,7 +301,7 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Align MockGCP logs with RealGCP for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
-*   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`
+*   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`, `overseer/review`
 *   **Body:**
     ````
     Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {kind}.
@@ -296,5 +310,32 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
     ```release-note
     NONE
     ```
+
+    ## Review Instructions
+    Use .gemini/skills/reviewgen-greenfield-mockgcp/SKILL.md to conduct the review.
+    ````
+
+### Step 5: Release
+
+Once Step 4's PR has merged, open a GitHub issue to release `{kind}`: remove it from `BLOCKED_KINDS` so its CRD ships in the release bundle.
+
+**GitHub Issue Details:**
+*   **Title:** `Greenfield: Release {kind} (remove it from BLOCKED_KINDS)`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/release`, `overseer/review`
+*   **Body:**
+    ````
+    Every other step for {kind} is done. Release it:
+
+    1. Check that every fixture of {kind} under `pkg/test/resourcefixture/testdata/basic/` has a real-GCP `_http.log`, an `_audit_probe.log` and an `_http_mock.log`. If any is missing, don't change anything: make no commit, and list what's missing.
+    2. Remove `"{kind}"` from the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. Change nothing else.
+
+    When creating the PR, include this release note block:
+    ```release-note
+    New Alpha Resources (Direct Reconciler): `{kind}`
+    ```
+
+    ## Review Instructions
+    Use .gemini/skills/reviewgen-greenfield-release/SKILL.md to conduct the review.
     ````
 
