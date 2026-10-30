@@ -99,11 +99,8 @@ const (
 
 func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
 	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
-	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
-		"--member=serviceAccount:"+mclGSA,
-		"--role=roles/storage.objectAdmin",
-	); err != nil {
-		return fmt.Errorf("granting storage.objectAdmin on %q to %q: %w", p.bucketURI, mclGSA, err)
+	if err := p.configureIAMForLeaseBucket(ctx, mclGSA); err != nil {
+		return err
 	}
 
 	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
@@ -121,6 +118,23 @@ func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID stri
 
 func gsaEmail(serviceAccountName, projectID string) string {
 	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
+}
+
+func (p *gcpProvisioner) configureIAMForLeaseBucket(ctx context.Context, mclGSA string) error {
+	roles := []string{
+		"roles/storage.objectAdmin",
+		"roles/storage.legacyBucketReader",
+	}
+	for _, role := range roles {
+		if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "add-iam-policy-binding", p.bucketURI,
+			"--member=serviceAccount:"+mclGSA,
+			"--role="+role,
+		); err != nil {
+			return fmt.Errorf("granting %s on %q to %q: %w", role, p.bucketURI, mclGSA, err)
+		}
+	}
+
+	return nil
 }
 
 func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, projectID, mclGSA, syncerGSA string) error {

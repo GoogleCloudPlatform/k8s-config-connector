@@ -237,16 +237,24 @@ func (b *manifestBuilder) buildRenderedConfigConnector(cc *operatorv1beta1.Confi
 	}
 }
 
+const defaultReplicationMode = "Status"
+
 func (b *manifestBuilder) configureMultiClusterLease(spec *operatorv1beta1.ConfigConnectorSpec) {
 	if spec.Experiments == nil {
 		spec.Experiments = &operatorv1beta1.CCExperiments{}
 	}
+	if spec.Experiments.MultiClusterLease == nil {
+		spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{}
+	}
 
-	spec.Experiments.MultiClusterLease = &operatorv1beta1.MultiClusterLeaseSpec{
-		LeaseName:                b.leaseName,
-		Namespace:                b.leaseNamespace,
-		ClusterCandidateIdentity: b.clusterIdentity,
-		ResourceReplicationMode:  "Status",
+	mcl := spec.Experiments.MultiClusterLease
+	mcl.LeaseName = b.leaseName
+	mcl.Namespace = b.leaseNamespace
+	if mcl.ClusterCandidateIdentity == "" {
+		mcl.ClusterCandidateIdentity = b.clusterIdentity
+	}
+	if mcl.ResourceReplicationMode == "" {
+		mcl.ResourceReplicationMode = defaultReplicationMode
 	}
 }
 

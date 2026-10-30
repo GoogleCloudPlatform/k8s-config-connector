@@ -125,12 +125,11 @@ func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun 
 			errs = append(errs, fmt.Errorf("applying %s on cluster %q: %w", formatObjectID(c.handle.client.Client, obj), c.handle.contextName, err))
 		}
 	}
-
-	if err := c.updateConfigConnector(ctx); err != nil {
-		errs = append(errs, err)
+	if len(errs) > 0 {
+		return errors.Join(errs...)
 	}
 
-	return errors.Join(errs...)
+	return c.updateConfigConnector(ctx)
 }
 
 func upsertObject(ctx context.Context, k8sClient client.Client, obj client.Object) error {

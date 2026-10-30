@@ -36,6 +36,7 @@ func TestGCPProvisionerDeduplicatesProjectsAndNormalizesZonalBucketLocation(t *t
 	wantCommands := []string{
 		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us-central1",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.objectAdmin",
+		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.legacyBucketReader",
 		"gcloud iam service-accounts add-iam-policy-binding kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-mcl]",
 		"gcloud iam service-accounts add-iam-policy-binding kcc-syncer@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-syncer]",
 		"gcloud projects add-iam-policy-binding proj-a --member=serviceAccount:kcc-syncer@proj-a.iam.gserviceaccount.com --role=roles/container.viewer",
