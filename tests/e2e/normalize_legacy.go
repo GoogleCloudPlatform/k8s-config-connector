@@ -957,18 +957,21 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	events = RemoveExtraEvents(events)
 
 	got := events.FormatHTTP()
-	normalizers := []func(string) string{}
-	normalizers = append(normalizers, IgnoreComments)
-	normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
-	normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
-	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+	replaceNormalizers := []func(string) string{
+		ReplaceString(uniqueID, "${uniqueId}"),
+		ReplaceString(project.ProjectID, "${projectId}"),
+		ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"),
+	}
 	for k, v := range r.PathIDs {
-		normalizers = append(normalizers, ReplaceString(k, v))
+		replaceNormalizers = append(replaceNormalizers, ReplaceString(k, v))
 	}
 	for k := range r.OperationIDs {
-		normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+		replaceNormalizers = append(replaceNormalizers, ReplaceString(k, "${operationID}"))
 	}
-
+	for _, fn := range replaceNormalizers {
+		got = fn(got)
+	}
+	normalizers := append([]func(string) string{IgnoreComments}, replaceNormalizers...)
 	return got, normalizers
 
 }

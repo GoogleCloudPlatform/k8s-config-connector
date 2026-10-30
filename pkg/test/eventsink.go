@@ -66,6 +66,19 @@ type MemoryEventSink struct {
 	mutex      sync.Mutex
 	HTTPEvents []*LogEntry `json:"httpEvents,omitempty"`
 	paused     bool
+	phase      string
+}
+
+func (s *MemoryEventSink) SetPhase(phase string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.phase = phase
+}
+
+func (s *MemoryEventSink) GetPhase() string {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	return s.phase
 }
 
 func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { //nolint:revive
@@ -77,8 +90,13 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	}
 
 	// HACK: Filter oauth events
-	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
+	if entry != nil && strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
 		return
+	}
+	if entry != nil && entry.Phase == "" && s.phase != "" {
+		copied := *entry
+		copied.Phase = s.phase
+		entry = &copied
 	}
 	s.HTTPEvents = append(s.HTTPEvents, entry)
 }
@@ -125,9 +143,14 @@ func (s *MemoryEventSink) Resume() {
 
 func (s LogEntries) FormatHTTP() string {
 	var eventStrings []string
+	var prevPhase string
 	for _, entry := range s {
-		s := entry.FormatHTTP()
-		eventStrings = append(eventStrings, s)
+		formatted := entry.FormatHTTP()
+		if entry.Phase != "" && entry.Phase != prevPhase {
+			formatted = fmt.Sprintf("# Phase: %s\n%s", entry.Phase, formatted)
+			prevPhase = entry.Phase
+		}
+		eventStrings = append(eventStrings, formatted)
 	}
 	return strings.Join(eventStrings, "\n---\n\n")
 }
