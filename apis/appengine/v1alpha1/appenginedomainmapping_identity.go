@@ -28,11 +28,13 @@ func getIdentityFromAppEngineDomainMappingSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		if obj.Spec.Project != nil && *obj.Spec.Project != "" {
-			projectID = *obj.Spec.Project
-		} else {
+	var projectID string
+	if obj.Spec.Project != nil && *obj.Spec.Project != "" {
+		projectID = *obj.Spec.Project
+	} else {
+		var err error
+		projectID, err = refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil {
 			return nil, fmt.Errorf("cannot resolve project: %w", err)
 		}
 	}

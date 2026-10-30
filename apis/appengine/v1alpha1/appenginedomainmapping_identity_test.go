@@ -22,11 +22,14 @@ import (
 	"k8s.io/utils/ptr"
 )
 
-func TestAppEngineDomainMappingIdentity_SpecProjectFallback(t *testing.T) {
+func TestAppEngineDomainMappingIdentity_SpecProjectPrecedence(t *testing.T) {
 	ctx := context.Background()
 	obj := &AppEngineDomainMapping{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test-mapping",
+			Annotations: map[string]string{
+				"cnrm.cloud.google.com/project-id": "project-from-annotation",
+			},
 		},
 		Spec: AppEngineDomainMappingSpec{
 			Project: ptr.To("project-from-spec"),
@@ -42,5 +45,42 @@ func TestAppEngineDomainMappingIdentity_SpecProjectFallback(t *testing.T) {
 	}
 	if id.DomainMapping != "test-mapping" {
 		t.Errorf("got domainMapping %q, want %q", id.DomainMapping, "test-mapping")
+	}
+}
+
+func TestAppEngineDomainMappingIdentity_ResolveProjectIDFallback(t *testing.T) {
+	ctx := context.Background()
+	obj := &AppEngineDomainMapping{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "test-mapping",
+			Annotations: map[string]string{
+				"cnrm.cloud.google.com/project-id": "project-from-annotation",
+			},
+		},
+	}
+
+	id, err := getIdentityFromAppEngineDomainMappingSpec(ctx, nil, obj)
+	if err != nil {
+		t.Fatalf("unexpected error resolving identity: %v", err)
+	}
+	if id.App != "project-from-annotation" {
+		t.Errorf("got app %q, want %q", id.App, "project-from-annotation")
+	}
+	if id.DomainMapping != "test-mapping" {
+		t.Errorf("got domainMapping %q, want %q", id.DomainMapping, "test-mapping")
+	}
+}
+
+func TestAppEngineDomainMappingIdentity_ErrorWhenUnset(t *testing.T) {
+	ctx := context.Background()
+	obj := &AppEngineDomainMapping{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "test-mapping",
+		},
+	}
+
+	_, err := getIdentityFromAppEngineDomainMappingSpec(ctx, nil, obj)
+	if err == nil {
+		t.Fatalf("expected error resolving identity when project is unset, got nil")
 	}
 }
