@@ -819,6 +819,14 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 	}
 
+	if isEnterprisePlus {
+		if (isMysql(obj) || isPostgres(obj)) && settings.DataCacheConfig == nil {
+			settings.DataCacheConfig = &pb.DataCacheConfig{
+				DataCacheEnabled: true,
+			}
+		}
+	}
+
 	if settings.DataCacheConfig != nil && !settings.DataCacheConfig.DataCacheEnabled {
 		settings.DataCacheConfig = nil
 	}
