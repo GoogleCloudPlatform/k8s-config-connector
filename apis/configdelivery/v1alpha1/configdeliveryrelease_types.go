@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,21 +30,12 @@ var ConfigDeliveryReleaseGVK = GroupVersion.WithKind("ConfigDeliveryRelease")
 // +kcc:spec:proto=google.cloud.configdelivery.v1.Release
 // +kcc:required-from-proto
 type ConfigDeliveryReleaseSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/resourceBundles/{resource_bundle} this resource belongs to.
-	// +kcc:guess
-	// ResourceBundleRef *ConfigDeliveryResourceBundleRef `json:"resourceBundleRef,omitempty"`
+	// Required. A reference to the ConfigDeliveryResourceBundle that this release belongs to.
+	// +required
+	ResourceBundleRef *ConfigDeliveryResourceBundleRef `json:"resourceBundleRef,omitempty"`
 
 	// The ConfigDeliveryRelease name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.Release.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. lifecycle of the `Release`.
 	// +kcc:proto:field=google.cloud.configdelivery.v1.Release.lifecycle

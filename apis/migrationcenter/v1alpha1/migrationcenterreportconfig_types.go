@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,7 @@ var MigrationCenterReportConfigGVK = GroupVersion.WithKind("MigrationCenterRepor
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.ReportConfig
 // +kcc:required-from-proto
 type MigrationCenterReportConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The MigrationCenterReportConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -51,6 +47,19 @@ type MigrationCenterReportConfigSpec struct {
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.group_preferenceset_assignments
 	// +required
 	GroupPreferencesetAssignments []ReportConfig_GroupPreferenceSetAssignment `json:"groupPreferencesetAssignments,omitempty"`
+}
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment
+type ReportConfig_GroupPreferenceSetAssignment struct {
+	// Required. Name of the group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.group
+	// +required
+	GroupRef *MigrationCenterGroupRef `json:"groupRef"`
+
+	// Required. Name of the Preference Set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.preference_set
+	// +required
+	PreferenceSetRef *MigrationCenterPreferenceSetRef `json:"preferenceSetRef"`
 }
 
 // MigrationCenterReportConfigStatus defines the config connector machine state of MigrationCenterReportConfig

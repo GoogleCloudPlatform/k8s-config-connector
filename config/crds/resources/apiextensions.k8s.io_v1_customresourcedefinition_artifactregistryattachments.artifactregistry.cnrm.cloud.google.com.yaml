@@ -81,11 +81,9 @@ spec:
                 items:
                   type: string
                 type: array
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              repositoryRef:
+                description: Required. A reference to the ArtifactRegistryRepository
+                  that this attachment belongs to.
                 oneOf:
                 - not:
                     required:
@@ -102,18 +100,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed ArtifactRegistryRepository
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of an ArtifactRegistryRepository resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of an ArtifactRegistryRepository resource.
                     type: string
                 type: object
               resourceID:
@@ -129,8 +123,7 @@ spec:
                 type: string
             required:
             - files
-            - location
-            - projectRef
+            - repositoryRef
             - target
             type: object
           status:
