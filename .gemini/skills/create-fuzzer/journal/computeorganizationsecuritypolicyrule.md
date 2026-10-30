@@ -3,30 +3,49 @@
 ## Observations & Learnings
 
 - **Fuzzer Implementation Details:** The round-trip KRM fuzzer for `ComputeOrganizationSecurityPolicyRule` (`compute.cnrm.cloud.google.com/v1alpha1`) was implemented in `pkg/controller/direct/compute/computeorganizationsecuritypolicyrule_fuzzer.go` following the `create-fuzzer` skill.
+- **Proto Mapping Target:** Compute Organization Security Policy Rules map to `google.cloud.compute.v1.FirewallPolicyRule` (`pb.FirewallPolicyRule`), not `pb.SecurityPolicyRule` (which is Cloud Armor).
 - **Spec-Only Resource:** `ComputeOrganizationSecurityPolicyRuleStatus` only contains `conditions` and `observedGeneration` without an `observedState` field. Consequently, `fuzztesting.RegisterKRMSpecFuzzer` and `fuzztesting.NewKRMTypedSpecFuzzer` were used.
 - **Central Fuzz Testing Integration:** Confirmed that `_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"` is registered in `pkg/controller/direct/register/register.go` so the fuzzer is executed by the central fuzz test suite.
 - **Field Mappings & Comparisons:**
   - KRM Spec fields:
     - `action` maps to proto `.action` (`f.SpecField(".action")`).
     - `description` maps to proto `.description` (`f.SpecField(".description")`).
-    - `preview` maps to proto `.preview` (`f.SpecField(".preview")`).
+    - `direction` maps to proto `.direction` (`f.SpecField(".direction")`).
+    - `enableLogging` maps to proto `.enable_logging` (`f.SpecField(".enable_logging")`).
     - `resourceID` maps to proto `.priority` (`f.SpecField(".priority")`).
+    - `targetResources` maps to proto `.target_resources` (`f.SpecField(".target_resources")`).
+    - `targetServiceAccounts` maps to proto `.target_service_accounts` (`f.SpecField(".target_service_accounts")`).
     - `match` maps to proto `.match` (`f.SpecField(".match")`).
-    - `match.config` maps to proto `.match.config` (`f.SpecField(".match.config")`).
-    - `match.config.srcIpRanges` maps to proto `.match.config.src_ip_ranges` (`f.SpecField(".match.config.src_ip_ranges")`).
-    - `match.versionedExpr` maps to proto `.match.versioned_expr` (`f.SpecField(".match.versioned_expr")`).
-  - Fields not present in `pb.SecurityPolicyRule`:
+    - `match.config.destIpRanges` maps to proto `.match.dest_ip_ranges` (`f.SpecField(".match.dest_ip_ranges")`).
+    - `match.config.layer4Config` maps to proto `.match.layer4_configs` (`f.SpecField(".match.layer4_configs")`).
+      - `match.config.layer4Config.ipProtocol` maps to proto `.match.layer4_configs.ip_protocol` (`f.SpecField(".match.layer4_configs.ip_protocol")`).
+      - `match.config.layer4Config.ports` maps to proto `.match.layer4_configs.ports` (`f.SpecField(".match.layer4_configs.ports")`).
+    - `match.config.srcIpRanges` maps to proto `.match.src_ip_ranges` (`f.SpecField(".match.src_ip_ranges")`).
+  - Fields not present on `pb.FirewallPolicyRule`:
     - `policyId` is the parent URL identifier.
-    - `direction`, `enableLogging`, `targetResources`, `targetServiceAccounts` are organization security policy rule parameters handled in GCP API endpoints but not represented on `pb.SecurityPolicyRule` in `computepb`.
-    - `match.config.destIpRanges`, `match.config.layer4Config`, and `match.description` are not present on `pb.SecurityPolicyRuleMatcher` or `pb.SecurityPolicyRuleMatcherConfig`.
+    - `preview` is not present on `pb.FirewallPolicyRule`.
+    - `match.description` and `match.versionedExpr` are not present on `pb.FirewallPolicyRuleMatcher`.
   - Unimplemented / not yet triaged proto fields:
-    - `.header_action`
+    - `.disabled`
     - `.kind`
-    - `.match.expr`
-    - `.match.expr_options`
-    - `.network_match`
-    - `.preconfigured_waf_config`
-    - `.rate_limit_options`
-    - `.redirect_options`
-  - Added FilterSpec to normalize `Action`: when the proto field is an empty string pointer `&""`, it is normalized to `nil` before mapping to prevent roundtrip diffs with KRM's non-pointer string representation.
-- **Testing Verification:** Executed and passed Spec round-trip fuzz testing via `FOCUS=ComputeOrganizationSecurityPolicyRule go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`. Also verified with `TestListTypesWithoutFuzzers` that `ComputeOrganizationSecurityPolicyRule` is recognized as fuzzed.
+    - `.rule_name`
+    - `.rule_tuple_count`
+    - `.security_profile_group`
+    - `.target_secure_tags`
+    - `.tls_inspect`
+    - `.match.dest_address_groups`
+    - `.match.dest_fqdns`
+    - `.match.dest_network_context`
+    - `.match.dest_network_type`
+    - `.match.dest_region_codes`
+    - `.match.dest_threat_intelligences`
+    - `.match.src_address_groups`
+    - `.match.src_fqdns`
+    - `.match.src_network_context`
+    - `.match.src_network_type`
+    - `.match.src_networks`
+    - `.match.src_region_codes`
+    - `.match.src_secure_tags`
+    - `.match.src_threat_intelligences`
+  - Added `FilterSpec` to normalize `Action` and `Layer4Configs.IpProtocol`: when either proto field is an empty string pointer `&""`, it is normalized to `nil` before mapping to prevent roundtrip diffs with KRM's non-pointer string representation.
+- **Testing Verification:** Executed and passed Spec round-trip fuzz testing via `FOCUS=ComputeOrganizationSecurityPolicyRule go test -count=100 -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`. Also verified with `TestListTypesWithoutFuzzers` that `ComputeOrganizationSecurityPolicyRule` is recognized as fuzzed.

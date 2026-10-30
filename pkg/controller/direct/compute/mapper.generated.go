@@ -4164,73 +4164,83 @@ found existing non-generated mapping function "ComputeOrganizationSecurityPolicy
 		return out
 	}
 */
-func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState {
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState{}
-	// MISSING: HeaderAction
+	// MISSING: Disabled
 	// MISSING: Kind
-	// MISSING: NetworkMatch
-	// MISSING: PreconfiguredWafConfig
 	// MISSING: Priority
-	// MISSING: RateLimitOptions
-	// MISSING: RedirectOptions
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetSecureTags
+	// MISSING: TLSInspect
 	return out
 }
-func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState) *pb.SecurityPolicyRule {
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState) *pb.FirewallPolicyRule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SecurityPolicyRule{}
-	// MISSING: HeaderAction
+	out := &pb.FirewallPolicyRule{}
+	// MISSING: Disabled
 	// MISSING: Kind
-	// MISSING: NetworkMatch
-	// MISSING: PreconfiguredWafConfig
 	// MISSING: Priority
-	// MISSING: RateLimitOptions
-	// MISSING: RedirectOptions
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetSecureTags
+	// MISSING: TLSInspect
 	return out
 }
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto", skipping
-func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
 	out.Action = in.Action
 	out.Description = in.Description
-	// MISSING: HeaderAction
+	out.Direction = in.Direction
+	// MISSING: Disabled
+	out.EnableLogging = in.EnableLogging
 	// MISSING: Kind
 	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_FromProto(mapCtx, in.GetMatch())
-	// MISSING: NetworkMatch
-	// MISSING: PreconfiguredWafConfig
-	out.Preview = in.Preview
 	// MISSING: Priority
-	// MISSING: RateLimitOptions
-	// MISSING: RedirectOptions
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = in.TargetResources
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = in.TargetServiceAccounts
+	// MISSING: TLSInspect
 	return out
 }
 */
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto", skipping
-func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.SecurityPolicyRule {
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.FirewallPolicyRule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SecurityPolicyRule{}
+	out := &pb.FirewallPolicyRule{}
 	out.Action = in.Action
 	out.Description = in.Description
-	// MISSING: HeaderAction
+	out.Direction = in.Direction
+	// MISSING: Disabled
+	out.EnableLogging = in.EnableLogging
 	// MISSING: Kind
 	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_ToProto(mapCtx, in.Match)
-	// MISSING: NetworkMatch
-	// MISSING: PreconfiguredWafConfig
-	out.Preview = in.Preview
 	// MISSING: Priority
-	// MISSING: RateLimitOptions
-	// MISSING: RedirectOptions
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = in.TargetResources
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = in.TargetServiceAccounts
+	// MISSING: TLSInspect
 	return out
 }
 */

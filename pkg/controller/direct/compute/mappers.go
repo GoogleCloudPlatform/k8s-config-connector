@@ -145,49 +145,61 @@ func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx 
 	return out
 }
 
-// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto maps a GCP proto SecurityPolicyRule to a KRM spec.
+// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto maps a GCP proto FirewallPolicyRule to a KRM spec.
 // We hand-code this function because Action is a required string in KRM but *string in proto,
-// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and several fields
-// (Direction, EnableLogging, TargetResources, TargetServiceAccounts) exist in GCP organization security policy rules
-// but are not present on pb.SecurityPolicyRule in computepb.
-func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and Priority is int32 in proto but string in KRM.
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
 	out.Action = in.GetAction()
 	out.Description = in.Description
-	out.Preview = in.Preview
+	out.Direction = in.Direction
+	out.EnableLogging = in.EnableLogging
 	if in.Priority != nil {
 		priorityStr := strconv.FormatInt(int64(*in.Priority), 10)
 		out.ResourceID = &priorityStr
 	}
+	out.TargetResources = in.TargetResources
+	out.TargetServiceAccounts = in.TargetServiceAccounts
 	if in.Match != nil {
 		out.Match = &krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatch{}
-		out.Match.VersionedExpr = in.Match.VersionedExpr
-		if in.Match.Config != nil {
-			out.Match.Config = &krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatchConfig{}
-			out.Match.Config.SrcIPRanges = in.Match.Config.SrcIpRanges
+		out.Match.Config = &krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatchConfig{
+			DestIPRanges: in.Match.DestIpRanges,
+			SrcIPRanges:  in.Match.SrcIpRanges,
+		}
+		for _, lc := range in.Match.Layer4Configs {
+			if lc == nil {
+				continue
+			}
+			var ipProto string
+			if lc.IpProtocol != nil {
+				ipProto = *lc.IpProtocol
+			}
+			out.Match.Config.Layer4Config = append(out.Match.Config.Layer4Config, krmcomputev1alpha1.OrganizationSecurityPolicyRuleMatchConfigLayer4Config{
+				IPProtocol: ipProto,
+				Ports:      lc.Ports,
+			})
 		}
 	}
 	return out
 }
 
-// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto SecurityPolicyRule.
+// ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto maps a KRM spec to a GCP proto FirewallPolicyRule.
 // We hand-code this function because Action is a required string in KRM but *string in proto,
-// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and several fields
-// (Direction, EnableLogging, TargetResources, TargetServiceAccounts) exist in GCP organization security policy rules
-// but are not present on pb.SecurityPolicyRule in computepb.
-func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.SecurityPolicyRule {
+// Match has a custom nested structure (OrganizationSecurityPolicyRuleMatch), and Priority is int32 in proto but string in KRM.
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.FirewallPolicyRule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SecurityPolicyRule{}
+	out := &pb.FirewallPolicyRule{}
 	if in.Action != "" {
-		out.Action = &in.Action
+		out.Action = direct.LazyPtr(in.Action)
 	}
 	out.Description = in.Description
-	out.Preview = in.Preview
+	out.Direction = in.Direction
+	out.EnableLogging = in.EnableLogging
 	if in.ResourceID != nil {
 		priorityVal, err := strconv.ParseInt(*in.ResourceID, 10, 32)
 		if err != nil {
@@ -197,12 +209,23 @@ func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.M
 			out.Priority = &p
 		}
 	}
+	out.TargetResources = in.TargetResources
+	out.TargetServiceAccounts = in.TargetServiceAccounts
 	if in.Match != nil {
-		out.Match = &pb.SecurityPolicyRuleMatcher{}
-		out.Match.VersionedExpr = in.Match.VersionedExpr
+		out.Match = &pb.FirewallPolicyRuleMatcher{}
 		if in.Match.Config != nil {
-			out.Match.Config = &pb.SecurityPolicyRuleMatcherConfig{}
-			out.Match.Config.SrcIpRanges = in.Match.Config.SrcIPRanges
+			out.Match.DestIpRanges = in.Match.Config.DestIPRanges
+			out.Match.SrcIpRanges = in.Match.Config.SrcIPRanges
+			for _, lc := range in.Match.Config.Layer4Config {
+				var ipProto *string
+				if lc.IPProtocol != "" {
+					ipProto = direct.LazyPtr(lc.IPProtocol)
+				}
+				out.Match.Layer4Configs = append(out.Match.Layer4Configs, &pb.FirewallPolicyRuleMatcherLayer4Config{
+					IpProtocol: ipProto,
+					Ports:      lc.Ports,
+				})
+			}
 		}
 	}
 	return out
