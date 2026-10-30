@@ -1,0 +1,15 @@
+- caisURL: unknown
+  error: cannot resolve resource ID
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformRepository
+  name: dataformrepository-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: 'resolving spec.parentRef: reference DataformRepository ${uniqueId}/dataformrepository-${uniqueId}
+    is not ready'
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformReleaseConfig
+  name: dfreleaseconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,544 @@
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=dataformrepository-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}",
+  "teamFolderName": ""
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e83fa87
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "US",
+  "name": "${projectId}-df-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e83fd92
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "${projectId}-df-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e83fdcb
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "${projectId}-df-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}%2FreleaseConfigs%2Fdfreleaseconfig-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs?%24alt=json%3Benum-encoding%3Dint&releaseConfigId=dfreleaseconfig-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "gitCommitish": "main"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "gitCommitish": "main",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}%2FreleaseConfigs%2Fdfreleaseconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "gitCommitish": "main",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}"
+}
+
+---
+
+PATCH https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=disabled%2CgitCommitish
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: release_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}%2FreleaseConfigs%2Fdfreleaseconfig-max-${uniqueId}
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "disabled": true,
+  "gitCommitish": "master",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "disabled": true,
+  "gitCommitish": "master",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}%2FreleaseConfigs%2Fdfreleaseconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "codeCompilationConfig": {
+    "assertionSchema": "test_assertion_schema",
+    "builtinAssertionNamePrefix": "assert_",
+    "databaseSuffix": "_db",
+    "defaultDatabase": "${projectId}",
+    "defaultLocation": "US",
+    "defaultNotebookRuntimeOptions": {
+      "gcsOutputBucket": "gs://${projectId}-df-${uniqueId}"
+    },
+    "defaultSchema": "test_schema",
+    "schemaSuffix": "_schema",
+    "tablePrefix": "prefix_",
+    "vars": {
+      "env": "test"
+    }
+  },
+  "disabled": true,
+  "gitCommitish": "master",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}"
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}%2FreleaseConfigs%2Fdfreleaseconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e8417f5
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "${projectId}-df-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e841819
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/${projectId}-df-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e8419b2
+
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}",
+  "teamFolderName": ""
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdataformrepository-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
