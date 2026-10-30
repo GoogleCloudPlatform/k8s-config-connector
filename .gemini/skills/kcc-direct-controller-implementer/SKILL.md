@@ -25,10 +25,11 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 3.  **Controller Structure & Patterns**:
     - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`. The adapter should avoid holding references to raw KRM objects for desired state to keep the interfaces clean, consistent with `actual` (which is also of proto type), and avoid redundant conversions. This ensures that `desired` is stored in the same proto format as `actual`.
     - **Handling Non-API / KRM-only Spec Fields**: If the KRM Spec has fields that are not represented in the GCP resource's proto message (such as client-side behavioral options or custom installation flags, e.g., `SkipInitialVersionCreation`), do NOT mix them into the proto. Instead, parse and store them as separate, explicitly-named fields on the adapter struct (e.g., `desiredSkipInitialVersionCreation bool`).
-    - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
+    - **NormalizeReferences Timing (CRITICAL)**: Always call `common.NormalizeReferences` on **line 1 of `Create()` and `Update()`** (or inside a `buildDesired()` helper invoked strictly by `Create()` and `Update()`), NEVER in `AdapterForObject()`.
+      *Rationale*: `Delete()` must never attempt to resolve external references. If a referenced dependency is deleted first, resolving references in `AdapterForObject` blocks finalizer cleanup and causes an unrecoverable deletion deadlock (per PR #13573):
       ```go
-      if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-          return nil, fmt.Errorf("normalizing references: %w", err)
+      if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+          return fmt.Errorf("normalizing references: %w", err)
       }
       ```
     - **Identity Parent Paths**: Create a `ParentString()` method on the resource's identity type (e.g., `KMSCryptoKeyIdentity`) instead of constructing formatting string patterns manually inside the controller. This keeps parent paths canonical and reusable.

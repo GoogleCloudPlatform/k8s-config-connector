@@ -1,23 +1,35 @@
 # Migrate Terraform/DCL-based Beta to direct Beta
 
 Config Connector requires the Beta resource to be backward compatible. We
-require the Mock GCP to reflect the real GCP  cases where the current Terraform
-or DCL based approach uses or depend on to make sure the migration is backward
+require the Mock GCP to reflect the real GCP cases where the current Terraform
+or DCL based approach uses or depends on to make sure the migration is backward
 compatible. Example things to look out for:
 
 *   assigning defaulting value to a field
 *   having the same HTTP errors for matching
 
+---
+
+## The 100% Field Parity Invariant (Mandatory Migration Invariant)
+
+> [!CAUTION]
+> **A Direct Controller migrating an existing TF or DCL resource must support every single field present in the legacy CRD.**
+> **Dropping a field causes KCC to wipe that configuration from GCP on the very first reconcile loop after upgrade.**
+> When existing resources are upgraded to direct reconciliation, any omitted field in the new controller or mapper is treated as unset, sending null or empty values in GCP API requests and wiping out user configurations.
+> 100% of the fields present in the legacy CRD must be mapped, fuzzed, and reconciled in the direct controller.
+
+---
+
 In the API and mapper step, we require the migration to happen in two stages:
 
 *   The first stage is to make sure all APIs and their behavior are exactly the
-    same after migration (verifying via  the golden logs).
+    same after migration (verifying via the golden logs).
 *   The second stage is to add new fields to make the resource up-to-date with
     what the current GCP service supports.
 
 In the controller step, we do not require the direct controller and the
-Terraform/DCL based controller  to behave exactly the same, but fixing the
-legacy or non Kubernetes-native  problems like merging config back to `spec`
+Terraform/DCL based controller to behave exactly the same, but fixing the
+legacy or non Kubernetes-native problems like merging config back to `spec`
 (`state-into-spec:merge`), setting defaulting on-behalf of users.
 
 To help the developer better manage the migration, we design the following steps
@@ -37,9 +49,9 @@ Terraform or DCL based controller to help develop the Mock GCP.
 *   The 3rd git-commit (or N-th git-commit) shall run against real GCP. The
     generated `_generated_object_<resource>.golden.yaml` and `_http.log` is the
     golden log reflecting the real GCP. The
-    `_generated_obeject_<resource>.golden.yaml` matches the `spec` in
+    `_generated_object_<resource>.golden.yaml` matches the `spec` in
     `update.yaml`
-*   The 4rd git-commit (or N+1-th git-commit) shall run against the Mock GCP.
+*   The 4th git-commit (or N+1-th git-commit) shall run against the Mock GCP.
     The git-diff shows `_generated_object_<resource>.golden.yaml` is unchanged,
     and the `_http.log` is as much like the real GCP as possible.
 
@@ -73,6 +85,8 @@ The PR shall contain the types and deepcopy codes. It shall make modifications
 to make sure the CRDs are the same, because Beta resource has to be backward
 compatible.
 
+*   **Enforce 100% Field Parity**: Maintain 100% field parity with the existing CRD. Every field in the existing CRD must exist in the direct types.
+
 *   You may need to modify the auto-generated `types.go` to keep the existing
     fields the same (even if it is not following the recommended styles and
     conventions). You can run `dev/tasks/generate-crds` (repeatedly) to make
@@ -83,7 +97,6 @@ compatible.
 
 *   Add `cnrm.cloud.google.com/dcl2crd: "true"` or
     `cnrm.cloud.google.com/tf2crd: "true"` to the API tag
-    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/v1.128.0/apis/alloydb/v1beta1/instance_types.go#L164),
     to continue using DCL-based or Terraform-based controllers.
 
 *   You may see some new fields added to the CRD. These are expected since the
@@ -108,12 +121,18 @@ The PR adds the direct mapper. You can do this together with the previous step
 or the next step if no additional manual changes are needed. Using `/*NOTYET ..
 */` to comment out new functions, same as the last step.
 
+*   **100% Field Parity in Mappers**: Every single field in `Spec` and `Status` must be mapped symmetrically (`Spec_ToProto` and `Spec_FromProto`).
+
 ## Add the direct controller
 
 Follow [deep-dives Step 4](../deep-dives/4-add-controller.md).
 
-*   Use the `KCC_USE_DIRECT_RECONCILERS` flag
-    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/dev/tasks/run-e2e#L27).
+*   **Reference Resolution Timing (CRITICAL)**:
+    Always resolve external references (`*refs.<Kind>Ref` or `common.NormalizeReferences`) on **line 1 of `Create()` and `Update()`** inside `pkg/controller/direct/<service>/<resource>_controller.go`.
+    **NEVER resolve references in `AdapterForObject()`**.
+    *Rationale*: `AdapterForObject()` runs during controller setup for every operation including `Delete()`. If a referenced dependency is deleted first, resolving references in `AdapterForObject()` blocks controller initialization, preventing `Delete()` from running and permanently trapping the resource with its finalizer intact (unrecoverable deletion deadlock per PR #13573).
+
+*   Use the `KCC_USE_DIRECT_RECONCILERS` flag.
 
 *Tips* The `KCC_USE_DIRECT_RECONCILERS` will override the `tf2crd` and `dcl2crd`
 label to force using the direct controller, but it will not affect the releases
@@ -124,8 +143,7 @@ different Config Connector releases without code freeze.
 ### PR Reviews
 
 *   We require the roundtrip fuzz tests to cover all the fields in `spec` and
-    `status.observedState` fields
-    [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/f313b00c52f09c4a52a2eb5fe2c15fa4b30a05fd/pkg/controller/direct/discoveryengine/fuzzers.go#L26-L47)
+    `status.observedState` fields.
 *   We require the MockGCP pass without any change to the `create.yaml`,
     `update.yaml` and `_generated_object_<resource>.golden.yaml` files.
 
@@ -135,10 +153,9 @@ Once the direct controller is fully implemented, you can switch to the direct
 controller.
 
 *   Remove the `cnrm.cloud.google.com/dcl2crd: "true"` or
-    `cnrm.cloud.google.com/tf2crd: "true"` API tag
-    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92).
+    `cnrm.cloud.google.com/tf2crd: "true"` API tag.
     Run `dev/tasks/generate-crds` to update the CRDs, now all the API and
-    controller have been migration to the direct approach.
+    controller have been migrated to the direct approach.
 
 *   If you want to keep the existing controller (TF or DCL) available but make
     Direct the default, you can add the
@@ -164,7 +181,5 @@ controller as well to support those new fields.
     `update.yaml` (if mutable), `_generated_object_<resource>.golden.yaml`, and
     `_http.log`.
 *   We require the roundtrip fuzz tests to cover the new fields in `spec` or/and
-    `status.observedState` fields
-    [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92)
-    (For mapper)
+    `status.observedState` fields.
 *   We require no /*NOTYET .. */ in the API and Mapper code.

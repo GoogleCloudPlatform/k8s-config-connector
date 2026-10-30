@@ -118,6 +118,13 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 
 ---
 
+## 6. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
+
+---
+
 # Review Comment Template
 
 When proposing changes or stating LGTM, format the review description as follows:
@@ -125,6 +132,7 @@ When proposing changes or stating LGTM, format the review description as follows
 ```markdown
 ### KCC Greenfield Step 2 (Judgement Queue) Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **Judgement Queue Completeness**: [Pass/Fail] - (Confirm `untriaged-bulk-generation` and all actionable entries for `<Kind>` are `resolved`, no entries were deleted, and no `+kcc:guess` comments remain in handwritten files)
 * **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` or top-level `labels` left in Spec, or doc comments stripped to evade `TestMissingRefs`)
 * **Parent, Identity & References**: [Pass/Fail] - (Verify `*parent.ProjectAndLocationRef` / single `spec.parentRef` per `go/kcc-oneparent`, `generate-identity` usage, singleton/multi-pattern template accuracy, `ServerGeneratedIdentity` vs `IdentityV2`, and `refs.Normalize`)

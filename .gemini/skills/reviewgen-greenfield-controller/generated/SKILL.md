@@ -42,11 +42,16 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 *   **Parent fields**: for a child resource, `create.yaml` sets `spec.parentRef` to the parent that `dependencies.yaml` creates (or `external` for an external-only reference type); for a top-level resource, `projectRef` plus `location`. `update.yaml` never changes the parent fields. Project, location and ancestor IDs come from the identity, never from the `cnrm.cloud.google.com/project-id` annotation, `refs.ResolveProjectID` or `refs.GetLocation`.
 *   Verify `<Kind>` is not excluded in `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.
 
+## 5. SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+*   Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
+
 # Review Comment Template
 
 ```markdown
 ### KCC Greenfield Controller Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **No Internal Info (SOUL.md Invariant 7)**: [Pass/Fail] - (Verified no b/<id>, internal URLs, or customer names)
 * **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` invokes `generate-controller` & `generate-fuzzer` with `--prepopulate-resource`, files have `+generated:controller` / `+generated:fuzzer`, `static_config.go` is updated, and `<Kind>` is still in `BLOCKED_KINDS`)
 * **Client Creation & Reference Normalization**: [Pass/Fail] - (Confirm GAPIC REST client and `common.NormalizeGreenfieldReferences` in `AdapterForObject`)
 * **CompareGreenfieldSpec & Structured Reporting**: [Pass/Fail] - (Confirm `common.CompareGreenfieldSpec` / `CompareGreenfieldSpecAndLabels` and `structuredreporting.ReportDiff` are used in `Update`)
