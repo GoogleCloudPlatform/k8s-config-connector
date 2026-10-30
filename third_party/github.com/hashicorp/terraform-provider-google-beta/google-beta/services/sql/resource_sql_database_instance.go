@@ -2003,7 +2003,7 @@ func resourceSqlDatabaseInstanceImport(d *schema.ResourceData, meta interface{})
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSettings(settings *sqladmin.Settings , d *schema.ResourceData) []map[string]interface{} {
+func flattenSettings(settings *sqladmin.Settings, d *schema.ResourceData) []map[string]interface{} {
 	data := map[string]interface{}{
 		"version":                     settings.SettingsVersion,
 		"tier":                        settings.Tier,
@@ -2198,12 +2198,11 @@ func flattenIpConfiguration(ipConfiguration *sqladmin.IpConfiguration, d *schema
 	if ipConfiguration.PscConfig != nil {
 		data["psc_config"] = flattenPscConfigs(ipConfiguration.PscConfig)
 	}
-	
+
 	// We store the ssl_mode value only if the customer already uses `ssl_mode`.
 	if _, ok := d.GetOk("settings.0.ip_configuration.0.ssl_mode"); ok {
 		data["ssl_mode"] = ipConfiguration.SslMode
 	}
-
 
 	return []map[string]interface{}{data}
 }

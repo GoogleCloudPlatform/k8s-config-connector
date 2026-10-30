@@ -158,6 +158,31 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.DatabaseReplicationEnabled = actual.Settings.DatabaseReplicationEnabled
 	}
 
+	if in.Spec.Settings.PerformanceCaptureConfig == nil && actual != nil && actual.Settings != nil {
+		// Preserve the live GCP state when spec.settings.performanceCaptureConfig is unset in KRM
+		// to prevent unintended drift and repetitive PATCH requests when the API returns default values.
+		out.Settings.PerformanceCaptureConfig = actual.Settings.PerformanceCaptureConfig
+	} else if in.Spec.Settings.PerformanceCaptureConfig != nil && actual != nil && actual.Settings != nil && actual.Settings.PerformanceCaptureConfig != nil {
+		if in.Spec.Settings.PerformanceCaptureConfig.Enabled == nil {
+			out.Settings.PerformanceCaptureConfig.Enabled = actual.Settings.PerformanceCaptureConfig.Enabled
+		}
+		if in.Spec.Settings.PerformanceCaptureConfig.ProbeThreshold == nil {
+			out.Settings.PerformanceCaptureConfig.ProbeThreshold = actual.Settings.PerformanceCaptureConfig.ProbeThreshold
+		}
+		if in.Spec.Settings.PerformanceCaptureConfig.ProbingIntervalSeconds == nil {
+			out.Settings.PerformanceCaptureConfig.ProbingIntervalSeconds = actual.Settings.PerformanceCaptureConfig.ProbingIntervalSeconds
+		}
+		if in.Spec.Settings.PerformanceCaptureConfig.RunningThreadsThreshold == nil {
+			out.Settings.PerformanceCaptureConfig.RunningThreadsThreshold = actual.Settings.PerformanceCaptureConfig.RunningThreadsThreshold
+		}
+		if in.Spec.Settings.PerformanceCaptureConfig.SecondsBehindSourceThreshold == nil {
+			out.Settings.PerformanceCaptureConfig.SecondsBehindSourceThreshold = actual.Settings.PerformanceCaptureConfig.SecondsBehindSourceThreshold
+		}
+		if in.Spec.Settings.PerformanceCaptureConfig.TransactionDurationThreshold == nil {
+			out.Settings.PerformanceCaptureConfig.TransactionDurationThreshold = actual.Settings.PerformanceCaptureConfig.TransactionDurationThreshold
+		}
+	}
+
 	// Stage 2: Preserve any fields that are unmanaged by the user.
 	// This generic loop will overwrite any defaults set in Stage 1.
 	if actual == nil {

@@ -167,6 +167,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 		LocationPreference:       InstanceLocationPreferenceKRMToGCP(in.LocationPreference),
 		MaintenanceWindow:        InstanceMaintenanceWindowKRMToGCP(in.MaintenanceWindow),
 		PasswordValidationPolicy: InstancePasswordValidationPolicyKRMToGCP(in.PasswordValidationPolicy),
+		PerformanceCaptureConfig: InstancePerformanceCaptureConfigKRMToGCP(in.PerformanceCaptureConfig),
 		PricingPlan:              direct.ValueOf(in.PricingPlan),
 		ReplicationType:          direct.ValueOf(in.ReplicationType),
 		// SettingsVersion is omitted because it is not part of the "desired state".
@@ -549,6 +550,42 @@ func InstancePasswordValidationPolicyKRMToGCP(in *krm.InstancePasswordValidation
 	return out
 }
 
+func InstancePerformanceCaptureConfigKRMToGCP(in *krm.InstancePerformanceCaptureConfig) *api.PerformanceCaptureConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.PerformanceCaptureConfig{
+		Enabled:                      direct.ValueOf(in.Enabled),
+		ProbeThreshold:               direct.ValueOf(in.ProbeThreshold),
+		ProbingIntervalSeconds:       direct.ValueOf(in.ProbingIntervalSeconds),
+		RunningThreadsThreshold:      direct.ValueOf(in.RunningThreadsThreshold),
+		SecondsBehindSourceThreshold: direct.ValueOf(in.SecondsBehindSourceThreshold),
+		TransactionDurationThreshold: direct.ValueOf(in.TransactionDurationThreshold),
+	}
+
+	if in.Enabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "Enabled")
+	}
+	if in.ProbeThreshold != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ProbeThreshold")
+	}
+	if in.ProbingIntervalSeconds != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ProbingIntervalSeconds")
+	}
+	if in.RunningThreadsThreshold != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "RunningThreadsThreshold")
+	}
+	if in.SecondsBehindSourceThreshold != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "SecondsBehindSourceThreshold")
+	}
+	if in.TransactionDurationThreshold != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "TransactionDurationThreshold")
+	}
+
+	return out
+}
+
 func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig) *api.SqlServerAuditConfig {
 	if in == nil {
 		return nil
@@ -729,6 +766,7 @@ func InstanceSettingsGCPToKRM(in *api.Settings) krm.InstanceSettings {
 		LocationPreference:       InstanceLocationPreferenceGCPToKRM(in.LocationPreference),
 		MaintenanceWindow:        InstanceMaintenanceWindowGCPToKRM(in.MaintenanceWindow),
 		PasswordValidationPolicy: InstancePasswordValidationPolicyGCPToKRM(in.PasswordValidationPolicy),
+		PerformanceCaptureConfig: InstancePerformanceCaptureConfigGCPToKRM(in.PerformanceCaptureConfig),
 		PricingPlan:              direct.LazyPtr(in.PricingPlan),
 		ReplicationType:          direct.LazyPtr(in.ReplicationType),
 		// SettingsVersion is omitted because it is not part of the "desired state".
@@ -1064,6 +1102,23 @@ func InstancePasswordValidationPolicyGCPToKRM(in *api.PasswordValidationPolicy) 
 		MinLength:                 direct.PtrTo(in.MinLength),
 		PasswordChangeInterval:    direct.LazyPtr(in.PasswordChangeInterval),
 		ReuseInterval:             direct.PtrTo(in.ReuseInterval),
+	}
+
+	return out
+}
+
+func InstancePerformanceCaptureConfigGCPToKRM(in *api.PerformanceCaptureConfig) *krm.InstancePerformanceCaptureConfig {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.InstancePerformanceCaptureConfig{
+		Enabled:                      direct.PtrTo(in.Enabled),
+		ProbeThreshold:               direct.PtrTo(in.ProbeThreshold),
+		ProbingIntervalSeconds:       direct.PtrTo(in.ProbingIntervalSeconds),
+		RunningThreadsThreshold:      direct.PtrTo(in.RunningThreadsThreshold),
+		SecondsBehindSourceThreshold: direct.PtrTo(in.SecondsBehindSourceThreshold),
+		TransactionDurationThreshold: direct.PtrTo(in.TransactionDurationThreshold),
 	}
 
 	return out
