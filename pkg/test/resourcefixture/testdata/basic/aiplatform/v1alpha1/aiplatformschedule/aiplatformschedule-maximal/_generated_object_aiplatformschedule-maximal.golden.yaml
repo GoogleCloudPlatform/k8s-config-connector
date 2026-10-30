@@ -16,6 +16,8 @@ spec:
   createPipelineJobRequest:
     pipelineJob:
       displayName: Hello World Pipeline Job inside Schedule
+      labels:
+        environment: test
       location: us-central1
       pipelineSpec:
         components:
@@ -43,9 +45,11 @@ spec:
                 taskInfo:
                   name: hello-world-task
         schemaVersion: 2.1.0
+      preflightValidations: false
       projectRef:
         external: ${projectId}
       runtimeConfig:
+        failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
         gcsOutputDirectoryRef:
           name: vertexai-schedmax-bucket-${uniqueId}
   cron: 0 2 * * *
