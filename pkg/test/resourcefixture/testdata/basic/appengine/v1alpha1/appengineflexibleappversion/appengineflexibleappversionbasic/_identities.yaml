@@ -1,0 +1,6 @@
+- caisURL: //appengine.googleapis.com/apps/${projectId}/services/default/versions/v${uniqueId}
+  group: appengine.cnrm.cloud.google.com
+  kind: AppEngineFlexibleAppVersion
+  name: appengineflexibleappversion-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
