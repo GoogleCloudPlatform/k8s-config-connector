@@ -773,6 +773,29 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				v["status"] = "RUNNING"
 			}
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#instance" {
+			delete(v, "dnsNames")
+			delete(v, "geminiConfig")
+			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
+					delete(backupConfig, "backupTier")
+					// Real GCP recordings from early 2026 return replicationLogArchivingEnabled=false for
+					// Postgres instances with backups disabled; newer recordings omit it.
+					if rla, ok := backupConfig["replicationLogArchivingEnabled"].(bool); ok && !rla {
+						delete(backupConfig, "replicationLogArchivingEnabled")
+					}
+				}
+			}
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#usersList" {
+			if items, ok := v["items"].([]interface{}); ok {
+				for _, item := range items {
+					if m, ok := item.(map[string]interface{}); ok {
+						delete(m, "passwordPolicy")
+					}
+				}
+			}
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
 			delete(v, "portName")
