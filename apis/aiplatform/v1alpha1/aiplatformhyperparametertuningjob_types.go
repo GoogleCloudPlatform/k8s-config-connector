@@ -39,7 +39,7 @@ type AIPlatformHyperparameterTuningJobSpec struct {
 	// The location of this resource.
 	Location *string `json:"location"`
 
-	// The AIPlatformHyperparameterTuningJob name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The display name of the HyperparameterTuningJob.
 	//  The name can be up to 128 characters long and can consist of any UTF-8
