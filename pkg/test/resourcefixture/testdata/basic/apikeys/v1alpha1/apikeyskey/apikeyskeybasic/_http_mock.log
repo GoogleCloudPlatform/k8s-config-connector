@@ -70,6 +70,7 @@ X-Xss-Protection: 0
 
 {
   "displayName": "Example Display Name",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
   "restrictions": {
     "apiTargets": [
@@ -136,6 +137,7 @@ X-Xss-Protection: 0
 
 {
   "displayName": "Example Display Name - Updated",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
   "restrictions": {
     "apiTargets": [
@@ -190,6 +192,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
     "displayName": "Example Display Name - Updated",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
     "restrictions": {
       "apiTargets": [

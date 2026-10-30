@@ -2,15 +2,323 @@
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-24c24
+17c17
+<     "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aOtyinmwJ-853TgxoPAHLcXwxKOtqxpWICrlc5oFxvRRh1cAb4asES6phIj-Wp9TVfkPLaAsN8D3fr1AItNngZQrLb0N-uGI587L7VMDVpY",
+---
+>     "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aMZVrGQqa-yHU78qDJoHijN5wdfdsGANlsHSlEHsE_hf_rBBqqL0hr8S242YJbgg7CBuFFKxIrNpajjfnCgb13xXKwO5diqb_PKBSTf276O",
+24,47c24
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found.\nHelp Token: AaVM3aPw-Gq66Zxa-HqLs_oqi0d2Ks-4r-Ce-2WtX2pSGv9RCN7bdfmmhdc2OvFqdjaQFJsPmJfD06PkK8403dCtOR6iwU_p99sJrqHe1Y7oKc6W",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
 < POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?alt=json&keyId=apikeyskey${uniqueId}
 ---
 > POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?%24alt=json%3Benum-encoding%3Dint&keyId=apikeyskey${uniqueId}
-58c58
+75c52
+<   "name": "operations/akmf.p7-${projectNumber}-e4dee95b-bb37-4164-9fb5-267ea822f78d"
+---
+>   "name": "operations/akmf.p7-${projectNumber}-d0e18016-bcab-441d-a810-d35b3929d958"
+80c57
+< GET https://apikeys.googleapis.com/v2/operations/${operationID}?alt=json
+---
+> GET https://apikeys.googleapis.com/v2/operations/${operationID}
+95c72
+<   "name": "operations/akmf.p7-${projectNumber}-e4dee95b-bb37-4164-9fb5-267ea822f78d",
+---
+>   "name": "operations/akmf.p7-${projectNumber}-d0e18016-bcab-441d-a810-d35b3929d958",
+101c78
+<     "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww",
+---
+>     "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
+120,385c97
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-88,352c88
+419,438c131
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
 < Content-Type: application/json
 < 
@@ -25,252 +333,7 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "displayName": "Example Display Name",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
-<   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "displayName": "Example Display Name",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
-<   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "displayName": "Example Display Name",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
-<   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "displayName": "Example Display Name",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
-<   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "displayName": "Example Display Name",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
-<   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
 < }
 < 
 < ---
@@ -278,10 +341,15 @@
 < PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json&updateMask=displayName%2Crestrictions
 ---
 > PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Crestrictions
-356a93
+442a136
 >   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-387,437c124
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+467,507c161
+<   "name": "operations/akmf.p10-${projectNumber}-b0d6f81f-a2b8-4d73-a4ba-7da7cdfda969"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/operations/${operationID}?alt=json
 < Content-Type: application/json
 < 
 < 200 OK
@@ -295,46 +363,35 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "displayName": "Example Display Name - Updated",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
-<   "restrictions": {
-<     "apiTargets": [
-<       {
-<         "methods": [
-<           "GET",
-<           "DELETE"
-<         ],
-<         "service": "translate.googleapis.com"
-<       }
-<     ]
+<   "done": true,
+<   "name": "operations/akmf.p10-${projectNumber}-b0d6f81f-a2b8-4d73-a4ba-7da7cdfda969",
+<   "response": {
+<     "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "displayName": "Example Display Name - Updated",
+<     "etag": "abcdef0123A=",
+<     "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<     "restrictions": {
+<       "apiTargets": [
+<         {
+<           "methods": [
+<             "GET",
+<             "DELETE"
+<           ],
+<           "service": "translate.googleapis.com"
+<         }
+<       ]
+<     },
+<     "uid": "111111111111111111111",
+<     "updateTime": "2024-04-01T12:34:56.123456Z"
 <   }
-< }
-< 
-< ---
-< 
-< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "keyString": "dummy-encrypted-value"
-< }
-< 
-< ---
-< 
+---
+>   "name": "operations/akmf.p10-${projectNumber}-71306357-06a3-4191-a960-ad87288c95e1"
+512c166
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-468,587c155
+547,728c201
 < GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
 < Content-Type: application/json
 < 
@@ -349,7 +406,7 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "keyString": "dummy-encrypted-value"
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
 < }
 < 
 < ---
@@ -368,8 +425,10 @@
 < X-Xss-Protection: 0
 < 
 < {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
 <   "displayName": "Example Display Name - Updated",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
 <   "restrictions": {
 <     "apiTargets": [
 <       {
@@ -380,7 +439,9 @@
 <         "service": "translate.googleapis.com"
 <       }
 <     ]
-<   }
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
 < }
 < 
 < ---
@@ -399,7 +460,7 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "keyString": "dummy-encrypted-value"
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
 < }
 < 
 < ---
@@ -418,8 +479,10 @@
 < X-Xss-Protection: 0
 < 
 < {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
 <   "displayName": "Example Display Name - Updated",
-<   "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
 <   "restrictions": {
 <     "apiTargets": [
 <       {
@@ -430,7 +493,9 @@
 <         "service": "translate.googleapis.com"
 <       }
 <     ]
-<   }
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
 < }
 < 
 < ---
@@ -449,7 +514,61 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "keyString": "dummy-encrypted-value"
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "Example Display Name - Updated",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectNumber}/locations/global/keys/apikeyskey${uniqueId}",
+<   "restrictions": {
+<     "apiTargets": [
+<       {
+<         "methods": [
+<           "GET",
+<           "DELETE"
+<         ],
+<         "service": "translate.googleapis.com"
+<       }
+<     ]
+<   },
+<   "uid": "111111111111111111111",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}/keyString?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww"
 < }
 < 
 < ---
@@ -457,7 +576,19 @@
 < DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json
 ---
 > DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-606c174
+742c215
+<   "name": "operations/akmf.p12-${projectNumber}-47f9e450-aa80-4061-b274-255fee0ccac2"
+---
+>   "name": "operations/akmf.p12-${projectNumber}-43417db1-f099-4466-9596-7b009e9c0064"
+747c220
 < GET https://apikeys.googleapis.com/v2/operations/${operationID}?alt=json
 ---
 > GET https://apikeys.googleapis.com/v2/operations/${operationID}
+762c235
+<   "name": "operations/akmf.p12-${projectNumber}-47f9e450-aa80-4061-b274-255fee0ccac2",
+---
+>   "name": "operations/akmf.p12-${projectNumber}-43417db1-f099-4466-9596-7b009e9c0064",
+769c242
+<     "keyString": "AIzaSyCMYs0cGetpgM6bPICTuwyAHa_WNmQbGww",
+---
+>     "keyString": "AIzaSyBqQFfa2nOCc7yUKDzmaQ_3mYqSImeawis",
