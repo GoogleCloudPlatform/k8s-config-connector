@@ -74,7 +74,6 @@ spec:
 
         Validate your changes locally by:
          * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-         * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
 
         If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
@@ -104,7 +103,6 @@ spec:
 
         Validate your changes locally by:
          * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-         * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
 
         If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
