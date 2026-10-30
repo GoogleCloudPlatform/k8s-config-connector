@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowConversationModel
+  name: dfcm-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

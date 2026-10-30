@@ -71,22 +71,9 @@ spec:
                   This is user-mutable. This will be same as the GlossaryCategoryId,
                   if not specified.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the GlossaryCategory.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
-              parent:
-                description: 'Required. The immediate parent of the GlossaryCategory
-                  in the resource-hierarchy. It can either be a Glossary or a GlossaryCategory.
-                  Format: projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
-                  OR projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}'
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              glossaryRef:
+                description: Required. The Glossary that this GlossaryCategory belongs
+                  to.
                 oneOf:
                 - not:
                     required:
@@ -103,18 +90,43 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed DataplexGlossary
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/glossaries/{{glossaryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a DataplexGlossary resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a DataplexGlossary resource.
+                    type: string
+                type: object
+              parentRef:
+                description: Required. The immediate parent of the GlossaryCategory
+                  in the resource-hierarchy.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataplexGlossary
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/glossaries/{{glossaryID}}".
+                    type: string
+                  name:
+                    description: The name of a DataplexGlossary resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataplexGlossary resource.
                     type: string
                 type: object
               resourceID:
@@ -122,9 +134,8 @@ spec:
                   metadata.name will be used.
                 type: string
             required:
-            - location
-            - parent
-            - projectRef
+            - glossaryRef
+            - parentRef
             type: object
           status:
             description: DataplexGlossaryCategoryStatus defines the config connector

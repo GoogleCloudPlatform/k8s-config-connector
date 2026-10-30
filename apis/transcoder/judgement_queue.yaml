@@ -25,52 +25,67 @@ entries:
     group: transcoder.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef, removed top-level Labels from spec, and converted SecretVersion to SecretVersionRef
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.encryptions[].secretManagerKeySource
     reason: possible-reference-by-name
     detail: SecretManagerSecretVersionRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: secretManagerKeySource is a container message; its child field secretVersion is converted to secretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef)
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.encryptions[].secretManagerKeySource.secretVersion
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/secrets/{secret_id}/versions/{version_number}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to secretVersionRef (*refsv1beta1.SecretManagerSecretVersionRef) on TranscoderJobTemplate_Encryption_SecretManagerSource
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.inputs[].uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.muxStreams[].encryptionID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: references an Encryption.id entry within the same JobConfig.encryptions list, not a separate GCP resource
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.output.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.overlays[].image.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.config.pubsubDestination.topic
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/topics/{topic}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to topicRef (*pubsubv1beta1.PubSubTopicRef) on PubsubDestination
   - kind: TranscoderJobTemplate
     group: transcoder.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

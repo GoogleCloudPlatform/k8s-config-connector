@@ -1,0 +1,12 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowPlaybook
+metadata:
+  name: dfplaybook-${uniqueId}
+spec:
+  agentRef:
+    external: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd
+  displayName: Playbook ${uniqueId}
+  goal: Help the user with their request.
+  instruction:
+    steps:
+      - text: Greet the user politely.

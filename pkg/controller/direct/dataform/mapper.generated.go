@@ -29,6 +29,7 @@ import (
 	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krmdataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	krmdataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -280,7 +281,9 @@ func DataformWorkflowConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krmdataformv1alpha1.DataformWorkflowConfigSpec{}
 	// MISSING: Name
-	out.ReleaseConfig = direct.LazyPtr(in.GetReleaseConfig())
+	if in.GetReleaseConfig() != "" {
+		out.ReleaseConfigRef = &krmdataformv1alpha1.DataformReleaseConfigRef{External: in.GetReleaseConfig()}
+	}
 	out.InvocationConfig = InvocationConfig_v1alpha1_FromProto(mapCtx, in.GetInvocationConfig())
 	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
@@ -293,7 +296,9 @@ func DataformWorkflowConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.WorkflowConfig{}
 	// MISSING: Name
-	out.ReleaseConfig = direct.ValueOf(in.ReleaseConfig)
+	if in.ReleaseConfigRef != nil {
+		out.ReleaseConfig = in.ReleaseConfigRef.External
+	}
 	out.InvocationConfig = InvocationConfig_v1alpha1_ToProto(mapCtx, in.InvocationConfig)
 	out.CronSchedule = direct.ValueOf(in.CronSchedule)
 	out.TimeZone = direct.ValueOf(in.TimeZone)
@@ -352,7 +357,9 @@ func InvocationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Invoc
 	out.TransitiveDependenciesIncluded = direct.LazyPtr(in.GetTransitiveDependenciesIncluded())
 	out.TransitiveDependentsIncluded = direct.LazyPtr(in.GetTransitiveDependentsIncluded())
 	out.FullyRefreshIncrementalTablesEnabled = direct.LazyPtr(in.GetFullyRefreshIncrementalTablesEnabled())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.QueryPriority = direct.Enum_FromProto(mapCtx, in.GetQueryPriority())
 	return out
 }
@@ -366,7 +373,9 @@ func InvocationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatafor
 	out.TransitiveDependenciesIncluded = direct.ValueOf(in.TransitiveDependenciesIncluded)
 	out.TransitiveDependentsIncluded = direct.ValueOf(in.TransitiveDependentsIncluded)
 	out.FullyRefreshIncrementalTablesEnabled = direct.ValueOf(in.FullyRefreshIncrementalTablesEnabled)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.QueryPriority = direct.EnumPtr_ToProto[pb.InvocationConfig_QueryPriority](mapCtx, in.QueryPriority)
 	return out
 }

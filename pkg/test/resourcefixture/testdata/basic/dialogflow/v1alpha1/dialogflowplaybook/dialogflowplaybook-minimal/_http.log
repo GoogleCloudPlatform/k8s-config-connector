@@ -1,0 +1,170 @@
+POST https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "Playbook ${uniqueId}",
+  "goal": "Help the user with their request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Playbook ${uniqueId}",
+  "goal": "Help the user with their request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53",
+  "tokenCount": "15"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fplaybooks%2Fe375e56b-ff69-4c20-9fe6-eb74c5b76c53
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Playbook ${uniqueId}",
+  "goal": "Help the user with their request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53",
+  "tokenCount": "15"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Cgoal
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: playbook.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fplaybooks%2Fe375e56b-ff69-4c20-9fe6-eb74c5b76c53
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "Playbook Updated ${uniqueId}",
+  "goal": "Help the user with their updated request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Playbook Updated ${uniqueId}",
+  "goal": "Help the user with their updated request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53",
+  "tokenCount": "16"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fplaybooks%2Fe375e56b-ff69-4c20-9fe6-eb74c5b76c53
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Playbook Updated ${uniqueId}",
+  "goal": "Help the user with their updated request.",
+  "instruction": {
+    "steps": [
+      {
+        "text": "Greet the user politely."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53",
+  "tokenCount": "16"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd/playbooks/e375e56b-ff69-4c20-9fe6-eb74c5b76c53?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2Fb674ae89-59b4-4587-ac8d-71b203f68dbd%2Fplaybooks%2Fe375e56b-ff69-4c20-9fe6-eb74c5b76c53
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

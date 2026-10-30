@@ -1,4 +1,4 @@
-// Copyright 2026 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,6 +67,10 @@ func (m *modelReleaseConfig) AdapterForObject(ctx context.Context, op *directbas
 		return nil, err
 	}
 	id := i.(*krm.DataformReleaseConfigIdentity)
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 
 	// Get dataform GCP client
 	gcpClient, err := m.client(ctx)

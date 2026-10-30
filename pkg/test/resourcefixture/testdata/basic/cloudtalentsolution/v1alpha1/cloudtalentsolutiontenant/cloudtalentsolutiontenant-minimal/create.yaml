@@ -1,0 +1,8 @@
+apiVersion: cloudtalentsolution.cnrm.cloud.google.com/v1alpha1
+kind: CloudTalentSolutionTenant
+metadata:
+  name: cloudtalentsolutiontenant-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  externalID: tenant-${uniqueId}

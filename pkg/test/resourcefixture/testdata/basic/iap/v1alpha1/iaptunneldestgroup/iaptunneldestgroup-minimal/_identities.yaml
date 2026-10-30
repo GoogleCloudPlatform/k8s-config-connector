@@ -1,0 +1,6 @@
+- caisURL: //iap.googleapis.com/projects/${projectId}/iap_tunnel/locations/us-central1/destGroups/iaptunneldestgroup-${uniqueId}
+  group: iap.cnrm.cloud.google.com
+  kind: IAPTunnelDestGroup
+  name: iaptunneldestgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

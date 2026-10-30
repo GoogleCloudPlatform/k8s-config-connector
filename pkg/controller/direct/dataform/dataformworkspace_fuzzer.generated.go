@@ -19,8 +19,8 @@
 // +generated:fuzzer
 // krm.group: dataform.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.message: google.cloud.dataform.v1.Workspace
-// proto.service: google.cloud.dataform.v1
+// proto.message: google.cloud.dataform.v1beta1.Workspace
+// proto.service: google.cloud.dataform.v1beta1
 
 package dataform
 
@@ -50,6 +50,12 @@ func dataformWorkspaceFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+
+	// Unimplemented / Not Yet Triaged fields
+	f.Unimplemented_NotYetTriaged(".depth")
+	f.Unimplemented_NotYetTriaged(".enable_branch_management")
+	f.Unimplemented_NotYetTriaged(".original_branch")
+	f.Unimplemented_NotYetTriaged(".shallow")
 
 	return f
 }

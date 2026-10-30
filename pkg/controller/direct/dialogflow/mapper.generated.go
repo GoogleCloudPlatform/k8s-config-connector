@@ -26,6 +26,7 @@ package dialogflow
 import (
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -138,6 +139,326 @@ func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreCon
 	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
 	return out
 }
+func DialogflowCX_DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreConnection) *krm.DialogflowCX_DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_DataStoreConnection{}
+	out.DataStoreType = direct.Enum_FromProto(mapCtx, in.GetDataStoreType())
+	if in.GetDataStore() != "" {
+		out.DataStoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetDataStore()}
+	}
+	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
+	return out
+}
+func DialogflowCX_DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_DataStoreConnection) *pb.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_ToProto[pb.DataStoreType](mapCtx, in.DataStoreType)
+	if in.DataStoreRef != nil {
+		out.DataStore = in.DataStoreRef.External
+	}
+	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
+	return out
+}
+func DialogflowCX_EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.DialogflowCX_EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_EventHandler{}
+	// MISSING: Name
+	out.Event = direct.LazyPtr(in.GetEvent())
+	out.TriggerFulfillment = DialogflowCX_Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	if in.GetTargetPage() != "" {
+		out.TargetPageRef = &krm.DialogflowPageRef{External: in.GetTargetPage()}
+	}
+	if in.GetTargetFlow() != "" {
+		out.TargetFlowRef = &krm.DialogflowFlowRef{External: in.GetTargetFlow()}
+	}
+	return out
+}
+
+/*
+found existing non-generated mapping function "DialogflowCX_EventHandler_ToProto", skipping
+
+	func DialogflowCX_EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_EventHandler) *pb.EventHandler {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EventHandler{}
+		// MISSING: Name
+		out.Event = direct.ValueOf(in.Event)
+		out.TriggerFulfillment = DialogflowCX_Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+		if in.TargetPageRef != nil {
+			out.TargetPage = in.TargetPageRef.External
+		}
+		if in.TargetFlowRef != nil {
+			out.TargetFlow = in.TargetFlowRef.External
+		}
+		return out
+	}
+*/
+func DialogflowCX_Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.DialogflowCX_Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_Fulfillment{}
+	out.Messages = direct.Slice_FromProto(mapCtx, in.Messages, DialogflowCX_ResponseMessage_FromProto)
+	if in.GetWebhook() != "" {
+		out.WebhookRef = &krm.DialogflowWebhookRef{External: in.GetWebhook()}
+	}
+	out.ReturnPartialResponses = direct.LazyPtr(in.GetReturnPartialResponses())
+	out.Tag = direct.LazyPtr(in.GetTag())
+	out.SetParameterActions = direct.Slice_FromProto(mapCtx, in.SetParameterActions, Fulfillment_SetParameterAction_FromProto)
+	out.ConditionalCases = direct.Slice_FromProto(mapCtx, in.ConditionalCases, DialogflowCX_Fulfillment_ConditionalCases_FromProto)
+	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
+	out.EnableGenerativeFallback = direct.LazyPtr(in.GetEnableGenerativeFallback())
+	out.Generators = direct.Slice_FromProto(mapCtx, in.Generators, DialogflowCX_Fulfillment_GeneratorSettings_FromProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_Fulfillment) *pb.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment{}
+	out.Messages = direct.Slice_ToProto(mapCtx, in.Messages, DialogflowCX_ResponseMessage_ToProto)
+	if in.WebhookRef != nil {
+		out.Webhook = in.WebhookRef.External
+	}
+	out.ReturnPartialResponses = direct.ValueOf(in.ReturnPartialResponses)
+	out.Tag = direct.ValueOf(in.Tag)
+	out.SetParameterActions = direct.Slice_ToProto(mapCtx, in.SetParameterActions, Fulfillment_SetParameterAction_ToProto)
+	out.ConditionalCases = direct.Slice_ToProto(mapCtx, in.ConditionalCases, DialogflowCX_Fulfillment_ConditionalCases_ToProto)
+	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
+	out.EnableGenerativeFallback = direct.ValueOf(in.EnableGenerativeFallback)
+	out.Generators = direct.Slice_ToProto(mapCtx, in.Generators, DialogflowCX_Fulfillment_GeneratorSettings_ToProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases) *krm.DialogflowCX_Fulfillment_ConditionalCases {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_Fulfillment_ConditionalCases{}
+	out.Cases = direct.Slice_FromProto(mapCtx, in.Cases, DialogflowCX_Fulfillment_ConditionalCases_Case_FromProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_Fulfillment_ConditionalCases) *pb.Fulfillment_ConditionalCases {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases{}
+	out.Cases = direct.Slice_ToProto(mapCtx, in.Cases, DialogflowCX_Fulfillment_ConditionalCases_Case_ToProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_Case_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case) *krm.DialogflowCX_Fulfillment_ConditionalCases_Case {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_Fulfillment_ConditionalCases_Case{}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.CaseContent = direct.Slice_FromProto(mapCtx, in.CaseContent, DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent_FromProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_Case_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_Fulfillment_ConditionalCases_Case) *pb.Fulfillment_ConditionalCases_Case {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case{}
+	out.Condition = direct.ValueOf(in.Condition)
+	out.CaseContent = direct.Slice_ToProto(mapCtx, in.CaseContent, DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent_ToProto)
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case_CaseContent) *krm.DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent{}
+	out.Message = DialogflowCX_ResponseMessage_FromProto(mapCtx, in.GetMessage())
+	out.AdditionalCases = DialogflowCX_Fulfillment_ConditionalCases_FromProto(mapCtx, in.GetAdditionalCases())
+	return out
+}
+func DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent) *pb.Fulfillment_ConditionalCases_Case_CaseContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case_CaseContent{}
+	if oneof := DialogflowCX_ResponseMessage_ToProto(mapCtx, in.Message); oneof != nil {
+		out.CasesOrMessage = &pb.Fulfillment_ConditionalCases_Case_CaseContent_Message{Message: oneof}
+	}
+	if oneof := DialogflowCX_Fulfillment_ConditionalCases_ToProto(mapCtx, in.AdditionalCases); oneof != nil {
+		out.CasesOrMessage = &pb.Fulfillment_ConditionalCases_Case_CaseContent_AdditionalCases{AdditionalCases: oneof}
+	}
+	return out
+}
+func DialogflowCX_Fulfillment_GeneratorSettings_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_GeneratorSettings) *krm.DialogflowCX_Fulfillment_GeneratorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_Fulfillment_GeneratorSettings{}
+	if in.GetGenerator() != "" {
+		out.GeneratorRef = &krm.DialogflowGeneratorRef{External: in.GetGenerator()}
+	}
+	out.InputParameters = in.InputParameters
+	out.OutputParameter = direct.LazyPtr(in.GetOutputParameter())
+	return out
+}
+func DialogflowCX_Fulfillment_GeneratorSettings_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_Fulfillment_GeneratorSettings) *pb.Fulfillment_GeneratorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_GeneratorSettings{}
+	if in.GeneratorRef != nil {
+		out.Generator = in.GeneratorRef.External
+	}
+	out.InputParameters = in.InputParameters
+	out.OutputParameter = direct.ValueOf(in.OutputParameter)
+	return out
+}
+func DialogflowCX_KnowledgeConnectorSettings_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeConnectorSettings) *krm.DialogflowCX_KnowledgeConnectorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_KnowledgeConnectorSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.TriggerFulfillment = DialogflowCX_Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	if in.GetTargetPage() != "" {
+		out.TargetPageRef = &krm.DialogflowPageRef{External: in.GetTargetPage()}
+	}
+	if in.GetTargetFlow() != "" {
+		out.TargetFlowRef = &krm.DialogflowFlowRef{External: in.GetTargetFlow()}
+	}
+	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DialogflowCX_DataStoreConnection_FromProto)
+	return out
+}
+
+/*
+found existing non-generated mapping function "DialogflowCX_KnowledgeConnectorSettings_ToProto", skipping
+
+	func DialogflowCX_KnowledgeConnectorSettings_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_KnowledgeConnectorSettings) *pb.KnowledgeConnectorSettings {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KnowledgeConnectorSettings{}
+		out.Enabled = direct.ValueOf(in.Enabled)
+		out.TriggerFulfillment = DialogflowCX_Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+		if in.TargetPageRef != nil {
+			out.TargetPage = in.TargetPageRef.External
+		}
+		if in.TargetFlowRef != nil {
+			out.TargetFlow = in.TargetFlowRef.External
+		}
+		out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DialogflowCX_DataStoreConnection_ToProto)
+		return out
+	}
+*/
+func DialogflowCX_ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.DialogflowCX_ResponseMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_ResponseMessage{}
+	out.Text = ResponseMessage_Text_FromProto(mapCtx, in.GetText())
+	if v := direct.Struct_FromProto(mapCtx, in.GetPayload()); v != nil {
+		out.Payload = *v
+	}
+	out.ConversationSuccess = ResponseMessage_ConversationSuccess_FromProto(mapCtx, in.GetConversationSuccess())
+	out.OutputAudioText = ResponseMessage_OutputAudioText_FromProto(mapCtx, in.GetOutputAudioText())
+	out.LiveAgentHandoff = ResponseMessage_LiveAgentHandoff_FromProto(mapCtx, in.GetLiveAgentHandoff())
+	// MISSING: EndInteraction
+	out.PlayAudio = ResponseMessage_PlayAudio_FromProto(mapCtx, in.GetPlayAudio())
+	// MISSING: MixedAudio
+	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
+	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
+	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.Channel = direct.LazyPtr(in.GetChannel())
+	return out
+}
+
+/*
+found existing non-generated mapping function "DialogflowCX_ResponseMessage_ToProto", skipping
+
+	func DialogflowCX_ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_ResponseMessage) *pb.ResponseMessage {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResponseMessage{}
+		if oneof := ResponseMessage_Text_ToProto(mapCtx, in.Text); oneof != nil {
+			out.Message = &pb.ResponseMessage_Text_{Text: oneof}
+		}
+		if oneof := direct.Struct_ToProto(mapCtx, in.Payload); oneof != nil {
+			out.Message = &pb.ResponseMessage_Payload{Payload: oneof}
+		}
+		if oneof := ResponseMessage_ConversationSuccess_ToProto(mapCtx, in.ConversationSuccess); oneof != nil {
+			out.Message = &pb.ResponseMessage_ConversationSuccess_{ConversationSuccess: oneof}
+		}
+		if oneof := ResponseMessage_OutputAudioText_ToProto(mapCtx, in.OutputAudioText); oneof != nil {
+			out.Message = &pb.ResponseMessage_OutputAudioText_{OutputAudioText: oneof}
+		}
+		if oneof := ResponseMessage_LiveAgentHandoff_ToProto(mapCtx, in.LiveAgentHandoff); oneof != nil {
+			out.Message = &pb.ResponseMessage_LiveAgentHandoff_{LiveAgentHandoff: oneof}
+		}
+		// MISSING: EndInteraction
+		if oneof := ResponseMessage_PlayAudio_ToProto(mapCtx, in.PlayAudio); oneof != nil {
+			out.Message = &pb.ResponseMessage_PlayAudio_{PlayAudio: oneof}
+		}
+		// MISSING: MixedAudio
+		if oneof := ResponseMessage_TelephonyTransferCall_ToProto(mapCtx, in.TelephonyTransferCall); oneof != nil {
+			out.Message = &pb.ResponseMessage_TelephonyTransferCall_{TelephonyTransferCall: oneof}
+		}
+		if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
+			out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
+		}
+		out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+		out.Channel = direct.ValueOf(in.Channel)
+		return out
+	}
+*/
+func DialogflowCX_TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.DialogflowCX_TransitionRoute {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowCX_TransitionRoute{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetIntent() != "" {
+		out.IntentRef = &krm.DialogflowCXIntentRef{External: in.GetIntent()}
+	}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.TriggerFulfillment = DialogflowCX_Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	if in.GetTargetPage() != "" {
+		out.TargetPageRef = &krm.DialogflowPageRef{External: in.GetTargetPage()}
+	}
+	if in.GetTargetFlow() != "" {
+		out.TargetFlowRef = &krm.DialogflowFlowRef{External: in.GetTargetFlow()}
+	}
+	return out
+}
+
+/*
+found existing non-generated mapping function "DialogflowCX_TransitionRoute_ToProto", skipping
+
+	func DialogflowCX_TransitionRoute_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowCX_TransitionRoute) *pb.TransitionRoute {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TransitionRoute{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		if in.IntentRef != nil {
+			out.Intent = in.IntentRef.External
+		}
+		out.Condition = direct.ValueOf(in.Condition)
+		out.TriggerFulfillment = DialogflowCX_Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+		if in.TargetPageRef != nil {
+			out.TargetPage = in.TargetPageRef.External
+		}
+		if in.TargetFlowRef != nil {
+			out.TargetFlow = in.TargetFlowRef.External
+		}
+		return out
+	}
+*/
 func DialogflowEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentObservedState {
 	if in == nil {
 		return nil
@@ -190,6 +511,7 @@ func DialogflowFlowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Flo
 	// MISSING: Name
 	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_FromProto)
 	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandlerObservedState_FromProto)
+	// MISSING: TransitionRouteGroups
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	return out
 }
@@ -201,6 +523,7 @@ func DialogflowFlowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Dial
 	// MISSING: Name
 	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_ToProto)
 	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandlerObservedState_ToProto)
+	// MISSING: TransitionRouteGroups
 	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	return out
 }
@@ -212,12 +535,18 @@ func DialogflowFlowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.D
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRoute_FromProto)
-	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandler_FromProto)
-	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, DialogflowCX_TransitionRoute_FromProto)
+	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, DialogflowCX_EventHandler_FromProto)
+
+	if v := in.GetTransitionRouteGroups(); len(v) != 0 {
+		for i := range v {
+			out.TransitionRouteGroupRefs = append(out.TransitionRouteGroupRefs, krm.DialogflowTransitionRouteGroupRef{External: v[i]})
+		}
+	}
+
 	out.NluSettings = NluSettings_FromProto(mapCtx, in.GetNluSettings())
 	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
-	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
+	out.KnowledgeConnectorSettings = DialogflowCX_KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
 	out.MultiLanguageSettings = Flow_MultiLanguageSettings_FromProto(mapCtx, in.GetMultiLanguageSettings())
 	out.Locked = direct.LazyPtr(in.GetLocked())
 	return out
@@ -230,12 +559,18 @@ func DialogflowFlowSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlo
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRoute_ToProto)
-	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandler_ToProto)
-	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, DialogflowCX_TransitionRoute_ToProto)
+	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, DialogflowCX_EventHandler_ToProto)
+
+	if v := in.TransitionRouteGroupRefs; len(v) != 0 {
+		for i := range v {
+			out.TransitionRouteGroups = append(out.TransitionRouteGroups, v[i].External)
+		}
+	}
+
 	out.NluSettings = NluSettings_ToProto(mapCtx, in.NluSettings)
 	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
-	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
+	out.KnowledgeConnectorSettings = DialogflowCX_KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
 	out.MultiLanguageSettings = Flow_MultiLanguageSettings_ToProto(mapCtx, in.MultiLanguageSettings)
 	out.Locked = direct.ValueOf(in.Locked)
 	return out

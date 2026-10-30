@@ -4,6 +4,7 @@
 [recursive_type] package=apis/datacatalog/v1alpha1: ColumnSchema -> ColumnSchema
 [recursive_type] package=apis/dataplex/v1alpha1: AspectType_MetadataTemplate -> AspectType_MetadataTemplate
 [recursive_type] package=apis/dataplex/v1alpha1: Schema_SchemaField -> Schema_SchemaField
+[recursive_type] package=apis/dialogflow/v1alpha1: DialogflowCX_Fulfillment_ConditionalCases -> DialogflowCX_Fulfillment_ConditionalCases_Case -> DialogflowCX_Fulfillment_ConditionalCases_Case_CaseContent -> DialogflowCX_Fulfillment_ConditionalCases
 [recursive_type] package=apis/dialogflow/v1alpha1: Fulfillment_ConditionalCases -> Fulfillment_ConditionalCases_Case -> Fulfillment_ConditionalCases_Case_CaseContent -> Fulfillment_ConditionalCases
 [recursive_type] package=apis/dialogflow/v1alpha1: InlineSchema -> TypeSchema -> InlineSchema
 [recursive_type] package=apis/dialogflow/v1alpha1: ListValue -> Value -> ListValue

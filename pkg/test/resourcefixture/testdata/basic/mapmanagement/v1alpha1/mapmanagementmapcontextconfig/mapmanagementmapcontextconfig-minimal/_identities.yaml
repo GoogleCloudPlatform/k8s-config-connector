@@ -1,0 +1,20 @@
+- caisURL: //mapmanagement.googleapis.com/projects/${projectId}/mapConfigs/
+  group: mapmanagement.cnrm.cloud.google.com
+  kind: MapManagementMapConfig
+  name: mmmc-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //mapmanagement.googleapis.com/projects/${projectId}/styleConfigs/${styleConfigId}
+  group: mapmanagement.cnrm.cloud.google.com
+  kind: MapManagementStyleConfig
+  name: mmsc-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  error: 'resolving spec.mapConfigRef: reference MapManagementMapConfig ${uniqueId}/mmmc-${uniqueId}
+    is not ready'
+  group: mapmanagement.cnrm.cloud.google.com
+  kind: MapmanagementMapContextConfig
+  name: mmmcc-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

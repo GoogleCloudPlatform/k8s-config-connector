@@ -1,0 +1,12 @@
+apiVersion: mapmanagement.cnrm.cloud.google.com/v1alpha1
+kind: MapmanagementMapContextConfig
+metadata:
+  name: mmmcc-${uniqueId}
+spec:
+  mapConfigRef:
+    name: mmmc-${uniqueId}
+  styleConfigRef:
+    name: mmsc-${uniqueId}
+  alias: alias-${uniqueId}
+  mapVariants:
+    - ROADMAP

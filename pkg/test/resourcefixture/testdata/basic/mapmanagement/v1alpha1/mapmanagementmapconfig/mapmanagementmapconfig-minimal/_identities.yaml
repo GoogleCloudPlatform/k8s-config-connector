@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //mapmanagement.googleapis.com/projects/${projectId}/mapConfigs/
   group: mapmanagement.cnrm.cloud.google.com
   kind: MapManagementMapConfig
   name: mapmanagementmapconfig-minimal-${uniqueId}

@@ -1,0 +1,12 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityDestination
+metadata:
+  name: ncdest-${uniqueId}
+spec:
+  multicloudDataTransferConfigRef:
+    external: projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/ncmcdt-74zfugfzrs5qyga
+  description: updated destination
+  ipPrefix: 192.0.2.0/24
+  endpoints:
+    - asn: 16509
+      csp: AWS

@@ -646,15 +646,8 @@
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.ingress.config.transportProtocol" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=beyondcorpclientconnectorservices.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.documentation" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.primaryContact" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.proposer" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.routine.definitionBody" is not set in unstructured objects
-[missing_field] crd=bigqueryanalyticshubquerytemplates.bigqueryanalyticshub.cnrm.cloud.google.com version=v1alpha1: field ".spec.routine.routineType" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataMaskingPolicy.predefinedExpression" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyID" is not set in unstructured objects
 [missing_field] crd=bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPolicyType" is not set in unstructured objects
@@ -781,27 +774,21 @@
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.beforeToolCallbacks[].disabled" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.beforeToolCallbacks[].proactiveExecutionEnabled" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.beforeToolCallbacks[].pythonCode" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.childAgents[]" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.guardrails[]" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction" is not set in unstructured objects
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.childAgentRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.guardrailRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmAgent" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSettings.model" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelSettings.temperature" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.agent" is not set in unstructured objects
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.agentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.environmentID" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.flowID" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.inputVariableMapping" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.outputVariableMapping" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.remoteDialogflowAgent.respectResponseInterruptionSettings" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[]" is not set in unstructured objects
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsets[].toolIDs[]" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsets[].toolset" is not set in unstructured objects
-[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferRules[].childAgent" is not set in unstructured objects
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsets[].toolsetRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferRules[].childAgentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferRules[].deterministicTransfer.expressionCondition.expression" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferRules[].deterministicTransfer.pythonCodeCondition.pythonCode" is not set in unstructured objects
 [missing_field] crd=cesagents.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.transferRules[].direction" is not set in unstructured objects
@@ -1326,8 +1313,6 @@
 [missing_field] crd=cloudsecuritycomplianceframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlGroupDetails[].cloudControlGroup.majorRevisionID" is not set in unstructured objects
 [missing_field] crd=cloudsupportsupporteventsubscriptions.cloudsupport.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudsupportsupporteventsubscriptions.cloudsupport.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudtalentsolutiontenants.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.externalID" is not set in unstructured objects
-[missing_field] crd=cloudtalentsolutiontenants.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects
@@ -1830,11 +1815,9 @@
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cronSchedule" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitCommitish" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseCompilationResult" is not set in unstructured objects
+[missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.repositoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cronSchedule" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.fullyRefreshIncrementalTablesEnabled" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTags[]" is not set in unstructured objects
@@ -1842,16 +1825,9 @@
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTargets[].name" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTargets[].schema" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.queryPriority" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.serviceAccount" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.transitiveDependenciesIncluded" is not set in unstructured objects
 [missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.transitiveDependentsIncluded" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseConfig" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableMoves" is not set in unstructured objects
-[missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotationSpecs[].description" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotationSpecs[].displayName" is not set in unstructured objects
 [missing_field] crd=datalabelingannotationspecsets.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
@@ -1895,7 +1871,7 @@
 [missing_field] crd=datalabelingevaluationjobs.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule" is not set in unstructured objects
 [missing_field] crd=datalabelinginstructions.datalabeling.cnrm.cloud.google.com version=v1alpha1: field ".spec.csvInstruction.gcsFileURI" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.clusterID" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.encryptionConfig.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.encryptionConfig.kmsKeyNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.password" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.user" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.labels" is not set in unstructured objects
@@ -1903,11 +1879,11 @@
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.primaryInstanceSettings.id" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.primaryInstanceSettings.labels" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.primaryInstanceSettings.machineConfig.cpuCount" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.vpcNetwork" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.vpcNetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.activationPolicy" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.autoStorageIncrease" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.availabilityType" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.cmekKeyName" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.cmekKeyNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.collation" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.dataDiskSizeGB" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.dataDiskType" is not set in unstructured objects
@@ -1920,26 +1896,19 @@
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.authorizedNetworks[].ttl" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.authorizedNetworks[].value" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.enableIPV4" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.privateNetwork" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.privateNetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.requireSSL" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.rootPassword" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.secondaryZone" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.sourceID" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.sourceIDRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.storageAutoResizeLimit" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.tier" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.userLabels" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.zone" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.cloudSQLID" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.host" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.password" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.port" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.ssl.caCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.ssl.clientCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.ssl.clientKey" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.username" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.databaseService" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.hostname" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.password" is not set in unstructured objects
@@ -1949,7 +1918,7 @@
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.host" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.password" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.port" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.privateConnectivity.privateConnection" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.privateConnectivity.privateConnectionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.ssl.caCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.ssl.clientCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.ssl.clientKey" is not set in unstructured objects
@@ -1959,15 +1928,12 @@
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.host" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.password" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.port" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.privateServiceConnectConnectivity.serviceAttachment" is not set in unstructured objects
+[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.privateServiceConnectConnectivity.serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.caCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.clientCertificate" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.clientKey" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.staticIPConnectivity" is not set in unstructured objects
 [missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.username" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.provider" is not set in unstructured objects
-[missing_field] crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=datamigrationmappingrules.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditionalColumnSetValue.customFeatures" is not set in unstructured objects
 [missing_field] crd=datamigrationmappingrules.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditionalColumnSetValue.sourceNumericFilter.numericFilterOption" is not set in unstructured objects
 [missing_field] crd=datamigrationmappingrules.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditionalColumnSetValue.sourceNumericFilter.sourceMaxPrecisionFilter" is not set in unstructured objects
@@ -2239,12 +2205,6 @@
 [missing_field] crd=dataplexglossaries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=dataplexglossaries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dataplexglossaries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" is not set in unstructured objects
-[missing_field] crd=dataplexglossarycategories.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexglossaryterms.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dataplexglossaryterms.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexglossaryterms.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
@@ -2690,12 +2650,7 @@
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.tier" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.articleSuggestionModelMetadata.trainingModelType" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasets[].dataset" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.smartReplyModelMetadata.trainingModelType" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.avatarUri" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultLanguageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
@@ -2975,12 +2930,10 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.speechSettings.models" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.speechSettings.noSpeechTimeout" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.advancedSettings.speechSettings.useTimeoutBasedEndpointing" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].event" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetFlow" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetPage" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetPlaybook" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetFlowRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetPageRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetPlaybookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.dtmfSettings.enabled" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.advancedSettings.dtmfSettings.endpointingTimeoutDuration" is not set in unstructured objects
@@ -3009,10 +2962,10 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.enableGenerativeFallback" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.generators[].generator" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.generators[].generatorRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.generators[].inputParameters" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.generators[].outputParameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].channel" is not set in unstructured objects
@@ -3028,7 +2981,7 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.messages[].toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.returnPartialResponses" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.setParameterActions[].parameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.setParameterActions[].value.boolValue" is not set in unstructured objects
@@ -3038,20 +2991,19 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.setParameterActions[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.tag" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.webhook" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.webhookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].description" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].name" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.dataStoreConnections[].dataStore" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.toolRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.dataStoreConnections[].dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.dataStoreConnections[].dataStoreType" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.dataStoreConnections[].documentProcessingMode" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.enabled" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.targetFlow" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.targetPage" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.targetFlowRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.targetPageRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.dtmfSettings.enabled" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.dtmfSettings.endpointingTimeoutDuration" is not set in unstructured objects
@@ -3080,10 +3032,10 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.enableGenerativeFallback" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.generators[].generator" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.generators[].generatorRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.generators[].inputParameters" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.generators[].outputParameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].channel" is not set in unstructured objects
@@ -3099,7 +3051,7 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.messages[].toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.returnPartialResponses" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.setParameterActions[].parameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.setParameterActions[].value.boolValue" is not set in unstructured objects
@@ -3109,8 +3061,7 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.setParameterActions[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.tag" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.webhook" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.knowledgeConnectorSettings.triggerFulfillment.webhookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.locked" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.multiLanguageSettings.enableMultiLanguageDetection" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.multiLanguageSettings.supportedResponseLanguageCodes[]" is not set in unstructured objects
@@ -3119,18 +3070,16 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.nluSettings.modelType" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].description" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].name" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRouteGroups[]" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.toolRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRouteGroupRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].description" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].intent" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].targetFlow" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].targetPage" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].intentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].targetFlowRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].targetPageRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.dtmfSettings.enabled" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.advancedSettings.dtmfSettings.endpointingTimeoutDuration" is not set in unstructured objects
@@ -3159,10 +3108,10 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.enableGenerativeFallback" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.generators[].generator" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.generators[].generatorRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.generators[].inputParameters" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.generators[].outputParameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].channel" is not set in unstructured objects
@@ -3178,7 +3127,7 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.messages[].toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.returnPartialResponses" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].parameter" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value.boolValue" is not set in unstructured objects
@@ -3188,7 +3137,7 @@
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.tag" is not set in unstructured objects
-[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhook" is not set in unstructured objects
+[missing_field] crd=dialogflowflows.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.features[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is not set in unstructured objects
 [missing_field] crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestHeaders" is not set in unstructured objects
@@ -3630,8 +3579,6 @@
 [missing_field] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhook" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeBlock.code" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.goal" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.condition" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.event" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
@@ -3662,10 +3609,10 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.enableGenerativeFallback" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.generators[].generator" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.generators[].generatorRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.generators[].inputParameters" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.generators[].outputParameter" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].channel" is not set in unstructured objects
@@ -3681,7 +3628,7 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.messages[].toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.returnPartialResponses" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.setParameterActions[].parameter" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.setParameterActions[].value.boolValue" is not set in unstructured objects
@@ -3691,7 +3638,7 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.setParameterActions[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.tag" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.webhook" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.webhookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.condition" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.advancedSettings.dtmfSettings.enabled" is not set in unstructured objects
@@ -3721,10 +3668,10 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.enableGenerativeFallback" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.generators[].generator" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.generators[].generatorRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.generators[].inputParameters" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.generators[].outputParameter" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].channel" is not set in unstructured objects
@@ -3740,7 +3687,7 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].text.text[]" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].toolCall.action" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].toolCall.inputParameters" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.messages[].toolCall.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.returnPartialResponses" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.setParameterActions[].parameter" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.setParameterActions[].value.boolValue" is not set in unstructured objects
@@ -3750,31 +3697,26 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.setParameterActions[].value.stringValue" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.tag" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.webhook" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.webhookRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.lifecycleStage" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].description" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].name" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.guidelines" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.steps[].steps[]" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.steps[].text" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.model" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.promptText" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].description" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].name" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.toolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.playbookType" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.referencedTools[]" is not set in unstructured objects
+[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.referencedToolRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioExportPattern" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioFormat" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.enableAudioRedaction" is not set in unstructured objects
@@ -4645,10 +4587,7 @@
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iaptunneldestgroups.iap.cnrm.cloud.google.com version=v1alpha1: field ".spec.cidrs[]" is not set in unstructured objects
 [missing_field] crd=iaptunneldestgroups.iap.cnrm.cloud.google.com version=v1alpha1: field ".spec.fqdns[]" is not set in unstructured objects
-[missing_field] crd=iaptunneldestgroups.iap.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=iaptunneldestgroups.iap.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpCertificates[].x509Certificate" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpEntityId" is not set in unstructured objects
@@ -4747,12 +4686,7 @@
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaschemaregistries.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaschemaregistries.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.alias" is not set in unstructured objects
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset[]" is not set in unstructured objects
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.mapConfig" is not set in unstructured objects
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.mapVariants[]" is not set in unstructured objects
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.styleConfig" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapcontextconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstanceendpoints.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.port" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseType" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
@@ -4818,14 +4752,6 @@
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappreplications.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.replicationSchedule" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].asn" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].csp" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipPrefix" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=networkconnectivitydestinations.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipCIDRRange" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" is not set in unstructured objects
@@ -4833,18 +4759,11 @@
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.overlaps[]" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.peering" is not set in unstructured objects
 [missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.usage" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.destRange" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.ipProtocol" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.protocolVersion" is not set in unstructured objects
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.srcRange" is not set in unstructured objects
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnectAttachment.region" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.nextHopIlbIP" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.nextHopOtherRoutes" is not set in unstructured objects
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.priority" is not set in unstructured objects
-[missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivitypolicybasedroutes.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.virtualMachine.tags[]" is not set in unstructured objects
 [missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].consumerInstanceProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].disableGlobalAccess" is not set in unstructured objects
@@ -4865,12 +4784,6 @@
 [missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceClass" is not set in unstructured objects
 [missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.token" is not set in unstructured objects
 [missing_field] crd=networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscConfig.producerInstanceLocation" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
-[missing_field] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkconnectivitytransports.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.providedActivationKey" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.bypassFirewallChecks" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.destination.appEngineVersion.uri" is not set in unstructured objects
@@ -6084,7 +5997,6 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].audioStream.mapping[].inputTrack" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].audioStream.mapping[].outputChannel" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].audioStream.sampleRateHertz" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].key" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].textStream.codec" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].textStream.displayName" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].textStream.languageCode" is not set in unstructured objects
@@ -6095,15 +6007,12 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.aqStrength" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.bFrameCount" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.bPyramid" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.bitrateBps" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.crfLevel" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.enableTwoPass" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.entropyCoder" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.frameRate" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.frameRateConversionStrategy" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.gopDuration" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.gopFrameCount" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.heightPixels" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.hlg" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.pixelFormat" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.preset" is not set in unstructured objects
@@ -6113,7 +6022,6 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.tune" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.vbvFullnessBits" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.vbvSizeBits" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h264.widthPixels" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h265.allowOpenGop" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h265.aqStrength" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.elementaryStreams[].videoStream.h265.bFrameCount" is not set in unstructured objects
@@ -6158,7 +6066,7 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptions[].id" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptions[].mpegCenc.scheme" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptions[].sampleAes" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptions[].secretManagerKeySource.secretVersion" is not set in unstructured objects
+[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.encryptions[].secretManagerKeySource.secretVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.inputs[].attributes.trackDefinitions[].detectLanguages" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.inputs[].attributes.trackDefinitions[].inputTrack" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.inputs[].attributes.trackDefinitions[].languages[]" is not set in unstructured objects
@@ -6193,12 +6101,9 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.manifests[].fileName" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.manifests[].muxStreams[]" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.manifests[].type" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].container" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].elementaryStreams[]" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].encryptionID" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].fileName" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].fmp4.codecTag" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].key" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].segmentSettings.individualSegments" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.muxStreams[].segmentSettings.segmentDuration" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.output.uri" is not set in unstructured objects
@@ -6227,9 +6132,6 @@
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.spriteSheets[].spriteWidthPixels" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.spriteSheets[].startTimeOffset" is not set in unstructured objects
 [missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.spriteSheets[].totalCount" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.exampleCount" is not set in unstructured objects
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

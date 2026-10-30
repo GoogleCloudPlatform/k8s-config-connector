@@ -365,34 +365,45 @@ entries:
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with required GlossaryRef, replaced Parent string with required ParentRef, and removed top-level Labels
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}" contains ancestor segment(s) glossaries/{glossary} with no matching reference or field on DataplexGlossaryCategorySpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: resolved via GlossaryRef on DataplexGlossaryCategorySpec
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/glossaries/{glossary}, and no GlossaryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: added GlossaryRef in dataplexglossary_reference.go and used it on DataplexGlossaryCategorySpec
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/glossaries/{glossary}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with GlossaryRef
   - kind: DataplexGlossaryCategory
     group: dataplex.cnrm.cloud.google.com
     field: .spec.parent
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced Parent string with ParentRef (*GlossaryRef)
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

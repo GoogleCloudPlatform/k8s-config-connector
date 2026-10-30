@@ -1,0 +1,9 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowFlow
+metadata:
+  name: dfflow-${uniqueId}
+spec:
+  agentRef:
+    external: projects/${projectId}/locations/global/agents/b674ae89-59b4-4587-ac8d-71b203f68dbd
+  displayName: Flow Updated ${uniqueId}
+  description: updated dialogflow cx flow

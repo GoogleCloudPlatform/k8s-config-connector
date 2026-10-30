@@ -49,7 +49,6 @@ func cesAgentFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".child_agents")
 	f.SpecField(".description")
 	f.SpecField(".display_name")
-	f.SpecField(".etag")
 	f.SpecField(".guardrails")
 	f.SpecField(".instruction")
 	f.SpecField(".llm_agent")
@@ -61,6 +60,7 @@ func cesAgentFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".generated_summary")
 	f.StatusField(".update_time")
 
@@ -74,8 +74,6 @@ func cesAgentFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".before_agent_callbacks[].python_code")
 	f.Unimplemented_NotYetTriaged(".before_model_callbacks[].python_code")
 	f.Unimplemented_NotYetTriaged(".before_tool_callbacks[].python_code")
-	f.Unimplemented_NotYetTriaged(".remote_dialogflow_agent.language_code_variable")
-	f.Unimplemented_NotYetTriaged(".validation_errors")
 
 	return f
 }

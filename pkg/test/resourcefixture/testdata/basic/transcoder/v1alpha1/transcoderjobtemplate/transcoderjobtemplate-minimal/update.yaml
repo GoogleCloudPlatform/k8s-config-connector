@@ -1,0 +1,24 @@
+apiVersion: transcoder.cnrm.cloud.google.com/v1alpha1
+kind: TranscoderJobTemplate
+metadata:
+  name: transcoderjobtemplate-${uniqueId}
+  labels:
+    env: updated
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  config:
+    elementaryStreams:
+      - key: video-stream0
+        videoStream:
+          h264:
+            heightPixels: 360
+            widthPixels: 640
+            bitrateBps: 550000
+            frameRate: 60
+    muxStreams:
+      - key: sd
+        container: mp4
+        elementaryStreams:
+          - video-stream0

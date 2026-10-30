@@ -14,15 +14,12 @@
 
 // API sources for MapmanagementMapContextConfig, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/maps/mapmanagement/v2/map_management_service.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://developers.google.com/maps/documentation/map-management
+// +kcc:source:resource-docs=https://developers.google.com/maps/documentation/map-management/reference/rest/v2/projects.mapConfigs.mapContextConfigs
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,24 +30,22 @@ var MapmanagementMapContextConfigGVK = GroupVersion.WithKind("MapmanagementMapCo
 // +kcc:spec:proto=google.maps.mapmanagement.v2.MapContextConfig
 // +kcc:required-from-proto
 type MapmanagementMapContextConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The MapmanagementMapContextConfig name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The MapConfig resource name that this MapContextConfig is
 	//  associated with. Format: projects/{project}/mapConfigs/{map_config}. This
 	//  field is required and cannot be omitted.
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.map_config
 	// +required
-	MapConfig *string `json:"mapConfig,omitempty"`
+	MapConfigRef *MapManagementMapConfigRef `json:"mapConfigRef"`
+
+	// The MapmanagementMapContextConfig name. If not given, a server-generated ID will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The StyleConfig resource name that is styling this
 	//  MapContextConfig. This field is required and cannot be omitted. Format:
 	//  projects/{project}/styleConfigs/{style_config}
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.style_config
 	// +required
-	StyleConfig *string `json:"styleConfig,omitempty"`
+	StyleConfigRef *MapManagementStyleConfigRef `json:"styleConfigRef"`
 
 	// Optional. The Dataset resource name that is associated with this
 	//  MapContextConfig. This field is optional and can be omitted. If omitted, no
@@ -58,7 +53,7 @@ type MapmanagementMapContextConfigSpec struct {
 	//  specified, it will be applied to the MapContextConfig. Format:
 	//  projects/{project}/datasets/{dataset}
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.dataset
-	Dataset []string `json:"dataset,omitempty"`
+	DatasetRefs []MapManagementDatasetRef `json:"datasetRefs,omitempty"`
 
 	// Optional. The user defined human readable name for this MapContextConfig.
 	// +kcc:proto:field=google.maps.mapmanagement.v2.MapContextConfig.alias
