@@ -24,60 +24,62 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &ConfigDeploymentRef{}
+var _ refs.Ref = &ConfigDeploymentGroupRef{}
 
-var ConfigDeploymentGVK = schema.GroupVersionKind{
-	Group:   "configdeployment.cnrm.cloud.google.com",
-	Version: "v1alpha1",
-	Kind:    "ConfigDeployment",
-}
-
-// ConfigDeploymentRef is a reference to a ConfigDeployment.
-type ConfigDeploymentRef struct {
-	// A reference to an externally managed ConfigDeployment resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deployments/{{deploymentID}}".
+// ConfigDeploymentGroupRef is a reference to a GCP ConfigDeploymentGroup.
+type ConfigDeploymentGroupRef struct {
+	/* A reference to an externally managed ConfigDeploymentGroup resource.
+	   Should be in the format "projects/{{projectID}}/locations/{{location}}/deploymentGroups/{{deploymentGroup}}". */
 	External string `json:"external,omitempty"`
 
-	// The name of a ConfigDeployment resource.
+	// The name of a ConfigDeploymentGroup resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ConfigDeployment resource.
+	// The namespace of a ConfigDeploymentGroup resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&ConfigDeploymentRef{}, nil)
+	refs.Register(&ConfigDeploymentGroupRef{}, &ConfigDeploymentGroup{})
 }
 
-func (r *ConfigDeploymentRef) GetGVK() schema.GroupVersionKind {
-	return ConfigDeploymentGVK
+func (r *ConfigDeploymentGroupRef) GetGVK() schema.GroupVersionKind {
+	return ConfigDeploymentGroupGVK
 }
 
-func (r *ConfigDeploymentRef) GetNamespacedName() types.NamespacedName {
+func (r *ConfigDeploymentGroupRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *ConfigDeploymentRef) GetExternal() string {
+func (r *ConfigDeploymentGroupRef) GetExternal() string {
 	return r.External
 }
 
-func (r *ConfigDeploymentRef) SetExternal(ref string) {
+func (r *ConfigDeploymentGroupRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *ConfigDeploymentRef) ValidateExternal(ref string) error {
+func (r *ConfigDeploymentGroupRef) ValidateExternal(ref string) error {
+	id := &ConfigDeploymentGroupIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (r *ConfigDeploymentRef) ParseExternalToIdentity() (identity.Identity, error) {
-	return nil, nil
+func (r *ConfigDeploymentGroupRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ConfigDeploymentGroupIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
-func (r *ConfigDeploymentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *ConfigDeploymentGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }
