@@ -32,8 +32,7 @@ spec:
       location: us-central1
       displayName: "Hello World Pipeline Job inside Schedule"
       runtimeConfig:
-        gcsOutputDirectoryRef:
-          name: vertexai-schedule-bucket-${uniqueId}
+        gcsOutputDirectory: gs://vertexai-schedule-bucket-${uniqueId}
       pipelineSpec:
         pipelineInfo:
           name: "hello-world-pipeline"

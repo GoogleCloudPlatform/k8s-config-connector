@@ -46,8 +46,7 @@ spec:
     external: ${projectId}
   runtimeConfig:
     failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
-    gcsOutputDirectoryRef:
-      name: vertexai-pipelinejob-bucket-${uniqueId}
+    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

@@ -22,8 +22,7 @@ spec:
   location: us-central1
   displayName: "Minimal Pipeline Job"
   runtimeConfig:
-    gcsOutputDirectoryRef:
-      name: vertexai-pipelinejob-bucket-${uniqueId}
+    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
   pipelineSpec:
     pipelineInfo:
       name: "hello-world-pipeline"

@@ -352,7 +352,6 @@
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.reservedIPRanges[]" is not set in unstructured objects
-[missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.runtimeConfig.gcsOutputDirectory" is not set in unstructured objects
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.templateURI" is not set in unstructured objects
 [missing_field] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJobID" is not set in unstructured objects
@@ -6623,7 +6622,6 @@
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservedIPRanges[]" is not set in unstructured objects
-[missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.gcsOutputDirectory" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateURI" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects

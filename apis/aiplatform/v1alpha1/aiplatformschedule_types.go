@@ -124,10 +124,6 @@ type AIPlatformScheduleStatus struct {
 // AIPlatformScheduleObservedState is the state of the AIPlatformSchedule resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Schedule
 type AIPlatformScheduleObservedState struct {
-	// Immutable. The resource name of the Schedule.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.name
-	Name *string `json:"name,omitempty"`
-
 	// Request for
 	//  [PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob].
 	//  CreatePipelineJobRequest.parent field is required (format:

@@ -740,39 +740,10 @@ spec:
                             description: Represents the failure policy of a pipeline.
                             type: string
                           gcsOutputDirectory:
-                            description: A path in a Cloud Storage bucket, which will
-                              be treated as the root output directory of the pipeline.
+                            description: Required. A path in a Cloud Storage bucket,
+                              which will be treated as the root output directory of
+                              the pipeline.
                             type: string
-                          gcsOutputDirectoryRef:
-                            description: Reference to a GCS bucket, which will be
-                              treated as the root output directory of the pipeline.
-                            oneOf:
-                            - not:
-                                required:
-                                - external
-                              required:
-                              - name
-                            - not:
-                                anyOf:
-                                - required:
-                                  - name
-                                - required:
-                                  - namespace
-                              required:
-                              - external
-                            properties:
-                              external:
-                                description: A reference to an externally managed
-                                  StorageBucket resource. Should be in the format
-                                  "projects/{{projectID}}/buckets/{{bucketID}}".
-                                type: string
-                              name:
-                                description: The name of a StorageBucket resource.
-                                type: string
-                              namespace:
-                                description: The namespace of a StorageBucket resource.
-                                type: string
-                            type: object
                         type: object
                       serviceAccountRef:
                         description: The service account that the pipeline workload
@@ -1373,9 +1344,6 @@ spec:
                           schedule.
                         type: string
                     type: object
-                  name:
-                    description: Immutable. The resource name of the Schedule.
-                    type: string
                   nextRunTime:
                     description: Output only. Timestamp when this Schedule should
                       schedule the next run. Having a next_run_time in the past means

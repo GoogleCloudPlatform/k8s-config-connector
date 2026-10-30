@@ -489,7 +489,7 @@ func AIPlatformScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krm.AIPlatformScheduleObservedState{}
 	out.CreatePipelineJobRequest = CreatePipelineJobRequestObservedState_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
 	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequestObservedState_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
-	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Name
 	out.StartedRunCount = direct.LazyPtr(in.GetStartedRunCount())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -512,7 +512,7 @@ func AIPlatformScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	if oneof := CreateNotebookExecutionJobRequestObservedState_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
 		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
 	}
-	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Name
 	out.StartedRunCount = direct.ValueOf(in.StartedRunCount)
 	out.State = direct.Enum_ToProto[pb.Schedule_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -532,6 +532,7 @@ func AIPlatformScheduleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Schedule
 	out.Cron = direct.LazyPtr(in.GetCron())
 	out.CreatePipelineJobRequest = CreatePipelineJobRequest_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
 	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequest_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
+	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
@@ -554,6 +555,7 @@ func AIPlatformScheduleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfor
 	if oneof := CreateNotebookExecutionJobRequest_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
 		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
 	}
+	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
@@ -2476,8 +2478,6 @@ func PipelineJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	out.TaskDetails = direct.Slice_ToProto(mapCtx, in.TaskDetails, PipelineTaskDetailObservedState_ToProto)
 	return out
 }
-
-/* found existing non-generated mapping function "PipelineJobRuntimeConfig_FromProto", skipping
 func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJobRuntimeConfig {
 	if in == nil {
 		return nil
@@ -2490,24 +2490,18 @@ func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.Pipeli
 	// MISSING: InputArtifacts
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "PipelineJobRuntimeConfig_ToProto", skipping
-
-	func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.PipelineJob_RuntimeConfig{}
-		// MISSING: Parameters
-		out.GcsOutputDirectory = direct.ValueOf(in.GCSOutputDirectory)
-		// MISSING: ParameterValues
-		out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
-		// MISSING: InputArtifacts
-		return out
+func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.PipelineJob_RuntimeConfig{}
+	// MISSING: Parameters
+	out.GcsOutputDirectory = direct.ValueOf(in.GCSOutputDirectory)
+	// MISSING: ParameterValues
+	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
+	// MISSING: InputArtifacts
+	return out
+}
 func PipelineTaskDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetailObservedState {
 	if in == nil {
 		return nil
