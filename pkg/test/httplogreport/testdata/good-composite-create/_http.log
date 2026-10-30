@@ -1,0 +1,70 @@
+# Phase: CREATE
+POST https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?clusterId=cluster-${uniqueId}
+Content-Type: application/json
+
+{
+  "description": "initial"
+}
+
+200 OK
+
+{
+  "description": "initial",
+  "name": "projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}"
+}
+
+---
+
+PATCH https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}?updateMask=secondaryConfig
+Content-Type: application/json
+
+{
+  "secondaryConfig": "enabled-on-create"
+}
+
+200 OK
+
+{
+  "description": "initial",
+  "name": "projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}",
+  "secondaryConfig": "enabled-on-create"
+}
+
+---
+
+GET https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}
+
+200 OK
+
+{
+  "description": "initial",
+  "name": "projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}",
+  "secondaryConfig": "enabled-on-create"
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}?updateMask=description
+Content-Type: application/json
+
+{
+  "description": "updated-in-update-phase"
+}
+
+200 OK
+
+{
+  "description": "updated-in-update-phase",
+  "name": "projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}",
+  "secondaryConfig": "enabled-on-create"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/cluster-${uniqueId}
+
+200 OK
+
+{}
