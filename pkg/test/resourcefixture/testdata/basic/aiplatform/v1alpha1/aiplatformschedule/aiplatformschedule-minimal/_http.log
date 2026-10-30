@@ -257,7 +257,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule",
   "maxConcurrentRunCount": "1",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -269,7 +269,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -330,7 +330,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule",
   "maxConcurrentRunCount": "1",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -397,7 +397,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
     "cron": "0 2 * * *",
     "displayName": "Minimal Schedule Updated",
     "maxConcurrentRunCount": "2",
-    "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+    "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
   },
   "updateMask": "displayName,maxConcurrentRunCount"
 }
@@ -460,7 +460,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -472,7 +472,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -533,7 +533,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -545,7 +545,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -606,7 +606,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -618,7 +618,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK
@@ -679,7 +679,7 @@ OK
   "cron": "0 2 * * *",
   "displayName": "Minimal Schedule Updated",
   "maxConcurrentRunCount": "2",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -691,7 +691,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.ScheduleService/DeleteSchedule
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/8508797230939897856"
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}"
 }
 
 OK

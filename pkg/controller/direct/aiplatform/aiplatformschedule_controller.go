@@ -169,10 +169,6 @@ func (a *ScheduleAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = schedulepb
 
-	if a.desired != nil {
-		a.desired.Status.ExternalRef = direct.LazyPtr(schedulepb.GetName())
-	}
-
 	return true, nil
 }
 
@@ -191,10 +187,6 @@ func (a *ScheduleAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 
 	log.V(2).Info("successfully created AIPlatformSchedule", "name", a.id.String())
-
-	if created.GetName() != "" {
-		_ = a.id.FromExternal(created.GetName())
-	}
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -267,11 +259,10 @@ func (a *ScheduleAdapter) updateStatus(ctx context.Context, op directbase.Operat
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping status: %w", mapCtx.Err())
 	}
-	if latest.GetName() != "" {
-		status.ExternalRef = direct.LazyPtr(latest.GetName())
-	} else {
-		status.ExternalRef = direct.LazyPtr(a.id.String())
+	if err := a.id.FromExternal(latest.Name); err != nil {
+		return fmt.Errorf("parsing Schedule name %q: %w", latest.Name, err)
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
 }
 
