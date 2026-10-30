@@ -89,12 +89,7 @@ func (c *Classifier) Classify(entries []*logparser.Entry) ([]*ClassifiedEntry, s
 		c.classifyWithExplicitPhases(classified)
 	} else {
 		phaseSource = PhaseSourceInferred
-		for _, ce := range classified {
-			if ce.Phase == "" {
-				ce.Phase = logparser.PhaseUnknown
-				ce.Entry.Phase = logparser.PhaseUnknown
-			}
-		}
+		c.classifyByInference(classified)
 	}
 
 	populatePrimaryEntryDetails(classified)
@@ -299,56 +294,9 @@ func updateLROSummaryFromPoll(lro *LROSummary, e *logparser.Entry) {
 
 func (c *Classifier) matchDependencyEntry(e *logparser.Entry) string {
 	if e.Phase == logparser.PhaseDependency {
-		if c.fix != nil {
-			uPath := e.CleanURLPath()
-			for _, dep := range c.fix.Dependencies {
-				for _, tok := range []string{dep.ResourceID, dep.Name} {
-					if tok != "" && (strings.Contains(uPath, tok) || strings.Contains(e.Request.URL, tok) || strings.Contains(e.Request.Body, tok)) {
-						return dep.Kind
-					}
-				}
-			}
-			if len(c.fix.Dependencies) == 1 {
-				return c.fix.Dependencies[0].Kind
-			}
-		}
-		return "Dependency"
+		return c.inferExplicitDependencyKind(e)
 	}
-
-	if c.fix == nil || len(c.fix.Dependencies) == 0 {
-		return ""
-	}
-
-	primary := c.fix.PrimaryCreate
-	primaryName := ""
-	primaryResID := ""
-	primaryKind := ""
-	if primary != nil {
-		primaryName = primary.Name
-		primaryResID = primary.ResourceID
-		primaryKind = primary.Kind
-	}
-
-	uPath := e.CleanURLPath()
-	for _, dep := range c.fix.Dependencies {
-		if dep.Kind == primaryKind {
-			continue
-		}
-		for _, depName := range []string{dep.ResourceID, dep.Name} {
-			if len(depName) < 3 || depName == primaryName || depName == primaryResID {
-				continue
-			}
-			if strings.Contains(uPath, depName) || strings.Contains(e.Request.URL, depName) {
-				return dep.Kind
-			}
-			if strings.Contains(e.Request.Body, depName) &&
-				(primaryName == "" || (!strings.Contains(e.Request.URL, primaryName) && !strings.Contains(e.Request.Body, primaryName))) &&
-				(primaryResID == "" || (!strings.Contains(e.Request.URL, primaryResID) && !strings.Contains(e.Request.Body, primaryResID))) {
-				return dep.Kind
-			}
-		}
-	}
-	return ""
+	return c.inferLegacyDependencyEntry(e)
 }
 
 func hasExplicitPhaseComments(entries []*logparser.Entry) bool {
@@ -394,7 +342,11 @@ func populatePrimaryEntryDetails(classified []*ClassifiedEntry) {
 		case logparser.PhaseCreate:
 			if ce.Entry.IsReadOnly() {
 				if code == 404 {
-					ce.Details = "Pre-create existence check"
+					if seenCreateMut {
+						ce.Details = "Post-create eventual-consistency poll"
+					} else {
+						ce.Details = "Pre-create existence check"
+					}
 				} else if !seenCreateMut {
 					ce.Details = "Pre-create read"
 				} else {

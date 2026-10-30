@@ -277,7 +277,9 @@ func (d *Data) IsNonDeletable() bool {
 	switch d.PrimaryCreate.Kind {
 	case "IAMPolicy", "IAMPartialPolicy", "IAMPolicyMember", "IAMAuditConfig",
 		"ComputeProjectMetadata", "ComputeSharedVPCHostProject", "Service", "ServiceIdentity",
-		"KMSAutokeyConfig", "Project", "Folder":
+		"KMSAutokeyConfig", "KMSKeyRing", "KMSCryptoKey", "KMSCryptoKeyVersion", "KMSKeyRingImportJob",
+		"FirebaseProject", "FirebaseWebApp", "FirebaseAndroidApp",
+		"LoggingLogBucket", "Project", "Folder":
 		return true
 	}
 	return false

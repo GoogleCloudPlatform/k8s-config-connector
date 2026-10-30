@@ -72,6 +72,32 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath:    "spec.state",
 			want:        true,
 		},
+		{
+			name: "composite slice with omitted empty slice, int64 string coercion, and server default field",
+			foundVal: []any{
+				map[string]any{
+					"weight":        "2",
+					"serverDefault": "Y1",
+					"logsPanel":     map[string]any{"filter": "foo"},
+				},
+			},
+			expectedVal: []any{
+				map[string]any{
+					"weight": int64(2),
+					"logsPanel": map[string]any{
+						"filter":        "foo",
+						"resourceNames": []any{},
+					},
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"weight": int64(1),
+				},
+			},
+			diffPath: "spec.columnLayout.columns",
+			want:     true,
+		},
 	}
 
 	for _, tc := range tests {

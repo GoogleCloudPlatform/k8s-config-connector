@@ -275,9 +275,16 @@ func (v *Validator) validateV4Delete() Check {
 	}
 
 	var deleteEntries []*classifier.ClassifiedEntry
-	for _, ce := range v.entries {
+	for _, ce := range v.primary {
 		if ce.Phase == logparser.PhaseDelete && ce.Entry.IsDelete() {
 			deleteEntries = append(deleteEntries, ce)
+		}
+	}
+	if len(deleteEntries) == 0 && len(v.primary) > 0 {
+		for _, ce := range v.entries {
+			if ce.Phase == logparser.PhaseDelete && ce.Entry.IsDelete() && ce.Role != classifier.RoleDependency {
+				deleteEntries = append(deleteEntries, ce)
+			}
 		}
 	}
 
@@ -295,12 +302,6 @@ func (v *Validator) validateV4Delete() Check {
 	}
 
 	primaryDel := deleteEntries[0]
-	for _, de := range deleteEntries {
-		if de.Role == classifier.RolePrimary {
-			primaryDel = de
-			break
-		}
-	}
 
 	if !primaryDel.Entry.Response.IsSuccess() && primaryDel.Entry.Response.StatusCode != 404 {
 		check.Passed = false

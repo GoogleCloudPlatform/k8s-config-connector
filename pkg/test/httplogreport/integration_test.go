@@ -15,10 +15,14 @@
 package httplogreport
 
 import (
+	"io/fs"
+	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/fixture"
 )
 
 func findCheck(report *Report, id string) *ValidationCheck {
@@ -230,6 +234,79 @@ func TestFixturesDataModel(t *testing.T) {
 	}
 }
 
+func TestTier1ExplicitVsTier2InferredParityOnFixtures(t *testing.T) {
+	fixtureDirs := []string{
+		filepath.Join("testdata", "good-composite-create"),
+		filepath.Join("testdata", "good-field-by-field-update"),
+		filepath.Join("testdata", "good-maskless-put-update"),
+		filepath.Join("..", "resourcefixture", "testdata", "basic", "agentregistry", "v1alpha1", "agentregistrybinding", "agentregistrybinding-maximal"),
+		filepath.Join("..", "resourcefixture", "testdata", "basic", "agentregistry", "v1alpha1", "agentregistrybinding", "agentregistrybinding-minimal"),
+	}
+
+	for _, dir := range fixtureDirs {
+		dir := dir
+		t.Run(filepath.Base(dir), func(t *testing.T) {
+			// Arrange
+			rawBytes, err := os.ReadFile(filepath.Join(dir, "_http.log"))
+			if err != nil {
+				t.Fatalf("reading _http.log in %s: %v", dir, err)
+			}
+			unmarkedLog := StripPhaseComments(string(rawBytes))
+
+			// Act
+			reportInferred, err := AnalyzeFixtureWithLogContent(dir, unmarkedLog)
+			if err != nil {
+				t.Fatalf("AnalyzeFixtureWithLogContent(inferred, %s) failed: %v", dir, err)
+			}
+			if reportInferred.PhaseSource != PhaseSourceInferred {
+				t.Fatalf("expected PhaseSourceInferred, got %s", reportInferred.PhaseSource)
+			}
+			if !reportInferred.Passed {
+				t.Fatalf("expected inferred report for %s to pass all checks", dir)
+			}
+
+			entries, err := ParseHTTPLog(unmarkedLog)
+			if err != nil {
+				t.Fatalf("ParseHTTPLog(%s) failed: %v", dir, err)
+			}
+			for i, ce := range reportInferred.Entries {
+				entries[i].Phase = ce.Phase
+			}
+			explicitLog := FormatWithPhaseComments(entries)
+			reportExplicit, err := AnalyzeFixtureWithLogContent(dir, explicitLog)
+			if err != nil {
+				t.Fatalf("AnalyzeFixtureWithLogContent(explicit, %s) failed: %v", dir, err)
+			}
+
+			// Assert
+			if reportExplicit.PhaseSource != PhaseSourceExplicit {
+				t.Fatalf("expected PhaseSourceExplicit, got %s", reportExplicit.PhaseSource)
+			}
+			if !reportExplicit.Passed {
+				t.Fatalf("expected explicit report for %s to pass all checks", dir)
+			}
+
+			if len(reportInferred.Entries) != len(reportExplicit.Entries) {
+				t.Fatalf("entry count mismatch: inferred=%d, explicit=%d", len(reportInferred.Entries), len(reportExplicit.Entries))
+			}
+			for i := range reportInferred.Entries {
+				if reportInferred.Entries[i].Phase != reportExplicit.Entries[i].Phase {
+					t.Errorf("entry #%d Phase mismatch: inferred=%s, explicit=%s", i+1, reportInferred.Entries[i].Phase, reportExplicit.Entries[i].Phase)
+				}
+				if reportInferred.Entries[i].Role != reportExplicit.Entries[i].Role {
+					t.Errorf("entry #%d Role mismatch: inferred=%s, explicit=%s", i+1, reportInferred.Entries[i].Role, reportExplicit.Entries[i].Role)
+				}
+			}
+			if !reflect.DeepEqual(reportInferred.SpecDiff, reportExplicit.SpecDiff) {
+				t.Errorf("SpecDiff mismatch between inferred and explicit reports:\ninferred: %+v\nexplicit: %+v", reportInferred.SpecDiff, reportExplicit.SpecDiff)
+			}
+			if !reflect.DeepEqual(reportInferred.Checks, reportExplicit.Checks) {
+				t.Errorf("Checks mismatch between inferred and explicit reports:\ninferred: %+v\nexplicit: %+v", reportInferred.Checks, reportExplicit.Checks)
+			}
+		})
+	}
+}
+
 func TestRenderMarkdownPrinter(t *testing.T) {
 	tests := []struct {
 		name            string
@@ -293,6 +370,64 @@ func TestRenderMarkdownPrinter(t *testing.T) {
 				if !strings.Contains(termOut, sub) {
 					t.Errorf("RenderTerminal(%s, %s) missing expected substring %q", tc.dirName, tc.verbosity, sub)
 				}
+			}
+		})
+	}
+}
+
+func TestCommittedHTTPLogReports(t *testing.T) {
+	basicRoot := filepath.Join("..", "resourcefixture", "testdata", "basic")
+	var reportDirs []string
+	var phaseStampedLogDirs []string
+
+	err := filepath.WalkDir(basicRoot, func(p string, d fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if d.IsDir() {
+			return nil
+		}
+		switch d.Name() {
+		case "_http_report.md":
+			reportDirs = append(reportDirs, filepath.Dir(p))
+		case "_http.log":
+			if b, readErr := os.ReadFile(p); readErr == nil && strings.Contains(string(b), "# Phase:") {
+				phaseStampedLogDirs = append(phaseStampedLogDirs, filepath.Dir(p))
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("walking %s: %v", basicRoot, err)
+	}
+	if len(reportDirs) == 0 {
+		t.Fatalf("expected at least 1 committed _http_report.md under %s", basicRoot)
+	}
+
+	for _, dir := range phaseStampedLogDirs {
+		reportPath := filepath.Join(dir, "_http_report.md")
+		if !fixture.FileExists(reportPath) {
+			t.Errorf("fixture %s has # Phase: markers in _http.log, but _http_report.md is missing. Run: go run ./cmd/httplog-report --fixture %s --write", dir, dir)
+		}
+	}
+
+	for _, dir := range reportDirs {
+		dir := dir
+		t.Run(filepath.Base(dir), func(t *testing.T) {
+			report, err := AnalyzeFixture(dir)
+			if err != nil {
+				t.Fatalf("AnalyzeFixture(%s) failed: %v", dir, err)
+			}
+			if !report.Passed {
+				t.Errorf("fixture %s failed HTTP log validation:\n%s", dir, RenderTerminal(report, "normal"))
+			}
+			committedBytes, err := os.ReadFile(filepath.Join(dir, "_http_report.md"))
+			if err != nil {
+				t.Fatalf("reading committed _http_report.md: %v", err)
+			}
+			expectedMD := RenderMarkdown(report)
+			if string(committedBytes) != expectedMD {
+				t.Errorf("committed _http_report.md in %s is out of sync with fixture files (or Integrity Hash mismatch).\nRun: go run ./cmd/httplog-report --fixture %s --write", dir, dir)
 			}
 		})
 	}
