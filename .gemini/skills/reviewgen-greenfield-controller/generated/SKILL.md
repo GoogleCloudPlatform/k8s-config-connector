@@ -19,11 +19,12 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ## 2. Canonical Greenfield Controller Invariants (The 5 Standards)
 1.  **GAPIC REST Client Preference**:
-    *   Verify `m.client(ctx)` uses `gcp.New<Service>RESTClient(ctx, opts...)` with `m.config.RESTClientOptions()` (falling back to `New<Service>Client` with `m.config.GRPCClientOptions()` only when REST is unsupported or broken on real GCP).
+    *   Verify `m.client(ctx)` uses `gcp.New<Service>RESTClient(ctx, opts...)` with `m.config.RESTClientOptions()` (falling back to `New<Service>Client` with `m.config.GRPCClientOptions()` only when REST is unsupported or broken on real GCP, with the reason stated in the PR).
 2.  **`common.NormalizeGreenfieldReferences` in `AdapterForObject`**:
     *   Verify `common.NormalizeGreenfieldReferences(ctx, reader, obj)` is called in `AdapterForObject` before `GetIdentity` and before `<Kind>Spec_ToProto`.
 3.  **`IdentityV2` / `ServerGeneratedIdentity` Handling**:
     *   Verify `AdapterForObject` calls `obj.GetIdentity(ctx, reader)` and asserts `*krm.<Kind>Identity`.
+    *   Verify the parent in GCP requests comes from the identity (`a.id.ParentString()`), never from spec fields.
     *   For `ServerGeneratedIdentity` resources (`Create<Resource>Request` has no `<resource>_id` field), verify `Create` extracts the server-assigned ID via `a.id.FromExternal(created.GetName())` and `setStatus` writes `status.ExternalRef = direct.LazyPtr(a.id.String())`.
 4.  **Declared-Spec-Only Diffing (`common.CompareGreenfieldSpec` / `common.CompareGreenfieldSpecAndLabels`)**:
     *   **Strict Rule:** Verify `Update` uses `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when reconciling top-level proto `labels` via `metadata.labels` — never `common.CompareProtoMessage` or `common.CompareBrownfieldSpec`).
@@ -36,8 +37,10 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 *   Verify `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` is present, registers the fuzzer in `init()`, and passes `FOCUS=<Kind> go test ./pkg/fuzztesting/fuzztests -run TestFocusedMappers` and `dev/ci/presubmits/fuzz-roundtrippers`.
 
 ## 4. Real-GCP E2E Fixtures & Ratcheting Opt-In
-*   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp).
+*   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp). The maximal fixture covers the supported spec fields.
+*   Verify the fixtures set the parent the way `<Kind>Spec` models it: a child resource sets `spec.parentRef` (to the parent created in `dependencies.yaml`, or `external:` for an external-only parent), and no `update.yaml` changes the parent fields (`parentRef`, or `projectRef`/`location`).
 *   Verify `<Kind>` is not excluded in `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.
+*   Verify the PR description states the GCP project and PDT start/end times of the `hack/record-gcp` run, and that the `gcloud logging read` audit-log output is posted as a PR comment.
 
 # Review Comment Template
 

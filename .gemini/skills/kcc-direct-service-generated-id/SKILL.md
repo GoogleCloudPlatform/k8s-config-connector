@@ -9,7 +9,9 @@ This skill outlines the mandatory implementation requirements for direct KCC res
 
 *Note: Resources that support both user-specified and service-generated IDs (or have alternative selection mechanisms) should be handled differently and are not covered by this skill.*
 
-For such resources, the Kubernetes configuration uses `spec.resourceID` to specify a service-generated ID (if acquiring or targeting a pre-existing resource), but can also leave it empty to request that KCC let the GCP service assign an ID.
+For such resources, the Kubernetes configuration uses `spec.resourceID` to specify a service-generated ID (if acquiring or targeting a pre-existing resource), but can also leave it empty to request that KCC let the GCP service assign an ID (an empty `spec.resourceID` means "create a new one").
+
+These rules apply when `<Kind>Identity` implements `ServerGeneratedIdentity` (typically the `Create<Resource>Request` has no `<resource>_id` field).
 
 ---
 
@@ -34,6 +36,7 @@ When implementing or migrating direct controllers for resources that use service
 
 ### Rule 3: `Create()` Request Payload
 - The `Create()` implementation **MUST NEVER** set the `desiredpb.Name` (or equivalent identifier field) in the GCP request payload before calling the GCP Create API. The identifier must be left empty so that the GCP service knows to generate it.
+- After creation, read the server-assigned ID back from the response with `a.id.FromExternal(created.GetName())`, and have `setStatus` write `status.externalRef = direct.LazyPtr(a.id.String())`.
 
 ### Rule 4: Identity Comparison in `GetIdentity()`
 When `status.externalRef` is present during reconciliation:
@@ -83,6 +86,9 @@ func (a *Adapter) Create(ctx context.Context, desired *krm.MyResource) error {
     // Rule 3: Create() Request Payload
     // Do not set desiredpb.Name, let GCP generate the identifier.
     // ...
+    // Read the server-assigned ID back from the created resource:
+    //   if err := a.id.FromExternal(created.GetName()); err != nil { ... }
+    // and setStatus writes status.externalRef = direct.LazyPtr(a.id.String()).
     return nil
 }
 

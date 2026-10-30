@@ -11,14 +11,14 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 ## Critical Rules
 
-*   **Real GCP Baseline Required**: You must always have authentic `_http.log` files recorded from real GCP before aligning mock behavior. Please always execute the [`record-real-gcp`](.gemini/skills/record-real-gcp/SKILL.md) skill.
+*   **Real GCP Baseline Required**: You must always have authentic `_http.log` files recorded from real GCP before aligning mock behavior. Please always execute the [`record-real-gcp`](.gemini/skills/record-real-gcp/SKILL.md) skill. You MUST first establish a baseline against `real` GCP with `E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest` with `WRITE_GOLDEN_OUTPUT=1`.
+*   **Never Hand-Edit Logs or Goldens**: `_http.log`, `_http_mock.log` and `_generated_object_*.golden.yaml` are only ever generated (by `hack/record-gcp` or `hack/compare-mock`), never edited by hand.
 *   **Basic Test Case Naming**: Ensure that the basic test case directory/folder names always contain the resource kind name (e.g., use `computesubnetwork-reservedinternalrange` instead of `reservedinternalrange`).
 *   **No New Missing Fields**: We should not add new missing fields to the exceptions file (`tests/apichecks/testdata/exceptions/missingfields.txt`). If fixing or renaming an existing test case exposes/causes more missing fields, you must extend the test case configuration or add a new test case (or more than one if needed) to cover those missing fields.
- You MUST first establish a baseline against `real` GCP with `E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest` with `WRITE_GOLDEN_OUTPUT=1`.
-*   **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN**: If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** execute the [`record-real-gcp`](.gemini/skills/record-real-gcp/SKILL.md) skill.
+*   **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN**: If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** execute the [`record-real-gcp`](.gemini/skills/record-real-gcp/SKILL.md) skill for those fixtures, and say in the PR which fixtures you re-recorded and why.
     - **Do NOT re-run real GCP during MockGCP alignment**: When updating MockGCP implementations, handlers, or normalizers (`normalize.go`), do NOT re-run `hack/record-gcp`. Mock alignment is done strictly against existing `_http.log` using `hack/compare-mock`.
     - **Normalize Variations**: Run-to-run differences (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `normalize.go` rather than re-recording against real GCP.
-*   **Do NOT Update Legacy Controller**: Do not update or modify the legacy/Terraform-based controller (such as code under `pkg/krmtotf/references.go`) unless absolutely necessary. Keep the legacy controller logic unchanged and avoid modifications to common or shared legacy framework code.
+*   **Do NOT Update Legacy Controller**: Do not update or modify the legacy (Terraform/DCL-based) controller (such as code under `pkg/krmtotf/references.go`) unless absolutely necessary. Keep the legacy controller logic unchanged and avoid modifications to common or shared legacy framework code.
 *   **Focus on Target CRUD Requests**: When aligning the HTTP logs, we only care about the requests made to the CRUD endpoint of the target resource. Non-target/dependent resource requests in the log do not need to be matched as strictly.
 
 ## Workflow
@@ -31,6 +31,18 @@ Before running the test cases against real or mock GCP, you **MUST** ensure the 
 2. Locate the function `ShouldTestRereconiliation`.
 3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
 4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
+### Step 0b: Check Whether There's Anything Left to Do
+
+The mock may already be aligned (e.g. by the MockGCP implementation step). Before changing anything, run:
+
+```bash
+hack/compare-mock "fixtures/<kind_lowercase>"
+go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/<kind_lowercase>"
+git status --porcelain -- pkg/test/resourcefixture mockgcp
+```
+
+If `TestGoldenLogAlignment` passes with zero errors for every fixture of the kind and the commands leave no diff, there is nothing to align: report the command output and stop. No PR is needed unless Step 0 removed a ratcheting exclusion (then the PR is just that change plus any regenerated files).
 
 ---
 
@@ -68,7 +80,7 @@ Before aligning mock behavior, ensure authentic `_http.log` files are recorded a
 #### Tips for Fixing Discrepancies:
 
 1. **Missing Default Values (Field in Real but NOT in Mock)**:
-   - For missing default values (e.g. `<missing> => REGIONAL`), add or update `populateDefaultsFor<Resource>` in `mockgcp/mock<service>/<kind>.go`. Ensure it is called on both mutation (`Create`/`Insert`) and retrieval (`Get`/`List`) methods.
+   - For missing default values (e.g. `<missing> => REGIONAL`), add or update `populateDefaultsFor<Resource>` in `mockgcp/mock<service>/<kind>.go`. Ensure it is called on both mutation (`Create`/`Insert`/`Update`) and retrieval (`Get`/`List`) methods.
    - If the field is **missing from the proto**, leave a `TODO` comment noting the missing proto field instead.
 2. **Unexpected Values (Field in Mock but NOT in Real)**:
    - Check if the field was added to align with another test case. If real GCP includes it in other scenarios but omits it here, it is possibly **conditionally defaulted** (or was accidentally hardcoded).
@@ -99,3 +111,19 @@ Verify that all test directories associated with your target resource are verifi
    ```bash
    go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/<kind_lowercase>"
    ```
+4. **Run the CI fixtures presubmit and prereqs**: This is what CI runs for the group, against MockGCP:
+   ```bash
+   ./dev/ci/presubmits/tests-e2e-fixtures-suite <group>
+   scripts/validate-prereqs.sh
+   ```
+5. Commit all regenerated mock logs and golden files for every fixture.
+
+## Review checklist
+
+Use this when reviewing a PR produced with this skill. Check every item:
+
+1. **Alignment**: `TestGoldenLogAlignment/<kind_lowercase>` passes with zero errors for every fixture, `hack/compare-mock "fixtures/<kind_lowercase>"` runs cleanly, and `./dev/ci/presubmits/tests-e2e-fixtures-suite <group>` passes.
+2. **Real-GCP baseline**: No `_http.log` changed, unless the PR explains a fixture or request change and the new log comes from `hack/record-gcp`. No log or golden file was edited by hand.
+3. **Fix quality**: Defaults are applied on both write and read paths. Conditional defaults are commented. Proto3 zero-value gaps and missing proto fields have `TODO`s. Canonicalization happens in the mock's `Create`/`Insert`.
+4. **Normalizer scoping**: `Previsit` is limited to `<service>.googleapis.com` URLs. API-version and URL-prefix replacements are exact strings for this service, with no broad wildcards.
+5. **Scope**: No legacy (Terraform/DCL) controller changes, no new `missingfields.txt` lines, fixture names contain the kind name, and the kind isn't excluded in `ShouldTestRereconiliation`.

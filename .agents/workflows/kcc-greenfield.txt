@@ -185,6 +185,12 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
 *   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
 *   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
 
+**How to check.** Read the parent workflow issue body first. If it has a line starting with `Prepopulated:` (the workflow creation script adds it when `{kind}` already has an open `untriaged-bulk-generation` entry on `master`), Step 1a is done: mark it `Completed (Bulk Prepopulated)` and go straight to Step 1b. **Don't open a Step 1a issue.** Without that line, check `master` without a checkout: list candidate queue files, then confirm an exact `  - kind: {kind}` line in one of them:
+```bash
+gh search code "kind: {kind}" --repo GoogleCloudPlatform/k8s-config-connector --filename judgement_queue.yaml --json path --jq '.[].path'
+gh api "repos/GoogleCloudPlatform/k8s-config-connector/contents/<path>" -H "Accept: application/vnd.github.raw" | grep -qx "  - kind: {kind}" && echo prepopulated
+```
+
 **GitHub Issue Details for Step 1a (Prepopulate):**
 *   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
@@ -194,11 +200,12 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1a: `prepopulate/SKILL.md`) for prepopulating types and `judgement_queue.yaml` for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
 
+    If `{kind}` already has an entry in an `apis/*/judgement_queue.yaml` on `master` (`git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`), it was bulk-prepopulated and this step doesn't apply: don't open a PR. Comment what you found on this issue and close it (`gh issue close <this issue's number> --comment "<what you found>"`). If you can't close it, leave the comment and stop.
+
     Validate your changes locally by:
      * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-     * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
 
-    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Record less general, service-specific observations as the skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` says, in `.gemini/journals/<service_name>.md` (never in a `journal/` folder or `journal.md` under `.gemini/skills/`). You may grep the journals to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -224,11 +231,12 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (which routes to `judgement/SKILL.md`) to triage `judgement_queue.yaml` and finalize direct KRM types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {kind}.
 
+    If `{kind_lowercase}_types.go` exists on `master` but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for `{kind}`, this step doesn't apply: don't open a PR. Comment what you found on this issue and close it (`gh issue close <this issue's number> --comment "<what you found>"`). If you can't close it, leave the comment and stop.
+
     Validate your changes locally by:
      * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
-     * Running ./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>
 
-    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Record less general, service-specific observations as the skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` says, in `.gemini/journals/<service_name>.md` (never in a `journal/` folder or `journal.md` under `.gemini/skills/`). You may grep the journals to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -251,7 +259,7 @@ Open a GitHub issue to coordinate the autogeneration/verification of the direct 
     ````
     Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {kind}.
 
-    If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
+    If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Record less general, service-specific observations as the skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` says, in `.gemini/journals/<service_name>.md` (never under `.gemini/skills/`).
 
     When creating the PR, include the release note block set to NONE:
     ```release-note
@@ -291,6 +299,8 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 *   **Body:**
     ````
     Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {kind}.
+
+    If `TestGoldenLogAlignment` already passes with zero errors for every `{kind}` fixture and leaves no diff, Step 3 already aligned the mock: post the output as a comment on this issue and close it (`gh issue close <this issue's number> --comment "<summary>"`). No PR is needed.
 
     When creating the PR, include the release note block set to NONE:
     ```release-note

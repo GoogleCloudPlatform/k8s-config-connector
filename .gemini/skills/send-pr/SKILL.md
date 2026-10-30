@@ -44,7 +44,7 @@ Alternatively, or in environments where hooks are not configured, explicitly pus
    - Before running `send-pr.sh` or pushing any commit, always verify your changes locally using the authoritative presubmit scripts:
      1. Run `make fmt && go vet ./...`.
      2. Run `./dev/ci/presubmits/unit-tests` (validates all package unit tests and golden log alignment).
-     3. Run `./dev/ci/presubmits/tests-e2e-fixtures-<service>` when modifying a resource controller or fixture.
+     3. Run `./dev/ci/presubmits/tests-e2e-fixtures-suite <group>` when modifying a resource controller or fixture (`<group>` is the API group's short name, e.g. `apihub`; only a few groups also have a `tests-e2e-fixtures-<group>` script).
 
 4. **What the Script Does**:
    - Runs `make fmt` to ensure the code is properly formatted.

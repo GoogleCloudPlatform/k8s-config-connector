@@ -17,8 +17,10 @@ You **must** always apply the baseline KRM standards in:
 Check whether `<Kind>` already has an entry in `apis/<service>/judgement_queue.yaml` and `apis/<service>/<version>/<kind_lowercase>_types.go` on `master` (or if the issue is labeled `step/types-judgement`):
 
 ```bash
-git show origin/master:apis/<service>/judgement_queue.yaml 2>/dev/null | grep -q "kind: <Kind>"
+git fetch origin master && git grep -n "kind: <Kind>$" origin/master -- 'apis/*/judgement_queue.yaml'
 ```
+
+(This searches every group, so it also finds kinds that were bulk-prepopulated under a group prefix you did not expect.)
 
 - **If `<Kind>` is NOT yet in `apis/<service>/judgement_queue.yaml` on `master` (Step 1a / `step/gen-types`: Prepopulate Resource & Judgement Queue)**:
   - Read and follow **[`.gemini/skills/kcc-direct-greenfield-types-implementer/prepopulate/SKILL.md`](prepopulate/SKILL.md)** using `view_file`.

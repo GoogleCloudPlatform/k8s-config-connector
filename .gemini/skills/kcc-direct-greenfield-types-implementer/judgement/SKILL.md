@@ -12,6 +12,10 @@ You **must** also apply the baseline KRM standards in:
 - [`.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-base-types-implementer/SKILL.md)
 - [`.gemini/skills/kcc-identity-reference/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-identity-reference/SKILL.md)
 
+> [!IMPORTANT]
+> - **Does this step apply?** If `<kind>_types.go` exists but `judgement_queue.yaml` has no open `untriaged-bulk-generation` entry for `<Kind>`, this workflow does not apply. If you are working from a Step 1b issue, comment what you found and close it (`gh issue close <issue> --comment "<what you found>"`); if you cannot close it, leave the comment and stop.
+> - **Stay in scope**: touch only `<Kind>`'s files, the shared files named below, and parent/target identity and reference files when the playbooks say so. Do not refactor other Kinds.
+
 ---
 
 ## Core Rules & Invariants of `judgement_queue.yaml`
@@ -50,7 +54,7 @@ You **must** also apply the baseline KRM standards in:
 
 ### Phase 2: Resolve Queue Entries by `reason`
 
-- **If `<Kind>` has Parent, Location, Root, or Identity reasons** (`location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-multiple-patterns`, `location-parent-unknown`, `root-*`, `identity-*`):
+- **If `<Kind>` has Parent, Location, Root, or Identity reasons** (`location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-ref-not-supported`, `parent-multiple-patterns`, `parent-root-unknown`, `location-parent-unknown`, `root-*`, `identity-*`):
   - Read and follow **[`references/PARENT_AND_IDENTITY.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md)** using `view_file`.
 - **If `<Kind>` has Reference, Output-Only Comment, `required-not-enforced`, or Shared Nested Struct reasons** (`authoritative-proto-reference`, `possible-reference*`, `reference-not-representable`, `*-output-only-pattern-in-comment`, `required-not-enforced`):
   - Read and follow **[`references/REFERENCES_AND_NESTED_STRUCTS.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/references/REFERENCES_AND_NESTED_STRUCTS.md)** using `view_file`.
@@ -73,7 +77,8 @@ You **must** also apply the baseline KRM standards in:
 1. **Unflagged Subtle References**: Scan every remaining `*string` / `[]string` field in `<Kind>Spec` and reachable structs in `types.generated.go` for unflagged GCP resource references (e.g., `sourceProjectID`, `defaultDatabase`, `kmsKey`, `serviceAccount`, `network`, `repository`) and convert them to `*Ref` fields.
 2. **Top-Level `Spec.Labels` Removal (`TestVerifyLabelsTestCasesExist`)**: Ensure top-level `Labels map[string]string` is removed from `<Kind>Spec` (top-level proto `labels` are reconciled via `metadata.labels`); leaving `Labels` in `<Kind>Spec` causes `TestVerifyLabelsTestCasesExist` to fail when a controller is registered.
 3. **Nested `Etag` / Output-Only Fields & Empty `ObservedState`**: Check nested Spec structs for unannotated `Etag` or output-only fields; if `<Kind>ObservedState` ends up empty, comment out `ObservedState` in `<Kind>Status` and `type <Kind>ObservedState struct`.
-4. **Close `untriaged-bulk-generation`**: Mark `<Kind>`'s `untriaged-bulk-generation` entry `status: resolved` (`edited` or `accepted` with a summary `note`).
+4. **KRM Standards**: Re-check `<kind>_types.go` against `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md` (copyright, CRD labels, `*int64` `observedGeneration`, pointer scalars except the embedded parent `Location`, acronym casing, `+kcc:*proto=` annotations, lean hand-written types file).
+5. **Close `untriaged-bulk-generation`**: Mark `<Kind>`'s `untriaged-bulk-generation` entry `status: resolved` (`edited` or `accepted` with a summary `note`).
 
 ### Phase 4: Regeneration, Lockstep Controller/Fuzzer Sync, & Verification
 1. Run `./apis/<service>/generate.sh` and confirm `git diff apis/<service>/judgement_queue.yaml` shows no newly opened entries for `<Kind>`.
@@ -93,6 +98,12 @@ You **must** also apply the baseline KRM standards in:
    go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming|TestGenerateScripts|TestDirectResourceFileNaming"
    go test -v ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
    go test -v ./apis/<service>/... ./pkg/controller/direct/<service>/...
+   WRITE_GOLDEN_OUTPUT=1 go test ./pkg/cli/powertools/cais/...   # _identities.yaml goldens
+   go build ./... && go vet ./...
+   make resource-docs
+   dev/tasks/diff-crds                                            # only <Kind>'s CRD should change
+   scripts/validate-prereqs.sh                                    # fails on any unstaged diff; commit again if it changes files
    ```
+   Only these exception files may grow: `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`, `pkg/gcpurls/registry_test.go` (verified templates missing from CAI), and `testdata/exceptions/naming_violations.txt` (new external-only identity/reference files). Never `missingrefs.txt` or `crds_have_parent_refs.txt`.
 6. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
 

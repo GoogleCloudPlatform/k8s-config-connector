@@ -58,27 +58,48 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
      go test -v ./tests/apichecks -run "TestGenerateScripts|TestDirectResourceFileNaming"
      ```
    - If `TestFocusedMappers` fails, inspect any inline `// HINT:` comments in `<kind_lower>_fuzzer.generated.go` and the `<hint_for_agent>...</hint_for_agent>` block in the test output to fix the underlying mapper or configure `FilterSpec` / `FilterStatus`.
-   - Verify `<proto_lower>_controller.go` satisfies the 5 Canonical Greenfield Controller Standards:
-     1. **GAPIC REST Client (`New<Service>RESTClient`)** with `m.config.RESTClientOptions()` (falling back to `New<Service>Client` with `m.config.GRPCClientOptions()` only if REST is unsupported by the service).
-     2. **`common.NormalizeGreenfieldReferences(ctx, reader, obj)`** called first in `AdapterForObject`.
-     3. **`IdentityV2` (`obj.GetIdentity`) or `ServerGeneratedIdentity`** handled cleanly in `AdapterForObject`, `Create`, and `setStatus`.
-     4. **`common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)`** (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when reconciling top-level proto `labels` via `metadata.labels`) used in `Update` together with `structuredreporting.ReportDiff(ctx, report)`.
-     5. **Post-LRO `Get<Resource>`** after `Create`/`Update` LROs when needed, and `setStatus(u, resolved)` called on every `Create` and `Update` path (including no-op updates).
+   - Verify `<proto_lower>_controller.go` satisfies the 5 Canonical Greenfield Controller Standards. The generator should get these right; change the controller only where real GCP proves it wrong, and explain any deviation in the PR description:
+     1. **GAPIC REST Client (`New<Service>RESTClient`)** with `m.config.RESTClientOptions()` (falling back to `New<Service>Client` with `m.config.GRPCClientOptions()` only if REST is unsupported or broken on real GCP, e.g. 403, 404 or LRO errors; state the reason in the PR).
+     2. **`common.NormalizeGreenfieldReferences(ctx, reader, obj)`** called first in `AdapterForObject`, before `GetIdentity` and before `<Kind>Spec_ToProto`.
+     3. **`IdentityV2` (`obj.GetIdentity`) or `ServerGeneratedIdentity`** handled cleanly in `AdapterForObject`, `Create`, and `setStatus`:
+        - `AdapterForObject` calls `obj.GetIdentity(ctx, reader)` and asserts `*krm.<Kind>Identity`.
+        - The parent in GCP requests comes from the identity (`a.id.ParentString()`), never from spec fields. If the proto message has a `parent` field, set it from `a.id.ParentString()` in `Create`.
+        - If the controller implements export (`AdapterForURL`/`Export`), build the parent fields from the identity: `obj.Spec.ParentRef = &krm.<ParentKind>Ref{External: a.id.ParentString()}` for a child resource; `projectRef` (or `folderRef`/`organizationRef`) plus `location` for a top-level one.
+        - For server-generated IDs, follow `.gemini/skills/kcc-direct-service-generated-id/SKILL.md`.
+     4. **`common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)`** (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when reconciling top-level proto `labels` via `metadata.labels`) used in `Update` — never `common.CompareProtoMessage` or `common.CompareBrownfieldSpec` — together with `structuredreporting.ReportDiff(ctx, report)` before sending the update request when paths changed.
+     5. **LRO waits and status**: `Create`, `Update`, and `Delete` wait on every LRO (`op.Wait(ctx)`), **Post-LRO `Get<Resource>`** after `Create`/`Update` LROs when the LRO result is incomplete, and `setStatus(u, resolved)` called on every `Create` and `Update` path (including no-op updates).
 
 
 ---
 
 ## Step 2: Create Minimal and Maximal E2E Fixtures
 
+Fixture directory names must contain the kind name.
+
 1. **Minimal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-minimal/`):
-   - `create.yaml`: Include only the bare minimum **required** Spec fields (use `${uniqueId}` for resource names and `${projectId}` where needed).
+   - `create.yaml`: Include only the bare minimum **required** Spec fields, including the parent (use `${uniqueId}` for resource names and `${projectId}` where needed).
    - `update.yaml`: Modify mutable fields from `create.yaml` (omit `update.yaml` only if the resource has no mutable fields or no Update RPC).
-   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml`.
+   - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml`, such as the parent resource.
 
 2. **Maximal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-maximal/`):
    - `create.yaml`: Populate **every supported Spec field** (create additional sibling fixture directories if certain Spec fields are mutually exclusive `oneof`s).
    - `update.yaml`: Modify all mutable fields defined in `create.yaml`.
    - `dependencies.yaml`: Include all prerequisite KCC resources.
+
+3. **Parent fields**: Set the parent the way `<Kind>Spec` models it, and never change the parent fields (`parentRef`, or `projectRef`/`location`) in `update.yaml`:
+   ```yaml
+   # Top-level resource (project + location parent)
+   spec:
+     projectRef:
+       external: projects/${projectId}
+     location: us-central1
+   ---
+   # Child resource: spec.parentRef names the parent, which dependencies.yaml creates
+   spec:
+     parentRef:
+       name: <parentkind>-${uniqueId}
+   ```
+   If the parent's reference type is external-only (only `External`), still create the parent in `dependencies.yaml` with the KCC kind that manages it, and set `parentRef: {external: <the parent's full name>}`.
 
 ---
 
@@ -93,13 +114,18 @@ Open `tests/e2e/ratcheting.go`, locate `ShouldTestRereconiliation`, and remove a
 > [!IMPORTANT]
 > **STRICT GUARDRAIL — DO NOT USE MOCKGCP**: You MUST record golden files against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Never use `E2E_GCP_TARGET=mock` or `hack/compare-mock` in Step 2.
 
+Follow `.gemini/skills/record-real-gcp/SKILL.md`. Note the start and end times (PDT) and the GCP project for the PR description. Compiling and recording often take 10–20+ minutes, so give the shell a long timeout (30 minutes).
+
 Run from the repository root:
 ```bash
+go run ./hack/find-test-targets   # lists every fixture the change affects; record all of them
 RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-minimal$"
 RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 ```
+(`RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/<kind_lower>"` records all of them in one run.)
+- Never create or edit `_http.log`, `_audit_probe.log`, or `*.golden.yaml` by hand, and never fall back to mock logs.
 - Once a fixture provisions on real GCP, reaches `Ready`, deletes cleanly, and writes `_http.log` and `_audit_probe.log`, **do not re-run `hack/record-gcp` for minor log variations**—normalize volatile fields in `tests/e2e/normalize.go` instead.
-- If real GCP reports a disabled API, enable it via `gcloud services enable <service>.googleapis.com` and retry.
+- If real GCP reports a disabled API, enable it via `gcloud services enable <service>.googleapis.com` and retry. For a missing dependency, add it to `dependencies.yaml`; for an invalid argument, fix the YAML using the API reference. After 3 distinct failed attempts, stop and explain the blocker in a comment.
 
 ---
 
@@ -108,8 +134,10 @@ RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 1. Run validation checks (without re-running `hack/record-gcp`):
    ```bash
    dev/ci/presubmits/fuzz-roundtrippers
-   dev/ci/presubmits/tests-e2e-fixtures-direct
-   WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
+   WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha   # the maximal fixture should shrink alpha-missingfields.txt
+   go test ./tests/apichecks/... ./pkg/controller/direct/<service>/...
+   go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
    ```
-2. Run `make ready-pr` and commit all changes.
-3. In the PR description, document the GCP project used for `record-gcp` and post the `gcloud logging read 'logName:"audit" AND "<service>"' --freshness=3h --limit=50` output as a PR comment.
+   Do not run the fixtures against MockGCP in Step 2; MockGCP runs (`dev/ci/presubmits/tests-e2e-fixtures-suite <service>`) belong to Step 3. If something fails, fix it where it belongs (controller, mapper, fuzzer, fixture, or normalizer) and repeat.
+2. Run `make ready-pr` and commit all changes, including the recorded logs.
+3. In the PR description, document the GCP project and the PDT start/end times used for `record-gcp`, and any deviation from the 5 standards and why. Post the `gcloud logging read 'logName:"audit" AND "<service>"' --freshness=3h --limit=50` output as a PR comment.

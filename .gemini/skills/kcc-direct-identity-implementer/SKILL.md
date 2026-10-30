@@ -29,7 +29,8 @@ This skill guides the implementation of the IdentityV2 and ExternalIdentifier in
     - Implement `ExternalIdentifier()`.
     - Implement `ParentString() string` to return the GCP parent URI (e.g., `projects/{project}` or `projects/{project}/locations/{location}`)
 4.  **Parent & Hierarchy Support**:
-    - Ensure the `Spec` struct has a `ProjectRef` (and `Location` if applicable).
+    - For a top-level resource, ensure the `Spec` struct has a `ProjectRef` (and `Location` if applicable).
+    - For a greenfield child resource (the parent pattern ends in another resource), the `Spec` has exactly one hierarchy field, `spec.parentRef` (`*<ParentKind>Ref`), and the identity takes project, location and ancestor IDs only from the resolved parent reference (see `.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md`, Case B).
     - **Hierarchical Branching**: If the GCP resource supports multiple hierarchies (e.g., Global and Regional), implement logic in `String()` and `FromExternal()` to handle both. Use the presence of the `location` field in the Spec to determine which pattern to use.
 
 ## Journaling

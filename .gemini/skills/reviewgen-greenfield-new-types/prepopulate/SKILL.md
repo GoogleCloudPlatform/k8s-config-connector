@@ -47,7 +47,7 @@ Please enforce all of the following review criteria and invariants.
         *   `pkg/controller/direct/<service>/mapper.generated.go`
         *   `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml`
         are 100% unmodified generator output.
-    *   Reject any hand-edits to `<kind>_types.go`, `<kind>_identity.generated.go`, or `<kind>_reference.generated.go` in Step 1.
+    *   Reject any hand-edits to `<kind>_types.go`, `types.generated.go`, `<kind>_identity.generated.go`, or `<kind>_reference.generated.go` in Step 1. The only allowed exception is the recursive-type markers (`+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` / `items:XPreserveUnknownFields`, `+kubebuilder:validation:Type=object`) on a recursive cycle-edge field in `<kind>_types.go`, which the PR should call out.
 *   **Allowed Compilation Fixes for `pkg/controller/direct/<service>/`**:
     *   Minimal changes required for `pkg/controller/direct/<service>/mapper.generated.go` to compile ARE allowed in Step 1:
         *   Adding the service's Go client library module to `go.mod` / `go.sum`.

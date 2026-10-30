@@ -9,9 +9,11 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 
 > [!IMPORTANT]
 > **Strict Mechanical Scope for Step 1**:
-> - **Do NOT hand-edit** `<kind>_types.go`, `types.generated.go`, `<kind>_identity.generated.go`, `<kind>_reference.generated.go`, or `apis/<service>/judgement_queue.yaml`.
+> - **Do NOT hand-edit** `<kind>_types.go`, `types.generated.go`, `<kind>_identity.generated.go`, `<kind>_reference.generated.go`, or `apis/<service>/judgement_queue.yaml` (the recursive-type markers in Phase 4 are the only exception).
 > - **Do NOT resolve** any entries in `apis/<service>/judgement_queue.yaml` during Step 1; `untriaged-bulk-generation` for `<Kind>` **must** remain `status: open` so Step 2 (`judgement/SKILL.md`) can triage it.
-> - **Do NOT pass `--allow-non-ga-proto`** unless explicitly instructed by a human.
+> - **Do NOT pass `--allow-non-ga-proto`** unless explicitly instructed by a human. If the resource only exists in a non-GA proto (`v1alpha*`, `v1beta*`), stop and report it (comment on the issue) instead of improvising.
+> - **Stay in scope**: touch only `<Kind>`'s files and the shared files named below; do not refactor other resources.
+> - **Already prepopulated?** Before starting, run `git fetch origin master && git grep -n "kind: <Kind>$" origin/master -- 'apis/*/judgement_queue.yaml'`. A hit means `<Kind>` was already bulk-prepopulated: do not open a PR. If you are working from a Step 1a issue, comment what you found and close it (`gh issue close <issue> --comment "<what you found>"`) so the pipeline moves on to Step 1b; if you cannot close it, leave the comment and stop.
 
 ---
 
@@ -20,13 +22,18 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 - `resource`: The mapping of KCC Kind to GCP Proto message (e.g., `APIHubPlugin:Plugin`).
 - `api_version`: The KCC API version (must be `v1alpha1` for new greenfield resources).
 
+How to find them:
+- `<service_short>` (group prefix): if `apis/<service_short>/` already has kinds with the same prefix as `<Kind>`, reuse it; otherwise use the lowercase service name from the proto package (`google.cloud.apihub.v1` -> `apihub`).
+- `<ProtoMessage>`: usually `<Kind>` without the group prefix. Confirm with `grep -i <name> docs/ai/metadata/cloudassetinventory_names.jsonl` and the proto.
+- `<service_name>` (for the journal): the proto's `option (google.api.default_host)`, as in `<service_name>.googleapis.com`.
+
 ---
 
 ## Workflow
 
 ### Phase 1: Proto Discovery & GA Verification
 1. Ensure `.build/third_party/googleapis` is populated (run `./dev/tools/controllerbuilder/generate-proto.sh` if missing).
-2. Locate the target proto message in `.build/third_party/googleapis/google/...` and confirm it belongs to a **GA** proto package (e.g., `v1`, `v2`, `v4` — not `v1alpha*` or `v1beta*`).
+2. Locate the target proto message (`grep -rn "^message <ProtoMessage> {" .build/third_party/googleapis/google/`) and confirm it belongs to a **GA** proto package (e.g., `v1`, `v2`, `v4` — not `v1alpha*` or `v1beta*`). Note its `option (google.api.resource)` pattern(s) and `Create<ProtoMessage>Request`.
    - Do **not** pass `--allow-non-ga-proto` unless explicitly instructed.
 
 ### Phase 2: Configure `apis/<service_short>/generate.sh`
@@ -112,7 +119,7 @@ fi
    go build ./apis/<service_short>/... ./pkg/controller/direct/<service_short>/...
    ```
 5. **If `pkg/controller/direct/<service_short>/...` fails to compile**, apply **only** the minimal fixes required for `mapper.generated.go` to build cleanly (without hand-editing `<kind>_types.go` or `judgement_queue.yaml`):
-   - **Missing Go client library in `go.mod`**: Run `go get cloud.google.com/go/<service>/apiv1/<service>pb` and `go mod tidy`.
+   - **Missing Go client library in `go.mod`**: Run `go get cloud.google.com/go/<service>/apiv1/<service>pb` and `go mod tidy`, then `(cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
    - **Missing external proto mappers (e.g. `Money_FromProto`, `LatLng_FromProto`, `Expr_FromProto`)**: Append `,google.type` (or the relevant external proto package) to `--service` on `generate-mapper` in `apis/<service_short>/generate.sh` and re-run `./apis/<service_short>/generate.sh`.
    - **Missing mapper helpers for `*Request` / `*Metadata` messages or wrapper types**: Add a minimal hand-written `<kind>_mapper.go` (using a valid `<Kind>` prefix so `TestDirectResourceFileNaming` does not flag `naming_violations.txt`, or `mapper.go`) in `pkg/controller/direct/<service_short>/` implementing only the missing `*_FromProto` / `*_ToProto` helper functions.
    - **Existing `v1beta1` controller callers when adding `--multiversion`**: Update existing callers in `pkg/controller/direct/<service_short>/` to call the versioned `*_v1beta1_FromProto` / `*_v1beta1_ToProto` functions (or updated `URIs` acronym casing).
@@ -123,9 +130,12 @@ fi
    ```bash
    go test -v ./apis/<service_short>/... ./pkg/controller/direct/<service_short>/...
    go test -v ./tests/apichecks/...
+   . dev/tasks/setup-envtest && go test ./pkg/cli/preview/... -run TestPreview
+   go test ./operator/pkg/controllers/configconnector/...
    ```
    - Because `<Kind>` has `untriaged-bulk-generation` with `status: open` in `apis/<service_short>/judgement_queue.yaml`, `TestMissingRefs`, `TestDescriptions`, `TestFieldNames`, `TestRequiredFields`, and `TestCRDBackwardCompatibility` automatically skip `<Kind>` until Step 2 (`judgement/SKILL.md`).
    - In Step 1 (`--prepopulate-resource`), running `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` may legitimately record untriaged items in `alpha-missingfields.txt`, `refs_not_representable.txt`, `spec_dislike_etag.txt`, `sensitive.txt`, `comments.txt`, and `recursivetypes.txt` (revert any spurious `tests/apichecks/testdata/exceptions/multi_version_crd_diff/` formatting churn).
-   - If `recursivetypes.txt` or `envtest` (`pkg/cli/preview`) flags a recursive proto message cycle where `controller-gen` emits an empty `{}` object schema, add `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` (or `+kubebuilder:validation:items:XPreserveUnknownFields` for slice fields), and `+kubebuilder:validation:Type=object` on the cycle-edge field in `apis/<service_short>/v1alpha1/<kind>_types.go` and re-run `./dev/tasks/generate-crds`.
+   - If `recursivetypes.txt` or `envtest` (`pkg/cli/preview`) flags a recursive proto message cycle where `controller-gen` emits an empty `{}` object schema, add `+kubebuilder:validation:Schemaless`, `+kubebuilder:validation:XPreserveUnknownFields` (or `+kubebuilder:validation:items:XPreserveUnknownFields` for slice fields), and `+kubebuilder:validation:Type=object` on the cycle-edge field in `apis/<service_short>/v1alpha1/<kind>_types.go` and re-run `./dev/tasks/generate-crds`. This is the **only** hand edit to `<kind>_types.go` allowed in Step 1; call it out in the PR description.
    - If `TestCRDObjectTypes` fails with `field ... is an object with no properties` on a genuine parameterless proto `oneof` variant struct (e.g., `message LlmAgent {}`), add the CRD plural to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with the comment `// GCP known pattern: Empty oneof option (<field path>)`.
    - **Never** modify `tests/apichecks/testdata/exceptions/missingrefs.txt`, `naming_violations.txt`, or `tests/apichecks/testdata/exceptions/multi_version_crd_diff/`.
+3. Run `scripts/validate-prereqs.sh`. It runs fmt/generate/manifests and fails on any unstaged diff (its output includes hints for fixing errors); commit again if it changes files.

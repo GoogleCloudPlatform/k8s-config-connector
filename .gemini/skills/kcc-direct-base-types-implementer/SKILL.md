@@ -17,7 +17,7 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
   // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
   ```
-  *(Note: See greenfield/brownfield skills for the correct `stability-level` label to append.)*
+  *(Note: See greenfield/brownfield skills for the correct `stability-level` label to append. Greenfield resources prepopulated with `--prepopulate-resource` do not require a `cnrm.cloud.google.com/stability-level` label; the generator does not emit one.)*
 - **Status Fields**: `status.observedGeneration` must be exactly `*int64`.
 - **Reference Fields**: Ensure that fields referencing other GCP/KCC resources are implemented as proper KCC reference fields (e.g., using `pubsubv1beta1.PubSubTopicRef` or `refsv1beta1.ProjectRef`), following the `Ref` suffix naming convention. You **MUST NOT** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt`. All reference-like fields must be implemented as proper references.
   * Standard references include:
@@ -26,6 +26,7 @@ After running the generator (via `generate.sh`), you must verify and enforce the
     * Service Directory configurations should be references to `ServiceDirectoryService`.
 - **Implement a New Reference Types**:
 
+  * Before adding any new `<newkind>Ref`, search all of `apis/` for an existing one (`git grep -n "type <NewKind>Ref struct" -- apis/`); it often lives in another group or version package. Reuse it if found and never create a second ref type for the same kind.
   * When a field is a reference to another resource, and that reference resource does not have full KCC support yet, we should support it as external-only reference.
   The `<newkind>Ref` must **always** be defined and implemented in its own separate file named `<newkind>_reference.go` (e.g., `networksecurityinterceptdeploymentgroup_reference.go`) under `apis/<service>/v1alpha1`(e.g., `apis/networksecurity/v1alpha1/`) directory. This keeps the main type definitions clean and isolated from reference resolution boilerplate.
   Example external-only reference:

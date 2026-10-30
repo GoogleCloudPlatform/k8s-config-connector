@@ -49,22 +49,25 @@ Do not blindly trust `resolution: not-applicable` or `resolution: accepted` in `
 
 Compare `<kind>_types.go`, `<kind>_identity.generated.go` (or `<kind>_identity.go`), and `<kind>_reference.generated.go` (or `<kind>_reference.go`) against the resource's `option (google.api.resource)` block and `Create<Resource>Request` in the proto:
 
-*   **Parent Hierarchy (`go/kcc-oneparent` — `location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`)**:
+*   **Parent Hierarchy (`go/kcc-oneparent` single-parent rule — `location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-ref-not-supported`)**:
+    *   **Top-level resources** (the parent pattern is `projects/{project}`, `folders/{folder}` or `organizations/{organization}`, optionally plus `locations/{location}`) keep the root reference plus `location`.
     *   **Regional project-parented resources (`projects/{project}/locations/{location}/<collection>/{<id>}`)**: Verify `location-or-parent-ref` is resolved by embedding `*parent.ProjectAndLocationRef `json:",inline"`` (from `apis/common/parent`) in `<Kind>Spec` instead of separate `ProjectRef` and `Location` fields. *(Note: `parent.ProjectAndLocationRef`'s `Location string` field is canonical and must NOT be flagged as a non-pointer primitive violation.)*
-    *   **Child resources of another GCP resource (`projects/{project}/locations/{location}/<parents>/{parent}/<collection>/{<id>}`)**: Verify `<Kind>Spec` replaces `ProjectRef` and `Location` with a typed parent reference (`<Parent>Ref *<ParentKind>Ref` or `parent.Reference`), **not** flat `ProjectRef` + `Location` fields.
+    *   **Child resources of another GCP resource (`projects/{project}/locations/{location}/<parents>/{parent}/<collection>/{<id>}`)**: Verify `<Kind>Spec` has exactly one hierarchy field, `ParentRef *<ParentKind>Ref` with `json:"parentRef"`, marked `// +required` and carrying the `self == oldSelf` CEL immutability rule. Reject any `projectRef`, `folderRef`, `organizationRef`, `location`, `region`, `zone`, or grandparent reference in the spec, `json:",inline"` on `parentRef`, or any other `parent<Something>Ref` field. The identity must take project, location, and ancestor IDs only from the resolved `spec.parentRef` (no `refs.ResolveProjectID`, `refs.GetLocation`, or annotations).
+    *   **The `parentRef` name is intentional** (single-parent design; `TestCRDsHaveParentRefs` is skipped on master for greenfield parent refs). Do not ask to rename it after the parent kind. Fail the PR if it adds lines to `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt` or changes `TestCRDsHaveParentRefs`.
     *   **Global / non-locational resources (`location-parent-unknown`)**: If the proto resource pattern has no `{location}` segment, verify `Location` was removed from `<Kind>Spec`.
 *   **Prefer `controllerbuilder generate-identity`**:
     *   Verify `apis/<service>/generate.sh` runs `controllerbuilder generate-identity` so `<kind>_identity.generated.go`, `<kind>_reference.generated.go`, and `<kind>_identity_generated_test.go` (`identity.AssertConformance`) are generated directly from `<Kind>Spec` and the proto descriptor.
     *   Handwritten `<kind>_identity.go` / `<kind>_reference.go` should only be used when a custom URL pattern cannot be represented by `controllerbuilder generate-identity`.
 *   **Singleton & Multi-Pattern Resources (`identity-root-unknown`, `identity-multi-pattern`, `parent-multiple-patterns`)**:
     *   If the proto resource pattern ends in a literal segment without a `{variable}` placeholder (e.g., `projects/{project}/locations/{location}/config`), verify `<Kind>IdentityFormat` uses the exact literal suffix without inventing a trailing `{config}` variable.
-    *   If the resource supports multiple root parents (`projects/{project}/...`, `folders/{folder}/...`, `organizations/{organization}/...`), verify `<Kind>Spec` includes optional `ProjectRef`, `FolderRef`, and/or `OrganizationRef` fields matching the supported patterns and that `<kind>_identity*.go` supports all root formats.
+    *   If a **top-level** resource supports multiple root parents (`projects/{project}/...`, `folders/{folder}/...`, `organizations/{organization}/...`), verify `<Kind>Spec` includes optional `ProjectRef`, `FolderRef`, and/or `OrganizationRef` fields matching the supported patterns and that `<kind>_identity*.go` supports all root formats.
 *   **Server-Generated ID vs. Client-Specified ID (`identity-server-generated-id`)**:
     *   Emitted when `Create<Resource>Request` has no `*_id` parameter or when the resource `.name` field is marked `OUTPUT_ONLY` in the proto. Inspect `Create<Resource>Request` (or equivalent creation RPC request such as `Insert<Resource>Request`) in the service proto:
         *   If `Create<Resource>Request` has **no** `<resource>_id` field and the server assigns the ID on creation, `<Kind>Identity` must implement `identity.ServerGeneratedIdentity`.
         *   If `Create<Resource>Request` has a `<resource>_id` field (even if `.name` is marked `OUTPUT_ONLY` in the proto) or allows setting the ID via `name`, `<Kind>Identity` must implement `identity.IdentityV2`.
 *   **Reference File Conventions**:
     *   Every new `<TargetKind>Ref` must be defined in its own `apis/<target_service>/v1alpha1/<targetkind>_reference*.go` file (with a matching `<targetkind>_identity*.go`), **never** inside `_types.go` and **never** under the deprecated `apis/refs/v1beta1/` directory.
+    *   No new ref type may duplicate one that already exists elsewhere in `apis/` (check with `git grep -n "type <TargetKind>Ref struct" -- apis/`); the generator only searches `<Kind>`'s own package, so a `parent-ref-not-modelled` or reference entry does not prove the type is missing.
     *   Greenfield reference types for resources that have a full KCC CRD must delegate `Normalize` strictly to `refs.Normalize` (never `refs.NormalizeWithFallback`). External-only reference types (for target resources without a KCC CRD yet) must validate `r.External` via `ValidateExternal`.
 
 ---
@@ -114,6 +117,7 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
         *   `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` (if required for alpha fields)
         *   `pkg/gcpurls/registry_test.go` (if needed for verified resource URL templates absent from `cloudassetinventory_names.jsonl` when `TestRegisteredTemplatesMatchCAI` runs)
         *   `testdata/exceptions/naming_violations.txt` (when introducing external-only `<targetkind>_identity.go` / `<targetkind>_reference.go` files for unmodelled referenced resources)
+    *   `missingrefs.txt` and `crds_have_parent_refs.txt` must be untouched.
 
 ---
 
@@ -126,7 +130,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **Trigger criteria matched**: [Yes/No]
 * **Judgement Queue Completeness**: [Pass/Fail] - (Confirm `untriaged-bulk-generation` and all actionable entries for `<Kind>` are `resolved`, no entries were deleted, and no `+kcc:guess` comments remain in handwritten files)
 * **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` or top-level `labels` left in Spec, or doc comments stripped to evade `TestMissingRefs`)
-* **Parent, Identity & References**: [Pass/Fail] - (Verify `*parent.ProjectAndLocationRef` / `<Parent>Ref` per `go/kcc-oneparent`, `generate-identity` usage, singleton/multi-pattern template accuracy, `ServerGeneratedIdentity` vs `IdentityV2`, and `refs.Normalize`)
+* **Parent, Identity & References**: [Pass/Fail] - (Verify top-level: root ref + location / `*parent.ProjectAndLocationRef`; child: single required, immutable `spec.parentRef` per `go/kcc-oneparent`; `generate-identity` usage, singleton/multi-pattern template accuracy, `ServerGeneratedIdentity` vs `IdentityV2`, and `refs.Normalize`)
 * **Unflagged Proto-vs-KRM Audit & Struct Isolation**: [Pass/Fail] - (List any subtle unflagged references, missing `+kcc:proto=` on handwritten nested structs, shared structs mutated in-place instead of forked, non-pointer primitives, or empty `ObservedState`)
 * **Generated Files, Pre-Existing Controller/Fuzzer Sync, & `BLOCKED_KINDS`**: [Pass/Fail] - (Confirm CRD/mapper/deepcopy are in sync, any pre-existing controller and fuzzer for `<Kind>` were regenerated/updated to compile and pass `TestFocusedMappers`, `<Kind>` is in `BLOCKED_KINDS`, and `missingrefs.txt` was not modified)
 
