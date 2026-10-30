@@ -49,7 +49,7 @@ Use this legacy guide **only** when iterating on an in-flight PR that already ha
     - Prefer `f.SpecField(".foo")`, `f.StatusField(".bar")`, and `f.Unimplemented_NotYetTriaged(".baz")` / `f.Unimplemented_Identity(".name")` / `f.Unimplemented_Etag()`.
 
 5.  **Create Minimal & Maximal Fixtures**:
-    Create `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/` and `<resource_lower>-maximal/` with `create.yaml`, `update.yaml` (if mutable), and `dependencies.yaml`.
+    Create `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/` and `<resource_lower>-maximal/` with `create.yaml`, `update.yaml` (only if the resource supports updates and the fixture contains mutable `.spec` fields; **omit `update.yaml` completely** for immutable resources, and never create a dummy `update.yaml` that only modifies `metadata.labels`), and `dependencies.yaml`.
 
 6.  **Remove from Ratcheting Exclusions (MANDATORY)**:
     Remove the target resource's `GroupKind` from `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.

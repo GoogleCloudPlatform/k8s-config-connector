@@ -23,7 +23,7 @@ Each fixture directory (e.g., `.../storage/v1beta1/storagebucket/`) directly cor
 Each test directory contains:
 
 - `create.yaml` (Required): Initial Kubernetes manifest for the primary resource.
-- `update.yaml` (Optional): Modified manifest to test resource updates.
+- `update.yaml` (Optional): Modified manifest to test resource updates. Omit `update.yaml` when the resource is immutable (has no Update API or no mutable `.spec` fields).
 - `dependencies.yaml` (Optional): Additional Kubernetes resources that must exist before the primary resource.
 - `_http.log`: Golden file containing the recorded HTTP/gRPC traffic between Config Connector and GCP APIs. This can be recorded from real GCP (standard) or MockGCP (for mock-only resources or when freezing mock behavior).
 - `_generated_object_<test-name>.golden.yaml`: Golden file containing the final state of the Kubernetes object.

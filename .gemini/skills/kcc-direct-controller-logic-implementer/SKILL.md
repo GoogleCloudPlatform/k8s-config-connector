@@ -23,12 +23,13 @@ This skill guides the implementation of the `Adapter` interface and the creation
 2.  **Create Minimal Fixture**:
     Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/`.
     - Add `create.yaml`: Use the bare minimum **Required** fields.
+    - Add `update.yaml` only if the minimal fixture includes mutable `.spec` fields (omit `update.yaml` if the resource has no `Update` RPC or no mutable fields in `create.yaml`).
     - Use `${uniqueId}` for resource names.
 
 3.  **Create Maximal Fixture**:
     Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-maximal/`.
     - Add `create.yaml`: Include **every supported field** in the Spec.
-    - Add `update.yaml`: Update all **mutable** fields.
+    - Add `update.yaml`: Update all **mutable** `.spec` fields. If the resource is immutable (has no `Update` RPC or no mutable `.spec` fields), **omit `update.yaml` completely**—never create a dummy `update.yaml` that only modifies `metadata.labels` or `metadata.annotations`.
     - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
 
 3.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
