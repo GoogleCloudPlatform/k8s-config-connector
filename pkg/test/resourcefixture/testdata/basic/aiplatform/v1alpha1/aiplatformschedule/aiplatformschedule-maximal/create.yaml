@@ -35,9 +35,13 @@ spec:
         external: ${projectId}
       location: us-central1
       displayName: "Hello World Pipeline Job inside Schedule"
+      preflightValidations: false
+      labels:
+        environment: test
       runtimeConfig:
         gcsOutputDirectoryRef:
           name: vertexai-schedmax-bucket-${uniqueId}
+        failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
       pipelineSpec:
         pipelineInfo:
           name: "hello-world-pipeline"

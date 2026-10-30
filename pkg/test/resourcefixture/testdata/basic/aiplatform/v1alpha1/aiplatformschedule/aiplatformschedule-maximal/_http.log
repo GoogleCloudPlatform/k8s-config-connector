@@ -7,6 +7,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e703a2b
 
 {
   "error": {
@@ -55,6 +56,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e703c6a
 
 {
   "etag": "abcdef0123A=",
@@ -100,6 +102,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e703ca1
 
 {
   "etag": "abcdef0123A=",
@@ -146,6 +149,9 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
       "parent": "projects/${projectId}/locations/us-central1",
       "pipelineJob": {
         "displayName": "Hello World Pipeline Job inside Schedule",
+        "labels": {
+          "environment": "test"
+        },
         "pipelineSpec": {
           "components": {
             "hello-world-component": {
@@ -189,6 +195,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
           "schemaVersion": "2.1.0"
         },
         "runtimeConfig": {
+          "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
           "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
         }
       }
@@ -209,6 +216,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -252,6 +262,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -284,6 +295,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -327,6 +341,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -355,6 +370,9 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
       "parent": "projects/${projectNumber}/locations/us-central1",
       "pipelineJob": {
         "displayName": "Hello World Pipeline Job inside Schedule",
+        "labels": {
+          "environment": "test"
+        },
         "pipelineSpec": {
           "components": {
             "hello-world-component": {
@@ -398,6 +416,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
           "schemaVersion": "2.1.0"
         },
         "runtimeConfig": {
+          "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
           "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
         }
       }
@@ -421,6 +440,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -464,6 +486,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -497,6 +520,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -540,6 +566,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -573,6 +600,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -616,6 +646,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -649,6 +680,9 @@ OK
     "parent": "projects/${projectId}/locations/us-central1",
     "pipelineJob": {
       "displayName": "Hello World Pipeline Job inside Schedule",
+      "labels": {
+        "environment": "test"
+      },
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -692,6 +726,7 @@ OK
         "schemaVersion": "2.1.0"
       },
       "runtimeConfig": {
+        "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
         "gcsOutputDirectory": "gs://vertexai-schedmax-bucket-${uniqueId}"
       }
     }
@@ -744,6 +779,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e705652
 
 {
   "etag": "abcdef0123A=",
@@ -789,6 +825,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e70567c
 
 {
   "kind": "storage#objects"
@@ -805,3 +842,4 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a18e7057c6

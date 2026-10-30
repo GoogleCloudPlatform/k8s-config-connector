@@ -8,6 +8,8 @@ spec:
     parent: projects/${projectId}/locations/us-central1
     pipelineJob:
       displayName: Hello World Pipeline Job inside Schedule
+      labels:
+        environment: test
       location: ""
       pipelineSpec:
         components:
@@ -37,6 +39,7 @@ spec:
         schemaVersion: 2.1.0
       projectRef: null
       runtimeConfig:
+        failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
         gcsOutputDirectory: gs://vertexai-schedmax-bucket-${uniqueId}
         gcsOutputDirectoryRef:
           external: gs://vertexai-schedmax-bucket-${uniqueId}
