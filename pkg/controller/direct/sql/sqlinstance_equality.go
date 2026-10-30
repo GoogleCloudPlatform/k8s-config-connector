@@ -597,12 +597,35 @@ func DiffPscConfig(desired *api.PscConfig, actual *api.PscConfig) *structuredrep
 	if !slicesMatch(desired.AllowedConsumerProjects, actual.AllowedConsumerProjects) {
 		diff.AddField(".settings.ipConfiguration.pscConfig.allowedConsumerProjects", actual.AllowedConsumerProjects, desired.AllowedConsumerProjects)
 	}
+	if !pscAutoConnectionsMatch(desired.PscAutoConnections, actual.PscAutoConnections) {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoConnections", actual.PscAutoConnections, desired.PscAutoConnections)
+	}
 	if desired.PscEnabled != actual.PscEnabled {
 		diff.AddField(".settings.ipConfiguration.pscConfig.pscEnabled", actual.PscEnabled, desired.PscEnabled)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return diff
+}
+
+func pscAutoConnectionsMatch(desired []*api.PscAutoConnectionConfig, actual []*api.PscAutoConnectionConfig) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	for i := range desired {
+		d := desired[i]
+		a := actual[i]
+		if d == nil && a == nil {
+			continue
+		}
+		if d == nil || a == nil {
+			return false
+		}
+		if d.ConsumerNetwork != a.ConsumerNetwork || d.ConsumerProject != a.ConsumerProject {
+			return false
+		}
+	}
+	return true
 }
 
 func DiffLocationPreference(desired *api.LocationPreference, actual *api.LocationPreference) *structuredreporting.Diff {

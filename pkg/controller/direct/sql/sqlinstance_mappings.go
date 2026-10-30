@@ -474,6 +474,7 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 
 	out := &api.PscConfig{
 		AllowedConsumerProjects: inFixed.AllowedConsumerProjects,
+		PscAutoConnections:      InstancePscAutoConnectionsKRMToGCP(inFixed.PscAutoConnections),
 		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
 	}
 
@@ -481,6 +482,24 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
 	}
 
+	return out
+}
+
+func InstancePscAutoConnectionsKRMToGCP(in []krm.InstancePscAutoConnectionConfig) []*api.PscAutoConnectionConfig {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]*api.PscAutoConnectionConfig, 0, len(in))
+	for _, item := range in {
+		conn := &api.PscAutoConnectionConfig{}
+		if item.ConsumerNetworkRef != nil {
+			conn.ConsumerNetwork = item.ConsumerNetworkRef.External
+		}
+		if item.ConsumerProjectRef != nil {
+			conn.ConsumerProject = item.ConsumerProjectRef.External
+		}
+		out = append(out, conn)
+	}
 	return out
 }
 
@@ -1004,10 +1023,36 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 	out := []krm.InstancePscConfig{
 		{
 			AllowedConsumerProjects: in.AllowedConsumerProjects,
+			PscAutoConnections:      InstancePscAutoConnectionsGCPToKRM(in.PscAutoConnections),
 			PscEnabled:              direct.PtrTo(in.PscEnabled),
 		},
 	}
 
+	return out
+}
+
+func InstancePscAutoConnectionsGCPToKRM(in []*api.PscAutoConnectionConfig) []krm.InstancePscAutoConnectionConfig {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]krm.InstancePscAutoConnectionConfig, 0, len(in))
+	for _, item := range in {
+		if item == nil {
+			continue
+		}
+		var conn krm.InstancePscAutoConnectionConfig
+		if item.ConsumerNetwork != "" {
+			conn.ConsumerNetworkRef = &computerefs.ComputeNetworkRef{
+				External: item.ConsumerNetwork,
+			}
+		}
+		if item.ConsumerProject != "" {
+			conn.ConsumerProjectRef = &refs.ProjectRef{
+				External: item.ConsumerProject,
+			}
+		}
+		out = append(out, conn)
+	}
 	return out
 }
 
