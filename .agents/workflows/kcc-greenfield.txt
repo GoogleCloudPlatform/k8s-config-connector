@@ -185,11 +185,7 @@ Check whether `{kind}` has already been prepopulated on `master` (i.e., `apis/<s
 *   If `{kind}` is **already** prepopulated in `apis/<service>/judgement_queue.yaml` on `master`, mark **Step 1a** as `Completed (Bulk Prepopulated)` in the progress table and proceed immediately to **Step 1b**.
 *   If `{kind}` is **not** yet on `master`, open a GitHub issue to prepopulate the initial KRM types, identity, and `judgement_queue.yaml` for `{kind}` using `--prepopulate-resource`.
 
-**How to check.** If the parent workflow issue body has a line starting with `Prepopulated:`, trust it: Step 1a is done, so mark it `Completed (Bulk Prepopulated)` and go straight to Step 1b. **Don't open a Step 1a issue.** Otherwise check `master` without a checkout: list candidate queue files, then confirm an exact `  - kind: {kind}` line in one of them:
-```bash
-gh search code "kind: {kind}" --repo GoogleCloudPlatform/k8s-config-connector --filename judgement_queue.yaml --json path --jq '.[].path'
-gh api "repos/GoogleCloudPlatform/k8s-config-connector/contents/<path>" -H "Accept: application/vnd.github.raw" | grep -qx "  - kind: {kind}" && echo prepopulated
-```
+**How to check.** If the parent workflow issue body has a line starting with `Prepopulated:`, trust it: Step 1a is done, so mark it `Completed (Bulk Prepopulated)` and go straight to Step 1b. **Don't open a Step 1a issue.** Otherwise check the local code base: `grep -n "kind: {kind}$" apis/*/judgement_queue.yaml`. A match means `{kind}` is already prepopulated.
 
 **GitHub Issue Details for Step 1a (Prepopulate):**
 *   **Title:** `Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {kind}`
@@ -197,7 +193,7 @@ gh api "repos/GoogleCloudPlatform/k8s-config-connector/contents/<path>" -H "Acce
 *   **Labels:** `overseer`, `greenfield`, `step/gen-types`, `overseer/review`
 *   **Body:**
     ````
-    **First, check that {kind} isn't already prepopulated on `master`**: `git fetch origin master && git grep -n "kind: {kind}$" origin/master -- 'apis/*/judgement_queue.yaml'`. If that finds it, don't change anything: make no commit, and say that {kind} is already prepopulated (naming the file). A maintainer will close this issue.
+    **First, check that {kind} isn't already prepopulated**: your checkout is already the latest `master`, so search it: `grep -n "kind: {kind}$" apis/*/judgement_queue.yaml`. If that finds it, don't change anything: make no commit, and say that {kind} is already prepopulated (naming the file). A maintainer will close this issue.
 
     Otherwise:
 
@@ -229,7 +225,7 @@ Once `{kind}` is prepopulated on `master` (either from bulk prepopulation or aft
 *   **Labels:** `overseer`, `greenfield`, `step/types-judgement`, `overseer/review`
 *   **Body:**
     ````
-    **First, check that this step applies**: if `apis/<service>/v1alpha1/{kind_lowercase}_types.go` exists on `master` but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for {kind}, it was finalized by a legacy Step 1 PR. Then don't change anything: make no commit, and say so (naming the types file). A maintainer will close this issue.
+    **First, check that this step applies**: if `apis/<service>/v1alpha1/{kind_lowercase}_types.go` exists in your checkout but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for {kind}, it was finalized by a legacy Step 1 PR. Then don't change anything: make no commit, and say so (naming the types file). A maintainer will close this issue.
 
     Otherwise:
 
