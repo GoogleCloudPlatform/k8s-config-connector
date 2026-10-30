@@ -66,10 +66,8 @@ func (i *AIPlatformScheduleIdentity) ParentString() string {
 }
 
 func getIdentityFromAIPlatformScheduleSpec(ctx context.Context, reader client.Reader, obj *AIPlatformSchedule) (*AIPlatformScheduleIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// AIPlatformSchedule only supports service-generated IDs.
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -109,13 +107,21 @@ func (obj *AIPlatformSchedule) GetIdentity(ctx context.Context, reader client.Re
 					return false
 				}
 			}
-			return true
+			return len(s) > 0
 		}
 
 		projectMatch := statusIdentity.Project == specIdentity.Project || isNumeric(statusIdentity.Project)
-		if !projectMatch || statusIdentity.Location != specIdentity.Location {
-			return nil, fmt.Errorf("cannot change AIPlatformSchedule identity (old project/location=%s/%s, new project/location=%s/%s)",
-				statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+		if specIdentity.Schedule == "" {
+			if !projectMatch || statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change AIPlatformSchedule parent (old project/location=%s/%s, new project/location=%s/%s)",
+					statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+			}
+			return statusIdentity, nil
+		}
+
+		if statusIdentity.Schedule != specIdentity.Schedule || !projectMatch || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change AIPlatformSchedule identity (old=%q, new=%q)",
+				statusIdentity.String(), specIdentity.String())
 		}
 		return statusIdentity, nil
 	}
