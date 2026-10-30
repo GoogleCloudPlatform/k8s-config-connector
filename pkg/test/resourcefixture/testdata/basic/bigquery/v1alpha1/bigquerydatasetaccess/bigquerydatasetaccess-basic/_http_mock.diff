@@ -56,12 +56,22 @@
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 153d204
 <       "datasetId": "bigquerydataset${uniqueId}",
-230,231c281
+173c224,225
+<   ]
+---
+>   ],
+>   "etag": "abcdef0123A="
+230,231c282
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-287c337
+287c338
 < PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+308c359,360
+<   ]
+---
+>   ],
+>   "etag": "abcdef0123A="

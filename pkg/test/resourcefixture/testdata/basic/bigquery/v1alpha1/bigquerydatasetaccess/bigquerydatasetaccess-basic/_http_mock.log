@@ -221,7 +221,8 @@ Content-Type: application/json
       "role": "WRITER",
       "specialGroup": "projectWriters"
     }
-  ]
+  ],
+  "etag": "abcdef0123A="
 }
 
 200 OK
@@ -355,7 +356,8 @@ Content-Type: application/json
       "role": "WRITER",
       "specialGroup": "projectWriters"
     }
-  ]
+  ],
+  "etag": "abcdef0123A="
 }
 
 200 OK

@@ -17,8 +17,10 @@ package bigquery
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"reflect"
 	"strings"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
@@ -33,6 +35,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/client-go/util/retry"
 	"k8s.io/klog/v2"
 )
 
@@ -110,102 +114,6 @@ type datasetAccessAdapter struct {
 
 var _ directbase.Adapter = &datasetAccessAdapter{}
 
-func canonicalRole(r string) string {
-	switch r {
-	case "roles/bigquery.dataOwner":
-		return "OWNER"
-	case "roles/bigquery.dataEditor":
-		return "WRITER"
-	case "roles/bigquery.dataViewer":
-		return "READER"
-	default:
-		return r
-	}
-}
-
-func matchesAccessEntry(entry *api.DatasetAccess, desired *api.DatasetAccess, desiredIamMember string) (bool, bool) {
-	if entry == nil || desired == nil {
-		return false, false
-	}
-
-	// 1. View
-	if desired.View != nil {
-		if entry.View == nil {
-			return false, false
-		}
-		if entry.View.ProjectId == desired.View.ProjectId &&
-			entry.View.DatasetId == desired.View.DatasetId &&
-			entry.View.TableId == desired.View.TableId {
-			return true, false
-		}
-		return false, false
-	}
-
-	// 2. Dataset
-	if desired.Dataset != nil {
-		if entry.Dataset == nil || entry.Dataset.Dataset == nil || desired.Dataset.Dataset == nil {
-			return false, false
-		}
-		if entry.Dataset.Dataset.ProjectId == desired.Dataset.Dataset.ProjectId &&
-			entry.Dataset.Dataset.DatasetId == desired.Dataset.Dataset.DatasetId &&
-			reflect.DeepEqual(entry.Dataset.TargetTypes, desired.Dataset.TargetTypes) {
-			return true, false
-		}
-		return false, false
-	}
-
-	// 3. For all other access entries, the role must match.
-	if canonicalRole(entry.Role) != canonicalRole(desired.Role) {
-		return false, false
-	}
-
-	if desired.Domain != "" {
-		if strings.EqualFold(entry.Domain, desired.Domain) {
-			return true, false
-		}
-	}
-	if desired.GroupByEmail != "" {
-		if strings.EqualFold(entry.GroupByEmail, desired.GroupByEmail) {
-			return true, false
-		}
-	}
-	if desired.UserByEmail != "" {
-		if strings.EqualFold(entry.UserByEmail, desired.UserByEmail) {
-			return true, false
-		}
-	}
-	if desired.SpecialGroup != "" {
-		if entry.SpecialGroup == desired.SpecialGroup {
-			return true, false
-		}
-	}
-
-	if desiredIamMember != "" {
-		if entry.IamMember != "" && strings.EqualFold(entry.IamMember, desiredIamMember) {
-			return true, false
-		}
-		parts := strings.SplitN(desiredIamMember, ":", 2)
-		memberValue := desiredIamMember
-		if len(parts) == 2 {
-			memberValue = parts[1]
-		}
-		if entry.UserByEmail != "" && strings.EqualFold(entry.UserByEmail, memberValue) {
-			return true, true
-		}
-		if entry.GroupByEmail != "" && strings.EqualFold(entry.GroupByEmail, memberValue) {
-			return true, true
-		}
-		if entry.Domain != "" && strings.EqualFold(entry.Domain, memberValue) {
-			return true, true
-		}
-		if entry.SpecialGroup != "" && strings.EqualFold(entry.SpecialGroup, memberValue) {
-			return true, true
-		}
-	}
-
-	return false, false
-}
-
 func (a *datasetAccessAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigQueryDatasetAccess", "id", a.id.String())
@@ -236,14 +144,137 @@ func (a *datasetAccessAdapter) Find(ctx context.Context) (bool, error) {
 	return false, nil
 }
 
+func matchesAccessEntry(entry *api.DatasetAccess, desired *api.DatasetAccess, desiredIamMember string) (bool, bool) {
+	if entry == nil || desired == nil {
+		return false, false
+	}
+
+	// 1. View
+	if desired.View != nil {
+		if entry.View == nil {
+			return false, false
+		}
+		if entry.View.ProjectId == desired.View.ProjectId &&
+			entry.View.DatasetId == desired.View.DatasetId &&
+			entry.View.TableId == desired.View.TableId {
+			return true, false
+		}
+		return false, false
+	}
+
+	// 2. Routine
+	if desired.Routine != nil {
+		if entry.Routine == nil {
+			return false, false
+		}
+		if entry.Routine.ProjectId == desired.Routine.ProjectId &&
+			entry.Routine.DatasetId == desired.Routine.DatasetId &&
+			entry.Routine.RoutineId == desired.Routine.RoutineId {
+			return true, false
+		}
+		return false, false
+	}
+
+	// 3. Dataset
+	if desired.Dataset != nil {
+		if entry.Dataset == nil || entry.Dataset.Dataset == nil || desired.Dataset.Dataset == nil {
+			return false, false
+		}
+		if entry.Dataset.Dataset.ProjectId == desired.Dataset.Dataset.ProjectId &&
+			entry.Dataset.Dataset.DatasetId == desired.Dataset.Dataset.DatasetId &&
+			reflect.DeepEqual(entry.Dataset.TargetTypes, desired.Dataset.TargetTypes) {
+			return true, false
+		}
+		return false, false
+	}
+
+	// 4. For all other access entries, the role must match.
+	if canonicalRole(entry.Role) != canonicalRole(desired.Role) {
+		return false, false
+	}
+
+	if desired.Domain != "" {
+		if strings.EqualFold(entry.Domain, desired.Domain) {
+			return true, false
+		}
+	}
+	if desired.GroupByEmail != "" {
+		if strings.EqualFold(entry.GroupByEmail, desired.GroupByEmail) {
+			return true, false
+		}
+	}
+	if desired.UserByEmail != "" {
+		if strings.EqualFold(entry.UserByEmail, desired.UserByEmail) {
+			return true, false
+		}
+	}
+	if desired.SpecialGroup != "" {
+		if entry.SpecialGroup == desired.SpecialGroup {
+			return true, false
+		}
+	}
+
+	if desiredIamMember != "" {
+		if entry.IamMember != "" {
+			if strings.EqualFold(entry.IamMember, desiredIamMember) ||
+				strings.EqualFold(stripTombstone(entry.IamMember), stripTombstone(desiredIamMember)) {
+				return true, false
+			}
+		}
+		memberValue := extractMemberValue(desiredIamMember)
+		if memberValue != "" {
+			if entry.UserByEmail != "" && strings.EqualFold(entry.UserByEmail, memberValue) {
+				return true, true
+			}
+			if entry.GroupByEmail != "" && strings.EqualFold(entry.GroupByEmail, memberValue) {
+				return true, true
+			}
+			if entry.Domain != "" && strings.EqualFold(entry.Domain, memberValue) {
+				return true, true
+			}
+			if entry.SpecialGroup != "" && strings.EqualFold(entry.SpecialGroup, memberValue) {
+				return true, true
+			}
+		}
+	}
+
+	return false, false
+}
+
+func canonicalRole(r string) string {
+	switch r {
+	case "roles/bigquery.dataOwner":
+		return "OWNER"
+	case "roles/bigquery.dataEditor":
+		return "WRITER"
+	case "roles/bigquery.dataViewer":
+		return "READER"
+	default:
+		return r
+	}
+}
+
+func stripTombstone(member string) string {
+	if strings.HasPrefix(strings.ToLower(member), "deleted:") {
+		member = member[len("deleted:"):]
+	}
+	if i := strings.Index(member, "?"); i != -1 {
+		member = member[:i]
+	}
+	return member
+}
+
+func extractMemberValue(iamMember string) string {
+	s := stripTombstone(iamMember)
+	if idx := strings.Index(s, ":"); idx != -1 {
+		s = s[idx+1:]
+	}
+	return s
+}
+
 func (a *datasetAccessAdapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BigQueryDatasetAccess", "id", a.id.String())
-
-	dataset, err := a.datasetsService.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("getting dataset %s/%s for access creation: %w", a.id.Project, a.id.Dataset, err)
-	}
 
 	mapCtx := &direct.MapContext{}
 	desiredAccess := BigQueryDatasetAccessSpec_ToAPI(mapCtx, &a.desired.Spec)
@@ -252,36 +283,66 @@ func (a *datasetAccessAdapter) Create(ctx context.Context, op *directbase.Create
 	}
 	desiredIamMember := direct.ValueOf(a.desired.Spec.IamMember)
 
-	for _, entry := range dataset.Access {
-		if matched, apiUpdated := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
-			a.actual = entry
-			a.apiUpdatedMember = apiUpdated
-			return a.updateStatus(ctx, op)
+	backoff := wait.Backoff{
+		Steps:    5,
+		Duration: 100 * time.Millisecond,
+		Factor:   2.0,
+		Jitter:   0.1,
+	}
+
+	err := retry.OnError(backoff, isConflictOrPreconditionFailed, func() error {
+		dataset, err := a.datasetsService.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting dataset %s/%s for access creation: %w", a.id.Project, a.id.Dataset, err)
 		}
-	}
 
-	newAccess := append(dataset.Access, desiredAccess)
-	patchReq := &api.Dataset{
-		Access: newAccess,
-	}
+		for _, entry := range dataset.Access {
+			if matched, apiUpdated := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
+				a.actual = entry
+				a.apiUpdatedMember = apiUpdated
+				return nil
+			}
+		}
 
-	patchedDataset, err := a.datasetsService.Patch(a.id.Project, a.id.Dataset, patchReq).Context(ctx).Do()
+		newAccess := append(dataset.Access, desiredAccess)
+		patchReq := &api.Dataset{
+			Access: newAccess,
+			Etag:   dataset.Etag,
+		}
+
+		patchedDataset, err := a.datasetsService.Patch(a.id.Project, a.id.Dataset, patchReq).Context(ctx).Do()
+		if err != nil {
+			return err
+		}
+
+		for _, entry := range patchedDataset.Access {
+			if matched, apiUpdated := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
+				a.actual = entry
+				a.apiUpdatedMember = apiUpdated
+				break
+			}
+		}
+		if a.actual == nil {
+			a.actual = desiredAccess
+		}
+		return nil
+	})
 	if err != nil {
-		return fmt.Errorf("patching dataset %s/%s with new access entry: %w", a.id.Project, a.id.Dataset, err)
-	}
-
-	for _, entry := range patchedDataset.Access {
-		if matched, apiUpdated := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
-			a.actual = entry
-			a.apiUpdatedMember = apiUpdated
-			break
-		}
-	}
-	if a.actual == nil {
-		a.actual = desiredAccess
+		return fmt.Errorf("creating BigQueryDatasetAccess: %w", err)
 	}
 
 	return a.updateStatus(ctx, op)
+}
+
+func isConflictOrPreconditionFailed(err error) bool {
+	if err == nil {
+		return false
+	}
+	if direct.HasHTTPCode(err, http.StatusPreconditionFailed) || direct.HasHTTPCode(err, http.StatusConflict) {
+		return true
+	}
+	msg := strings.ToLower(err.Error())
+	return strings.Contains(msg, "precondition") || strings.Contains(msg, "conflict")
 }
 
 func (a *datasetAccessAdapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
@@ -297,24 +358,134 @@ func (a *datasetAccessAdapter) Update(ctx context.Context, op *directbase.Update
 
 	matched, apiUpdated := matchesAccessEntry(a.actual, desiredAccess, desiredIamMember)
 	if !matched {
-		return fmt.Errorf("BigQueryDatasetAccess is immutable and cannot be updated")
+		diff := describeAccessDiff(a.actual, desiredAccess, desiredIamMember)
+		return fmt.Errorf("BigQueryDatasetAccess is immutable and cannot be updated: %s", diff)
 	}
 	a.apiUpdatedMember = apiUpdated
 
 	return a.updateStatus(ctx, op)
 }
 
+func describeAccessDiff(actual, desired *api.DatasetAccess, desiredIamMember string) string {
+	if actual == nil {
+		return "existing access entry not found on dataset"
+	}
+	if desired == nil {
+		return "desired access entry is nil"
+	}
+
+	var diffs []string
+
+	// Check View diff
+	if desired.View != nil || actual.View != nil {
+		if actual.View == nil {
+			diffs = append(diffs, fmt.Sprintf("view added (%s/%s/%s)", desired.View.ProjectId, desired.View.DatasetId, desired.View.TableId))
+		} else if desired.View == nil {
+			diffs = append(diffs, fmt.Sprintf("view removed (was %s/%s/%s)", actual.View.ProjectId, actual.View.DatasetId, actual.View.TableId))
+		} else if actual.View.ProjectId != desired.View.ProjectId || actual.View.DatasetId != desired.View.DatasetId || actual.View.TableId != desired.View.TableId {
+			diffs = append(diffs, fmt.Sprintf("view changed from %s/%s/%s to %s/%s/%s",
+				actual.View.ProjectId, actual.View.DatasetId, actual.View.TableId,
+				desired.View.ProjectId, desired.View.DatasetId, desired.View.TableId))
+		}
+	}
+
+	// Check Routine diff
+	if desired.Routine != nil || actual.Routine != nil {
+		if actual.Routine == nil {
+			diffs = append(diffs, fmt.Sprintf("routine added (%s/%s/%s)", desired.Routine.ProjectId, desired.Routine.DatasetId, desired.Routine.RoutineId))
+		} else if desired.Routine == nil {
+			diffs = append(diffs, fmt.Sprintf("routine removed (was %s/%s/%s)", actual.Routine.ProjectId, actual.Routine.DatasetId, actual.Routine.RoutineId))
+		} else if actual.Routine.ProjectId != desired.Routine.ProjectId || actual.Routine.DatasetId != desired.Routine.DatasetId || actual.Routine.RoutineId != desired.Routine.RoutineId {
+			diffs = append(diffs, fmt.Sprintf("routine changed from %s/%s/%s to %s/%s/%s",
+				actual.Routine.ProjectId, actual.Routine.DatasetId, actual.Routine.RoutineId,
+				desired.Routine.ProjectId, desired.Routine.DatasetId, desired.Routine.RoutineId))
+		}
+	}
+
+	// Check Dataset diff
+	if desired.Dataset != nil || actual.Dataset != nil {
+		if actual.Dataset == nil {
+			diffs = append(diffs, "dataset entry added")
+		} else if desired.Dataset == nil {
+			diffs = append(diffs, "dataset entry removed")
+		} else {
+			if actual.Dataset.Dataset != nil && desired.Dataset.Dataset != nil {
+				if actual.Dataset.Dataset.ProjectId != desired.Dataset.Dataset.ProjectId || actual.Dataset.Dataset.DatasetId != desired.Dataset.Dataset.DatasetId {
+					diffs = append(diffs, fmt.Sprintf("dataset reference changed from %s/%s to %s/%s",
+						actual.Dataset.Dataset.ProjectId, actual.Dataset.Dataset.DatasetId,
+						desired.Dataset.Dataset.ProjectId, desired.Dataset.Dataset.DatasetId))
+				}
+			}
+			if !reflect.DeepEqual(actual.Dataset.TargetTypes, desired.Dataset.TargetTypes) {
+				diffs = append(diffs, fmt.Sprintf("dataset targetTypes changed from %v to %v", actual.Dataset.TargetTypes, desired.Dataset.TargetTypes))
+			}
+		}
+	}
+
+	// Check Role diff
+	if canonicalRole(actual.Role) != canonicalRole(desired.Role) {
+		diffs = append(diffs, fmt.Sprintf("role changed from %q to %q", actual.Role, desired.Role))
+	}
+
+	// Check UserByEmail diff
+	if desired.UserByEmail != "" && !strings.EqualFold(actual.UserByEmail, desired.UserByEmail) {
+		diffs = append(diffs, fmt.Sprintf("userByEmail changed from %q to %q", actual.UserByEmail, desired.UserByEmail))
+	}
+
+	// Check GroupByEmail diff
+	if desired.GroupByEmail != "" && !strings.EqualFold(actual.GroupByEmail, desired.GroupByEmail) {
+		diffs = append(diffs, fmt.Sprintf("groupByEmail changed from %q to %q", actual.GroupByEmail, desired.GroupByEmail))
+	}
+
+	// Check Domain diff
+	if desired.Domain != "" && !strings.EqualFold(actual.Domain, desired.Domain) {
+		diffs = append(diffs, fmt.Sprintf("domain changed from %q to %q", actual.Domain, desired.Domain))
+	}
+
+	// Check SpecialGroup diff
+	if desired.SpecialGroup != "" && actual.SpecialGroup != desired.SpecialGroup {
+		diffs = append(diffs, fmt.Sprintf("specialGroup changed from %q to %q", actual.SpecialGroup, desired.SpecialGroup))
+	}
+
+	// Check IamMember diff
+	if desiredIamMember != "" {
+		memberVal := extractMemberValue(desiredIamMember)
+		if actual.IamMember != "" && !strings.EqualFold(stripTombstone(actual.IamMember), stripTombstone(desiredIamMember)) {
+			diffs = append(diffs, fmt.Sprintf("iamMember changed from %q to %q", actual.IamMember, desiredIamMember))
+		} else if actual.IamMember == "" {
+			actualGrantee := actualGranteeString(actual)
+			if actualGrantee != "" && !strings.EqualFold(extractMemberValue(actualGrantee), memberVal) {
+				diffs = append(diffs, fmt.Sprintf("grantee changed from %s to iamMember %q", actualGrantee, desiredIamMember))
+			}
+		}
+	}
+
+	if len(diffs) == 0 {
+		return "grantee or configuration type changed"
+	}
+
+	return strings.Join(diffs, "; ")
+}
+
+func actualGranteeString(entry *api.DatasetAccess) string {
+	if entry.UserByEmail != "" {
+		return "userByEmail: " + entry.UserByEmail
+	}
+	if entry.GroupByEmail != "" {
+		return "groupByEmail: " + entry.GroupByEmail
+	}
+	if entry.Domain != "" {
+		return "domain: " + entry.Domain
+	}
+	if entry.SpecialGroup != "" {
+		return "specialGroup: " + entry.SpecialGroup
+	}
+	return ""
+}
+
 func (a *datasetAccessAdapter) Delete(ctx context.Context, op *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting BigQueryDatasetAccess", "id", a.id.String())
-
-	dataset, err := a.datasetsService.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
-	if err != nil {
-		if direct.IsNotFound(err) {
-			return true, nil
-		}
-		return false, fmt.Errorf("getting dataset %s/%s for access deletion: %w", a.id.Project, a.id.Dataset, err)
-	}
 
 	mapCtx := &direct.MapContext{}
 	desiredAccess := BigQueryDatasetAccessSpec_ToAPI(mapCtx, &a.desired.Spec)
@@ -323,35 +494,58 @@ func (a *datasetAccessAdapter) Delete(ctx context.Context, op *directbase.Delete
 	}
 	desiredIamMember := direct.ValueOf(a.desired.Spec.IamMember)
 
-	foundIdx := -1
-	for idx, entry := range dataset.Access {
-		if matched, _ := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
-			foundIdx = idx
-			break
+	backoff := wait.Backoff{
+		Steps:    5,
+		Duration: 100 * time.Millisecond,
+		Factor:   2.0,
+		Jitter:   0.1,
+	}
+
+	err := retry.OnError(backoff, isConflictOrPreconditionFailed, func() error {
+		dataset, err := a.datasetsService.Get(a.id.Project, a.id.Dataset).Context(ctx).Do()
+		if err != nil {
+			if direct.IsNotFound(err) {
+				return nil
+			}
+			return fmt.Errorf("getting dataset %s/%s for access deletion: %w", a.id.Project, a.id.Dataset, err)
 		}
-	}
 
-	if foundIdx == -1 {
-		return true, nil
-	}
-
-	updatedAccess := make([]*api.DatasetAccess, 0, len(dataset.Access)-1)
-	for idx, entry := range dataset.Access {
-		if idx != foundIdx {
-			updatedAccess = append(updatedAccess, entry)
+		foundIdx := -1
+		for idx, entry := range dataset.Access {
+			if matched, _ := matchesAccessEntry(entry, desiredAccess, desiredIamMember); matched {
+				foundIdx = idx
+				break
+			}
 		}
-	}
 
-	patchReq := &api.Dataset{
-		Access: updatedAccess,
-	}
+		if foundIdx == -1 {
+			return nil
+		}
 
-	_, err = a.datasetsService.Patch(a.id.Project, a.id.Dataset, patchReq).Context(ctx).Do()
+		updatedAccess := make([]*api.DatasetAccess, 0, len(dataset.Access)-1)
+		for idx, entry := range dataset.Access {
+			if idx != foundIdx {
+				updatedAccess = append(updatedAccess, entry)
+			}
+		}
+
+		patchReq := &api.Dataset{
+			Access: updatedAccess,
+			Etag:   dataset.Etag,
+		}
+
+		_, err = a.datasetsService.Patch(a.id.Project, a.id.Dataset, patchReq).Context(ctx).Do()
+		if err != nil {
+			if direct.IsNotFound(err) {
+				return nil
+			}
+			return err
+		}
+
+		return nil
+	})
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return true, nil
-		}
-		return false, fmt.Errorf("patching dataset %s/%s to delete access entry: %w", a.id.Project, a.id.Dataset, err)
+		return false, fmt.Errorf("deleting BigQueryDatasetAccess: %w", err)
 	}
 
 	return true, nil
