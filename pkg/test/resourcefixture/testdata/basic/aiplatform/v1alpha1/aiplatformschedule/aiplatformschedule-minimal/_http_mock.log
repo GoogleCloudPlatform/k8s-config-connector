@@ -137,18 +137,6 @@ Vary: X-Origin
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
-
-{
-  "name": "projects/${projectId}/locations/us-central1/schedules/aiplatformschedule-minimal-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/aiplatformschedule-minimal-${uniqueId}" not found
-
-{}
-
----
-
 GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
 
 {

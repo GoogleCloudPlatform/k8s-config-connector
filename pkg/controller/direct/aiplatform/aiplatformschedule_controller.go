@@ -148,6 +148,10 @@ type ScheduleAdapter struct {
 var _ directbase.Adapter = &ScheduleAdapter{}
 
 func (a *ScheduleAdapter) Find(ctx context.Context) (bool, error) {
+	if a.id.Schedule == "" {
+		return false, nil
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting AIPlatformSchedule", "name", a.id.String())
 
@@ -187,6 +191,10 @@ func (a *ScheduleAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 
 	log.V(2).Info("successfully created AIPlatformSchedule", "name", a.id.String())
+
+	if created.GetName() != "" {
+		_ = a.id.FromExternal(created.GetName())
+	}
 
 	return a.updateStatus(ctx, createOp, created)
 }
