@@ -72,9 +72,6 @@ func fetchClusterHAState(ctx context.Context, handle *clusterHandle) (*clusterHA
 	if err != nil {
 		return nil, err
 	}
-	if cc == nil {
-		return nil, fmt.Errorf("cluster %q is missing the %q ConfigConnector object; install Config Connector and create the %q resource before running HA commands", handle.contextName, configConnectorResourceName, configConnectorResourceName)
-	}
 
 	mclSpec := multiClusterLeaseSpec(cc)
 	if err := validateClusterLeaseSpec(handle.contextName, mclSpec); err != nil {
@@ -104,7 +101,10 @@ func fetchConfigConnector(ctx context.Context, handle *clusterHandle) (*operator
 	key := types.NamespacedName{Name: configConnectorResourceName}
 	if err := handle.client.Get(ctx, key, cc); err != nil {
 		if isResourceOrKindAbsent(err) {
-			return nil, nil
+			return nil, fmt.Errorf(
+				"cluster %q is missing the %q ConfigConnector object; install Config Connector and create the %q resource before running HA commands",
+				handle.contextName, configConnectorResourceName, configConnectorResourceName,
+			)
 		}
 
 		return nil, fmt.Errorf("fetching ConfigConnector on cluster %q: %w", handle.contextName, err)
