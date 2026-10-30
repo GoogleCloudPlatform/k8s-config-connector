@@ -79,11 +79,7 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 
 	// Always call common.NormalizeReferences to resolve any resource references
 	if err := common.NormalizeReferences(ctx, reader.Reader, obj, nil); err != nil {
-		if obj.GetDeletionTimestamp() != nil {
-			klog.FromContext(ctx).Info("ignoring reference normalization failure during deletion", "error", err)
-		} else {
-			return nil, fmt.Errorf("normalizing references: %w", err)
-		}
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	typedID, ok := id.(*krm.VertexAIPipelineJobIdentity)

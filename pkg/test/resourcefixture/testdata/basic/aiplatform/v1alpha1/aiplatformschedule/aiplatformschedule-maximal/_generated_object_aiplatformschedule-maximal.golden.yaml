@@ -50,8 +50,7 @@ spec:
         external: ${projectId}
       runtimeConfig:
         failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
-        gcsOutputDirectoryRef:
-          name: vertexai-schedmax-bucket-${uniqueId}
+        gcsOutputDirectory: gs://vertexai-schedmax-bucket-${uniqueId}
   cron: 0 2 * * *
   displayName: Maximal Schedule Updated
   endTime: "1970-01-01T00:00:00Z"
@@ -68,13 +67,12 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}
+  externalRef: projects/${projectNumber}/locations/us-central1/schedules/10982031432294162491
   observedGeneration: 2
   observedState:
     createPipelineJobRequest:
       pipelineJob: {}
     createTime: "1970-01-01T00:00:00Z"
-    name: projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}
     nextRunTime: "1970-01-01T00:00:00Z"
     state: ACTIVE
     updateTime: "1970-01-01T00:00:00Z"

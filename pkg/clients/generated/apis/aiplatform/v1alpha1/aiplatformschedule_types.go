@@ -579,10 +579,6 @@ type AiplatformscheduleObservedStateStatus struct {
 	// +optional
 	LastScheduledRunResponse *AiplatformscheduleLastScheduledRunResponseStatus `json:"lastScheduledRunResponse,omitempty"`
 
-	/* Immutable. The resource name of the Schedule. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* Output only. Timestamp when this Schedule should schedule the next run. Having a next_run_time in the past means the runs are being started behind schedule. */
 	// +optional
 	NextRunTime *string `json:"nextRunTime,omitempty"`

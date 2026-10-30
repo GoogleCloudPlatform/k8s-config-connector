@@ -4452,11 +4452,6 @@ func (in *AiplatformscheduleObservedStateStatus) DeepCopyInto(out *Aiplatformsch
 		*out = new(AiplatformscheduleLastScheduledRunResponseStatus)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.NextRunTime != nil {
 		in, out := &in.NextRunTime, &out.NextRunTime
 		*out = new(string)
