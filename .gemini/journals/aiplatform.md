@@ -42,6 +42,17 @@
   4. Scaffolded E2E golden tests under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaipipelinejob/` (`vertexaipipelinejob-minimal` and `vertexaipipelinejob-maximal`), including `dependencies.yaml` to provision a `StorageBucket` used as the `gcsOutputDirectory` parameter.
 - **Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
 
+### 2026-07-06 Modeling Cross-Package and Legacy Resource References in VertexAIRagCorpus Spec
+- **Context**: Implementing direct types for `VertexAIRagCorpus` under `apis/aiplatform/v1alpha1/`.
+- **Problem**: 
+  1. The `RagCorpus` proto references nested structures (like `RagVectorDbConfig.VertexVectorSearch` and `RagEmbeddingModelConfig.VertexPredictionEndpoint`) which use string fields pointing to other resources (e.g. Vertex AI Index, Vertex AI Index Endpoint, Vertex AI Endpoint, Secret Manager Secret).
+  2. If these fields are kept as strings, the `apicheck` linter will fail because their description strings contain format strings like `projects/{}` or `locations/{}`, suggesting they should be proper references.
+- **Solution**:
+  1. Overrode the corresponding nested structures (`APIAuth_APIKeyConfig`, `RagEmbeddingModelConfig_VertexPredictionEndpoint`, `RagEmbeddingModelConfig_VertexPredictionEndpointObservedState`, `RagVectorDbConfig_VertexVectorSearch`) directly in `vertexairagcorpus_types.go` to replace raw string fields with proper reference structures (`*refsv1beta1.SecretManagerSecretVersionRef`, `*VertexAIEndpointRef`, `*VertexAIIndexEndpointRef`, `*VertexAIIndexRef`).
+  2. Implemented reference handlers and fallback normalizers in `vertexairagcorpus_reference.go`.
+  3. Added the `ragCorpora` URL template to the ignored list in `pkg/gcpurls/registry_test.go`.
+- **Impact**: Standardizes the pattern of handling cross-group and legacy reference fields in direct controllers, ensuring linter compliance and robust type safety during resource reconciliation.
+
 ### 2026-09-29 Implementing AIPlatformReasoningEngine Greenfield Direct Controller, Fuzzer, and E2E Fixtures
 - **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `AIPlatformReasoningEngine` (Issue #13501).
 - **Problem**: 
@@ -64,5 +75,3 @@
 - **Finding & Real GCP Observation**:
   During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateSpecialistPool` API returned `rpc error: code = FailedPrecondition desc = Data labeling service is shutdown` (audited via Cloud Audit Logs `SpecialistPoolService.CreateSpecialistPool`). Google Cloud deprecated and shut down the Vertex AI Data Labeling Service (and its associated human labeling SpecialistPool backend) on July 1, 2024.
 - **Impact**: Controller implementation and CRD structures are complete, idiomatic, and verified with unit tests and fuzzer roundtripping.
-
-
