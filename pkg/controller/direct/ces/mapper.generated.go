@@ -26,6 +26,7 @@ package ces
 import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	krmdialogflowv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -34,7 +35,9 @@ func Agent_AgentToolset_FromProto(mapCtx *direct.MapContext, in *pb.Agent_AgentT
 		return nil
 	}
 	out := &krm.Agent_AgentToolset{}
-	out.Toolset = direct.LazyPtr(in.GetToolset())
+	if in.GetToolset() != "" {
+		out.ToolsetRef = &krm.CesToolsetRef{External: in.GetToolset()}
+	}
 	out.ToolIDs = in.ToolIds
 	return out
 }
@@ -43,7 +46,9 @@ func Agent_AgentToolset_ToProto(mapCtx *direct.MapContext, in *krm.Agent_AgentTo
 		return nil
 	}
 	out := &pb.Agent_AgentToolset{}
-	out.Toolset = direct.ValueOf(in.Toolset)
+	if in.ToolsetRef != nil {
+		out.Toolset = in.ToolsetRef.External
+	}
 	out.ToolIds = in.ToolIDs
 	return out
 }
@@ -66,7 +71,9 @@ func Agent_RemoteDialogflowAgent_FromProto(mapCtx *direct.MapContext, in *pb.Age
 		return nil
 	}
 	out := &krm.Agent_RemoteDialogflowAgent{}
-	out.Agent = direct.LazyPtr(in.GetAgent())
+	if in.GetAgent() != "" {
+		out.AgentRef = &krmdialogflowv1alpha1.DialogflowCXAgentRef{External: in.GetAgent()}
+	}
 	out.FlowID = direct.LazyPtr(in.GetFlowId())
 	out.EnvironmentID = direct.LazyPtr(in.GetEnvironmentId())
 	out.InputVariableMapping = in.InputVariableMapping
@@ -79,7 +86,9 @@ func Agent_RemoteDialogflowAgent_ToProto(mapCtx *direct.MapContext, in *krm.Agen
 		return nil
 	}
 	out := &pb.Agent_RemoteDialogflowAgent{}
-	out.Agent = direct.ValueOf(in.Agent)
+	if in.AgentRef != nil {
+		out.Agent = in.AgentRef.External
+	}
 	out.FlowId = direct.ValueOf(in.FlowID)
 	out.EnvironmentId = direct.ValueOf(in.EnvironmentID)
 	out.InputVariableMapping = in.InputVariableMapping
@@ -123,8 +132,12 @@ func CesAgentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *k
 	}
 	out := &krm.CesAgentObservedState{}
 	// MISSING: Name
+	// MISSING: Tools
+	// MISSING: ChildAgents
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Guardrails
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.GeneratedSummary = direct.LazyPtr(in.GetGeneratedSummary())
 	return out
 }
@@ -134,8 +147,12 @@ func CesAgentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CesAgentOb
 	}
 	out := &pb.Agent{}
 	// MISSING: Name
+	// MISSING: Tools
+	// MISSING: ChildAgents
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Guardrails
+	out.Etag = direct.ValueOf(in.Etag)
 	out.GeneratedSummary = direct.ValueOf(in.GeneratedSummary)
 	return out
 }
@@ -151,16 +168,32 @@ func CesAgentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.CesAge
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
 	out.Instruction = direct.LazyPtr(in.GetInstruction())
-	out.Tools = in.Tools
-	out.ChildAgents = in.ChildAgents
+
+	if v := in.GetTools(); len(v) != 0 {
+		for i := range v {
+			out.ToolRefs = append(out.ToolRefs, krm.CesToolRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetChildAgents(); len(v) != 0 {
+		for i := range v {
+			out.ChildAgentRefs = append(out.ChildAgentRefs, krm.CesAgentRef{External: v[i]})
+		}
+	}
+
 	out.BeforeAgentCallbacks = direct.Slice_FromProto(mapCtx, in.BeforeAgentCallbacks, Callback_FromProto)
 	out.AfterAgentCallbacks = direct.Slice_FromProto(mapCtx, in.AfterAgentCallbacks, Callback_FromProto)
 	out.BeforeModelCallbacks = direct.Slice_FromProto(mapCtx, in.BeforeModelCallbacks, Callback_FromProto)
 	out.AfterModelCallbacks = direct.Slice_FromProto(mapCtx, in.AfterModelCallbacks, Callback_FromProto)
 	out.BeforeToolCallbacks = direct.Slice_FromProto(mapCtx, in.BeforeToolCallbacks, Callback_FromProto)
 	out.AfterToolCallbacks = direct.Slice_FromProto(mapCtx, in.AfterToolCallbacks, Callback_FromProto)
-	out.Guardrails = in.Guardrails
-	out.Etag = direct.LazyPtr(in.GetEtag())
+
+	if v := in.GetGuardrails(); len(v) != 0 {
+		for i := range v {
+			out.GuardrailRefs = append(out.GuardrailRefs, krm.CesGuardrailRef{External: v[i]})
+		}
+	}
+
 	out.Toolsets = direct.Slice_FromProto(mapCtx, in.Toolsets, Agent_AgentToolset_FromProto)
 	out.TransferRules = direct.Slice_FromProto(mapCtx, in.TransferRules, TransferRule_FromProto)
 	return out
@@ -181,16 +214,32 @@ func CesAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CesAgentSpec) *pb.A
 	out.Description = direct.ValueOf(in.Description)
 	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
 	out.Instruction = direct.ValueOf(in.Instruction)
-	out.Tools = in.Tools
-	out.ChildAgents = in.ChildAgents
+
+	if v := in.ToolRefs; len(v) != 0 {
+		for i := range v {
+			out.Tools = append(out.Tools, v[i].External)
+		}
+	}
+
+	if v := in.ChildAgentRefs; len(v) != 0 {
+		for i := range v {
+			out.ChildAgents = append(out.ChildAgents, v[i].External)
+		}
+	}
+
 	out.BeforeAgentCallbacks = direct.Slice_ToProto(mapCtx, in.BeforeAgentCallbacks, Callback_ToProto)
 	out.AfterAgentCallbacks = direct.Slice_ToProto(mapCtx, in.AfterAgentCallbacks, Callback_ToProto)
 	out.BeforeModelCallbacks = direct.Slice_ToProto(mapCtx, in.BeforeModelCallbacks, Callback_ToProto)
 	out.AfterModelCallbacks = direct.Slice_ToProto(mapCtx, in.AfterModelCallbacks, Callback_ToProto)
 	out.BeforeToolCallbacks = direct.Slice_ToProto(mapCtx, in.BeforeToolCallbacks, Callback_ToProto)
 	out.AfterToolCallbacks = direct.Slice_ToProto(mapCtx, in.AfterToolCallbacks, Callback_ToProto)
-	out.Guardrails = in.Guardrails
-	out.Etag = direct.ValueOf(in.Etag)
+
+	if v := in.GuardrailRefs; len(v) != 0 {
+		for i := range v {
+			out.Guardrails = append(out.Guardrails, v[i].External)
+		}
+	}
+
 	out.Toolsets = direct.Slice_ToProto(mapCtx, in.Toolsets, Agent_AgentToolset_ToProto)
 	out.TransferRules = direct.Slice_ToProto(mapCtx, in.TransferRules, TransferRule_ToProto)
 	return out
@@ -252,7 +301,9 @@ func TransferRule_FromProto(mapCtx *direct.MapContext, in *pb.TransferRule) *krm
 	out := &krm.TransferRule{}
 	out.DeterministicTransfer = TransferRule_DeterministicTransfer_FromProto(mapCtx, in.GetDeterministicTransfer())
 	out.DisablePlannerTransfer = TransferRule_DisablePlannerTransfer_FromProto(mapCtx, in.GetDisablePlannerTransfer())
-	out.ChildAgent = direct.LazyPtr(in.GetChildAgent())
+	if in.GetChildAgent() != "" {
+		out.ChildAgentRef = &krm.CesAgentRef{External: in.GetChildAgent()}
+	}
 	out.Direction = direct.Enum_FromProto(mapCtx, in.GetDirection())
 	return out
 }
@@ -267,7 +318,9 @@ func TransferRule_ToProto(mapCtx *direct.MapContext, in *krm.TransferRule) *pb.T
 	if oneof := TransferRule_DisablePlannerTransfer_ToProto(mapCtx, in.DisablePlannerTransfer); oneof != nil {
 		out.RuleType = &pb.TransferRule_DisablePlannerTransfer_{DisablePlannerTransfer: oneof}
 	}
-	out.ChildAgent = direct.ValueOf(in.ChildAgent)
+	if in.ChildAgentRef != nil {
+		out.ChildAgent = in.ChildAgentRef.External
+	}
 	out.Direction = direct.Enum_ToProto[pb.TransferRule_Direction](mapCtx, in.Direction)
 	return out
 }

@@ -806,7 +806,7 @@ spec:
                         secretManagerKeySource:
                           description: Keys are stored in Google Secret Manager.
                           properties:
-                            secretVersion:
+                            secretVersionRef:
                               description: |-
                                 Required. The name of the Secret Version containing the encryption key in
                                  the following format:
@@ -814,9 +814,36 @@ spec:
 
                                  Note that only numbered versions are supported. Aliases like "latest" are
                                  not supported.
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: ' If provided must be in the format
+                                    `projects/*/secrets/*/versions/*`.'
+                                  type: string
+                                name:
+                                  description: The `name` field of a `SecretManagerSecretVersion`
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The `metadata.namespace` field of a
+                                    `SecretManagerSecretVersion` resource.
+                                  type: string
+                              type: object
                           required:
-                          - secretVersion
+                          - secretVersionRef
                           type: object
                       required:
                       - drmSystems
@@ -1441,17 +1468,14 @@ spec:
                       type: object
                     type: array
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: The labels associated with this job template. You can
-                  use these to organize and group your job templates.
-                type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

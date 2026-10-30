@@ -48,9 +48,15 @@ func MapmanagementMapContextConfigSpec_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.MapmanagementMapContextConfigSpec{}
 	// MISSING: Name
-	out.MapConfig = direct.LazyPtr(in.GetMapConfig())
-	out.StyleConfig = direct.LazyPtr(in.GetStyleConfig())
-	out.Dataset = in.Dataset
+	if in.GetMapConfig() != "" {
+		out.MapConfigRef = &krm.MapManagementMapConfigRef{External: in.GetMapConfig()}
+	}
+	if in.GetStyleConfig() != "" {
+		out.StyleConfigRef = &krm.MapManagementStyleConfigRef{External: in.GetStyleConfig()}
+	}
+	for _, v := range in.GetDataset() {
+		out.DatasetRefs = append(out.DatasetRefs, krm.MapManagementDatasetRef{External: v})
+	}
 	out.Alias = direct.LazyPtr(in.GetAlias())
 	out.MapVariants = direct.EnumSlice_FromProto(mapCtx, in.MapVariants)
 	return out
@@ -62,9 +68,15 @@ func MapmanagementMapContextConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &mapmanagementpb.MapContextConfig{}
 	// MISSING: Name
-	out.MapConfig = direct.ValueOf(in.MapConfig)
-	out.StyleConfig = direct.ValueOf(in.StyleConfig)
-	out.Dataset = in.Dataset
+	if in.MapConfigRef != nil {
+		out.MapConfig = in.MapConfigRef.External
+	}
+	if in.StyleConfigRef != nil {
+		out.StyleConfig = in.StyleConfigRef.External
+	}
+	for _, v := range in.DatasetRefs {
+		out.Dataset = append(out.Dataset, v.External)
+	}
 	out.Alias = direct.ValueOf(in.Alias)
 	out.MapVariants = direct.EnumSlice_ToProto[mapmanagementpb.MapContextConfig_MapVariant](mapCtx, in.MapVariants)
 	return out

@@ -2652,6 +2652,7 @@ func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -2664,6 +2665,7 @@ func DataplexGlossaryCategoryObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -2675,8 +2677,10 @@ func DataplexGlossaryCategorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gl
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.Parent = direct.LazyPtr(in.GetParent())
+	// MISSING: Labels
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.GlossaryRef{External: in.GetParent()}
+	}
 	return out
 }
 
@@ -2688,8 +2692,10 @@ func DataplexGlossaryCategorySpec_ToProto(mapCtx *direct.MapContext, in *krm.Dat
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Parent = direct.ValueOf(in.Parent)
+	// MISSING: Labels
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
 	return out
 }
 

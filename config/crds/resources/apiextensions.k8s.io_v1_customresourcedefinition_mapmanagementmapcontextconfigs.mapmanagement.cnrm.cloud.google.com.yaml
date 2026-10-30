@@ -67,29 +67,26 @@ spec:
                 description: Optional. The user defined human readable name for this
                   MapContextConfig.
                 type: string
-              dataset:
+              datasetRefs:
                 description: 'Optional. The Dataset resource name that is associated
                   with this MapContextConfig. This field is optional and can be omitted.
                   If omitted, no datasets will be associated with the MapContextConfig.
                   If a dataset is specified, it will be applied to the MapContextConfig.
                   Format: projects/{project}/datasets/{dataset}'
                 items:
-                  type: string
+                  description: MapManagementDatasetRef is a reference to a GCP MapManagementDataset
+                    resource.
+                  properties:
+                    external:
+                      description: A reference to an externally managed MapManagementDataset
+                        resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
+                      type: string
+                  type: object
                 type: array
-              mapConfig:
+              mapConfigRef:
                 description: 'Required. The MapConfig resource name that this MapContextConfig
                   is associated with. Format: projects/{project}/mapConfigs/{map_config}.
                   This field is required and cannot be omitted.'
-                type: string
-              mapVariants:
-                description: Required. The map variants that this MapContextConfig
-                  can be applied to. If empty, the MapContextConfig will be default
-                  applied to only the ROADMAP map variant.
-                items:
-                  type: string
-                type: array
-              projectRef:
-                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -106,34 +103,61 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed MapManagementMapConfig
+                      resource. Should be in the format "projects/{{projectID}}/mapConfigs/{{mapConfigID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a MapManagementMapConfig resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a MapManagementMapConfig resource.
                     type: string
                 type: object
+              mapVariants:
+                description: Required. The map variants that this MapContextConfig
+                  can be applied to. If empty, the MapContextConfig will be default
+                  applied to only the ROADMAP map variant.
+                items:
+                  type: string
+                type: array
               resourceID:
                 description: The MapmanagementMapContextConfig name. If not given,
-                  the metadata.name will be used.
+                  a server-generated ID will be used.
                 type: string
-              styleConfig:
+              styleConfigRef:
                 description: 'Required. The StyleConfig resource name that is styling
                   this MapContextConfig. This field is required and cannot be omitted.
                   Format: projects/{project}/styleConfigs/{style_config}'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed MapManagementStyleConfig
+                      resource. Should be in the format "projects/{{projectID}}/styleConfigs/{{styleConfigID}}".
+                    type: string
+                  name:
+                    description: The name of a MapManagementStyleConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a MapManagementStyleConfig resource.
+                    type: string
+                type: object
             required:
-            - mapConfig
+            - mapConfigRef
             - mapVariants
-            - projectRef
-            - styleConfig
+            - styleConfigRef
             type: object
           status:
             description: MapmanagementMapContextConfigStatus defines the config connector

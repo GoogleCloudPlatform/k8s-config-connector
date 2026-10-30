@@ -42,12 +42,13 @@ type AlloyDbConnectionProfile struct {
 	Settings *AlloyDbSettings `json:"settings,omitempty"`
 }
 
+/* found existing non-generated go type "AlloyDbSettings", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings
 type AlloyDbSettings struct {
 	// Required. Input only. Initial user to setup during cluster creation.
 	//  Required.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
-	// +required
 	InitialUser *AlloyDbSettings_UserPassword `json:"initialUser,omitempty"`
 
 	// Required. The resource link for the VPC network in which cluster resources
@@ -56,7 +57,6 @@ type AlloyDbSettings struct {
 	//  form: "projects/{project_number}/global/networks/{network_id}". This is
 	//  required to create a cluster.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.vpc_network
-	// +required
 	VPCNetwork *string `json:"vpcNetwork,omitempty"`
 
 	// Labels for the AlloyDB cluster created by DMS. An object containing a list
@@ -75,6 +75,9 @@ type AlloyDbSettings struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.encryption_config
 	EncryptionConfig *AlloyDbSettings_EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "AlloyDbSettings_EncryptionConfig", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.EncryptionConfig
 type AlloyDbSettings_EncryptionConfig struct {
@@ -84,6 +87,7 @@ type AlloyDbSettings_EncryptionConfig struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.EncryptionConfig.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
 type AlloyDbSettings_PrimaryInstanceSettings struct {
@@ -150,6 +154,8 @@ type CloudSQLConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
 	Settings *CloudSQLSettings `json:"settings,omitempty"`
 }
+
+/* found existing non-generated go type "CloudSQLSettings", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.CloudSqlSettings
 type CloudSQLSettings struct {
@@ -260,6 +266,7 @@ type CloudSQLSettings struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.edition
 	Edition *string `json:"edition,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.clouddms.v1.ConditionalColumnSetValue
 type ConditionalColumnSetValue struct {
@@ -943,13 +950,17 @@ type PrivateConnection struct {
 }
 */
 
+/* found existing non-generated go type "PrivateConnectivity", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.PrivateConnectivity
 type PrivateConnectivity struct {
 	// Required. The resource name (URI) of the private connection.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnectivity.private_connection
-	// +required
 	PrivateConnection *string `json:"privateConnection,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "PrivateServiceConnectConnectivity", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity
 type PrivateServiceConnectConnectivity struct {
@@ -957,9 +968,9 @@ type PrivateServiceConnectConnectivity struct {
 	//  following format:
 	//  projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity.service_attachment
-	// +required
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ReverseSSHConnectivity", skipping
 
@@ -1161,6 +1172,8 @@ type SQLAclEntry struct {
 	Label *string `json:"label,omitempty"`
 }
 
+/* found existing non-generated go type "SQLIPConfig", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.SqlIpConfig
 type SQLIPConfig struct {
 	// Whether the instance should be assigned an IPv4 address or not.
@@ -1194,6 +1207,7 @@ type SQLIPConfig struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.authorized_networks
 	AuthorizedNetworks []SQLAclEntry `json:"authorizedNetworks,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.clouddms.v1.SslConfig
 type SSLConfig struct {

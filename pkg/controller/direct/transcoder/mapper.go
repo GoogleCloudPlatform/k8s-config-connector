@@ -56,21 +56,21 @@ func Encryption_ToProto(mapCtx *direct.MapContext, in *krm.Encryption) *pb.Encry
 	return out
 }
 
-func EncryptionWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Encryption) *krm.EncryptionWithRequired {
+func TranscoderJobTemplate_Encryption_FromProto(mapCtx *direct.MapContext, in *pb.Encryption) *krm.TranscoderJobTemplate_Encryption {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionWithRequired{}
+	out := &krm.TranscoderJobTemplate_Encryption{}
 	out.ID = direct.LazyPtr(in.GetId())
 	out.Aes128 = Encryption_Aes128Encryption_FromProto(mapCtx, in.GetAes_128())
 	out.SampleAes = Encryption_SampleAesEncryption_FromProto(mapCtx, in.GetSampleAes())
 	out.MpegCenc = Encryption_MpegCommonEncryptionWithRequired_FromProto(mapCtx, in.GetMpegCenc())
-	out.SecretManagerKeySource = Encryption_SecretManagerSourceWithRequired_FromProto(mapCtx, in.GetSecretManagerKeySource())
+	out.SecretManagerKeySource = TranscoderJobTemplate_Encryption_SecretManagerSource_FromProto(mapCtx, in.GetSecretManagerKeySource())
 	out.DrmSystems = Encryption_DrmSystems_FromProto(mapCtx, in.GetDrmSystems())
 	return out
 }
 
-func EncryptionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionWithRequired) *pb.Encryption {
+func TranscoderJobTemplate_Encryption_ToProto(mapCtx *direct.MapContext, in *krm.TranscoderJobTemplate_Encryption) *pb.Encryption {
 	if in == nil {
 		return nil
 	}
@@ -85,7 +85,7 @@ func EncryptionWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Encryptio
 	if oneof := Encryption_MpegCommonEncryptionWithRequired_ToProto(mapCtx, in.MpegCenc); oneof != nil {
 		out.EncryptionMode = &pb.Encryption_MpegCenc{MpegCenc: oneof}
 	}
-	if oneof := Encryption_SecretManagerSourceWithRequired_ToProto(mapCtx, in.SecretManagerKeySource); oneof != nil {
+	if oneof := TranscoderJobTemplate_Encryption_SecretManagerSource_ToProto(mapCtx, in.SecretManagerKeySource); oneof != nil {
 		out.SecretSource = &pb.Encryption_SecretManagerKeySource{SecretManagerKeySource: oneof}
 	}
 	out.DrmSystems = Encryption_DrmSystems_ToProto(mapCtx, in.DrmSystems)

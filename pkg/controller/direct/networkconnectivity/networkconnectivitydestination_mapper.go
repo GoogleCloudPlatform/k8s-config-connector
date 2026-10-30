@@ -16,6 +16,7 @@ package networkconnectivity
 
 import (
 	networkconnectivitypb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -76,6 +77,8 @@ func NetworkConnectivityDestinationObservedState_FromProto(mapCtx *direct.MapCon
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Destination_DestinationEndpointObservedState_FromProto)
 	out.StateTimeline = StateTimelineObservedState_FromProto(mapCtx, in.GetStateTimeline())
 	out.Uid = direct.LazyPtr(in.GetUid())
@@ -90,6 +93,8 @@ func NetworkConnectivityDestinationObservedState_ToProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Destination_DestinationEndpointObservedState_ToProto)
 	out.StateTimeline = StateTimelineObservedState_ToProto(mapCtx, in.StateTimeline)
 	out.Uid = direct.ValueOf(in.Uid)
@@ -102,8 +107,7 @@ func NetworkConnectivityDestinationSpec_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.NetworkConnectivityDestinationSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.IPPrefix = direct.LazyPtr(in.GetIpPrefix())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Destination_DestinationEndpoint_FromProto)
@@ -116,8 +120,7 @@ func NetworkConnectivityDestinationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &networkconnectivitypb.Destination{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.IpPrefix = direct.ValueOf(in.IPPrefix)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Destination_DestinationEndpoint_ToProto)
@@ -132,6 +135,7 @@ func NetworkConnectivityPolicyBasedRouteObservedState_FromProto(mapCtx *direct.M
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.Warnings = direct.Slice_FromProto(mapCtx, in.Warnings, PolicyBasedRoute_WarningsObservedState_FromProto)
 	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
 	out.Kind = direct.LazyPtr(in.GetKind())
@@ -146,6 +150,7 @@ func NetworkConnectivityPolicyBasedRouteObservedState_ToProto(mapCtx *direct.Map
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.Warnings = direct.Slice_ToProto(mapCtx, in.Warnings, PolicyBasedRoute_WarningsObservedState_ToProto)
 	out.SelfLink = direct.ValueOf(in.SelfLink)
 	out.Kind = direct.ValueOf(in.Kind)
@@ -162,9 +167,11 @@ func NetworkConnectivityPolicyBasedRouteSpec_FromProto(mapCtx *direct.MapContext
 	out.NextHopIlbIP = direct.LazyPtr(in.GetNextHopIlbIp())
 	out.NextHopOtherRoutes = direct.Enum_FromProto(mapCtx, in.GetNextHopOtherRoutes())
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	out.Filter = PolicyBasedRoute_Filter_FromProto(mapCtx, in.GetFilter())
 	out.Priority = direct.LazyPtr(in.GetPriority())
 	return out
@@ -202,9 +209,11 @@ func NetworkConnectivityPolicyBasedRouteSpec_ToProto(mapCtx *direct.MapContext, 
 		out.NextHop = oneof
 	}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
-	out.Network = direct.ValueOf(in.Network)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.Filter = PolicyBasedRoute_Filter_ToProto(mapCtx, in.Filter)
 	out.Priority = direct.ValueOf(in.Priority)
 	return out
@@ -218,8 +227,10 @@ func NetworkConnectivityServiceConnectionTokenObservedState_FromProto(mapCtx *di
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.Token = direct.LazyPtr(in.GetToken())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Etag = in.Etag
 	return out
 }
 
@@ -231,8 +242,10 @@ func NetworkConnectivityServiceConnectionTokenObservedState_ToProto(mapCtx *dire
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.Token = direct.ValueOf(in.Token)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Etag = in.Etag
 	return out
 }
 
@@ -242,10 +255,11 @@ func NetworkConnectivityServiceConnectionTokenSpec_FromProto(mapCtx *direct.MapC
 	}
 	out := &krm.NetworkConnectivityServiceConnectionTokenSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Etag = in.Etag
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	return out
 }
 
@@ -255,10 +269,11 @@ func NetworkConnectivityServiceConnectionTokenSpec_ToProto(mapCtx *direct.MapCon
 	}
 	out := &networkconnectivitypb.ServiceConnectionToken{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
-	out.Network = direct.ValueOf(in.Network)
-	out.Etag = in.Etag
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	return out
 }
 

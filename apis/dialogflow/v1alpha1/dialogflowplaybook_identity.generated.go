@@ -24,10 +24,10 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -80,28 +80,19 @@ func (i *DialogflowPlaybookIdentity) ParentString() string {
 func getIdentityFromDialogflowPlaybookSpec(ctx context.Context, reader client.Reader, obj *DialogflowPlaybook) (*DialogflowPlaybookIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.AgentRef == nil {
+		return nil, fmt.Errorf("spec.agentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.AgentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.agentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	agent := ""
-	if agent == "" {
-		return nil, fmt.Errorf("cannot resolve agent for DialogflowPlaybook")
+	parsed := &DialogflowPlaybookIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/playbooks" + "/_"); err != nil {
+		return nil, fmt.Errorf("parsing spec.agentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &DialogflowPlaybookIdentity{
-		Project:  projectID,
-		Location: location,
-		Agent:    agent,
-		Playbook: resourceID,
-	}, nil
+	parsed.Playbook = resourceID
+	return parsed, nil
 }
 
 func (obj *DialogflowPlaybook) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

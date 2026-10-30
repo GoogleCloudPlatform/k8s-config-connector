@@ -25,26 +25,35 @@ entries:
     group: bigqueryanalyticshub.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with required DataExchangeRef
   - kind: BigQueryAnalyticsHubQueryTemplate
     group: bigqueryanalyticshub.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/queryTemplates/{query_template}" contains ancestor segment(s) dataExchanges/{data_exchange} with no matching reference or field on BigQueryAnalyticsHubQueryTemplateSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: resolved via DataExchangeRef on BigQueryAnalyticsHubQueryTemplateSpec
   - kind: BigQueryAnalyticsHubQueryTemplate
     group: bigqueryanalyticshub.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: BigQueryAnalyticsHubQueryTemplate
     group: bigqueryanalyticshub.cnrm.cloud.google.com
     field: .spec.dataExchangeRef
     reason: parent-ref-guessed
     detail: emitted as a reference to BigQueryAnalyticsHubDataExchangeRef, read from the dataExchanges segment of projects/{project}/locations/{location}/dataExchanges/{data_exchange}/queryTemplates/{query_template}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: uncommented DataExchangeRef and marked required, replacing ProjectRef and Location
   - kind: BigQueryAnalyticsHubQueryTemplate
     group: bigqueryanalyticshub.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/dataExchanges/{data_exchange}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with DataExchangeRef

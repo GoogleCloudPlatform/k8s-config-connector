@@ -41,18 +41,18 @@ func networkConnectivityServiceConnectionTokenFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".description")
-	f.SpecField(".etag")
-	f.SpecField(".labels")
 	f.SpecField(".network")
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".expire_time")
 	f.StatusField(".token")
 	f.StatusField(".update_time")
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

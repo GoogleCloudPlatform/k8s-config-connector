@@ -37,13 +37,13 @@ var (
 	_ identity.Resource   = &NetworkConnectivityPolicyBasedRoute{}
 )
 
-var NetworkConnectivityPolicyBasedRouteIdentityFormat = gcpurls.Template[NetworkConnectivityPolicyBasedRouteIdentity]("networkconnectivity.googleapis.com", "projects/{projectsid}/locations/global/policyBasedRoutes/{policybasedroutesid}")
+var NetworkConnectivityPolicyBasedRouteIdentityFormat = gcpurls.Template[NetworkConnectivityPolicyBasedRouteIdentity]("networkconnectivity.googleapis.com", "projects/{project}/locations/global/policyBasedRoutes/{policyBasedRoute}")
 
 // NetworkConnectivityPolicyBasedRouteIdentity is the identity of a GCP NetworkConnectivityPolicyBasedRoute resource.
 // +k8s:deepcopy-gen=false
 type NetworkConnectivityPolicyBasedRouteIdentity struct {
-	Projectsid          string
-	Policybasedroutesid string
+	Project          string
+	PolicyBasedRoute string
 }
 
 func (i *NetworkConnectivityPolicyBasedRouteIdentity) String() string {
@@ -68,7 +68,7 @@ func (i *NetworkConnectivityPolicyBasedRouteIdentity) Host() string {
 }
 
 func (i *NetworkConnectivityPolicyBasedRouteIdentity) ParentString() string {
-	return "projects/" + i.Projectsid + "/locations/global"
+	return "projects/" + i.Project + "/locations/global"
 }
 
 func getIdentityFromNetworkConnectivityPolicyBasedRouteSpec(ctx context.Context, reader client.Reader, obj *NetworkConnectivityPolicyBasedRoute) (*NetworkConnectivityPolicyBasedRouteIdentity, error) {
@@ -83,8 +83,8 @@ func getIdentityFromNetworkConnectivityPolicyBasedRouteSpec(ctx context.Context,
 	}
 
 	return &NetworkConnectivityPolicyBasedRouteIdentity{
-		Projectsid:          projectID,
-		Policybasedroutesid: resourceID,
+		Project:          projectID,
+		PolicyBasedRoute: resourceID,
 	}, nil
 }
 

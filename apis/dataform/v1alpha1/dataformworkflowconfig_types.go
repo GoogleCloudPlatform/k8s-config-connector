@@ -20,8 +20,9 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -31,11 +32,9 @@ var DataformWorkflowConfigGVK = GroupVersion.WithKind("DataformWorkflowConfig")
 // +kcc:spec:proto=google.cloud.dataform.v1.WorkflowConfig
 // +kcc:required-from-proto
 type DataformWorkflowConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. The repository in which to create the workflow config.
+	// +required
+	RepositoryRef *v1beta1.DataformRepositoryRef `json:"repositoryRef"`
 
 	// The DataformWorkflowConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -44,7 +43,7 @@ type DataformWorkflowConfigSpec struct {
 	//  `projects/*/locations/*/repositories/*/releaseConfigs/*`.
 	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.release_config
 	// +required
-	ReleaseConfig *string `json:"releaseConfig,omitempty"`
+	ReleaseConfigRef *DataformReleaseConfigRef `json:"releaseConfigRef"`
 
 	// Optional. If left unset, a default InvocationConfig will be used.
 	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.invocation_config
@@ -67,11 +66,46 @@ type DataformWorkflowConfigSpec struct {
 	Disabled *bool `json:"disabled,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataform.v1.InvocationConfig
+type InvocationConfig struct {
+	// Optional. The set of action identifiers to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_targets
+	IncludedTargets []Target `json:"includedTargets,omitempty"`
+
+	// Optional. The set of tags to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_tags
+	IncludedTags []string `json:"includedTags,omitempty"`
+
+	// Optional. When set to true, transitive dependencies of included actions
+	//  will be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependencies_included
+	TransitiveDependenciesIncluded *bool `json:"transitiveDependenciesIncluded,omitempty"`
+
+	// Optional. When set to true, transitive dependents of included actions will
+	//  be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependents_included
+	TransitiveDependentsIncluded *bool `json:"transitiveDependentsIncluded,omitempty"`
+
+	// Optional. When set to true, any incremental tables will be fully refreshed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.fully_refresh_incremental_tables_enabled
+	FullyRefreshIncrementalTablesEnabled *bool `json:"fullyRefreshIncrementalTablesEnabled,omitempty"`
+
+	// Optional. The service account to run workflow invocations under.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.service_account
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Optional. Specifies the priority for query execution in BigQuery.
+	//  More information can be found at
+	//  https://cloud.google.com/bigquery/docs/running-queries#queries.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.query_priority
+	QueryPriority *string `json:"queryPriority,omitempty"`
+}
+
 // DataformWorkflowConfigStatus defines the config connector machine state of DataformWorkflowConfig
 type DataformWorkflowConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

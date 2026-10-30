@@ -25,29 +25,37 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Triaged parent, identity, and dataset references for DialogflowConversationModel.
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-multi-pattern
     detail: proto message google.cloud.dialogflow.v2.ConversationModel declares 2 resource name patterns (projects/{project}/locations/{location}/conversationModels/{conversation_model}, projects/{project}/conversationModels/{conversation_model}); generated identity uses "projects/{project}/locations/{location}/conversationModels/{conversation_model}" (pass --pattern DialogflowConversationModel=<pattern> to override)
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated DialogflowConversationModelIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.datasets[].dataset
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/ConversationDataset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Dataset *string with DatasetRef *DialogflowConversationDatasetRef on InputDataset.
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef.
   - kind: DialogflowEnvironment
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -246,71 +254,92 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Triaged parent, identity, deprecated fields, and references for DialogflowFlow.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}" contains ancestor segment(s) agents/{agent} with no matching reference or field on DialogflowFlowSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added AgentRef *DialogflowCXAgentRef to DialogflowFlowSpec.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated DialogflowFlowIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.agentRef
     reason: parent-ref-guessed
     detail: emitted as a reference to DialogflowCXAgentRef, read from the agents segment of projects/{project}/locations/{location}/agents/{agent}/flows/{flow}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: Uncommented AgentRef *DialogflowCXAgentRef and removed ProjectRef and Location.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].targetFlow
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Flow (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetFlow *string with TargetFlowRef *DialogflowFlowRef on DialogflowCX_EventHandler.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].targetPage
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Page (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetPage *string with TargetPageRef *DialogflowPageRef on DialogflowCX_EventHandler.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].targetPlaybook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Playbook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetPlaybook *string with TargetPlaybookRef *DialogflowPlaybookRef on DialogflowCX_EventHandler.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].triggerFulfillment.generators[].generator
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Generator *string with GeneratorRef *DialogflowGeneratorRef on DialogflowCX_Fulfillment_GeneratorSettings.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].triggerFulfillment.messages[].toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.eventHandlers[].triggerFulfillment.setParameterActions[].value
@@ -322,61 +351,80 @@ entries:
     field: .spec.eventHandlers[].triggerFulfillment.webhook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Webhook *string with WebhookRef *DialogflowWebhookRef on DialogflowCX_Fulfillment.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.inputParameterDefinitions[].type
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: edited
+    note: Removed deprecated Type *string from ParameterDefinition.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.inputParameterDefinitions[].typeSchema.schemaReference.tool
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on TypeSchema_SchemaReference.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.dataStoreConnections[].dataStore
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced DataStore *string with DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef on DialogflowCX_DataStoreConnection.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.targetFlow
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Flow (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetFlow *string with TargetFlowRef *DialogflowFlowRef on DialogflowCX_KnowledgeConnectorSettings.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.targetPage
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Page (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetPage *string with TargetPageRef *DialogflowPageRef on DialogflowCX_KnowledgeConnectorSettings.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.generators[].generator
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Generator *string with GeneratorRef *DialogflowGeneratorRef on DialogflowCX_Fulfillment_GeneratorSettings.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.messages[].toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.setParameterActions[].value
@@ -388,73 +436,96 @@ entries:
     field: .spec.knowledgeConnectorSettings.triggerFulfillment.webhook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Webhook *string with WebhookRef *DialogflowWebhookRef on DialogflowCX_Fulfillment.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/agents/{agent}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with AgentRef *DialogflowCXAgentRef.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.outputParameterDefinitions[].type
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: edited
+    note: Removed deprecated Type *string from ParameterDefinition.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.outputParameterDefinitions[].typeSchema.schemaReference.tool
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on TypeSchema_SchemaReference.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRouteGroups
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/TransitionRouteGroup (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TransitionRouteGroups []string with TransitionRouteGroupRefs []DialogflowTransitionRouteGroupRef on DialogflowFlowSpec.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].intent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Intent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Intent *string with IntentRef *DialogflowCXIntentRef on DialogflowCX_TransitionRoute.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].targetFlow
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Flow (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetFlow *string with TargetFlowRef *DialogflowFlowRef on DialogflowCX_TransitionRoute.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].targetPage
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Page (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced TargetPage *string with TargetPageRef *DialogflowPageRef on DialogflowCX_TransitionRoute.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].triggerFulfillment.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].triggerFulfillment.generators[].generator
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Generator *string with GeneratorRef *DialogflowGeneratorRef on DialogflowCX_Fulfillment_GeneratorSettings.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].triggerFulfillment.messages[].toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowFlow
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value
@@ -466,7 +537,9 @@ entries:
     field: .spec.transitionRoutes[].triggerFulfillment.webhook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Webhook *string with WebhookRef *DialogflowWebhookRef on DialogflowCX_Fulfillment.
   - kind: DialogflowPage
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -815,46 +888,60 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: Triaged parent, identity, deprecated fields, and references for DialogflowPlaybook.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}" contains ancestor segment(s) agents/{agent} with no matching reference or field on DialogflowPlaybookSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added AgentRef *DialogflowCXAgentRef to DialogflowPlaybookSpec.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated DialogflowPlaybookIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/agents/{agent}, and no AgentRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added AgentRef *DialogflowCXAgentRef to DialogflowPlaybookSpec.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].eventHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].eventHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].eventHandler.fulfillment.generators[].generator
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Generator *string with GeneratorRef *DialogflowGeneratorRef on DialogflowCX_Fulfillment_GeneratorSettings.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].eventHandler.fulfillment.messages[].toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].eventHandler.fulfillment.setParameterActions[].value
@@ -866,31 +953,40 @@ entries:
     field: .spec.handlers[].eventHandler.fulfillment.webhook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Webhook *string with WebhookRef *DialogflowWebhookRef on DialogflowCX_Fulfillment.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].lifecycleHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].lifecycleHandler.fulfillment.conditionalCases[].cases[].caseContent[].message.toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].lifecycleHandler.fulfillment.generators[].generator
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Generator (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Generator *string with GeneratorRef *DialogflowGeneratorRef on DialogflowCX_Fulfillment_GeneratorSettings.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].lifecycleHandler.fulfillment.messages[].toolCall.tool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on DialogflowCX_ToolCall.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.handlers[].lifecycleHandler.fulfillment.setParameterActions[].value
@@ -902,43 +998,57 @@ entries:
     field: .spec.handlers[].lifecycleHandler.fulfillment.webhook
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Webhook (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Webhook *string with WebhookRef *DialogflowWebhookRef on DialogflowCX_Fulfillment.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.inputParameterDefinitions[].type
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: edited
+    note: Removed deprecated Type *string from ParameterDefinition.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.inputParameterDefinitions[].typeSchema.schemaReference.tool
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on TypeSchema_SchemaReference.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/agents/{agent}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with AgentRef *DialogflowCXAgentRef.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.outputParameterDefinitions[].type
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: edited
+    note: Removed deprecated Type *string from ParameterDefinition.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.outputParameterDefinitions[].typeSchema.schemaReference.tool
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>"
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced Tool *string with ToolRef *DialogflowToolRef on TypeSchema_SchemaReference.
   - kind: DialogflowPlaybook
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.referencedTools
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ReferencedTools []string with ReferencedToolRefs []DialogflowToolRef on DialogflowPlaybookSpec.
   - kind: DialogflowTransitionRouteGroup
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

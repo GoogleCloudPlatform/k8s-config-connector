@@ -25,80 +25,108 @@ entries:
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: Triaged CesAgent spec, parent AppRef, references, and observedState.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/apps/{app}/agents/{agent}" contains ancestor segment(s) apps/{app} with no matching reference or field on CesAgentSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: Added AppRef (*CesAppRef) on CesAgentSpec to resolve parent app identity.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with AppRef (*CesAppRef) on CesAgentSpec.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.childAgents
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted ChildAgents to ChildAgentRefs ([]CesAgentRef).
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: Moved Etag from CesAgentSpec to CesAgentObservedState.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.guardrails
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Guardrail (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted Guardrails to GuardrailRefs ([]CesGuardrailRef).
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Replaced ProjectRef and Location with AppRef (*CesAppRef).
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.remoteDialogflowAgent.agent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dialogflow.googleapis.com/DialogflowAgent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted Agent to AgentRef (*dialogflowv1alpha1.DialogflowCXAgentRef).
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.remoteDialogflowAgent.environmentID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Plain environment ID within the remote Dialogflow agent, not a standalone KCC resource reference.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.remoteDialogflowAgent.flowID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Plain flow ID within the remote Dialogflow agent, not a standalone KCC resource reference.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.tools
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted Tools to ToolRefs ([]CesToolRef).
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.toolsets[].toolIDs
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Filter list of tool IDs within the toolset, not standalone KCC resource references.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.toolsets[].toolset
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted Toolset to ToolsetRef (*CesToolsetRef) in Agent_AgentToolset.
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     field: .spec.transferRules[].childAgent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: Converted ChildAgent to ChildAgentRef (*CesAgentRef) in TransferRule.

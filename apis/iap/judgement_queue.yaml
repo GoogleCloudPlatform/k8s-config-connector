@@ -25,15 +25,21 @@ entries:
     group: iap.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined parent.ProjectAndLocationRef
   - kind: IAPTunnelDestGroup
     group: iap.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
+    status: resolved
+    resolution: edited
+    note: commented out empty ObservedState struct and field because TunnelDestGroup has no output-only fields
   - kind: IAPTunnelDestGroup
     group: iap.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined parent.ProjectAndLocationRef
