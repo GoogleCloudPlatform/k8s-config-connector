@@ -231,48 +231,64 @@ entries:
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all entries, modelled child hierarchy with spec.parentRef (*EntryGroupRef), converted entryType to entryTypeRef (*EntryTypeRef), converted parentEntry to parentEntryRef (*DataplexEntryRef), verified message map mapping for aspects
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}" contains ancestor segment(s) entryGroups/{entry_group} with no matching reference or field on DataplexEntrySpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EntryGroupRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.aspects
     reason: message-map-derived
     detail: derived as map[string]Aspect from proto google.cloud.dataplex.v1.Aspect; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified Go type and mapping for map[string]Aspect
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.entryGroupRef
     reason: parent-ref-guessed
     detail: emitted as a reference to EntryGroupRef, read from the entryGroups segment of projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EntryGroupRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.entryType
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_id_or_number}/locations/{location_id}/entryTypes/{entry_type_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to entryTypeRef (*EntryTypeRef)
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.entryType
     reason: possible-reference-by-sibling
     detail: the name matches DataplexEntryType, a resource this service declares; confirm whether it should be a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to entryTypeRef (*EntryTypeRef)
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/entryGroups/{entry_group}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EntryGroupRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexEntry
     group: dataplex.cnrm.cloud.google.com
     field: .spec.parentEntry
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to parentEntryRef (*DataplexEntryRef)
   - kind: DataplexEntryLink
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
