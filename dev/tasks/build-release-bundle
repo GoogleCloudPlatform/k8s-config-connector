@@ -81,6 +81,7 @@ kustomize create
 # until they pass a final manual verification. Once verified, they should be removed from this list.
 BLOCKED_KINDS=(
     "AIPlatformFeatureView"
+    "AIPlatformHyperparameterTuningJob"
     "AIPlatformNotebookRuntimeTemplate"
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"

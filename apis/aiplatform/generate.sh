@@ -50,7 +50,9 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --allow-non-declarative \
   --resource AIPlatformFeatureView:FeatureView \
+  --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -58,6 +60,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformFeatureView:FeatureView \
+  --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
 ${CONTROLLERBUILDER} generate-mapper \

@@ -1,5 +1,8 @@
 [not_representable] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuerySource.uri" reason=bigquery-uri-not-a-gcp-resource-name
 [not_representable] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexRagSource.uri" reason=bigquery-uri-not-a-gcp-resource-name
+[not_representable] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.baseOutputDirectory.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
+[not_representable] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
