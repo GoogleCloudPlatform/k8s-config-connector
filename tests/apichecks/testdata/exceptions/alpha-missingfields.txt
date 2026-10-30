@@ -1620,8 +1620,7 @@
 [missing_field] crd=commerceproducerprivateoffers.commerceproducer.cnrm.cloud.google.com version=v1alpha1: field ".spec.term.startPolicy" is not set in unstructured objects
 [missing_field] crd=commerceproducerprivateoffers.commerceproducer.cnrm.cloud.google.com version=v1alpha1: field ".spec.title" is not set in unstructured objects
 [missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.data" is not set in unstructured objects
-[missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.data" is not set in unstructured objects
 [missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

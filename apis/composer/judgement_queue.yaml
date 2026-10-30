@@ -25,33 +25,45 @@ entries:
     group: composer.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged entries, resolved parent via spec.parentRef, verified no unflagged references or output-only fields, commented out empty ObservedState
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
+    status: resolved
+    resolution: edited
+    note: no output-only fields in proto; ObservedState commented out
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsConfigMaps/{user_workloads_config_map}" contains ancestor segment(s) environments/{environment} with no matching reference or field on ComposerUserWorkloadsConfigMapSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EnvironmentRef) per the single-parent rule; removed projectRef and location
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated ComposerUserWorkloadsConfigMapIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
+    note: Create RPC has no *_id parameter; ServerGeneratedIdentity accepted
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/environments/{environment}, and no EnvironmentRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EnvironmentRef) per the single-parent rule; removed projectRef and location
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/environments/{environment}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*EnvironmentRef) per the single-parent rule; removed projectRef and location
   - kind: ComposerUserWorkloadsSecret
     group: composer.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

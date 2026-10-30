@@ -16,11 +16,10 @@
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/orchestration/airflow/service/v1/environments.proto
 // +kcc:source:service-docs=https://cloud.google.com/composer/
 // +kcc:source:resource-docs=https://docs.cloud.google.com/composer/docs/reference/rest/v1/projects.locations.environments.userWorkloadsConfigMaps
-
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,13 +28,11 @@ var ComposerUserWorkloadsConfigMapGVK = GroupVersion.WithKind("ComposerUserWorkl
 
 // ComposerUserWorkloadsConfigMapSpec defines the desired state of ComposerUserWorkloadsConfigMap
 // +kcc:spec:proto=google.cloud.orchestration.airflow.service.v1.UserWorkloadsConfigMap
-// +kcc:required-from-proto
 type ComposerUserWorkloadsConfigMapSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The ComposerEnvironment this ComposerUserWorkloadsConfigMap is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *v1beta1.EnvironmentRef `json:"parentRef"`
 
 	// The ComposerUserWorkloadsConfigMap name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
