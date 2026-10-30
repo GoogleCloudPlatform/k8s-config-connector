@@ -2189,20 +2189,8 @@
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.system" is not set in unstructured objects
 [missing_field] crd=dataplexentities.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.aspects" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.ancestors[].name" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.ancestors[].type" is not set in unstructured objects
 [missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.createTime" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.description" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.displayName" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.labels" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.platform" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.resource" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.system" is not set in unstructured objects
 [missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entrySource.updateTime" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entryTypeRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.fullyQualifiedName" is not set in unstructured objects
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentEntryRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataplexentries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexentrygroups.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexentrylinks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.aspects" is not set in unstructured objects
 [missing_field] crd=dataplexentrylinks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.entryLinkType" is not set in unstructured objects
