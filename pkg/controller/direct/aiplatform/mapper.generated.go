@@ -113,6 +113,7 @@ func AIPlatformHyperparameterTuningJobObservedState_FromProto(mapCtx *direct.Map
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
@@ -130,6 +131,7 @@ func AIPlatformHyperparameterTuningJobObservedState_ToProto(mapCtx *direct.MapCo
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	// MISSING: Labels
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
@@ -146,7 +148,7 @@ func AIPlatformHyperparameterTuningJobSpec_FromProto(mapCtx *direct.MapContext, 
 	out.ParallelTrialCount = direct.LazyPtr(in.GetParallelTrialCount())
 	out.MaxFailedTrialCount = direct.LazyPtr(in.GetMaxFailedTrialCount())
 	out.TrialJobSpec = CustomJobSpec_FromProto(mapCtx, in.GetTrialJobSpec())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
@@ -162,7 +164,7 @@ func AIPlatformHyperparameterTuningJobSpec_ToProto(mapCtx *direct.MapContext, in
 	out.ParallelTrialCount = direct.ValueOf(in.ParallelTrialCount)
 	out.MaxFailedTrialCount = direct.ValueOf(in.MaxFailedTrialCount)
 	out.TrialJobSpec = CustomJobSpec_ToProto(mapCtx, in.TrialJobSpec)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
@@ -735,11 +737,15 @@ func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *k
 		return nil
 	}
 	out := &krm.CustomJobSpec{}
-	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
+	// MISSING: PersistentResourceID
 	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
 	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	out.ReservedIPRanges = in.ReservedIpRanges
 	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
 	out.BaseOutputDirectory = GCSDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
@@ -749,7 +755,13 @@ func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *k
 	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
 	out.Experiment = direct.LazyPtr(in.GetExperiment())
 	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
-	out.Models = in.Models
+
+	if v := in.GetModels(); len(v) != 0 {
+		for i := range v {
+			out.ModelRefs = append(out.ModelRefs, krm.AIPlatformModelRef{External: v[i]})
+		}
+	}
+
 	return out
 }
 func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
@@ -757,11 +769,15 @@ func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb
 		return nil
 	}
 	out := &pb.CustomJobSpec{}
-	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
+	// MISSING: PersistentResourceID
 	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
 	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.Network = direct.ValueOf(in.Network)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.ReservedIpRanges = in.ReservedIPRanges
 	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
 	out.BaseOutputDirectory = GCSDestination_ToProto(mapCtx, in.BaseOutputDirectory)
@@ -771,7 +787,13 @@ func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb
 	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
 	out.Experiment = direct.ValueOf(in.Experiment)
 	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
-	out.Models = in.Models
+
+	if v := in.ModelRefs; len(v) != 0 {
+		for i := range v {
+			out.Models = append(out.Models, v[i].External)
+		}
+	}
+
 	return out
 }
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
