@@ -1,0 +1,63 @@
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagBindings": [
+    {
+      "name": "tagBindings/%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}",
+      "parent": "//secretmanager.googleapis.com/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${projectId}/secrettag${uniqueId}/enabled"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "business_unit": "helix",
+    "goog-terraform-provisioned": "true",
+    "nc-contains-user-data": "false",
+    "nc-data-description": "none",
+    "nc-env-type": "dev",
+    "nc-has-pii": "false",
+    "nc-individual-owner-uname": "pthomson",
+    "nc-repo": "helix-foundations",
+    "region": "au"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

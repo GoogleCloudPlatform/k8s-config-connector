@@ -269,8 +269,8 @@ type ResourceID struct {
 }
 
 type ReferenceConfig struct {
-	// The inlined type configuration for this reference. Must not be filled
-	// out if Types is set.
+	// The inlined type configuration for this reference. If Types is set,
+	// only Key may be filled out, and only for kind-discriminated Types.
 	TypeConfig `json:",inline"`
 
 	// TFField is the path to the field in the underlying Terraform provider that is
@@ -284,8 +284,13 @@ type ReferenceConfig struct {
 	// exposed in the CRD.
 	Description string `json:"description,omitempty"`
 
-	// Types is the supported types this resource reference supports. Must not
-	// be specified if the inlined TypeConfig is filled out.
+	// Types is the supported types this resource reference supports. It must
+	// not be specified if fields other than Key are set in the inlined
+	// TypeConfig.
+	//
+	// Types with keys represent a union of nested reference fields. Types
+	// without keys represent one reference field discriminated by its "kind"
+	// field; the ReferenceConfig's inlined Key names that field.
 	//
 	// If the value for the reference is not specified in the KRM spec, it is
 	// possible that a default value may be set by GCP. This default reference

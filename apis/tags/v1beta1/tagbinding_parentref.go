@@ -27,7 +27,7 @@ import (
 )
 
 // ParentRef is a reference to a parent resource.
-// +kcc:ref=Project;StorageBucket
+// +kcc:ref=Project;SecretManagerSecret;StorageBucket
 type TagsTagBindingParentRef struct {
 	// Kind to which we are binding the tag.  Defaults to Project if not specified.
 	// +optional
@@ -40,8 +40,8 @@ type TagsTagBindingParentRef struct {
 	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 
-	// Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-	// where {{value}} is the `number` field of a `Project` resource.
+	// The external identifier of the resource to which the tag is bound.
+	// Supported formats depend on Kind.
 	External string `json:"external,omitempty"`
 }
 
@@ -103,8 +103,26 @@ func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.R
 		return err
 	}
 
-	// Include the service qualification in case of ambiguities
-	r.External = "//" + service + "/" + id.GetExternal()
+	external := id.GetExternal()
+	if service == "" {
+		extRef, ok := id.(refs.ExternalRef)
+		if !ok {
+			return fmt.Errorf("kind %q does not implement ExternalRef", r.Kind)
+		}
+		parsed, err := extRef.ParseExternalToIdentity()
+		if err != nil {
+			return err
+		}
+		idV2, ok := parsed.(identity.IdentityV2)
+		if !ok {
+			return fmt.Errorf("identity for kind %q does not implement IdentityV2", r.Kind)
+		}
+		service = idV2.Host()
+		external = parsed.String()
+	}
+
+	// Include the service qualification in case of ambiguities.
+	r.SetExternal("//" + service + "/" + external)
 
 	return nil
 }
@@ -132,6 +150,10 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 
 	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
 		return "", nil, err
+	}
+
+	if r.External == "" {
+		return "", ref, nil
 	}
 
 	// Get host/service
