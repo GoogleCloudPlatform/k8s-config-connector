@@ -31,6 +31,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -61,15 +65,10 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 	var uniqueURLs []string
 	seen := make(map[string]bool)
 	for _, e := range h.Events.GetHTTPEvents() {
-		if e.Request.Method == "GRPC" && e.Response.Status == "OK" && strings.HasPrefix(e.Request.URL, "/google.bigtable.admin.v2.BigtableInstanceAdmin/Get") {
-			if reqBody := e.Request.ParseBody(); reqBody != nil {
-				if name, ok := reqBody["name"].(string); ok && strings.HasPrefix(name, "projects/") {
-					u := "https://bigtableadmin.googleapis.com/v2/" + name
-					if shouldProbeURL(u) && !seen[u] {
-						seen[u] = true
-						uniqueURLs = append(uniqueURLs, u)
-					}
-				}
+		if e.Request.Method == "GRPC" {
+			if u, ok := grpcEventToRESTProbeURL(e); ok && !seen[u] {
+				seen[u] = true
+				uniqueURLs = append(uniqueURLs, u)
 			}
 			continue
 		}
@@ -189,6 +188,87 @@ func isListOrOperationResponse(body map[string]any) bool {
 		}
 	}
 	return false
+}
+
+// grpcEventToRESTProbeURL resolves a recorded gRPC Get* event into its corresponding
+// REST GET URL using the protobuf service's google.api.default_host and google.api.http
+// method annotations registered in protoregistry.GlobalFiles.
+func grpcEventToRESTProbeURL(e *test.LogEntry) (string, bool) {
+	if e == nil || e.Request.Method != "GRPC" || e.Response.Status != "OK" {
+		return "", false
+	}
+	if isGetOperation(e) {
+		return "", false
+	}
+	serviceFullName, methodName, ok := strings.Cut(strings.TrimPrefix(e.Request.URL, "/"), "/")
+	if !ok || serviceFullName == "" || !strings.HasPrefix(methodName, "Get") {
+		return "", false
+	}
+	desc, err := protoregistry.GlobalFiles.FindDescriptorByName(protoreflect.FullName(serviceFullName))
+	if err != nil {
+		return "", false
+	}
+	sd, ok := desc.(protoreflect.ServiceDescriptor)
+	if !ok {
+		return "", false
+	}
+	defaultHost, _ := proto.GetExtension(sd.Options(), annotations.E_DefaultHost).(string)
+	if defaultHost == "" {
+		return "", false
+	}
+	md := sd.Methods().ByName(protoreflect.Name(methodName))
+	if md == nil {
+		return "", false
+	}
+	httpRule, _ := proto.GetExtension(md.Options(), annotations.E_Http).(*annotations.HttpRule)
+	if httpRule == nil || httpRule.GetGet() == "" {
+		return "", false
+	}
+	path, ok := expandHTTPPathTemplate(httpRule.GetGet(), e.Request.ParseBody())
+	if !ok {
+		return "", false
+	}
+	u := "https://" + defaultHost + path
+	if !shouldProbeURL(u) || isListOrOperationResponse(e.Response.ParseBody()) {
+		return "", false
+	}
+	return u, true
+}
+
+// expandHTTPPathTemplate substitutes {field} or {field=pattern} placeholders in a
+// google.api.http path pattern using string fields from reqBody.
+func expandHTTPPathTemplate(pattern string, reqBody map[string]any) (string, bool) {
+	if pattern == "" || reqBody == nil {
+		return "", false
+	}
+	var sb strings.Builder
+	rest := pattern
+	for rest != "" {
+		openIdx := strings.IndexByte(rest, '{')
+		if openIdx == -1 {
+			sb.WriteString(rest)
+			break
+		}
+		sb.WriteString(rest[:openIdx])
+		rest = rest[openIdx+1:]
+		closeIdx := strings.IndexByte(rest, '}')
+		if closeIdx == -1 {
+			return "", false
+		}
+		token := rest[:closeIdx]
+		rest = rest[closeIdx+1:]
+
+		fieldPath, _, _ := strings.Cut(token, "=")
+		if fieldPath == "" {
+			return "", false
+		}
+		val, found, err := unstructured.NestedString(reqBody, strings.Split(fieldPath, ".")...)
+		if err != nil || !found || val == "" {
+			return "", false
+		}
+		sb.WriteString(val)
+	}
+	return sb.String(), true
 }
 
 func shouldProbeURL(u string) bool {
