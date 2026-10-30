@@ -2,6 +2,7 @@
 [naming_violation] file=apis/agentregistry/v1alpha1/authprovider_reference.go prefix=authprovider (expected a valid resource kind prefix)
 [naming_violation] file=apis/agentsearch/v1alpha1/agentsearchengine_reference.go prefix=agentsearchengine (expected a valid resource kind prefix)
 [naming_violation] file=apis/agentsearch/v1alpha1/agentsearchservingconfig_reference.go prefix=agentsearchservingconfig (expected a valid resource kind prefix)
+[naming_violation] file=apis/aiplatform/v1alpha1/common_types.go prefix=common (expected a valid resource kind prefix)
 [naming_violation] file=apis/aiplatform/v1alpha1/recursive_types.go prefix=recursive (expected a valid resource kind prefix)
 [naming_violation] file=apis/appengine/v1alpha1/appengineservice_identity_test.go prefix=appengineservice (expected a valid resource kind prefix)
 [naming_violation] file=apis/appengine/v1alpha1/appengineservice_reference.go prefix=appengineservice (expected a valid resource kind prefix)
