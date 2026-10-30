@@ -68,3 +68,16 @@
   3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
   4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
 - **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
+
+### [2026-10-30] Align MockGCP Logs with RealGCP for DataplexDataScan
+- **Context**: Aligning MockGCP behavior and logs for `DataplexDataScan` (`v1alpha1`) with Real GCP authentic logs.
+- **Problem**:
+  1. Default values on retrieval were not populated in `GetDataScan` and `ListDataScans` in `mockgcp/mockdataplex/datascan.go`.
+  2. `AlreadyExists` and `NotFound` error messages in `datascan.go` needed standardization to adhere to authentic GCP error formats (`Resource '%s' already exists` / `Resource '%s' was not found`).
+  3. Operation normalization in `mockgcp/mockdataplex/normalize.go` was previously narrowly scoped to `/dataProducts`, while it applies to all Dataplex service operations across endpoints (`dataplex.googleapis.com`).
+- **Solution**:
+  1. Called `populateDefaultsForDataScan` on retrieval in `GetDataScan` and `ListDataScans`.
+  2. Standardized `AlreadyExists` and `NotFound` error formatting in `datascan.go`.
+  3. Scoped `ConfigureVisitor` to `dataplex.googleapis.com` so standard operation normalization applies across all Dataplex endpoints.
+  4. Verified both minimal and maximal fixtures pass `hack/compare-mock` and `TestGoldenLogAlignment` with zero discrepancies.
+- **Impact**: Ensures behavioral and log alignment between MockGCP and Real GCP for DataplexDataScan.

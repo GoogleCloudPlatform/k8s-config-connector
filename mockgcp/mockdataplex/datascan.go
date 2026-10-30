@@ -59,6 +59,8 @@ func (s *DataScanService) GetDataScan(ctx context.Context, req *pb.GetDataScanRe
 		return nil, err
 	}
 
+	s.populateDefaultsForDataScan(obj)
+
 	return obj, nil
 }
 
@@ -69,6 +71,7 @@ func (s *DataScanService) ListDataScans(ctx context.Context, req *pb.ListDataSca
 	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
 		ds := obj.(*pb.DataScan)
 		if strings.HasPrefix(ds.GetName(), req.Parent) {
+			s.populateDefaultsForDataScan(ds)
 			response.DataScans = append(response.DataScans, ds)
 		}
 		return nil
@@ -98,6 +101,9 @@ func (s *DataScanService) CreateDataScan(ctx context.Context, req *pb.CreateData
 	s.populateDefaultsForDataScan(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -125,6 +131,9 @@ func (s *DataScanService) UpdateDataScan(ctx context.Context, req *pb.UpdateData
 
 	obj := &pb.DataScan{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
+		}
 		return nil, err
 	}
 
@@ -184,12 +193,14 @@ func (s *DataScanService) DeleteDataScan(ctx context.Context, req *pb.DeleteData
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 	now := time.Now()
 
 	deleted := &pb.DataScan{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
+		}
 		return nil, err
 	}
 

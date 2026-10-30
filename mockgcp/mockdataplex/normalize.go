@@ -23,18 +23,19 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	if strings.Contains(url, "/dataProducts") {
-		replacements.TransformObject("", func(m map[string]any) {
-			if val, found := m["done"]; found && val == false {
-				delete(m, "done")
-			}
-		})
-		replacements.TransformObject(".metadata", func(m map[string]any) {
-			if val, found := m["requestedCancellation"]; found && val == false {
-				delete(m, "requestedCancellation")
-			}
-		})
+	if !strings.Contains(url, "dataplex.googleapis.com") {
+		return
 	}
+	replacements.TransformObject("", func(m map[string]any) {
+		if val, found := m["done"]; found && val == false {
+			delete(m, "done")
+		}
+	})
+	replacements.TransformObject(".metadata", func(m map[string]any) {
+		if val, found := m["requestedCancellation"]; found && val == false {
+			delete(m, "requestedCancellation")
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
