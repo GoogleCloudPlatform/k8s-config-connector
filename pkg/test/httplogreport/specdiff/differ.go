@@ -314,7 +314,10 @@ func collectFinalPhaseResponseBodies(primary []*classifier.ClassifiedEntry, phas
 
 func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, string) {
 	if len(bodies) == 0 {
-		return true, "Yes"
+		if item.SentInUpdateRPC || isZeroOrEmptyValue(item.UpdateVal) {
+			return true, "Yes"
+		}
+		return false, "No (mismatch)"
 	}
 
 	foundIncompatibleAtPath := false
@@ -340,7 +343,7 @@ func responseBodiesMatchDiffItem(bodies []map[string]any, item Item) (bool, stri
 		}
 	}
 
-	if foundIncompatibleAtPath {
+	if foundIncompatibleAtPath || !item.SentInUpdateRPC {
 		return false, "No (mismatch)"
 	}
 
@@ -421,6 +424,9 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false
 	}
+	if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
+		return true
+	}
 	// Allow proto enum integer encoding vs string enum name
 	if isNumericValue(foundVal) && isEnumLikeString(expectedVal) {
 		return true
@@ -442,6 +448,58 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 		return false
 	}
 	return false
+}
+
+func jsonContainsExpected(actual, expected any) bool {
+	if actual == nil && expected == nil {
+		return true
+	}
+	if actual == nil || expected == nil {
+		return false
+	}
+	if aMap, aOk := actual.(map[string]any); aOk {
+		eMap, eOk := expected.(map[string]any)
+		if !eOk {
+			return false
+		}
+		aNorm := make(map[string]any, len(aMap))
+		for k, v := range aMap {
+			aNorm[normalizeKey(k)] = v
+		}
+		for k, eVal := range eMap {
+			nk := normalizeKey(k)
+			aVal, exists := aNorm[nk]
+			if !exists {
+				if isOmissibleEmptyCollection(eVal) {
+					continue
+				}
+				return false
+			}
+			if isOmissibleEmptyCollection(eVal) {
+				if !isOmissibleEmptyCollection(aVal) {
+					return false
+				}
+				continue
+			}
+			if !jsonContainsExpected(aVal, eVal) {
+				return false
+			}
+		}
+		return true
+	}
+	if aSlice, aOk := actual.([]any); aOk {
+		eSlice, eOk := expected.([]any)
+		if !eOk || len(aSlice) != len(eSlice) {
+			return false
+		}
+		for i := range aSlice {
+			if !jsonContainsExpected(aSlice[i], eSlice[i]) {
+				return false
+			}
+		}
+		return true
+	}
+	return fmt.Sprintf("%v", actual) == fmt.Sprintf("%v", expected)
 }
 
 func isNumericValue(v any) bool {
@@ -625,6 +683,76 @@ func ValuesMatch(a, b any) bool {
 	bj, err2 := json.Marshal(b)
 	if err1 == nil && err2 == nil && string(aj) == string(bj) {
 		return true
+	}
+	return jsonValuesEquivalent(a, b)
+}
+
+func jsonValuesEquivalent(a, b any) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if aMap, aOk := a.(map[string]any); aOk {
+		bMap, bOk := b.(map[string]any)
+		if !bOk {
+			return false
+		}
+		aNorm := make(map[string]any, len(aMap))
+		for k, v := range aMap {
+			aNorm[normalizeKey(k)] = v
+		}
+		bNorm := make(map[string]any, len(bMap))
+		for k, v := range bMap {
+			bNorm[normalizeKey(k)] = v
+		}
+		for k, aVal := range aNorm {
+			bVal, exists := bNorm[k]
+			if !exists {
+				if isOmissibleEmptyCollection(aVal) {
+					continue
+				}
+				return false
+			}
+			if !jsonValuesEquivalent(aVal, bVal) {
+				return false
+			}
+		}
+		for k, bVal := range bNorm {
+			if _, exists := aNorm[k]; !exists {
+				if isOmissibleEmptyCollection(bVal) {
+					continue
+				}
+				return false
+			}
+		}
+		return true
+	}
+	if aSlice, aOk := a.([]any); aOk {
+		bSlice, bOk := b.([]any)
+		if !bOk || len(aSlice) != len(bSlice) {
+			return false
+		}
+		for i := range aSlice {
+			if !jsonValuesEquivalent(aSlice[i], bSlice[i]) {
+				return false
+			}
+		}
+		return true
+	}
+	return fmt.Sprintf("%v", a) == fmt.Sprintf("%v", b)
+}
+
+func isOmissibleEmptyCollection(v any) bool {
+	if v == nil {
+		return true
+	}
+	switch val := v.(type) {
+	case []any:
+		return len(val) == 0
+	case map[string]any:
+		return len(val) == 0
 	}
 	return false
 }

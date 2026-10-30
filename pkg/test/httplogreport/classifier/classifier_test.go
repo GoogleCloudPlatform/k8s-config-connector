@@ -157,7 +157,7 @@ func TestClassifier_Classify(t *testing.T) {
 			wantParentIdxs:  []int{0, 0, 1, 2},
 		},
 		{
-			name: "unmarked entries default to PhaseUnknown when only Tier 1 is present",
+			name: "unmarked entries inferred as PhaseCreate when Tier 2 is enabled",
 			fix:  defaultFixture,
 			entries: []*logparser.Entry{
 				{
@@ -171,7 +171,7 @@ func TestClassifier_Classify(t *testing.T) {
 			wantPhaseSource: PhaseSourceInferred,
 			wantRoles:       []string{RolePrimary},
 			wantKinds:       []string{"ExampleWidget"},
-			wantPhases:      []string{logparser.PhaseUnknown},
+			wantPhases:      []string{logparser.PhaseCreate},
 			wantParentIdxs:  []int{0},
 		},
 	}
