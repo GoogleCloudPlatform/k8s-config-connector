@@ -893,8 +893,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The AIPlatformSchedule name. If not given, the metadata.name
-                  will be used.
+                description: The service-generated schedule ID. Used for acquisition
+                  only. Leave unset to create a new resource.
                 type: string
               startTime:
                 description: Optional. Timestamp after which the first run can be

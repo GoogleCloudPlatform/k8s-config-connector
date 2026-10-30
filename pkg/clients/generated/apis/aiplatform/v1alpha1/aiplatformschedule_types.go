@@ -389,7 +389,7 @@ type AIPlatformScheduleSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The AIPlatformSchedule name. If not given, the metadata.name will be used. */
+	/* The service-generated schedule ID. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

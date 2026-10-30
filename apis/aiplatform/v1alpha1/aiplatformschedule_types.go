@@ -38,7 +38,7 @@ type AIPlatformScheduleSpec struct {
 	// +required
 	Location *string `json:"location"`
 
-	// The AIPlatformSchedule name. If not given, the metadata.name will be used.
+	// The service-generated schedule ID. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Cron schedule (https://en.wikipedia.org/wiki/Cron) to launch scheduled
