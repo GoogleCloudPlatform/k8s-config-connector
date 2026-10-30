@@ -70,14 +70,17 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
 
 ## Step 2: Create Minimal and Maximal E2E Fixtures
 
+> [!IMPORTANT]
+> **Immutable Resources & `update.yaml`:** If `{kind}` is an immutable resource (e.g., `<proto_lower>_controller.go` has no `Update*` RPC and returns `"updating <Kind> is not supported"`, or all `.spec` fields in a fixture are immutable), **omit `update.yaml` completely**. Never create a dummy `update.yaml` that only modifies `metadata.labels` or `metadata.annotations` to simulate an update.
+
 1. **Minimal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-minimal/`):
    - `create.yaml`: Include only the bare minimum **required** Spec fields (use `${uniqueId}` for resource names and `${projectId}` where needed).
-   - `update.yaml`: Modify mutable fields from `create.yaml` (omit `update.yaml` only if the resource has no mutable fields or no Update RPC).
+   - `update.yaml`: Modify mutable `.spec` fields from `create.yaml` (**omit `update.yaml`** if the resource has no `Update*` RPC or if none of the fields in `create.yaml` are mutable).
    - `dependencies.yaml`: Include any prerequisite KCC resources referenced by `create.yaml`.
 
 2. **Maximal Fixture** (`pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/<kind_lower>-maximal/`):
    - `create.yaml`: Populate **every supported Spec field** (create additional sibling fixture directories if certain Spec fields are mutually exclusive `oneof`s).
-   - `update.yaml`: Modify all mutable fields defined in `create.yaml`.
+   - `update.yaml`: Modify all mutable `.spec` fields defined in `create.yaml` (**omit `update.yaml`** if the resource has no `Update*` RPC or has no mutable `.spec` fields).
    - `dependencies.yaml`: Include all prerequisite KCC resources.
 
 ---

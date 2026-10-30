@@ -37,6 +37,7 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ## 4. Real-GCP E2E Fixtures & Ratcheting Opt-In
 *   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp).
+*   **Immutable Resources Must Omit `update.yaml`**: If `<Kind>` has no `Update*` RPC (e.g., the controller returns `"updating <Kind> is not supported"`) or a fixture has no mutable `.spec` fields, verify that `update.yaml` is **omitted** rather than populated with a no-op `metadata.labels` or `metadata.annotations` change.
 *   Verify `<Kind>` is not excluded in `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.
 
 # Review Comment Template
@@ -53,4 +54,3 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
 ```
-

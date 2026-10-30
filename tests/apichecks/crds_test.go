@@ -803,9 +803,11 @@ func loadUnstructs(t *testing.T) []*unstructured.Unstructured {
 	for _, fixture := range fixtures {
 		fixture := fixture
 		createResource := bytesToUnstructured(t, fixture.Create)
-		updateResource := bytesToUnstructured(t, fixture.Update)
-
-		unstructs = append(unstructs, createResource, updateResource)
+		unstructs = append(unstructs, createResource)
+		if fixture.Update != nil {
+			updateResource := bytesToUnstructured(t, fixture.Update)
+			unstructs = append(unstructs, updateResource)
+		}
 	}
 
 	return unstructs
