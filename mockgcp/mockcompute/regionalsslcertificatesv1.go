@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -61,29 +62,17 @@ func (s *RegionalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertRe
 	fqn := name.String()
 
 	id := s.generateID()
+	now := time.Now()
 
 	obj := proto.CloneOf(req.GetSslCertificateResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
-	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.CreationTimestamp = PtrTo(s.formatDate(now))
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 	obj.PrivateKey = nil
 
-	if obj.Type == nil {
-		obj.Type = PtrTo("SELF_MANAGED")
-	}
-	if obj.GetType() == "SELF_MANAGED" {
-		if obj.SelfManaged == nil {
-			obj.SelfManaged = &pb.SslCertificateSelfManagedSslCertificate{}
-		}
-		if obj.SelfManaged.Certificate == nil {
-			obj.SelfManaged.Certificate = obj.Certificate
-		}
-	}
-	if obj.ExpireTime == nil {
-		obj.ExpireTime = obj.CreationTimestamp
-	}
+	s.populateSSLCertificateDefaults(now, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
