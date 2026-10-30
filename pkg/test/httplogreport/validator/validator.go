@@ -514,6 +514,12 @@ func (v *Validator) validateV7Authenticity() Check {
 		}
 	}
 
+	// 4. Protobuf Schema & LRO @type Validation (when .build/googleapis.pb is present)
+	if protoErrs := ValidateProtoSchemas(v.entries, ""); len(protoErrs) > 0 {
+		summaries = append(summaries, fmt.Sprintf("Protobuf schema violation: %s.", protoErrs[0]))
+		hints = append(hints, "HAND-EDITED OR HALLUCINATED PROTO PAYLOAD DETECTED: One or more JSON payloads or @type URLs in _http.log violate the protobuf schema in .build/googleapis.pb. Do not hand-edit _http.log; re-record against RealGCP.")
+	}
+
 	if len(summaries) > 0 {
 		check.Passed = false
 		check.Summary = strings.Join(summaries, " ")
