@@ -58,9 +58,6 @@ type DataExchange struct {
 
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
 type SharingEnvironmentConfig struct {
-	// Default Analytics Hub data exchange, used for secured data sharing.
-	DefaultExchangeConfig *SharingEnvironmentConfig_DefaultExchangeConfig `json:"defaultExchangeConfig,omitempty"`
-
 	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 }

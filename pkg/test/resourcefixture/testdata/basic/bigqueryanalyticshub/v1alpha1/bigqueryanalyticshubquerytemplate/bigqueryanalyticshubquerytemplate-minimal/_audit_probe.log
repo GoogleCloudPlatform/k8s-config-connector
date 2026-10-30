@@ -1,0 +1,38 @@
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "displayName": "data_exchange_${uniqueId}",
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "sharingEnvironmentConfig": {
+    "dcrExchangeConfig": {
+      "singleLinkedDatasetPerCleanroom": true,
+      "singleSelectedResourceSharingRestriction": true
+    }
+  }
+}
+
+---
+
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/queryTemplates/bigqueryanalyticshubquerytemplatemin${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "query_template_min_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/queryTemplates/bigqueryanalyticshubquerytemplatemin${uniqueId}",
+  "primaryContact": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "routine": {
+    "definitionBody": "bigqueryanalyticshubquerytemplatemin${uniqueId}() AS (SELECT 2 AS col)",
+    "routineType": "TABLE_VALUED_FUNCTION"
+  },
+  "state": "DRAFTED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

@@ -68,6 +68,10 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+sharingEnvironmentConfig:
+  dcrExchangeConfig:
+    singleLinkedDatasetPerCleanroom: boolean
+    singleSelectedResourceSharingRestriction: boolean
 ```
 
 <table class="properties responsive">
@@ -195,6 +199,46 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. The BigQueryAnalyticsHubDataExchange name. If not given, the metadata.name will be used.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sharingEnvironmentConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Configurable data sharing environment option for a data exchange.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sharingEnvironmentConfig.dcrExchangeConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Data Clean Room (DCR), used for privacy-safe and secured data sharing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sharingEnvironmentConfig.dcrExchangeConfig.singleLinkedDatasetPerCleanroom</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. If True, when subscribing to this DCR, it will create only one linked dataset containing all resources shared within the cleanroom. If False, when subscribing to this DCR, it will create 1 linked dataset per listing. This is not configurable, and by default, all new DCRs will have the restriction set to True.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sharingEnvironmentConfig.dcrExchangeConfig.singleSelectedResourceSharingRestriction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. If True, this DCR restricts the contributors to sharing only a single resource in a Listing. And no two resources should have the same IDs. So if a contributor adds a view with a conflicting name, the CreateListing API will reject the request. if False, the data contributor can publish an entire dataset (as before). This is not configurable, and by default, all new DCRs will have the restriction set to True.</p>
         </td>
     </tr>
 </tbody>

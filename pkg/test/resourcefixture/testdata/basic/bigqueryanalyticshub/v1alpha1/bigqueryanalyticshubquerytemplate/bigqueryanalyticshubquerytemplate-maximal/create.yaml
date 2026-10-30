@@ -1,0 +1,15 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubQueryTemplate
+metadata:
+  name: bigqueryanalyticshubquerytemplatemax${uniqueId}
+spec:
+  parentRef:
+    name: bigqueryanalyticshubdataexchange${uniqueId}
+  resourceID: bigqueryanalyticshubquerytemplatemax${uniqueId}
+  displayName: query_template_max_${uniqueId}
+  description: Sample description for query template ${uniqueId}
+  primaryContact: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
+  documentation: Documentation for query template ${uniqueId}
+  routine:
+    routineType: TABLE_VALUED_FUNCTION
+    definitionBody: "bigqueryanalyticshubquerytemplatemax${uniqueId}() AS (SELECT 1 AS col)"
