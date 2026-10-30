@@ -1,93 +1,58 @@
-61c61
+103c103
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-90c90
+132c132
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses
-101d100
+143d142
 <   "region": "projects/${projectId}/global/regions/us-central1",
-133c132,133
+175c174,175
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-164,234c164
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-<   "name": "${addressID}",
-<   "networkTier": "PREMIUM",
-<   "purpose": "GCE_ENDPOINT",
-<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-<   "status": "RESERVED",
-<   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-< }
-< 
-< ---
-< 
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-< Content-Type: application/json
-< 
-< {
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   }
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE"
-< }
-< 
-< ---
-< 
+206c206
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-270,342c200
+238c238
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels
+245c245,246
+<     "managed-by-cnrm": "true"
+---
+>     "managed-by-cnrm": "true",
+>     "test-label": "updated-value"
+278c279
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+292,336d292
+<   "address": "8.8.8.8",
+<   "addressType": "INTERNAL",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "a test address",
+<   "id": "000000000000000000000",
+<   "kind": "compute#address",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${addressID}",
+<   "networkTier": "PREMIUM",
+<   "purpose": "GCE_ENDPOINT",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+<   "status": "RESERVED",
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+< }
+< 
+< ---
+< 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 < Content-Type: application/json
 < 
@@ -111,59 +76,15 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE"
-< }
-< 
-< ---
-< 
+355c311
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true",
-<     "test-label": "updated-value"
-<   },
-<   "name": "${addressID}",
-<   "networkTier": "PREMIUM",
-<   "purpose": "GCE_ENDPOINT",
-<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-<   "status": "RESERVED",
-<   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-< }
-< 
-< ---
-< 
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+392c348
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-373c231,232
+423c379,380
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

@@ -39,6 +39,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
@@ -47,13 +48,54 @@ X-Xss-Protection: 0
   "kind": "compute#subnetwork",
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
-  "privateIpGoogleAccess": false,
+  "privateIpGoogleAccess": true,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "secondaryIpRanges": [
+    {
+      "ipCidrRange": "10.0.0.0/14",
+      "rangeName": "gke-cluster-sample-gvo236vj5cmojqi-pods-b7228e2c",
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/gke-cluster-sample-gvo236vj5cmojqi-pods-b7228e2c"
+    },
+    {
+      "ipCidrRange": "10.56.0.0/14",
+      "rangeName": "gke-containercluster-zfckqyqxkfxgpay-pods-13646634",
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/gke-containercluster-zfckqyqxkfxgpay-pods-13646634"
+    },
+    {
+      "ipCidrRange": "10.76.0.0/14",
+      "rangeName": "gke-cluster-sample-7wmbgo3dsqdce3i-pods-34360f0c",
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/gke-cluster-sample-7wmbgo3dsqdce3i-pods-34360f0c"
+    },
+    {
+      "ipCidrRange": "10.48.0.0/14",
+      "rangeName": "gke-cluster-sample-sviqqs4hikdbkwa-pods-ad9d745f"
+    },
+    {
+      "ipCidrRange": "10.116.0.0/14",
+      "rangeName": "gke-cluster-sample-yhtvunk6z54vcbi-pods-24bcf007"
+    },
+    {
+      "ipCidrRange": "10.88.0.0/14",
+      "rangeName": "gke-cluster-sample-h3zetza3bxuusqq-pods-b02a3110",
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/gke-cluster-sample-h3zetza3bxuusqq-pods-b02a3110"
+    },
+    {
+      "ipCidrRange": "10.8.0.0/14",
+      "rangeName": "gke-containercluster-o7cuxjrtsi4paey-pods-50a2e79d"
+    },
+    {
+      "ipCidrRange": "10.96.0.0/14",
+      "rangeName": "gke-cluster-sample-rhd7tm2ruqkuqyq-pods-32913aa9"
+    },
+    {
+      "ipCidrRange": "10.16.0.0/14",
+      "rangeName": "gke-cluster-sample-rnr2fyetu3badpi-pods-6b1562ac"
+    }
+  ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "stackType": "IPV4_ONLY"
 }
 
 ---
@@ -182,9 +224,115 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels
+Content-Type: application/json
+
+{
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "a test address",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
@@ -192,7 +340,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED",
-  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---

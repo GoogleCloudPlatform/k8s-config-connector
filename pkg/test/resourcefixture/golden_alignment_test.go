@@ -589,6 +589,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
+		delete(v, "progress")
+		delete(v, "user")
 		delete(v, "statusMessage")
 		delete(v, "createTime")
 		delete(v, "creationTime")
@@ -760,18 +762,28 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			delete(v, "region")
 			if status, ok := v["status"].(string); ok && status == "PENDING" {
 				v["status"] = "RUNNING"
 			}
 			if opType, ok := v["operationType"].(string); ok && opType == "UPGRADE_NODES" {
 				delete(v, "operationType")
 			}
+			if opType, ok := v["operationType"].(string); ok && opType == "setLabels" {
+				delete(v, "operationType")
+			}
 		} else if name, ok := v["name"].(string); ok && (strings.Contains(name, "operation") || strings.Contains(name, "/operations/")) {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			delete(v, "region")
 			if status, ok := v["status"].(string); ok && status == "PENDING" {
 				v["status"] = "RUNNING"
 			}
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#address" {
+			delete(v, "ipVersion")
+			delete(v, "networkTier")
+			delete(v, "status")
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
