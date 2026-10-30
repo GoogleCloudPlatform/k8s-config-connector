@@ -59,7 +59,7 @@ Please enforce all of the following review criteria and invariants.
 ## 4. Release Bundle Blocklist, Compilation, & `apichecks` Verification
 
 *   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
-    *   Verify that each newly prepopulated `<Kind>` is added (formatted with 4-space indentation and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+    *   Verify that each newly prepopulated `<Kind>` is added (formatted with 4-space indentation and double quotes as `    "<Kind>"`, sorted alphabetically into the existing list without duplicates) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until the pipeline's final Release step removes it.
 *   **Build, `apichecks`, `envtest`, & Operator Golden Verification**:
     *   Run:
         ```bash

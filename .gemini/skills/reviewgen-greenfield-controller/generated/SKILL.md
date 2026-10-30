@@ -16,6 +16,7 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
     *   `${CONTROLLERBUILDER} generate-fuzzer --prepopulate-resource --service <proto.service> --api-version <group>/<version> --resource <Kind>:<ProtoMessage>`
 *   Verify that `pkg/controller/direct/<service>/<proto_lower>_controller.go` carries the `// +generated:controller` header marker, `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` carries the `// +generated:fuzzer` header marker, and `pkg/controller/resourceconfig/static_config.go` has been updated via `python3 dev/tasks/generate_static_config.py`.
 *   Verify `TestGenerateScripts`, `TestDirectResourceFileNaming`, `TestRegisteredTemplatesMatchCAI`, and `TestVerifyLabelsTestCasesExist` pass.
+*   Verify `<Kind>` is still in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`: only the pipeline's final Release step removes it.
 
 ## 2. Canonical Greenfield Controller Invariants (The 5 Standards)
 1.  **GAPIC REST Client Preference**:
@@ -37,6 +38,8 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ## 4. Real-GCP E2E Fixtures & Ratcheting Opt-In
 *   Verify `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind_lower>/` contains both `<kind_lower>-minimal` and `<kind_lower>-maximal` fixtures with `create.yaml`, `update.yaml` (if mutable), `_http.log`, and `_audit_probe.log` recorded against **real GCP** (never mockgcp).
+*   Verify no `_http.log`, `_audit_probe.log` or golden file was edited by hand: they come from `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+*   **Parent fields**: for a child resource, `create.yaml` sets `spec.parentRef` to the parent that `dependencies.yaml` creates (or `external` for an external-only reference type); for a top-level resource, `projectRef` plus `location`. `update.yaml` never changes the parent fields. Project, location and ancestor IDs come from the identity, never from the `cnrm.cloud.google.com/project-id` annotation, `refs.ResolveProjectID` or `refs.GetLocation`.
 *   Verify `<Kind>` is not excluded in `ShouldTestRereconiliation` in `tests/e2e/ratcheting.go`.
 
 # Review Comment Template
@@ -44,11 +47,11 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 ```markdown
 ### KCC Greenfield Controller Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
-* **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` invokes `generate-controller` & `generate-fuzzer` with `--prepopulate-resource`, files have `+generated:controller` / `+generated:fuzzer`, and `static_config.go` is updated)
+* **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` invokes `generate-controller` & `generate-fuzzer` with `--prepopulate-resource`, files have `+generated:controller` / `+generated:fuzzer`, `static_config.go` is updated, and `<Kind>` is still in `BLOCKED_KINDS`)
 * **Client Creation & Reference Normalization**: [Pass/Fail] - (Confirm GAPIC REST client and `common.NormalizeGreenfieldReferences` in `AdapterForObject`)
 * **CompareGreenfieldSpec & Structured Reporting**: [Pass/Fail] - (Confirm `common.CompareGreenfieldSpec` / `CompareGreenfieldSpecAndLabels` and `structuredreporting.ReportDiff` are used in `Update`)
 * **LRO Wait & Mandatory Status Updates**: [Pass/Fail] - (Confirm `op.Wait(ctx)` and `setStatus` on both no-op and mutating paths)
-* **Fuzzer & Real-GCP Test Coverage**: [Pass/Fail] - (Confirm `<kind>_fuzzer.generated.go`, minimal/maximal fixtures with real-GCP `_http.log` & `_audit_probe.log`, and ratcheting enabled)
+* **Fuzzer & Real-GCP Test Coverage**: [Pass/Fail] - (Confirm `<kind>_fuzzer.generated.go`, minimal/maximal fixtures with real-GCP `_http.log` & `_audit_probe.log` (none edited by hand), parent fields set as the spec models them and unchanged in `update.yaml`, and ratcheting enabled)
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]

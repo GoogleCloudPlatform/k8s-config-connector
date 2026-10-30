@@ -80,6 +80,21 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
    - `update.yaml`: Modify all mutable fields defined in `create.yaml`.
    - `dependencies.yaml`: Include all prerequisite KCC resources.
 
+3. **Parent fields** (as `<Kind>Spec` models them; see `kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md`). Never change them in `update.yaml`.
+   ```yaml
+   # Top-level resource (project + location parent)
+   spec:
+     projectRef:
+       external: projects/${projectId}
+     location: us-central1
+   ---
+   # Child resource: spec.parentRef names the parent, which dependencies.yaml creates
+   spec:
+     parentRef:
+       name: <parentkind>-${uniqueId}
+   ```
+   If the parent's reference type is external-only (`External` only), create the parent in `dependencies.yaml` with the KCC kind that manages it and set `parentRef: {external: <the parent's full resource name>}`.
+
 ---
 
 ## Step 3: Remove from Ratcheting Exclusions (MANDATORY)
@@ -108,8 +123,10 @@ RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 1. Run validation checks (without re-running `hack/record-gcp`):
    ```bash
    dev/ci/presubmits/fuzz-roundtrippers
-   dev/ci/presubmits/tests-e2e-fixtures-direct
    WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
+   go test ./tests/apichecks/... ./pkg/controller/direct/<service>/...
+   go test ./pkg/gcpurls/... ./pkg/test/resourcefixture/... -run "TestRegisteredTemplatesMatchCAI|TestVerifyLabelsTestCasesExist"
    ```
+   Don't run the fixtures against MockGCP in this step (`dev/ci/presubmits/tests-e2e-fixtures-suite <service>` runs them against mocks): MockGCP comes in Step 3.
 2. Run `make ready-pr` and commit all changes.
 3. In the PR description, document the GCP project used for `record-gcp` and post the `gcloud logging read 'logName:"audit" AND "<service>"' --freshness=3h --limit=50` output as a PR comment.

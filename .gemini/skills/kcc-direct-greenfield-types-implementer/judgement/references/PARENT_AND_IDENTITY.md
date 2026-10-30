@@ -21,17 +21,27 @@ Inspect the `option (google.api.resource)` pattern(s) on the resource proto mess
      *(Note: `parent.ProjectAndLocationRef` defines `ProjectRef *refsv1beta1.ProjectRef` (`+required`) and `Location string` (`+required`, immutable); its `Location string` field is an explicitly approved exception to the Go scalar pointer rule.)*
   3. Re-run `./apis/<service>/generate.sh` so `controllerbuilder generate-identity` regenerates `<kind>_identity.generated.go` and `<kind>_identity_generated_test.go`.
   4. Mark `location-or-parent-ref` as `status: resolved`, `resolution: edited`, `note: "replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef"`.
+- **Other top-level parents** keep the generated root field, required: `projects/{project}` keeps `ProjectRef` with no `Location`; `folders/{folder}` or `organizations/{organization}` keeps `FolderRef` or `OrganizationRef`, plus `Location` if the pattern has `locations/{location}`.
 
 ### Case B: Child Resource of Another GCP Resource (`projects/{project}/locations/{location}/<parents>/{parent}/<collection>/{<id>}`)
 - **Triggered by**: `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-ref-not-supported`, and `location-or-parent-ref` (with detail stating `"the parent is ..., which already names the location; a reference to it could replace location and the root reference"`).
+- **Rule (single parent)**: a child resource has exactly one hierarchy field, `spec.parentRef`. No `projectRef`, `folderRef`, `organizationRef`, `location`, `region`, `zone` or grandparent reference anywhere in the spec: project, location and every ancestor ID come from the resolved parent. For this one field, the rule overrides `docs/develop-resources/api-conventions/validations.md` Rule 3 (an inlined `Parent` struct) and the convention that a reference is named after its target kind.
 - **How to resolve**:
-  1. **If `<ParentKind>Ref` already exists in the package (`parent-ref-guessed`)**:
-     - Uncomment the guessed `<Parent>Ref *<ParentKind>Ref` (or `parent.Reference` once available for the service) on `<Kind>Spec` in `<kind>_types.go`, mark it `// +required`, remove the `// +kcc:guess` comment, and **delete** the redundant `ProjectRef` and `Location` fields (a child resource derives its project and location from its parent reference).
-  2. **If `<ParentKind>Ref` does not exist yet (`parent-ref-not-modelled`)**:
-     - If the parent resource exists in the service proto, generate its identity and reference via `controllerbuilder generate-identity` (or create `<parentkind>_identity.go` and an external-only `<parentkind>_reference.go` in `apis/<service>/v1alpha1/` following `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`, updating `testdata/exceptions/naming_violations.txt` if `TestDirectResourceFileNaming` requires it).
-     - Replace `ProjectRef` and `Location` on `<Kind>Spec` with `<Parent>Ref *<ParentKind>Ref` (`// +required`).
-  3. Re-run `./apis/<service>/generate.sh` so `controllerbuilder generate-identity` wires `<Parent>Ref` into `<kind>_identity.generated.go` and resolves any `identity-root-unknown` entry automatically.
-  4. Mark `parent-ref-*` and `location-or-parent-ref` as `status: resolved`, `resolution: edited`, `note: "replaced ProjectRef and Location with <Parent>Ref (*<ParentKind>Ref) and regenerated identity"`.
+  1. **Find the parent's reference type anywhere under `apis/`**: `git grep -n "type <ParentKind>Ref struct" -- apis/`. `controllerbuilder` only searches `<Kind>`'s own package, so `parent-ref-not-modelled` can appear even when the ref exists in another version or group package (e.g. `ArtifactRegistryRepositoryRef` in `apis/artifactregistry/v1beta1/`). Reuse it; never create a second ref type for the same kind, and don't change the parent's CRD. If none exists: for a parent in the same proto service, generate its identity and reference via `controllerbuilder generate-identity`; otherwise create `<parentkind>_identity.go` and an external-only `<parentkind>_reference.go` in `apis/<service>/v1alpha1/` following `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md` (updating `testdata/exceptions/naming_violations.txt` if `TestDirectResourceFileNaming` requires it).
+  2. Replace `ProjectRef`, `Location` and any guessed `<Parent>Ref` on `<Kind>Spec` with exactly:
+     ```go
+     // The <ParentKind> this <Kind> is created under.
+     // +required
+     // +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+     ParentRef *<ParentKind>Ref `json:"parentRef"`
+     ```
+     Never inline it (`json:",inline"`), and don't name any other field `parent<Something>Ref`. If the proto message has its own `parent` field, don't add a spec field for it: the controller fills it from the identity.
+  3. Re-run `./apis/<service>/generate.sh`. `controllerbuilder generate-identity` recognizes a field named `parentRef`: the generated identity normalizes `spec.parentRef` and builds the identity from the parent's external reference plus the resource ID, which also resolves `identity-root-unknown`.
+  4. `TestCRDsHaveParentRefs` is skipped on master for greenfield parent refs: don't add lines to `tests/apichecks/testdata/exceptions/crds_have_parent_refs.txt`, don't edit the test, and don't rename `parentRef` after the parent kind.
+  5. Mark `parent-ref-*`, `location-or-parent-ref` and `identity-root-unknown` as `status: resolved`, `resolution: edited`, `note: "modelled as spec.parentRef (*<ParentKind>Ref); removed ProjectRef and Location"`.
+  6. **Stop and explain** (make no commit) instead of improvising if:
+     - the resource's name patterns have parents of different kinds (e.g. `DialogflowTransitionRouteGroup` lives under an agent or under a flow): one typed `parentRef` can't point at both, and there is no shared multi-kind reference type yet; or
+     - no KCC kind, direct or legacy, can create the parent (it isn't in KCC, or it has types but no controller): Step 2's fixtures must create the parent in `dependencies.yaml`, so the parent kind has to be implemented first. A parent that KCC manages only through a legacy (Terraform/DCL) kind is fine: reuse its reference type, or give it an external-only one as in item 1.
 
 ### Case C: Global / Non-Locational, Multi-Parent, or Proto `location`/`region`/`zone` Fields (`location-parent-unknown`, `location-or-parent-ref`, `parent-multiple-patterns`, `root-*`)
 - **`location-parent-unknown`**:

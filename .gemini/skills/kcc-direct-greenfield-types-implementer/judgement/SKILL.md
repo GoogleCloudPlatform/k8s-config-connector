@@ -86,7 +86,7 @@ You **must** also apply the baseline KRM standards in:
        go build ./pkg/controller/direct/<service>/...
        FOCUS=<Kind> go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers
        ```
-3. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as a separate graduation step removes it at the end of the pipeline).
+3. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as the pipeline's final Release step removes it).
 4. If `go.mod` was updated, run `go mod tidy && (cd mockgcp && go mod tidy)` (or `make ensure`) so `validate-ensure` passes.
 5. Run verification tests (including `TestCRDBackwardCompatibility`, `TestHandWrittenProtoStructAnnotationsAndNaming`, `TestGenerateScripts`, `TestDirectResourceFileNaming`, and `TestRegisteredTemplatesMatchCAI`):
    ```bash
