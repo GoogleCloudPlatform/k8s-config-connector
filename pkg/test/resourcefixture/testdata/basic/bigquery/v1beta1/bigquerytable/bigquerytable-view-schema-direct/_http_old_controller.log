@@ -85,6 +85,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -562,6 +563,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -624,6 +626,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -706,19 +709,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
-        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
-        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -733,6 +733,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -774,19 +775,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
-        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
-        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -801,6 +799,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }

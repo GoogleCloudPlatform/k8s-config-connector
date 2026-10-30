@@ -85,6 +85,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -452,13 +453,10 @@ X-Xss-Protection: 0
   "location": "us-central1",
   "materializedView": {
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -532,13 +530,10 @@ X-Xss-Protection: 0
   "location": "us-central1",
   "materializedView": {
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -640,13 +635,10 @@ X-Xss-Protection: 0
   "location": "us-central1",
   "materializedView": {
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -657,6 +649,97 @@ X-Xss-Protection: 0
     "partitionedColumn": [
       {
         "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "mode": "NULLABLE",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "user_id",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  },
+  "type": "MATERIALIZED_VIEW"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clustering": {
+    "fields": [
+      "user_id"
+    ]
+  },
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "mv_test3_updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "department_name": "hr",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "materializedView": {
+    "enableRefresh": true,
+    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+    "refreshIntervalMs": "1800000"
+  },
+  "materializedViewStatus": {},
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "mode": "NULLABLE",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "user_id",
+        "type": "STRING"
       }
     ]
   },
@@ -723,6 +806,20 @@ X-Xss-Protection: 0
     "partitionedColumn": [
       {
         "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "mode": "NULLABLE",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "user_id",
+        "type": "STRING"
       }
     ]
   },
