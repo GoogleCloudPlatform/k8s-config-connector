@@ -31,6 +31,31 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// Since billingConfig, connectionRevision, connectorVersionInfraConfig, connectorVersionLaunchStage,
+	// host, subscriptionType, and tlsServiceDirectory are not present in the google.cloud.connectors.v1 protobuf,
+	// they are not modeled in MockGCP. We strip them from the HTTP logs to align with MockGCP.
+	// TODO: Add these fields to mockgcp proto once supported in googleapis.
+	replacements.RemovePath(".billingConfig")
+	replacements.RemovePath(".response.billingConfig")
+
+	replacements.RemovePath(".connectionRevision")
+	replacements.RemovePath(".response.connectionRevision")
+
+	replacements.RemovePath(".connectorVersionInfraConfig")
+	replacements.RemovePath(".response.connectorVersionInfraConfig")
+
+	replacements.RemovePath(".connectorVersionLaunchStage")
+	replacements.RemovePath(".response.connectorVersionLaunchStage")
+
+	replacements.RemovePath(".host")
+	replacements.RemovePath(".response.host")
+
+	replacements.RemovePath(".subscriptionType")
+	replacements.RemovePath(".response.subscriptionType")
+
+	replacements.RemovePath(".tlsServiceDirectory")
+	replacements.RemovePath(".response.tlsServiceDirectory")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

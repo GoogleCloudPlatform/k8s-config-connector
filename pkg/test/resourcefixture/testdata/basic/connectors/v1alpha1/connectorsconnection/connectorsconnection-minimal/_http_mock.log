@@ -103,8 +103,6 @@ X-Xss-Protection: 0
     "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/gcs/versions/1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Minimal ConnectorsConnection create",
-    "envoyImageLocation": "us.gcr.io/apigee-saas-prod-repo/thirdparty/connectors-envoy/master:1.0.12",
-    "imageLocation": "us-docker.pkg.dev/connectors-producer-prod/connectors-platform/connectors-service-gcp-gcs@sha256:65be052f7049a25dfc0e9e137b1d13533212a50c6e61b5d0c6d9e12334783f0b",
     "name": "projects/${projectId}/locations/us-central1/connections/connectorsconnection-${uniqueId}",
     "nodeConfig": {
       "maxNodeCount": 50,
@@ -238,8 +236,6 @@ X-Xss-Protection: 0
     "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/gcs/versions/1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Minimal ConnectorsConnection update",
-    "envoyImageLocation": "us.gcr.io/apigee-saas-prod-repo/thirdparty/connectors-envoy/master:1.0.12",
-    "imageLocation": "us-docker.pkg.dev/connectors-producer-prod/connectors-platform/connectors-service-gcp-gcs@sha256:65be052f7049a25dfc0e9e137b1d13533212a50c6e61b5d0c6d9e12334783f0b",
     "name": "projects/${projectId}/locations/us-central1/connections/connectorsconnection-${uniqueId}",
     "nodeConfig": {
       "maxNodeCount": 50,

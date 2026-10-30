@@ -51,6 +51,8 @@ func (s *connectorsServer) GetConnection(ctx context.Context, req *pb.GetConnect
 		return nil, err
 	}
 
+	s.populateConnectionDefaults(name, obj)
+
 	return obj, nil
 }
 
@@ -73,6 +75,9 @@ func (s *connectorsServer) CreateConnection(ctx context.Context, req *pb.CreateC
 	s.populateConnectionDefaults(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -86,7 +91,11 @@ func (s *connectorsServer) CreateConnection(ctx context.Context, req *pb.CreateC
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		result := proto.Clone(obj).(*pb.Connection)
+		// Real GCP LRO response does not return envoyImageLocation or imageLocation on create
+		result.EnvoyImageLocation = ""
+		result.ImageLocation = ""
+		return result, nil
 	})
 }
 
@@ -132,7 +141,11 @@ func (s *connectorsServer) UpdateConnection(ctx context.Context, req *pb.UpdateC
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		result := proto.Clone(obj).(*pb.Connection)
+		// Real GCP LRO response does not return envoyImageLocation or imageLocation on update
+		result.EnvoyImageLocation = ""
+		result.ImageLocation = ""
+		return result, nil
 	})
 }
 
@@ -184,7 +197,12 @@ func (s *connectorsServer) ListConnections(ctx context.Context, req *pb.ListConn
 	if err := s.storage.List(ctx, connectionKind, storage.ListOptions{
 		Prefix: findPrefix,
 	}, func(obj proto.Message) error {
-		response.Connections = append(response.Connections, obj.(*pb.Connection))
+		conn := obj.(*pb.Connection)
+		connName, err := s.parseConnectionName(conn.GetName())
+		if err == nil {
+			s.populateConnectionDefaults(connName, conn)
+		}
+		response.Connections = append(response.Connections, conn)
 		return nil
 	}); err != nil {
 		return nil, err
