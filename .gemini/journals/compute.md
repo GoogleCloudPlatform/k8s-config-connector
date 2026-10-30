@@ -46,3 +46,15 @@
   3. Registered dual controllers in `pkg/controller/resourceconfig/static_config.go` with `SupportedControllers: [Direct, Terraform]` keeping default as `Terraform` for brownfield backward compatibility.
   4. Executed `hack/compare-mock` and verified E2E test scenarios for direct reconciliation, legacy fallback, and `TestMigrationToDirect`.
 - **Impact**: Successfully enables direct reconciliation for `ComputeProjectMetadata` with 0 diffs during takeover and steady-state re-reconciliation.
+
+### [2026-10-30] Direct Migration of ComputeManagedSSLCertificate
+- **Context**: Implementing direct controller and test fixtures for `ComputeManagedSSLCertificate` (issue #14697).
+- **Problem**: In GCP, SSL certificates are immutable and cannot be updated after creation. The legacy controller had server defaults (`type: "MANAGED"`, `name`) and status fields that needed clean handling during brownfield takeover without drift loops or diff mismatches.
+- **Solution**:
+  1. Added `newSslCertificatesClient` in `pkg/controller/direct/compute/client.go` using GAPIC REST client (`compute.NewSslCertificatesRESTClient`).
+  2. Implemented `ComputeManagedSSLCertificateAdapter` supporting `Find`, `Create`, `Update`, `Delete`, and `Export`.
+  3. In `Update`, used `common.CompareBrownfieldSpec` to automatically adopt server-defaulted fields (`type: "MANAGED"`, `name`) via its `MergeUnsetFields` step, reporting diffs via `structuredreporting.ReportDiff` and returning an error explaining immutability if diffs exist.
+  4. Registered dual controllers in `pkg/controller/resourceconfig/static_config.go` with `SupportedControllers: [Direct, Terraform]` while keeping `DefaultController` as legacy `Terraform`.
+  5. Validated against real GCP and MockGCP with recorded test fixtures and golden comparisons.
+- **Impact**: Provides a robust, idiomatic direct controller for `ComputeManagedSSLCertificate` with zero-write re-reconciliation and clean immutability enforcement.
+
