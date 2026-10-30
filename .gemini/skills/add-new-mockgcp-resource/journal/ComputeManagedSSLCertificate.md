@@ -21,19 +21,27 @@ When recording baseline HTTP logs against real GCP project `cnrm-barni-4` using 
 
 ## Solution
 
-Updated `Insert` in both `mockcompute/globalsslcertificatesv1.go` and `mockcompute/regionalsslcertificatesv1.go`:
+Centralized SSL certificate defaulting in `mockcompute/sslcertificate.go` (`populateSSLCertificateDefaults`), used by both `GlobalSSLCertificatesV1.Insert` and `RegionalSSLCertificatesV1.Insert`:
 - If `obj.Managed != nil` and `obj.Type == nil`, default `Type` to `MANAGED`.
-- Only populate `ExpireTime = CreationTimestamp` when `Type == "SELF_MANAGED"`.
-- When `Type == "MANAGED"`:
-  - Default `Managed.Status` to `PROVISIONING`.
-  - Normalize domains by trimming trailing dots.
-  - Populate `Managed.DomainStatus` with `PROVISIONING` for each domain.
+- For `SELF_MANAGED` certificates, populate `ExpireTime = CreationTimestamp`.
+- For `MANAGED` certificates:
+  - Default `Managed.Status` to `PROVISIONING` if omitted.
+  - Normalize domains in `Managed.Domains` by trimming trailing dots (`.`).
+  - Normalize keys in `Managed.DomainStatus` by trimming trailing dots (`.`).
+  - Handle field presence and domain status according to `Managed.Status`:
+    - `PROVISIONING`: `certificate`, `expireTime`, and `subjectAlternativeNames` are omitted. Unset domain statuses default to `PROVISIONING`.
+    - `ACTIVE`: `certificate` is populated with a dummy PEM cert, `expireTime` is set to ~90 days from creation, and `subjectAlternativeNames` is populated with the domains. Unset domain statuses default to `ACTIVE`.
+    - `PROVISIONING_FAILED` / `PROVISIONING_FAILED_PERMANENTLY`: `certificate`, `expireTime`, and `subjectAlternativeNames` are omitted. Unset domain statuses default to `FAILED_NOT_VISIBLE`.
+    - `RENEWAL_FAILED`: `certificate` is populated with an existing/dummy cert, `expireTime` is set to ~30 days from creation, and `subjectAlternativeNames` is populated with domains. Failing/unset domain statuses default to `FAILED_NOT_VISIBLE`.
 
 ## Validation
 
+- Added unit tests in `mockgcp/mockcompute/sslcertificate_test.go` covering each status case (`SELF_MANAGED`, `PROVISIONING`, `ACTIVE`, `PROVISIONING_FAILED`, `PROVISIONING_FAILED_PERMANENTLY`, and `RENEWAL_FAILED`).
 - Recorded authentic baseline against real GCP (`cnrm-barni-4`) using `hack/record-gcp pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computemanagedsslcertificate`.
 - Ran `hack/compare-mock pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computemanagedsslcertificate` successfully.
 - Verified golden log alignment tests pass:
   - `go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/compute/v1beta1/computemanagedsslcertificate"`
   - `go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/compute/v1beta1/computesslcertificate"`
   - `go test -v ./pkg/test/resourcefixture -run "TestRealHTTPLogsDoNotContainMockGCP"`
+- Verified end-to-end fixture reconciliation and re-reconciliation pass against MockGCP:
+  - `RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -run TestAllInSeries/fixtures/computemanagedsslcertificate`

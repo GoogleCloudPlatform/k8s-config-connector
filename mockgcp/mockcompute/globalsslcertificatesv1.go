@@ -17,6 +17,7 @@ package mockcompute
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -60,54 +61,16 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 	fqn := name.String()
 
 	id := s.generateID()
+	now := time.Now()
 
 	obj := proto.CloneOf(req.GetSslCertificateResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
-	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.CreationTimestamp = PtrTo(s.formatDate(now))
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")
 	obj.PrivateKey = nil
 
-	if obj.Type == nil {
-		if obj.Managed != nil {
-			obj.Type = PtrTo("MANAGED")
-		} else {
-			obj.Type = PtrTo("SELF_MANAGED")
-		}
-	}
-	if obj.GetType() == "SELF_MANAGED" {
-		if obj.SelfManaged == nil {
-			obj.SelfManaged = &pb.SslCertificateSelfManagedSslCertificate{}
-		}
-		if obj.SelfManaged.Certificate == nil {
-			obj.SelfManaged.Certificate = obj.Certificate
-		}
-		if obj.ExpireTime == nil {
-			obj.ExpireTime = obj.CreationTimestamp
-		}
-	}
-	if obj.GetType() == "MANAGED" {
-		if obj.Managed == nil {
-			obj.Managed = &pb.SslCertificateManagedSslCertificate{}
-		}
-		if obj.Managed.Status == nil {
-			obj.Managed.Status = PtrTo("PROVISIONING")
-		}
-		if len(obj.Managed.Domains) > 0 {
-			var normalizedDomains []string
-			if obj.Managed.DomainStatus == nil {
-				obj.Managed.DomainStatus = make(map[string]string)
-			}
-			for _, d := range obj.Managed.Domains {
-				normalizedDomain := strings.TrimSuffix(d, ".")
-				normalizedDomains = append(normalizedDomains, normalizedDomain)
-				if _, ok := obj.Managed.DomainStatus[normalizedDomain]; !ok {
-					obj.Managed.DomainStatus[normalizedDomain] = "PROVISIONING"
-				}
-			}
-			obj.Managed.Domains = normalizedDomains
-		}
-	}
+	s.populateSSLCertificateDefaults(now, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
