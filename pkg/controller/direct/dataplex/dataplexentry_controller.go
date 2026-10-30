@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:controller
+// +tool:controller
 // krm.group: dataplex.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // krm.kind: DataplexEntry
@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -62,15 +63,16 @@ func (m *modelEntry) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.DataplexEntryIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get dataplex GCP client
 	gcpClient, err := m.client(ctx, id.Location)
@@ -78,9 +80,10 @@ func (m *modelEntry) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 	return &EntryAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:            id,
+		gcpClient:     gcpClient,
+		desired:       obj,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -97,8 +100,9 @@ func (m *modelEntry) AdapterForURL(ctx context.Context, url string) (directbase.
 		return nil, err
 	}
 	return &EntryAdapter{
-		id:        id,
-		gcpClient: gcpClient,
+		id:            id,
+		gcpClient:     gcpClient,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 func (m *modelEntry) client(ctx context.Context, location string) (*gcp.CatalogClient, error) {
@@ -118,10 +122,11 @@ func (m *modelEntry) client(ctx context.Context, location string) (*gcp.CatalogC
 }
 
 type EntryAdapter struct {
-	id        *krm.DataplexEntryIdentity
-	gcpClient *gcp.CatalogClient
-	desired   *krm.DataplexEntry
-	actual    *dataplexpb.Entry
+	id            *krm.DataplexEntryIdentity
+	gcpClient     *gcp.CatalogClient
+	desired       *krm.DataplexEntry
+	actual        *dataplexpb.Entry
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &EntryAdapter{}
@@ -186,13 +191,31 @@ func (a *EntryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Entry", "name", a.id)
 
+	normalize := func(ctx context.Context, p *dataplexpb.Entry) error {
+		if a.projectMapper != nil && p.GetEntryType() != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, p.GetEntryType())
+			if err != nil {
+				return err
+			}
+			p.EntryType = normalized
+		}
+		if a.projectMapper != nil && p.GetParentEntry() != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, p.GetParentEntry())
+			if err != nil {
+				return err
+			}
+			p.ParentEntry = normalized
+		}
+		return nil
+	}
+
 	resource, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		DataplexEntrySpec_FromProto,
 		DataplexEntrySpec_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
@@ -238,13 +261,15 @@ func (a *EntryAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	obj.Spec.ParentRef = &krm.EntryGroupRef{External: a.id.ParentString()}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Entry)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.Entry)
 	u.SetGroupVersionKind(krm.DataplexEntryGVK)
 
 	return u, nil

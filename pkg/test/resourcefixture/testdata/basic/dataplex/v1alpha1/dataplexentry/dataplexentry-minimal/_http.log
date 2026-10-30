@@ -1,0 +1,545 @@
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryGroup
+
+{
+  "entryGroup": {
+    "description": "Test entry group for DataplexEntry minimal test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "entryGroupId": "entrygroup-dep-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test entry group for DataplexEntry minimal test",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryType
+
+{
+  "entryType": {
+    "description": "Test entry type for DataplexEntry minimal test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "entryTypeId": "entrytype-dep-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test entry type for DataplexEntry minimal test",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}%2Fentries%2Fdataplexentry-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Entry `projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}` does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries?%24alt=json%3Benum-encoding%3Dint&entryId=dataplexentry-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}
+
+{
+  "entrySource": {
+    "description": "Initial description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry"
+  },
+  "entryType": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "entrySource": {
+    "description": "Initial description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry",
+    "location": "us-central1"
+  },
+  "entryType": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}%2Fentries%2Fdataplexentry-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "entrySource": {
+    "description": "Initial description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry",
+    "location": "us-central1"
+  },
+  "entryType": "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Dependent Project",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${organizationID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=entrySource
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: entry.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}%2Fentries%2Fdataplexentry-minimal-${uniqueId}
+
+{
+  "entrySource": {
+    "description": "Updated description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry Updated"
+  },
+  "entryType": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "entrySource": {
+    "description": "Updated description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry Updated",
+    "location": "us-central1"
+  },
+  "entryType": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}%2Fentries%2Fdataplexentry-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "entrySource": {
+    "description": "Updated description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry Updated",
+    "location": "us-central1"
+  },
+  "entryType": "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataplex.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fentrygroup-dep-${uniqueId}%2Fentries%2Fdataplexentry-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "entrySource": {
+    "description": "Updated description for minimal DataplexEntry test",
+    "displayName": "Minimal Entry Updated",
+    "location": "us-central1"
+  },
+  "entryType": "projects/${projectNumber}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}/entries/dataplexentry-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test entry type for DataplexEntry minimal test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test entry type for DataplexEntry minimal test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test entry group for DataplexEntry minimal test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test entry group for DataplexEntry minimal test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
