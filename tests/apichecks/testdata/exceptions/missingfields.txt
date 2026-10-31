@@ -203,6 +203,7 @@
 [missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].external" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].namespace" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificatemapentries.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.hostname" is not set in unstructured objects
+[missing_field] crd=certificatemanagercertificatemaps.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].details" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].domain" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].failureReason" is not set in unstructured objects

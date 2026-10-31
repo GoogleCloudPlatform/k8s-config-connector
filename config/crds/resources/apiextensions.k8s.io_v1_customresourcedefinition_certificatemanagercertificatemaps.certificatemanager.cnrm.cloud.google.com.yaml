@@ -68,6 +68,10 @@ spec:
               description:
                 description: A human-readable description of the resource.
                 type: string
+              location:
+                description: Immutable. The location of the certificate map. Defaults
+                  to "global".
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -228,6 +232,10 @@ spec:
             properties:
               description:
                 description: A human-readable description of the resource.
+                type: string
+              location:
+                description: Immutable. The location of the certificate map. Defaults
+                  to "global".
                 type: string
               projectRef:
                 description: The project that this resource belongs to.

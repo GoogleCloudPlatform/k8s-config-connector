@@ -151,7 +151,11 @@ func (a *CertificateMapAdapter) Create(ctx context.Context, createOp *directbase
 	fqn := a.id.String()
 	log.V(2).Info("creating CertificateManagerCertificateMap", "id", fqn)
 
-	parent := fmt.Sprintf("projects/%s/locations/global", a.id.Project)
+	location := a.id.Location
+	if location == "" {
+		location = "global"
+	}
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, location)
 
 	req := &pb.CreateCertificateMapRequest{
 		Parent:           parent,
