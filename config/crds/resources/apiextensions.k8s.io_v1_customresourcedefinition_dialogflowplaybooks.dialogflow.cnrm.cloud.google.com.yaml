@@ -1212,9 +1212,6 @@ spec:
                     description: The custom prompt to use.
                     type: string
                 type: object
-              location:
-                description: The location of this resource.
-                type: string
               outputParameterDefinitions:
                 description: Optional. Defined structured output parameters for this
                   playbook.
@@ -1261,41 +1258,21 @@ spec:
                   - name
                   type: object
                 type: array
+              parentRef:
+                description: The DialogflowCXAgent this DialogflowPlaybook is created
+                  under.
+                properties:
+                  external:
+                    description: A reference to an externally managed DialogflowCXAgent
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
+                    type: string
+                type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               playbookType:
                 description: Optional. Type of the playbook.
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               referencedTools:
                 description: Optional. The resource name of tools referenced by the
                   current playbook in the instructions. If not provided explicitly,
@@ -1305,14 +1282,14 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: The DialogflowPlaybook name. If not given, the metadata.name
-                  will be used.
+                description: The DialogflowPlaybook name. The server-generated name
+                  of the resource. Used for acquisition only. Leave unset to create
+                  a new resource.
                 type: string
             required:
             - displayName
             - goal
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: DialogflowPlaybookStatus defines the config connector machine

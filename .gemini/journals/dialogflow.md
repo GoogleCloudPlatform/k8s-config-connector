@@ -54,4 +54,19 @@
   4. Recorded `dialogflowconversationdataset-minimal` and `dialogflowconversationdataset-maximal` fixtures against real GCP.
 - **Impact**: Fully enables management and reconciliation of `DialogflowConversationDataset` resources via direct controller.
 
+### [2026-10-29] DialogflowPlaybook Greenfield Step 1b Judgement Queue Triage
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for DialogflowPlaybook (Issue #14672).
+- **Problem**:
+  1. `DialogflowPlaybook` is a child of `DialogflowCXAgent` (`projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}`). The generator emitted separate `projectRef` and `location` fields instead of following the single-parent rule.
+  2. The create RPC `CreatePlaybook` has no client-specified ID parameter; the playbook ID is server-generated.
+  3. `generate-mapper` for Dialogflow CX previously dumped Playbook mappers into `dialogflowconversationmodel_mapper.go` alongside ConversationModel mappers.
+  4. Deeply nested fields inside shared structs (`Fulfillment`, `ParameterDefinition`) reference GCP resources (`Webhook`, `Tool`, `Generator`) that are not yet modeled as KCC kinds or are shared with untriaged kinds (`DialogflowFlow`, `DialogflowPage`, `DialogflowTransitionRouteGroup`).
+- **Solution**:
+  1. Replaced `projectRef` and `location` with `ParentRef *DialogflowCXAgentRef` with the `self == oldSelf` immutability CEL rule.
+  2. Updated `ResourceID` godoc to document server-generated ID, allowing `generate-identity` to emit `identity.ServerGeneratedIdentity`.
+  3. Isolated DialogflowPlaybook mappers into `pkg/controller/direct/dialogflow/dialogflowplaybook_mapper.go` satisfying `TestDirectResourceFileNaming`.
+  4. Deferred unmodeled references in `judgement_queue.yaml` and recorded them in `tests/apichecks/testdata/exceptions/refs_deferred.txt`.
+- **Impact**: Cleanly establishes identity, types, and controller/fuzzer conformance for `DialogflowPlaybook` without breaking backward compatibility of shared structs or modifying other kinds' CRDs.
+
+
 
