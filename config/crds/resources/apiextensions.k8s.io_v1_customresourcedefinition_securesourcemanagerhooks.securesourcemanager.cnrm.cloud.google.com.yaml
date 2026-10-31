@@ -72,11 +72,9 @@ spec:
                 items:
                   type: string
                 type: array
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The SecureSourceManagerRepository this SecureSourceManagerHook
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -93,20 +91,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed SecureSourceManagerRepository
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a SecureSourceManagerRepository resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a SecureSourceManagerRepository
+                      resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               pushOption:
                 description: Optional. The trigger option for push events.
                 properties:
@@ -130,8 +128,7 @@ spec:
                   delivered.
                 type: string
             required:
-            - location
-            - projectRef
+            - parentRef
             - targetURI
             type: object
           status:

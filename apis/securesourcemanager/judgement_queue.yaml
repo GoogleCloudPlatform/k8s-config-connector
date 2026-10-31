@@ -52,20 +52,28 @@ entries:
     group: securesourcemanager.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triage complete; parentRef modelled per single-parent rule; identity and references aligned
   - kind: SecureSourceManagerHook
     group: securesourcemanager.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/hooks/{hook}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on SecureSourceManagerHookSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*SecureSourceManagerRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: SecureSourceManagerHook
     group: securesourcemanager.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*SecureSourceManagerRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: SecureSourceManagerHook
     group: securesourcemanager.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*SecureSourceManagerRepositoryRef) per the single-parent rule; removed projectRef and location
