@@ -3,7 +3,6 @@ kind: BeyondCorpAppGateway
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -27,6 +26,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}
   observedGeneration: 1
   state: CREATED
   uri: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}
