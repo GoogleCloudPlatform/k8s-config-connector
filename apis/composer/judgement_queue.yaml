@@ -47,8 +47,8 @@ entries:
     reason: identity-server-generated-id
     detail: generated ComposerUserWorkloadsConfigMapIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
     status: resolved
-    resolution: accepted
-    note: Create RPC has no *_id parameter; ServerGeneratedIdentity accepted
+    resolution: edited
+    note: Resource ID is client-specified via .name in the Create request body, defaulting to metadata.name
   - kind: ComposerUserWorkloadsConfigMap
     group: composer.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
