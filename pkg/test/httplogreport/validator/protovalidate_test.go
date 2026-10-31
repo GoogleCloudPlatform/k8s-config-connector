@@ -130,6 +130,23 @@ DELETE https://example.googleapis.com/v1/projects/${projectId}/locations/us-cent
 			rawLog:        strings.ReplaceAll(validLog, `"state": 1`, `"state": "ACTIVE"`),
 			wantErrSubstr: "enum-encoding=int",
 		},
+		{
+			name: "dependency entries with unknown fields are ignored",
+			rawLog: `# Phase: DEPENDENCY
+GET https://other.googleapis.com/v1/projects/${projectId}/locations/us-central1/otherResources/other-1
+
+200 OK
+
+{
+  "@type": "type.googleapis.com/google.example.v1.UnknownDependency",
+  "unknownField": "bar"
+}
+
+---
+
+` + validLog,
+			wantErrSubstr: "",
+		},
 	}
 
 	for _, tc := range tests {
