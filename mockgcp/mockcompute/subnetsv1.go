@@ -215,18 +215,30 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 		}
 	}
 
-	cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
-	if err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+	if obj.GetIpCidrRange() != "" {
+		cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+		}
+		cidrIP = cidrIP.To4()
+		if cidrIP == nil {
+			return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+		}
+		gatewayAddress := make(net.IP, len(cidrIP))
+		copy(gatewayAddress, cidrIP)
+		gatewayAddress[3] = 1
+		obj.GatewayAddress = PtrTo(gatewayAddress.String())
 	}
-	cidrIP = cidrIP.To4()
-	if cidrIP == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+	if obj.GetStackType() == "IPV4_IPV6" || obj.GetStackType() == "IPV6_ONLY" {
+		if obj.Ipv6CidrRange == nil {
+			obj.Ipv6CidrRange = PtrTo("2600:1900:4000:abcd::/64")
+		}
+		if obj.GetIpv6AccessType() == "EXTERNAL" && obj.ExternalIpv6Prefix == nil {
+			obj.ExternalIpv6Prefix = PtrTo("2600:1900:4000:abcd::/64")
+		} else if obj.GetIpv6AccessType() == "INTERNAL" && obj.InternalIpv6Prefix == nil {
+			obj.InternalIpv6Prefix = PtrTo("fd20:1234:5678:abcd::/64")
+		}
 	}
-	gatewayAddress := make(net.IP, len(cidrIP))
-	copy(gatewayAddress, cidrIP)
-	gatewayAddress[3] = 1
-	obj.GatewayAddress = PtrTo(gatewayAddress.String())
 
 	if obj.AllowSubnetCidrRoutesOverlap == nil {
 		obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
@@ -364,6 +376,15 @@ func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (
 		}
 		if patch.PrivateIpGoogleAccess != nil {
 			obj.PrivateIpGoogleAccess = patch.PrivateIpGoogleAccess
+		}
+		if patch.PrivateIpv6GoogleAccess != nil {
+			obj.PrivateIpv6GoogleAccess = patch.PrivateIpv6GoogleAccess
+		}
+		if patch.StackType != nil {
+			obj.StackType = patch.StackType
+		}
+		if patch.Ipv6AccessType != nil {
+			obj.Ipv6AccessType = patch.Ipv6AccessType
 		}
 		if patch.Role != nil {
 			obj.Role = patch.Role
