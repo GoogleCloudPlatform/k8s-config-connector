@@ -1622,8 +1622,7 @@
 [missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.data" is not set in unstructured objects
 [missing_field] crd=composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.data" is not set in unstructured objects
-[missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=composeruserworkloadssecrets.composer.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.loadBalancingUtilization.target" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].filter" is not set in unstructured objects
 [missing_field] crd=computeautoscalers.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingPolicy.metric[].name" is not set in unstructured objects

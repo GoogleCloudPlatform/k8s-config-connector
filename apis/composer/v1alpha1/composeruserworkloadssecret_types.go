@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,10 @@ var ComposerUserWorkloadsSecretGVK = GroupVersion.WithKind("ComposerUserWorkload
 // +kcc:spec:proto=google.cloud.orchestration.airflow.service.v1.UserWorkloadsSecret
 // +kcc:required-from-proto
 type ComposerUserWorkloadsSecretSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The ComposerEnvironment this ComposerUserWorkloadsSecret is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *v1beta1.EnvironmentRef `json:"parentRef"`
 
 	// The ComposerUserWorkloadsSecret name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
