@@ -46,7 +46,7 @@
   name: servicenetworkingconnection2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //sqladmin.googleapis.com/projects/${projectId}/instances/sqlinstance-privatenetwork-legacyref-direct-${uniqueId}
   group: sql.cnrm.cloud.google.com
   kind: SQLInstance
   name: sqlinstance-privatenetwork-legacyref-direct-${uniqueId}
