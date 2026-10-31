@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,34 +30,19 @@ var ManagedKafkaACLGVK = GroupVersion.WithKind("ManagedKafkaACL")
 // +kcc:spec:proto=google.cloud.managedkafka.v1.Acl
 // +kcc:required-from-proto
 type ManagedKafkaACLSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/clusters/{cluster} this resource belongs to.
-	// +kcc:guess
-	// ClusterRef *ClusterRef `json:"clusterRef,omitempty"`
+	// The ManagedKafkaCluster this ManagedKafkaACL is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *ClusterRef `json:"parentRef"`
 
 	// The ManagedKafkaACL name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. The ACL entries that apply to the resource pattern. The maximum
 	//  number of allowed entries 100.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.acl_entries
 	// +required
 	AclEntries []AclEntry `json:"aclEntries,omitempty"`
-
-	// Optional. `etag` is used for concurrency control. An `etag` is returned in
-	//  the response to `GetAcl` and `CreateAcl`. Callers are required to put that
-	//  etag in the request to `UpdateAcl` to ensure that their change will be
-	//  applied to the same version of the acl that exists in the Kafka Cluster.
-	//
-	//  A terminal 'T' character in the etag indicates that the AclEntries were
-	//  truncated; more entries for the Acl exist on the Kafka Cluster, but can't
-	//  be returned in the Acl due to repeated field limits.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.etag
-	Etag *string `json:"etag,omitempty"`
 }
 
 // ManagedKafkaACLStatus defines the config connector machine state of ManagedKafkaACL
@@ -95,6 +79,17 @@ type ManagedKafkaACLObservedState struct {
 	//  PREFIXED.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.pattern_type
 	PatternType *string `json:"patternType,omitempty"`
+
+	// Optional. `etag` is used for concurrency control. An `etag` is returned in
+	//  the response to `GetAcl` and `CreateAcl`. Callers are required to put that
+	//  etag in the request to `UpdateAcl` to ensure that their change will be
+	//  applied to the same version of the acl that exists in the Kafka Cluster.
+	//
+	//  A terminal 'T' character in the etag indicates that the AclEntries were
+	//  truncated; more entries for the Acl exist on the Kafka Cluster, but can't
+	//  be returned in the Acl due to repeated field limits.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

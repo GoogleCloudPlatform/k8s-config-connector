@@ -4898,9 +4898,7 @@
 [missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.aclEntries[].operation" is not set in unstructured objects
 [missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.aclEntries[].permissionType" is not set in unstructured objects
 [missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.aclEntries[].principal" is not set in unstructured objects
-[missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=managedkafkaacls.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.config" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects

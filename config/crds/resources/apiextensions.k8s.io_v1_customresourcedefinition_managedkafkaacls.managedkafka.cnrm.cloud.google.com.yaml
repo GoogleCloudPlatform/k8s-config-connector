@@ -95,22 +95,9 @@ spec:
                   - principal
                   type: object
                 type: array
-              etag:
-                description: |-
-                  Optional. `etag` is used for concurrency control. An `etag` is returned in
-                   the response to `GetAcl` and `CreateAcl`. Callers are required to put that
-                   etag in the request to `UpdateAcl` to ensure that their change will be
-                   applied to the same version of the acl that exists in the Kafka Cluster.
-
-                   A terminal 'T' character in the etag indicates that the AclEntries were
-                   truncated; more entries for the Acl exist on the Kafka Cluster, but can't
-                   be returned in the Acl due to repeated field limits.
-                type: string
-              location:
-                description: The location of this resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The ManagedKafkaCluster this ManagedKafkaACL is created
+                  under.
                 oneOf:
                 - not:
                     required:
@@ -127,28 +114,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed ManagedKafkaCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a ManagedKafkaCluster resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a ManagedKafkaCluster resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The ManagedKafkaACL name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
             - aclEntries
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: ManagedKafkaACLStatus defines the config connector machine
@@ -196,6 +181,17 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  etag:
+                    description: |-
+                      Optional. `etag` is used for concurrency control. An `etag` is returned in
+                       the response to `GetAcl` and `CreateAcl`. Callers are required to put that
+                       etag in the request to `UpdateAcl` to ensure that their change will be
+                       applied to the same version of the acl that exists in the Kafka Cluster.
+
+                       A terminal 'T' character in the etag indicates that the AclEntries were
+                       truncated; more entries for the Acl exist on the Kafka Cluster, but can't
+                       be returned in the Acl due to repeated field limits.
+                    type: string
                   patternType:
                     description: 'Output only. The ACL pattern type derived from the
                       name. One of: LITERAL, PREFIXED.'
