@@ -168,7 +168,7 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
-	if proto.Equal(a.actual.GetSpec(), desiredPb.GetSpec()) && proto.Equal(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
+	if policySpecEqual(a.actual.GetSpec(), desiredPb.GetSpec()) && policySpecEqual(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
 		log.V(2).Info("Policy is already up to date", "name", a.id)
 		// The resource is already up to date, but we still need to update the status
 		// to reflect the actual state from the backend.
@@ -207,6 +207,16 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func policySpecEqual(actual, desired *orgpolicypb.PolicySpec) bool {
+	if actual == nil || desired == nil {
+		return proto.Equal(actual, desired)
+	}
+	normalized := proto.Clone(actual).(*orgpolicypb.PolicySpec)
+	normalized.Etag = ""
+	normalized.UpdateTime = nil
+	return proto.Equal(normalized, desired)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
