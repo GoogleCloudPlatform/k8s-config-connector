@@ -28,13 +28,16 @@ type BackendserviceHealthChecks struct {
 	HttpHealthCheckRef *ComputeHTTPHealthCheckRef `json:"httpHealthCheckRef,omitempty"`
 }
 
-// Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup resource. In case of instance group this defines the list of instances that serve traffic. Member virtual machine instances from each instance group must live in the same zone as the instance group itself. No two backends in a backend service are allowed to use same Instance Group resource. For Network Endpoint Groups this defines list of endpoints. All endpoints of Network Endpoint Group must be hosted on instances located in the same zone as the Network Endpoint Group. Backend services cannot mix Instance Group and Network Endpoint Group backends. When the 'load_balancing_scheme' is INTERNAL, only instance groups are supported.
+// Reference to a ComputeInstanceGroup, ComputeNetworkEndpointGroup, or ComputeRegionNetworkEndpointGroup resource. In case of instance group this defines the list of instances that serve traffic. Member virtual machine instances from each instance group must live in the same zone as the instance group itself. No two backends in a backend service are allowed to use same Instance Group resource. For Network Endpoint Groups this defines list of endpoints. All endpoints of Network Endpoint Group must be hosted on instances located in the same zone as the Network Endpoint Group. Backend services cannot mix Instance Group and Network Endpoint Group backends. When the 'load_balancing_scheme' is INTERNAL, only instance groups are supported.
 type BackendGroup struct {
 	// Reference to a ComputeInstanceGroup resource.
 	InstanceGroupRef *ComputeInstanceGroupRef `json:"instanceGroupRef,omitempty"`
 
 	// Reference to a ComputeNetworkEndpointGroup resource.
 	NetworkEndpointGroupRef *ComputeNetworkEndpointGroupRef `json:"networkEndpointGroupRef,omitempty"`
+
+	// Reference to a ComputeRegionNetworkEndpointGroup resource.
+	RegionNetworkEndpointGroupRef *ComputeRegionNetworkEndpointGroupRef `json:"regionNetworkEndpointGroupRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.Backend
