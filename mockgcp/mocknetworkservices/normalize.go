@@ -96,4 +96,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			replacements.ReplaceStringValue(value, newValue)
 		}
 	})
+
+	// Normalize projects/projects/ caused by DCL client serialization bug.
+	event.VisitRequestStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "projects/projects/") {
+			replacements.ReplaceStringValue(value, strings.TrimPrefix(value, "projects/"))
+		}
+	})
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "projects/projects/") {
+			replacements.ReplaceStringValue(value, strings.TrimPrefix(value, "projects/"))
+		}
+	})
 }

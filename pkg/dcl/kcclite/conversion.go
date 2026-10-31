@@ -255,7 +255,7 @@ func handleListOfReferencesField(path []string, config map[string]interface{}, s
 		if !ok {
 			return fmt.Errorf("expected the value for item reference to be map[string]interface{}, but was actually %T", item)
 		}
-		refVal, err := resolveResourceReference(refObj, schema.Items, smLoader, schemaLoader, serviceMappingLoader, kubeClient, namespace)
+		refVal, err := resolveResourceReference(path, refObj, schema.Items, smLoader, schemaLoader, serviceMappingLoader, kubeClient, namespace)
 		if err != nil {
 			if mustResolveAllFields {
 				return err
@@ -286,7 +286,7 @@ func handleRegularReferenceField(path []string, config map[string]interface{}, s
 	if !ok {
 		return fmt.Errorf("expected the value to be map[string]interface{} for reference field %v but was actually %T", refField, rawVal)
 	}
-	val, err := resolveResourceReference(refObj, schema, smLoader, schemaLoader, serviceMappingLoader, kubeClient, namespace)
+	val, err := resolveResourceReference(path, refObj, schema, smLoader, schemaLoader, serviceMappingLoader, kubeClient, namespace)
 	if err != nil {
 		if mustResolveAllFields {
 			return err
@@ -321,7 +321,7 @@ func resolveHierarchicalReferenceForMultiParentResource(resourceRefValRaw map[st
 	}, nil
 }
 
-func resolveResourceReference(resourceRefValRaw map[string]interface{}, schema *openapi.Schema, smLoader dclmetadata.ServiceMetadataLoader,
+func resolveResourceReference(path []string, resourceRefValRaw map[string]interface{}, schema *openapi.Schema, smLoader dclmetadata.ServiceMetadataLoader,
 	schemaLoader dclschemaloader.DCLSchemaLoader, serviceMappingLoader *servicemappingloader.ServiceMappingLoader,
 	kubeClient client.Client, ns string) (map[string]interface{}, error) {
 	tcs, err := dcl.GetReferenceTypeConfigs(schema, smLoader)
@@ -335,7 +335,7 @@ func resolveResourceReference(resourceRefValRaw map[string]interface{}, schema *
 		return resourceRefValRaw, nil
 	}
 
-	tc, refResource, err := getMultiTypeReferencedResource(resourceRefValRaw, tcs, ns, kubeClient)
+	tc, refResource, err := getMultiTypeReferencedResource(path, resourceRefValRaw, tcs, ns, kubeClient)
 	if err != nil {
 		return nil, err
 	}
@@ -390,7 +390,19 @@ func resolveReferenceObject(resourceRefValRaw map[string]interface{}, tc *corekc
 	return val, nil
 }
 
-func getMultiTypeReferencedResource(resourceRefValRaw map[string]interface{}, tcs []corekccv1alpha1.TypeConfig,
+func isHTTPRouteServiceRef(path []string) bool {
+	// rules[].action.destinations[].serviceName
+	if len(path) == 4 && path[0] == "rules" && path[1] == "action" && path[2] == "destinations" && path[3] == "serviceName" {
+		return true
+	}
+	// rules[].action.requestMirrorPolicy.destination.serviceName
+	if len(path) == 5 && path[0] == "rules" && path[1] == "action" && path[2] == "requestMirrorPolicy" && path[3] == "destination" && path[4] == "serviceName" {
+		return true
+	}
+	return false
+}
+
+func getMultiTypeReferencedResource(path []string, resourceRefValRaw map[string]interface{}, tcs []corekccv1alpha1.TypeConfig,
 	ns string, kubeClient client.Client) (*corekccv1alpha1.TypeConfig, *k8s.Resource, error) {
 
 	if len(tcs) == 0 {
@@ -425,6 +437,16 @@ func getMultiTypeReferencedResource(resourceRefValRaw map[string]interface{}, tc
 		tc := &tcs[0]
 		refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
 		return tc, refResource, err
+	}
+
+	// For backward compatibility, if 'kind' is not specified in NetworkServicesHTTPRoute serviceRef,
+	// fall back to default kind in tcs[0] (ComputeBackendService) if the referenced resource exists.
+	if isHTTPRouteServiceRef(path) && len(tcs) > 1 && tcs[0].GVK.Kind == "ComputeBackendService" {
+		tc := &tcs[0]
+		refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
+		if err == nil {
+			return tc, refResource, nil
+		}
 	}
 
 	// "multi-kind" resource ref requires "kind"
