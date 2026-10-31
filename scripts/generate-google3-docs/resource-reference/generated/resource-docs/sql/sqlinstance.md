@@ -1138,7 +1138,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.</p>
+            <p>Immutable. The type of data disk: PD_SSD, PD_HDD, or HYPERDISK_BALANCED. Defaults to PD_SSD for Enterprise edition in standard regions.</p>
         </td>
     </tr>
     <tr>
