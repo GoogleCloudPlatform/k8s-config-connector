@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/prunetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/kindnames"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/sourcelinks"
@@ -65,6 +66,10 @@ type GenerateCRDOptions struct {
 	AllowNonGAProto     bool
 	AllowDeprecated     bool
 	AllowNonDeclarative bool
+
+	// ServicePrefixesDir is the directory of the handwritten service-prefix table that
+	// --prepopulate-resource checks new resources against.
+	ServicePrefixesDir string
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -73,6 +78,7 @@ func (o *GenerateCRDOptions) InitDefaults() error {
 		return err
 	}
 	o.OutputAPIDirectory = root + "/apis/"
+	o.ServicePrefixesDir = filepath.Join(root, "dev", "tools", "controllerbuilder", "serviceprefixes")
 	o.PruneUnusedTypes = true
 	return nil
 }
@@ -90,6 +96,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.AllowNonGAProto, "allow-non-ga-proto", false, "allow scaffolding new resources backed by non-GA (alpha or beta) proto packages")
 	cmd.Flags().BoolVar(&o.AllowDeprecated, "allow-deprecated", false, "allow scaffolding new resources backed by a deprecated proto service")
 	cmd.Flags().BoolVar(&o.AllowNonDeclarative, "allow-non-declarative", false, "allow scaffolding new resources whose resource pattern indicates an ephemeral, data-plane, version-snapshot, or point-in-time backup resource")
+	cmd.Flags().StringVar(&o.ServicePrefixesDir, "service-prefixes-dir", o.ServicePrefixesDir, "directory of the hand-maintained service-prefix files ("+kindnames.FileName+", "+kindnames.ExceptionsFileName+") that --prepopulate-resource checks new resources against")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -203,6 +210,27 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 		if len(rejected) > 0 {
 			return fmt.Errorf("rejected %d suspected non-declarative resource(s) (see docs/ai/declarative-resource-criteria.md or pass --allow-non-declarative):\n%s", len(rejected), strings.Join(rejected, "\n"))
+		}
+	}
+	if o.PrepopulateResource && !o.SkipScaffoldFiles {
+		table, err := kindnames.Load(o.ServicePrefixesDir)
+		if err != nil {
+			return fmt.Errorf("loading service-prefix table: %w", err)
+		}
+		var resources []kindResource
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			msg, err := resourceMessage(api, resourceProtoFullName)
+			if err != nil {
+				return err
+			}
+			resources = append(resources, newKindResource(api, resource.Kind, msg))
+		}
+		if rejected := kindNameMismatches(table, resources); len(rejected) > 0 {
+			return fmt.Errorf("rejected %d resource(s) whose Kind does not match the service-prefix table in %s (use the Kind it implies; to change a service prefix, edit %s; to approve one, move it from %s to %s):\n%s", len(rejected), o.ServicePrefixesDir, kindnames.FileName, kindnames.ExceptionsFileName, kindnames.FileName, strings.Join(rejected, "\n"))
 		}
 	}
 	if scaffolder.DocFileNotExist() {
@@ -772,4 +800,3 @@ func isNonGAProto(fullName string) bool {
 	}
 	return false
 }
-

@@ -191,9 +191,9 @@ func (r *Resolver) links(ctx context.Context, in input) []Link {
 // from mockgcp/apis before compiling. Types generated from them follow the
 // KCC copy, so the link does too.
 var kccProtoOverrides = map[string]bool{
-	"google/cloud/config/v1/config.proto":       true,
-	"google/cloud/dataplex/v1/catalog.proto":    true,
-	"google/logging/v2/logging_config.proto":    true,
+	"google/cloud/config/v1/config.proto":    true,
+	"google/cloud/dataplex/v1/catalog.proto": true,
+	"google/logging/v2/logging_config.proto": true,
 }
 
 func (r *Resolver) protoLink(path string) Link {
@@ -410,6 +410,13 @@ func restPath(pattern string) string {
 		}
 	}
 	return strings.Join(segs, ".")
+}
+
+// DefaultHost returns the google.api.default_host of a service in the file,
+// or else in another file of the same package. It returns "" when there is
+// none.
+func DefaultHost(file protoreflect.FileDescriptor, files *protoregistry.Files) string {
+	return defaultHost(file, files)
 }
 
 // defaultHost returns the google.api.default_host of a service in the file,
