@@ -1,0 +1,1024 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "ServicePerimeter \"accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "accountId": "gsa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "title": "default policy ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.ServicePerimeter",
+    "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+    "title": "default policy ${uniqueId}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "title": "default policy ${uniqueId}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "title": "default policy ${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "AccessLevel \"accessPolicies/578359180191/accessLevels/acl${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "requireCorpOwned": true
+        }
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/accessLevels/acl${uniqueId}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "devicePolicy": {
+            "requireCorpOwned": true
+          }
+        }
+      ]
+    },
+    "name": "accessPolicies/578359180191/accessLevels/acl${uniqueId}",
+    "title": "Config Connector Access Level ${uniqueId}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "devicePolicy": {
+          "requireCorpOwned": true
+        }
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifecycleState": "ACTIVE",
+    "name": "project-${uniqueId}",
+    "parent": {
+      "id": "${organizationID}",
+      "type": "organization"
+    },
+    "projectId": "project-${uniqueId}",
+    "projectNumber": "${projectNumber}"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "title": "default policy ${uniqueId}"
+}
+
+---
+
+PATCH https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json&updateMask=title%2Cstatus%2Cspec%2CuseExplicitDryRunSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "spec": {
+    "accessLevels": [
+      "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+    ],
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "sources": [
+            {
+              "accessLevel": "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+            }
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      "projects/${projectNumber}"
+    ],
+    "restrictedServices": [
+      "notebooks.googleapis.com"
+    ]
+  },
+  "status": {
+    "restrictedServices": [
+      "bigquery.googleapis.com"
+    ]
+  },
+  "title": "default policy ${uniqueId} 2",
+  "useExplicitDryRunSpec": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}/update/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.ServicePerimeter",
+    "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+    "spec": {
+      "accessLevels": [
+        "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+      ],
+      "egressPolicies": [
+        {
+          "egressFrom": {
+            "identities": [
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            ]
+          }
+        },
+        {
+          "egressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
+      "ingressPolicies": [
+        {
+          "ingressFrom": {
+            "identities": [
+              "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+            ],
+            "sources": [
+              {
+                "accessLevel": "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+              }
+            ]
+          }
+        },
+        {
+          "ingressTo": {
+            "resources": [
+              "projects/${projectNumber}"
+            ]
+          }
+        }
+      ],
+      "resources": [
+        "projects/${projectNumber}"
+      ],
+      "restrictedServices": [
+        "notebooks.googleapis.com"
+      ]
+    },
+    "status": {
+      "restrictedServices": [
+        "bigquery.googleapis.com"
+      ]
+    },
+    "title": "default policy ${uniqueId} 2",
+    "useExplicitDryRunSpec": true
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "spec": {
+    "accessLevels": [
+      "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+    ],
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "sources": [
+            {
+              "accessLevel": "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+            }
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      "projects/${projectNumber}"
+    ],
+    "restrictedServices": [
+      "notebooks.googleapis.com"
+    ]
+  },
+  "status": {
+    "restrictedServices": [
+      "bigquery.googleapis.com"
+    ]
+  },
+  "title": "default policy ${uniqueId} 2",
+  "useExplicitDryRunSpec": true
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "devicePolicy": {
+          "requireCorpOwned": true
+        }
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/accessLevels/acl${uniqueId}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "spec": {
+    "accessLevels": [
+      "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+    ],
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "sources": [
+            {
+              "accessLevel": "accessPolicies/578359180191/accessLevels/acl${uniqueId}"
+            }
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/${projectNumber}"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      "projects/${projectNumber}"
+    ],
+    "restrictedServices": [
+      "notebooks.googleapis.com"
+    ]
+  },
+  "status": {
+    "restrictedServices": [
+      "bigquery.googleapis.com"
+    ]
+  },
+  "title": "default policy ${uniqueId} 2",
+  "useExplicitDryRunSpec": true
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/servicePerimeters/kccsvcperimeter${uniqueId}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

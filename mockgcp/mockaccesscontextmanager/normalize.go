@@ -56,7 +56,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				if len(tokens) == 5 && tokens[0] == "operations" && tokens[1] == "accessPolicies" && (tokens[3] == "create" || tokens[3] == "update" || tokens[3] == "delete") {
 					replacements.ReplaceStringValue(tokens[4], "${operationID}")
 				}
-				if len(tokens) == 7 && tokens[0] == "operations" && tokens[1] == "accessPolicies" && tokens[3] == "accessLevels" && (tokens[5] == "create" || tokens[5] == "update" || tokens[5] == "delete") {
+				if len(tokens) == 7 && tokens[0] == "operations" && tokens[1] == "accessPolicies" && (tokens[3] == "accessLevels" || tokens[3] == "servicePerimeters") && (tokens[5] == "create" || tokens[5] == "update" || tokens[5] == "delete") {
 					replacements.ReplaceStringValue(tokens[6], "${operationID}")
 				}
 			}

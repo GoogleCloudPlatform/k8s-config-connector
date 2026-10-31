@@ -1,0 +1,11 @@
+- exec: gcloud access-context-manager policies create --organization=${organizationId} --title="test-perimeter-${uniqueId}" --format="value(name)"
+  setEnv: accessPolicies/{{POLICY_ID}}
+
+- exec: gcloud access-context-manager perimeters create test_perimeter --policy=${POLICY_ID} --title="test perimeter" --resources=projects/${projectNumber} --restricted-services=storage.googleapis.com
+- exec: gcloud access-context-manager perimeters describe test_perimeter --policy=${POLICY_ID}
+- exec: gcloud access-context-manager perimeters list --policy=${POLICY_ID}
+- exec: gcloud access-context-manager perimeters update test_perimeter --policy=${POLICY_ID} --add-restricted-services=bigquery.googleapis.com
+- exec: gcloud access-context-manager perimeters describe test_perimeter --policy=${POLICY_ID}
+- exec: gcloud access-context-manager perimeters delete test_perimeter --policy=${POLICY_ID} --quiet
+
+- exec: gcloud access-context-manager policies delete ${POLICY_ID} --quiet
