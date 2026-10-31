@@ -301,14 +301,22 @@ func (s *MockService) populateDefaultsForVersion(parent *versionParent, name *ve
 	if obj.Env == "" {
 		obj.Env = "standard"
 	}
+	if obj.Env == "flex" {
+		obj.Env = "flexible"
+	}
 	if obj.ServingStatus == pb.ServingStatus_SERVING_STATUS_UNSPECIFIED {
 		obj.ServingStatus = pb.ServingStatus_SERVING
 	}
-	if obj.InstanceClass == "" {
-		obj.InstanceClass = "F1"
-	}
-	if obj.RuntimeChannel == "" {
-		obj.RuntimeChannel = "default"
+	if obj.Env == "standard" {
+		if obj.InstanceClass == "" {
+			obj.InstanceClass = "F1"
+		}
+		if obj.RuntimeChannel == "" {
+			obj.RuntimeChannel = "default"
+		}
+		if obj.DiskUsageBytes == 0 {
+			obj.DiskUsageBytes = 2978869
+		}
 	}
 	obj.Threadsafe = true
 
@@ -321,38 +329,64 @@ func (s *MockService) populateDefaultsForVersion(parent *versionParent, name *ve
 	if obj.CreateTime == nil {
 		obj.CreateTime = timestamppb.New(now)
 	}
-	if obj.DiskUsageBytes == 0 {
-		obj.DiskUsageBytes = 2978869
-	}
 	if obj.VersionUrl == "" {
 		obj.VersionUrl = fmt.Sprintf("https://%s-dot-%s.uc.r.appspot.com", name.Version, parent.App)
 	}
 	if obj.Network == nil {
 		obj.Network = &pb.Network{}
 	}
-	if obj.Deployment != nil && obj.Deployment.Files != nil {
-		for _, f := range obj.Deployment.Files {
-			if f.Sha1Sum == "" && f.SourceUrl != "" {
-				parts := strings.Split(f.SourceUrl, "/")
-				hash := parts[len(parts)-1]
-				if len(hash) == 40 {
-					f.Sha1Sum = hash
+	if obj.Deployment != nil {
+		if obj.Deployment.Files != nil {
+			for _, f := range obj.Deployment.Files {
+				if f.Sha1Sum == "" && f.SourceUrl != "" {
+					parts := strings.Split(f.SourceUrl, "/")
+					hash := parts[len(parts)-1]
+					if len(hash) == 40 {
+						f.Sha1Sum = hash
+					}
 				}
 			}
 		}
+		if obj.Deployment.Container != nil {
+			if obj.Deployment.Container.Image == "gcr.io/google-samples/hello-app:1.0" {
+				obj.Deployment.Container.Image = "gcr.io/google-samples/hello-app@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e"
+			}
+		}
 	}
-	if len(obj.Handlers) == 0 {
-		obj.Handlers = []*pb.UrlMap{
-			{
-				Login:         pb.LoginRequirement_LOGIN_OPTIONAL,
-				SecurityLevel: pb.SecurityLevel_SECURE_OPTIONAL,
-				UrlRegex:      ".*",
-				HandlerType: &pb.UrlMap_Script{
-					Script: &pb.ScriptHandler{
-						ScriptPath: "auto",
+	if obj.Env == "flexible" {
+		if obj.BetaSettings == nil {
+			obj.BetaSettings = make(map[string]string)
+		}
+		if obj.BetaSettings["no_appserver_affinity"] == "" {
+			obj.BetaSettings["no_appserver_affinity"] = "true"
+		}
+		if obj.BetaSettings["use_deployment_manager"] == "" {
+			obj.BetaSettings["use_deployment_manager"] = "true"
+		}
+		if obj.BetaSettings["minor_version_id_ccfe"] == "" {
+			obj.BetaSettings["minor_version_id_ccfe"] = "1234567890123456789"
+		}
+	}
+	if obj.Env == "standard" {
+		if len(obj.Handlers) == 0 {
+			obj.Handlers = []*pb.UrlMap{
+				{
+					Login:         pb.LoginRequirement_LOGIN_OPTIONAL,
+					SecurityLevel: pb.SecurityLevel_SECURE_OPTIONAL,
+					UrlRegex:      ".*",
+					HandlerType: &pb.UrlMap_Script{
+						Script: &pb.ScriptHandler{
+							ScriptPath: "auto",
+						},
 					},
 				},
-			},
+			}
+		} else {
+			for _, h := range obj.Handlers {
+				if h.AuthFailAction == pb.AuthFailAction_AUTH_FAIL_ACTION_UNSPECIFIED {
+					h.AuthFailAction = pb.AuthFailAction_AUTH_FAIL_ACTION_REDIRECT
+				}
+			}
 		}
 	} else {
 		for _, h := range obj.Handlers {

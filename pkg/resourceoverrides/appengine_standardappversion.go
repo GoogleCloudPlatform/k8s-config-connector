@@ -31,6 +31,14 @@ func GetAppEngineStandardAppVersionResourceOverrides() ResourceOverrides {
 	return ro
 }
 
+func GetAppEngineFlexibleAppVersionResourceOverrides() ResourceOverrides {
+	ro := ResourceOverrides{
+		Kind: "AppEngineFlexibleAppVersion",
+	}
+	ro.Overrides = append(ro.Overrides, handleAppEngineServiceRef())
+	return ro
+}
+
 // handleAppEngineServiceRef ensures that serviceRef in format "apps/{app}/services/{service}"
 // is trimmed to just "{service}" before Terraform actuation, and restored after actuation.
 func handleAppEngineServiceRef() ResourceOverride {

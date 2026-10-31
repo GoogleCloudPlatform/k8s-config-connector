@@ -242,4 +242,5 @@ func init() {
 	Handler.Register(GetCloudIDSEndpointResourceOverrides())
 	Handler.Register(GetPrivateCACAPoolResourceOverrides())
 	Handler.Register(GetAppEngineStandardAppVersionResourceOverrides())
+	Handler.Register(GetAppEngineFlexibleAppVersionResourceOverrides())
 }

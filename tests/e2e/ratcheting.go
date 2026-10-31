@@ -72,6 +72,10 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaPreference"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineDomainMapping"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineFlexibleAppVersion"}:
+		// The legacy Terraform provider for google_app_engine_flexible_app_version does not have DiffSuppressFunc
+		// for deployment.0.container.0.image (GCP resolves image tags to digests @sha256:...).
+		// Consequently, during re-reconciliation, Terraform detects a diff on `deployment.0.container.0.image` and triggers an update.
+		return false
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineServiceSplitTraffic"}:
 		// AppEngineServiceSplitTraffic with the fallback Terraform controller does not populate
 		// `split` in Read, causing an unexpected PATCH during re-reconciliation.
