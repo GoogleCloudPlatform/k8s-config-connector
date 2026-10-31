@@ -71,15 +71,16 @@ func (i *AlloyDBInstanceIdentity) ParentString() string {
 
 func getIdentityFromAlloyDBInstanceSpec(ctx context.Context, reader client.Reader, obj *AlloyDBInstance) (*AlloyDBInstanceIdentity, error) {
 	if obj.Spec.ClusterRef == nil {
-		return nil, fmt.Errorf("spec.clusterRef is required")
+		return nil, fmt.Errorf("clusterRef is required")
 	}
+
 	clusterRef := obj.Spec.ClusterRef.DeepCopy()
 	if err := clusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
 	identity, err := clusterRef.ParseExternalToIdentity()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cannot resolve clusterRef: %w", err)
 	}
 	clusterIdentity := identity.(*AlloyDBClusterIdentity)
 
