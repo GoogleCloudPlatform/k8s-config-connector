@@ -272,7 +272,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 7. **Run CI/CD Group Presubmit Tests Locally (MANDATORY)**:
    - > [!WARNING]
      > Modifying a resource type (e.g., adding fields to a CRD, or registering new fields under `observedFields` in mapping configs) will implicitly affect **ALL** existing test cases for that resource type. The controller will begin populating the new fields in the status or `observedState` of all existing instances, causing their golden object manifests (`_generated_object_*.golden.yaml`) to change.
-   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-suite container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests. Ensure that ALL test folders discovered for the kind under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have been run, updated, and validated successfully.
+   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-suite container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests. Ensure that ALL test folders discovered for the kind under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have been run, updated, and validated successfully. Do not add individual CI presubmit files.
    - After the run, check `git status` for any modified golden files, verify they are correct, and commit them:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-suite <service_name>
