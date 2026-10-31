@@ -16,7 +16,7 @@ metadata:
 spec:
   connectMode: DIRECT_PEERING
   displayName: Sample Redis Instance with Secondary IP Range - Updated
-  memorySizeGb: 16
+  memorySizeGb: 1
   region: us-central1
   secondaryIpRange: auto
   tier: STANDARD_HA

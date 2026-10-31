@@ -26,7 +26,7 @@ Content-Type: application/json
 
 {
   "displayName": "Sample Redis Instance",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "tier": 1
 }
 
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
     "displayName": "Sample Redis Instance",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -132,7 +132,7 @@ X-Xss-Protection: 0
   "displayName": "Sample Redis Instance",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -160,7 +160,7 @@ Content-Type: application/json
 
 {
   "displayName": "newDisplayName",
-  "memorySizeGb": 20,
+  "memorySizeGb": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "tier": 1
 }
@@ -222,7 +222,7 @@ X-Xss-Protection: 0
     "displayName": "newDisplayName",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -251,7 +251,7 @@ Content-Type: application/json
 
 {
   "displayName": "newDisplayName",
-  "memorySizeGb": 20,
+  "memorySizeGb": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "tier": 1
 }
@@ -313,7 +313,7 @@ X-Xss-Protection: 0
     "displayName": "newDisplayName",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 20,
+    "memorySizeGb": 2,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -358,7 +358,7 @@ X-Xss-Protection: 0
   "displayName": "newDisplayName",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 20,
+  "memorySizeGb": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {

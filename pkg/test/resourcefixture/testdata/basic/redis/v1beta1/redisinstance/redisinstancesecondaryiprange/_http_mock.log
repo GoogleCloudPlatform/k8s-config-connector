@@ -27,7 +27,7 @@ Content-Type: application/json
 {
   "connectMode": 1,
   "displayName": "Sample Redis Instance with Secondary IP Range",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "secondaryIpRange": "auto",
   "tier": 3
 }
@@ -89,7 +89,7 @@ X-Xss-Protection: 0
     "displayName": "Sample Redis Instance with Secondary IP Range",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -108,8 +108,8 @@ X-Xss-Protection: 0
     "port": 6379,
     "readReplicasMode": "READ_REPLICAS_DISABLED",
     "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
     "reservedIpRange": "10.1.2.0/24",
-    "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
     "tier": "STANDARD_HA",
     "transitEncryptionMode": "DISABLED"
@@ -140,7 +140,7 @@ X-Xss-Protection: 0
   "displayName": "Sample Redis Instance with Secondary IP Range",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -159,8 +159,8 @@ X-Xss-Protection: 0
   "port": 6379,
   "readReplicasMode": 1,
   "redisVersion": "REDIS_7_0",
+  "replicaCount": 1,
   "reservedIpRange": "10.1.2.0/24",
-  "secondaryIpRange": "10.20.30.16/28",
   "state": 2,
   "tier": 3,
   "transitEncryptionMode": 2
@@ -174,7 +174,7 @@ Content-Type: application/json
 {
   "connectMode": 1,
   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "secondaryIpRange": "auto",
   "tier": 3
@@ -237,7 +237,7 @@ X-Xss-Protection: 0
     "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -256,8 +256,8 @@ X-Xss-Protection: 0
     "port": 6379,
     "readReplicasMode": "READ_REPLICAS_DISABLED",
     "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
     "reservedIpRange": "10.1.2.0/24",
-    "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
     "tier": "STANDARD_HA",
     "transitEncryptionMode": "DISABLED"
@@ -288,7 +288,7 @@ X-Xss-Protection: 0
   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -307,8 +307,8 @@ X-Xss-Protection: 0
   "port": 6379,
   "readReplicasMode": 1,
   "redisVersion": "REDIS_7_0",
+  "replicaCount": 1,
   "reservedIpRange": "10.1.2.0/24",
-  "secondaryIpRange": "10.20.30.16/28",
   "state": 2,
   "tier": 3,
   "transitEncryptionMode": 2
