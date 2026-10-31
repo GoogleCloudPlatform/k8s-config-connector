@@ -56,8 +56,6 @@ func dataformWorkflowConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 
 	// Unimplemented / Not Yet Triaged fields
-	f.Unimplemented_NotYetTriaged(".invocation_config.end_user_auth_config")
-	f.Unimplemented_NotYetTriaged(".invocation_config.query_priority")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_execution_records[].error_status.details")
 	f.Unimplemented_NotYetTriaged(".recent_scheduled_execution_records[].workflow_invocation")
 
