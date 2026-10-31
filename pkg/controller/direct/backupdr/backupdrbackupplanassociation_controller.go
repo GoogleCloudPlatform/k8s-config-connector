@@ -24,8 +24,11 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strconv"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -36,6 +39,9 @@ import (
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
+	gcpcompute "cloud.google.com/go/compute/apiv1"
+	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -93,6 +99,10 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, op *d
 	if err != nil {
 		return nil, err
 	}
+	computeClient, err := gcpClient.newComputeInstancesClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	mapCtx := &direct.MapContext{}
 	desired := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
@@ -101,10 +111,12 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, op *d
 	}
 
 	return &BackupPlanAssociationAdapter{
-		id:        id,
-		gcpClient: backupDRClient,
-		desired:   desired,
-		reader:    reader,
+		id:            id,
+		gcpClient:     backupDRClient,
+		computeClient: computeClient,
+		projectMapper: m.config.ProjectMapper,
+		desired:       desired,
+		reader:        reader,
 	}, nil
 }
 
@@ -114,11 +126,13 @@ func (m *modelBackupPlanAssociation) AdapterForURL(ctx context.Context, url stri
 }
 
 type BackupPlanAssociationAdapter struct {
-	id        *krm.BackupPlanAssociationIdentity
-	gcpClient *gcp.Client
-	desired   *pb.BackupPlanAssociation
-	actual    *pb.BackupPlanAssociation
-	reader    client.Reader
+	id            *krm.BackupPlanAssociationIdentity
+	gcpClient     *gcp.Client
+	computeClient *gcpcompute.InstancesClient
+	projectMapper *projects.ProjectMapper
+	desired       *pb.BackupPlanAssociation
+	actual        *pb.BackupPlanAssociation
+	reader        client.Reader
 }
 
 var _ directbase.Adapter = &BackupPlanAssociationAdapter{}
@@ -181,17 +195,22 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
+	actual, err := normalizeActualReferences(ctx, a.projectMapper, a.getComputeInstanceID, a.desired, a.actual)
+	if err != nil {
+		return err
+	}
+
 	paths := []string{}
-	if !reflect.DeepEqual(a.desired.ResourceType, a.actual.ResourceType) {
-		report.AddField("resource_type", a.actual.ResourceType, a.desired.ResourceType)
+	if !reflect.DeepEqual(a.desired.ResourceType, actual.ResourceType) {
+		report.AddField("resource_type", actual.ResourceType, a.desired.ResourceType)
 		paths = append(paths, "resource_type")
 	}
-	if !reflect.DeepEqual(a.desired.Resource, a.actual.Resource) {
-		report.AddField("resource", a.actual.Resource, a.desired.Resource)
+	if !reflect.DeepEqual(a.desired.Resource, actual.Resource) {
+		report.AddField("resource", actual.Resource, a.desired.Resource)
 		paths = append(paths, "resource")
 	}
-	if !reflect.DeepEqual(a.desired.BackupPlan, a.actual.BackupPlan) {
-		report.AddField("backup_plan", a.actual.BackupPlan, a.desired.BackupPlan)
+	if !reflect.DeepEqual(a.desired.BackupPlan, actual.BackupPlan) {
+		report.AddField("backup_plan", actual.BackupPlan, a.desired.BackupPlan)
 		paths = append(paths, "backup_plan")
 	}
 
@@ -209,6 +228,111 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// getComputeInstanceID returns the numeric ID of a Compute Engine instance.
+func (a *BackupPlanAssociationAdapter) getComputeInstanceID(ctx context.Context, id *computev1beta1.ComputeInstanceIdentity) (uint64, error) {
+	req := &computepb.GetInstanceRequest{
+		Project:  id.Project,
+		Zone:     id.Zone,
+		Instance: id.Instance,
+	}
+	instance, err := a.computeClient.Get(ctx, req)
+	if err != nil {
+		return 0, fmt.Errorf("getting ComputeInstance %q: %w", id, err)
+	}
+	return instance.GetId(), nil
+}
+
+// normalizeActualReferences returns a copy of actual where the backup plan and the resource are
+// replaced with the desired values when they refer to the same GCP resources.
+// The API returns these references with the project number instead of the project ID,
+// and Compute Engine instances with their numeric ID instead of their name.
+func normalizeActualReferences(ctx context.Context, projectMapper *projects.ProjectMapper, getComputeInstanceID func(context.Context, *computev1beta1.ComputeInstanceIdentity) (uint64, error), desired, actual *pb.BackupPlanAssociation) (*pb.BackupPlanAssociation, error) {
+	normalized := proto.CloneOf(actual)
+
+	if desired.GetBackupPlan() != actual.GetBackupPlan() {
+		same, err := isSameResourceName(ctx, projectMapper, desired.GetBackupPlan(), actual.GetBackupPlan())
+		if err != nil {
+			return nil, fmt.Errorf("comparing backup plan: %w", err)
+		}
+		if same {
+			normalized.BackupPlan = desired.GetBackupPlan()
+		}
+	}
+
+	if desired.GetResource() != actual.GetResource() {
+		var same bool
+		var err error
+		if actual.GetResourceType() == krm.ResourceType_ComputeInstance {
+			same, err = isSameComputeInstance(ctx, projectMapper, getComputeInstanceID, desired.GetResource(), actual.GetResource())
+		} else {
+			same, err = isSameResourceName(ctx, projectMapper, desired.GetResource(), actual.GetResource())
+		}
+		if err != nil {
+			return nil, fmt.Errorf("comparing resource: %w", err)
+		}
+		if same {
+			normalized.Resource = desired.GetResource()
+		}
+	}
+
+	return normalized, nil
+}
+
+// isSameResourceName returns true if both resource names are equal once project numbers are replaced with project IDs.
+func isSameResourceName(ctx context.Context, projectMapper *projects.ProjectMapper, desired, actual string) (bool, error) {
+	normalizedDesired, err := projectMapper.ReplaceProjectNumberWithIDInLink(ctx, desired)
+	if err != nil {
+		return false, err
+	}
+	normalizedActual, err := projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actual)
+	if err != nil {
+		return false, err
+	}
+	return normalizedDesired == normalizedActual, nil
+}
+
+// isSameComputeInstance returns true if both names refer to the same Compute Engine instance.
+// The project can be identified by its ID or number, and the instance by its name or numeric ID.
+func isSameComputeInstance(ctx context.Context, projectMapper *projects.ProjectMapper, getComputeInstanceID func(context.Context, *computev1beta1.ComputeInstanceIdentity) (uint64, error), desired, actual string) (bool, error) {
+	desiredID, err := computev1beta1.ParseComputeInstanceExternal(desired)
+	if err != nil {
+		// Not a known format, we cannot prove that this is the same instance.
+		return false, nil
+	}
+	actualID, err := computev1beta1.ParseComputeInstanceExternal(actual)
+	if err != nil {
+		return false, nil
+	}
+
+	desiredProject, err := projectMapper.ReplaceProjectNumberWithID(ctx, desiredID.Project)
+	if err != nil {
+		return false, err
+	}
+	actualProject, err := projectMapper.ReplaceProjectNumberWithID(ctx, actualID.Project)
+	if err != nil {
+		return false, err
+	}
+	if desiredProject != actualProject || desiredID.Zone != actualID.Zone {
+		return false, nil
+	}
+	if desiredID.Instance == actualID.Instance {
+		return true, nil
+	}
+
+	// Instance names start with a letter, so a numeric value is an instance ID.
+	if _, err := strconv.ParseUint(actualID.Instance, 10, 64); err != nil {
+		return false, nil
+	}
+	instanceID, err := getComputeInstanceID(ctx, desiredID)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, err
+	}
+	return strconv.FormatUint(instanceID, 10) == actualID.Instance, nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
