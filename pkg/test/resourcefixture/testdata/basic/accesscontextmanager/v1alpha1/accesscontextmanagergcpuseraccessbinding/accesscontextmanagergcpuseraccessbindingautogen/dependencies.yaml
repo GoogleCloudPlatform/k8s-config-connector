@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,36 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
-kind: CloudIdentityGroup
-metadata:
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: cloudidentitygroup-${uniqueId}
-spec:
-  displayName: my-identity-group
-  groupKey:
-  - id: my-identity-group@example.com
-  labels:
-    cloudidentity.googleapis.com/groups.discussionForum: ""
-  parent: customers/A01b123xz
----
 apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
+    cnrm.cloud.google.com/organization-id: ${TEST_ORG_ID}
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: accesscontextmanageraccesslevel-${uniqueId}
 spec:
   accessPolicyRef:
     external: accessPolicies/578359180191
   basic:
-  - conditions:
-    - devicePolicy:
-      - osConstraints:
-        - osType: DESKTOP_CHROME_OS
-        requireScreenLock: true
-      regions:
-      - US
+    conditions:
+      - devicePolicy:
+          osConstraints:
+            - osType: DESKTOP_CHROME_OS
+          requireScreenLock: true
+        regions:
+          - US
   resourceID: accesscontextmanageraccesslevel${uniqueId}
   title: chromeos_no_lock
