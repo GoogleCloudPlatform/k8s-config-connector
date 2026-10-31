@@ -38,6 +38,9 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 			External: in.GetBackupVault(),
 		}
 	}
+	if in.GetLogRetentionDays() != 0 {
+		out.LogRetentionDays = direct.LazyPtr(in.GetLogRetentionDays())
+	}
 	return out
 }
 func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
@@ -52,5 +55,6 @@ func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 	if in.BackupVaultRef != nil {
 		out.BackupVault = in.BackupVaultRef.External
 	}
+	out.LogRetentionDays = direct.ValueOf(in.LogRetentionDays)
 	return out
 }
