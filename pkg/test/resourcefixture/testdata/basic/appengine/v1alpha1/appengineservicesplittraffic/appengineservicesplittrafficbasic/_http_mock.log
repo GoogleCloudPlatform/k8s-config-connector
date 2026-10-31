@@ -1,6 +1,5 @@
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -20,24 +19,23 @@ X-Xss-Protection: 0
       "v1": 0.8,
       "v2": 0.2
     },
-    "shardBy": "IP"
+    "shardBy": 2
   }
 }
 
 ---
 
-PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "id": "000000000000000000000",
   "split": {
     "allocations": {
-      "v1": "0.5",
-      "v2": "0.5"
+      "v1": 0.5,
+      "v2": 0.5
     },
-    "shardBy": "IP"
+    "shardBy": 2
   }
 }
 
@@ -64,8 +62,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -104,9 +102,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -126,24 +123,23 @@ X-Xss-Protection: 0
       "v1": 0.5,
       "v2": 0.5
     },
-    "shardBy": "IP"
+    "shardBy": 2
   }
 }
 
 ---
 
-PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "id": "000000000000000000000",
   "split": {
     "allocations": {
-      "v1": "0.8",
-      "v2": "0.2"
+      "v1": 0.8,
+      "v2": 0.2
     },
-    "shardBy": "IP"
+    "shardBy": 2
   }
 }
 
@@ -170,8 +166,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -210,9 +206,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -232,6 +227,6 @@ X-Xss-Protection: 0
       "v1": 0.8,
       "v2": 0.2
     },
-    "shardBy": "IP"
+    "shardBy": 2
   }
 }

@@ -1,0 +1,66 @@
+1c1
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+22c22
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+28c28
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+32a33
+>   "name": "apps/${projectId}/services/default",
+35,36c36,37
+<       "v1": "0.5",
+<       "v2": "0.5"
+---
+>       "v1": 0.5,
+>       "v2": 0.5
+38c39
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+65c66,67
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+104c106
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+125c127
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+131c133
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json&migrateTraffic=false&updateMask=split
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+135a138
+>   "name": "apps/${projectId}/services/default",
+138,139c141,142
+<       "v1": "0.8",
+<       "v2": "0.2"
+---
+>       "v1": 0.8,
+>       "v2": 0.2
+141c144
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
+168c171,172
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+207c211
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+228c232
+<     "shardBy": "IP"
+---
+>     "shardBy": 2
