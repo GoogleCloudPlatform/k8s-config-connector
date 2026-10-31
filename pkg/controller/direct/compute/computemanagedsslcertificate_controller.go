@@ -17,6 +17,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
@@ -179,13 +180,23 @@ func (a *ComputeManagedSSLCertificateAdapter) Update(ctx context.Context, update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeManagedSSLCertificate", "name", a.id)
 
+	normalize := func(ctx context.Context, p *pb.SslCertificate) error {
+		if p == nil || p.Managed == nil {
+			return nil
+		}
+		for i, domain := range p.Managed.Domains {
+			p.Managed.Domains[i] = strings.TrimSuffix(domain, ".")
+		}
+		return nil
+	}
+
 	diffs, _, err := common.CompareBrownfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		ComputeManagedSSLCertificateSpec_v1beta1_FromProto,
 		ComputeManagedSSLCertificateSpec_v1beta1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err

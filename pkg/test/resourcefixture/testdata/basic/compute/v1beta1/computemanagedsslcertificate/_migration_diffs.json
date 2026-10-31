@@ -1,0 +1,64 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeManagedSSLCertificate/computemanagedsslcertificate-${uniqueId}",
+    "fields": [
+      {
+        "id": "certificate_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "expire_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "managed.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "managed.0.domains.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "managed.0.domains.0",
+        "old": "",
+        "new": "sslcert.fixture.club."
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computemanagedsslcertificate-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "subject_alternative_names.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "MANAGED"
+      }
+    ]
+  }
+]
