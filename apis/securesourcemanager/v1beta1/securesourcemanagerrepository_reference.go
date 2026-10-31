@@ -19,15 +19,24 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecureSourceManagerRepositoryRef{}
+var (
+	_ refsv1beta1.ExternalNormalizer = &SecureSourceManagerRepositoryRef{}
+	_ refsv1beta1.Ref                = &SecureSourceManagerRepositoryRef{}
+)
+
+func init() {
+	refsv1beta1.Register(&SecureSourceManagerRepositoryRef{}, &SecureSourceManagerRepository{})
+}
 
 // SecureSourceManagerRepositoryRef is a reference to a SecureSourceManagerRepository.
 type SecureSourceManagerRepositoryRef struct {
@@ -40,6 +49,40 @@ type SecureSourceManagerRepositoryRef struct {
 
 	// The namespace of a SecureSourceManagerRepository resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *SecureSourceManagerRepositoryRef) GetGVK() schema.GroupVersionKind {
+	return SecureSourceManagerRepositoryGVK
+}
+
+func (r *SecureSourceManagerRepositoryRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *SecureSourceManagerRepositoryRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecureSourceManagerRepositoryRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecureSourceManagerRepositoryRef) ValidateExternal(ref string) error {
+	_, err := parseSecureSourceManagerRepositoryExternal(ref)
+	return err
+}
+
+func (r *SecureSourceManagerRepositoryRef) ParseExternalToIdentity() (identity.Identity, error) {
+	return parseSecureSourceManagerRepositoryExternal(r.External)
+}
+
+func (r *SecureSourceManagerRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecureSourceManagerRepository.

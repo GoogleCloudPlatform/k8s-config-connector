@@ -59,6 +59,18 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-controller \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource SecureSourceManagerBranchRule:BranchRule
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource SecureSourceManagerBranchRule:BranchRule
+
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
