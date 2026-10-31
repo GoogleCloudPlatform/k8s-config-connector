@@ -16,6 +16,7 @@ package k8s_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -981,5 +982,81 @@ func TestUnmarshalMergeBehavior(t *testing.T) {
 	// 6. Verify managed fields entry is "fixed".
 	if !cmp.Equal(existing.ObjectMeta.ManagedFields[0].Subresource, "") {
 		t.Fatalf("Sanitization failed. Expected empty subresource, got %q", existing.ObjectMeta.ManagedFields[0].Subresource)
+	}
+}
+
+func TestSMDConverterDeterministicFields(t *testing.T) {
+	// This test verifies that the custom OpenAPI JSON schema to SMD (structured-merge-diff) converter
+	// sorts the constructed schema.Map.Fields by Name. This is critical because the sigs.k8s.io/structured-merge-diff
+	// library's FindField method uses sort.Search (binary search) to look up struct fields, which fails
+	// if the fields are not sorted by Name.
+	//
+	// To reliably reproduce this, we define a schema with many fields (e.g., 20 fields) inside spec.obj.
+	// In Go, map iteration order is randomized, so if they are not explicitly sorted, the resulting SMD schema
+	// fields will be out of order. We run the conversion and lookups 100 times to guarantee that at least
+	// one randomized order would fail if they were not sorted.
+
+	properties := make(map[string]apiextensions.JSONSchemaProps)
+	for i := 1; i <= 20; i++ {
+		fieldName := fmt.Sprintf("field%02d", i)
+		properties[fieldName] = apiextensions.JSONSchemaProps{
+			Type: "string",
+		}
+	}
+
+	testSchema := &apiextensions.JSONSchemaProps{
+		Properties: map[string]apiextensions.JSONSchemaProps{
+			"spec": {
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"obj": {
+						Properties: properties,
+						Type:       "object",
+					},
+				},
+				Type: "object",
+			},
+		},
+	}
+
+	for run := 0; run < 100; run++ {
+		spec := map[string]interface{}{
+			"obj": map[string]interface{}{
+				"field01": "val",
+				"field02": "val",
+				"field03": "val",
+				"field04": "val",
+				"field05": "val",
+				"field06": "val",
+				"field07": "val",
+				"field08": "val",
+				"field09": "val",
+				"field10": "val",
+				"field11": "val",
+				"field12": "val",
+				"field13": "val",
+				"field14": "val",
+				"field15": "val",
+				"field16": "val",
+				"field17": "val",
+				"field18": "val",
+				"field19": "val",
+				"field20": "val",
+			},
+		}
+
+		// By calling OverlayManagedFieldsOntoState, it will invoke jsonSchemaToSMDSchema and toTypedValue
+		// under the hood. toTypedValue calls typed.AsTyped, which uses FindField.
+		// If ANY field is not declared (due to binary search failure), it will return an error.
+		managedFields := testk8s.MapToFieldPathSet(t, map[string]interface{}{
+			"f:obj": map[string]interface{}{
+				".":         emptyObject,
+				"f:field01": emptyObject,
+			},
+		})
+
+		_, err := k8s.OverlayManagedFieldsOntoState(spec, spec, managedFields, testSchema, nil)
+		if err != nil {
+			t.Fatalf("run %d failed: failed to overlay managed fields (likely due to unsorted SMD fields causing binary search failure in FindField): %v", run, err)
+		}
 	}
 }
