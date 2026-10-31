@@ -11,10 +11,12 @@ This skill guides an automated agent through diagnosing, explaining, and fixing 
 
 ## ⚠️ MANDATORY WORKFLOW REQUIREMENT
 
-You MUST run the **4-Step Development Sequence** in exact sequential order (Step 1 ➔ Step 2 ➔ Step 3 ➔ Step 4). 
+You MUST run the **Development Sequence** in exact sequential order starting with Step 0 (Step 0 ➔ Step 1 ➔ Step 2 ➔ Step 3 ➔ Step 4).
 
+* **ALWAYS start with Step 0.** Check `tests/e2e/ratcheting.go`. If your target resource is listed in `ShouldTestRereconiliation`, remove it immediately before running migration tests.
 * **NEVER skip Step 1.** You must always run the migration test against real GCP first. This is required to exercise the actual GCP APIs, generate GCP project audit logs, and produce a baseline `_migration_diffs.json` from real GCP behavior. **Note that the automated agent has full access to a real GCP project in its environment (pre-configured inside the runtime container/sandbox via Application Default Credentials or environment variables) and is fully expected and required to run `./hack/record-gcp` against live GCP.**
 * **NEVER jump straight to Step 3 or Step 4.** Writing code or testing solely against MockGCP without first diagnosing on real GCP violates this workflow.
+* **DO NOT flip the default controller to Direct or modify CRD controller labels:** This task validates direct migration and takeover via `cnrm.cloud.google.com/reconciler: direct` annotations in test fixtures. Do NOT change `DefaultController: k8s.ReconcilerDirect` in `pkg/controller/resourceconfig/static_config.go` and do NOT remove or change `tf2crd=true` / `dcl2crd=true` labels in CRD types. Flipping the default controller is handled in a separate promotion step.
 * **WHENEVER A TEST CASE OR CONTROLLER CODE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or **the controller code itself (including comparison logic, mappers, or adapter methods)**, you **MUST** run the migration test against real GCP (`./hack/record-gcp TestMigrationToDirect/fixtures/...` or with `E2E_GCP_TARGET=real`) to regenerate authentic golden logs and verify clean, 0-write takeover. Do not attempt to manually edit the logs or bypass recording live traffic.
 * **Do NOT Re-Run Real GCP for Normalization or Iterative Adapter Logic Fixes**: Once the Step 1 baseline is recorded against real GCP, do not repeatedly re-record against live GCP while adjusting comparison logic, defaults, or normalizers. Run-to-run variations in HTTP calls should be handled via normalizers.
 

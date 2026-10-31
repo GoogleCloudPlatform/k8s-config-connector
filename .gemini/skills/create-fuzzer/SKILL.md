@@ -76,6 +76,19 @@ This skill guides an automated agent through the process of implementing a round
      ```
    - Ensure the test suite completes successfully. If any fields fail round-tripping, examine the `<hint_for_agent>` in the test output to identify which fields need to be registered or marked as unimplemented.
 
+6. **Validate CAIS Identities & Fixture Schema Parity**
+   - Registering the direct package in `pkg/controller/direct/register/register.go` exposes its KRM types to `kccscheme`, which activates CAIS identity resolution tests in `TestGoldenIdentitiesYamlFiles` (`pkg/test/resourcefixture` and `pkg/cli/powertools/cais`).
+   - Run:
+     ```bash
+     WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/test/resourcefixture/...
+     ```
+   - **CRITICAL / DO NOT COMMIT UNMARSHALING ERRORS**: Inspect generated or modified `_identities.yaml` files. They MUST NOT contain unmarshaling errors:
+     ```yaml
+     - caisURL: unknown
+       error: 'failed to convert unstructured object to ...: cannot restore struct from: slice'
+     ```
+   - **Fix YAML Syntax in Test Fixtures**: If `cannot restore struct from: slice` appears, inspect the test fixtures under `pkg/test/resourcefixture/testdata/basic/<service>/...` (e.g. `create.yaml` or `dependencies.yaml`). The test YAML likely specified a single struct/object field as a YAML list (e.g. `applicationEndpoint:\n  - host: ...` or `principalInfo:\n  - serviceAccount: ...`). Update the test fixture YAML to use object syntax rather than a list, and re-run with `WRITE_GOLDEN_OUTPUT=1` so `_identities.yaml` is regenerated cleanly with valid CAIS URLs and zero unmarshaling errors.
+
 ## Creating a Fuzzer for No-Proto (OpenAPI) Resources
 
 When a direct controller manages a resource that does not have a proto schema (e.g., OpenAPI-based or Discovery API-based resources such as DNS ManagedZone), use the NoProto KRM Fuzzer framework and automatic OpenAPI mapper generation.
@@ -140,4 +153,7 @@ Run the central fuzz test suite:
 ```bash
 go test -count=1 -v ./pkg/fuzztesting/fuzztests/
 ```
+
+### 6. Validate CAIS Identities & Fixture Schema Parity
+Run `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/test/resourcefixture/...` and verify that no `_identities.yaml` files contain `error: 'failed to convert unstructured object ...: cannot restore struct from: slice'`. If found, fix the list vs object syntax in the test fixture YAML (`create.yaml`/`dependencies.yaml`).
 
