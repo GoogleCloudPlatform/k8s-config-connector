@@ -943,6 +943,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	addReplacement("creationTime", "123456789")
 	addReplacement("lastModifiedTime", "123456789")
+	addReplacement("keyString", "${keyString}")
+	addReplacement("response.keyString", "${keyString}")
 
 	events.PrettifyJSON(jsonMutators...)
 
