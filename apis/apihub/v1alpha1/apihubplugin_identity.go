@@ -32,6 +32,7 @@ var (
 
 var APIHubPluginIdentityFormat = gcpurls.Template[APIHubPluginIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/plugins/{plugin}")
 
+// APIHubPluginIdentity is the identity of a GCP APIHubPlugin resource.
 // +k8s:deepcopy-gen=false
 type APIHubPluginIdentity struct {
 	Project  string
@@ -64,7 +65,7 @@ func (i *APIHubPluginIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromAPIHubPluginSpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubPluginIdentity, error) {
+func getIdentityFromAPIHubPluginSpec(ctx context.Context, reader client.Reader, obj *APIHubPlugin) (*APIHubPluginIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
