@@ -50,6 +50,14 @@ type BigQueryReservationAssignmentSpec struct {
 	// Service-generated.Can be set only if resource acquisition .
 	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries of this
+	//  assignee when running under the associated reservation. The scheduling
+	//  policy controls how the reservation's resources are distributed. This
+	//  overrides the default scheduling policy specified on the reservation.
+	// +optional
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.scheduling_policy
+	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 
 // BigQueryReservationAssignmentStatus defines the config connector machine state of BigQueryReservationAssignment
