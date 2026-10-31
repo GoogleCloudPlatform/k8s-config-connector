@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,8 +68,12 @@ func (m *modelDataAsset) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 	id := i.(*krm.DataplexDataAssetIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get dataplex GCP client
-	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.Location))
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +85,21 @@ func (m *modelDataAsset) AdapterForObject(ctx context.Context, op *directbase.Ad
 }
 
 func (m *modelDataAsset) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	if !strings.HasPrefix(url, "//dataplex.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.DataplexDataAssetIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx, id.Location)
+	if err != nil {
+		return nil, err
+	}
+	return &DataAssetAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 func (m *modelDataAsset) client(ctx context.Context, location string) (*gcp.DataProductClient, error) {
 	var opts []option.ClientOption

@@ -79,3 +79,14 @@
   4. Updated `DataplexEntrySpec_FromProto` and `DataplexEntrySpec_ToProto` in `mapper.generated.go` to map `EntryTypeRef` and `ParentEntryRef` using the existing `Aspects_FromProto`/`Aspects_ToProto` helpers.
   5. Resolved all 8 judgement queue entries for `DataplexEntry`.
 - **Impact**: Cleanly conforms to Greenfield single-parent and reference conventions, passes all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexEntry`).
+
+### [2026-10-29] Finalize Direct KRM Types and Identity for DataplexDataAsset
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for DataplexDataAsset under v1alpha1 (#14604).
+- **Problem**:
+  1. DataplexDataAsset is a child resource of DataplexDataProduct (`projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}`). While DataplexDataProduct existed, it lacked a `DataplexDataProductRef` reference definition, causing `parent-ref-not-modelled` and `identity-root-unknown`.
+  2. In `generate-mapper`, `shouldCurrentReplaceExisting` prioritizes existing mapper functions without inline map conversions (`make(map[`) over newly generated functions with `make(map[`. Because existing `mapper.generated.go` had a stale `DataplexDataAssetSpec_FromProto` that referenced `out.Etag` and `out.Labels`, it failed to compile when those fields were removed from `DataplexDataAssetSpec`.
+- **Solution**:
+  1. Added `DataplexDataProductRef` in `apis/dataplex/v1alpha1/dataplexdataproduct_reference.go`, and modelled `spec.parentRef` (`*DataplexDataProductRef`) as required and immutable on `DataplexDataAssetSpec`.
+  2. Isolated `DataplexDataAssetSpec_FromProto` and `DataplexDataAssetSpec_ToProto` in `pkg/controller/direct/dataplex/dataplexdataasset_mapper.go` so they are excluded from `mapper.generated.go`.
+  3. Moved `etag` to `DataplexDataAssetObservedState`, removed `labels` from `Spec`, and updated `apis/dataplex/generate.sh` to include `generate-controller` and `generate-fuzzer` for `DataplexDataAsset`.
+- **Impact**: Cleanly compiles and passes `TestFocusedMappers`, conforming to all Greenfield Step 1b standards and single-parent rules.

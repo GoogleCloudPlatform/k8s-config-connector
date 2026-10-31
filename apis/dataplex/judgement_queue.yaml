@@ -89,40 +89,53 @@ entries:
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all entries; modelled child hierarchy with spec.parentRef (*DataplexDataProductRef), moved etag to observedState, removed labels from spec, and verified mappers and fuzzer
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}" contains ancestor segment(s) dataProducts/{data_product} with no matching reference or field on DataplexDataAssetSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexDataProductRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/dataProducts/{data_product}, and no DataProductRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexDataProductRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.accessGroupConfigs
     reason: message-map-derived
     detail: derived as map[string]DataAsset_AccessGroupConfig from proto google.cloud.dataplex.v1.DataAsset.AccessGroupConfig; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from spec to status.observedState
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/dataProducts/{data_product}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexDataProductRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexDataAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.resource
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: kept as string; holds a polymorphic full IAM resource name (//bigquery.googleapis.com/...) for BigQuery tables or datasets, which cannot be represented as a single reference
   - kind: DataplexDataAttribute
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

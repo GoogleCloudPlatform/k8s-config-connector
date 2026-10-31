@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,31 +30,13 @@ var DataplexDataAssetGVK = GroupVersion.WithKind("DataplexDataAsset")
 // +kcc:spec:proto=google.cloud.dataplex.v1.DataAsset
 // +kcc:required-from-proto
 type DataplexDataAssetSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DataplexDataProduct this DataplexDataAsset is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *DataplexDataProductRef `json:"parentRef"`
 
 	// The DataplexDataAsset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. This checksum is computed by the server based on the value of
-	//  other fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataAsset.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Optional. User-defined labels for the data asset.
-	//
-	//  Example:
-	//   ```
-	//   {
-	//     "environment": "production",
-	//     "billing": "marketing-department"
-	//   }
-	//   ```
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataAsset.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Immutable. Full resource name of the cloud resource represented
 	//  by the data asset. This must follow
@@ -122,6 +103,12 @@ type DataplexDataAssetObservedState struct {
 	// Output only. The time at which the data asset was last updated.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataAsset.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. This checksum is computed by the server based on the value of
+	//  other fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataAsset.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

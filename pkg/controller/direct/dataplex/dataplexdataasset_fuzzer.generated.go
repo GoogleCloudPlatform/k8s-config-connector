@@ -41,17 +41,17 @@ func dataplexDataAssetFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".access_group_configs")
-	f.SpecField(".etag")
-	f.SpecField(".labels")
 	f.SpecField(".resource")
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".uid")
 	f.StatusField(".update_time")
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }
