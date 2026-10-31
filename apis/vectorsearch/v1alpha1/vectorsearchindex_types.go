@@ -14,14 +14,12 @@
 
 // API sources for VectorsearchIndex, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/vectorsearch/v1/vectorsearch_service.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
+// +kcc:source:service-docs=https://cloud.google.com/vertex-ai/docs/vector-search/overview
 // +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/reference/rest/v1/projects.locations.collections.indexes
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,14 +30,14 @@ var VectorsearchIndexGVK = GroupVersion.WithKind("VectorsearchIndex")
 // +kcc:spec:proto=google.cloud.vectorsearch.v1.Index
 // +kcc:required-from-proto
 type VectorsearchIndexSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The VectorSearchCollection this VectorsearchIndex is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *VectorSearchCollectionRef `json:"parentRef"`
 
 	// The VectorsearchIndex name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. Dedicated infrastructure for the index.
 	// +kcc:proto:field=google.cloud.vectorsearch.v1.Index.dedicated_infrastructure
 	DedicatedInfrastructure *DedicatedInfrastructure `json:"dedicatedInfrastructure,omitempty"`
@@ -55,10 +53,6 @@ type VectorsearchIndexSpec struct {
 	// Optional. User-specified description of the index
 	// +kcc:proto:field=google.cloud.vectorsearch.v1.Index.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.vectorsearch.v1.Index.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Distance metric used for indexing. If not specified, will default
 	//  to DOT_PRODUCT.

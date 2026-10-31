@@ -15,3 +15,10 @@
 - **Problem**: Regionalizing endpoints (e.g. `us-central1-vectorsearch.googleapis.com`) results in 404 HTML errors on creation, and creating collections with empty `vector_schema` and `data_schema` returns a 400 Bad Request.
 - **Solution**: Explicitly set the client endpoint to the global REST endpoint `https://vectorsearch.googleapis.com` and updated the minimal fixture to configure a simple `vectorSchema`.
 - **Impact**: The controller reconciled correctly on real GCP, and recorded golden logs are extremely stable.
+
+### [2026-10-29] DedicatedInfrastructure Optional Enum Presence on Roundtrip
+- **Context**: Triaging judgement queue and finalizing types/fuzzer for `VectorsearchIndex` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**: Proto field `DedicatedInfrastructure.mode` is an `optional Mode mode = 1` enum. `direct.Enum_FromProto` maps 0 (`MODE_UNSPECIFIED`) to `nil`, losing presence on roundtrip in `TestFocusedMappers`.
+- **Solution**: Implemented `DedicatedInfrastructure_FromProto` in `vectorsearchcollection_mapper.go` to preserve pointer presence when `in.Mode != nil` via `direct.LazyPtr(in.GetMode().String())`, ensuring roundtrip fidelity between proto and KRM.
+- **Impact**: Roundtrip fuzz testing passes cleanly for `VectorsearchIndex` without dropping zero-value enums.
+

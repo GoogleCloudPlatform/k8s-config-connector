@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,6 +67,10 @@ func (m *modelIndex) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 	id := i.(*krm.VectorsearchIndexIdentity)
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 
 	// Get vectorsearch GCP client
 	gcpClient, err := m.client(ctx)
@@ -183,7 +187,7 @@ func (a *IndexAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Index", "name", a.id)
 
-	resource, report, updateMask, err := common.CompareGreenfieldSpec(
+	_, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
@@ -194,31 +198,15 @@ func (a *IndexAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if err != nil {
 		return err
 	}
-	updated := a.actual
-	if !report.HasDiff() {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
+	if report.HasDiff() {
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
-		resource.Name = a.id.String()
-		req := &vectorsearchpb.UpdateIndexRequest{
-			UpdateMask: updateMask,
-			Index:      resource,
-		}
-		op, err := a.gcpClient.UpdateIndex(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating Index %s: %w", a.id, err)
-		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("Index %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated Index", "name", a.id)
+		return fmt.Errorf("updating VectorsearchIndex is not supported, fields modified: %v", updateMask.Paths)
 	}
 
 	status := &krm.VectorsearchIndexStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = VectorsearchIndexObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = VectorsearchIndexObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
