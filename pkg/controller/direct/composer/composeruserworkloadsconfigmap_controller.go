@@ -130,9 +130,6 @@ var _ directbase.Adapter = &UserWorkloadsConfigMapAdapter{}
 func (a *UserWorkloadsConfigMapAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting UserWorkloadsConfigMap", "name", a.id)
-	if !a.id.HasIdentitySpecified() {
-		return false, nil
-	}
 
 	req := &servicepb.GetUserWorkloadsConfigMapRequest{
 		Name: a.id.String(),
@@ -160,23 +157,19 @@ func (a *UserWorkloadsConfigMapAdapter) Create(ctx context.Context, createOp *di
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
 	req := &servicepb.CreateUserWorkloadsConfigMapRequest{
 		Parent:                 a.id.ParentString(),
 		UserWorkloadsConfigMap: resource,
 	}
-	created, err := a.gcpClient.CreateUserWorkloadsConfigMap(ctx, req)
+	_, err := a.gcpClient.CreateUserWorkloadsConfigMap(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating UserWorkloadsConfigMap %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created UserWorkloadsConfigMap", "name", a.id)
 
 	status := &krm.ComposerUserWorkloadsConfigMapStatus{}
-	parsedID := &krm.ComposerUserWorkloadsConfigMapIdentity{}
-	if err := parsedID.FromExternal(created.Name); err != nil {
-		return err
-	}
-	a.id.UserWorkloadsConfigMap = parsedID.UserWorkloadsConfigMap
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }

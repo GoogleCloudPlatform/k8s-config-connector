@@ -46,7 +46,6 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.orchestration.airflow.service.v1 \
   --api-version composer.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComposerUserWorkloadsConfigMap:UserWorkloadsConfigMap \
   --resource ComposerUserWorkloadsSecret:UserWorkloadsSecret
 
 ${CONTROLLERBUILDER} generate-mapper \

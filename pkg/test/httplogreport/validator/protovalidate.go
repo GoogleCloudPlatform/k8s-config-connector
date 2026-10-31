@@ -87,7 +87,7 @@ func ValidateProtoSchemas(entries []*classifier.ClassifiedEntry, descriptorSetPa
 	}
 
 	for _, ce := range entries {
-		if ce == nil || ce.Entry == nil {
+		if ce == nil || ce.Entry == nil || ce.Role != classifier.RolePrimary {
 			continue
 		}
 		method := ce.Entry.Request.Method

@@ -32,7 +32,7 @@ func TestComposerUserWorkloadsConfigMapIdentity_Conformance(t *testing.T) {
 		SampleExternal:        "projects/my-project/locations/us-central1/environments/my-environment/userWorkloadsConfigMaps/my-user-workloads-config-map",
 		WantHost:              "composer.googleapis.com",
 		WantParent:            "projects/my-project/locations/us-central1/environments/my-environment",
-		ExpectServerGenerated: true,
+		ExpectServerGenerated: false,
 		WantIdentity: &ComposerUserWorkloadsConfigMapIdentity{
 			Project:                "my-project",
 			Location:               "us-central1",

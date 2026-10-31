@@ -27,6 +27,10 @@ import (
 var _ refsv1beta1.Ref = &EnvironmentRef{}
 var _ refsv1beta1.ExternalRef = &EnvironmentRef{}
 
+func init() {
+	refsv1beta1.Register(&EnvironmentRef{}, &ComposerEnvironment{})
+}
+
 // EnvironmentRef is a reference to a ComposerEnvironment.
 type EnvironmentRef struct {
 	// A reference to an externally managed ComposerEnvironment resource.
