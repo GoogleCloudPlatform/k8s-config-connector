@@ -112,14 +112,23 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		endpointProtocol = pb.HiveMetastoreConfig_GRPC
 	}
 	// Add HiveMetastoreConfig with endpointProtocol
-	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
-		HiveMetastoreConfig: &pb.HiveMetastoreConfig{
-			EndpointProtocol: endpointProtocol,
-			Version:          "3.1.2",
-			ConfigOverrides: map[string]string{
-				"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
-			},
+	hiveMetastoreConfig := &pb.HiveMetastoreConfig{
+		EndpointProtocol: endpointProtocol,
+		Version:          "3.1.2",
+		ConfigOverrides: map[string]string{
+			"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
 		},
+	}
+	if req.Service.GetHiveMetastoreConfig() != nil {
+		if req.Service.GetHiveMetastoreConfig().Version != "" {
+			hiveMetastoreConfig.Version = req.Service.GetHiveMetastoreConfig().Version
+		}
+		if req.Service.GetHiveMetastoreConfig().AuxiliaryVersions != nil {
+			hiveMetastoreConfig.AuxiliaryVersions = req.Service.GetHiveMetastoreConfig().AuxiliaryVersions
+		}
+	}
+	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
+		HiveMetastoreConfig: hiveMetastoreConfig,
 	}
 
 	// Generate a UID if not present
