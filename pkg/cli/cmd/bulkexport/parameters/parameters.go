@@ -55,6 +55,7 @@ var (
 type Parameters struct {
 	IAMFormat               string
 	FilterDeletedIAMMembers bool
+	FilterSensitiveFields   bool
 	Input                   string
 	Output                  string
 	OnError                 string

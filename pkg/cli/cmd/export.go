@@ -69,6 +69,7 @@ func init() {
 	commonparams.AddOAuth2TokenParam(exportCmd, &exportParams.GCPAccessToken)
 	commonparams.AddIAMFormatParam(exportCmd, &exportParams.IAMFormat)
 	commonparams.AddFilterDeletedIAMMembersParam(exportCmd, &exportParams.FilterDeletedIAMMembers)
+	commonparams.AddFilterSensitiveFieldsParam(exportCmd, &exportParams.FilterSensitiveFields)
 	commonparams.AddOutputParam(exportCmd, &exportParams.Output)
 	commonparams.AddResourceFormatParam(exportCmd, &exportParams.ResourceFormat)
 }

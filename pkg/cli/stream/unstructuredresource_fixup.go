@@ -21,22 +21,38 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
+	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 const namePath = "metadata.name"
+
+type FixupOptions struct {
+	FilterSensitiveFields bool
+	SMLoader              *servicemappingloader.ServiceMappingLoader
+	TFProvider            *schema.Provider
+}
 
 // UnstructuredResourceFixupStream will make any necessary edits to a resource to make sure it will work with K8s and KCC
 // For example, ensuring the metadata.name is a K8s legal value (some GCP resource's allow values in 'name' with
 // characters that are not allowed by K8s in metadata.name)
 type UnstructuredResourceFixupStream struct {
 	unstructStream UnstructuredStream
+	opts           FixupOptions
 }
 
 func NewUnstructuredResourceFixupStream(unstructuredStream UnstructuredStream) *UnstructuredResourceFixupStream {
+	return NewUnstructuredResourceFixupStreamWithOptions(unstructuredStream, FixupOptions{})
+}
+
+func NewUnstructuredResourceFixupStreamWithOptions(unstructuredStream UnstructuredStream, opts FixupOptions) *UnstructuredResourceFixupStream {
 	return &UnstructuredResourceFixupStream{
 		unstructStream: unstructuredStream,
+		opts:           opts,
 	}
 }
 
@@ -51,7 +67,123 @@ func (s *UnstructuredResourceFixupStream) Next(ctx context.Context) (*unstructur
 	if err := ensureNameIsK8sLegal(u); err != nil {
 		return nil, err
 	}
+	if s.opts.FilterSensitiveFields {
+		filterSensitiveFields(u, s.opts.SMLoader, s.opts.TFProvider)
+	}
 	return u, nil
+}
+
+func filterSensitiveFields(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) {
+	if u == nil || u.Object == nil {
+		return
+	}
+	spec, ok := u.Object["spec"].(map[string]interface{})
+	if !ok {
+		return
+	}
+	if smLoader != nil && tfProvider != nil {
+		if rc, err := smLoader.GetResourceConfig(u); err == nil && rc != nil {
+			if tfResource, ok := tfProvider.ResourcesMap[rc.Name]; ok && tfResource != nil {
+				tfSchema := &schema.Schema{Elem: tfResource}
+				filterSensitiveFieldsUsingTFSchema(tfSchema, spec)
+			}
+		}
+	}
+	filterSensitiveFieldStructsInMap(spec)
+}
+
+func filterSensitiveFieldsUsingTFSchema(tfSchema *schema.Schema, obj interface{}) {
+	if tfSchema == nil || obj == nil {
+		return
+	}
+	switch elem := tfSchema.Elem.(type) {
+	case *schema.Schema:
+		filterSensitiveFieldValueUsingTFSchema(elem, obj)
+	case *schema.Resource:
+		mapValue, ok := obj.(map[string]interface{})
+		if !ok {
+			return
+		}
+		for k, v := range elem.Schema {
+			k8sKey := text.SnakeCaseToLowerCamelCase(k)
+			val, exists := mapValue[k8sKey]
+			if !exists {
+				continue
+			}
+			if tfresource.IsSensitiveConfigurableField(v) {
+				if valMap, isMap := val.(map[string]interface{}); isMap {
+					delete(valMap, "value")
+				} else {
+					mapValue[k8sKey] = ""
+				}
+				continue
+			}
+			filterSensitiveFieldValueUsingTFSchema(v, val)
+		}
+	}
+}
+
+func filterSensitiveFieldValueUsingTFSchema(tfSchema *schema.Schema, obj interface{}) {
+	if tfSchema == nil || obj == nil {
+		return
+	}
+	switch tfSchema.Type {
+	case schema.TypeList, schema.TypeSet:
+		switch typedObj := obj.(type) {
+		case []interface{}:
+			for _, item := range typedObj {
+				filterSensitiveFieldsUsingTFSchema(tfSchema, item)
+			}
+		case map[string]interface{}:
+			if tfSchema.MaxItems == 1 {
+				filterSensitiveFieldsUsingTFSchema(tfSchema, typedObj)
+			}
+		}
+	}
+}
+
+func filterSensitiveFieldStructsInMap(m map[string]interface{}) {
+	for _, val := range m {
+		switch typedVal := val.(type) {
+		case map[string]interface{}:
+			if isSensitiveFieldMap(typedVal) {
+				delete(typedVal, "value")
+			} else {
+				filterSensitiveFieldStructsInMap(typedVal)
+			}
+		case []interface{}:
+			filterSensitiveFieldStructsInSlice(typedVal)
+		}
+	}
+}
+
+func filterSensitiveFieldStructsInSlice(s []interface{}) {
+	for _, item := range s {
+		switch typedItem := item.(type) {
+		case map[string]interface{}:
+			filterSensitiveFieldStructsInMap(typedItem)
+		case []interface{}:
+			filterSensitiveFieldStructsInSlice(typedItem)
+		}
+	}
+}
+
+func isSensitiveFieldMap(m map[string]interface{}) bool {
+	if len(m) == 0 || len(m) > 2 {
+		return false
+	}
+	val, hasValue := m["value"]
+	if !hasValue {
+		return false
+	}
+	if _, isStr := val.(string); !isStr {
+		return false
+	}
+	if len(m) == 1 {
+		return true
+	}
+	_, hasValueFrom := m["valueFrom"]
+	return hasValueFrom
 }
 
 // if the resource does not have a name, fill it with the value in the resourceID field
