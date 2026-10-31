@@ -195,6 +195,10 @@ observedState:
   certificateID: integer
   creationTimestamp: string
   expireTime: string
+  managed:
+    domainStatus:
+      string: string
+    status: string
   selfLink: string
   subjectAlternativeNames:
   - string
@@ -296,6 +300,27 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Expire time of the certificate in RFC3339 text format.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>[Output only] Properties relevant to a managed certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.domainStatus</code></td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>[Output only] Detailed statuses of the domains specified for managed certificate resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.status</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>[Output only] Status of the managed certificate resource. Possible values: [ACTIVE, MANAGED_CERTIFICATE_STATUS_UNSPECIFIED, PROVISIONING, PROVISIONING_FAILED, PROVISIONING_FAILED_PERMANENTLY, RENEWAL_FAILED].</p>
         </td>
     </tr>
     <tr>

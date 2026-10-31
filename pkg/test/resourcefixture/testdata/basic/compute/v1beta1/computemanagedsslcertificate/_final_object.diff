@@ -1,2 +1,7 @@
 6d5
 <     cnrm.cloud.google.com/state-into-spec: absent
+32a32,35
+>     managed:
+>       domainStatus:
+>         sslcert.fixture.club: PROVISIONING
+>       status: PROVISIONING

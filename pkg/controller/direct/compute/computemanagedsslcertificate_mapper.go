@@ -34,6 +34,7 @@ func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.
 	}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ExpireTime = in.ExpireTime
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx, in.Managed)
 	out.SelfLink = in.SelfLink
 	out.SubjectAlternativeNames = in.SubjectAlternativeNames
 	return out
@@ -53,8 +54,29 @@ func ComputeManagedSSLCertificateObservedState_v1beta1_ToProto(mapCtx *direct.Ma
 	}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ExpireTime = in.ExpireTime
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx, in.Managed)
 	out.SelfLink = in.SelfLink
 	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krm.ComputeManagedSSLCertificateManagedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeManagedSSLCertificateManagedObservedState{}
+	out.DomainStatus = in.DomainStatus
+	out.Status = in.Status
+	return out
+}
+
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeManagedSSLCertificateManagedObservedState) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	out.DomainStatus = in.DomainStatus
+	out.Status = in.Status
 	return out
 }
 
