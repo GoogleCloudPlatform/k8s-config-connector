@@ -139,7 +139,27 @@ func GetComputeForwardingRuleResourceOverrides() ResourceOverrides {
 		Kind: "ComputeForwardingRule",
 	}
 	ro.Overrides = append(ro.Overrides, noLabelsOnCreate())
+	ro.Overrides = append(ro.Overrides, pscForwardingRuleOverrides())
 	return ro
+}
+
+func pscForwardingRuleOverrides() ResourceOverride {
+	o := ResourceOverride{}
+
+	o.PreTerraformApply = func(ctx context.Context, op *operations.PreTerraformApply) error {
+		target, ok := op.TerraformConfig.Config["target"].(string)
+		if ok && strings.Contains(target, "/serviceAttachments/") {
+			if lbs, ok := op.TerraformConfig.Config["load_balancing_scheme"]; !ok || lbs == nil {
+				op.TerraformConfig.Config["load_balancing_scheme"] = ""
+			}
+			if lbs, ok := op.TerraformConfig.Raw["load_balancing_scheme"]; !ok || lbs == nil {
+				op.TerraformConfig.Raw["load_balancing_scheme"] = ""
+			}
+		}
+		return nil
+	}
+
+	return o
 }
 
 func noLabelsOnCreate() ResourceOverride {

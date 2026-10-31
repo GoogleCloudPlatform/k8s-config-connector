@@ -65,6 +65,17 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 		return nil, err
 	}
 
+	if fwdRule, ok := src.(*krm.ComputeForwardingRule); ok && isPSCForwardingRule(fwdRule) {
+		selfLink, _, _ := unstructured.NestedString(computeAddress.Object, "status", "selfLink")
+		if selfLink != "" {
+			return &krm.ComputeAddressRef{External: selfLink}, nil
+		}
+		externalRef, _, _ := unstructured.NestedString(computeAddress.Object, "status", "externalRef")
+		if externalRef != "" {
+			return &krm.ComputeAddressRef{External: externalRef}, nil
+		}
+	}
+
 	// targetField: address
 	// See compute servicemappings for details
 	// Because `spec.address` field is optional, we can't guarantee it always

@@ -193,6 +193,10 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 		return nil, k8s.NewReferenceNotReadyErrorForResource(&refResource.Resource)
 	}
 
+	if IsPSCForwardingRule(r, nil) && refConfig.TFField == "ip_address" && (typeConfig.Key == "addressRef" || typeConfig.GVK.Kind == "ComputeAddress") {
+		typeConfig.TargetField = "self_link"
+	}
+
 	resolvedVal, err := resolveTargetFieldValue(refResource, typeConfig)
 	if err != nil {
 		return nil, fmt.Errorf("error resolving value of target field of "+
@@ -214,11 +218,20 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 			return val, nil
 		}
 		if val, exists, _ := unstructured.NestedString(r.GetStatusOrObservedState(), strings.Split(key, ".")...); exists {
-			return val, nil
+			if key != "selfLink" || val != "" {
+				return val, nil
+			}
 		}
 		// Check 'status.observedState' for the observed, optional 'spec' fields.
 		if val, exists, _ := unstructured.NestedString(getObservedStateFromStatus(r.Status), strings.Split(key, ".")...); exists {
-			return val, nil
+			if key != "selfLink" || val != "" {
+				return val, nil
+			}
+		}
+		if key == "selfLink" {
+			if val, exists, _ := unstructured.NestedString(r.Status, "externalRef"); exists && val != "" {
+				return val, nil
+			}
 		}
 	}
 
@@ -334,4 +347,28 @@ func GetReferenceConfigForHierarchicalReference(hierarchicalRef corekccv1alpha1.
 		}
 	}
 	return nil, fmt.Errorf("no reference config found for hierarchical reference field %v", hierarchicalRef.Key)
+}
+
+func IsPSCForwardingRule(r *Resource, config map[string]interface{}) bool {
+	if r == nil || r.GroupVersionKind().Kind != "ComputeForwardingRule" {
+		return false
+	}
+	if config != nil {
+		if targetStr, ok := config["target"].(string); ok && strings.Contains(targetStr, "/serviceAttachments/") {
+			return true
+		}
+	}
+	target, exists, _ := unstructured.NestedMap(r.Spec, "target")
+	if exists && target != nil {
+		if saRef, ok := target["serviceAttachmentRef"]; ok && saRef != nil {
+			return true
+		}
+		if saRef, ok := target["memorystoreInstanceServiceAttachment"]; ok && saRef != nil {
+			return true
+		}
+		if saRef, ok := target["redisClusterServiceAttachment"]; ok && saRef != nil {
+			return true
+		}
+	}
+	return false
 }
