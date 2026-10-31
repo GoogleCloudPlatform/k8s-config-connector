@@ -71,3 +71,24 @@ entries:
     reason: location-or-parent-ref
     detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
     status: open
+  - kind: IAMWorkloadIdentityPoolManagedIdentity
+    group: iam.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: IAMWorkloadIdentityPoolManagedIdentity
+    group: iam.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/workloadIdentityPools/{workload_identity_pool}/namespaces/{workload_identity_pool_namespace}/managedIdentities/{workload_identity_pool_managed_identity}" contains ancestor segment(s) workloadIdentityPools/{workload_identity_pool}, namespaces/{workload_identity_pool_namespace} with no matching reference or field on IAMWorkloadIdentityPoolManagedIdentitySpec
+    status: open
+  - kind: IAMWorkloadIdentityPoolManagedIdentity
+    group: iam.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/workloadIdentityPools/{workload_identity_pool}/namespaces/{workload_identity_pool_namespace}, and no NamespaceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: IAMWorkloadIdentityPoolManagedIdentity
+    group: iam.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/workloadIdentityPools/{workload_identity_pool}/namespaces/{workload_identity_pool_namespace}, which already names the location; a reference to it could replace location and the root reference
+    status: open
