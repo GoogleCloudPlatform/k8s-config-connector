@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -124,7 +125,7 @@ func ResolveIAMServiceAccount(ctx context.Context, reader client.Reader, src cli
 	}
 
 	return &refs.IAMServiceAccountRef{
-		External: fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", projectID, resourceID, projectID)}, nil
+		External: fmt.Sprintf("projects/%s/serviceAccounts/%s", projectID, gcp.FormatServiceAccountEmail(projectID, resourceID))}, nil
 }
 
 func resolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
