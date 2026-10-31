@@ -249,6 +249,12 @@ func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return err
 	}
 
+	// GKE rejects node pool creation if autoscaling is disabled with min_node_count specified.
+	// When autoscaling is disabled, omit autoscaling on create.
+	if as := desired.GetAutoscaling(); as != nil && !as.GetEnabled() {
+		desired.Autoscaling = nil
+	}
+
 	req := &pb.CreateNodePoolRequest{
 		Parent:   a.id.ParentString(),
 		NodePool: desired,
@@ -281,11 +287,17 @@ func (a *nodePoolAdapter) normalizeNodePool(ctx context.Context, pbNodePool *pb.
 		return nil
 	}
 
-	// In the KRM CRD, autoscaling does not expose an explicit `enabled` field; the presence
-	// of the autoscaling configuration implies autoscaling is enabled. GCP GKE requires
-	// enabled=true in the request whenever autoscaling is configured.
+	// Autoscaling defaults to enabled=true when configured unless explicitly disabled via spec.autoscaling.enabled=false.
 	if as := pbNodePool.GetAutoscaling(); as != nil {
-		as.Enabled = true
+		if a.desiredKRM != nil && a.desiredKRM.Spec.Autoscaling != nil && a.desiredKRM.Spec.Autoscaling.Enabled != nil && !*a.desiredKRM.Spec.Autoscaling.Enabled {
+			// When autoscaling is disabled, GKE does not maintain an autoscaling config on the node pool (it is nil).
+			// Normalize disabled autoscaling to nil so that when actual is nil, no diff is detected.
+			if !as.GetEnabled() {
+				pbNodePool.Autoscaling = nil
+			}
+		} else {
+			as.Enabled = true
+		}
 	}
 
 	if netConfig := pbNodePool.GetNetworkConfig(); netConfig != nil {
@@ -372,11 +384,18 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	// 1. Update Autoscaling via UpdateCluster if changed
 	if updateAutoscaling {
+		desiredAutoscaling := mergedDesired.GetAutoscaling()
+		if desiredAutoscaling == nil || !desiredAutoscaling.GetEnabled() {
+			// GKE requires desiredNodePoolAutoscaling to only have enabled: false without min/max counts.
+			desiredAutoscaling = &pb.NodePoolAutoscaling{
+				Enabled: false,
+			}
+		}
 		op, err := a.client.UpdateCluster(ctx, &pb.UpdateClusterRequest{
 			Name: a.id.ParentString(),
 			Update: &pb.ClusterUpdate{
 				DesiredNodePoolId:          a.id.NodePool,
-				DesiredNodePoolAutoscaling: mergedDesired.GetAutoscaling(),
+				DesiredNodePoolAutoscaling: desiredAutoscaling,
 			},
 		})
 		if err != nil {
