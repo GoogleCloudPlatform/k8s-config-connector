@@ -69,6 +69,23 @@ func TestComputeNetworkRefNormalize(t *testing.T) {
 				External: "projects/p1/global/networks/n1",
 			},
 		},
+		{
+			name: "external custom universe status selfLink",
+			ref: &ComputeNetworkRef{
+				Name:      "n1",
+				Namespace: "ns1",
+			},
+			unstructured: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"status": map[string]interface{}{
+						"selfLink": "https://compute.custom.universe.goog/compute/v1/projects/p1/global/networks/n1",
+					},
+				},
+			},
+			want: &ComputeNetworkRef{
+				External: "projects/p1/global/networks/n1",
+			},
+		},
 	}
 
 	for _, tc := range tests {
@@ -227,6 +244,23 @@ func TestCanonicalizeAndNormalize(t *testing.T) {
 				},
 			},
 			parentProjectID: "other-project",
+			want: &ComputeNetworkRef{
+				External: "projects/p1/global/networks/n1",
+			},
+		},
+		{
+			name: "external custom universe status selfLink",
+			ref: &ComputeNetworkRef{
+				Name:      "n1",
+				Namespace: "ns1",
+			},
+			unstructured: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"status": map[string]interface{}{
+						"selfLink": "https://compute.custom.universe.goog/compute/v1/projects/p1/global/networks/n1",
+					},
+				},
+			},
 			want: &ComputeNetworkRef{
 				External: "projects/p1/global/networks/n1",
 			},
