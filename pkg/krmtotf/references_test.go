@@ -34,6 +34,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestResolveResourceReferenceToTFResource(t *testing.T) {
@@ -2029,5 +2030,130 @@ func TestIsRequiredParentReference(t *testing.T) {
 				t.Fatalf("got %v, want %v", result, tc.isParentRef)
 			}
 		})
+	}
+}
+
+func TestResolveComputeForwardingRulePSCAddressReference(t *testing.T) {
+	ns := "test-ns"
+
+	addressSelfLink := "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/addresses/my-psc-addr"
+	addressIP := "10.10.0.42"
+	computeAddr := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ComputeAddress",
+			"metadata": map[string]interface{}{
+				"name":      "my-psc-addr",
+				"namespace": ns,
+			},
+			"spec": map[string]interface{}{
+				"location":    "us-central1",
+				"addressType": "INTERNAL",
+			},
+			"status": map[string]interface{}{
+				"selfLink": addressSelfLink,
+				"observedState": map[string]interface{}{
+					"address": addressIP,
+				},
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+			},
+		},
+	}
+	c := fake.NewClientBuilder().WithObjects(computeAddr).Build()
+
+	refConfig := v1alpha1.ReferenceConfig{
+		TFField: "ip_address",
+		Types: []v1alpha1.TypeConfig{
+			{
+				Key:         "addressRef",
+				TargetField: "address",
+				GVK: schema.GroupVersionKind{
+					Group:   "compute.cnrm.cloud.google.com",
+					Version: "v1beta1",
+					Kind:    "ComputeAddress",
+				},
+			},
+			{
+				Key:            "ip",
+				JSONSchemaType: "string",
+			},
+		},
+	}
+
+	smLoader := testservicemappingloader.New(t)
+
+	// Case 1: PSC ComputeForwardingRule (serviceAttachmentRef) resolves addressRef to selfLink
+	pscResource := &Resource{}
+	pscResource.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeForwardingRule",
+	})
+	pscResource.SetNamespace(ns)
+	pscResource.Spec = map[string]interface{}{
+		"location": "us-central1",
+		"target": map[string]interface{}{
+			"serviceAttachmentRef": map[string]interface{}{
+				"name": "my-service-attachment",
+			},
+		},
+		"ipAddress": map[string]interface{}{
+			"addressRef": map[string]interface{}{
+				"name": "my-psc-addr",
+			},
+		},
+	}
+	pscConfig := map[string]interface{}{
+		"ipAddress": map[string]interface{}{
+			"addressRef": map[string]interface{}{
+				"name": "my-psc-addr",
+			},
+		},
+	}
+	if err := ResolveResourceReference([]string{"ip_address"}, pscConfig, refConfig, pscResource, c, smLoader); err != nil {
+		t.Fatalf("unexpected error resolving PSC addressRef: %v", err)
+	}
+	if got := pscConfig["ipAddress"]; got != addressSelfLink {
+		t.Fatalf("PSC ComputeForwardingRule ipAddress = %v, want %v", got, addressSelfLink)
+	}
+
+	// Case 2: Non-PSC ComputeForwardingRule resolves addressRef to IP literal
+	nonPSCResource := &Resource{}
+	nonPSCResource.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeForwardingRule",
+	})
+	nonPSCResource.SetNamespace(ns)
+	nonPSCResource.Spec = map[string]interface{}{
+		"location": "us-central1",
+		"target": map[string]interface{}{
+			"targetTCPProxyRef": map[string]interface{}{
+				"name": "my-tcp-proxy",
+			},
+		},
+		"ipAddress": map[string]interface{}{
+			"addressRef": map[string]interface{}{
+				"name": "my-psc-addr",
+			},
+		},
+	}
+	nonPSCConfig := map[string]interface{}{
+		"ipAddress": map[string]interface{}{
+			"addressRef": map[string]interface{}{
+				"name": "my-psc-addr",
+			},
+		},
+	}
+	if err := ResolveResourceReference([]string{"ip_address"}, nonPSCConfig, refConfig, nonPSCResource, c, smLoader); err != nil {
+		t.Fatalf("unexpected error resolving non-PSC addressRef: %v", err)
+	}
+	if got := nonPSCConfig["ipAddress"]; got != addressIP {
+		t.Fatalf("non-PSC ComputeForwardingRule ipAddress = %v, want %v", got, addressIP)
 	}
 }

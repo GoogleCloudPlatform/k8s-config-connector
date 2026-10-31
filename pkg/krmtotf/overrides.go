@@ -17,6 +17,7 @@ package krmtotf
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 
@@ -46,9 +47,34 @@ func withResourceCustomResolvers(config map[string]interface{}, liveState map[st
 	switch kind {
 	case "BigtableInstance":
 		return MergeClusterConfigsFromLiveStateForBigtableInstance(config, liveState, r)
+	case "ComputeForwardingRule":
+		return ResolvePSCDefaultsForComputeForwardingRule(config), nil
 	default:
 		return config, nil
 	}
+}
+
+// ResolvePSCDefaultsForComputeForwardingRule suppresses the Terraform schema default
+// load_balancing_scheme="EXTERNAL" when a ComputeForwardingRule targets a Private
+// Service Connect service attachment or Google APIs bundle ("all-apis" or "vpc-sc")
+// and loadBalancingScheme is not explicitly specified in the KRM spec.
+func ResolvePSCDefaultsForComputeForwardingRule(config map[string]interface{}) map[string]interface{} {
+	if len(config) == 0 {
+		return config
+	}
+	if _, hasLBS := config["load_balancing_scheme"]; hasLBS {
+		return config
+	}
+	target, _ := config["target"].(string)
+	if isPSCForwardingRuleTarget(target) {
+		config = deepcopy.MapStringInterface(config)
+		config["load_balancing_scheme"] = ""
+	}
+	return config
+}
+
+func isPSCForwardingRuleTarget(target string) bool {
+	return target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/")
 }
 
 // MergeClusterConfigsFromLiveStateForBigtableInstance is a resource specific function to deal with the following edge case.
