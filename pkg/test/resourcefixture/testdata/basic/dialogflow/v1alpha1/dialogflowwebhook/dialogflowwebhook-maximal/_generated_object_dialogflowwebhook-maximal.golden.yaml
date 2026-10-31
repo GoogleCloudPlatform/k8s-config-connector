@@ -1,0 +1,36 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowWebhook
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowwebhook-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  agentRef:
+    name: dialogflowcxagent-${uniqueId}
+  disabled: true
+  displayName: webhook-max-updated-${uniqueId}
+  genericWebService:
+    httpMethod: POST
+    parameterMapping:
+      param1: response.updated-key
+    requestBody: '{"key": "updated-value"}'
+    requestHeaders:
+      X-Custom-Header: updated-value
+    serviceAgentAuth: NONE
+    uri: https://example.com/webhook/updated
+    webhookType: FLEXIBLE
+  timeout: 20s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a
+  observedGeneration: 2

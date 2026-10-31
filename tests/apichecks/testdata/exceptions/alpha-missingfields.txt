@@ -4025,24 +4025,14 @@
 [missing_field] crd=dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.setParameterActions[].value.structValue" is not set in unstructured objects
 [missing_field] crd=dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhook" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.allowedCACerts[]" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.httpMethod" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.clientID" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.clientSecret" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.tokenEndpoint" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.parameterMapping" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password.value" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestBody" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestHeaders" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.serviceAgentAuth" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.uri" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.username" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.webhookType" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.allowedCACerts[]" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.httpMethod" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.oauthConfig.clientID" is not set in unstructured objects
@@ -4059,7 +4049,6 @@
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.username" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.webhookType" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.serviceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects
