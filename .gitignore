@@ -171,7 +171,6 @@ pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
 # Experimental MCP
 # Let Gemini CLI to ignore env to avoid sensitive data
 .gemini/.env
-.gemini/settings.json
 
 # Ignore pycache
 experiments/mcp/**/__pycache__

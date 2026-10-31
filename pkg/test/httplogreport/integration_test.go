@@ -17,12 +17,14 @@ package httplogreport
 import (
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/fixture"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/validator"
 )
 
 func findCheck(report *Report, id string) *ValidationCheck {
@@ -430,5 +432,55 @@ func TestCommittedHTTPLogReports(t *testing.T) {
 				t.Errorf("committed _http_report.md in %s is out of sync with fixture files (or Integrity Hash mismatch).\nRun: go run ./cmd/httplog-report --fixture %s --write", dir, dir)
 			}
 		})
+	}
+}
+
+func TestValidateProtoSchemas_RealAgentRegistryBinding(t *testing.T) {
+	pbPath := validator.DefaultDescriptorSetPath()
+	if pbPath == "" {
+		t.Skip(".build/googleapis.pb not present on disk; skipping real googleapis.pb test")
+	}
+
+	realFixtureDir := filepath.Join("..", "resourcefixture", "testdata", "basic", "agentregistry", "v1alpha1", "agentregistrybinding", "agentregistrybinding-maximal")
+	report, err := AnalyzeFixture(realFixtureDir)
+	if err != nil {
+		t.Fatalf("AnalyzeFixture: %v", err)
+	}
+	errs := validator.ValidateProtoSchemas(report.Entries, pbPath)
+	if len(errs) > 0 {
+		t.Fatalf("expected real agentregistrybinding-maximal/_http.log to pass ValidateProtoSchemas against %s, got: %v", pbPath, errs)
+	}
+
+	rawBytes, err := os.ReadFile(filepath.Join(realFixtureDir, "_http.log"))
+	if err != nil {
+		t.Fatalf("reading _http.log: %v", err)
+	}
+	tamperedLog := strings.Replace(
+		string(rawBytes),
+		"  \"description\": \"Original Description\",\n",
+		"  \"description\": \"Original Description\",\n  \"descriptiozHallucinatedField\": \"bad\",\n",
+		1,
+	)
+	badReport, err := AnalyzeFixtureWithLogContent(realFixtureDir, tamperedLog)
+	if err != nil {
+		t.Fatalf("AnalyzeFixtureWithLogContent(tampered): %v", err)
+	}
+	v7 := findCheck(badReport, "V7")
+	if v7 == nil || v7.Passed {
+		t.Fatalf("expected V7 to fail when hallucinated proto field is injected, got: %+v", v7)
+	}
+	if !strings.Contains(v7.Summary, "Protobuf schema violation") {
+		t.Fatalf("expected V7 summary to report Protobuf schema violation, got: %s", v7.Summary)
+	}
+}
+
+func TestPreToolUseGoldenFileHook(t *testing.T) {
+	hookTestPath := filepath.Join("..", "..", "..", ".gemini", "hooks", "block_golden_file_edits_test.py")
+	if !fixture.FileExists(hookTestPath) {
+		t.Fatalf("expected hook unit test script at %s", hookTestPath)
+	}
+	out, err := exec.Command("python3", hookTestPath).CombinedOutput()
+	if err != nil {
+		t.Fatalf("block_golden_file_edits_test.py failed: %v\nOutput:\n%s", err, string(out))
 	}
 }

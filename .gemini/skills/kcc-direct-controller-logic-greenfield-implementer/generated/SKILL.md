@@ -113,7 +113,8 @@ Run from the repository root:
 RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-minimal$"
 RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<kind_lower>-maximal$"
 ```
-- Once a fixture provisions on real GCP, reaches `Ready`, deletes cleanly, and writes `_http.log` and `_audit_probe.log`, **do not re-run `hack/record-gcp` for minor log variations**—normalize volatile fields in `tests/e2e/normalize.go` instead.
+- `hack/record-gcp` (`E2E_GCP_TARGET=real WRITE_GOLDEN_OUTPUT=1`) automatically validates `_http.log` (`V1`–`V7`, including protobuf schema and LRO `@type` validation) and writes `_http_report.md` in each fixture directory. Always stage `_http_report.md` alongside `_http.log`, and never hand-edit `_http.log` or `_http_report.md`.
+- Once a fixture provisions on real GCP, reaches `Ready`, deletes cleanly, and writes `_http.log`, `_http_report.md`, and `_audit_probe.log`, **do not re-run `hack/record-gcp` for minor log variations**—normalize volatile fields in `tests/e2e/normalize.go` instead.
 - If real GCP reports a disabled API, enable it via `gcloud services enable <service>.googleapis.com` and retry.
 
 ---
