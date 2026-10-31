@@ -482,6 +482,94 @@ found existing non-generated mapping function "AIPlatformReasoningEngineSpec_ToP
 		return out
 	}
 */
+func AIPlatformScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.AIPlatformScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformScheduleObservedState{}
+	out.CreatePipelineJobRequest = CreatePipelineJobRequestObservedState_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
+	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequestObservedState_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
+	// MISSING: Name
+	out.StartedRunCount = direct.LazyPtr(in.GetStartedRunCount())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
+	out.LastPauseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastPauseTime())
+	out.LastResumeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastResumeTime())
+	out.CatchUp = direct.LazyPtr(in.GetCatchUp())
+	out.LastScheduledRunResponse = Schedule_RunResponse_FromProto(mapCtx, in.GetLastScheduledRunResponse())
+	return out
+}
+func AIPlatformScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformScheduleObservedState) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	if oneof := CreatePipelineJobRequestObservedState_ToProto(mapCtx, in.CreatePipelineJobRequest); oneof != nil {
+		out.Request = &pb.Schedule_CreatePipelineJobRequest{CreatePipelineJobRequest: oneof}
+	}
+	if oneof := CreateNotebookExecutionJobRequestObservedState_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
+		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
+	}
+	// MISSING: Name
+	out.StartedRunCount = direct.ValueOf(in.StartedRunCount)
+	out.State = direct.Enum_ToProto[pb.Schedule_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
+	out.LastPauseTime = direct.StringTimestamp_ToProto(mapCtx, in.LastPauseTime)
+	out.LastResumeTime = direct.StringTimestamp_ToProto(mapCtx, in.LastResumeTime)
+	out.CatchUp = direct.ValueOf(in.CatchUp)
+	out.LastScheduledRunResponse = Schedule_RunResponse_ToProto(mapCtx, in.LastScheduledRunResponse)
+	return out
+}
+func AIPlatformScheduleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.AIPlatformScheduleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformScheduleSpec{}
+	out.Cron = direct.LazyPtr(in.GetCron())
+	out.CreatePipelineJobRequest = CreatePipelineJobRequest_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
+	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequest_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.MaxRunCount = direct.LazyPtr(in.GetMaxRunCount())
+	out.MaxConcurrentRunCount = direct.LazyPtr(in.GetMaxConcurrentRunCount())
+	out.AllowQueueing = direct.LazyPtr(in.GetAllowQueueing())
+	return out
+}
+func AIPlatformScheduleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformScheduleSpec) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	if oneof := AIPlatformScheduleSpec_Cron_ToProto(mapCtx, in.Cron); oneof != nil {
+		out.TimeSpecification = oneof
+	}
+	if oneof := CreatePipelineJobRequest_ToProto(mapCtx, in.CreatePipelineJobRequest); oneof != nil {
+		out.Request = &pb.Schedule_CreatePipelineJobRequest{CreatePipelineJobRequest: oneof}
+	}
+	if oneof := CreateNotebookExecutionJobRequest_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
+		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.MaxRunCount = direct.ValueOf(in.MaxRunCount)
+	out.MaxConcurrentRunCount = direct.ValueOf(in.MaxConcurrentRunCount)
+	out.AllowQueueing = direct.ValueOf(in.AllowQueueing)
+	return out
+}
+func AIPlatformScheduleSpec_Cron_ToProto(mapCtx *direct.MapContext, in *string) *pb.Schedule_Cron {
+	if in == nil {
+		return nil
+	}
+	return &pb.Schedule_Cron{Cron: *in}
+}
 func AIPlatformSpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.AIPlatformSpecialistPoolObservedState {
 	if in == nil {
 		return nil
@@ -4280,92 +4368,6 @@ func VertexAIPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAI
 	out.TemplateUri = direct.ValueOf(in.TemplateURI)
 	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
 	return out
-}
-func VertexAIScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.VertexAIScheduleObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIScheduleObservedState{}
-	out.CreatePipelineJobRequest = CreatePipelineJobRequestObservedState_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
-	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequestObservedState_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
-	out.Name = direct.LazyPtr(in.GetName())
-	out.StartedRunCount = direct.LazyPtr(in.GetStartedRunCount())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.NextRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRunTime())
-	out.LastPauseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastPauseTime())
-	out.LastResumeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastResumeTime())
-	out.CatchUp = direct.LazyPtr(in.GetCatchUp())
-	out.LastScheduledRunResponse = Schedule_RunResponse_FromProto(mapCtx, in.GetLastScheduledRunResponse())
-	return out
-}
-func VertexAIScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIScheduleObservedState) *pb.Schedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schedule{}
-	if oneof := CreatePipelineJobRequestObservedState_ToProto(mapCtx, in.CreatePipelineJobRequest); oneof != nil {
-		out.Request = &pb.Schedule_CreatePipelineJobRequest{CreatePipelineJobRequest: oneof}
-	}
-	if oneof := CreateNotebookExecutionJobRequestObservedState_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
-		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
-	}
-	out.Name = direct.ValueOf(in.Name)
-	out.StartedRunCount = direct.ValueOf(in.StartedRunCount)
-	out.State = direct.Enum_ToProto[pb.Schedule_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.NextRunTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRunTime)
-	out.LastPauseTime = direct.StringTimestamp_ToProto(mapCtx, in.LastPauseTime)
-	out.LastResumeTime = direct.StringTimestamp_ToProto(mapCtx, in.LastResumeTime)
-	out.CatchUp = direct.ValueOf(in.CatchUp)
-	out.LastScheduledRunResponse = Schedule_RunResponse_ToProto(mapCtx, in.LastScheduledRunResponse)
-	return out
-}
-func VertexAIScheduleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.VertexAIScheduleSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIScheduleSpec{}
-	out.Cron = direct.LazyPtr(in.GetCron())
-	out.CreatePipelineJobRequest = CreatePipelineJobRequest_FromProto(mapCtx, in.GetCreatePipelineJobRequest())
-	out.CreateNotebookExecutionJobRequest = CreateNotebookExecutionJobRequest_FromProto(mapCtx, in.GetCreateNotebookExecutionJobRequest())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.MaxRunCount = direct.LazyPtr(in.GetMaxRunCount())
-	out.MaxConcurrentRunCount = direct.LazyPtr(in.GetMaxConcurrentRunCount())
-	out.AllowQueueing = direct.LazyPtr(in.GetAllowQueueing())
-	return out
-}
-func VertexAIScheduleSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIScheduleSpec) *pb.Schedule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schedule{}
-	if oneof := VertexAIScheduleSpec_Cron_ToProto(mapCtx, in.Cron); oneof != nil {
-		out.TimeSpecification = oneof
-	}
-	if oneof := CreatePipelineJobRequest_ToProto(mapCtx, in.CreatePipelineJobRequest); oneof != nil {
-		out.Request = &pb.Schedule_CreatePipelineJobRequest{CreatePipelineJobRequest: oneof}
-	}
-	if oneof := CreateNotebookExecutionJobRequest_ToProto(mapCtx, in.CreateNotebookExecutionJobRequest); oneof != nil {
-		out.Request = &pb.Schedule_CreateNotebookExecutionJobRequest{CreateNotebookExecutionJobRequest: oneof}
-	}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.MaxRunCount = direct.ValueOf(in.MaxRunCount)
-	out.MaxConcurrentRunCount = direct.ValueOf(in.MaxConcurrentRunCount)
-	out.AllowQueueing = direct.ValueOf(in.AllowQueueing)
-	return out
-}
-func VertexAIScheduleSpec_Cron_ToProto(mapCtx *direct.MapContext, in *string) *pb.Schedule_Cron {
-	if in == nil {
-		return nil
-	}
-	return &pb.Schedule_Cron{Cron: *in}
 }
 func VertexAIStudyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Study) *krm.VertexAIStudyObservedState {
 	if in == nil {

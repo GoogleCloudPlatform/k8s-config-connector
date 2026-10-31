@@ -1118,7 +1118,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
-		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
+		"aiplatformschedules.aiplatform.cnrm.cloud.google.com":                          true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
 		"aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.indexConfig.bruteForceConfig)
 		"cesagents.ces.cnrm.cloud.google.com":                                           true, // GCP known pattern: Empty oneof option (spec.llmAgent)

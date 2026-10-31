@@ -26,11 +26,11 @@
 // resource: VertexAITuningJob:TuningJob
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
-// resource: VertexAISchedule:Schedule
 // resource: AIPlatformReasoningEngine:ReasoningEngine
 // resource: AIPlatformFeatureView:FeatureView
 // resource: AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 // resource: AIPlatformHyperparameterTuningJob:HyperparameterTuningJob
+// resource: AIPlatformSchedule:Schedule
 
 package v1alpha1
 

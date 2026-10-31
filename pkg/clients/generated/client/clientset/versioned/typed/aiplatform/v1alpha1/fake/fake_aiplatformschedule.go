@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeVertexAISchedules implements VertexAIScheduleInterface
-type fakeVertexAISchedules struct {
-	*gentype.FakeClientWithList[*v1alpha1.VertexAISchedule, *v1alpha1.VertexAIScheduleList]
+// fakeAIPlatformSchedules implements AIPlatformScheduleInterface
+type fakeAIPlatformSchedules struct {
+	*gentype.FakeClientWithList[*v1alpha1.AIPlatformSchedule, *v1alpha1.AIPlatformScheduleList]
 	Fake *FakeAiplatformV1alpha1
 }
 
-func newFakeVertexAISchedules(fake *FakeAiplatformV1alpha1, namespace string) aiplatformv1alpha1.VertexAIScheduleInterface {
-	return &fakeVertexAISchedules{
-		gentype.NewFakeClientWithList[*v1alpha1.VertexAISchedule, *v1alpha1.VertexAIScheduleList](
+func newFakeAIPlatformSchedules(fake *FakeAiplatformV1alpha1, namespace string) aiplatformv1alpha1.AIPlatformScheduleInterface {
+	return &fakeAIPlatformSchedules{
+		gentype.NewFakeClientWithList[*v1alpha1.AIPlatformSchedule, *v1alpha1.AIPlatformScheduleList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("vertexaischedules"),
-			v1alpha1.SchemeGroupVersion.WithKind("VertexAISchedule"),
-			func() *v1alpha1.VertexAISchedule { return &v1alpha1.VertexAISchedule{} },
-			func() *v1alpha1.VertexAIScheduleList { return &v1alpha1.VertexAIScheduleList{} },
-			func(dst, src *v1alpha1.VertexAIScheduleList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VertexAIScheduleList) []*v1alpha1.VertexAISchedule {
+			v1alpha1.SchemeGroupVersion.WithResource("aiplatformschedules"),
+			v1alpha1.SchemeGroupVersion.WithKind("AIPlatformSchedule"),
+			func() *v1alpha1.AIPlatformSchedule { return &v1alpha1.AIPlatformSchedule{} },
+			func() *v1alpha1.AIPlatformScheduleList { return &v1alpha1.AIPlatformScheduleList{} },
+			func(dst, src *v1alpha1.AIPlatformScheduleList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AIPlatformScheduleList) []*v1alpha1.AIPlatformSchedule {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.VertexAIScheduleList, items []*v1alpha1.VertexAISchedule) {
+			func(list *v1alpha1.AIPlatformScheduleList, items []*v1alpha1.AIPlatformSchedule) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),
