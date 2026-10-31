@@ -191,10 +191,16 @@ func resourceResourceManagerLienRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{ResourceManagerBasePath}}liens?parent={{parent}}")
+	baseURL, err := tpgresource.ReplaceVars(d, config, "{{ResourceManagerBasePath}}liens")
 	if err != nil {
 		return err
 	}
+	parentVal, _ := d.Get("parent").(string)
+	normalizedParent, err := normalizeResourceManagerLienParent(parentVal, d, config)
+	if err != nil {
+		return err
+	}
+	url := fmt.Sprintf("%s?parent=%s", baseURL, normalizedParent)
 
 	billingProject := ""
 
@@ -269,10 +275,16 @@ func resourceResourceManagerLienDelete(d *schema.ResourceData, meta interface{})
 
 	billingProject := ""
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{ResourceManagerBasePath}}liens?parent={{parent}}")
+	baseURL, err := tpgresource.ReplaceVars(d, config, "{{ResourceManagerBasePath}}liens")
 	if err != nil {
 		return err
 	}
+	parentVal, _ := d.Get("parent").(string)
+	normalizedParent, err := normalizeResourceManagerLienParent(parentVal, d, config)
+	if err != nil {
+		return err
+	}
+	url := fmt.Sprintf("%s?parent=%s", baseURL, normalizedParent)
 
 	var obj map[string]interface{}
 	// log the old URL to make the ineffassign linter happy
@@ -310,6 +322,7 @@ func resourceResourceManagerLienDelete(d *schema.ResourceData, meta interface{})
 func resourceResourceManagerLienImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 	if err := tpgresource.ParseImportId([]string{
+		"projects/(?P<parent>[^/]+)/(?P<name>[^/]+)",
 		"(?P<parent>[^/]+)/(?P<name>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
@@ -369,7 +382,34 @@ func expandNestedResourceManagerLienOrigin(v interface{}, d tpgresource.Terrafor
 }
 
 func expandNestedResourceManagerLienParent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
-	return v, nil
+	s, ok := v.(string)
+	if !ok || s == "" {
+		return v, nil
+	}
+	return normalizeResourceManagerLienParent(s, d, config)
+}
+
+func normalizeResourceManagerLienParent(parent string, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (string, error) {
+	if parent == "" {
+		return "", nil
+	}
+	proj := strings.TrimPrefix(parent, "projects/")
+	if strings.Contains(proj, "/") {
+		return parent, nil
+	}
+	if strings.Contains(proj, ":") {
+		if config != nil && d != nil {
+			if userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent); err == nil {
+				if p, err := config.NewResourceManagerClient(userAgent).Projects.Get(proj).Do(); err == nil && p != nil && p.ProjectNumber != 0 {
+					return fmt.Sprintf("projects/%d", p.ProjectNumber), nil
+				}
+			}
+		}
+		if idx := strings.LastIndex(proj, ":"); idx != -1 && idx+1 < len(proj) {
+			proj = proj[idx+1:]
+		}
+	}
+	return fmt.Sprintf("projects/%s", proj), nil
 }
 
 func expandNestedResourceManagerLienRestrictions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
@@ -461,6 +501,10 @@ func resourceResourceManagerLienDecoder(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Trying to figure out whether to use %s or %s", old, new)
 	// If there's still a '/' in there, the value must not be a project ID.
 	if strings.Contains(old, "/") || strings.Contains(new, "/") {
+		return res, nil
+	}
+	if idx := strings.LastIndex(old, ":"); idx != -1 && idx+1 < len(old) && old[idx+1:] == new {
+		res["parent"] = d.Get("parent")
 		return res, nil
 	}
 	// If 'old' isn't entirely numeric, let's assume it's a project ID.
