@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -93,23 +94,34 @@ func (i *LogBucketIdentity) ID() string {
 }
 
 func (i *LogBucketIdentity) FromExternal(ref string) error {
-	if parsed, match, _ := ProjectLogBucketIdentityFormat.Parse(ref); match {
+	normalized := ref
+	normalized = strings.TrimPrefix(normalized, "https:")
+	normalized = strings.TrimPrefix(normalized, "http:")
+	normalized = strings.TrimPrefix(normalized, "//")
+	if idx := strings.Index(normalized, "/"); idx != -1 {
+		hostPrefix := normalized[:idx]
+		if strings.HasPrefix(hostPrefix, "logging.") {
+			normalized = normalized[idx+1:]
+		}
+	}
+
+	if parsed, match, _ := ProjectLogBucketIdentityFormat.Parse(normalized); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := FolderLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := FolderLogBucketIdentityFormat.Parse(normalized); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := OrganizationLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := OrganizationLogBucketIdentityFormat.Parse(normalized); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := BillingAccountLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := BillingAccountLogBucketIdentityFormat.Parse(normalized); match {
 		*i = *parsed
 		return nil
 	}
-	if parsed, match, _ := AccessPolicyLogBucketIdentityFormat.Parse(ref); match {
+	if parsed, match, _ := AccessPolicyLogBucketIdentityFormat.Parse(normalized); match {
 		*i = *parsed
 		return nil
 	}
