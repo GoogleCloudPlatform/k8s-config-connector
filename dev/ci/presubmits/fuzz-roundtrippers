@@ -25,6 +25,10 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
+
 SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
 
 if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then

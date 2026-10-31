@@ -44,6 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'destroyed' }}
     outputs:
+      is_md_only: ${{ steps.split.outputs.is_md_only }}
       has_priority_tests: ${{ steps.split.outputs.has_priority_tests }}
       priority_fixtures_json: ${{ steps.split.outputs.priority_fixtures_json }}
       remaining_fixtures_json: ${{ steps.split.outputs.remaining_fixtures_json }}
@@ -55,9 +56,14 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+      - name: Split test matrix between priority and non-priority
+        id: split
+        run: ./dev/tasks/split-test-matrix
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.split.outputs.is_md_only != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
+        if: ${{ steps.split.outputs.is_md_only != 'true' }}
         run: |
           mkdir -p bin/envtest
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
@@ -65,14 +71,12 @@ jobs:
           KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
           cp -r "${KUBEBUILDER_ASSETS}/." bin/envtest/
       - name: Upload prebuilt test binaries
+        if: ${{ steps.split.outputs.is_md_only != 'true' }}
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: prebuilt-test-binaries
           path: bin/
           retention-days: 1
-      - name: Split test matrix between priority and non-priority
-        id: split
-        run: ./dev/tasks/split-test-matrix
 
   capture-pprof:
     runs-on: ubuntu-latest
@@ -80,16 +84,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
           ./dev/ci/presubmits/capture-pprof
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-capture-pprof
           path: /tmp/artifacts/
@@ -106,18 +120,29 @@ jobs:
         shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Free up disk space
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
           ./dev/ci/presubmits/fuzz-roundtrippers "${{ matrix.shard }}"
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-fuzz-roundtrippers-${{ matrix.shard }}
           path: /tmp/artifacts/
@@ -145,13 +170,24 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Free up disk space
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         run: dev/tasks/free-disk-space-on-github-actions-runner
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.work'
           cache: false
       - name: Pre-warm Go build cache in batches to bound /tmp usage
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         run: |
           go mod download
           rm -rf "$(go env GOMODCACHE)/cache/download"
@@ -160,6 +196,7 @@ jobs:
           go list -e -compiled=true -test=true -export=true -deps=true ./pkg/... >/dev/null
           go list -e -compiled=true -test=true -export=true -deps=true ./mockgcp/... ./dev/... ./experiments/... >/dev/null
       - name: golangci-lint
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
           version: v2.9.0
@@ -174,16 +211,26 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/license-lint"
         run: |
           ./dev/ci/presubmits/license-lint
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-license-lint
           path: /tmp/artifacts/
@@ -195,16 +242,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
           ./dev/ci/presubmits/run-linters
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-run-linters
           path: /tmp/artifacts/
@@ -216,9 +273,19 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Set up Docker Buildx
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
@@ -226,10 +293,11 @@ jobs:
         run: |
           ./dev/ci/presubmits/smoketest-with-kind
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-smoketest-with-kind
           path: /tmp/artifacts/
@@ -241,16 +309,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-fuzz-random-mappers"
         run: |
           ./dev/ci/presubmits/test-fuzz-random-mappers
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-test-fuzz-random-mappers
           path: /tmp/artifacts/
@@ -262,16 +340,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-mockgcp"
         run: |
           ./dev/ci/presubmits/test-mockgcp
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-test-mockgcp
           path: /tmp/artifacts/
@@ -283,16 +371,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
           ./dev/ci/presubmits/test-pause
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-test-pause
           path: /tmp/artifacts/
@@ -301,7 +399,7 @@ jobs:
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: ${{ !cancelled() && github.event.action != 'destroyed' }}
+    if: ${{ !cancelled() && github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -332,7 +430,7 @@ jobs:
     name: "tests-e2e-fixtures-${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: ${{ github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.has_priority_tests == 'true' }}
+    if: ${{ github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.has_priority_tests == 'true' && needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
     timeout-minutes: 60
     strategy:
       fail-fast: true
@@ -384,19 +482,24 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: chmod -R +x bin/ || true
       - name: "Run fixture test for ${{ matrix.service }}"
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: |
           target="${TARGET_SERVICE}"
           if [[ "${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
@@ -413,7 +516,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         with:
           name: artifacts-tests-e2e-fixtures-${{ matrix.service }}
           path: /tmp/artifacts/
@@ -537,19 +640,24 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: chmod -R +x bin/ || true
       - name: "Run sample test for ${{ matrix.service }}"
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-suite "${TARGET_SERVICE}"
         env:
@@ -557,7 +665,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         with:
           name: artifacts-tests-e2e-samples-${{ matrix.service }}
           path: /tmp/artifacts/
@@ -568,16 +676,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
           ./dev/ci/presubmits/tests-gcptracker
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-tests-gcptracker
           path: /tmp/artifacts/
@@ -589,16 +707,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
           ./dev/ci/presubmits/tests-preview
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-tests-preview
           path: /tmp/artifacts/
@@ -615,19 +743,24 @@ jobs:
       matrix:
         suite: ${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: chmod -R +x bin/ || true
       - name: "Run scenario test for ${{ matrix.suite }}"
+        if: ${{ needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         run: |
           ./dev/ci/presubmits/tests-scenarios-suite "${TARGET_SUITE}"
         env:
@@ -635,7 +768,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && needs.prepare-test-matrix.outputs.is_md_only != 'true' }}
         with:
           name: artifacts-tests-scenarios-${{ matrix.suite }}
           path: /tmp/artifacts/
@@ -651,18 +784,29 @@ jobs:
         shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Free up disk space
+        if: ${{ steps.skip_check.outputs.skip != 'true' }}
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
           ./dev/ci/presubmits/unit-tests "${{ matrix.shard }}"
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-unit-tests-${{ matrix.shard }}
           path: /tmp/artifacts/
@@ -690,16 +834,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/unit-tests-operator"
         run: |
           ./dev/ci/presubmits/unit-tests-operator
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-unit-tests-operator
           path: /tmp/artifacts/
@@ -711,16 +865,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-ensure"
         run: |
           ./dev/ci/presubmits/validate-ensure
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-ensure
           path: /tmp/artifacts/
@@ -732,7 +896,16 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
@@ -740,10 +913,11 @@ jobs:
         run: |
           ./dev/ci/presubmits/validate-fmt
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-fmt
           path: /tmp/artifacts/
@@ -755,16 +929,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
           ./dev/ci/presubmits/validate-generated-files
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-generated-files
           path: /tmp/artifacts/
@@ -776,7 +960,16 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
@@ -784,10 +977,11 @@ jobs:
         run: |
           ./dev/ci/presubmits/validate-github-actions
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-github-actions
           path: /tmp/artifacts/
@@ -799,16 +993,26 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 # zizmor: ignore[unpinned-uses]
-      - uses: ./dev/actions/cache-go
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-manifests"
         run: |
           ./dev/ci/presubmits/validate-manifests
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-manifests
           path: /tmp/artifacts/
@@ -820,7 +1024,16 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
@@ -828,10 +1041,11 @@ jobs:
         run: |
           ./dev/ci/presubmits/validate-resource-docs
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-resource-docs
           path: /tmp/artifacts/
@@ -845,7 +1059,16 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - name: Check if presubmit should be skipped
+        id: skip_check
+        run: |
+          if ./dev/tasks/should-skip-presubmit; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.skip_check.outputs.skip != 'true' }}
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
@@ -853,12 +1076,13 @@ jobs:
         run: |
           ./dev/ci/presubmits/validate-untested-fields
         env:
+          SKIP_PRESUBMIT: ${{ steps.skip_check.outputs.skip }}
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.skip_check.outputs.skip != 'true' }}
         with:
           name: artifacts-validate-untested-fields
           path: /tmp/artifacts/

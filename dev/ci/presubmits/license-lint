@@ -25,4 +25,8 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
+
 ./dev/tasks/run-license-lint

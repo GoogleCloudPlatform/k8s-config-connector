@@ -19,6 +19,10 @@ set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
+
 if [[ -z "${IMAGE_PREFIX:-}" ]]; then
   IMAGE_PREFIX=""
 fi
