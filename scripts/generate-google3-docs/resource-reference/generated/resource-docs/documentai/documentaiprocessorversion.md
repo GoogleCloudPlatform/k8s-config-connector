@@ -249,7 +249,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The DocumentAIProcessorVersion name. If not given, the metadata.name will be used.</p>
+            <p>Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.</p>
         </td>
     </tr>
 </tbody>

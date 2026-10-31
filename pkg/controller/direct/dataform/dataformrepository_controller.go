@@ -185,10 +185,6 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	if a.id.Repository == "" {
-		return false, nil
-	}
-
 	req := &dataformpb.GetRepositoryRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetRepository(ctx, req)
 	if err != nil {
