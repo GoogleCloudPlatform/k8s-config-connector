@@ -1466,6 +1466,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
 	visitor.replacePaths[".networkCookie"] = 12345678
 	visitor.replacePaths[".response.networkCookie"] = 12345678
+	visitor.replacePaths[".keyString"] = "${keyString}"
+	visitor.replacePaths[".response.keyString"] = "${keyString}"
+	visitor.replacePaths[".keys[].keyString"] = "${keyString}"
+	visitor.replacePaths[".response.keys[].keyString"] = "${keyString}"
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
