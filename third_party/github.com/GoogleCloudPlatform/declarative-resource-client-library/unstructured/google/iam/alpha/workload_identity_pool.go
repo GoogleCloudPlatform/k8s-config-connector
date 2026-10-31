@@ -72,6 +72,13 @@ func UnstructuredToWorkloadIdentityPool(u *unstructured.Resource) (*dclService.W
 			return nil, fmt.Errorf("r.Disabled: expected bool")
 		}
 	}
+	if _, ok := u.Object["mode"]; ok {
+		if s, ok := u.Object["mode"].(string); ok {
+			r.Mode = dclService.WorkloadIdentityPoolModeEnumRef(s)
+		} else {
+			return nil, fmt.Errorf("r.Mode: expected string")
+		}
+	}
 	if _, ok := u.Object["displayName"]; ok {
 		if s, ok := u.Object["displayName"].(string); ok {
 			r.DisplayName = dcl.String(s)

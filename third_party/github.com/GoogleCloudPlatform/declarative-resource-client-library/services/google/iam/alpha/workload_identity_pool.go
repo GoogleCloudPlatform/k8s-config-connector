@@ -26,6 +26,7 @@ type WorkloadIdentityPool struct {
 	DisplayName *string                        `json:"displayName"`
 	Description *string                        `json:"description"`
 	State       *WorkloadIdentityPoolStateEnum `json:"state"`
+	Mode        *WorkloadIdentityPoolModeEnum  `json:"mode"`
 	Disabled    *bool                          `json:"disabled"`
 	Project     *string                        `json:"project"`
 	Location    *string                        `json:"location"`
@@ -33,6 +34,33 @@ type WorkloadIdentityPool struct {
 
 func (r *WorkloadIdentityPool) String() string {
 	return dcl.SprintResource(r)
+}
+
+// The enum WorkloadIdentityPoolModeEnum.
+type WorkloadIdentityPoolModeEnum string
+
+// WorkloadIdentityPoolModeEnumRef returns a *WorkloadIdentityPoolModeEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func WorkloadIdentityPoolModeEnumRef(s string) *WorkloadIdentityPoolModeEnum {
+	v := WorkloadIdentityPoolModeEnum(s)
+	return &v
+}
+
+func (v WorkloadIdentityPoolModeEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"MODE_UNSPECIFIED", "FEDERATION_ONLY", "TRUST_DOMAIN"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "WorkloadIdentityPoolModeEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
 }
 
 // The enum WorkloadIdentityPoolStateEnum.

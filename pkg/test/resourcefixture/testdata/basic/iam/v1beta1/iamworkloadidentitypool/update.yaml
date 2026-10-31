@@ -21,5 +21,6 @@ spec:
   displayName: "updated-sample-pool"
   description: "An updated sample workload identity pool"
   disabled: true
+  mode: "TRUST_DOMAIN"
   projectRef:
     external: "projects/${projectId}"
