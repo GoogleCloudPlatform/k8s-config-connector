@@ -385,6 +385,79 @@ spec:
                           modifiable by internal API.
                         type: boolean
                     type: object
+                  observabilityInstanceInfo:
+                    description: Output only. Observability feature status for an
+                      instance.
+                    properties:
+                      assistiveExperiencesEnabled:
+                        description: Output only. Whether assistive experiences are
+                          enabled for this AlloyDB instance.
+                        type: boolean
+                      enabled:
+                        description: Output only. Observability feature status for
+                          an instance.
+                        type: boolean
+                      maxQueryStringLength:
+                        description: Output only. Query string length. The default
+                          value is 10k.
+                        format: int32
+                        type: integer
+                      preserveComments:
+                        description: Output only. Preserve comments in query string
+                          for an instance.
+                        type: boolean
+                      queryPlansPerMinute:
+                        description: Output only. Number of query execution plans
+                          captured by Insights per minute for all queries combined.
+                        format: int32
+                        type: integer
+                      recordApplicationTags:
+                        description: Output only. Record application tags for an instance.
+                        type: boolean
+                      trackActiveQueries:
+                        description: Output only. Track actively running queries on
+                          the instance.
+                        type: boolean
+                      trackActiveQueryPlan:
+                        description: 'Output only. Indicates whether to track active
+                          query plans for an instance. Deprecated: Use track_active_queries
+                          instead.'
+                        type: boolean
+                      trackClientAddress:
+                        description: Output only. Track client address for an instance.
+                        type: boolean
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance.
+                        type: boolean
+                      trackWaitEvents:
+                        description: Output only. Track wait events during query execution
+                          for an instance.
+                        type: boolean
+                    type: object
+                  queryInsightsInfo:
+                    description: Output only. Query Insights feature status for an
+                      instance.
+                    properties:
+                      enabled:
+                        description: Output only. Whether Query Insights is enabled.
+                        type: boolean
+                      queryPlansPerMinute:
+                        description: Output only. Number of query execution plans
+                          captured per minute.
+                        format: int32
+                        type: integer
+                      queryStringLength:
+                        description: Output only. Maximum query string length.
+                        format: int32
+                        type: integer
+                      recordApplicationTags:
+                        description: Output only. Whether to record application tags.
+                        type: boolean
+                      recordClientAddress:
+                        description: Output only. Whether to record client address.
+                        type: boolean
+                    type: object
                 type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
@@ -778,6 +851,79 @@ spec:
                           but tracking is enabled only after observability enabled
                           flag is also turned on. This is read-only flag and only
                           modifiable by internal API.
+                        type: boolean
+                    type: object
+                  observabilityInstanceInfo:
+                    description: Output only. Observability feature status for an
+                      instance.
+                    properties:
+                      assistiveExperiencesEnabled:
+                        description: Output only. Whether assistive experiences are
+                          enabled for this AlloyDB instance.
+                        type: boolean
+                      enabled:
+                        description: Output only. Observability feature status for
+                          an instance.
+                        type: boolean
+                      maxQueryStringLength:
+                        description: Output only. Query string length. The default
+                          value is 10k.
+                        format: int32
+                        type: integer
+                      preserveComments:
+                        description: Output only. Preserve comments in query string
+                          for an instance.
+                        type: boolean
+                      queryPlansPerMinute:
+                        description: Output only. Number of query execution plans
+                          captured by Insights per minute for all queries combined.
+                        format: int32
+                        type: integer
+                      recordApplicationTags:
+                        description: Output only. Record application tags for an instance.
+                        type: boolean
+                      trackActiveQueries:
+                        description: Output only. Track actively running queries on
+                          the instance.
+                        type: boolean
+                      trackActiveQueryPlan:
+                        description: 'Output only. Indicates whether to track active
+                          query plans for an instance. Deprecated: Use track_active_queries
+                          instead.'
+                        type: boolean
+                      trackClientAddress:
+                        description: Output only. Track client address for an instance.
+                        type: boolean
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance.
+                        type: boolean
+                      trackWaitEvents:
+                        description: Output only. Track wait events during query execution
+                          for an instance.
+                        type: boolean
+                    type: object
+                  queryInsightsInfo:
+                    description: Output only. Query Insights feature status for an
+                      instance.
+                    properties:
+                      enabled:
+                        description: Output only. Whether Query Insights is enabled.
+                        type: boolean
+                      queryPlansPerMinute:
+                        description: Output only. Number of query execution plans
+                          captured per minute.
+                        format: int32
+                        type: integer
+                      queryStringLength:
+                        description: Output only. Maximum query string length.
+                        format: int32
+                        type: integer
+                      recordApplicationTags:
+                        description: Output only. Whether to record application tags.
+                        type: boolean
+                      recordClientAddress:
+                        description: Output only. Whether to record client address.
                         type: boolean
                     type: object
                 type: object
