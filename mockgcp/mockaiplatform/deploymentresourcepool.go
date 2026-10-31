@@ -50,6 +50,9 @@ func (s *deploymentResourcePoolService) GetDeploymentResourcePool(ctx context.Co
 
 	obj := &pb.DeploymentResourcePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "DeploymentResourcePool %s does not exist.", req.Name)
+		}
 		return nil, err
 	}
 
@@ -64,10 +67,11 @@ func (s *deploymentResourcePoolService) CreateDeploymentResourcePool(ctx context
 	}
 
 	fqn := fmt.Sprintf("%s/deploymentResourcePools/%s", parent, id)
-	_, err := s.parseDeploymentResourcePoolName(fqn)
+	name, err := s.parseDeploymentResourcePoolName(fqn)
 	if err != nil {
 		return nil, err
 	}
+	fqn = name.String()
 
 	now := time.Now()
 
@@ -75,9 +79,10 @@ func (s *deploymentResourcePoolService) CreateDeploymentResourcePool(ctx context
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
-	// Some fields are set by the API
-	obj.SatisfiesPzi = true
-	obj.SatisfiesPzs = true
+	// Real GCP defaults max_replica_count to min_replica_count.
+	if dr := obj.GetDedicatedResources(); dr != nil && dr.GetMaxReplicaCount() == 0 {
+		dr.MaxReplicaCount = dr.GetMinReplicaCount()
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -91,7 +96,8 @@ func (s *deploymentResourcePoolService) CreateDeploymentResourcePool(ctx context
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		return obj, nil
+		// Real GCP only populates the name in the LRO result.
+		return &pb.DeploymentResourcePool{Name: fqn}, nil
 	})
 }
 
@@ -105,24 +111,34 @@ func (s *deploymentResourcePoolService) UpdateDeploymentResourcePool(ctx context
 	fqn := name.String()
 	now := time.Now()
 
-	obj := &pb.DeploymentResourcePool{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	original := &pb.DeploymentResourcePool{}
+	if err := s.storage.Get(ctx, fqn, original); err != nil {
 		return nil, err
 	}
 
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		obj.DedicatedResources = req.DeploymentResourcePool.DedicatedResources
-		obj.DisableContainerLogging = req.DeploymentResourcePool.DisableContainerLogging
-	} else {
-		for _, path := range paths {
-			switch path {
-			case "dedicated_resources", "dedicatedResources":
-				obj.DedicatedResources = req.DeploymentResourcePool.DedicatedResources
-			case "disable_container_logging", "disableContainerLogging":
-				obj.DisableContainerLogging = req.DeploymentResourcePool.DisableContainerLogging
-			}
+	obj := proto.Clone(original).(*pb.DeploymentResourcePool)
+	if obj.DedicatedResources == nil {
+		obj.DedicatedResources = &pb.DedicatedResources{}
+	}
+	updated := req.GetDeploymentResourcePool()
+	for _, path := range req.GetUpdateMask().GetPaths() {
+		switch path {
+		case "dedicated_resources.min_replica_count", "dedicatedResources.minReplicaCount":
+			obj.DedicatedResources.MinReplicaCount = updated.GetDedicatedResources().GetMinReplicaCount()
+		case "dedicated_resources.max_replica_count", "dedicatedResources.maxReplicaCount":
+			obj.DedicatedResources.MaxReplicaCount = updated.GetDedicatedResources().GetMaxReplicaCount()
+		case "dedicated_resources", "dedicatedResources", "disable_container_logging", "disableContainerLogging":
+			// Real GCP silently ignores these paths.
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q is not yet handled in mock", path)
 		}
+	}
+
+	if proto.Equal(original, obj) {
+		return nil, status.Errorf(codes.InvalidArgument, "updated resource request is identical to the original, no update will be performed.")
+	}
+	if obj.DedicatedResources.GetMinReplicaCount() > obj.DedicatedResources.GetMaxReplicaCount() {
+		return nil, status.Errorf(codes.InvalidArgument, "min_replica_count cannot be greater than max_replica_count.")
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -136,7 +152,8 @@ func (s *deploymentResourcePoolService) UpdateDeploymentResourcePool(ctx context
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		return obj, nil
+		// Real GCP only populates the name in the LRO result.
+		return &pb.DeploymentResourcePool{Name: fqn}, nil
 	})
 }
 
@@ -159,7 +176,7 @@ func (s *deploymentResourcePoolService) DeleteDeploymentResourcePool(ctx context
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := fqn
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
 
@@ -186,5 +203,5 @@ func (s *deploymentResourcePoolService) parseDeploymentResourcePoolName(name str
 }
 
 func (n *DeploymentResourcePoolName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/deploymentResourcePools/%s", n.Project.ID, n.Location, n.DeploymentResourcePoolId)
+	return fmt.Sprintf("projects/%d/locations/%s/deploymentResourcePools/%s", n.Project.Number, n.Location, n.DeploymentResourcePoolId)
 }
