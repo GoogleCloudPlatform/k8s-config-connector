@@ -847,6 +847,10 @@ spec:
                         exclusionOptions:
                           description: Maintenance exclusion related options.
                           properties:
+                            endTimeBehavior:
+                              description: 'The behavior of the exclusion end time.
+                                Valid value: UNTIL_END_OF_SUPPORT.'
+                              type: string
                             scope:
                               description: The scope of automatic upgrades to restrict
                                 in the exclusion window.
@@ -857,7 +861,6 @@ spec:
                         startTime:
                           type: string
                       required:
-                      - endTime
                       - exclusionName
                       - startTime
                       type: object

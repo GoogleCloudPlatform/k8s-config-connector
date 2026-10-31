@@ -1055,7 +1055,7 @@ func ResourceContainerCluster() *schema.Resource {
 									},
 									"end_time": {
 										Type:         schema.TypeString,
-										Required:     true,
+										Optional:     true,
 										ValidateFunc: verify.ValidateRFC3339Date,
 									},
 									"exclusion_options": {
@@ -1065,6 +1065,12 @@ func ResourceContainerCluster() *schema.Resource {
 										Description: `Maintenance exclusion related options.`,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
+												"end_time_behavior": {
+													Type:         schema.TypeString,
+													Optional:     true,
+													ValidateFunc: validation.StringInSlice([]string{"UNTIL_END_OF_SUPPORT"}, false),
+													Description:  `The behavior of the exclusion end time.`,
+												},
 												"scope": {
 													Type:         schema.TypeString,
 													Required:     true,
@@ -4873,6 +4879,10 @@ func expandMaintenancePolicy(d *schema.ResourceData, meta interface{}) *containe
 					Scope:           meo["scope"].(string),
 					ForceSendFields: []string{"Scope"},
 				}
+				if len(meo["end_time_behavior"].(string)) > 0 {
+					mex.MaintenanceExclusionOptions.EndTimeBehavior = meo["end_time_behavior"].(string)
+					mex.EndTime = ""
+				}
 				exclusions[exclusion["exclusion_name"].(string)] = mex
 			}
 		}
@@ -6224,7 +6234,6 @@ func flattenMaintenancePolicy(mp *container.MaintenancePolicy) []map[string]inte
 		for wName, window := range mp.Window.MaintenanceExclusions {
 			exclusion := map[string]interface{}{
 				"start_time":     window.StartTime,
-				"end_time":       window.EndTime,
 				"exclusion_name": wName,
 			}
 			if window.MaintenanceExclusionOptions != nil {
@@ -6235,10 +6244,26 @@ func flattenMaintenancePolicy(mp *container.MaintenancePolicy) []map[string]inte
 				if window.MaintenanceExclusionOptions.Scope != "" {
 					scope = window.MaintenanceExclusionOptions.Scope
 				}
-				exclusion["exclusion_options"] = []map[string]interface{}{
-					{
-						"scope": scope,
-					},
+				if window.MaintenanceExclusionOptions.EndTimeBehavior != "" {
+					exclusion["exclusion_options"] = []map[string]interface{}{
+						{
+							"scope":             scope,
+							"end_time_behavior": window.MaintenanceExclusionOptions.EndTimeBehavior,
+						},
+					}
+				} else {
+					exclusion["exclusion_options"] = []map[string]interface{}{
+						{
+							"scope": scope,
+						},
+					}
+					if window.EndTime != "" {
+						exclusion["end_time"] = window.EndTime
+					}
+				}
+			} else {
+				if window.EndTime != "" {
+					exclusion["end_time"] = window.EndTime
 				}
 			}
 			exclusions = append(exclusions, exclusion)
