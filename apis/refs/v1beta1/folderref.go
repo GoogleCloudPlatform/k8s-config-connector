@@ -28,6 +28,14 @@ import (
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
+var FolderGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Folder",
+}
+
+var _ Ref = &FolderRefDeprecated{}
+
 // The Folder that contains this resource.
 type FolderRefDeprecated struct {
 	// The 'name' field of a folder, when not managed by Config Connector.
@@ -46,6 +54,51 @@ type FolderRefDeprecated struct {
 }
 
 type FolderRef = FolderRefDeprecated
+
+func (r *FolderRefDeprecated) GetGVK() schema.GroupVersionKind {
+	return FolderGVK
+}
+
+func (r *FolderRefDeprecated) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *FolderRefDeprecated) GetExternal() string {
+	return r.External
+}
+
+func (r *FolderRefDeprecated) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *FolderRefDeprecated) ValidateExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 2 && tokens[0] == "folders" && tokens[1] != "" {
+		return nil
+	}
+	return fmt.Errorf("format of 'folderRef.external'=%q was not known (use folders/<folderID>)", ref)
+}
+
+func (r *FolderRefDeprecated) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both 'name' and 'external' in 'folderRef'")
+	}
+	if r.External == "" && r.Name == "" {
+		return fmt.Errorf("must specify either 'name' and 'external' in 'folderRef'")
+	}
+	fallback := func(u *unstructured.Unstructured) string {
+		if folderID, _, err := unstructured.NestedString(u.Object, "status", "folderId"); err == nil && folderID != "" {
+			return "folders/" + folderID
+		}
+		return ""
+	}
+	return NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
 
 // AsFolderRef converts a generic ResourceRef into a FolderRef.
 func AsFolderRef(in *deprecatedrefs.ResourceRef) *FolderRef {
