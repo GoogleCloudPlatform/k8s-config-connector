@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -41,7 +40,7 @@ type BackupDRBackupPlanAssociationSpec struct {
 	// The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	backupdrv1alpha1.Parent `json:",inline"`
+	Parent `json:",inline"`
 
 	// Required. Immutable. Resource type of workload on which backupplan is
 	//  applied
