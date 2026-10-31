@@ -17,6 +17,7 @@ package kcclite_test
 import (
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/kcclite"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
@@ -63,7 +64,7 @@ var (
 		if err == nil {
 			t.Fatal("got nil, want to have a ReferenceNotFoundError")
 		}
-		if _, ok := k8s.AsReferenceNotFoundError(err); !ok {
+		if _, ok := refs.AsReferenceNotFoundError(err); !ok {
 			t.Fatalf("got %v, want to have a ReferenceNotFoundError", err)
 		}
 	}
@@ -71,7 +72,7 @@ var (
 		if err == nil {
 			t.Fatal("got nil, want to have a ReferenceNotReadyError")
 		}
-		if _, ok := k8s.AsReferenceNotReadyError(err); !ok {
+		if _, ok := refs.AsReferenceNotReadyError(err); !ok {
 			t.Fatalf("got %v, want to have a ReferenceNotReadyError", err)
 		}
 	}
@@ -79,7 +80,7 @@ var (
 		if err == nil {
 			t.Fatal("got nil, want to have a SecretNotFoundError")
 		}
-		if _, ok := k8s.AsSecretNotFoundError(err); !ok {
+		if _, ok := refs.AsSecretNotFoundError(err); !ok {
 			t.Fatalf("got %v, want to have a SecretNotFoundError", err)
 		}
 	}
@@ -87,7 +88,7 @@ var (
 		if err == nil {
 			t.Fatal("got nil, want to have a KeyInSecretNotFoundError")
 		}
-		if _, ok := k8s.AsKeyInSecretNotFoundError(err); !ok {
+		if _, ok := refs.AsKeyInSecretNotFoundError(err); !ok {
 			t.Fatalf("got %v, want to have a KeyInSecretNotFoundError", err)
 		}
 	}
