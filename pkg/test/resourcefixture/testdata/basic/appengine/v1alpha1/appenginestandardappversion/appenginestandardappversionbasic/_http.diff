@@ -1,0 +1,100 @@
+1c1
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+24c24
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+---
+> POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
+85c85,86
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+141c142
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+189c190
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+193c194
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+204c205
+<   "servingStatus": "SERVING",
+---
+>   "servingStatus": 1,
+211c212
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automaticScaling.maxIdleInstances%2CautomaticScaling.minIdleInstances%2CinstanceClass
+238,240d238
+<   "entrypoint": {
+<     "shell": "gunicorn -b :$PORT main:app"
+<   },
+246c244
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+250c248
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+254,255d251
+<   "id": "000000000000000000000",
+<   "inboundServices": [],
+258c254,255
+<   "serviceAccount": "${projectId}@appspot.gserviceaccount.com"
+---
+>   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+>   "threadsafe": true
+275c272
+<     "method": "google.appengine.v1.Versions.CreateVersion",
+---
+>     "method": "google.appengine.v1.Versions.UpdateVersion",
+284c281,282
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json
+302c300
+<     "method": "google.appengine.v1.Versions.CreateVersion",
+---
+>     "method": "google.appengine.v1.Versions.UpdateVersion",
+340c338
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+388,397c386
+<       "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     },
+<     {
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+401c390
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+412c401
+<   "servingStatus": "SERVING",
+---
+>   "servingStatus": 1,
+419c408
+< DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json
+---
+> DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+445c434,435
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+> Content-Type: application/json

@@ -1,0 +1,195 @@
+1c1
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+24c24
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+---
+> POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
+86c86
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+134c134
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+138c138
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+149c149
+<   "servingStatus": "SERVING",
+---
+>   "servingStatus": 1,
+156c156
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automaticScaling.maxIdleInstances%2CautomaticScaling.minIdleInstances%2CinstanceClass
+183,185d182
+<   "entrypoint": {
+<     "shell": "gunicorn -b :$PORT main:app"
+<   },
+191c188
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+195c192
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+199,200d195
+<   "id": "000000000000000000000",
+<   "inboundServices": [],
+203c198,199
+<   "serviceAccount": "${projectId}@appspot.gserviceaccount.com"
+---
+>   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+>   "threadsafe": true
+221c217
+<     "method": "google.appengine.v1.Versions.CreateVersion",
+---
+>     "method": "google.appengine.v1.Versions.UpdateVersion",
+230c226
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+278c274
+<       "login": "LOGIN_OPTIONAL",
+---
+>       "login": 1,
+282,291c278
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     },
+<     {
+<       "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+---
+>       "securityLevel": 2,
+302c289
+<   "servingStatus": "SERVING",
+---
+>   "servingStatus": 1,
+309c296
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+---
+> DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+323,353c310,316
+<   "automaticScaling": {
+<     "maxConcurrentRequests": 10,
+<     "maxIdleInstances": 4,
+<     "maxPendingLatency": "5s",
+<     "minIdleInstances": 2,
+<     "minPendingLatency": "1s",
+<     "standardSchedulerSettings": {
+<       "maxInstances": 10,
+<       "minInstances": 2,
+<       "targetCpuUtilization": 0.5,
+<       "targetThroughputUtilization": 0.75
+<     }
+<   },
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "createdBy": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+<   "deployment": {
+<     "files": {
+<       "app.yaml": {
+<         "sha1Sum": "fccc0c6d2e2fcb05c84f69f40c7a613d2338e8d8",
+<         "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/fccc0c6d2e2fcb05c84f69f40c7a613d2338e8d8"
+<       },
+<       "main.py": {
+<         "sha1Sum": "05e6871e9161335ea72fe540fb798803633b43ba",
+<         "sourceUrl": "https://storage.googleapis.com/staging.${projectId}.appspot.com/05e6871e9161335ea72fe540fb798803633b43ba"
+<       }
+<     }
+<   },
+<   "diskUsageBytes": "2978869",
+<   "env": "standard",
+<   "envVariables": {
+<     "PORT": "8080"
+---
+>   "done": true,
+>   "metadata": {
+>     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+>     "insertTime": "2024-04-01T12:34:56.123456Z",
+>     "method": "google.appengine.v1.Versions.DeleteVersion",
+>     "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+>     "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+355,401c318
+<   "handlers": [
+<     {
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     },
+<     {
+<       "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     },
+<     {
+<       "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     },
+<     {
+<       "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
+<       "login": "LOGIN_OPTIONAL",
+<       "script": {
+<         "scriptPath": "auto"
+<       },
+<       "securityLevel": "SECURE_OPTIONAL",
+<       "urlRegex": ".*"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "instanceClass": "F2",
+<   "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+<   "network": {},
+<   "runtime": "python311",
+<   "runtimeChannel": "default",
+<   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+<   "servingStatus": "SERVING",
+<   "threadsafe": true,
+<   "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+---
+>   "name": "apps/${projectId}/operations/${operationID}"
+406c323
+< DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+409c326
+< 200 OK
+---
+> 404 Not Found
+420,428c337,341
+<   "done": true,
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+<     "insertTime": "2024-04-01T12:34:56.123456Z",
+<     "method": "google.appengine.v1.Versions.DeleteVersion",
+<     "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+<     "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+<   },
+<   "name": "apps/${projectId}/operations/${operationID}"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "Resource 'projects/${projectId}/locations/us-central1/applications/${projectId}/services/default/versions/v${uniqueId}' was not found",
+>     "status": "NOT_FOUND"
+>   }
