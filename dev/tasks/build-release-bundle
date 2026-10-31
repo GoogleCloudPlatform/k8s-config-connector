@@ -323,7 +323,7 @@ BLOCKED_KINDS=(
     "VectorSearchCollection"
     "VectorsearchIndex"
     "VertexAICachedContent"
-    "VertexAICustomJob"
+    "AIPlatformCustomJob"
     "VertexAIDataset"
     "VertexAIDeploymentResourcePool"
     "VertexAIEndpoint"

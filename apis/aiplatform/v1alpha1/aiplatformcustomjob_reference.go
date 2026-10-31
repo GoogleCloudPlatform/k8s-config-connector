@@ -28,70 +28,73 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &VertexAICustomJobRef{}
+var _ refs.Ref = &AIPlatformCustomJobRef{}
 
-// VertexAICustomJobRef is a reference to a VertexAICustomJob.
-type VertexAICustomJobRef struct {
-	// A reference to an externally managed VertexAICustomJob resource.
+// AIPlatformCustomJobRef is a reference to an AIPlatformCustomJob.
+type AIPlatformCustomJobRef struct {
+	// A reference to an externally managed AIPlatformCustomJob resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customJobs/{{customJobID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a VertexAICustomJob resource.
+	// The name of an AIPlatformCustomJob resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a VertexAICustomJob resource.
+	// The namespace of an AIPlatformCustomJob resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&VertexAICustomJobRef{}, &VertexAICustomJob{})
+	refs.Register(&AIPlatformCustomJobRef{}, &AIPlatformCustomJob{})
 }
 
-func (r *VertexAICustomJobRef) GetGVK() schema.GroupVersionKind {
-	return VertexAICustomJobGVK
+func (r *AIPlatformCustomJobRef) GetGVK() schema.GroupVersionKind {
+	return AIPlatformCustomJobGVK
 }
 
-func (r *VertexAICustomJobRef) GetNamespacedName() types.NamespacedName {
+func (r *AIPlatformCustomJobRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *VertexAICustomJobRef) GetExternal() string {
+func (r *AIPlatformCustomJobRef) GetExternal() string {
 	return r.External
 }
 
-func (r *VertexAICustomJobRef) SetExternal(ref string) {
+func (r *AIPlatformCustomJobRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *VertexAICustomJobRef) ValidateExternal(ref string) error {
-	id := &VertexAICustomJobIdentity{}
+func (r *AIPlatformCustomJobRef) ValidateExternal(ref string) error {
+	id := &AIPlatformCustomJobIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *VertexAICustomJobRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &VertexAICustomJobIdentity{}
+func (r *AIPlatformCustomJobRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AIPlatformCustomJobIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *VertexAICustomJobRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *AIPlatformCustomJobRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		structuredObj, err := common.ToStructuredType[*VertexAICustomJob](u)
+		structuredObj, err := common.ToStructuredType[*AIPlatformCustomJob](u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromVertexAICustomJobSpec(ctx, reader, structuredObj)
-		if err != nil {
+		if externalRef := common.ValueOf(structuredObj.Status.ExternalRef); externalRef != "" {
+			return externalRef
+		}
+		identity, err := getIdentityFromAIPlatformCustomJobSpec(ctx, reader, structuredObj)
+		if err != nil || identity.CustomJob == "" {
 			return ""
 		}
 		return identity.String()

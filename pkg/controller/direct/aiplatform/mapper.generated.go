@@ -31,9 +31,70 @@ import (
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmvertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AIPlatformCustomJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krm.AIPlatformCustomJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformCustomJobObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.WebAccessURIs = in.WebAccessUris
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func AIPlatformCustomJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformCustomJobObservedState) *pb.CustomJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomJob{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.WebAccessUris = in.WebAccessURIs
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func AIPlatformCustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krm.AIPlatformCustomJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformCustomJobSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.JobSpec = CustomJobSpec_FromProto(mapCtx, in.GetJobSpec())
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: WebAccessUris
+	return out
+}
+func AIPlatformCustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformCustomJobSpec) *pb.CustomJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.JobSpec = CustomJobSpec_ToProto(mapCtx, in.JobSpec)
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: WebAccessUris
+	return out
+}
 func AIPlatformFeatureViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureView) *krm.AIPlatformFeatureViewObservedState {
 	if in == nil {
 		return nil
@@ -654,7 +715,7 @@ func ContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *k
 	out.ImageURI = direct.LazyPtr(in.GetImageUri())
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVarWithRequired_FromProto)
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
 	return out
 }
 func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb.ContainerSpec {
@@ -665,7 +726,7 @@ func ContainerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerSpec) *pb
 	out.ImageUri = direct.ValueOf(in.ImageURI)
 	out.Command = in.Command
 	out.Args = in.Args
-	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVarWithRequired_ToProto)
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
 	return out
 }
 func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
@@ -738,18 +799,34 @@ func CustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *k
 	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
 	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_FromProto)
 	out.Scheduling = Scheduling_FromProto(mapCtx, in.GetScheduling())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	out.ReservedIPRanges = in.ReservedIpRanges
 	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
 	out.BaseOutputDirectory = GCSDestination_FromProto(mapCtx, in.GetBaseOutputDirectory())
 	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
-	out.Tensorboard = direct.LazyPtr(in.GetTensorboard())
+	if in.GetTensorboard() != "" {
+		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorboardRef{External: in.GetTensorboard()}
+	}
 	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
 	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
-	out.Experiment = direct.LazyPtr(in.GetExperiment())
-	out.ExperimentRun = direct.LazyPtr(in.GetExperimentRun())
-	out.Models = in.Models
+	if in.GetExperiment() != "" {
+		out.ExperimentRef = &krm.VertexAIExperimentRef{External: in.GetExperiment()}
+	}
+	if in.GetExperimentRun() != "" {
+		out.ExperimentRunRef = &krm.VertexAIExperimentRunRef{External: in.GetExperimentRun()}
+	}
+
+	if v := in.GetModels(); len(v) != 0 {
+		for i := range v {
+			out.ModelRefs = append(out.ModelRefs, krm.AIPlatformModelRef{External: v[i]})
+		}
+	}
+
 	return out
 }
 func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb.CustomJobSpec {
@@ -760,18 +837,34 @@ func CustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomJobSpec) *pb
 	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
 	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_ToProto)
 	out.Scheduling = Scheduling_ToProto(mapCtx, in.Scheduling)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	out.Network = direct.ValueOf(in.Network)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.ReservedIpRanges = in.ReservedIPRanges
 	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
 	out.BaseOutputDirectory = GCSDestination_ToProto(mapCtx, in.BaseOutputDirectory)
 	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
-	out.Tensorboard = direct.ValueOf(in.Tensorboard)
+	if in.TensorboardRef != nil {
+		out.Tensorboard = in.TensorboardRef.External
+	}
 	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
 	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
-	out.Experiment = direct.ValueOf(in.Experiment)
-	out.ExperimentRun = direct.ValueOf(in.ExperimentRun)
-	out.Models = in.Models
+	if in.ExperimentRef != nil {
+		out.Experiment = in.ExperimentRef.External
+	}
+	if in.ExperimentRunRef != nil {
+		out.ExperimentRun = in.ExperimentRunRef.External
+	}
+
+	if v := in.ModelRefs; len(v) != 0 {
+		for i := range v {
+			out.Models = append(out.Models, v[i].External)
+		}
+	}
+
 	return out
 }
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
@@ -2793,7 +2886,7 @@ func PythonPackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackage
 	out.PackageURIs = in.PackageUris
 	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
 	out.Args = in.Args
-	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVarWithRequired_FromProto)
+	// MISSING: Env
 	return out
 }
 func PythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.PythonPackageSpec) *pb.PythonPackageSpec {
@@ -2805,7 +2898,7 @@ func PythonPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.PythonPackageS
 	out.PackageUris = in.PackageURIs
 	out.PythonModule = direct.ValueOf(in.PythonModule)
 	out.Args = in.Args
-	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVarWithRequired_ToProto)
+	// MISSING: Env
 	return out
 }
 func RayLogsSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayLogsSpec) *krm.RayLogsSpec {

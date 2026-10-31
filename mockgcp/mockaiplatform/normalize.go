@@ -111,4 +111,30 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			previsitSpecialistPool(value)
 		})
 	}
+
+	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") {
+		previsitCustomJob := func(val string) {
+			if strings.Contains(val, "/customJobs/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "customJobs" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${customJobID}")
+						}
+					}
+				}
+			}
+		}
+		previsitCustomJob(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitCustomJob(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitCustomJob(value)
+		})
+	}
 }

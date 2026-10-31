@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: vertexaicustomjobs.vertexai.cnrm.cloud.google.com
+  name: aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com
 spec:
-  group: vertexai.cnrm.cloud.google.com
+  group: aiplatform.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: VertexAICustomJob
-    listKind: VertexAICustomJobList
-    plural: vertexaicustomjobs
+    kind: AIPlatformCustomJob
+    listKind: AIPlatformCustomJobList
+    plural: aiplatformcustomjobs
     shortNames:
-    - gcpvertexaicustomjob
-    - gcpvertexaicustomjobs
-    singular: vertexaicustomjob
+    - gcpaiplatformcustomjob
+    - gcpaiplatformcustomjobs
+    singular: aiplatformcustomjob
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAICustomJob is the Schema for the VertexAICustomJob API
+        description: AIPlatformCustomJob is the Schema for the AIPlatformCustomJob
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,7 +61,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAICustomJobSpec defines the desired state of VertexAICustomJob
+            description: AIPlatformCustomJobSpec defines the desired state of AIPlatformCustomJob
             properties:
               displayName:
                 description: Required. The display name of the CustomJob. The name
@@ -71,10 +72,11 @@ spec:
                   a CustomJob.
                 properties:
                   kmsKeyRef:
-                    description: Required. The Cloud KMS resource identifier of the
+                    description: 'Required. The Cloud KMS resource identifier of the
                       customer managed encryption key used to protect a resource.
+                      Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
                       The key needs to be in the same region as where the compute
-                      resource is created.
+                      resource is created.'
                     oneOf:
                     - not:
                         required:
@@ -101,8 +103,6 @@ spec:
                         description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
-                required:
-                - kmsKeyRef
                 type: object
               jobSpec:
                 description: Required. Job spec.
@@ -139,9 +139,9 @@ spec:
                        dashboard in training chief container.
 
                        If set to `true`, you can access the dashboard at the URIs given
-                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1beta1.CustomJob.web_access_uris] or
-                       [Trial.web_access_uris][google.cloud.aiplatform.v1beta1.Trial.web_access_uris] (within
-                       [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1beta1.HyperparameterTuningJob.trials]).
+                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris] or
+                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris] (within
+                       [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
                     type: boolean
                   enableWebAccess:
                     description: |-
@@ -150,9 +150,9 @@ spec:
                        for custom training.
 
                        If set to `true`, you can access interactive shells at the URIs given
-                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1beta1.CustomJob.web_access_uris] or
-                       [Trial.web_access_uris][google.cloud.aiplatform.v1beta1.Trial.web_access_uris] (within
-                       [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1beta1.HyperparameterTuningJob.trials]).
+                       by [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris] or
+                       [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris] (within
+                       [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
                     type: boolean
                   experimentRef:
                     description: 'Optional. The Experiment associated with this job.
@@ -318,12 +318,7 @@ spec:
                     description: Optional. Configuration for PSC-I for CustomJob.
                     properties:
                       dnsPeeringConfigs:
-                        description: Optional. DNS peering configurations. When specified,
-                          Vertex AI will attempt to configure DNS peering zones in
-                          the tenant project VPC to resolve the specified domains
-                          using the target network's Cloud DNS. The user must grant
-                          the dns.peer role to the Vertex AI Service Agent on the
-                          target project.
+                        description: Optional. DNS peering configurations.
                         items:
                           properties:
                             domain:
@@ -331,26 +326,103 @@ spec:
                                 being peered to, e.g., "my-internal-domain.corp.".
                                 Must end with a dot.
                               type: string
-                            targetNetwork:
+                            targetNetworkRef:
                               description: Required. The VPC network name in the target_project
                                 where the DNS zone specified by 'domain' is visible.
-                              type: string
-                            targetProject:
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    ComputeNetwork resource. Should be in the format
+                                    "projects/{{projectID}}/global/networks/{{networkID}}".
+                                  type: string
+                                name:
+                                  description: The name of a ComputeNetwork resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a ComputeNetwork resource.
+                                  type: string
+                              type: object
+                            targetProjectRef:
                               description: Required. The project ID hosting the Cloud
-                                DNS managed zone that contains the 'domain'. The Vertex
-                                AI Service Agent requires the dns.peer role on this
-                                project.
-                              type: string
+                                DNS managed zone that contains the 'domain'.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: The `projectID` field of a project,
+                                    when not managed by Config Connector.
+                                  type: string
+                                kind:
+                                  description: The kind of the Project resource; optional
+                                    but must be `Project` if provided.
+                                  type: string
+                                name:
+                                  description: The `name` field of a `Project` resource.
+                                  type: string
+                                namespace:
+                                  description: The `namespace` field of a `Project`
+                                    resource.
+                                  type: string
+                              type: object
                           type: object
                         type: array
-                      networkAttachment:
-                        description: Optional. The name of the Compute Engine [network
-                          attachment](https://cloud.google.com/vpc/docs/about-network-attachments)
-                          to attach to the resource within the region and user project.
-                          To specify this field, you must have already [created a
-                          network attachment] (https://cloud.google.com/vpc/docs/create-manage-network-attachments#create-network-attachments).
-                          This field is only used for resources using PSC-I.
-                        type: string
+                      networkAttachmentRef:
+                        description: Optional. The name of the Compute Engine network
+                          attachment to attach to the resource within the region and
+                          user project.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ComputeNetworkAttachment
+                              resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".
+                            type: string
+                          name:
+                            description: The name of a ComputeNetworkAttachment resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ComputeNetworkAttachment
+                              resource.
+                            type: string
+                        type: object
                     type: object
                   reservedIPRanges:
                     description: |-
@@ -381,18 +453,18 @@ spec:
                           is 24 hours.
                         type: string
                       restartJobOnWorkerRestart:
-                        description: Restarts the entire CustomJob if a worker gets
-                          restarted. This feature can be used by distributed training
-                          jobs that are not resilient to workers leaving and joining
-                          a job.
+                        description: Optional. Restarts the entire CustomJob if a
+                          worker gets restarted. This feature can be used by distributed
+                          training jobs that are not resilient to workers leaving
+                          and joining a job.
                         type: boolean
                       strategy:
                         description: Optional. This determines which type of scheduling
                           strategy to use.
                         type: string
                       timeout:
-                        description: The maximum job running time. The default is
-                          7 days.
+                        description: Optional. The maximum job running time. The default
+                          is 7 days.
                         type: string
                     type: object
                   serviceAccountRef:
@@ -427,7 +499,7 @@ spec:
                         type: string
                     type: object
                   tensorboardRef:
-                    description: 'Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1beta1.Tensorboard]
+                    description: 'Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1.Tensorboard]
                       resource to which this CustomJob will upload Tensorboard logs.
                       Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}`'
                     oneOf:
@@ -523,6 +595,27 @@ spec:
                                 (Persistent Disk Hard Disk Drive) or "hyperdisk-balanced".'
                               type: string
                           type: object
+                        lustreMounts:
+                          description: Optional. List of Lustre mounts.
+                          items:
+                            properties:
+                              filesystem:
+                                description: Required. The name of the Lustre filesystem.
+                                type: string
+                              instanceIP:
+                                description: Required. IP address of the Lustre instance.
+                                type: string
+                              mountPoint:
+                                description: Required. Destination mount path. The
+                                  Lustre file system will be mounted for the user
+                                  under /mnt/lustre/<mount_point>
+                                type: string
+                              volumeHandle:
+                                description: Required. The unique identifier of the
+                                  Lustre volume.
+                                type: string
+                            type: object
+                          type: array
                         machineSpec:
                           description: Optional. Immutable. The specification of a
                             single machine.
@@ -534,7 +627,7 @@ spec:
                               type: integer
                             acceleratorType:
                               description: Immutable. The type of accelerator(s) that
-                                may be attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
+                                may be attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count].
                               type: string
                             gpuPartitionSize:
                               description: |-
@@ -563,17 +656,12 @@ spec:
                                  See the [list of machine types supported for custom
                                  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
 
-                                 For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
-                                 field is optional, and the default value is `n1-standard-2`. For
-                                 [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
-                                 as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
-                                 this field is required.
+                                 For [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] this field is
+                                 optional, and the default value is `n1-standard-2`. For
+                                 [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] or as
+                                 part of [WorkerPoolSpec][google.cloud.aiplatform.v1.WorkerPoolSpec] this
+                                 field is required.
                               type: string
-                            multihostGpuNodeCount:
-                              description: Optional. Immutable. The number of nodes
-                                per replica for multihost GPU deployments.
-                              format: int32
-                              type: integer
                             reservationAffinity:
                               description: Optional. Immutable. Configuration controlling
                                 how this resource pool consumes reservation.
@@ -701,8 +789,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The VertexAICustomJob name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
             required:
             - displayName
@@ -711,8 +800,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: VertexAICustomJobStatus defines the config connector machine
-              state of VertexAICustomJob
+            description: AIPlatformCustomJobStatus defines the config connector machine
+              state of AIPlatformCustomJob
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -741,7 +830,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAICustomJob resource
+                description: A unique specifier for the AIPlatformCustomJob resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -780,9 +869,6 @@ spec:
                           field, or localized by the client.
                         type: string
                     type: object
-                  name:
-                    description: Output only. Resource name of a CustomJob.
-                    type: string
                   satisfiesPzi:
                     description: Output only. Reserved for future use.
                     type: boolean

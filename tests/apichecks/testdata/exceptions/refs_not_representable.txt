@@ -1,3 +1,6 @@
+[not_representable] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.baseOutputDirectory.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
+[not_representable] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuerySource.uri" reason=bigquery-uri-not-a-gcp-resource-name
 [not_representable] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexRagSource.uri" reason=bigquery-uri-not-a-gcp-resource-name
 [not_representable] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.baseOutputDirectory.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
@@ -101,9 +104,6 @@
 [not_representable] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.output.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=transcoderjobtemplates.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.overlays[].image.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=translateglossaries.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputConfig.gcsSource.inputURI" reason=gcs-path-decomposable-as-bucketref-plus-path
-[not_representable] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.baseOutputDirectory.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
-[not_representable] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
-[not_representable] crd=vertexaicustomjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputsSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.instructionURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaidatasets.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaUri" reason=gcs-path-decomposable-as-bucketref-plus-path
