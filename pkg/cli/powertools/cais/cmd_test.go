@@ -17,6 +17,7 @@ package cais
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -268,6 +269,24 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 				if err := unstructured.SetNestedField(u.Object, policyID, "status", "policyId"); err != nil {
 					t.Fatalf("failed to inject status.policyId for ComputeOrganizationSecurityPolicy %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.externalRef for DataformRepository to simulate a reconciled repository in static unit tests.
+			if u.GetKind() == "DataformRepository" && u.GroupVersionKind().Group == "dataform.cnrm.cloud.google.com" {
+				region, _, _ := unstructured.NestedString(u.Object, "spec", "region")
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				if projectID == "" {
+					projectID = u.GetAnnotations()["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				if region != "" {
+					externalRef := fmt.Sprintf("//dataform.googleapis.com/projects/%s/locations/%s/repositories/%s", projectID, region, u.GetName())
+					if err := unstructured.SetNestedField(u.Object, externalRef, "status", "externalRef"); err != nil {
+						t.Fatalf("failed to inject status.externalRef for DataformRepository %s: %v", u.GetName(), err)
+					}
 				}
 			}
 

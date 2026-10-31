@@ -1,0 +1,19 @@
+- caisURL: unknown
+  error: cannot resolve resource ID
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformRepository
+  name: dataformrepository-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/${projectId}-df-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: ${projectId}-df-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //dataform.googleapis.com/projects/${projectId}/locations/us-central1/repositories/dataformrepository-${uniqueId}/releaseConfigs/dfreleaseconfig-max-${uniqueId}
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformReleaseConfig
+  name: dfreleaseconfig-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
