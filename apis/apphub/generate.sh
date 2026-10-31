@@ -66,6 +66,20 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-controller \
+  --service google.cloud.apphub.v1 \
+  --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource AppHubService:Service \
+  --resource AppHubWorkload:Workload
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --prepopulate-resource \
+  --service google.cloud.apphub.v1 \
+  --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
+  --resource AppHubService:Service \
+  --resource AppHubWorkload:Workload
+
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds
