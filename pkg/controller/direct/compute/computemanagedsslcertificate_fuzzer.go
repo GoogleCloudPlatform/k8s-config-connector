@@ -45,6 +45,8 @@ func computeManagedSSLCertificateFuzzer() fuzztesting.KRMFuzzer {
 	// - ObservedState.CertificateID           maps to proto field .id (handcoded uint64 <-> int conversion)
 	// - ObservedState.CreationTimestamp       maps to proto field .creation_timestamp
 	// - ObservedState.ExpireTime              maps to proto field .expire_time
+	// - ObservedState.Managed.DomainStatus    maps to proto field .managed.domain_status
+	// - ObservedState.Managed.Status          maps to proto field .managed.status
 	// - ObservedState.SelfLink                maps to proto field .self_link
 	// - ObservedState.SubjectAlternativeNames maps to proto field .subject_alternative_names
 
@@ -58,6 +60,8 @@ func computeManagedSSLCertificateFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".creation_timestamp")
 	f.StatusField(".expire_time")
 	f.StatusField(".id")
+	f.StatusField(".managed.domain_status")
+	f.StatusField(".managed.status")
 	f.StatusField(".self_link")
 	f.StatusField(".subject_alternative_names")
 
@@ -67,8 +71,6 @@ func computeManagedSSLCertificateFuzzer() fuzztesting.KRMFuzzer {
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".certificate")
 	f.Unimplemented_NotYetTriaged(".kind")
-	f.Unimplemented_NotYetTriaged(".managed.domain_status")
-	f.Unimplemented_NotYetTriaged(".managed.status")
 	f.Unimplemented_NotYetTriaged(".private_key")
 	f.Unimplemented_NotYetTriaged(".region")
 	f.Unimplemented_NotYetTriaged(".self_managed")

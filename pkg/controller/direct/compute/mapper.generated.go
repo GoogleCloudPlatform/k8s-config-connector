@@ -3339,6 +3339,32 @@ func ComputeManagedSSLCertificateManaged_v1beta1_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto", skipping
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState{}
+	out.DomainStatus = in.DomainStatus
+	// MISSING: Domains
+	out.Status = in.Status
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto", skipping
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	out.DomainStatus = in.DomainStatus
+	// MISSING: Domains
+	out.Status = in.Status
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1beta1_FromProto", skipping
 func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateObservedState {
 	if in == nil {
@@ -3350,6 +3376,7 @@ func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.
 	out.ExpireTime = in.ExpireTime
 	// MISSING: ID
 	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx, in.GetManaged())
 	// MISSING: Name
 	// MISSING: PrivateKey
 	// MISSING: Region
@@ -3371,6 +3398,7 @@ func ComputeManagedSSLCertificateObservedState_v1beta1_ToProto(mapCtx *direct.Ma
 	out.ExpireTime = in.ExpireTime
 	// MISSING: ID
 	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx, in.Managed)
 	// MISSING: Name
 	// MISSING: PrivateKey
 	// MISSING: Region
