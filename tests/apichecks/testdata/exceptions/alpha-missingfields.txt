@@ -6551,17 +6551,7 @@
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].projectID" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimized" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.categoricalThresholdConfig.value" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.importFeaturesAnalysis.anomalyDetectionBaseline" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.importFeaturesAnalysis.state" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.numericalThresholdConfig.value" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.snapshotAnalysis.disabled" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.snapshotAnalysis.monitoringInterval" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.snapshotAnalysis.monitoringIntervalDays" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.monitoringConfig.snapshotAnalysis.stalenessDays" is not set in unstructured objects
-[missing_field] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.offlineStorageTtlDays" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlineServingConfig.scaling.cpuUtilizationTarget" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlineServingConfig.scaling.maxNodeCount" is not set in unstructured objects
