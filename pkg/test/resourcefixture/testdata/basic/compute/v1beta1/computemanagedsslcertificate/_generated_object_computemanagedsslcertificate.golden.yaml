@@ -29,4 +29,8 @@ status:
   observedState:
     certificateID: 1111111111111111
     creationTimestamp: "1970-01-01T00:00:00Z"
+    managed:
+      domainStatus:
+        sslcert.fixture.club: PROVISIONING
+      status: PROVISIONING
     selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}

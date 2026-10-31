@@ -53,6 +53,18 @@ type ComputeManagedSSLCertificateSpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
+type ComputeManagedSSLCertificateManagedObservedState struct {
+	/* [Output only] Detailed statuses of the domains specified for managed certificate resource. */
+	// +optional
+	DomainStatus map[string]string `json:"domainStatus,omitempty"`
+
+	/* [Output only] Status of the managed certificate resource.
+	   Possible values: [ACTIVE, MANAGED_CERTIFICATE_STATUS_UNSPECIFIED, PROVISIONING, PROVISIONING_FAILED, PROVISIONING_FAILED_PERMANENTLY, RENEWAL_FAILED]. */
+	// +optional
+	Status *string `json:"status,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.compute.v1.SslCertificate
 type ComputeManagedSSLCertificateObservedState struct {
 	/* The unique identifier for the resource. */
@@ -67,6 +79,10 @@ type ComputeManagedSSLCertificateObservedState struct {
 	/* Expire time of the certificate in RFC3339 text format. */
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
+
+	/* [Output only] Properties relevant to a managed certificate. */
+	// +optional
+	Managed *ComputeManagedSSLCertificateManagedObservedState `json:"managed,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
