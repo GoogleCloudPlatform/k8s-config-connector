@@ -13,3 +13,14 @@
   2. The resource supports labels via metadata labels, which are mapped to GCP labels and compared during update reconciliation.
 - **Impact**: Clean direct controller implementation for `ConfigDeliveryResourceBundle` with full real GCP recording coverage.
 
+### [2026-10-29] Triaging Judgement Queue and Finalizing Direct KRM Types for ConfigDeliveryRelease
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `ConfigDeliveryRelease` ([Issue 14673](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/14673)).
+- **Problem**: `ConfigDeliveryRelease` is a child resource of `ConfigDeliveryResourceBundle` under `projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}`. The initial scaffolding had separate `projectRef`, `location`, a commented-out guess for `resourceBundleRef`, and top-level `labels`.
+- **Solution**:
+  1. Applied the single-parent rule for child resources: replaced `projectRef`, `location`, and `resourceBundleRef` with a single required immutable `ParentRef *ConfigDeliveryResourceBundleRef` with CEL immutability (`self == oldSelf`).
+  2. Removed `Labels map[string]string` from spec since proto labels are reconciled from `metadata.labels`.
+  3. Added `generate-controller` and `generate-fuzzer` to `generate.sh` to keep the direct controller and fuzzer in lockstep.
+  4. Added the release template to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` and resolved all judgement queue entries.
+- **Impact**: Clean child resource identity resolution derived entirely from `ParentRef`, passing `TestFocusedMappers`, API checks, and conformance tests.
+
+

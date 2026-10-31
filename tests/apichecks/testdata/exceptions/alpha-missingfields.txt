@@ -1809,10 +1809,8 @@
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceBundleSelector.cloudBuildRepository.variantsPattern" is not set in unstructured objects
 [missing_field] crd=configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutStrategy.allAtOnce" is not set in unstructured objects
 [missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.info.variantOciImagePaths" is not set in unstructured objects
-[missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.lifecycle" is not set in unstructured objects
-[missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=configdeliveryreleases.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=configdeliveryvariants.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=configdeliveryvariants.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
