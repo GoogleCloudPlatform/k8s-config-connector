@@ -308,15 +308,19 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
+	return r.HandleUpdateFailedWithReason(ctx, resource, k8s.UpdateFailed, err)
+}
+
+func (r *LifecycleHandler) HandleUpdateFailedWithReason(ctx context.Context, resource *k8s.Resource, reason string, err error) error {
 	structuredreporting.ReportError(ctx, err, resource)
 	msg := fmt.Errorf("Update call failed: %w", err).Error()
-	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
+	setCondition(resource, corev1.ConditionFalse, reason, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
 
-	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, reason, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
 

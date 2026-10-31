@@ -28,6 +28,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
 )
 
 func TestIsOrphaned(t *testing.T) {
@@ -256,5 +257,42 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
 			}
 		})
+	}
+}
+
+func TestHandleUpdateFailedWithReason(t *testing.T) {
+	ctx := context.TODO()
+	h := test.NewKubeHarness(ctx, t)
+	c := h.GetClient()
+	recorder := record.NewFakeRecorder(10)
+	handler := NewLifecycleHandler(c, recorder)
+
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Bar"})
+	testID := "test-ns"
+	h.EnsureNamespaceExists(testID)
+
+	res := test.NewBarUnstructured("test-bar", testID, corev1.ConditionTrue)
+	test.EnsureObjectsExist(t, []*unstructured.Unstructured{res}, c)
+
+	k8sRes, err := k8s.NewResource(res)
+	if err != nil {
+		t.Fatalf("unexpected error converting to k8s resource: %v", err)
+	}
+
+	testErr := errors.New("googleapi: Error 404: Method not found.")
+	err = handler.HandleUpdateFailedWithReason(ctx, k8sRes, k8s.ServiceEndpointUnavailable, testErr)
+	if err == nil {
+		t.Fatalf("expected error from HandleUpdateFailedWithReason, got nil")
+	}
+
+	readyCond, found := k8s.GetReadyCondition(k8sRes)
+	if !found {
+		t.Fatalf("ready condition not found on resource")
+	}
+	if readyCond.Status != corev1.ConditionFalse {
+		t.Errorf("expected status %v, got %v", corev1.ConditionFalse, readyCond.Status)
+	}
+	if readyCond.Reason != k8s.ServiceEndpointUnavailable {
+		t.Errorf("expected reason %v, got %v", k8s.ServiceEndpointUnavailable, readyCond.Reason)
 	}
 }
