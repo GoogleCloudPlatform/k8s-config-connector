@@ -1,0 +1,299 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com
+spec:
+  group: dataflow.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataflowFlexTemplateJob
+    listKind: DataflowFlexTemplateJobList
+    plural: dataflowflextemplatejobs
+    shortNames:
+    - gcpdataflowflextemplatejob
+    - gcpdataflowflextemplatejobs
+    singular: dataflowflextemplatejob
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: DataflowFlexTemplateJob is the Schema for the DataflowFlexTemplateJob
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataflowFlexTemplateJobSpec defines the desired state of
+              DataflowFlexTemplateJob
+            properties:
+              additionalExperiments:
+                description: Additional experiment flags for the job.
+                items:
+                  type: string
+                type: array
+              additionalUserLabels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Additional user labels to be specified for the job.
+                   Keys and values must follow the restrictions specified in the [labeling
+                   restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
+                   page.
+                   An object containing a list of "key": value pairs.
+                   Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
+                type: object
+              autoscalingAlgorithm:
+                description: The algorithm to use for autoscaling
+                type: string
+              diskSizeGB:
+                description: Worker disk size, in gigabytes.
+                format: int32
+                type: integer
+              dumpHeapOnOom:
+                description: |-
+                  If true, when processing time is spent almost entirely
+                   on garbage collection (GC), saves a heap dump before ending the thread
+                   or process. If false, ends the thread or process without saving a heap
+                   dump. Does not save a heap dump when the Java Virtual Machine (JVM) has an
+                   out of memory error during processing. The location of the heap file is
+                   either echoed back to the user, or the user is given the opportunity to
+                   download the heap file.
+                type: boolean
+              enableLauncherVMSerialPortLogging:
+                description: If true serial port logging will be enabled for the launcher
+                  VM.
+                type: boolean
+              enableStreamingEngine:
+                description: Whether to enable Streaming Engine for the job.
+                type: boolean
+              flexrsGoal:
+                description: |-
+                  Set FlexRS goal for the job.
+                   https://cloud.google.com/dataflow/docs/guides/flexrs
+                type: string
+              ipConfiguration:
+                description: Configuration for VM IPs.
+                type: string
+              kmsKeyName:
+                description: |-
+                  Name for the Cloud KMS key for the job.
+                   Key format is:
+                   projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
+                type: string
+              launcherMachineType:
+                description: |-
+                  The machine type to use for launching the job. The default is
+                   n1-standard-1.
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              machineType:
+                description: |-
+                  The machine type to use for the job. Defaults to the value from the
+                   template if not specified.
+                type: string
+              maxWorkers:
+                description: |-
+                  The maximum number of Google Compute Engine instances to be made
+                   available to your pipeline during execution, from 1 to 1000.
+                format: int32
+                type: integer
+              network:
+                description: |-
+                  Network to which VMs will be assigned.  If empty or unspecified,
+                   the service will use the network "default".
+                type: string
+              numWorkers:
+                description: The initial number of Google Compute Engine instances
+                  for the job.
+                format: int32
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataflowFlexTemplateJob name. If not given, the metadata.name
+                  will be used.
+                type: string
+              saveHeapDumpsToGCSPath:
+                description: |-
+                  Cloud Storage bucket (directory) to upload heap dumps to.
+                   Enabling this field implies that `dump_heap_on_oom` is set to true.
+                type: string
+              sdkContainerImage:
+                description: |-
+                  Docker registry location of container image to use for the 'worker harness.
+                   Default is the container for the version of the SDK. Note this field is
+                   only valid for portable pipelines.
+                type: string
+              serviceAccountEmail:
+                description: The email address of the service account to run the job
+                  as.
+                type: string
+              stagingLocation:
+                description: |-
+                  The Cloud Storage path for staging local files.
+                   Must be a valid Cloud Storage URL, beginning with `gs://`.
+                type: string
+              streamingMode:
+                description: |-
+                  Optional. Specifies the Streaming Engine message processing guarantees.
+                   Reduces cost and latency but might result in duplicate messages committed
+                   to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+                   cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+                   case. For more information, see
+                   [Set the pipeline streaming
+                   mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+                type: string
+              subnetwork:
+                description: |-
+                  Subnetwork to which VMs will be assigned, if desired. You can specify a
+                   subnetwork using either a complete URL or an abbreviated path. Expected to
+                   be of the form
+                   "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
+                   or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
+                   a Shared VPC network, you must use the complete URL.
+                type: string
+              tempLocation:
+                description: |-
+                  The Cloud Storage path to use for temporary files.
+                   Must be a valid Cloud Storage URL, beginning with `gs://`.
+                type: string
+              workerRegion:
+                description: |-
+                  The Compute Engine region
+                   (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+                   which worker processing should occur, e.g. "us-west1". Mutually exclusive
+                   with worker_zone. If neither worker_region nor worker_zone is specified,
+                   default to the control plane's region.
+                type: string
+              workerZone:
+                description: |-
+                  The Compute Engine zone
+                   (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+                   which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
+                   with worker_region. If neither worker_region nor worker_zone is specified,
+                   a zone in the control plane's region is chosen based on available capacity.
+                   If both `worker_zone` and `zone` are set, `worker_zone` takes precedence.
+                type: string
+              zone:
+                description: |-
+                  The Compute Engine [availability
+                   zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
+                   for launching worker instances to run your pipeline.
+                   In the future, worker_zone will take precedence.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: DataflowFlexTemplateJobStatus defines the config connector
+              machine state of DataflowFlexTemplateJob
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataflowFlexTemplateJob resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

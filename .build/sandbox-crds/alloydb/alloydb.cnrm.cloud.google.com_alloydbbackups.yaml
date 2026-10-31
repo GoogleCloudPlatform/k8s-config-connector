@@ -1,0 +1,288 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: alloydbbackups.alloydb.cnrm.cloud.google.com
+spec:
+  group: alloydb.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AlloyDBBackup
+    listKind: AlloyDBBackupList
+    plural: alloydbbackups
+    shortNames:
+    - gcpalloydbbackup
+    - gcpalloydbbackups
+    singular: alloydbbackup
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: AlloyDBBackup is the Schema for the AlloyDBBackup API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AlloyDBBackupSpec defines the desired state of AlloyDBBackup
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Annotations to allow client tools to store small amount
+                  of arbitrary data. This is distinct from labels. https://google.aip.dev/128
+                type: object
+              clusterName:
+                description: Required. The full resource name of the backup source
+                  cluster (e.g., projects/{project}/locations/{region}/clusters/{cluster_id}).
+                type: string
+              description:
+                description: User-provided description of the backup.
+                type: string
+              displayName:
+                description: User-settable and human-readable display name for the
+                  Backup.
+                type: string
+              encryptionConfig:
+                description: Optional. The encryption config can be specified to encrypt
+                  the backup with a customer-managed encryption key (CMEK). When this
+                  field is not specified, the backup will then use default encryption
+                  scheme to protect the user data.
+                properties:
+                  kmsKeyName:
+                    description: 'The fully-qualified resource name of the KMS key.
+                      Each Cloud KMS key is regionalized and has the following format:
+                      projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
+                    type: string
+                type: object
+              etag:
+                description: For Resource freshness validation (https://google.aip.dev/154)
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels as key value pairs
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The AlloyDBBackup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              tags:
+                additionalProperties:
+                  type: string
+                description: 'Optional. Input only. Immutable. Tag keys/values directly
+                  bound to this resource. For example: ``` "123/environment": "production",
+                  "123/costCenter": "marketing" ```'
+                type: object
+              type:
+                description: The backup type, which suggests the trigger for the backup.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: AlloyDBBackupStatus defines the config connector machine
+              state of AlloyDBBackup
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AlloyDBBackup resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  clusterUid:
+                    description: Output only. The system-generated UID of the cluster
+                      which was used to create this resource.
+                    type: string
+                  createCompletionTime:
+                    description: Output only. Timestamp when the resource finished
+                      being created.
+                    type: string
+                  createTime:
+                    description: Output only. Create time stamp
+                    type: string
+                  databaseVersion:
+                    description: Output only. The database engine major version of
+                      the cluster this backup was created from. Any restored cluster
+                      created from this backup will have the same database version.
+                    type: string
+                  deleteTime:
+                    description: Output only. Delete time stamp
+                    type: string
+                  encryptionInfo:
+                    description: Output only. The encryption information for the backup.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. Cloud KMS key versions that are
+                          being used to protect the database or the backup.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  expiryQuantity:
+                    description: Output only. The QuantityBasedExpiry of the backup,
+                      specified by the backup's retention policy. Once the expiry
+                      quantity is over retention, the backup is eligible to be garbage
+                      collected.
+                    properties:
+                      retentionCount:
+                        description: Output only. The backup's position among its
+                          backups with the same source cluster and type, by descending
+                          chronological order create time(i.e. newest first).
+                        format: int32
+                        type: integer
+                      totalRetentionCount:
+                        description: Output only. The length of the quantity-based
+                          queue, specified by the backup's retention policy.
+                        format: int32
+                        type: integer
+                    type: object
+                  expiryTime:
+                    description: Output only. The time at which after the backup is
+                      eligible to be garbage collected. It is the duration specified
+                      by the backup's retention policy, added to the backup's create_time.
+                    type: string
+                  reconciling:
+                    description: Output only. Reconciling (https://google.aip.dev/128#reconciliation),
+                      if true, indicates that the service is actively updating the
+                      resource. This can happen due to user-triggered updates or system
+                      actions like failover or maintenance.
+                    type: boolean
+                  satisfiesPzs:
+                    description: Output only. Reserved for future use.
+                    type: boolean
+                  sizeBytes:
+                    description: Output only. The size of the backup in bytes.
+                    format: int64
+                    type: integer
+                  state:
+                    description: Output only. The current state of the backup.
+                    type: string
+                  uid:
+                    description: Output only. The system-generated UID of the resource.
+                      The UID is assigned when the resource is created, and it is
+                      retained until it is deleted.
+                    type: string
+                  updateTime:
+                    description: |-
+                      Output only. Update time stamp
+
+                       Users should not infer any meaning from this field. Its value is generally
+                       unrelated to the timing of the backup creation operation.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

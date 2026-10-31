@@ -1,0 +1,538 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computereservations.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeReservation
+    listKind: ComputeReservationList
+    plural: computereservations
+    shortNames:
+    - gcpcomputereservation
+    - gcpcomputereservations
+    singular: computereservation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeReservation is the Schema for the ComputeReservation API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeReservationSpec defines the desired state of ComputeReservation
+            properties:
+              advancedDeploymentControl:
+                description: Advanced control for cluster management, applicable only
+                  to DENSE deployment type reservations.
+                properties:
+                  reservationOperationalMode:
+                    description: |-
+                      Indicates chosen reservation operational mode for the reservation.
+                       Check the ReservationOperationalMode enum for the list of possible values.
+                    type: string
+                type: object
+              aggregateReservation:
+                description: Reservation for aggregated resources, providing shape
+                  flexibility.
+                properties:
+                  inUseResources:
+                    description: '[Output only] List of resources currently in use.'
+                    items:
+                      properties:
+                        accelerator:
+                          description: Properties of accelerator resources in this
+                            reservation.
+                          properties:
+                            acceleratorCount:
+                              description: Number of accelerators of specified type.
+                              format: int32
+                              type: integer
+                            acceleratorType:
+                              description: Full or partial URL to accelerator type.
+                                e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                  reservedResources:
+                    description: List of reserved resources (CPUs, memory, accelerators).
+                    items:
+                      properties:
+                        accelerator:
+                          description: Properties of accelerator resources in this
+                            reservation.
+                          properties:
+                            acceleratorCount:
+                              description: Number of accelerators of specified type.
+                              format: int32
+                              type: integer
+                            acceleratorType:
+                              description: Full or partial URL to accelerator type.
+                                e.g. "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l"
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                  vmFamily:
+                    description: |-
+                      The VM family that all instances scheduled against this reservation must belong to.
+                       Check the VmFamily enum for the list of possible values.
+                    type: string
+                  workloadType:
+                    description: |-
+                      The workload type of the instances that will target this reservation.
+                       Check the WorkloadType enum for the list of possible values.
+                    type: string
+                type: object
+              commitment:
+                description: '[Output Only] Full or partial URL to a parent commitment.
+                  This field displays for reservations that are tied to a commitment.'
+                type: string
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              deleteAfterDuration:
+                description: Duration time relative to reservation creation when Compute
+                  Engine will automatically delete this resource.
+                properties:
+                  nanos:
+                    description: Span of time that's a fraction of a second at nanosecond
+                      resolution. Durations less than one second are represented with
+                      a 0 `seconds` field and a positive `nanos` field. Must be from
+                      0 to 999,999,999 inclusive.
+                    format: int32
+                    type: integer
+                  seconds:
+                    description: 'Span of time at a resolution of a second. Must be
+                      from 0 to 315,576,000,000 inclusive. Note: these bounds are
+                      computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year
+                      * 10000 years'
+                    format: int64
+                    type: integer
+                type: object
+              deleteAtTime:
+                description: Absolute time in future when the reservation will be
+                  auto-deleted by Compute Engine. Timestamp is represented in RFC3339
+                  text format.
+                type: string
+              deploymentType:
+                description: |-
+                  Specifies the deployment strategy for this reservation.
+                   Check the DeploymentType enum for the list of possible values.
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              enableEmergentMaintenance:
+                description: Indicates whether Compute Engine allows unplanned maintenance
+                  for your VMs; for example, to fix hardware errors.
+                type: boolean
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#reservations
+                  for reservations.'
+                type: string
+              linkedCommitments:
+                description: '[Output Only] Full or partial URL to parent commitments.
+                  This field displays for reservations that are tied to multiple commitments.'
+                items:
+                  type: string
+                type: array
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              reservationSharingPolicy:
+                description: Specify the reservation sharing policy. If unspecified,
+                  the reservation will not be shared with Google Cloud managed services.
+                properties:
+                  serviceShareType:
+                    description: |-
+                      Sharing config for all Google Cloud services.
+                       Check the ServiceShareType enum for the list of possible values.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeReservation name. If not given, the metadata.name
+                  will be used.
+                type: string
+              resourcePolicies:
+                additionalProperties:
+                  type: string
+                description: Resource policies to be added to this reservation. The
+                  key is defined by user, and the value is resource policy url. This
+                  is to define placement policy with reservation.
+                type: object
+              resourceStatus:
+                description: '[Output Only] Status information for Reservation resource.'
+                properties:
+                  healthInfo:
+                    description: '[Output only] Health information for the reservation.'
+                    properties:
+                      degradedBlockCount:
+                        description: The number of reservation blocks that are degraded.
+                        format: int32
+                        type: integer
+                      healthStatus:
+                        description: |-
+                          The health status of the reservation.
+                           Check the HealthStatus enum for the list of possible values.
+                        type: string
+                      healthyBlockCount:
+                        description: The number of reservation blocks that are healthy.
+                        format: int32
+                        type: integer
+                    type: object
+                  reservationBlockCount:
+                    description: The number of reservation blocks associated with
+                      this reservation.
+                    format: int32
+                    type: integer
+                  reservationMaintenance:
+                    description: Maintenance information for this reservation
+                    properties:
+                      instanceMaintenanceOngoingCount:
+                        description: Describes number of instances that have ongoing
+                          maintenance.
+                        format: int32
+                        type: integer
+                      instanceMaintenancePendingCount:
+                        description: Describes number of instances that have pending
+                          maintenance.
+                        format: int32
+                        type: integer
+                      maintenanceOngoingCount:
+                        description: Progress for ongoing maintenance for this group
+                          of VMs/hosts. Describes number of hosts in the block that
+                          have ongoing maintenance.
+                        format: int32
+                        type: integer
+                      maintenancePendingCount:
+                        description: Progress for ongoing maintenance for this group
+                          of VMs/hosts. Describes number of hosts in the block that
+                          have pending maintenance.
+                        format: int32
+                        type: integer
+                      schedulingType:
+                        description: |-
+                          The type of maintenance for the reservation.
+                           Check the SchedulingType enum for the list of possible values.
+                        type: string
+                      subblockInfraMaintenanceOngoingCount:
+                        description: Describes number of subblock Infrastructure that
+                          has ongoing maintenance. Here, Subblock Infrastructure Maintenance
+                          pertains to upstream hardware contained in the Subblock
+                          that is necessary for a VM Family(e.g. NVLink Domains).
+                          Not all VM Families will support this field.
+                        format: int32
+                        type: integer
+                      subblockInfraMaintenancePendingCount:
+                        description: Describes number of subblock Infrastructure that
+                          has pending maintenance. Here, Subblock Infrastructure Maintenance
+                          pertains to upstream hardware contained in the Subblock
+                          that is necessary for a VM Family (e.g. NVLink Domains).
+                          Not all VM Families will support this field.
+                        format: int32
+                        type: integer
+                      upcomingGroupMaintenance:
+                        description: Maintenance information on this group of VMs.
+                        properties:
+                          canReschedule:
+                            description: Indicates if the maintenance can be customer
+                              triggered.
+                            type: boolean
+                          latestWindowStartTime:
+                            description: The latest time for the planned maintenance
+                              window to start. This timestamp value is in RFC3339
+                              text format.
+                            type: string
+                          maintenanceOnShutdown:
+                            description: Indicates whether the UpcomingMaintenance
+                              will be triggered on VM shutdown.
+                            type: boolean
+                          maintenanceReasons:
+                            description: |-
+                              The reasons for the maintenance. Only valid for vms.
+                               Check the MaintenanceReasons enum for the list of possible values.
+                            items:
+                              type: string
+                            type: array
+                          maintenanceStatus:
+                            description: Check the MaintenanceStatus enum for the
+                              list of possible values.
+                            type: string
+                          type:
+                            description: |-
+                              Defines the type of maintenance.
+                               Check the Type enum for the list of possible values.
+                            type: string
+                          windowEndTime:
+                            description: The time by which the maintenance disruption
+                              will be completed. This timestamp value is in RFC3339
+                              text format.
+                            type: string
+                          windowStartTime:
+                            description: The current start time of the maintenance
+                              window. This timestamp value is in RFC3339 text format.
+                            type: string
+                        type: object
+                    type: object
+                  specificSkuAllocation:
+                    description: Allocation Properties of this reservation.
+                    properties:
+                      sourceInstanceTemplateID:
+                        description: ID of the instance template used to populate
+                          reservation properties.
+                        type: string
+                      utilizations:
+                        additionalProperties:
+                          format: int64
+                          type: integer
+                        description: Per service utilization breakdown. The Key is
+                          the Google Cloud managed service name.
+                        type: object
+                    type: object
+                type: object
+              satisfiesPzs:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              schedulingType:
+                description: |-
+                  The type of maintenance for the reservation.
+                   Check the SchedulingType enum for the list of possible values.
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined fully-qualified URL for
+                  this resource.'
+                type: string
+              shareSettings:
+                description: Specify share-settings to create a shared reservation.
+                  This property is optional. For more information about the syntax
+                  and options for this field and its subfields, see the guide for
+                  creating a shared reservation.
+                properties:
+                  shareType:
+                    description: |-
+                      Type of sharing for this shared-reservation
+                       Check the ShareType enum for the list of possible values.
+                    type: string
+                type: object
+              specificReservation:
+                description: Reservation for instances with specific machine shapes.
+                properties:
+                  assuredCount:
+                    description: '[Output Only] Indicates how many instances are actually
+                      usable currently.'
+                    format: int64
+                    type: integer
+                  count:
+                    description: Specifies the number of resources that are allocated.
+                    format: int64
+                    type: integer
+                  inUseCount:
+                    description: '[Output Only] Indicates how many instances are in
+                      use.'
+                    format: int64
+                    type: integer
+                  instanceProperties:
+                    description: The instance properties for the reservation.
+                    properties:
+                      guestAccelerators:
+                        description: Specifies accelerator type and count.
+                        items:
+                          properties:
+                            acceleratorCount:
+                              description: The number of the guest accelerator cards
+                                exposed to this instance.
+                              format: int32
+                              type: integer
+                            acceleratorType:
+                              description: 'Full or partial URL of the accelerator
+                                type resource to attach to this instance. For example:
+                                projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
+                                If you are creating an instance template, specify
+                                only the accelerator name. See GPUs on Compute Engine
+                                for a full list of accelerator types.'
+                              type: string
+                          type: object
+                        type: array
+                      localSsds:
+                        description: Specifies amount of local ssd to reserve with
+                          each instance. The type of disk is local-ssd.
+                        items:
+                          properties:
+                            diskSizeGB:
+                              description: Specifies the size of the disk in base-2
+                                GB.
+                              format: int64
+                              type: integer
+                            interface:
+                              description: |-
+                                Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance.
+                                 Check the Interface enum for the list of possible values.
+                              type: string
+                          type: object
+                        type: array
+                      locationHint:
+                        description: An opaque location hint used to place the allocation
+                          close to other resources. This field is for use by internal
+                          tools that use the public API.
+                        type: string
+                      machineType:
+                        description: Specifies type of machine (name only) which has
+                          fixed number of vCPUs and fixed amount of memory. This also
+                          includes specifying custom machine type following custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY
+                          pattern.
+                        type: string
+                      minCPUPlatform:
+                        description: Minimum cpu platform the reservation.
+                        type: string
+                    type: object
+                  sourceInstanceTemplate:
+                    description: 'Specifies the instance template to create the reservation.
+                      If you use this field, you must exclude the instanceProperties
+                      field. This field is optional, and it can be a full or partial
+                      URL. For example, the following are all valid URLs to an instance
+                      template: - https://www.googleapis.com/compute/v1/projects/project
+                      /global/instanceTemplates/instanceTemplate - projects/project/global/instanceTemplates/instanceTemplate
+                      - global/instanceTemplates/instanceTemplate'
+                    type: string
+                type: object
+              specificReservationRequired:
+                description: Indicates whether the reservation can be consumed by
+                  VMs with affinity for "any" reservation. If the field is set, then
+                  only VMs that target the reservation by name can consume from this
+                  reservation.
+                type: boolean
+              status:
+                description: |-
+                  [Output Only] The status of the reservation. - CREATING: Reservation resources are being allocated. - READY: Reservation resources have been allocated, and the reservation is ready for use. - DELETING: Reservation deletion is in progress. - UPDATING: Reservation update is in progress.
+                   Check the Status enum for the list of possible values.
+                type: string
+              zone:
+                description: Zone in which the reservation resides. A zone must be
+                  provided if the reservation is created within a commitment.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeReservationStatus defines the config connector machine
+              state of ComputeReservation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeReservation resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
