@@ -62,6 +62,7 @@ type AuditLogConfig struct {
 }
 
 // Specifies the members to bind to an IAM role.
+// +kubebuilder:skipversion
 type IAMPolicyBinding struct {
 	// Optional. The list of IAM users to be bound to the role.
 	Members []Member `json:"members,omitempty"`

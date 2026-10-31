@@ -4804,6 +4804,19 @@
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.expression" is not set in unstructured objects
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.location" is not set in unstructured objects
 [missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.title" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition.description" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition.expression" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition.location" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.condition.title" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.policy" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyKind" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.principalSet" is not set in unstructured objects
+[missing_field] crd=iampolicybindings.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.resource" is not set in unstructured objects
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.enforcementVersion" is not set in unstructured objects
 [missing_field] crd=iamprincipalaccessboundarypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.details.rules[].description" is not set in unstructured objects
