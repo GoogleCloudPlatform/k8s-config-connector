@@ -95,19 +95,38 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 		return NotAReference, ""
 	}
 
-	// No reference is required for a zone, region, location, machine type or
-	// accelerator type. These are taxonomy values rather than managed objects.
-	// The plural forms are excluded too: a field naming a set of zones is no
-	// more a reference than one naming a single zone.
-	switch {
-	case strings.HasSuffix(fieldPath, ".zone"), strings.HasSuffix(fieldPath, ".zones"),
-		strings.HasSuffix(fieldPath, ".region"), strings.HasSuffix(fieldPath, ".regions"),
-		strings.HasSuffix(fieldPath, ".location"), strings.HasSuffix(fieldPath, ".locations"),
-		strings.HasSuffix(fieldPath, ".machineType"),
-		strings.HasSuffix(fieldPath, ".acceleratorType"):
+	// No reference is required for a zone, region, location, machine type,
+	// accelerator type, or image URI. These are taxonomy values rather than
+	// managed objects. The plural forms and URI/URL suffixes are excluded too.
+	leaf := fieldLeaf(fieldPath)
+	if isCatalogueLeaf(leaf) {
+		return NotAReference, ""
+	}
+
+	// An alias is a label or identifier for the resource being created, not a
+	// reference to another resource.
+	if hasToken(fieldPath, "alias") || hasToken(fieldPath, "aliases") {
 		return NotAReference, ""
 	}
 	return IsReference, ""
+}
+
+// isCatalogueLeaf reports whether leaf names a taxonomy value (zone, region,
+// machine type, accelerator type, or image catalogue entry) rather than a
+// managed resource.
+func isCatalogueLeaf(leaf string) bool {
+	lower := strings.ToLower(leaf)
+	for _, base := range []string{"zone", "zones", "region", "regions", "location", "locations", "machinetype", "machinetypes", "acceleratortype", "acceleratortypes"} {
+		if lower == base || strings.HasSuffix(lower, "."+base) {
+			return true
+		}
+	}
+	for _, base := range []string{"zone", "region", "location", "machinetype", "acceleratortype", "image"} {
+		if lower == base+"uri" || lower == base+"url" {
+			return true
+		}
+	}
+	return false
 }
 
 // ReferenceRules returns the rules that say a field names another resource,
@@ -125,11 +144,27 @@ func ReferenceRules(fieldPath, desc string) []string {
 		rules = append(rules, fmt.Sprintf("the description has the resource-name template %q", template))
 	}
 
+	leaf := fieldLeaf(fieldPath)
+
 	// The suffix matches serviceAccount and ServiceAccount alike.
-	if strings.HasSuffix(fieldPath, "erviceAccount") {
+	if leafEndsWith(leaf, "serviceAccount") {
 		rules = append(rules, "the field name ends in serviceAccount")
 	}
-	// TODO: how to detect KMS Key
+
+	// SecretManager secret versions.
+	if leafEndsWith(leaf, "secretVersion") {
+		rules = append(rules, "the field name ends in secretVersion")
+	}
+
+	// KMS CryptoKeys.
+	if strings.EqualFold(leaf, "kmsKeyName") || strings.EqualFold(leaf, "cmekKeyName") {
+		rules = append(rules, "the field name is kmsKeyName or cmekKeyName")
+	}
+
+	// Projects.
+	if strings.EqualFold(leaf, "project") || leafEndsWith(leaf, "projectID") {
+		rules = append(rules, "the field name is project or ends in projectID")
+	}
 
 	// A Cloud Storage bucket reference is expressible today:
 	// StorageBucketIdentity.FromExternal accepts the bare "gs://<bucket>"
@@ -156,24 +191,94 @@ var resourceNamePrefixes = []string{"projects/", "locations/", "zones/", "region
 // a backtick rather than a space and <> rather than {}. Both forms count.
 func resourceNameTemplate(desc string) string {
 	// A placeholder immediately after a collection segment is unambiguous: the
-	// description is spelling out a resource name. Both brace and angle-bracket
-	// syntaxes are used upstream.
+	// description is spelling out a resource name. Brace, angle-bracket and
+	// square-bracket syntaxes are used upstream.
 	for _, prefix := range resourceNamePrefixes {
-		for _, open := range []string{"{", "<"} {
+		for _, open := range []string{"{", "<", "["} {
 			if i := strings.Index(desc, prefix+open); i >= 0 {
 				return wordAt(desc, i)
 			}
 		}
 	}
 
-	// Without a placeholder, only a space-delimited "projects/" counts. Widening
-	// this to other delimiters or to "locations/" matches ordinary prose, and it
-	// produced findings on container.username and allowedLocations, which are
-	// not references.
-	if i := strings.Index(desc, " projects/"); i >= 0 {
-		return wordAt(desc, i+1)
+	// Without a placeholder, a path starting with "projects/" or "/projects/"
+	// counts when followed by at least one additional path segment
+	// (e.g. "projects/<seg>/<collection>/<seg>").
+	for search := desc; ; {
+		i := strings.Index(search, "projects/")
+		if i < 0 {
+			break
+		}
+		absIdx := len(desc) - len(search) + i
+		search = search[i+len("projects/"):]
+
+		if !hasResourcePrefixDelimiter(desc, absIdx) {
+			continue
+		}
+
+		w := wordAt(desc, absIdx)
+		if strings.Contains(w, "*") {
+			continue
+		}
+		trimmed := strings.TrimPrefix(w, "/")
+		if !strings.HasPrefix(trimmed, "projects/") {
+			continue
+		}
+		rest := strings.TrimPrefix(trimmed, "projects/")
+		segments := strings.Split(rest, "/")
+		if len(segments) < 3 || segments[0] == "" || segments[1] == "" || segments[2] == "" {
+			continue
+		}
+		// If segment 1 is a regional/zonal prefix ("locations", "regions", "zones"),
+		// it is followed by the location ID, so to name a resource rather than a
+		// location parent, it must have a collection and resource ID (at least 5 segments).
+		if segments[1] == "locations" || segments[1] == "regions" || segments[1] == "zones" {
+			if len(segments) < 5 || segments[3] == "" || segments[4] == "" {
+				continue
+			}
+		}
+		// If segment 1 is "global", it is followed immediately by collection and
+		// resource ID (e.g. global/networks/default), so it needs at least 4 segments.
+		if segments[1] == "global" {
+			if len(segments) < 4 || segments[2] == "" || segments[3] == "" {
+				continue
+			}
+		}
+		return w
 	}
 	return ""
+}
+
+// hasResourcePrefixDelimiter reports whether desc[absIdx:] (where "projects/" begins)
+// is preceded by a valid delimiter, either directly or via a leading slash.
+func hasResourcePrefixDelimiter(desc string, absIdx int) bool {
+	if absIdx == 0 {
+		return true
+	}
+	isStop := func(c byte) bool {
+		return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '`' || c == '"' || c == '\'' || c == '('
+	}
+	if desc[absIdx-1] == '/' {
+		if absIdx-1 == 0 {
+			return true
+		}
+		return isStop(desc[absIdx-2])
+	}
+	return isStop(desc[absIdx-1])
+}
+
+// fieldLeaf returns the last segment of fieldPath without any list suffix.
+func fieldLeaf(fieldPath string) string {
+	leaf := fieldPath
+	if i := strings.LastIndex(leaf, "."); i >= 0 {
+		leaf = leaf[i+1:]
+	}
+	return strings.TrimSuffix(leaf, "[]")
+}
+
+// leafEndsWith reports whether leaf ends with suffix, ignoring case.
+func leafEndsWith(leaf, suffix string) bool {
+	return len(leaf) >= len(suffix) && strings.EqualFold(leaf[len(leaf)-len(suffix):], suffix)
 }
 
 // wordAt returns the word in desc that contains index i. Words are split at
@@ -331,7 +436,8 @@ func notRepresentableReason(fieldPath, desc string) string {
 	// there is no StorageObject CRD, and StorageBucketIdentity rejects anything
 	// with a "/" after the bucket. Classify treats a bucket-only field as a
 	// reference.
-	if isURIField && mentionsCloudStorage(desc) && !hasToken(fieldPath, "bucket") {
+	isPathOrURIField := isURIField || hasToken(fieldPath, "path") || hasToken(fieldPath, "paths")
+	if isPathOrURIField && mentionsCloudStorage(desc) && !hasToken(fieldPath, "bucket") {
 		return reasonGCSPath
 	}
 
@@ -371,7 +477,7 @@ func hasSuffix(suffix string) func(string) bool {
 // Rules are evaluated in order; the first matching rule wins.
 var NameRules = []NameRule{
 	// Every confirmed instance ends in SecretVersion.
-	{Target: "SecretManagerSecretVersionRef", Match: hasSuffix("SecretVersion")},
+	{Target: "SecretManagerSecretVersionRef", Match: func(leaf string) bool { return leafEndsWith(leaf, "SecretVersion") }},
 	// Matches common network identifier names as exact words.
 	{Target: "ComputeNetworkRef", Match: eq("network", "vpc", "vpcName")},
 	{Target: "KMSCryptoKeyRef", Match: eq("kmsKey", "cmekKeyName", "encryptionKey", "kmsKeyName")},

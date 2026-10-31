@@ -48,6 +48,12 @@ entries:
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
     status: open
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    field: .spec.target
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/p1/locations/us-central1/repositories/repo1/packages/p1/versions/v1"
+    status: open
   - kind: ArtifactRegistryRule
     group: artifactregistry.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
