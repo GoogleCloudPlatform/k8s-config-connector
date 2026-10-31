@@ -477,6 +477,10 @@ type RunServiceSpec struct {
 	// +optional
 	Ingress *string `json:"ingress,omitempty"`
 
+	/* Disables IAM permission check for run.routes.invoke for callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check. */
+	// +optional
+	InvokerIamDisabled *bool `json:"invokerIamDisabled,omitempty"`
+
 	/* The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.
 	If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.
 
