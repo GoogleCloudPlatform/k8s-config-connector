@@ -63,6 +63,11 @@ spec:
           spec:
             description: FirestoreIndexSpec defines the desired state of FirestoreIndex
             properties:
+              apiScope:
+                description: 'Immutable. The API scope at which a query is run. Default
+                  value: "ANY_API" Possible values: ["ANY_API", "DATASTORE_MODE_API",
+                  "MONGODB_COMPATIBLE_API"].'
+                type: string
               collection:
                 description: Immutable. The collection being indexed.
                 type: string
@@ -97,7 +102,8 @@ spec:
                 type: array
               queryScope:
                 description: 'Immutable. The scope at which a query is run. Default
-                  value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"].'
+                  value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP",
+                  "COLLECTION_RECURSIVE"].'
                 type: string
             required:
             - collection
