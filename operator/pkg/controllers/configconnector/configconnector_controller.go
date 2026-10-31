@@ -129,10 +129,10 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		})
 
 	options := []declarative.ReconcilerOption{
-		declarative.WithLabels(r.labelMaker),
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
-		declarative.WithOwner(declarative.SourceAsOwner),
+		declarative.WithObjectTransform(r.addLabels()),
+		declarative.WithObjectTransform(r.addOwner()),
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
@@ -572,6 +572,30 @@ func (r *Reconciler) updateConfigConnectorStatus(ctx context.Context, cc *corev1
 		return fmt.Errorf("failed to update ConfigConnector on API server: %w", err)
 	}
 	return nil
+}
+
+// Add labels that will be used for the controller to identify deployed KCC components.
+func (r *Reconciler) addLabels() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
+		labels := r.labelMaker(ctx, o)
+		for _, o := range manifest.Items {
+			o.AddLabels(labels)
+		}
+		return nil
+	}
+}
+
+// Add owner reference to each deployed object.
+func (r *Reconciler) addOwner() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
+		for _, obj := range manifest.Items {
+			_, err := declarative.SourceAsOwner(ctx, o, *obj, *manifest)
+			if err != nil {
+				return fmt.Errorf("error setting %v as owner for %v: %w", o.GetName(), obj.UnstructuredObject().GetName(), err)
+			}
+		}
+		return nil
+	}
 }
 
 func (r *Reconciler) recordEvent(cc *corev1beta1.ConfigConnector, eventtype, reason, message string) {
