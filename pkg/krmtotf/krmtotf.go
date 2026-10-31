@@ -406,14 +406,31 @@ func addToMap(left map[string]string, right map[string]string) map[string]string
 }
 
 func resolveContainerValue(config map[string]interface{}, r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) error {
-	if len(r.ResourceConfig.Containers) == 0 {
-		return nil
-	}
 	if SupportsHierarchicalReferences(&r.ResourceConfig) {
 		// If resource supports hierarchical references, use those references
 		// instead to set the parent fields in the underlying resource.
 		// TODO(b/193177782): Delete this function once all resources support
 		// hierarchical references.
+		return nil
+	}
+	if len(r.ResourceConfig.Containers) == 0 {
+		for _, refConfig := range r.ResourceConfig.ResourceReferences {
+			if !refConfig.Parent {
+				continue
+			}
+			val, ok := resolveParentReferenceFromContainerAnnotation(refConfig.TFField, r)
+			if !ok {
+				continue
+			}
+			val, err := ResolveValueTemplate(refConfig.ValueTemplate, val, r, c, smLoader)
+			if err != nil {
+				return fmt.Errorf("error resolving templated parent reference value: %w", err)
+			}
+			if err := setValue(config, refConfig.TFField, val); err != nil {
+				return fmt.Errorf("error setting parent reference container value: %w", err)
+			}
+			return nil
+		}
 		return nil
 	}
 	for _, container := range r.ResourceConfig.Containers {
