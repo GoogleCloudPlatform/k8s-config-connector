@@ -15,12 +15,15 @@
 package mockappengine
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
+
+var reImageDigest = regexp.MustCompile(`@sha256:[a-f0-9]{64}`)
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(url, "appengine.googleapis.com") {
@@ -33,10 +36,19 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".betaSettings.minor_version_id_ccfe", "1234567890123456789")
+	replacements.ReplacePath(".response.betaSettings.minor_version_id_ccfe", "1234567890123456789")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(event.URL(), "appengine.googleapis.com") {
 		return
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if reImageDigest.MatchString(value) {
+			normalized := reImageDigest.ReplaceAllString(value, "@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e")
+			replacements.ReplaceStringValue(value, normalized)
+		}
+	})
 }

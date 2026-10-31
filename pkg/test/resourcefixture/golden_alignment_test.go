@@ -660,6 +660,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "ciphertextCrc32c")
 		}
 
+		// App Engine version dynamic internal CCFE minor version ID
+		if bs, ok := v["betaSettings"].(map[string]interface{}); ok {
+			delete(bs, "minor_version_id_ccfe")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")

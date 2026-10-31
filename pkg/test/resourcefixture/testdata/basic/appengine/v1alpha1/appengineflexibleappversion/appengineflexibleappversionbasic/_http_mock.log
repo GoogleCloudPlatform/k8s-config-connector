@@ -1,0 +1,290 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/applications/${projectId}/services/default/versions/v${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "deployment": {
+    "container": {
+      "image": "gcr.io/google-samples/hello-app:1.0"
+    }
+  },
+  "env": "flex",
+  "id": "000000000000000000000",
+  "livenessCheck": {
+    "checkInterval": "30s",
+    "failureThreshold": 4,
+    "initialDelay": "300s",
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "manualScaling": {
+    "instances": 1
+  },
+  "readinessCheck": {
+    "appStartTimeout": "300s",
+    "checkInterval": "5s",
+    "failureThreshold": 2,
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "runtime": "custom",
+  "servingStatus": "SERVING"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "betaSettings": {
+    "minor_version_id_ccfe": "1234567890123456789",
+    "no_appserver_affinity": "true",
+    "use_deployment_manager": "true"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "createdBy": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "deployment": {
+    "container": {
+      "image": "gcr.io/google-samples/hello-app@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e"
+    }
+  },
+  "env": "flexible",
+  "id": "000000000000000000000",
+  "livenessCheck": {
+    "checkInterval": "30s",
+    "failureThreshold": 4,
+    "initialDelay": "300s",
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "manualScaling": {
+    "instances": 1
+  },
+  "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+  "network": {},
+  "readinessCheck": {
+    "appStartTimeout": "300s",
+    "checkInterval": "5s",
+    "failureThreshold": 2,
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "runtime": "custom",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": "SERVING",
+  "threadsafe": true,
+  "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+}
+
+---
+
+# Phase: UPDATE
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "deployment": {
+    "container": {
+      "image": "gcr.io/google-samples/hello-app:1.0"
+    }
+  },
+  "env": "flex",
+  "id": "000000000000000000000",
+  "inboundServices": [],
+  "livenessCheck": {
+    "checkInterval": "30s",
+    "failureThreshold": 4,
+    "initialDelay": "300s",
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "manualScaling": {
+    "instances": 2
+  },
+  "readinessCheck": {
+    "appStartTimeout": "300s",
+    "checkInterval": "5s",
+    "failureThreshold": 2,
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "runtime": "custom",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": "SERVING"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "betaSettings": {
+    "minor_version_id_ccfe": "1234567890123456789",
+    "no_appserver_affinity": "true",
+    "use_deployment_manager": "true"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "createdBy": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "deployment": {
+    "container": {
+      "image": "gcr.io/google-samples/hello-app@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e"
+    }
+  },
+  "env": "flexible",
+  "id": "000000000000000000000",
+  "livenessCheck": {
+    "checkInterval": "30s",
+    "failureThreshold": 4,
+    "initialDelay": "300s",
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "manualScaling": {
+    "instances": 2
+  },
+  "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
+  "network": {},
+  "readinessCheck": {
+    "appStartTimeout": "300s",
+    "checkInterval": "5s",
+    "failureThreshold": 2,
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "runtime": "custom",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": "SERVING",
+  "threadsafe": true,
+  "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.DeleteVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
