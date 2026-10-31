@@ -1,0 +1,78 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Field Addition'
+description: 'Request or propose adding missing field(s) to an existing KCC resource'
+title: 'feat: Add <field> to <Kind>'
+labels: ['enhancement']
+body:
+- id: 'use-case-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Generic Use-Case Description'
+    description: 'Describe the use case for adding this field. Do NOT include internal tracker IDs (e.g. b/<id>), internal URLs, or customer names.'
+    placeholder: 'Describe why this field is needed and how it is used in Kubernetes Config Connector...'
+  validations:
+    required: true
+
+- id: 'target-resource'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind'
+    description: 'The KCC resource Kind and Group to which the field should be added.'
+    placeholder: 'e.g. StorageBucket (storage.cnrm.cloud.google.com)'
+  validations:
+    required: true
+
+- id: 'controller-archetype'
+  type: 'dropdown'
+  attributes:
+    label: 'Controller Archetype'
+    description: 'Controller archetype managing this resource (verify via pkg/controller/resourceconfig/static_config.go or CRD labels).'
+    options:
+      - Direct
+      - Terraform-Based
+      - DCL-Based
+      - Dual-Controller
+  validations:
+    required: true
+
+- id: 'target-field-path'
+  type: 'input'
+  attributes:
+    label: 'Target Field Path'
+    description: 'The field path in the KRM resource spec or status.'
+    placeholder: 'e.g. spec.lifecycleRule[].condition.sendAgeIfZero'
+  validations:
+    required: true
+
+- id: 'gcp-api-doc'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation Link'
+    description: 'Public GCP API reference documentation URL defining this field.'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+
+- type: 'checkboxes'
+  id: 'deliverables'
+  attributes:
+    label: 'Deliverables & Verification'
+    description: 'Track the deliverables for this field addition.'
+    options:
+      - label: 'Field added to API schema / CRDs'
+      - label: 'Reconciler mapping / expanders / flatteners updated'
+      - label: 'Tests updated or added (MockGCP / integration fixtures)'
+      - label: 'Pre-flight checks passing (`make ready-pr`)'

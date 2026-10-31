@@ -3,24 +3,27 @@
 <!--
 Describe what this pull request does.
 
-* If your pull request is to address an open issue, indicate it by specifying the
-issue number: 
-* If your pull request fixes an issue which has not been filed, please file the
-issue and put the number here.
-
-For example: "Fixes #858"
+PR Linkage & Multi-PR Staging Protocol:
+- Intermediate PR (Phase 1 or 2): Use "Part of #<issue_id>". Do NOT use "Fixes #" or "Closes #".
+- Terminal PR (Phase 3 or single-PR field addition): Use "Fixes #<issue_id>".
 -->
 Fixes #
+<!-- or: Part of # -->
 
 #### WHY do we need this change?
 
 #### Special notes for your reviewer:
 
+#### Confidentiality & Cleanliness Verification
+
+- [ ] No Buganizer IDs (`b/<id>`), internal URLs, or customer names in the title, description, commit messages, code comments, or release note.
+
 #### Does this PR add something which needs to be 'release noted'?
 <!--
-If no, just write "NONE" in the release-note block below.
-If yes, a release note is required:
-Enter your extended release note in the block below. If the PR requires additional action from users switching to the new release, include the string "action required".
+Release Note Protocol:
+- Intermediate PR (Phase 1 or 2): In the release note block, enter "NONE".
+- Terminal PR (Phase 3 or single-PR field addition): Provide the customer-facing release note.
+If the PR requires additional action from users switching to the new release, include the string "action required".
 -->
 ```release-note
 
@@ -52,6 +55,29 @@ Please use the following format for linking documentation:
 
 Please indicate the intended milestone. 
 - [ ] Reviewer tagged PR with the actual milestone.
+
+### Archetype-Specific Pre-Flight Checklists
+
+Complete the checklist corresponding to the controller archetype modified in this PR:
+
+#### Direct Controller Archetype
+- [ ] `make manifests`
+- [ ] `make resource-docs`
+- [ ] `TestFocusedMappers`
+- [ ] MockGCP alignment
+- [ ] `make ready-pr`
+
+#### Terraform-Based Controller Archetype
+- [ ] TPG compiles (`make vet`)
+- [ ] `config/servicemappings/` updated
+- [ ] `make manifests`
+- [ ] `make resource-docs`
+- [ ] `make ready-pr`
+
+#### DCL-Based Controller Archetype
+- [ ] `make upgrade-dcl`
+- [ ] `make ready-pr`
+- [ ] CRD diff verified
 
 ### Tests you have done
 

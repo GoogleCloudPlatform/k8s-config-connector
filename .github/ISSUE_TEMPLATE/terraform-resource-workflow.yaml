@@ -1,0 +1,66 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Terraform-Based Resource Workflow'
+description: 'Track adding or managing a resource backed by the Terraform provider (TF/ServiceMapping)'
+title: 'feat: KCC support for <Kind> (Terraform-Based)'
+labels: ['enhancement']
+body:
+- id: 'use-case-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Generic Use-Case Description'
+    description: 'Provide a generic description of the use case for this resource. Do NOT include internal tracker IDs (e.g. b/<id>), internal URLs, or customer names.'
+    placeholder: 'Describe the resource and its generic use case in Kubernetes Config Connector...'
+  validations:
+    required: true
+
+- id: 'target-resource'
+  type: 'input'
+  attributes:
+    label: 'Target Resource Kind & Group'
+    description: 'The target KCC resource Kind and API Group/Version.'
+    placeholder: 'e.g. ComputeFirewallPolicy (compute.cnrm.cloud.google.com/v1beta1)'
+  validations:
+    required: true
+
+- id: 'tf-resource-name'
+  type: 'input'
+  attributes:
+    label: 'Terraform Provider Resource Name'
+    description: 'The upstream/vendored Terraform provider resource name (e.g. google_compute_firewall_policy).'
+    placeholder: 'google_<service>_<resource>'
+  validations:
+    required: true
+
+- id: 'gcp-api-doc'
+  type: 'input'
+  attributes:
+    label: 'GCP API Documentation Link'
+    description: 'Public GCP API reference documentation URL.'
+    placeholder: 'https://cloud.google.com/<service>/docs/reference/rest/...'
+  validations:
+    required: true
+
+- type: 'checkboxes'
+  id: 'deliverables'
+  attributes:
+    label: 'Implementation Deliverables'
+    description: 'Track the deliverables for this Terraform-backed resource.'
+    options:
+      - label: 'TPG Beta schema and expander/flattener implementation (`third_party/.../terraform-provider-google-beta/`)'
+      - label: 'ServiceMapping configuration (`config/servicemappings/<service>.yaml`)'
+      - label: 'CRDs and documentation generated (`make manifests`, `make resource-docs`)'
+      - label: 'Integration tests and golden files generated (`pkg/test/resourcefixture/testdata/basic/`)'
+      - label: 'Pre-flight verification passed (`make vet`, `make ready-pr`)'
