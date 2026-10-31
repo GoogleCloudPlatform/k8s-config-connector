@@ -1,0 +1,13 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: orgsink-${uniqueId}
+spec:
+  destination:
+    storageBucketRef:
+      external: orgsink-${uniqueId}
+  filter: resource.type="bigquery_dataset" AND logName:"cloudaudit.googleapis.com"
+  organizationRef:
+    external: ${organizationID}
+  resourceID: orgsink-${uniqueId}
+  uniqueWriterIdentity: true
