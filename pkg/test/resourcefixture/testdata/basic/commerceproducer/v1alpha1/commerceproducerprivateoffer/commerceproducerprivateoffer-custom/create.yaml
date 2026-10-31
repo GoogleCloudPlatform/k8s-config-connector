@@ -1,0 +1,103 @@
+apiVersion: commerceproducer.cnrm.cloud.google.com/v1alpha1
+kind: CommerceProducerPrivateOffer
+metadata:
+  name: commerceproducerprivateoffer-custom-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  title: Custom Private Offer ${uniqueId}
+  customerNote: Customer note for ${uniqueId}
+  internalNote: Internal note for ${uniqueId}
+  offerDealType: NEW
+  customer:
+    targetBillingAccountRef:
+      external: billingAccounts/000000-000000-000000
+    entityTitle: Example Customer Corp
+    contact: John Doe
+    email: johndoe@example.com
+  partnerContact:
+    contact: Jane Partner
+    email: partner@example.com
+  acceptDeadlineTime:
+    year: 2030
+    month: 12
+    day: 31
+    hours: 23
+    minutes: 59
+    seconds: 59
+    nanos: 0
+    utcOffset: 0s
+  term:
+    durationMonths: 12
+    endPolicy: CANCEL_SUBSCRIPTION
+    maxRenewalCount: 2
+    scheduledStartTime:
+      year: 2030
+      month: 1
+      day: 1
+      hours: 0
+      minutes: 0
+      seconds: 0
+      nanos: 0
+      utcOffset: 0s
+    scheduledEndTime:
+      year: 2031
+      month: 1
+      day: 1
+      hours: 0
+      minutes: 0
+      seconds: 0
+      nanos: 0
+      utcOffset: 0s
+    startPolicy: UPON_ISSUANCE
+  singleProductOffer:
+    amendedStandardOfferRef:
+      external: projects/${projectId}/locations/us-central1/services/test-service/standardOffers/amended-standard
+    baseStandardOfferRef:
+      external: projects/${projectId}/locations/us-central1/services/test-service/standardOffers/base-standard
+    features:
+      - displayName: Custom Support
+        value: 12/5 Support
+    additionalContractValue:
+      contractValue:
+        currencyCode: USD
+        units: 25000
+        nanos: 0
+      eligibleSkuRefs:
+        - external: projects/${projectId}/locations/us-central1/services/test-service/skus/test-sku
+    customIntervalPrice:
+      installments:
+        - startTime:
+            year: 2030
+            month: 1
+            day: 1
+            hours: 0
+            minutes: 0
+            seconds: 0
+            nanos: 0
+            utcOffset: 0s
+          priceModel:
+            commitment:
+              commitmentAmount:
+                currencyCode: USD
+                units: 5000
+                nanos: 0
+              discountPercent:
+                value: "10.0"
+              additionalCredit:
+                currencyCode: USD
+                units: 250
+                nanos: 0
+              discardPreviousCreditBalance: false
+            usage:
+              defaultDiscountPercent:
+                value: "2.5"
+              skuDiscounts:
+                - cloudBillingSku: 1111-1111-1111
+                  discountPercent:
+                    value: "8.0"
+                - skuRef:
+                    external: projects/${projectId}/locations/us-central1/services/test-service/skus/test-sku
+                  discountPercent:
+                    value: "5.0"
