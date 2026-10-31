@@ -38,8 +38,29 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version websecurityscanner.cnrm.cloud.google.com/v1alpha1 \
   --resource WebSecurityScannerScanConfig:ScanConfig
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.websecurityscanner.v1 \
+  --api-version websecurityscanner.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto CustomAccount \
+  --skip-proto GoogleAccount \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-controller \
+  --service google.cloud.websecurityscanner.v1 \
+  --api-version websecurityscanner.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource WebSecurityScannerScanConfig:ScanConfig
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.cloud.websecurityscanner.v1 \
+  --api-version websecurityscanner.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource WebSecurityScannerScanConfig:ScanConfig
+
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/websecurityscanner" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/websecurityscanner/

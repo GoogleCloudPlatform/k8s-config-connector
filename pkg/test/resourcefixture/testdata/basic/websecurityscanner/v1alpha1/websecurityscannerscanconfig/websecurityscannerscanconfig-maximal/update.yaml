@@ -1,0 +1,22 @@
+apiVersion: websecurityscanner.cnrm.cloud.google.com/v1alpha1
+kind: WebSecurityScannerScanConfig
+metadata:
+  name: websecurityscannerscanconfig-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: websecurityscannerscanconfig-max-upd-${uniqueId}
+  startingURLs:
+  - https://${projectId}.appspot.com
+  maxQps: 15
+  userAgent: CHROME_ANDROID
+  riskLevel: LOW
+  exportToSecurityCommandCenter: DISABLED
+  schedule:
+    intervalDurationDays: 14
+    scheduleTime: "2026-12-01T00:00:00Z"
+  blacklistPatterns:
+  - https://${projectId}.appspot.com/logout
+  - https://${projectId}.appspot.com/admin
+  staticIPScan: false
+  ignoreHTTPStatusErrors: true
