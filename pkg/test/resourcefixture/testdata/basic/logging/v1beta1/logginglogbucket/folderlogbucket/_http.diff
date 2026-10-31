@@ -9,54 +9,36 @@
 146c146
 < PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
 ---
-> PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
-164,165c164
-<   "description": "Default bucket",
+> PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+149a150
+>   "description": "Default bucket",
+165c166
 <   "lifecycleState": "ACTIVE",
 ---
 >   "lifecycleState": 1,
-173c172
+173c174
 < GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
 ---
 > GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
-187,188c186
-<   "description": "Default bucket",
+188c189
 <   "lifecycleState": "ACTIVE",
 ---
 >   "lifecycleState": 1,
-196c194
+196c197
 < PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
 ---
 > PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
-214,215c212
-<   "description": "Default bucket",
+199a201
+>   "description": "Default bucket",
+215c217
 <   "lifecycleState": "ACTIVE",
 ---
 >   "lifecycleState": 1,
-223c220
+223c225
 < GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
 ---
 > GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
-237,238c234
-<   "description": "Default bucket",
+238c240
 <   "lifecycleState": "ACTIVE",
 ---
 >   "lifecycleState": 1,
-242a239,255
-> 
-> ---
-> 
-> DELETE https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
-> Content-Type: application/json
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {}
