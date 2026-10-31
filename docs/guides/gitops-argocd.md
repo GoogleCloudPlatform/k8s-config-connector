@@ -30,9 +30,12 @@ Before setting up ArgoCD applications for Config Connector, ensure you meet the 
 > **Solution**: Use official published release bundles from Google Cloud Storage, or render the Kustomize targets using `./dev/tasks/build-release-bundle` in your CI pipeline before committing manifests to your GitOps repository.
 
 > [!IMPORTANT]
-> **Mandatory Server-Side Apply for CRDs**  
-> Config Connector includes over 250 CRDs with extensive OpenAPI validation schemas. Standard client-side `kubectl apply` fails on large CRD bundles due to Kubernetes' 262KB `kubectl.kubernetes.io/last-applied-configuration` etcd annotation size limit.  
-> **Solution**: You **must enable Server-Side Apply** in your ArgoCD Application sync options (`ServerSideApply=true`).
+> **Mandatory Server-Side Apply for CRDs and AI workloads**  
+> Client-side `kubectl apply` stores the serialized configuration in the `kubectl.kubernetes.io/last-applied-configuration` annotation. Because the Kubernetes API server enforces a 256KB (262,144 bytes) limit on `metadata.annotations`, applying large manifests client-side will fail with `Too long: may not be more than 262144 bytes` in two primary scenarios:
+> 1. **Config Connector CRD bundles**: KCC includes over 250 CRDs with extensive OpenAPI validation schemas.
+> 2. **AI hypercomputing workload schemas**: Modern AI/ML orchestration stacks (such as Kueue `workloads.kueue.x-k8s.io` and `clusterqueues.kueue.x-k8s.io`, or JobSet) deployed alongside KCC contain massive schemas that exceed this annotation limit.
+> 
+> **Solution**: You **must enable Server-Side Apply (SSA)** in your GitOps sync configurations (such as ArgoCD `ServerSideApply=true`). SSA transfers field management to the API server, bypassing client-side annotation size limits. Config Sync applies resources server-side by default.
 
 > [!CAUTION]
 > **CRD upgrades and safety rules**  
@@ -147,6 +150,59 @@ metadata:
 spec:
   googleServiceAccount: "kcc-namespace-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 ```
+
+---
+
+## AI workloads and hypercomputing considerations (Kueue & JobSet)
+
+When using Config Connector as the foundation for AI clusters (e.g., orchestrating Cloud TPU/GPU node pools with `ContainerNodePool`), users frequently deploy modern AI orchestration frameworks—such as [Kueue](https://kueue.sigs.k8s.io/) and [JobSet](https://jobset.sigs.k8s.io/)—directly onto the provisioned infrastructure using GitOps.
+
+### The 256KB annotation limit
+Standard client-side `kubectl apply` records the applied object state in the `kubectl.kubernetes.io/last-applied-configuration` annotation. Because the Kubernetes API server validates and limits `metadata.annotations` to 256KB (262,144 bytes), deploying massive CRDs and custom resources with rich validation schemas fails with:
+
+```text
+Error from server (Invalid): CustomResourceDefinition.apiextensions.k8s.io "...": 
+CustomResourceDefinition.apiextensions.k8s.io "workloads.kueue.x-k8s.io" is invalid: 
+metadata.annotations: Too long: may not be more than 262144 bytes
+```
+
+This error commonly affects:
+* Kueue workload definitions: `workloads.kueue.x-k8s.io`
+* Kueue cluster queue definitions: `clusterqueues.kueue.x-k8s.io`
+* JobSet custom resource definitions: `jobsets.jobset.sigs.k8s.io`
+
+### Enabling Server-Side Apply (SSA)
+Server-Side Apply transfers field management and diff calculations to the Kubernetes API server, bypassing client-side annotation storage limits.
+
+#### ArgoCD Application configuration
+Ensure `ServerSideApply=true` is enabled in `syncOptions` for your AI workload Applications:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kueue-system
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/<your-org>/ai-workloads.git'
+    targetRevision: main
+    path: kueue
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kueue-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true           # CRITICAL: Bypasses 262KB annotation limit on Kueue/JobSet CRDs
+```
+
+#### Config Sync
+[Config Sync](https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/overview) applies resources using Server-Side Apply by default, so no additional configuration is required to avoid client-side annotation overflow when managing large schemas.
 
 ---
 
