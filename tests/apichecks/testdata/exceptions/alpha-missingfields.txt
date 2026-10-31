@@ -588,10 +588,8 @@
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.automaticScaling.requestUtilization.targetRequestCountPerSecond" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.betaSettings" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultExpiration" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deleteServiceOnDestroy" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.cloudBuildOptions.appYamlPath" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.cloudBuildOptions.cloudBuildTimeout" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.container.image" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.files[].name" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.files[].sha1Sum" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.files[].sourceUrl" is not set in unstructured objects
@@ -622,10 +620,8 @@
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.failureThreshold" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.host" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.initialDelay" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.path" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.successThreshold" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.livenessCheck.timeout" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.manualScaling.instances" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.network.forwardedPorts[]" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.network.instanceTag" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.network.name" is not set in unstructured objects
@@ -633,12 +629,10 @@
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.network.subnetwork" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.nobuildFilesRegex" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.noopOnDestroy" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.appStartTimeout" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.checkInterval" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.failureThreshold" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.host" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.path" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.successThreshold" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.readinessCheck.timeout" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.resources.cpu" is not set in unstructured objects
@@ -647,12 +641,10 @@
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.resources.volumes[].name" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.resources.volumes[].sizeGb" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.resources.volumes[].volumeType" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtime" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeApiVersion" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeChannel" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeMainExecutablePath" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
-[missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.servingStatus" is not set in unstructured objects
 [missing_field] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcAccessConnector.name" is not set in unstructured objects
 [missing_field] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.appEngineApis" is not set in unstructured objects
