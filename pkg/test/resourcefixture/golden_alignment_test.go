@@ -52,6 +52,9 @@ var realGCPSkipFixtures = map[string]bool{
 	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
 	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
 	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
+	// SecurityCenter BigQueryExport requires organization-level permissions and quota project.
+	"securitycenter/v1alpha1/securitycenterbigqueryexport/bigqueryexport-maximal": true,
+	"securitycenter/v1alpha1/securitycenterbigqueryexport/bigqueryexport-minimal": true,
 	// GKEBackup BackupChannel requires distinct source and destination projects.
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
