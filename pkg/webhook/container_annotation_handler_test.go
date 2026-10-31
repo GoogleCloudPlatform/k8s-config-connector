@@ -647,7 +647,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			},
 		},
 		{
-			name: "default reference from namespace annotation (project-scoped resource which only supports hierarchical references)",
+			name: "default reference from resource annotation (project-scoped resource which only supports hierarchical references)",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
@@ -668,6 +668,57 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 						"annotations": map[string]interface{}{
 							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
 						},
+						"name": "resource-name",
+					},
+					"spec": map[string]interface{}{
+						"projectRef": map[string]interface{}{
+							"external": "project-id-from-resource-annotation",
+						},
+					},
+				},
+			},
+			schema: &openapi.Schema{
+				Type: "object",
+				Properties: map[string]*openapi.Schema{
+					"project": &openapi.Schema{
+						Type: "string",
+						Extension: map[string]interface{}{
+							"x-dcl-references": []interface{}{
+								map[interface{}]interface{}{
+									"field":    "name",
+									"parent":   true,
+									"resource": "Cloudresourcemanager/Project",
+								},
+							},
+						},
+					},
+				},
+			},
+			ns: &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Annotations: map[string]string{
+						k8s.ProjectIDAnnotation: "project-id-from-namespace-annotation",
+					},
+					Name: "namespace-name",
+				},
+			},
+		},
+		{
+			name: "default reference from namespace annotation (project-scoped resource which only supports hierarchical references)",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test6OnlyHierarchicalRef",
+					"metadata": map[string]interface{}{
+						"name": "resource-name",
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test6OnlyHierarchicalRef",
+					"metadata": map[string]interface{}{
 						"name": "resource-name",
 					},
 					"spec": map[string]interface{}{
@@ -710,9 +761,6 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
 					"kind":       "Test6OnlyHierarchicalRef",
 					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
-						},
 						"name": "resource-name",
 					},
 				},
@@ -722,9 +770,6 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
 					"kind":       "Test6OnlyHierarchicalRef",
 					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
-						},
 						"name": "resource-name",
 					},
 					"spec": map[string]interface{}{
@@ -758,7 +803,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			},
 		},
 		{
-			name: "default reference from namespace annotation (multi-parent resource which only supports hierarchical references)",
+			name: "default reference from resource annotation (multi-parent resource which only supports hierarchical references)",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
@@ -779,6 +824,67 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 						"annotations": map[string]interface{}{
 							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
 						},
+						"name": "resource-name",
+					},
+					"spec": map[string]interface{}{
+						"projectRef": map[string]interface{}{
+							"external": "project-id-from-resource-annotation",
+						},
+					},
+				},
+			},
+			schema: &openapi.Schema{
+				Type: "object",
+				Properties: map[string]*openapi.Schema{
+					"parent": &openapi.Schema{
+						Type: "string",
+						Extension: map[string]interface{}{
+							"x-dcl-references": []interface{}{
+								map[interface{}]interface{}{
+									"field":    "name",
+									"parent":   true,
+									"resource": "Cloudresourcemanager/Project",
+								},
+								map[interface{}]interface{}{
+									"field":    "name",
+									"parent":   true,
+									"resource": "Cloudresourcemanager/Folder",
+								},
+								map[interface{}]interface{}{
+									"field":    "name",
+									"parent":   true,
+									"resource": "Cloudresourcemanager/Organization",
+								},
+							},
+						},
+					},
+				},
+			},
+			ns: &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Annotations: map[string]string{
+						k8s.FolderIDAnnotation: "folder-id-from-namespace-annotation",
+					},
+					Name: "namespace-name",
+				},
+			},
+		},
+		{
+			name: "default reference from namespace annotation (multi-parent resource which only supports hierarchical references)",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test6OnlyHierarchicalRef",
+					"metadata": map[string]interface{}{
+						"name": "resource-name",
+					},
+				},
+			},
+			newObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test6OnlyHierarchicalRef",
+					"metadata": map[string]interface{}{
 						"name": "resource-name",
 					},
 					"spec": map[string]interface{}{
@@ -831,9 +937,6 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
 					"kind":       "Test6OnlyHierarchicalRef",
 					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
-						},
 						"name": "resource-name",
 					},
 				},
@@ -843,9 +946,6 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 					"apiVersion": "test6.cnrm.cloud.google.com/v1alpha1",
 					"kind":       "Test6OnlyHierarchicalRef",
 					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							k8s.ProjectIDAnnotation: "project-id-from-resource-annotation",
-						},
 						"name": "resource-name",
 					},
 					"spec": map[string]interface{}{
