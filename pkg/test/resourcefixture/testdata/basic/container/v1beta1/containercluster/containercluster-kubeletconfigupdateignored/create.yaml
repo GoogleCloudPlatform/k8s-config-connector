@@ -29,3 +29,6 @@ spec:
       imageGcHighThresholdPercent: 70
       imageMinimumGcAge: "1m0s"
       imageMaximumGcAge: "1h0m0s"
+      allowedUnsafeSysctls:
+        - "kernel.msg*"
+        - "net.core.somaxconn"
