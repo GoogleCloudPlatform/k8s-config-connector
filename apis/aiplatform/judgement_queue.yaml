@@ -81,65 +81,87 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all references, parent/location, and KRM conventions
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated AIPlatformHyperparameterTuningJobIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed server-generated ID; CreateHyperparameterTuningJobRequest has no id parameter and name is OUTPUT_ONLY
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.hyperparameterTuningJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to cloud.google.com and removed guess marker
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef) in shared EncryptionSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformModel, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAISchedule, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of EncryptionSpec. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared EncryptionSpec across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.metrics[].metricID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-defined metric identifier within the study spec, not a GCP resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentCategoricalValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentCategoricalValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared StudySpec_ParameterSpec_ConditionalParameterSpec from VertexAIStudy
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentDiscreteValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentDiscreteValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared StudySpec_ParameterSpec_ConditionalParameterSpec from VertexAIStudy
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentIntValues.values
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. StudySpec_ParameterSpec_ConditionalParameterSpec in vertexaistudy_types.go is also used by VertexAIStudy. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of StudySpec_ParameterSpec_ConditionalParameterSpec whose ParentIntValues field holds StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequired, and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared StudySpec_ParameterSpec_ConditionalParameterSpec from VertexAIStudy
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.parameters[].parameterID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-defined parameter identifier within the study spec, not a GCP resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.studySpec.studyStoppingConfig.maxNumTrials
@@ -163,109 +185,145 @@ entries:
     field: .spec.trialJobSpec.baseOutputDirectory.outputURIPrefix
     reason: reference-not-representable
     detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: GCS URI string, not directly representable as KCC reference today
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.baseOutputDirectory.outputURIPrefix
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformHyperparameterTuningJobSpec.TrialJobSpec in aiplatformhyperparametertuningjob_types.go from CustomJobSpec to CustomJobSpecWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change CustomJobSpec.BaseOutputDirectory in aiplatformhyperparametertuningjob_types.go from GCSDestination to GCSDestinationWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared GCSDestination across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.experiment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred in refs_deferred.txt; target AIPlatformContext has no KCC resource or Ref type yet
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.experimentRun
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Context (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred in refs_deferred.txt; target AIPlatformContext has no KCC resource or Ref type yet
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.models
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as ModelRefs ([]AIPlatformModelRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.network
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as NetworkRef (*computev1beta1.ComputeNetworkRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.persistentResourceID
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/PersistentResource (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as PersistentResourceRef (*AIPlatformPersistentResourceRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.protectedArtifactLocationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: GCP location string (e.g. us-central1) for protected artifact storage, not a resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared DNSPeeringConfig across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared DNSPeeringConfig across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource, AIPlatformReasoningEngine, VertexAIPipelineJob. +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformHyperparameterTuningJob only, give AIPlatformHyperparameterTuningJob its own copy of DNSPeeringConfig. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared DNSPeeringConfig across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.pscInterfaceConfig.networkAttachment
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/NetworkAttachment (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as NetworkAttachmentRef (*computev1alpha1.ComputeNetworkAttachmentRef) in shared PSCInterfaceConfig
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled as ServiceAccountRef (*refsv1beta1.IAMServiceAccountRef) in CustomJobSpec
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.tensorboard
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/Tensorboard (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred in refs_deferred.txt; target VertexAITensorboard is in vertexai package and cannot be referenced from aiplatform due to circular package dependency
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].containerSpec.imageURI
     reason: reference-not-representable
     detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: container image URI, not a KCC resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.reservationAffinityType
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformHyperparameterTuningJobSpec.TrialJobSpec in aiplatformhyperparametertuningjob_types.go from CustomJobSpec to CustomJobSpecWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change CustomJobSpec.WorkerPoolSpecs in aiplatformhyperparametertuningjob_types.go from WorkerPoolSpec to WorkerPoolSpecWithRequired and run generate.sh again. AIPlatformHyperparameterTuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: accepted
+    note: kept optional to match existing shared ReservationAffinity across aiplatform resources
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].machineSpec.reservationAffinity.values
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: accepted
+    note: shared ReservationAffinity struct across aiplatform/compute/vertexai resources uses string values for reservation affinity
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.trialJobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI
     reason: reference-not-representable
     detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: executor container image URI, not a KCC resource reference
   - kind: AIPlatformHyperparameterTuningJob
     group: aiplatform.cnrm.cloud.google.com
     field: .status.observedState.trials[].parameters[].value

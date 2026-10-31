@@ -106,21 +106,12 @@ spec:
                         type: string
                     type: object
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The labels with user-defined metadata to organize HyperparameterTuningJobs.
-
-                   Label keys and values can be no longer than 64 characters
-                   (Unicode codepoints), can only contain lowercase letters, numeric
-                   characters, underscores and dashes. International characters are allowed.
-
-                   See https://goo.gl/xmQnxf for more information and examples of labels.
-                type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               maxFailedTrialCount:
                 description: |-
                   The number of failed Trials that need to be seen before failing
@@ -139,7 +130,7 @@ spec:
                 format: int32
                 type: integer
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -638,7 +629,7 @@ spec:
                     description: 'Optional. The Experiment Run associated with this
                       job. Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}-{experiment-run-name}`'
                     type: string
-                  models:
+                  modelRefs:
                     description: |-
                       Optional. The name of the Model resources for which to generate a mapping
                        to artifact URIs. Applicable only to some of the Google-provided custom
@@ -654,9 +645,35 @@ spec:
                        the model, and can be moved to other versions later on. There will be
                        exactly one default version.
                     items:
-                      type: string
+                      description: AIPlatformModelRef is a reference to an AIPlatformModel.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed AIPlatformModel
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/models/{{modelID}}".
+                          type: string
+                        name:
+                          description: The name of an AIPlatformModel resource.
+                          type: string
+                        namespace:
+                          description: The namespace of an AIPlatformModel resource.
+                          type: string
+                      type: object
                     type: array
-                  network:
+                  networkRef:
                     description: |-
                       Optional. The full name of the Compute Engine
                        [network](/compute/docs/networks-and-firewalls#networks) to which the Job
@@ -671,8 +688,33 @@ spec:
                        AI](https://cloud.google.com/vertex-ai/docs/general/vpc-peering).
 
                        If this field is left unspecified, the job is not peered with any network.
-                    type: string
-                  persistentResourceID:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeNetwork resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeNetwork resource.
+                        type: string
+                    type: object
+                  persistentResourceRef:
                     description: |-
                       Optional. The ID of the PersistentResource in the same Project and Location
                        which to run
@@ -681,7 +723,33 @@ spec:
                        PersistentResource instead of on-demand short-live machines.
                        The network and CMEK configs on the job should be consistent with those on
                        the PersistentResource, otherwise, the job will be rejected.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed AIPlatformPersistentResource
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/persistentResources/{persistentResource}"
+                        type: string
+                      name:
+                        description: The name of an AIPlatformPersistentResource resource.
+                        type: string
+                      namespace:
+                        description: The namespace of an AIPlatformPersistentResource
+                          resource.
+                        type: string
+                    type: object
                   protectedArtifactLocationID:
                     description: 'The ID of the location to store protected artifacts.
                       e.g. us-central1. Populate only when the location is different
@@ -840,13 +908,37 @@ spec:
                           is 7 days.
                         type: string
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Specifies the service account for workload run-as
                       account. Users submitting jobs must have act-as permission on
                       this run-as account. If unspecified, the [Vertex AI Custom Code
                       Service Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
                       for the CustomJob's project is used.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   tensorboard:
                     description: 'Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1.Tensorboard]
                       resource to which this CustomJob will upload Tensorboard logs.
