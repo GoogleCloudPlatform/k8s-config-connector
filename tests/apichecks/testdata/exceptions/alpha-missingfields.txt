@@ -6471,17 +6471,6 @@
 [missing_field] crd=translatemodels.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=translatemodels.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=translatemodels.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedInfrastructure.autoscalingSpec.maxReplicaCount" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedInfrastructure.autoscalingSpec.minReplicaCount" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedInfrastructure.mode" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.denseScann.featureNormType" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.distanceMetric" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterFields[]" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexField" is not set in unstructured objects
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vectorsearchindices.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.storeFields[]" is not set in unstructured objects
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.maxDataItemCount" is not set in unstructured objects
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.maxDataItemPercentage" is not set in unstructured objects
 [missing_field] crd=vertexaidatalabelingjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.activeLearningConfig.sampleConfig.followingBatchSamplePercentage" is not set in unstructured objects

@@ -1,0 +1,20 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorSearchCollection
+metadata:
+  name: vsc-max-dep-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Vector Search Collection for Index Maximal"
+  vectorSchema:
+    text_vector:
+      denseVector:
+        dimensions: 128
+  dataSchema:
+    type: "object"
+    properties:
+      genre:
+        type: "string"
+      title:
+        type: "string"

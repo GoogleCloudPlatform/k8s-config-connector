@@ -22,3 +22,9 @@
 - **Solution**: Implemented `DedicatedInfrastructure_FromProto` in `vectorsearchcollection_mapper.go` to preserve pointer presence when `in.Mode != nil` via `direct.LazyPtr(in.GetMode().String())`, ensuring roundtrip fidelity between proto and KRM.
 - **Impact**: Roundtrip fuzz testing passes cleanly for `VectorsearchIndex` without dropping zero-value enums.
 
+### [2026-11-01] VectorsearchIndex UpdateIndex Implementation and Real GCP LRO Wait
+- **Context**: Implementing Greenfield direct controller and E2E fixtures for `VectorsearchIndex` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**: The generated controller scaffold assumed `VectorsearchIndex` did not support `Update` and marked it unsupported. However, the vectorsearch GAPIC client provides `UpdateIndex` with `update_mask` support for fields like `displayName`, `description`, and `dedicatedInfrastructure`. Additionally, creating a `VectorsearchIndex` on real GCP executes an LRO that takes ~35 minutes to complete.
+- **Solution**: Updated `IndexAdapter.Update` to invoke `a.gcpClient.UpdateIndex` with `updateMask` derived from `common.CompareGreenfieldSpec`, waited on the operation with `op.Wait(ctx)`, and configured the E2E recording timeout appropriately to allow the ~35 minute index creation operation to complete cleanly.
+- **Impact**: In-place mutations to `VectorsearchIndex` are supported, and E2E tests against real GCP reconcile and delete cleanly.
+
