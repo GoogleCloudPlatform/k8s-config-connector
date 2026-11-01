@@ -1,0 +1,45 @@
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffeaturestores%2Ffeaturestore${uniqueId}%2FentityTypes%2Fentitytype${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test entity type",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "monitoringConfig": {
+    "categoricalThresholdConfig": {
+      "value": 10
+    },
+    "importFeaturesAnalysis": {
+      "anomalyDetectionBaseline": 1,
+      "state": 2
+    },
+    "numericalThresholdConfig": {
+      "value": 0.8
+    },
+    "snapshotAnalysis": {
+      "monitoringInterval": "86400s",
+      "monitoringIntervalDays": 1,
+      "stalenessDays": 21
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}",
+  "offlineStorageTtlDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

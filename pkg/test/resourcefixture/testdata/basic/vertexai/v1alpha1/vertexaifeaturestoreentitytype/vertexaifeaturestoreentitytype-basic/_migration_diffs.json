@@ -1,0 +1,139 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "VertexAIFeaturestore/featurestore${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "VertexAIFeaturestoreEntityType/entitytype${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Test entity type"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "featurestore",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "monitoring_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.categorical_threshold_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.categorical_threshold_config.0.value",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "monitoring_config.0.import_features_analysis.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.import_features_analysis.0.anomaly_detection_baseline",
+        "old": "",
+        "new": "LATEST_STATS"
+      },
+      {
+        "id": "monitoring_config.0.import_features_analysis.0.state",
+        "old": "",
+        "new": "ENABLED"
+      },
+      {
+        "id": "monitoring_config.0.numerical_threshold_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.numerical_threshold_config.0.value",
+        "old": "",
+        "new": "0.8"
+      },
+      {
+        "id": "monitoring_config.0.snapshot_analysis.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.snapshot_analysis.0.disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "monitoring_config.0.snapshot_analysis.0.monitoring_interval",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "monitoring_config.0.snapshot_analysis.0.monitoring_interval_days",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "monitoring_config.0.snapshot_analysis.0.staleness_days",
+        "old": "",
+        "new": "21"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "entitytype${uniqueId}"
+      },
+      {
+        "id": "offline_storage_ttl_days",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
