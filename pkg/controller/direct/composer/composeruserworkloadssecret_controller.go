@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -161,6 +162,14 @@ func (a *UserWorkloadsSecretAdapter) Create(ctx context.Context, createOp *direc
 		return mapCtx.Err()
 	}
 
+	if a.id.HasIdentitySpecified() {
+		resource.Name = a.id.String()
+	} else if a.desired.GetName() != "" {
+		id := *a.id
+		id.UserWorkloadsSecret = a.desired.GetName()
+		resource.Name = id.String()
+	}
+
 	req := &servicepb.CreateUserWorkloadsSecretRequest{
 		Parent:              a.id.ParentString(),
 		UserWorkloadsSecret: resource,
@@ -186,13 +195,31 @@ func (a *UserWorkloadsSecretAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating UserWorkloadsSecret", "name", a.id)
 
+	u := updateOp.GetUnstructured()
+	obsGen, _, _ := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	generationMatches := u != nil && obsGen > 0 && u.GetGeneration() == obsGen
+
+	normalize := func(ctx context.Context, pb *servicepb.UserWorkloadsSecret) error {
+		if generationMatches && pb.GetData() != nil {
+			// GCP masks secret values as "**********" on GET. If generation matches observedGeneration,
+			// the secret values on GCP are up-to-date with desired KRM spec, so we align actual data
+			// with desired to avoid false diffs during re-reconciliation.
+			for k, v := range a.desired.Spec.Data {
+				if pb.GetData()[k] == "**********" {
+					pb.GetData()[k] = v
+				}
+			}
+		}
+		return nil
+	}
+
 	resource, report, _, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		ComposerUserWorkloadsSecretSpec_v1alpha1_FromProto,
 		ComposerUserWorkloadsSecretSpec_v1alpha1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
@@ -230,6 +257,10 @@ func (a *UserWorkloadsSecretAdapter) Export(ctx context.Context) (*unstructured.
 	obj.Spec = direct.ValueOf(ComposerUserWorkloadsSecretSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	obj.Spec.ParentRef = &v1beta1.EnvironmentRef{External: a.id.ParentString()}
+	if a.id.UserWorkloadsSecret != "" {
+		obj.Spec.ResourceID = direct.LazyPtr(a.id.UserWorkloadsSecret)
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

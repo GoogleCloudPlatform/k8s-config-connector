@@ -440,6 +440,10 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	fStr, fIsStr := foundVal.(string)
 	eStr, eIsStr := expectedVal.(string)
 	if fIsStr && eIsStr {
+		if strings.Trim(fStr, "*") == "" && len(fStr) > 0 {
+			// Secret/sensitive field masked by GCP API as asterisks
+			return true
+		}
 		fl := strings.ToLower(fStr)
 		el := strings.ToLower(eStr)
 		if fl != "" && el != "" && (strings.Contains(fl, el) || strings.Contains(el, fl)) {
