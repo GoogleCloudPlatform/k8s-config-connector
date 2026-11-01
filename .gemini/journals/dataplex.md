@@ -90,3 +90,14 @@
   2. Isolated `DataplexDataAssetSpec_FromProto` and `DataplexDataAssetSpec_ToProto` in `pkg/controller/direct/dataplex/dataplexdataasset_mapper.go` so they are excluded from `mapper.generated.go`.
   3. Moved `etag` to `DataplexDataAssetObservedState`, removed `labels` from `Spec`, and updated `apis/dataplex/generate.sh` to include `generate-controller` and `generate-fuzzer` for `DataplexDataAsset`.
 - **Impact**: Cleanly compiles and passes `TestFocusedMappers`, conforming to all Greenfield Step 1b standards and single-parent rules.
+
+### [2026-11-01] Implement Greenfield DataplexDataAsset Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataAsset` under `v1alpha1` (#14733).
+- **Problem**:
+  1. `DataplexDataAsset` represents an underlying BigQuery dataset/table resource (`resource: //bigquery.googleapis.com/projects/${projectId}/datasets/...`). When `accessGroupConfigs` is configured, Dataplex attempts `setIamPolicy` on the BigQuery dataset for the principal associated with the parent `DataplexDataProduct`'s access group. If the principal is a non-existent Google Group (e.g., `analysts@example.com`), BigQuery returns `InvalidArgument: Group analysts@example.com does not exist`.
+  2. The Dataplex API returns an unmodeled server-side field `state: "APPLIED"` (or numeric enum `state: 2`) within `accessGroupConfigs.<group>` in GET and LRO responses. Because this field is absent from the public protobuf definition in `googleapis`, V7 protobuf schema validation failed with `proto: unknown field "state"`.
+- **Solution**:
+  1. Included `BigQueryDataset` and `DataplexDataProduct` in fixture `dependencies.yaml`, using a valid Google Group (`kcc-eng@google.com`) for the access group principal.
+  2. Added normalization in `tests/e2e/normalize.go` and `mockgcp/mockdataplex/normalize.go` to remove `state` from `accessGroupConfigs`.
+  3. Recorded `dataplexdataasset-minimal` and `dataplexdataasset-maximal` against real GCP (`cnrm-barni-4`), passing all 7 validation checks and shrinking `alpha-missingfields.txt`.
+- **Impact**: Fully functional direct controller and verified real GCP golden logs for `DataplexDataAsset`.

@@ -1648,6 +1648,19 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".schedules[].startTime", mockgcpregistry.PlaceholderTimestamp)
 	}
 
+	// Dataplex DataAsset
+	if strings.Contains(t.Name(), "dataplexdataasset") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if agc, ok := m["accessGroupConfigs"].(map[string]any); ok {
+				for _, v := range agc {
+					if groupMap, ok := v.(map[string]any); ok {
+						delete(groupMap, "state")
+					}
+				}
+			}
+		})
+	}
+
 	// KMS
 	{
 		visitor.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)

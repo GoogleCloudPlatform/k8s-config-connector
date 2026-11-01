@@ -35,6 +35,19 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			}
 		})
 	}
+	if strings.Contains(url, "/dataAssets") {
+		removeAccessGroupState := func(m map[string]any) {
+			if agc, ok := m["accessGroupConfigs"].(map[string]any); ok {
+				for _, v := range agc {
+					if groupMap, ok := v.(map[string]any); ok {
+						delete(groupMap, "state")
+					}
+				}
+			}
+		}
+		replacements.TransformObject("", removeAccessGroupState)
+		replacements.TransformObject(".response", removeAccessGroupState)
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
