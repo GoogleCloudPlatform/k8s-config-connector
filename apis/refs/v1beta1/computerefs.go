@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -125,7 +124,7 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 	})
 	if err := reader.Get(ctx, key, computeServiceAttachment); err != nil {
 		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
+			return NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced ComputeServiceAttachment %v: %w", key, err)
 	}
@@ -134,7 +133,7 @@ func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, 
 	// to direct controller, which uses status.externalRef.
 	selfLink, _, _ := unstructured.NestedString(computeServiceAttachment.Object, "status", "selfLink")
 	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
+		return NewReferenceNotFoundError(computeServiceAttachment.GroupVersionKind(), key)
 	}
 
 	externalRef := strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/beta/")
@@ -247,7 +246,7 @@ func ResolveComputeBackendBucket(ctx context.Context, reader client.Reader, defa
 	})
 	if err := reader.Get(ctx, key, computeBackendBucket); err != nil {
 		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
+			return NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced ComputeBackendBucket %v: %w", key, err)
 	}
@@ -256,7 +255,7 @@ func ResolveComputeBackendBucket(ctx context.Context, reader client.Reader, defa
 	// to direct controller, which uses status.externalRef.
 	selfLink, _, _ := unstructured.NestedString(computeBackendBucket.Object, "status", "selfLink")
 	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
+		return NewReferenceNotFoundError(computeBackendBucket.GroupVersionKind(), key)
 	}
 
 	externalRef := TrimComputeURIPrefix(selfLink)

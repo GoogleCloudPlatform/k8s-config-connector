@@ -20,8 +20,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -84,7 +84,7 @@ func AdapterForReference(ctx context.Context, reader client.Reader, sourceNamesp
 
 	if err := reader.Get(ctx, nn, obj); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(gvk, nn)
+			return nil, refs.NewReferenceNotFoundError(gvk, nn)
 		}
 		return nil, fmt.Errorf("error retrieving resource '%v' with GroupVersionKind '%v': %w", nn, gvk, err)
 	}

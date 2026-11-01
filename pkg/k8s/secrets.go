@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 
 	v1 "k8s.io/api/core/v1"
@@ -35,13 +36,13 @@ func GetSecretVal(secretKeyRef *corekccv1alpha1.SecretKeyReference, secretNamesp
 	secret := v1.Secret{}
 	if err := kubeClient.Get(context.TODO(), nn, &secret); err != nil {
 		if errors.IsNotFound(err) {
-			return "", "", NewSecretNotFoundError(nn)
+			return "", "", refs.NewSecretNotFoundError(nn)
 		}
 		return "", "", fmt.Errorf("error getting Secret %v: %w", nn, err)
 	}
 	secretValBytes, ok := secret.Data[secretKeyRef.Key]
 	if !ok {
-		return "", "", NewKeyInSecretNotFoundError(secretKeyRef.Key, nn)
+		return "", "", refs.NewKeyInSecretNotFoundError(secretKeyRef.Key, nn)
 	}
 	return string(secretValBytes), secret.GetResourceVersion(), nil
 }

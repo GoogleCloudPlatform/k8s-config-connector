@@ -31,6 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -131,7 +132,7 @@ func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	iamPolicySkeleton := ToIAMPolicySkeleton(a.desired)
 	oldKRMPolicy, err := a.iamClient.GetPolicy(ctx, iamPolicySkeleton)
 	if err != nil {
-		if apierrors.IsNotFound(err) || k8s.IsReferenceNotFoundError(err) {
+		if apierrors.IsNotFound(err) || refs.IsReferenceNotFoundError(err) {
 			log.V(2).Info("IAM policy not found or underlying resource not found", "resource", k8s.GetNamespacedName(a.desired))
 			return false, nil
 		}
@@ -296,7 +297,7 @@ func (a *IAMPartialPolicyAdapter) Delete(ctx context.Context, deleteOp *directba
 
 	_, err := a.iamClient.SetPolicy(ctx, finalPolicyToSet)
 	if err != nil {
-		if apierrors.IsNotFound(err) || k8s.IsReferenceNotFoundError(err) {
+		if apierrors.IsNotFound(err) || refs.IsReferenceNotFoundError(err) {
 			log.V(2).Info("IAM policy or underlying resource not found during SetPolicy for deletion, treated as success", "name", k8s.GetNamespacedName(a.desired))
 			return true, nil // Policy/resource gone, so our bindings are effectively removed
 		}

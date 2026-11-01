@@ -21,7 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -102,7 +101,7 @@ func (r *IAMServiceAccountRef) Normalize(ctx context.Context, reader client.Read
 		u.SetGroupVersionKind(IAMServiceAccountGVK)
 		if err := reader.Get(ctx, key, u); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(IAMServiceAccountGVK, key)
+				return refsv1beta1.NewReferenceNotFoundError(IAMServiceAccountGVK, key)
 			}
 			return fmt.Errorf("reading referenced IAMServiceAccount %s: %w", key, err)
 		}
@@ -113,7 +112,7 @@ func (r *IAMServiceAccountRef) Normalize(ctx context.Context, reader client.Read
 			return fmt.Errorf("reading status.email: %w", err)
 		}
 		if email == "" {
-			return k8s.NewReferenceNotReadyError(IAMServiceAccountGVK, key)
+			return refsv1beta1.NewReferenceNotReadyError(IAMServiceAccountGVK, key)
 		}
 		r.SetExternal(email)
 	}

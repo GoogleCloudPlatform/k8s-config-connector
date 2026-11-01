@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
@@ -66,7 +65,7 @@ func (r *SecureSourceManagerRepositoryRef) NormalizedExternal(ctx context.Contex
 	u.SetGroupVersionKind(SecureSourceManagerRepositoryGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			return "", refsv1beta1.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", SecureSourceManagerRepositoryGVK, key, err)
 	}
@@ -76,7 +75,7 @@ func (r *SecureSourceManagerRepositoryRef) NormalizedExternal(ctx context.Contex
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		return "", refsv1beta1.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef
 	return r.External, nil

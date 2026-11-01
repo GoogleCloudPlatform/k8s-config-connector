@@ -21,6 +21,7 @@ import (
 	"testing"
 	"time"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
@@ -274,7 +275,7 @@ func TestReconcile_FindUnresolvableDependency_Reconcile(t *testing.T) {
 
 	adapter := &mockAdapter{
 		findFound: false,
-		findErr:   k8s.NewReferenceNotReadyError(testGVK, types.NamespacedName{Namespace: "test-ns", Name: "dep-resource"}),
+		findErr:   refs.NewReferenceNotReadyError(testGVK, types.NamespacedName{Namespace: "test-ns", Name: "dep-resource"}),
 	}
 	model := &mockModel{
 		adapter: adapter,
@@ -363,7 +364,7 @@ func TestReconcile_FindUnresolvableDependency_Delete(t *testing.T) {
 
 	adapter := &mockAdapter{
 		findFound: false,
-		findErr:   k8s.NewReferenceNotReadyError(testGVK, types.NamespacedName{Namespace: "test-ns", Name: "dep-resource"}),
+		findErr:   refs.NewReferenceNotReadyError(testGVK, types.NamespacedName{Namespace: "test-ns", Name: "dep-resource"}),
 	}
 	model := &mockModel{
 		adapter: adapter,

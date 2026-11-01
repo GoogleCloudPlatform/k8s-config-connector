@@ -19,7 +19,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -116,9 +116,9 @@ func TestKMSCryptoKeyRef_Normalize(t *testing.T) {
 		if err == nil {
 			t.Fatalf("Normalize() expected ReferenceNotReadyError, got nil (External=%q)", ref.External)
 		}
-		var notReadyErr *k8s.ReferenceNotReadyError
+		var notReadyErr *refs.ReferenceNotReadyError
 		if !errors.As(err, &notReadyErr) {
-			t.Errorf("Normalize() error = %T (%v), want *k8s.ReferenceNotReadyError", err, err)
+			t.Errorf("Normalize() error = %T (%v), want *refs.ReferenceNotReadyError", err, err)
 		}
 	})
 }

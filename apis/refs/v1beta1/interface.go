@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -101,7 +100,7 @@ func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, d
 		u.SetGroupVersionKind(ref.GetGVK())
 		if err := reader.Get(ctx, key, u); err != nil {
 			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+				return NewReferenceNotFoundError(u.GroupVersionKind(), key)
 			}
 			return fmt.Errorf("reading referenced %s %s: %w", ref.GetGVK(), key, err)
 		}
@@ -114,7 +113,7 @@ func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, d
 			externalRef = fallback(u)
 		}
 		if externalRef == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			return NewReferenceNotReadyError(u.GroupVersionKind(), key)
 		}
 		ref.SetExternal(externalRef)
 	}
