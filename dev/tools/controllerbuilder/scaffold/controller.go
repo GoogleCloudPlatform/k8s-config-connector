@@ -183,6 +183,10 @@ func (c *ControllerBuilder) shouldSkipControllerWrite(controllerFilePath string,
 	existing, err := os.ReadFile(controllerFilePath)
 	if err == nil {
 		if (c.prepopulateResource || cArgs.PassesApplied) && bytes.Contains(existing, []byte(GeneratedControllerMarker)) {
+			if bytes.Contains(existing, []byte("// +customized")) {
+				klog.V(1).Infof("file %s has manual customizations (// +customized), skipping overwrite\n", controllerFilePath)
+				return true, nil
+			}
 			return false, nil
 		}
 		klog.V(1).Infof("file %s already exists (handwritten), skipping\n", controllerFilePath)

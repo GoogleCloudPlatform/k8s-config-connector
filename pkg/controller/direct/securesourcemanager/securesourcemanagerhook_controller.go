@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // +generated:controller
+// +customized
 // krm.group: securesourcemanager.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // krm.kind: SecureSourceManagerHook
@@ -25,6 +26,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
+	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -62,15 +64,16 @@ func (m *modelHook) AdapterForObject(ctx context.Context, op *directbase.Adapter
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.SecureSourceManagerHookIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get securesourcemanager GCP client
 	gcpClient, err := m.client(ctx)
@@ -187,13 +190,22 @@ func (a *HookAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Hook", "name", a.id)
 
+	normalize := func(ctx context.Context, pb *securesourcemanagerpb.Hook) error {
+		if a.desired.Status.ObservedGeneration != nil && *a.desired.Status.ObservedGeneration == a.desired.GetGeneration() {
+			if a.actual.GetSensitiveQueryString() == "[REDACTED]" {
+				pb.SensitiveQueryString = ""
+			}
+		}
+		return nil
+	}
+
 	resource, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		SecureSourceManagerHookSpec_v1alpha1_FromProto,
 		SecureSourceManagerHookSpec_v1alpha1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
@@ -242,6 +254,9 @@ func (a *HookAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	obj.Spec = direct.ValueOf(SecureSourceManagerHookSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	obj.Spec.ParentRef = &securesourcemanagerv1beta1.SecureSourceManagerRepositoryRef{
+		External: a.id.ParentString(),
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

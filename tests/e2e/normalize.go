@@ -1678,6 +1678,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".connectionRevision"] = "1234567890"
 	visitor.replacePaths[".response.connectionRevision"] = "1234567890"
 
+	// SecureSourceManager
+	{
+		visitor.removePaths.Insert(".response.scanConfig")
+		visitor.removePaths.Insert(".scanConfig")
+	}
+
 	// Dataplex
 	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
