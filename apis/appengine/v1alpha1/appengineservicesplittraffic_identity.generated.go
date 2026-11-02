@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -73,6 +74,19 @@ func (obj *AppEngineServiceSplitTraffic) GetIdentity(ctx context.Context, reader
 	specIdentity, err := getIdentityFromAppEngineServiceSplitTrafficSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &AppEngineServiceSplitTrafficIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AppEngineServiceSplitTraffic identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
 	}
 
 	return specIdentity, nil

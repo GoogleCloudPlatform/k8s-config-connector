@@ -3,7 +3,7 @@ kind: AppEngineServiceSplitTraffic
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
+    cnrm.cloud.google.com/mutable-but-unreadable-fields-hash: fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -28,4 +28,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: apps/${projectId}/services/default
   observedGeneration: 2
