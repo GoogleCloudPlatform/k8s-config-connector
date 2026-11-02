@@ -62,20 +62,6 @@ ${CONTROLLERBUILDER} generate-mapper \
     --proto-source-path ${PROTO_OUT} \
     --prepopulate-resource
 
-${CONTROLLERBUILDER} generate-controller \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.vectorsearch.v1 \
-  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
-  --resource VectorsearchIndex:Index
-
-${CONTROLLERBUILDER} generate-fuzzer \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.vectorsearch.v1 \
-  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
-  --resource VectorsearchIndex:Index
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

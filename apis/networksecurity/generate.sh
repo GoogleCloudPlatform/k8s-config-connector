@@ -107,23 +107,6 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
-${CONTROLLERBUILDER} generate-controller \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.networksecurity.v1 \
-  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
-  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule
-
-${CONTROLLERBUILDER} generate-fuzzer \
-  --prepopulate-resource \
-  --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.networksecurity.v1 \
-  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule
-
-
-
-
 ${REPO_ROOT}/dev/tasks/fix-gofmt
 
 cd ${REPO_ROOT}
