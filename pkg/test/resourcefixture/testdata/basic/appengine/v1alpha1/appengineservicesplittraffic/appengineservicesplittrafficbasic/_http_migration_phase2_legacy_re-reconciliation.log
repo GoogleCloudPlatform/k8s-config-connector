@@ -1,0 +1,25 @@
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "name": "apps/${projectId}/services/default",
+  "split": {
+    "allocations": {
+      "v1": 0.5,
+      "v2": 0.5
+    },
+    "shardBy": "IP"
+  }
+}
