@@ -1,0 +1,217 @@
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsRegion": "us-central1",
+  "apigeeProjectId": "bba74dd9140b33c1e-tp",
+  "billingType": "PAYG",
+  "caCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURTVENDQWpHZ0F3SUJBZ0lRUTluaWl4akhCRTA0VHZMRDNTejAxVEFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlRd01tUTBZVEJrTWkwNVlURmxMVFJpWXpBdFlUQXhZeTA1T0ROa05HSmtaalZsTVRndwpIaGNOTWpZd056SXpNRGN3T1RBeFdoY05Nell3TnpJd01EY3dPVEF4V2pBdk1TMHdLd1lEVlFRREV5UXdNbVEwCllUQmtNaTA1WVRGbExUUmlZekF0WVRBeFl5MDVPRE5rTkdKa1pqVmxNVGd3Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURHeUVVSDFrVE56dWxhbkVHL3ZicjZ4QlpTa3U0UTlXTmt1QWVoRFZ6ZQpnb1poVkk0bnhEMDYwMU1kS2NQWkNKK2k4b1d3OGpFTllOVThOK3BHSmlqTlM2WHErTjAzZjJvdnVFUjJJRlRNCk4zb1BuMXhKU0NZT0JBeVVhUGhEanZOaFBmYXFVWUJHRXBiSHRRbHpvZTZWd2lsQTkvU3ZqMFBwaWtNSjlFMWUKZGw5OHNtR05YOUZPRTk1dVhtZzNuVzRHOW5wTVY2cVh1K1FmRmZXUVdBRGJnS3VlK3FDWmlFaFRUMzVoM20yMApZQ3pydzF5elQ0b25HUzk1bHZub093L1dBcnc3bTdmZVRzWWhmNTVaR0Fyc2tCR3RtZ21zd3lnUU1ZZmRRb0hrClVQaHFXOC9KeDBUZzFZVzRaSHhlbmVqNGh6K1k0SjkwQUN3aDQwbGpQdUNMQWdNQkFBR2pZVEJmTUE0R0ExVWQKRHdFQi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEd1lEVlIwVApBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVcHplQitIdHkrVlVGZHJrREdWZlNuM00rbDB3d0RRWUpLb1pJCmh2Y05BUUVMQlFBRGdnRUJBSWtoMkx0VURBUXhOVW4vNkhYVVVEYXl4RUtQL29Ka3ZVcjZ3UXkwdGNnZ0JhRFoKVzlsUTFGeFU3NXQ1ME5iS3k0b2tSMUFpYUlQcjdoTVB4enZ1QytDR0VGcHYwcVJablc3aDVlNjlERUg5U0tMYwpEbFdXMGlFUUNSTUd4MGN1SVNsRWdGRDRlMEoyTVdadktsbFAwb2xZekwrQ2RzZzR0Q3BhNTlELzV1KzYyUm5XCjRnVDRvek5wa3JlZ0NBSElHMTFXZ2xUazNmc3RLa2xaUlY2Yjh6NFZ0SFo5UTRCa0ozVEtFVzZmTEhOQ2pmQysKVjBVNWJwdG9aVmRSd1ZBSStjaVpJZjlFc2ZhZ1RiQnNuMjVJdzBuU3V1ZXBMSGo0TmVZQWFOMTQyWnRwNXo1YwpLMlRkUStWbXRqMEpZdHVXbkZPWkQ5YWpCd1RNZ2RYYmRNbmNydHc9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+  "caCertificates": [
+    "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURTVENDQWpHZ0F3SUJBZ0lRUTluaWl4akhCRTA0VHZMRDNTejAxVEFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlRd01tUTBZVEJrTWkwNVlURmxMVFJpWXpBdFlUQXhZeTA1T0ROa05HSmtaalZsTVRndwpIaGNOTWpZd056SXpNRGN3T1RBeFdoY05Nell3TnpJd01EY3dPVEF4V2pBdk1TMHdLd1lEVlFRREV5UXdNbVEwCllUQmtNaTA1WVRGbExUUmlZekF0WVRBeFl5MDVPRE5rTkdKa1pqVmxNVGd3Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURHeUVVSDFrVE56dWxhbkVHL3ZicjZ4QlpTa3U0UTlXTmt1QWVoRFZ6ZQpnb1poVkk0bnhEMDYwMU1kS2NQWkNKK2k4b1d3OGpFTllOVThOK3BHSmlqTlM2WHErTjAzZjJvdnVFUjJJRlRNCk4zb1BuMXhKU0NZT0JBeVVhUGhEanZOaFBmYXFVWUJHRXBiSHRRbHpvZTZWd2lsQTkvU3ZqMFBwaWtNSjlFMWUKZGw5OHNtR05YOUZPRTk1dVhtZzNuVzRHOW5wTVY2cVh1K1FmRmZXUVdBRGJnS3VlK3FDWmlFaFRUMzVoM20yMApZQ3pydzF5elQ0b25HUzk1bHZub093L1dBcnc3bTdmZVRzWWhmNTVaR0Fyc2tCR3RtZ21zd3lnUU1ZZmRRb0hrClVQaHFXOC9KeDBUZzFZVzRaSHhlbmVqNGh6K1k0SjkwQUN3aDQwbGpQdUNMQWdNQkFBR2pZVEJmTUE0R0ExVWQKRHdFQi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEd1lEVlIwVApBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVcHplQitIdHkrVlVGZHJrREdWZlNuM00rbDB3d0RRWUpLb1pJCmh2Y05BUUVMQlFBRGdnRUJBSWtoMkx0VURBUXhOVW4vNkhYVVVEYXl4RUtQL29Ka3ZVcjZ3UXkwdGNnZ0JhRFoKVzlsUTFGeFU3NXQ1ME5iS3k0b2tSMUFpYUlQcjdoTVB4enZ1QytDR0VGcHYwcVJablc3aDVlNjlERUg5U0tMYwpEbFdXMGlFUUNSTUd4MGN1SVNsRWdGRDRlMEoyTVdadktsbFAwb2xZekwrQ2RzZzR0Q3BhNTlELzV1KzYyUm5XCjRnVDRvek5wa3JlZ0NBSElHMTFXZ2xUazNmc3RLa2xaUlY2Yjh6NFZ0SFo5UTRCa0ozVEtFVzZmTEhOQ2pmQysKVjBVNWJwdG9aVmRSd1ZBSStjaVpJZjlFc2ZhZ1RiQnNuMjVJdzBuU3V1ZXBMSGo0TmVZQWFOMTQyWnRwNXo1YwpLMlRkUStWbXRqMEpZdHVXbkZPWkQ5YWpCd1RNZ2RYYmRNbmNydHc9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  ],
+  "createdAt": "1711974896",
+  "disableVpcPeering": true,
+  "lastModifiedAt": "1711974896",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "true"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "PAID"
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "addonsConfig": {
+    "apiSecurityConfig": {
+      "enabled": true
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "IN_PROGRESS",
+    "targetResourceName": "organizations/${projectId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${projectId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig",
+    "apiSecurityConfig": {
+      "enabled": true
+    }
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "apiSecurityConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-central1",
+  "apigeeProjectId": "bba74dd9140b33c1e-tp",
+  "billingType": "PAYG",
+  "caCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURTVENDQWpHZ0F3SUJBZ0lRUTluaWl4akhCRTA0VHZMRDNTejAxVEFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlRd01tUTBZVEJrTWkwNVlURmxMVFJpWXpBdFlUQXhZeTA1T0ROa05HSmtaalZsTVRndwpIaGNOTWpZd056SXpNRGN3T1RBeFdoY05Nell3TnpJd01EY3dPVEF4V2pBdk1TMHdLd1lEVlFRREV5UXdNbVEwCllUQmtNaTA1WVRGbExUUmlZekF0WVRBeFl5MDVPRE5rTkdKa1pqVmxNVGd3Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURHeUVVSDFrVE56dWxhbkVHL3ZicjZ4QlpTa3U0UTlXTmt1QWVoRFZ6ZQpnb1poVkk0bnhEMDYwMU1kS2NQWkNKK2k4b1d3OGpFTllOVThOK3BHSmlqTlM2WHErTjAzZjJvdnVFUjJJRlRNCk4zb1BuMXhKU0NZT0JBeVVhUGhEanZOaFBmYXFVWUJHRXBiSHRRbHpvZTZWd2lsQTkvU3ZqMFBwaWtNSjlFMWUKZGw5OHNtR05YOUZPRTk1dVhtZzNuVzRHOW5wTVY2cVh1K1FmRmZXUVdBRGJnS3VlK3FDWmlFaFRUMzVoM20yMApZQ3pydzF5elQ0b25HUzk1bHZub093L1dBcnc3bTdmZVRzWWhmNTVaR0Fyc2tCR3RtZ21zd3lnUU1ZZmRRb0hrClVQaHFXOC9KeDBUZzFZVzRaSHhlbmVqNGh6K1k0SjkwQUN3aDQwbGpQdUNMQWdNQkFBR2pZVEJmTUE0R0ExVWQKRHdFQi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEd1lEVlIwVApBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVcHplQitIdHkrVlVGZHJrREdWZlNuM00rbDB3d0RRWUpLb1pJCmh2Y05BUUVMQlFBRGdnRUJBSWtoMkx0VURBUXhOVW4vNkhYVVVEYXl4RUtQL29Ka3ZVcjZ3UXkwdGNnZ0JhRFoKVzlsUTFGeFU3NXQ1ME5iS3k0b2tSMUFpYUlQcjdoTVB4enZ1QytDR0VGcHYwcVJablc3aDVlNjlERUg5U0tMYwpEbFdXMGlFUUNSTUd4MGN1SVNsRWdGRDRlMEoyTVdadktsbFAwb2xZekwrQ2RzZzR0Q3BhNTlELzV1KzYyUm5XCjRnVDRvek5wa3JlZ0NBSElHMTFXZ2xUazNmc3RLa2xaUlY2Yjh6NFZ0SFo5UTRCa0ozVEtFVzZmTEhOQ2pmQysKVjBVNWJwdG9aVmRSd1ZBSStjaVpJZjlFc2ZhZ1RiQnNuMjVJdzBuU3V1ZXBMSGo0TmVZQWFOMTQyWnRwNXo1YwpLMlRkUStWbXRqMEpZdHVXbkZPWkQ5YWpCd1RNZ2RYYmRNbmNydHc9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+  "caCertificates": [
+    "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURTVENDQWpHZ0F3SUJBZ0lRUTluaWl4akhCRTA0VHZMRDNTejAxVEFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlRd01tUTBZVEJrTWkwNVlURmxMVFJpWXpBdFlUQXhZeTA1T0ROa05HSmtaalZsTVRndwpIaGNOTWpZd056SXpNRGN3T1RBeFdoY05Nell3TnpJd01EY3dPVEF4V2pBdk1TMHdLd1lEVlFRREV5UXdNbVEwCllUQmtNaTA1WVRGbExUUmlZekF0WVRBeFl5MDVPRE5rTkdKa1pqVmxNVGd3Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURHeUVVSDFrVE56dWxhbkVHL3ZicjZ4QlpTa3U0UTlXTmt1QWVoRFZ6ZQpnb1poVkk0bnhEMDYwMU1kS2NQWkNKK2k4b1d3OGpFTllOVThOK3BHSmlqTlM2WHErTjAzZjJvdnVFUjJJRlRNCk4zb1BuMXhKU0NZT0JBeVVhUGhEanZOaFBmYXFVWUJHRXBiSHRRbHpvZTZWd2lsQTkvU3ZqMFBwaWtNSjlFMWUKZGw5OHNtR05YOUZPRTk1dVhtZzNuVzRHOW5wTVY2cVh1K1FmRmZXUVdBRGJnS3VlK3FDWmlFaFRUMzVoM20yMApZQ3pydzF5elQ0b25HUzk1bHZub093L1dBcnc3bTdmZVRzWWhmNTVaR0Fyc2tCR3RtZ21zd3lnUU1ZZmRRb0hrClVQaHFXOC9KeDBUZzFZVzRaSHhlbmVqNGh6K1k0SjkwQUN3aDQwbGpQdUNMQWdNQkFBR2pZVEJmTUE0R0ExVWQKRHdFQi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEd1lEVlIwVApBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVcHplQitIdHkrVlVGZHJrREdWZlNuM00rbDB3d0RRWUpLb1pJCmh2Y05BUUVMQlFBRGdnRUJBSWtoMkx0VURBUXhOVW4vNkhYVVVEYXl4RUtQL29Ka3ZVcjZ3UXkwdGNnZ0JhRFoKVzlsUTFGeFU3NXQ1ME5iS3k0b2tSMUFpYUlQcjdoTVB4enZ1QytDR0VGcHYwcVJablc3aDVlNjlERUg5U0tMYwpEbFdXMGlFUUNSTUd4MGN1SVNsRWdGRDRlMEoyTVdadktsbFAwb2xZekwrQ2RzZzR0Q3BhNTlELzV1KzYyUm5XCjRnVDRvek5wa3JlZ0NBSElHMTFXZ2xUazNmc3RLa2xaUlY2Yjh6NFZ0SFo5UTRCa0ozVEtFVzZmTEhOQ2pmQysKVjBVNWJwdG9aVmRSd1ZBSStjaVpJZjlFc2ZhZ1RiQnNuMjVJdzBuU3V1ZXBMSGo0TmVZQWFOMTQyWnRwNXo1YwpLMlRkUStWbXRqMEpZdHVXbkZPWkQ5YWpCd1RNZ2RYYmRNbmNydHc9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  ],
+  "createdAt": "1711974896",
+  "disableVpcPeering": true,
+  "lastModifiedAt": "1711974896",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "true"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "PAID"
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "IN_PROGRESS",
+    "targetResourceName": "organizations/${projectId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${projectId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig"
+  }
+}
