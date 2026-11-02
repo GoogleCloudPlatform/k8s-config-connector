@@ -15,13 +15,11 @@
 // API sources for AIPlatformFeatureView, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/feature_view.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +30,10 @@ var AIPlatformFeatureViewGVK = GroupVersion.WithKind("AIPlatformFeatureView")
 // +kcc:spec:proto=google.cloud.aiplatform.v1.FeatureView
 // +kcc:required-from-proto
 type AIPlatformFeatureViewSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The VertexAIFeatureOnlineStore this AIPlatformFeatureView is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *VertexAIFeatureOnlineStoreRef `json:"parentRef"`
 
 	// The AIPlatformFeatureView name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -53,25 +50,6 @@ type AIPlatformFeatureViewSpec struct {
 	// Optional. The Vertex RAG Source that the FeatureView is linked to.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.vertex_rag_source
 	VertexRagSource *FeatureView_VertexRagSource `json:"vertexRagSource,omitempty"`
-
-	// Optional. Used to perform consistent read-modify-write updates. If not set,
-	//  a blind "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Optional. The labels with user-defined metadata to organize your
-	//  FeatureViews.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
-	//  No more than 64 user labels can be associated with one
-	//  FeatureOnlineStore(System labels are excluded)." System reserved label keys
-	//  are prefixed with "aiplatform.googleapis.com/" and are immutable.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Configures when data is to be synced/updated for this FeatureView. At the
 	//  end of the sync the latest featureValues for each entityId of this
@@ -127,6 +105,11 @@ type AIPlatformFeatureViewObservedState struct {
 	// Output only. Timestamp when this FeatureView was last updated.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. Used to perform consistent read-modify-write updates. If not set,
+	//  a blind "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FeatureView.etag
+	Etag *string `json:"etag,omitempty"`
 
 	// Output only. A Service Account unique to this FeatureView. The role
 	//  bigquery.dataViewer should be granted to this service account to allow

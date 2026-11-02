@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,8 +68,12 @@ func (m *modelFeatureView) AdapterForObject(ctx context.Context, op *directbase.
 	}
 	id := i.(*krm.AIPlatformFeatureViewIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get aiplatform GCP client
-	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.Location))
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +85,21 @@ func (m *modelFeatureView) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *modelFeatureView) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	if !strings.HasPrefix(url, "//aiplatform.googleapis.com/") {
+		return nil, nil
+	}
+	id := &krm.AIPlatformFeatureViewIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx, id.Location)
+	if err != nil {
+		return nil, err
+	}
+	return &FeatureViewAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 func (m *modelFeatureView) client(ctx context.Context, location string) (*gcp.FeatureOnlineStoreAdminClient, error) {
 	var opts []option.ClientOption

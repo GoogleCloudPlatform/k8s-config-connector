@@ -79,10 +79,6 @@ spec:
                 - entityIDColumns
                 - uri
                 type: object
-              etag:
-                description: Optional. Used to perform consistent read-modify-write
-                  updates. If not set, a blind "overwrite" update happens.
-                type: string
               featureRegistrySource:
                 description: Optional. Configures the features from a Feature Registry
                   source that need to be loaded onto the FeatureOnlineStore.
@@ -165,25 +161,6 @@ spec:
                         type: integer
                     type: object
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  Optional. The labels with user-defined metadata to organize your
-                   FeatureViews.
-
-                   Label keys and values can be no longer than 64 characters
-                   (Unicode codepoints), can only contain lowercase letters, numeric
-                   characters, underscores and dashes. International characters are allowed.
-
-                   See https://goo.gl/xmQnxf for more information on and examples of labels.
-                   No more than 64 user labels can be associated with one
-                   FeatureOnlineStore(System labels are excluded)." System reserved label keys
-                   are prefixed with "aiplatform.googleapis.com/" and are immutable.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
               optimizedConfig:
                 description: Optional. Configuration for FeatureView created under
                   Optimized FeatureOnlineStore.
@@ -221,8 +198,9 @@ spec:
                         type: integer
                     type: object
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
+              parentRef:
+                description: The VertexAIFeatureOnlineStore this AIPlatformFeatureView
+                  is created under.
                 oneOf:
                 - not:
                     required:
@@ -239,20 +217,19 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed VertexAIFeatureOnlineStore
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/featureOnlineStores/{{featureOnlineStoreID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a VertexAIFeatureOnlineStore resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a VertexAIFeatureOnlineStore resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: parentRef is immutable
+                  rule: self == oldSelf
               resourceID:
                 description: The AIPlatformFeatureView name. If not given, the metadata.name
                   will be used.
@@ -306,8 +283,7 @@ spec:
                 - uri
                 type: object
             required:
-            - location
-            - projectRef
+            - parentRef
             type: object
           status:
             description: AIPlatformFeatureViewStatus defines the config connector
@@ -366,6 +342,10 @@ spec:
                   createTime:
                     description: Output only. Timestamp when this FeatureView was
                       created.
+                    type: string
+                  etag:
+                    description: Optional. Used to perform consistent read-modify-write
+                      updates. If not set, a blind "overwrite" update happens.
                     type: string
                   satisfiesPzi:
                     description: Output only. Reserved for future use.
