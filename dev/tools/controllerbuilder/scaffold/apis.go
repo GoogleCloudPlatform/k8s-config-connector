@@ -22,7 +22,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"text/template"
+
+	// text/template scaffolds Go API source files (.go), not YAML.
+	"text/template" // NOLINT
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
