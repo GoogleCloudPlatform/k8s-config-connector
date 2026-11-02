@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 
@@ -37,8 +38,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -184,17 +189,13 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = direct.LazyPtr(a.id.Reservation)
 
-	// Handle output-only fields from GCP
-	a.assignGCPDefaults(resource, a.actual)
-
-	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)
+	report, updateMask, err := compareComputeReservation(ctx, &desired.Spec, a.actual)
 	if err != nil {
 		return err
 	}
 
-	if len(paths) == 0 {
+	if !report.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
 		if a.desired.Status.ExternalRef == nil {
 			status := ComputeReservationStatus_v1beta1_FromProto(mapCtx, a.actual)
@@ -204,18 +205,12 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return nil
 	}
 
-	for path := range paths {
-		if path != "specific_reservation.count" && !strings.HasPrefix(path, "share_settings") {
-			return fmt.Errorf("field %q is immutable", path)
-		}
-	}
-
 	report.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateOp.RecordUpdatingEvent()
 
-	if _, ok := paths["specific_reservation.count"]; ok {
+	if slices.Contains(updateMask.GetPaths(), "specific_reservation") {
 		req := &computepb.ResizeReservationRequest{
 			Project:     a.id.Project,
 			Zone:        a.id.Zone,
@@ -236,21 +231,9 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("successfully resized compute Reservation", "name", a.id)
 	}
 
-	shareSettingsChanged := false
-	for path := range paths {
-		if strings.HasPrefix(path, "share_settings") {
-			shareSettingsChanged = true
-			break
-		}
-	}
-
-	if shareSettingsChanged {
+	if slices.Contains(updateMask.GetPaths(), "share_settings") {
 		actualShareSettings := a.actual.GetShareSettings()
 		desiredShareSettings := resource.GetShareSettings()
-
-		if actualShareSettings.GetShareType() != desiredShareSettings.GetShareType() {
-			return fmt.Errorf("field %q is immutable", "share_settings.share_type")
-		}
 
 		actualProjectMap := actualShareSettings.GetProjectMap()
 		desiredProjectMap := desiredShareSettings.GetProjectMap()
@@ -409,31 +392,82 @@ func (a *ReservationAdapter) get(ctx context.Context) (*computepb.Reservation, e
 	return resource, nil
 }
 
-func (a *ReservationAdapter) assignGCPDefaults(desired *computepb.Reservation, actual *computepb.Reservation) {
-	// Output-only fields
-	desired.SelfLink = actual.SelfLink
-	desired.CreationTimestamp = actual.CreationTimestamp
-	desired.Status = actual.Status
-	desired.Kind = actual.Kind
-	desired.Id = actual.Id
-	desired.Commitment = actual.Commitment
-	desired.ResourceStatus = actual.ResourceStatus
-
-	// Convert Zone to match GCP API, the immutability is handled in reservation_identity.go
-	desired.Zone = actual.Zone
-
-	// GCP default fields if not specified by user
-	if desired.ReservationSharingPolicy == nil {
-		desired.ReservationSharingPolicy = actual.ReservationSharingPolicy
+func compareComputeReservation(ctx context.Context, desiredKRM *krm.ComputeReservationSpec, actual *computepb.Reservation) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	report, updateMask, err := common.CompareBrownfieldSpec(
+		ctx,
+		desiredKRM,
+		actual,
+		ComputeReservationSpec_v1beta1_FromProto,
+		ComputeReservationSpec_v1beta1_ToProto,
+		normalizeReservationProto,
+	)
+	if err != nil {
+		return nil, nil, err
 	}
-	if (desired.ShareSettings == nil || desired.GetShareSettings().GetShareType() == "" || desired.GetShareSettings().GetShareType() == "LOCAL") &&
-		actual.GetShareSettings().GetShareType() == "LOCAL" {
-		desired.ShareSettings = actual.ShareSettings
-	}
-	if desired.SpecificReservation != nil && actual.SpecificReservation != nil {
-		if desired.SpecificReservation.AssuredCount == nil {
-			desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount
+
+	// Enforce immutability: only specific_reservation.count and share_settings.project_map can be updated.
+	for _, field := range report.Fields {
+		switch field.ID {
+		case "specific_reservation":
+			actualSR := protoMessageFromAny[*computepb.AllocationSpecificSKUReservation](field.Old)
+			desiredSR := protoMessageFromAny[*computepb.AllocationSpecificSKUReservation](field.New)
+			if !proto.Equal(desiredSR.GetInstanceProperties(), actualSR.GetInstanceProperties()) {
+				subPaths, _, err := common.CompareProtoMessageStructuredDiff(
+					desiredSR.GetInstanceProperties(),
+					actualSR.GetInstanceProperties(),
+					common.BasicDiff,
+				)
+				if err != nil {
+					return nil, nil, err
+				}
+				for _, subPath := range sets.List(subPaths) {
+					return nil, nil, fmt.Errorf("field %q is immutable", "specific_reservation.instance_properties."+subPath)
+				}
+				return nil, nil, fmt.Errorf("field %q is immutable", "specific_reservation.instance_properties")
+			}
+		case "share_settings":
+			actualSS := protoMessageFromAny[*computepb.ShareSettings](field.Old)
+			desiredSS := protoMessageFromAny[*computepb.ShareSettings](field.New)
+			if actualSS.GetShareType() != desiredSS.GetShareType() {
+				return nil, nil, fmt.Errorf("field %q is immutable", "share_settings.share_type")
+			}
+		default:
+			return nil, nil, fmt.Errorf("field %q is immutable", field.ID)
 		}
-		desired.SpecificReservation.InUseCount = actual.SpecificReservation.InUseCount
 	}
+
+	return report, updateMask, nil
+}
+
+func protoMessageFromAny[T proto.Message](v any) T {
+	var zero T
+	if pm, ok := v.(protoreflect.Message); ok {
+		if msg, ok := pm.Interface().(T); ok {
+			return msg
+		}
+	}
+	if msg, ok := v.(T); ok {
+		return msg
+	}
+	return zero
+}
+
+func normalizeReservationProto(_ context.Context, pb *computepb.Reservation) error {
+	if pb.Zone != nil {
+		zone := pb.GetZone()
+		if idx := strings.LastIndex(zone, "/"); idx != -1 {
+			pb.Zone = direct.LazyPtr(zone[idx+1:])
+		}
+	}
+	if pb.ShareSettings == nil {
+		pb.ShareSettings = &computepb.ShareSettings{
+			ShareType: direct.LazyPtr("LOCAL"),
+		}
+	} else if pb.GetShareSettings().GetShareType() == "" {
+		pb.ShareSettings.ShareType = direct.LazyPtr("LOCAL")
+	}
+	if pb.SpecificReservation != nil {
+		pb.SpecificReservation.InUseCount = nil
+	}
+	return nil
 }
