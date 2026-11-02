@@ -48,8 +48,6 @@
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].pythonPackageSpec.executorImageURI" is not set in unstructured objects
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].pythonPackageSpec.packageURIs[]" is not set in unstructured objects
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.workerPoolSpecs[].pythonPackageSpec.pythonModule" is not set in unstructured objects
-[missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuerySource.entityIDColumns[]" is not set in unstructured objects
-[missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuerySource.uri" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.featureRegistrySource.featureGroups[].featureGroupID" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.featureRegistrySource.featureGroups[].featureIDs[]" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.featureRegistrySource.projectNumber" is not set in unstructured objects
@@ -62,10 +60,8 @@
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.treeAhConfig.leafNodeEmbeddingCount" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimizedConfig.automaticResources.maxReplicaCount" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimizedConfig.automaticResources.minReplicaCount" is not set in unstructured objects
-[missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAgentType" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.syncConfig.continuous" is not set in unstructured objects
-[missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.syncConfig.cron" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexRagSource.ragCorpusID" is not set in unstructured objects
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexRagSource.uri" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
