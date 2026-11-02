@@ -71,7 +71,7 @@ type OrganizationSecurityPolicyRuleMatch struct {
 	VersionedExpr *string `json:"versionedExpr,omitempty"`
 }
 
-// +kcc:spec:proto=google.cloud.compute.v1.SecurityPolicyRule
+// +kcc:spec:proto=google.cloud.compute.v1.FirewallPolicyRule
 type ComputeOrganizationSecurityPolicyRuleSpec struct {
 	/* The Action to perform when the client connection triggers the rule. Can currently be either
 	"allow", "deny" or "goto_next". */
@@ -141,7 +141,7 @@ type ComputeOrganizationSecurityPolicyRuleStatus struct {
 }
 
 // ComputeOrganizationSecurityPolicyRuleObservedState is the state of the ComputeOrganizationSecurityPolicyRule resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.compute.v1.SecurityPolicyRule
+// +kcc:observedstate:proto=google.cloud.compute.v1.FirewallPolicyRule
 type ComputeOrganizationSecurityPolicyRuleObservedState struct {
 }
 

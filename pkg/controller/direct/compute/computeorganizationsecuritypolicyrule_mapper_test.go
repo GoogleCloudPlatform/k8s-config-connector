@@ -25,19 +25,28 @@ import (
 func TestComputeOrganizationSecurityPolicyRuleSpecMappers(t *testing.T) {
 	action := "allow"
 	desc := "test rule"
+	direction := "INGRESS"
+	enableLogging := true
 	resourceID := "100"
-	versionedExpr := "FIREWALL"
-	preview := false
 
 	spec := &krm.ComputeOrganizationSecurityPolicyRuleSpec{
-		Action:      action,
-		Description: &desc,
-		Preview:     &preview,
-		ResourceID:  &resourceID,
+		Action:                action,
+		Description:           &desc,
+		Direction:             &direction,
+		EnableLogging:         &enableLogging,
+		ResourceID:            &resourceID,
+		TargetResources:       []string{"https://www.googleapis.com/compute/v1/projects/p1/global/networks/default"},
+		TargetServiceAccounts: []string{"sa@example.com"},
 		Match: &krm.OrganizationSecurityPolicyRuleMatch{
-			VersionedExpr: &versionedExpr,
 			Config: &krm.OrganizationSecurityPolicyRuleMatchConfig{
-				SrcIPRanges: []string{"10.0.0.0/8"},
+				DestIPRanges: []string{"192.168.1.0/24"},
+				SrcIPRanges:  []string{"10.0.0.0/8"},
+				Layer4Config: []krm.OrganizationSecurityPolicyRuleMatchConfigLayer4Config{
+					{
+						IPProtocol: "tcp",
+						Ports:      []string{"80", "443"},
+					},
+				},
 			},
 		},
 	}
@@ -53,6 +62,12 @@ func TestComputeOrganizationSecurityPolicyRuleSpecMappers(t *testing.T) {
 	}
 	if proto.GetPriority() != 100 {
 		t.Errorf("GetPriority() = %d, want 100", proto.GetPriority())
+	}
+	if proto.GetDirection() != direction {
+		t.Errorf("GetDirection() = %q, want %q", proto.GetDirection(), direction)
+	}
+	if proto.GetEnableLogging() != enableLogging {
+		t.Errorf("GetEnableLogging() = %v, want %v", proto.GetEnableLogging(), enableLogging)
 	}
 
 	convertedSpec := ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx, proto)
