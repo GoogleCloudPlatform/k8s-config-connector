@@ -68,3 +68,110 @@ func TestOrganizationSecurityPolicyAssociationsValidation(t *testing.T) {
 		t.Fatalf("expected InvalidArgument code, got %v", status.Code(err))
 	}
 }
+
+func TestOrganizationSecurityPolicyRules(t *testing.T) {
+	ctx := context.Background()
+	env := &common.MockEnvironment{}
+	memStorage := storage.NewInMemoryStorage()
+	service := &OrganizationSecurityPoliciesV1{
+		MockService: &MockService{
+			MockEnvironment:   env,
+			storage:           memStorage,
+			computeOperations: newComputeOperationsService(memStorage),
+		},
+	}
+
+	policyFQN := "locations/global/securityPolicies/123456789"
+	dummyPolicy := &pb.SecurityPolicy{
+		Id:       PtrTo(uint64(123456789)),
+		SelfLink: PtrTo("https://compute.googleapis.com/compute/v1/" + policyFQN),
+	}
+	if err := memStorage.Create(ctx, policyFQN, dummyPolicy); err != nil {
+		t.Fatalf("failed to create dummy policy: %v", err)
+	}
+
+	// 1. AddRule
+	addOp, err := service.AddRule(ctx, &pb.AddRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		SecurityPolicyRuleResource: &pb.SecurityPolicyRule{
+			Action:      PtrTo("allow"),
+			Description: PtrTo("initial rule"),
+			Priority:    PtrTo(int32(100)),
+			Match: &pb.SecurityPolicyRuleMatcher{
+				Config: &pb.SecurityPolicyRuleMatcherConfig{
+					SrcIpRanges: []string{"192.168.0.0/16"},
+				},
+				VersionedExpr: PtrTo("SRC_IPS_V1"),
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("AddRule failed: %v", err)
+	}
+	if addOp.GetOperationType() != "addOrganizationSecurityPolicyRule" {
+		t.Errorf("unexpected operation type: %s", addOp.GetOperationType())
+	}
+
+	// 2. GetRule
+	rule, err := service.GetRule(ctx, &pb.GetRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		Priority:       PtrTo(int32(100)),
+	})
+	if err != nil {
+		t.Fatalf("GetRule failed: %v", err)
+	}
+	if rule.GetDescription() != "initial rule" {
+		t.Errorf("unexpected description: %s", rule.GetDescription())
+	}
+
+	// 3. PatchRule
+	patchOp, err := service.PatchRule(ctx, &pb.PatchRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		Priority:       PtrTo(int32(100)),
+		SecurityPolicyRuleResource: &pb.SecurityPolicyRule{
+			Description: PtrTo("updated rule"),
+		},
+	})
+	if err != nil {
+		t.Fatalf("PatchRule failed: %v", err)
+	}
+	if patchOp.GetOperationType() != "patchOrganizationSecurityPolicyRule" {
+		t.Errorf("unexpected operation type: %s", patchOp.GetOperationType())
+	}
+
+	// Verify patch
+	rule, err = service.GetRule(ctx, &pb.GetRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		Priority:       PtrTo(int32(100)),
+	})
+	if err != nil {
+		t.Fatalf("GetRule failed: %v", err)
+	}
+	if rule.GetDescription() != "updated rule" {
+		t.Errorf("unexpected description after patch: %s", rule.GetDescription())
+	}
+
+	// 4. RemoveRule
+	removeOp, err := service.RemoveRule(ctx, &pb.RemoveRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		Priority:       PtrTo(int32(100)),
+	})
+	if err != nil {
+		t.Fatalf("RemoveRule failed: %v", err)
+	}
+	if removeOp.GetOperationType() != "removeOrganizationSecurityPolicyRule" {
+		t.Errorf("unexpected operation type: %s", removeOp.GetOperationType())
+	}
+
+	// 5. GetRule non-existent
+	_, err = service.GetRule(ctx, &pb.GetRuleOrganizationSecurityPolicyRequest{
+		SecurityPolicy: "123456789",
+		Priority:       PtrTo(int32(100)),
+	})
+	if err == nil {
+		t.Fatalf("expected error for removed rule, got nil")
+	}
+	if status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("expected InvalidArgument, got %v", status.Code(err))
+	}
+}
