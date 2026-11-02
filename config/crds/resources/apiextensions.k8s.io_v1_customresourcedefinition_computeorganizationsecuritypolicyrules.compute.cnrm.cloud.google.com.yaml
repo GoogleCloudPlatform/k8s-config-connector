@@ -127,23 +127,22 @@ spec:
                         items:
                           type: string
                         type: array
-                    required:
-                    - layer4Config
                     type: object
                   description:
                     description: A description of the rule.
                     type: string
                   versionedExpr:
                     description: 'Preconfigured versioned expression. For organization
-                      security policy rules, the only supported type is "FIREWALL".
-                      Default value: "FIREWALL" Possible values: ["FIREWALL"].'
+                      security policy rules, supported types are "FIREWALL" and "SRC_IPS_V1".
+                      Default value: "FIREWALL" Possible values: ["FIREWALL", "SRC_IPS_V1"].'
                     type: string
                 required:
                 - config
                 type: object
               policyId:
                 description: Immutable. The ID of the OrganizationSecurityPolicy this
-                  rule applies to.
+                  rule applies to. Exactly one of policyId or securityPolicyRef must
+                  be specified.
                 type: string
               preview:
                 description: If set to true, the specified action is not enforced.
@@ -153,6 +152,36 @@ spec:
                   for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              securityPolicyRef:
+                description: Immutable. The security policy that this rule belongs
+                  to. Exactly one of policyId or securityPolicyRef must be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeOrganizationSecurityPolicy
+                      resource. Should be in the format "locations/global/securityPolicies/{{securityPolicyID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeOrganizationSecurityPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeOrganizationSecurityPolicy
+                      resource.
+                    type: string
+                type: object
               targetResources:
                 description: A list of network resource URLs to which this rule applies.
                   This field allows you to control which network's VMs get this rule.
@@ -170,7 +199,6 @@ spec:
             required:
             - action
             - match
-            - policyId
             type: object
           status:
             properties:

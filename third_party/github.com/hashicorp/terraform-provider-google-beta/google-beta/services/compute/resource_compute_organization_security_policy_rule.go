@@ -21,14 +21,27 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strings"
 	"time"
 
+	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+	"google.golang.org/api/googleapi"
 )
+
+func transformSecurityPolicyRuleReadError(err error) error {
+	if gErr, ok := errwrap.GetType(err, &googleapi.Error{}).(*googleapi.Error); ok {
+		if gErr.Code == 400 && strings.Contains(gErr.Message, "does not contain a rule at priority") {
+			gErr.Code = 404
+		}
+		return gErr
+	}
+	return err
+}
 
 func ResourceComputeOrganizationSecurityPolicyRule() *schema.Resource {
 	return &schema.Resource{
@@ -70,7 +83,7 @@ func ResourceComputeOrganizationSecurityPolicyRule() *schema.Resource {
 								Schema: map[string]*schema.Schema{
 									"layer4_config": {
 										Type:        schema.TypeList,
-										Required:    true,
+										Optional:    true,
 										Description: `Pairs of IP protocols and ports that the rule should match.`,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
@@ -131,7 +144,7 @@ INGRESS rules.`,
 						"versioned_expr": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: verify.ValidateEnum([]string{"FIREWALL", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"FIREWALL", "SRC_IPS_V1", ""}),
 							Description: `Preconfigured versioned expression. For organization security policy rules,
 the only supported type is "FIREWALL". Default value: "FIREWALL" Possible values: ["FIREWALL"]`,
 							Default: "FIREWALL",
@@ -206,6 +219,10 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	obj := make(map[string]interface{})
@@ -339,6 +356,10 @@ func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, m
 		return err
 	}
 
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
+	}
+
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getRule?priority={{priority}}")
 	if err != nil {
 		return err
@@ -359,7 +380,7 @@ func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, m
 		UserAgent: userAgent,
 	})
 	if err != nil {
-		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicyRule %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(transformSecurityPolicyRuleReadError(err), d, fmt.Sprintf("ComputeOrganizationSecurityPolicyRule %q", d.Id()))
 	}
 
 	if err := d.Set("description", flattenComputeOrganizationSecurityPolicyRuleDescription(res["description"], d, config)); err != nil {
@@ -398,6 +419,10 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	billingProject := ""
@@ -525,6 +550,10 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 		return err
 	}
 
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
+	}
+
 	billingProject := ""
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/removeRule?priority={{priority}}")
@@ -593,6 +622,10 @@ func resourceComputeOrganizationSecurityPolicyRuleImport(d *schema.ResourceData,
 		"(?P<policy_id>.+)/priority/(?P<priority>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	// Replace import id for the resource id

@@ -2521,6 +2521,16 @@ func (in *ComputeOrganizationSecurityPolicyRuleSpec) DeepCopyInto(out *ComputeOr
 		*out = new(OrganizationSecurityPolicyRuleMatch)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.PolicyID != nil {
+		in, out := &in.PolicyID, &out.PolicyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.SecurityPolicyRef != nil {
+		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
+		*out = new(ComputeOrganizationSecurityPolicyRef)
+		**out = **in
+	}
 	if in.Preview != nil {
 		in, out := &in.Preview, &out.Preview
 		*out = new(bool)

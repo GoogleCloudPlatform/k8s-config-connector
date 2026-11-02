@@ -167,7 +167,27 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:     "allow",
-					PolicyID:   "1234567890",
+					PolicyID:   common.LazyPtr("1234567890"),
+					ResourceID: common.LazyPtr("1000"),
+				},
+			},
+			wantIdentity: &ComputeOrganizationSecurityPolicyRuleIdentity{
+				SecurityPolicy: "1234567890",
+				Priority:       "1000",
+			},
+		},
+		{
+			name: "spec with securityPolicyRef",
+			obj: &ComputeOrganizationSecurityPolicyRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "rule-ref",
+					Namespace: "default",
+				},
+				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
+					Action: "allow",
+					SecurityPolicyRef: &ComputeOrganizationSecurityPolicyRef{
+						External: "locations/global/securityPolicies/1234567890",
+					},
 					ResourceID: common.LazyPtr("1000"),
 				},
 			},
@@ -185,7 +205,7 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:   "allow",
-					PolicyID: "locations/global/securityPolicies/9876543210",
+					PolicyID: common.LazyPtr("locations/global/securityPolicies/9876543210"),
 				},
 			},
 			wantIdentity: &ComputeOrganizationSecurityPolicyRuleIdentity{
@@ -202,7 +222,7 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:     "deny",
-					PolicyID:   "https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/5555555555",
+					PolicyID:   common.LazyPtr("https://compute.googleapis.com/compute/v1/locations/global/securityPolicies/5555555555"),
 					ResourceID: common.LazyPtr("3000"),
 				},
 			},
@@ -220,7 +240,7 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:     "deny",
-					PolicyID:   "securityPolicies/7777777777",
+					PolicyID:   common.LazyPtr("securityPolicies/7777777777"),
 					ResourceID: common.LazyPtr("4000"),
 				},
 			},
@@ -238,7 +258,20 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:   "allow",
-					PolicyID: "",
+					PolicyID: common.LazyPtr(""),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "neither policyId nor securityPolicyRef set",
+			obj: &ComputeOrganizationSecurityPolicyRule{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "rule-no-policy",
+					Namespace: "default",
+				},
+				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
+					Action: "allow",
 				},
 			},
 			wantErr: true,
@@ -252,7 +285,7 @@ func TestComputeOrganizationSecurityPolicyRule_GetIdentity(t *testing.T) {
 				},
 				Spec: ComputeOrganizationSecurityPolicyRuleSpec{
 					Action:   "allow",
-					PolicyID: "invalid/policy/format",
+					PolicyID: common.LazyPtr("invalid/policy/format"),
 				},
 			},
 			wantErr: true,

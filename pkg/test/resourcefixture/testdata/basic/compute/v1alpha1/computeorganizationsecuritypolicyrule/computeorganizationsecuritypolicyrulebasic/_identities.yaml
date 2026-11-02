@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeOrganizationSecurityPolicy
+  name: computeorganizationsecuritypolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeOrganizationSecurityPolicyRule
+  name: computeorganizationsecuritypolicyrule-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
