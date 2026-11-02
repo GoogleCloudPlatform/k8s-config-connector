@@ -63,12 +63,14 @@ ${CONTROLLERBUILDER} generate-controller \
   --service google.cloud.securesourcemanager.v1 \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --resource SecureSourceManagerBranchRule:BranchRule \
   --resource SecureSourceManagerHook:Hook
 
 ${CONTROLLERBUILDER} generate-fuzzer \
   --service google.cloud.securesourcemanager.v1 \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --resource SecureSourceManagerBranchRule:BranchRule \
   --resource SecureSourceManagerHook:Hook
 
 

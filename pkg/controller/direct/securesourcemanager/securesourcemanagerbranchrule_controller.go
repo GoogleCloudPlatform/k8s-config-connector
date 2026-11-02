@@ -68,6 +68,10 @@ func (m *modelBranchRule) AdapterForObject(ctx context.Context, op *directbase.A
 	}
 	id := i.(*krm.SecureSourceManagerBranchRuleIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get securesourcemanager GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

@@ -43,7 +43,6 @@ func secureSourceManagerBranchRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".allow_stale_reviews")
 	f.SpecField(".annotations")
 	f.SpecField(".disabled")
-	f.SpecField(".etag")
 	f.SpecField(".include_pattern")
 	f.SpecField(".minimum_approvals_count")
 	f.SpecField(".minimum_reviews_count")
@@ -54,14 +53,12 @@ func secureSourceManagerBranchRuleFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".uid")
 	f.StatusField(".update_time")
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
-
-	// Unimplemented / Not Yet Triaged fields
-	f.Unimplemented_NotYetTriaged(".require_code_owner_approval")
 
 	return f
 }
