@@ -252,6 +252,7 @@ func ManagedKafkaACLObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaACLObservedState{}
 	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.ResourceName = direct.LazyPtr(in.GetResourceName())
 	out.PatternType = direct.LazyPtr(in.GetPatternType())
@@ -263,6 +264,7 @@ func ManagedKafkaACLObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Acl{}
 	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
 	out.ResourceType = direct.ValueOf(in.ResourceType)
 	out.ResourceName = direct.ValueOf(in.ResourceName)
 	out.PatternType = direct.ValueOf(in.PatternType)
@@ -275,7 +277,6 @@ func ManagedKafkaACLSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Ac
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaACLSpec{}
 	// MISSING: Name
 	out.AclEntries = direct.Slice_FromProto(mapCtx, in.AclEntries, AclEntry_v1alpha1_FromProto)
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func ManagedKafkaACLSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaACLSpec) *pb.Acl {
@@ -285,7 +286,6 @@ func ManagedKafkaACLSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmana
 	out := &pb.Acl{}
 	// MISSING: Name
 	out.AclEntries = direct.Slice_ToProto(mapCtx, in.AclEntries, AclEntry_v1alpha1_ToProto)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func ManagedKafkaClusterObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmmanagedkafkav1alpha1.ManagedKafkaClusterObservedState {

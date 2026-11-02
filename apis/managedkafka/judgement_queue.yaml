@@ -25,30 +25,40 @@ entries:
     group: managedkafka.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent as spec.parentRef (*ClusterRef) per single-parent rule; moved etag to observedState
   - kind: ManagedKafkaACL
     group: managedkafka.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}" contains ancestor segment(s) clusters/{cluster} with no matching reference or field on ManagedKafkaACLSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ClusterRef) per the single-parent rule; removed projectRef and location
   - kind: ManagedKafkaACL
     group: managedkafka.cnrm.cloud.google.com
     field: .spec.clusterRef
     reason: parent-ref-guessed
     detail: emitted as a reference to ClusterRef, read from the clusters segment of projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ClusterRef) per the single-parent rule; removed projectRef and location
   - kind: ManagedKafkaACL
     group: managedkafka.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved output-only field from spec.etag to status.observedState.etag
   - kind: ManagedKafkaACL
     group: managedkafka.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/clusters/{cluster}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ClusterRef) per the single-parent rule; removed projectRef and location
   - kind: ManagedKafkaConnector
     group: managedkafka.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

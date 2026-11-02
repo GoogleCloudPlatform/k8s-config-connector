@@ -80,6 +80,18 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-controller \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ManagedKafkaACL:Acl
+
+${CONTROLLERBUILDER} generate-fuzzer \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ManagedKafkaACL:Acl
+
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds

@@ -68,6 +68,10 @@ func (m *modelAcl) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 	}
 	id := i.(*krm.ManagedKafkaACLIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get managedkafka GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
