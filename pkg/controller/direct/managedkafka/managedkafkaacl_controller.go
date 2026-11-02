@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:controller
 // krm.group: managedkafka.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // krm.kind: ManagedKafkaACL
@@ -201,6 +200,7 @@ func (a *AclAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String()
+		resource.Etag = a.actual.Etag
 		req := &managedkafkapb.UpdateAclRequest{
 			UpdateMask: updateMask,
 			Acl:        resource,
