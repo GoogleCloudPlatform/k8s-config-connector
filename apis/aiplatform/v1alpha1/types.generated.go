@@ -30,6 +30,7 @@
 // resource: AIPlatformReasoningEngine:ReasoningEngine
 // resource: AIPlatformFeatureView:FeatureView
 // resource: AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
+// resource: AIPlatformCustomJob:CustomJob
 // resource: AIPlatformHyperparameterTuningJob:HyperparameterTuningJob
 
 package v1alpha1
@@ -205,6 +206,29 @@ type ContainerSpec struct {
 	// Required. The URI of a container image in the Container Registry that is to
 	//  be run on each worker replica.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// The command to be invoked when the container is started.
+	//  It overrides the entrypoint instruction in Dockerfile when provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.command
+	Command []string `json:"command,omitempty"`
+
+	// The arguments to be passed when starting the container.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.args
+	Args []string `json:"args,omitempty"`
+
+	// Environment variables to be passed to the container.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.env
+	Env []EnvVar `json:"env,omitempty"`
+}
+
+/* unreachable type ContainerSpecWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.ContainerSpec
+type ContainerSpecWithRequired struct {
+	// Required. The URI of a container image in the Container Registry that is to
+	//  be run on each worker replica.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.image_uri
 	// +required
 	ImageURI *string `json:"imageURI,omitempty"`
 
@@ -222,6 +246,7 @@ type ContainerSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.env
 	Env []EnvVarWithRequired `json:"env,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Content
 type Content struct {
@@ -238,161 +263,37 @@ type Content struct {
 	Parts []Part `json:"parts,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.CustomJobSpec
-type CustomJobSpec struct {
-	// Optional. The ID of the PersistentResource in the same Project and Location
-	//  which to run
+/* unreachable type CustomJob
+// +kcc:proto=google.cloud.aiplatform.v1.CustomJob
+type CustomJob struct {
+
+	// Required. The display name of the CustomJob.
+	//  The name can be up to 128 characters long and can consist of any UTF-8
+	//  characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Job spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.job_spec
+	JobSpec *CustomJobSpec `json:"jobSpec,omitempty"`
+
+	// The labels with user-defined metadata to organize CustomJobs.
 	//
-	//  If this is specified, the job will be run on existing machines held by the
-	//  PersistentResource instead of on-demand short-live machines.
-	//  The network and CMEK configs on the job should be consistent with those on
-	//  the PersistentResource, otherwise, the job will be rejected.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.persistent_resource_id
-	PersistentResourceID *string `json:"persistentResourceID,omitempty"`
-
-	// Required. The spec of the worker pools including machine type and Docker
-	//  image. All worker pools except the first one are optional and can be
-	//  skipped by providing an empty value.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.worker_pool_specs
-	// +required
-	WorkerPoolSpecs []WorkerPoolSpec `json:"workerPoolSpecs,omitempty"`
-
-	// Scheduling options for a CustomJob.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.scheduling
-	Scheduling *Scheduling `json:"scheduling,omitempty"`
-
-	// Specifies the service account for workload run-as account.
-	//  Users submitting jobs must have act-as permission on this run-as account.
-	//  If unspecified, the [Vertex AI Custom Code Service
-	//  Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
-	//  for the CustomJob's project is used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Optional. The full name of the Compute Engine
-	//  [network](/compute/docs/networks-and-firewalls#networks) to which the Job
-	//  should be peered. For example, `projects/12345/global/networks/myVPC`.
-	//  [Format](/compute/docs/reference/rest/v1/networks/insert)
-	//  is of the form `projects/{project}/global/networks/{network}`.
-	//  Where {project} is a project number, as in `12345`, and {network} is a
-	//  network name.
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
 	//
-	//  To specify this field, you must have already [configured VPC Network
-	//  Peering for Vertex
-	//  AI](https://cloud.google.com/vertex-ai/docs/general/vpc-peering).
-	//
-	//  If this field is left unspecified, the job is not peered with any network.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.network
-	Network *string `json:"network,omitempty"`
+	//  See https://goo.gl/xmQnxf for more information and examples of labels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. A list of names for the reserved ip ranges under the VPC network
-	//  that can be used for this job.
-	//
-	//  If set, we will deploy the job within the provided ip ranges. Otherwise,
-	//  the job will be deployed to any ip ranges under the provided VPC
-	//  network.
-	//
-	//  Example: ['vertex-ai-ip-range'].
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.reserved_ip_ranges
-	ReservedIPRanges []string `json:"reservedIPRanges,omitempty"`
-
-	// Optional. Configuration for PSC-I for CustomJob.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.psc_interface_config
-	PSCInterfaceConfig *PSCInterfaceConfig `json:"pscInterfaceConfig,omitempty"`
-
-	// The Cloud Storage location to store the output of this CustomJob or
-	//  HyperparameterTuningJob. For HyperparameterTuningJob,
-	//  the baseOutputDirectory of
-	//  each child CustomJob backing a Trial is set to a subdirectory of name
-	//  [id][google.cloud.aiplatform.v1.Trial.id] under its parent
-	//  HyperparameterTuningJob's baseOutputDirectory.
-	//
-	//  The following Vertex AI environment variables will be passed to
-	//  containers or python modules when this field is set:
-	//
-	//    For CustomJob:
-	//
-	//    * AIP_MODEL_DIR = `<base_output_directory>/model/`
-	//    * AIP_CHECKPOINT_DIR = `<base_output_directory>/checkpoints/`
-	//    * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/logs/`
-	//
-	//    For CustomJob backing a Trial of HyperparameterTuningJob:
-	//
-	//    * AIP_MODEL_DIR = `<base_output_directory>/<trial_id>/model/`
-	//    * AIP_CHECKPOINT_DIR = `<base_output_directory>/<trial_id>/checkpoints/`
-	//    * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/<trial_id>/logs/`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.base_output_directory
-	BaseOutputDirectory *GCSDestination `json:"baseOutputDirectory,omitempty"`
-
-	// The ID of the location to store protected artifacts. e.g. us-central1.
-	//  Populate only when the location is different than CustomJob location.
-	//  List of supported locations:
-	//  https://cloud.google.com/vertex-ai/docs/general/locations
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.protected_artifact_location_id
-	ProtectedArtifactLocationID *string `json:"protectedArtifactLocationID,omitempty"`
-
-	// Optional. The name of a Vertex AI
-	//  [Tensorboard][google.cloud.aiplatform.v1.Tensorboard] resource to which
-	//  this CustomJob will upload Tensorboard logs. Format:
-	//  `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.tensorboard
-	Tensorboard *string `json:"tensorboard,omitempty"`
-
-	// Optional. Whether you want Vertex AI to enable [interactive shell
-	//  access](https://cloud.google.com/vertex-ai/docs/training/monitor-debug-interactive-shell)
-	//  to training containers.
-	//
-	//  If set to `true`, you can access interactive shells at the URIs given
-	//  by
-	//  [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris]
-	//  or
-	//  [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris]
-	//  (within
-	//  [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.enable_web_access
-	EnableWebAccess *bool `json:"enableWebAccess,omitempty"`
-
-	// Optional. Whether you want Vertex AI to enable access to the customized
-	//  dashboard in training chief container.
-	//
-	//  If set to `true`, you can access the dashboard at the URIs given
-	//  by
-	//  [CustomJob.web_access_uris][google.cloud.aiplatform.v1.CustomJob.web_access_uris]
-	//  or
-	//  [Trial.web_access_uris][google.cloud.aiplatform.v1.Trial.web_access_uris]
-	//  (within
-	//  [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1.HyperparameterTuningJob.trials]).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.enable_dashboard_access
-	EnableDashboardAccess *bool `json:"enableDashboardAccess,omitempty"`
-
-	// Optional. The Experiment associated with this job.
-	//  Format:
-	//  `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.experiment
-	Experiment *string `json:"experiment,omitempty"`
-
-	// Optional. The Experiment Run associated with this job.
-	//  Format:
-	//  `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}-{experiment-run-name}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.experiment_run
-	ExperimentRun *string `json:"experimentRun,omitempty"`
-
-	// Optional. The name of the Model resources for which to generate a mapping
-	//  to artifact URIs. Applicable only to some of the Google-provided custom
-	//  jobs. Format: `projects/{project}/locations/{location}/models/{model}`
-	//
-	//  In order to retrieve a specific version of the model, also provide
-	//  the version ID or version alias.
-	//    Example: `projects/{project}/locations/{location}/models/{model}@2`
-	//               or
-	//             `projects/{project}/locations/{location}/models/{model}@golden`
-	//  If no version ID or alias is specified, the "default" version will be
-	//  returned. The "default" version alias is created for the first version of
-	//  the model, and can be moved to other versions later on. There will be
-	//  exactly one default version.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJobSpec.models
-	Models []string `json:"models,omitempty"`
+	// Customer-managed encryption key options for a CustomJob. If this is set,
+	//  then all resources created by the CustomJob will be encrypted with the
+	//  provided encryption key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.DeployedModelRef
 type DeployedModelRef struct {
@@ -993,6 +894,19 @@ type GCSDestination struct {
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
 
+/* unreachable type GCSDestinationWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.GcsDestination
+type GCSDestinationWithRequired struct {
+	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
+	//  end with
+	//  '/', a '/' will be automatically appended. The directory is created if it
+	//  doesn't exist.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsDestination.output_uri_prefix
+	// +required
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.GcsSource
 type GCSSource struct {
 	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
@@ -1191,6 +1105,27 @@ type IntegratedGradientsAttribution struct {
 type LustreMount struct {
 	// Required. IP address of the Lustre instance.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.LustreMount.instance_ip
+	InstanceIP *string `json:"instanceIP,omitempty"`
+
+	// Required. The unique identifier of the Lustre volume.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.LustreMount.volume_handle
+	VolumeHandle *string `json:"volumeHandle,omitempty"`
+
+	// Required. The name of the Lustre filesystem.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.LustreMount.filesystem
+	Filesystem *string `json:"filesystem,omitempty"`
+
+	// Required. Destination mount path. The Lustre file system will be mounted
+	//  for the user under /mnt/lustre/<mount_point>
+	// +kcc:proto:field=google.cloud.aiplatform.v1.LustreMount.mount_point
+	MountPoint *string `json:"mountPoint,omitempty"`
+}
+
+/* unreachable type LustreMountWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.LustreMount
+type LustreMountWithRequired struct {
+	// Required. IP address of the Lustre instance.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.LustreMount.instance_ip
 	// +required
 	InstanceIP *string `json:"instanceIP,omitempty"`
 
@@ -1210,6 +1145,7 @@ type LustreMount struct {
 	// +required
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
 type MachineSpec struct {
@@ -1266,6 +1202,64 @@ type MachineSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
 	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
 }
+
+/* unreachable type MachineSpecWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
+type MachineSpecWithRequired struct {
+	// Immutable. The type of the machine.
+	//
+	//  See the [list of machine types supported for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+	//
+	//  See the [list of machine types supported for custom
+	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+	//
+	//  For [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] this field is
+	//  optional, and the default value is `n1-standard-2`. For
+	//  [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] or as
+	//  part of [WorkerPoolSpec][google.cloud.aiplatform.v1.WorkerPoolSpec] this
+	//  field is required.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The type of accelerator(s) that may be attached to the machine
+	//  as per
+	//  [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// The number of accelerators to attach to the machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Optional. Immutable. The Nvidia GPU partition size.
+	//
+	//  When specified, the requested accelerators will be partitioned into
+	//  smaller GPU partitions. For example, if the request is for 8 units of
+	//  NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+	//  create 8 * 7 = 56 partitioned MIG instances.
+	//
+	//  The partition size must be a value supported by the requested accelerator.
+	//  Refer to
+	//  [Nvidia GPU
+	//  Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+	//  for the available partition sizes.
+	//
+	//  If set, the accelerator_count should be set to 1.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.gpu_partition_size
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+	//  available from GKE. (Example: tpu_topology: "2x2x1").
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.tpu_topology
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Optional. Immutable. Configuration controlling how this resource pool
+	//  consumes reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
+	ReservationAffinity *ReservationAffinityWithRequired `json:"reservationAffinity,omitempty"`
+}
+*/
 
 /* unreachable type Measurement
 // +kcc:proto=google.cloud.aiplatform.v1.Measurement
@@ -1631,6 +1625,25 @@ type ModelSourceInfo struct {
 type NfsMount struct {
 	// Required. IP address of the NFS server.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.server
+	Server *string `json:"server,omitempty"`
+
+	// Required. Source path exported from NFS server.
+	//  Has to start with '/', and combined with the ip address, it indicates
+	//  the source mount path in the form of `server:path`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.path
+	Path *string `json:"path,omitempty"`
+
+	// Required. Destination mount path. The NFS will be mounted for the user
+	//  under /mnt/nfs/<mount_point>
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.mount_point
+	MountPoint *string `json:"mountPoint,omitempty"`
+}
+
+/* unreachable type NfsMountWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.NfsMount
+type NfsMountWithRequired struct {
+	// Required. IP address of the NFS server.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NfsMount.server
 	// +required
 	Server *string `json:"server,omitempty"`
 
@@ -1647,6 +1660,7 @@ type NfsMount struct {
 	// +required
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
 type NotebookEUCConfig struct {
@@ -2034,40 +2048,6 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.PythonPackageSpec
-type PythonPackageSpec struct {
-	// Required. The URI of a container image in Artifact Registry that will run
-	//  the provided Python package. Vertex AI provides a wide range of executor
-	//  images with pre-installed packages to meet users' various use cases. See
-	//  the list of [pre-built containers for
-	//  training](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
-	//  You must use an image from this list.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.executor_image_uri
-	// +required
-	ExecutorImageURI *string `json:"executorImageURI,omitempty"`
-
-	// Required. The Google Cloud Storage location of the Python package files
-	//  which are the training program and its dependent packages. The maximum
-	//  number of package URIs is 100.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.package_uris
-	// +required
-	PackageURIs []string `json:"packageURIs,omitempty"`
-
-	// Required. The Python module name to run after installing the packages.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.python_module
-	// +required
-	PythonModule *string `json:"pythonModule,omitempty"`
-
-	// Command line arguments to be passed to the Python task.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.args
-	Args []string `json:"args,omitempty"`
-
-	// Environment variables to be passed to the python module.
-	//  Maximum limit is 100.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.PythonPackageSpec.env
-	Env []EnvVarWithRequired `json:"env,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.RayLogsSpec
 type RayLogsSpec struct {
 	// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
@@ -2139,6 +2119,28 @@ type ReservationAffinity struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
 }
+
+/* unreachable type ReservationAffinityWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
+type ReservationAffinityWithRequired struct {
+	// Required. Specifies the reservation affinity type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.reservation_affinity_type
+	// +required
+	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
+
+	// Optional. Corresponds to the label key of a reservation resource. To target
+	//  a SPECIFIC_RESERVATION by name, use
+	//  `compute.googleapis.com/reservation-name` as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of a reservation resource. This
+	//  must be the full resource name of the reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ResourcePool
 type ResourcePool struct {
@@ -3082,6 +3084,39 @@ type WorkerPoolSpec struct {
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
 
+/* unreachable type WorkerPoolSpecWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1.WorkerPoolSpec
+type WorkerPoolSpecWithRequired struct {
+	// The custom container task.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.container_spec
+	ContainerSpec *ContainerSpecWithRequired `json:"containerSpec,omitempty"`
+
+	// The Python packaged task.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.python_package_spec
+	PythonPackageSpec *PythonPackageSpec `json:"pythonPackageSpec,omitempty"`
+
+	// Optional. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.machine_spec
+	MachineSpec *MachineSpecWithRequired `json:"machineSpec,omitempty"`
+
+	// Optional. The number of worker replicas to use for this worker pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Optional. List of NFS mount spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.nfs_mounts
+	NfsMounts []NfsMountWithRequired `json:"nfsMounts,omitempty"`
+
+	// Optional. List of Lustre mounts.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.lustre_mounts
+	LustreMounts []LustreMountWithRequired `json:"lustreMounts,omitempty"`
+
+	// Disk spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.disk_spec
+	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.XraiAttribution
 type XraiAttribution struct {
 	// Required. The number of steps for approximating the path integral.
@@ -3126,6 +3161,65 @@ type ColabImageObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ColabImage.description
 	Description *string `json:"description,omitempty"`
 }
+
+/* unreachable type CustomJobObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CustomJob
+type CustomJobObservedState struct {
+	// Output only. Resource name of a CustomJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The detailed state of the job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Time when the CustomJob was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when the CustomJob for the first time entered the
+	//  `JOB_STATE_RUNNING` state.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when the CustomJob entered any of the following states:
+	//  `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. Time when the CustomJob was most recently updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Only populated when job's state is `JOB_STATE_FAILED` or
+	//  `JOB_STATE_CANCELLED`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// Output only. URIs for accessing [interactive
+	//  shells](https://cloud.google.com/vertex-ai/docs/training/monitor-debug-interactive-shell)
+	//  (one URI for each training node). Only available if
+	//  [job_spec.enable_web_access][google.cloud.aiplatform.v1.CustomJobSpec.enable_web_access]
+	//  is `true`.
+	//
+	//  The keys are names of each node in the training job; for example,
+	//  `workerpool0-0` for the primary node, `workerpool1-0` for the first node in
+	//  the second worker pool, and `workerpool1-1` for the second node in the
+	//  second worker pool.
+	//
+	//  The values are the URIs for each node's interactive shell.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.web_access_uris
+	WebAccessUris map[string]string `json:"webAccessUris,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CustomJob.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.FeatureView.BigtableMetadata
 type FeatureView_BigtableMetadataObservedState struct {

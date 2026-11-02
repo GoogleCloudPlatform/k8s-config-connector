@@ -23,7 +23,6 @@
 // resource: VertexAIExampleStore:ExampleStore
 // resource: VertexAIFeatureGroup:FeatureGroup
 // resource: VertexAIDataLabelingJob:DataLabelingJob
-// resource: VertexAICustomJob:CustomJob
 // resource: VertexAITensorboard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
 // resource: VertexAIFeaturestoreEntityTypeFeature:Feature
@@ -89,6 +88,7 @@ type BigQuerySource struct {
 	InputURI *string `json:"inputURI,omitempty"`
 }
 
+/* unreachable type ContainerSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ContainerSpec
 type ContainerSpec struct {
 	// Required. The URI of a container image in the Container Registry that is to
@@ -110,6 +110,7 @@ type ContainerSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.env
 	Env []EnvVar `json:"env,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
 type DedicatedResources struct {
@@ -188,6 +189,7 @@ type DedicatedResources struct {
 	FlexStart *FlexStart `json:"flexStart,omitempty"`
 }
 
+/* unreachable type DiskSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DiskSpec
 type DiskSpec struct {
 	// Type of the boot disk. For non-A3U machines, the default value is
@@ -201,7 +203,9 @@ type DiskSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DiskSpec.boot_disk_size_gb
 	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
+*/
 
+/* unreachable type DNSPeeringConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DnsPeeringConfig
 type DNSPeeringConfig struct {
 	// Required. The DNS name suffix of the zone being peered to, e.g.,
@@ -221,7 +225,9 @@ type DNSPeeringConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_network
 	TargetNetwork *string `json:"targetNetwork,omitempty"`
 }
+*/
 
+/* unreachable type EnvVar
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
@@ -238,6 +244,7 @@ type EnvVar struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.value
 	Value *string `json:"value,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
 type ExampleStoreConfig struct {
@@ -501,6 +508,7 @@ type FlexStart struct {
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
 
+/* unreachable type GCSDestination
 // +kcc:proto=google.cloud.aiplatform.v1beta1.GcsDestination
 type GCSDestination struct {
 	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
@@ -510,6 +518,7 @@ type GCSDestination struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsDestination.output_uri_prefix
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -587,6 +596,7 @@ type MetadataStore_MetadataStoreState struct {
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }
 
+/* unreachable type NfsMount
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NfsMount
 type NfsMount struct {
 	// Required. IP address of the NFS server.
@@ -604,7 +614,9 @@ type NfsMount struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.mount_point
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
+*/
 
+/* unreachable type PSCInterfaceConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PscInterfaceConfig
 type PSCInterfaceConfig struct {
 	// Optional. The name of the Compute Engine
@@ -625,6 +637,7 @@ type PSCInterfaceConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.dns_peering_configs
 	DNSPeeringConfigs []DNSPeeringConfig `json:"dnsPeeringConfigs,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
@@ -662,6 +675,7 @@ type SampleConfig struct {
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
+/* unreachable type Scheduling
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Scheduling
 type Scheduling struct {
 	// The maximum job running time. The default is 7 days.
@@ -691,6 +705,7 @@ type Scheduling struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.max_wait_duration
 	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.TrainingConfig
 type TrainingConfig struct {
@@ -700,6 +715,7 @@ type TrainingConfig struct {
 	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
 }
 
+/* unreachable type WorkerPoolSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.WorkerPoolSpec
 type WorkerPoolSpec struct {
 	// The custom container task.
@@ -726,6 +742,7 @@ type WorkerPoolSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.disk_spec
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
+*/
 
 /* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
