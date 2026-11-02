@@ -25,8 +25,12 @@ Inspect every generated `pkg/controller/direct/<service>/<proto_lower>_controlle
 4. **Declared-Spec-Only Diffing (`common.CompareGreenfieldSpec` / `common.CompareGreenfieldSpecAndLabels`):** `Update` calls `common.CompareGreenfieldSpec(ctx, a.desired, actual, krm.<Kind>Spec_FromProto)` (or `common.CompareGreenfieldSpecAndLabels(..., a.labels)` when top-level proto `labels` are reconciled via `metadata.labels`) and reports diffs via `structuredreporting.ReportDiff(ctx, report)`.
 5. **Status & ExternalRef Updates:** `setStatus(u, resolved)` is called at the end of `Create` and on both no-op and mutating `Update` paths, setting `status.ExternalRef = direct.LazyPtr(a.id.String())`.
 
-### 3. `generate.sh` Idempotency & `static_config.go` Sync
-- Re-run `SKIP_GENERATE_CRDS=1 ./apis/<service>/generate.sh` for the services in the branch and verify `git diff` is completely empty (confirming `// +generated:controller` and `// +generated:fuzzer` files regenerate idempotently in place).
+### 3. No `generate-controller` / `generate-fuzzer` in `generate.sh` & `static_config.go` Sync
+- Controllers and fuzzers must be generated with one-shot commands only; `generate.sh` runs on every CI build and would overwrite later customizations. Run `git diff origin/master...HEAD -- 'apis/*/generate.sh'` and **fail verification** if the branch:
+    - adds any `generate-controller` (or `generate-direct-reconciler`) / `generate-fuzzer` invocation, or any `--resource` flag on one; or
+    - leaves an existing invocation's `--resource <Kind>:...` flag in place for any of the branch's target Kinds.
+  *(Pre-existing invocations for other, non-target Kinds are out of scope for this check.)*
+- Re-run `SKIP_GENERATE_CRDS=1 ./apis/<service>/generate.sh` for the services in the branch and verify `git diff` is completely empty (confirming types, identities, and mappers are in sync and `generate.sh` does not touch the `// +generated:controller` / `// +generated:fuzzer` files).
 - Re-run `python3 dev/tasks/generate_static_config.py` and verify `git diff pkg/controller/resourceconfig/static_config.go` is empty.
 - If `go.mod` was modified, verify `go mod tidy && (cd mockgcp && go mod tidy)` produces zero diff.
 
@@ -50,6 +54,6 @@ Return a concise report with:
 - **Services & Kinds Count:** `<N services, M controllers, K fuzzers>`
 - **Handwritten Protection Check:** `PASS / FAIL`
 - **5 Canonical Greenfield Standards Check:** `PASS / FAIL`
-- **`generate.sh` Idempotency Check:** `PASS / FAIL`
+- **No Controller/Fuzzer Generators in `generate.sh` & `generate.sh` Zero-Diff Check:** `PASS / FAIL`
 - **`go build`, `FuzzAllMappers`, & `TestDirectResourceFileNaming`:** `PASS / FAIL`
 - **Actionable Findings (if any):** Exact file paths and fixes needed.

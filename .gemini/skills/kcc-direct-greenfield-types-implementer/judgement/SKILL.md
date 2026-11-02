@@ -43,8 +43,10 @@ You **must** also apply the baseline KRM standards in:
    - `generate-types --prepopulate-resource`
    - `generate-identity`
    - `generate-mapper --prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`, and `--proto-source-path ${PROTO_OUT}` if `generate.sh` pins a custom `PROTO_SHA`)
-   - `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` (if a pre-generated controller/fuzzer already exists for `<Kind>`)
    - `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports`.
+
+   > [!IMPORTANT]
+   > **`generate.sh` must NOT invoke `generate-controller` or `generate-fuzzer`.** `generate.sh` runs continuously in CI (`make generate` → `dev/tasks/generate-types-and-mappers` → `validate-generated-files`), and `generate-controller --prepopulate-resource` overwrites any file marked `// +generated:controller` on every run, silently discarding later Step 2 customizations. The controller and fuzzer are generated with **one-shot** commands (see Phase 4). If `apis/<service>/generate.sh` already contains `generate-controller` / `generate-fuzzer` invocations with `--resource <Kind>:<ProtoMessage>`, remove that `--resource` flag in this PR (and delete the whole invocation if no `--resource` flags remain).
    *(Note for multi-service or legacy packages such as `dialogflow`, `iam`, `mapmanagement`, `networkconnectivity`, or `bigqueryanalyticshub`: if running `generate-mapper` in `generate.sh` would overwrite existing mockgcp/legacy or multi-service mappers in `pkg/controller/direct/<service>/mapper.generated.go`, keep `<Kind>`'s mapper functions isolated in `pkg/controller/direct/<service>/<kind_lower>_mapper.go` using the exact lowercase `<kind_lower>_` prefix required by `TestDirectResourceFileNaming`.)*
 3. Locate the proto definition in `.build/third_party/googleapis/google/...` matching `+kcc:spec:proto=<full_proto_name>` (run `./dev/tools/controllerbuilder/generate-proto.sh` if `.build/third_party/googleapis` is missing). Inspect the resource message, `option (google.api.resource)`, and `Create<Resource>Request`.
 
@@ -79,7 +81,26 @@ You **must** also apply the baseline KRM standards in:
 1. Run `./apis/<service>/generate.sh` and confirm `git diff apis/<service>/judgement_queue.yaml` shows no newly opened entries for `<Kind>`.
 2. **If a Pre-Generated Controller (`*_controller.go`) or Fuzzer (`<kind_lower>_fuzzer.generated.go`) Exists in `pkg/controller/direct/<service>/` (MANDATORY)**:
    - Because closing `judgement_queue.yaml` entries changes KRM fields, `*Ref` types, `ObservedState` presence, or `IdentityV2` vs `ServerGeneratedIdentity`, you **must** regenerate and fix the controller, mapper, and fuzzer in lockstep:
-     - Ensure `apis/<service>/generate.sh` (or direct `controllerbuilder generate-controller --prepopulate-resource` / `generate-fuzzer --prepopulate-resource` calls) updates `pkg/controller/direct/<service>/<proto_lower>_controller.go` and `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go`.
+     - Run `generate-controller` and `generate-fuzzer` **once, directly** (never from `generate.sh`) to regenerate `pkg/controller/direct/<service>/<proto_lower>_controller.go` and `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` against the finalized types and mappers:
+       ```bash
+       # One-shot regeneration. Do NOT add these commands to apis/<service>/generate.sh.
+       REPO_ROOT="$(git rev-parse --show-toplevel)"  # needed for --proto-source-path below
+       cd "${REPO_ROOT}/dev/tools/controllerbuilder"
+       go run . generate-controller \
+         --service <proto.service.package> \
+         --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
+         --prepopulate-resource \
+         --resource <Kind>:<ProtoMessage>
+       go run . generate-fuzzer \
+         --service <proto.service.package> \
+         --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
+         --prepopulate-resource \
+         --resource <Kind>:<ProtoMessage>
+       cd -
+       ```
+       *(If `apis/<service>/generate.sh` pins a custom proto descriptor via `PROTO_SHA` / `PROTO_OUT`, pass the same `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb` flag to both commands.)*
+     - **Stop** if `generate-controller` logs `could not load proto ... scaffolding will guess the resource name shape`: it still writes a controller, but without proto-driven RPC/LRO/ID handling. Ensure the descriptor exists (Phase 4 step 1's `generate.sh` run creates `.build/googleapis.pb`; pass `--proto-source-path` if the service pins one) and re-run the one-shot commands.
+     - Commit the regenerated files, and confirm `apis/<service>/generate.sh` contains no `generate-controller` / `generate-fuzzer` invocation for `<Kind>`.
      - If `ambiguous-proto-name` changed `<ProtoMessage>`, remove any stale `<old_proto_lower>_controller.go` file and run `python3 dev/tasks/generate_static_config.py`.
      - Verify that `pkg/controller/direct/<service>/...` compiles cleanly and passes 200-seed round-trip fuzzing:
        ```bash

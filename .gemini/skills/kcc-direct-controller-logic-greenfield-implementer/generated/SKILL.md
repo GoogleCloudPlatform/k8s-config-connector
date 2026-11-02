@@ -15,31 +15,44 @@ Before generating or finalizing the controller and E2E fixtures for `{kind}`, ve
 
 ---
 
-## Step 1: Autogenerate Controller and Fuzzer via `apis/<service>/generate.sh`
+## Step 1: Autogenerate Controller and Fuzzer (One-Shot `controllerbuilder` Commands)
 
-1. **Inspect `apis/<service>/generate.sh`**:
-   Ensure `apis/<service>/generate.sh` includes both `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` for `{kind}:<ProtoResource>` after `generate-mapper --prepopulate-resource`:
-   ```bash
-   ${CONTROLLERBUILDER} generate-controller \
-     --service <proto.service.package> \
-     --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
-     --prepopulate-resource \
-     --resource <Kind>:<ProtoResource>
+> [!IMPORTANT]
+> **Never add `generate-controller` or `generate-fuzzer` to `apis/<service>/generate.sh`.** `generate.sh` runs on every CI build (`make generate` → `dev/tasks/generate-types-and-mappers` → `validate-generated-files`), and `generate-controller --prepopulate-resource` overwrites any file marked `// +generated:controller` on every run, silently discarding customizations. Run the generators **once**, directly, and commit the output. If `generate.sh` still invokes them for `{kind}`, remove `{kind}`'s `--resource` flag in this PR (and the whole invocation if no `--resource` flags remain).
 
-   ${CONTROLLERBUILDER} generate-fuzzer \
-     --prepopulate-resource \
-     --service <proto.service.package> \
-     --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
-     --resource <Kind>:<ProtoResource>
-   ```
-   *(If `apis/<service>/generate.sh` pins `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb` on `generate-types`, pass the same `--proto-source-path` flag to `generate-mapper`, `generate-controller`, and `generate-fuzzer`.)*
-
-2. **Run `./apis/<service>/generate.sh` & Update `static_config.go` (MANDATORY)**:
+1. **Check Whether the Controller and Fuzzer Already Exist**:
+   If `pkg/controller/direct/<service>/<proto_lower>_controller.go` (with `// +generated:controller`) and `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` already exist (from bulk generation or Step 1b) and compile against the finalized types, skip to step 2. Otherwise, first run `generate.sh` so types, identities, and mappers are current **and** the proto descriptor (`.build/googleapis.pb`) exists, then generate the controller and fuzzer once:
    ```bash
    SKIP_GENERATE_CRDS=1 ./apis/<service>/generate.sh
+
+   # One-shot generation. Do NOT add these commands to apis/<service>/generate.sh.
+   REPO_ROOT="$(git rev-parse --show-toplevel)"  # needed for --proto-source-path below
+   cd "${REPO_ROOT}/dev/tools/controllerbuilder"
+   go run . generate-controller \
+     --service <proto.service.package> \
+     --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
+     --prepopulate-resource \
+     --resource <Kind>:<ProtoResource>
+   go run . generate-fuzzer \
+     --service <proto.service.package> \
+     --api-version <service>.cnrm.cloud.google.com/v1alpha1 \
+     --prepopulate-resource \
+     --resource <Kind>:<ProtoResource>
+   cd -
+   ```
+   *(If `apis/<service>/generate.sh` pins `--proto-source-path ${REPO_ROOT}/.build/googleapis-<sha>.pb` on `generate-types`, pass the same `--proto-source-path` flag to both commands.)*
+
+   > [!CAUTION]
+   > If `generate-controller` logs `could not load proto ... scaffolding will guess the resource name shape`, **stop**: it still writes a controller, but without proto-driven RPC/LRO/ID handling. Ensure the descriptor exists (re-run `generate.sh` or `./dev/tools/controllerbuilder/generate-proto.sh`, and pass `--proto-source-path` if the service pins one), then re-run the one-shot commands.
+
+   > [!WARNING]
+   > Re-running `generate-controller --prepopulate-resource` overwrites `<proto_lower>_controller.go` (no `--overwrite` needed while it carries `// +generated:controller`). Do not re-run it after you have customized the controller, or your changes will be lost. Record golden logs only against the final, committed controller code.
+
+2. **Update `static_config.go` (MANDATORY)**:
+   ```bash
    python3 dev/tasks/generate_static_config.py
    ```
-   This deterministically generates:
+   Generation produces:
    - `pkg/controller/direct/<service>/<proto_lower>_controller.go` (marked with `// +generated:controller`)
    - `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` (marked with `// +generated:fuzzer`)
    - Service registration in `pkg/controller/direct/register/register.go` and `pkg/controller/resourceconfig/static_config.go`
