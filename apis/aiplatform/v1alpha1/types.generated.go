@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1
 // proto.service: google.cloud.aiplatform.v1
+// proto.service: google.cloud.aiplatform.v1beta1
 // resource: AIPlatformPersistentResource:PersistentResource
 // resource: AIPlatformSpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
@@ -32,6 +33,7 @@
 // resource: AIPlatformCustomJob:CustomJob
 // resource: AIPlatformHyperparameterTuningJob:HyperparameterTuningJob
 // resource: AIPlatformSchedule:Schedule
+// resource: AIPlatformModelMonitor:ModelMonitor
 
 package v1alpha1
 
@@ -894,7 +896,6 @@ type GCSDestination struct {
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
 
-/* unreachable type GCSDestinationWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.GcsDestination
 type GCSDestinationWithRequired struct {
 	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
@@ -905,7 +906,6 @@ type GCSDestinationWithRequired struct {
 	// +required
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.GcsSource
 type GCSSource struct {
@@ -3146,11 +3146,528 @@ type XraiAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BatchDedicatedResources
+type BatchDedicatedResources struct {
+	// Required. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.machine_spec
+	// +required
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Immutable. The number of machine replicas used at the start of the batch
+	//  operation. If not set, Vertex AI decides starting number, not greater than
+	//  [max_replica_count][google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count]
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.starting_replica_count
+	StartingReplicaCount *int32 `json:"startingReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of machine replicas the batch operation may
+	//  be scaled to. The default value is 10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+
+	// Optional. Immutable. If set, use DWS resource to schedule the deployment
+	//  workload. reference:
+	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.flex_start
+	FlexStart *FlexStart `json:"flexStart,omitempty"`
+
+	// Optional. If true, schedule the deployment workload on [spot
+	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.spot
+	Spot *bool `json:"spot,omitempty"`
+}
+
+/* unreachable type ExamplesWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Examples
+type ExamplesWithRequired struct {
+	// The Cloud Storage input instances.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.example_gcs_source
+	ExampleGCSSource *Examples_ExampleGCSSourceWithRequired `json:"exampleGCSSource,omitempty"`
+
+	// The full configuration for the generated index, the semantics are the
+	//  same as [metadata][google.cloud.aiplatform.v1beta1.Index.metadata] and
+	//  should match
+	//  [NearestNeighborSearchConfig](https://cloud.google.com/vertex-ai/docs/explainable-ai/configuring-explanations-example-based#nearest-neighbor-search-config).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.nearest_neighbor_search_config
+	NearestNeighborSearchConfig *Value `json:"nearestNeighborSearchConfig,omitempty"`
+
+	// Simplified preset configuration, which automatically sets configuration
+	//  values based on the desired query speed-precision trade-off and modality.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.presets
+	Presets *Presets `json:"presets,omitempty"`
+
+	// The Cloud Storage locations that contain the instances to be
+	//  indexed for approximate nearest neighbor search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.gcs_source
+	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
+
+	// The number of neighbors to return when querying for examples.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.neighbor_count
+	NeighborCount *int32 `json:"neighborCount,omitempty"`
+}
+*/
+
+/* unreachable type Examples_ExampleGCSSourceWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource
+type Examples_ExampleGCSSourceWithRequired struct {
+	// The format in which instances are given, if not specified, assume it's
+	//  JSONL format. Currently only JSONL format is supported.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource.data_format
+	DataFormat *string `json:"dataFormat,omitempty"`
+
+	// The Cloud Storage location for the input instances.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Examples.ExampleGcsSource.gcs_source
+	GCSSource *GCSSourceWithRequired `json:"gcsSource,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ExplanationSpec
+type ExplanationSpecWithRequired struct {
+	// Required. Parameters that configure explaining of the Model's predictions.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.parameters
+	// +required
+	Parameters *ExplanationParameters `json:"parameters,omitempty"`
+
+	// Optional. Metadata describing the Model's input and output for explanation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExplanationSpec.metadata
+	Metadata *ExplanationMetadata `json:"metadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
+type FlexStart struct {
+	// The max duration of the deployment is max_runtime_duration. The
+	//  deployment will be terminated after the duration. The
+	//  max_runtime_duration can be set up to 7 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
+	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
+}
+
+/* unreachable type GCSSourceWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.GcsSource
+type GCSSourceWithRequired struct {
+	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
+	//  wildcards. For more information on wildcards, see
+	//  https://cloud.google.com/storage/docs/wildcards.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsSource.uris
+	// +required
+	URIs []string `json:"uris,omitempty"`
+}
+*/
+
+/* unreachable type IntegratedGradientsAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution
+type IntegratedGradientsAttributionWithRequired struct {
+	// Required. The number of steps for approximating the path integral.
+	//  A good value to start is 50 and gradually increase until the
+	//  sum to diff property is within the desired error range.
+	//
+	//  Valid range of its value is [1, 100], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.step_count
+	// +required
+	StepCount *int32 `json:"stepCount,omitempty"`
+
+	// Config for SmoothGrad approximation of gradients.
+	//
+	//  When enabled, the gradients are approximated by averaging the gradients
+	//  from noisy samples in the vicinity of the inputs. Adding
+	//  noise can help improve the computed gradients. Refer to this paper for more
+	//  details: https://arxiv.org/pdf/1706.03825.pdf
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.smooth_grad_config
+	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
+
+	// Config for IG with blur baseline.
+	//
+	//  When enabled, a linear path from the maximally blurred image to the input
+	//  image is created. Using a blurred baseline instead of zero (black image) is
+	//  motivated by the BlurIG approach explained here:
+	//  https://arxiv.org/abs/2004.03383
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.blur_baseline_config
+	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget
+type ModelMonitor_ModelMonitoringTarget struct {
+	// Model in Vertex AI Model Registry.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.vertex_model
+	VertexModel *ModelMonitor_ModelMonitoringTarget_VertexModelSource `json:"vertexModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource
+type ModelMonitor_ModelMonitoringTarget_VertexModelSource struct {
+	// Model resource name. Format:
+	//  projects/{project}/locations/{location}/models/{model}.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model
+	Model *string `json:"model,omitempty"`
+
+	// Model version id.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model_version_id
+	ModelVersionID *string `json:"modelVersionID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition
+type ModelMonitoringAlertCondition struct {
+	// A condition that compares a stats value against a threshold. Alert will
+	//  be triggered if value above the threshold.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition.threshold
+	Threshold *float64 `json:"threshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput
+type ModelMonitoringInput struct {
+	// Columnized dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.columnized_dataset
+	ColumnizedDataset *ModelMonitoringInput_ModelMonitoringDataset `json:"columnizedDataset,omitempty"`
+
+	// Vertex AI Batch prediction Job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.batch_prediction_output
+	BatchPredictionOutput *ModelMonitoringInput_BatchPredictionOutput `json:"batchPredictionOutput,omitempty"`
+
+	// Vertex AI Endpoint request & response logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.vertex_endpoint_logs
+	VertexEndpointLogs *ModelMonitoringInput_VertexEndpointLogs `json:"vertexEndpointLogs,omitempty"`
+
+	// The time interval (pair of start_time and end_time) for which results
+	//  should be returned.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.time_interval
+	TimeInterval *Interval `json:"timeInterval,omitempty"`
+
+	// The time offset setting for which results should be returned.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.time_offset
+	TimeOffset *ModelMonitoringInput_TimeOffset `json:"timeOffset,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput
+type ModelMonitoringInput_BatchPredictionOutput struct {
+	// Vertex AI Batch prediction job resource name. The job must match the
+	//  model version specified in [ModelMonitor].[model_monitoring_target].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput.batch_prediction_job
+	BatchPredictionJob *string `json:"batchPredictionJob,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset
+type ModelMonitoringInput_ModelMonitoringDataset struct {
+	// Resource name of the Vertex AI managed dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.vertex_dataset
+	VertexDataset *string `json:"vertexDataset,omitempty"`
+
+	// Google Cloud Storage data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.gcs_source
+	GCSSource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource `json:"gcsSource,omitempty"`
+
+	// BigQuery data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.bigquery_source
+	BigquerySource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource `json:"bigquerySource,omitempty"`
+
+	// The timestamp field. Usually for serving data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.timestamp_field
+	TimestampField *string `json:"timestampField,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource
+type ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource struct {
+	// BigQuery URI to a table, up to 2000 characters long. All the columns
+	//  in the table will be selected. Accepted forms:
+	//
+	//  *  BigQuery path. For example:
+	//  `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource.table_uri
+	TableURI *string `json:"tableURI,omitempty"`
+
+	// Standard SQL to be used instead of the `table_uri`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource.query
+	Query *string `json:"query,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource
+type ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource struct {
+	// Google Cloud Storage URI to the input file(s). May contain
+	//  wildcards. For more information on wildcards, see
+	//  https://cloud.google.com/storage/docs/wildcards.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
+
+	// Data format of the dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource.format
+	Format *string `json:"format,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset
+type ModelMonitoringInput_TimeOffset struct {
+	// [offset] is the time difference from the cut-off time.
+	//  For scheduled jobs, the cut-off time is the scheduled time.
+	//  For non-scheduled jobs, it's the time when the job was created.
+	//  Currently we support the following format:
+	//  'w|W': Week, 'd|D': Day, 'h|H': Hour
+	//  E.g. '1h' stands for 1 hour, '2d' stands for 2 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset.offset
+	Offset *string `json:"offset,omitempty"`
+
+	// [window] refers to the scope of data selected for analysis.
+	//  It allows you to specify the quantity of data you wish to examine.
+	//  Currently we support the following format:
+	//  'w|W': Week, 'd|D': Day, 'h|H': Hour
+	//  E.g. '1h' stands for 1 hour, '2d' stands for 2 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset.window
+	Window *string `json:"window,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs
+type ModelMonitoringInput_VertexEndpointLogs struct {
+	// List of endpoint resource names. The endpoints must enable the logging
+	//  with the [Endpoint].[request_response_logging_config], and must contain
+	//  the deployed model corresponding to the model version specified in
+	//  [ModelMonitor].[model_monitoring_target].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs.endpoints
+	Endpoints []string `json:"endpoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec
+type ModelMonitoringNotificationSpec struct {
+	// Email alert config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.email_config
+	EmailConfig *ModelMonitoringNotificationSpec_EmailConfig `json:"emailConfig,omitempty"`
+
+	// Dump the anomalies to Cloud Logging. The anomalies will be put to json
+	//  payload encoded from proto
+	//  [google.cloud.aiplatform.logging.ModelMonitoringAnomaliesLogEntry][].
+	//  This can be further sinked to Pub/Sub or any other services supported
+	//  by Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.enable_cloud_logging
+	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
+
+	// Notification channel config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.notification_channel_configs
+	NotificationChannelConfigs []ModelMonitoringNotificationSpec_NotificationChannelConfig `json:"notificationChannelConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig
+type ModelMonitoringNotificationSpec_EmailConfig struct {
+	// The email addresses to send the alerts.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig.user_emails
+	UserEmails []string `json:"userEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig
+type ModelMonitoringNotificationSpec_NotificationChannelConfig struct {
+	// Resource names of the NotificationChannels.
+	//  Must be of the format
+	//  `projects/<project_id_or_number>/notificationChannels/<channel_id>`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig.notification_channel
+	NotificationChannel *string `json:"notificationChannel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec
+type ModelMonitoringObjectiveSpec_DataDriftSpec struct {
+	// Feature names / Prediction output names interested in monitoring.
+	//  These should be a subset of the input feature names or prediction output
+	//  names specified in the monitoring schema.
+	//  If the field is not specified all features / prediction outputs outlied
+	//  in the monitoring schema will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.features
+	Features []string `json:"features,omitempty"`
+
+	// Supported metrics type:
+	//   * l_infinity
+	//   * jensen_shannon_divergence
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.categorical_metric_type
+	CategoricalMetricType *string `json:"categoricalMetricType,omitempty"`
+
+	// Supported metrics type:
+	//   * jensen_shannon_divergence
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.numeric_metric_type
+	NumericMetricType *string `json:"numericMetricType,omitempty"`
+
+	// Default alert condition for all the categorical features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.default_categorical_alert_condition
+	DefaultCategoricalAlertCondition *ModelMonitoringAlertCondition `json:"defaultCategoricalAlertCondition,omitempty"`
+
+	// Default alert condition for all the numeric features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.default_numeric_alert_condition
+	DefaultNumericAlertCondition *ModelMonitoringAlertCondition `json:"defaultNumericAlertCondition,omitempty"`
+
+	// Per feature alert condition will override default alert condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.feature_alert_conditions
+	FeatureAlertConditions map[string]ModelMonitoringAlertCondition `json:"featureAlertConditions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec
+type ModelMonitoringObjectiveSpec_FeatureAttributionSpec struct {
+	// Feature names interested in monitoring.
+	//  These should be a subset of the input feature names specified in the
+	//  monitoring schema. If the field is not specified all features outlied in
+	//  the monitoring schema will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.features
+	Features []string `json:"features,omitempty"`
+
+	// Default alert condition for all the features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.default_alert_condition
+	DefaultAlertCondition *ModelMonitoringAlertCondition `json:"defaultAlertCondition,omitempty"`
+
+	// Per feature alert condition will override default alert condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.feature_alert_conditions
+	FeatureAlertConditions map[string]ModelMonitoringAlertCondition `json:"featureAlertConditions,omitempty"`
+
+	// The config of resources used by the Model Monitoring during the batch
+	//  explanation for non-AutoML models. If not set, `n1-standard-2` machine
+	//  type will be used by default.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.batch_explanation_dedicated_resources
+	BatchExplanationDedicatedResources *BatchDedicatedResources `json:"batchExplanationDedicatedResources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.TabularObjective
+type ModelMonitoringObjectiveSpec_TabularObjective struct {
+	// Input feature distribution drift monitoring spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.TabularObjective.feature_drift_spec
+	FeatureDriftSpec *ModelMonitoringObjectiveSpec_DataDriftSpec `json:"featureDriftSpec,omitempty"`
+
+	// Prediction output distribution drift monitoring spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.TabularObjective.prediction_output_drift_spec
+	PredictionOutputDriftSpec *ModelMonitoringObjectiveSpec_DataDriftSpec `json:"predictionOutputDriftSpec,omitempty"`
+
+	// Feature attribution monitoring spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.TabularObjective.feature_attribution_spec
+	FeatureAttributionSpec *ModelMonitoringObjectiveSpec_FeatureAttributionSpec `json:"featureAttributionSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringOutputSpec
+type ModelMonitoringOutputSpec struct {
+	// Google Cloud Storage base folder path for metrics, error logs, etc.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringOutputSpec.gcs_base_directory
+	GCSBaseDirectory *GCSDestinationWithRequired `json:"gcsBaseDirectory,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema
+type ModelMonitoringSchema struct {
+	// Feature names of the model. Vertex AI will try to match the features from
+	//  your dataset as follows:
+	//   * For 'csv' files, the header names are required, and we will extract the
+	//     corresponding feature values when the header names align with the
+	//     feature names.
+	//   * For 'jsonl' files, we will extract the corresponding feature values if
+	//     the key names match the feature names.
+	//     Note: Nested features are not supported, so please ensure your features
+	//     are flattened. Ensure the feature values are scalar or an array of
+	//     scalars.
+	//   * For 'bigquery' dataset, we will extract the corresponding feature values
+	//     if the column names match the feature names.
+	//     Note: The column type can be a scalar or an array of scalars. STRUCT or
+	//     JSON types are not supported. You may use SQL queries to select or
+	//     aggregate the relevant features from your original table. However,
+	//     ensure that the 'schema' of the query results meets our requirements.
+	//   * For the Vertex AI Endpoint Request Response Logging table or Vertex AI
+	//     Batch Prediction Job results. If the
+	//     [instance_type][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.instance_type]
+	//     is an array, ensure that the sequence in
+	//     [feature_fields][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields]
+	//     matches the order of features in the prediction instance. We will match
+	//     the feature with the array in the order specified in [feature_fields].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields
+	FeatureFields []ModelMonitoringSchema_FieldSchema `json:"featureFields,omitempty"`
+
+	// Prediction output names of the model. The requirements are the same as the
+	//  [feature_fields][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields].
+	//  For AutoML Tables, the prediction output name presented in schema will be:
+	//  `predicted_{target_column}`, the `target_column` is the one you specified
+	//  when you train the model.
+	//  For Prediction output drift analysis:
+	//   * AutoML Classification, the distribution of the argmax label will be
+	//     analyzed.
+	//   * AutoML Regression, the distribution of the value will be analyzed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.prediction_fields
+	PredictionFields []ModelMonitoringSchema_FieldSchema `json:"predictionFields,omitempty"`
+
+	// Target /ground truth names of the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.ground_truth_fields
+	GroundTruthFields []ModelMonitoringSchema_FieldSchema `json:"groundTruthFields,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema
+type ModelMonitoringSchema_FieldSchema struct {
+	// Field name.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.name
+	Name *string `json:"name,omitempty"`
+
+	// Supported data types are:
+	//  `float`
+	//  `integer`
+	//  `boolean`
+	//  `string`
+	//  `categorical`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// Describes if the schema field is an array of given data type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.repeated
+	Repeated *bool `json:"repeated,omitempty"`
+}
+
+/* unreachable type SampledShapleyAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution
+type SampledShapleyAttributionWithRequired struct {
+	// Required. The number of feature permutations to consider when approximating
+	//  the Shapley values.
+	//
+	//  Valid range of its value is [1, 50], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count
+	// +required
+	PathCount *int32 `json:"pathCount,omitempty"`
+}
+*/
+
+/* unreachable type XraiAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.XraiAttribution
+type XraiAttributionWithRequired struct {
+	// Required. The number of steps for approximating the path integral.
+	//  A good value to start is 50 and gradually increase until the
+	//  sum to diff property is met within the desired error range.
+	//
+	//  Valid range of its value is [1, 100], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.step_count
+	// +required
+	StepCount *int32 `json:"stepCount,omitempty"`
+
+	// Config for SmoothGrad approximation of gradients.
+	//
+	//  When enabled, the gradients are approximated by averaging the gradients
+	//  from noisy samples in the vicinity of the inputs. Adding
+	//  noise can help improve the computed gradients. Refer to this paper for more
+	//  details: https://arxiv.org/pdf/1706.03825.pdf
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.smooth_grad_config
+	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
+
+	// Config for XRAI with blur baseline.
+	//
+	//  When enabled, a linear path from the maximally blurred image to the input
+	//  image is created. Using a blurred baseline instead of zero (black image) is
+	//  motivated by the BlurIG approach explained here:
+	//  https://arxiv.org/abs/2004.03383
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.blur_baseline_config
+	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+*/
+
 // +kcc:proto=google.protobuf.Int32Value
 type Int32Value struct {
 	// The int32 value.
 	// +kcc:proto:field=google.protobuf.Int32Value.value
 	Value *int32 `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Inclusive start of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be the same
+	//  or after the start.
+	// +kcc:proto:field=google.type.Interval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Exclusive end of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be before the
+	//  end.
+	// +kcc:proto:field=google.type.Interval.end_time
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ColabImage

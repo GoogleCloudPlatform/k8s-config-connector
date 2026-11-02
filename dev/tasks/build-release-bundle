@@ -82,6 +82,7 @@ kustomize create
 BLOCKED_KINDS=(
     "AIPlatformFeatureView"
     "AIPlatformHyperparameterTuningJob"
+    "AIPlatformModelMonitor"
     "AIPlatformNotebookRuntimeTemplate"
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"

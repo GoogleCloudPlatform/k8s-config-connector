@@ -32,6 +32,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-ga-proto \
+  --prepopulate-resource \
+  --resource AIPlatformModelMonitor:ModelMonitor
+
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformPersistentResource:PersistentResource \
@@ -63,6 +71,12 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformModelMonitor:ModelMonitor
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
