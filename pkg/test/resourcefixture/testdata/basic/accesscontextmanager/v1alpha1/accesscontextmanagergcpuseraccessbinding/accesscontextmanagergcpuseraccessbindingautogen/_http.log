@@ -1,0 +1,283 @@
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "AccessLevel \"accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "osConstraints": [
+            {
+              "osType": "DESKTOP_CHROME_OS"
+            }
+          ],
+          "requireScreenlock": true
+        },
+        "regions": [
+          "US"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}",
+  "title": "chromeos_no_lock"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "devicePolicy": {
+            "osConstraints": [
+              {
+                "osType": "DESKTOP_CHROME_OS"
+              }
+            ],
+            "requireScreenlock": true
+          },
+          "regions": [
+            "US"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}",
+    "title": "chromeos_no_lock"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "devicePolicy": {
+          "osConstraints": [
+            {
+              "osType": "DESKTOP_CHROME_OS"
+            }
+          ],
+          "requireScreenlock": true
+        },
+        "regions": [
+          "US"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}",
+  "title": "chromeos_no_lock"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accessLevels": [
+    "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}"
+  ],
+  "groupKey": "01d520gv4vjcrht"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBindingOperationMetadata"
+  },
+  "name": "operations/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBinding",
+    "accessLevels": [
+      "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}"
+    ],
+    "groupKey": "01d520gv4vjcrht",
+    "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessLevels": [
+    "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}"
+  ],
+  "groupKey": "01d520gv4vjcrht",
+  "name": "organizations/${organizationID}/gcpUserAccessBindings/${bindingID}"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.GcpUserAccessBindingOperationMetadata"
+  },
+  "name": "operations/organizations/${organizationID}/gcpUserAccessBindings/${bindingID}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "devicePolicy": {
+          "osConstraints": [
+            {
+              "osType": "DESKTOP_CHROME_OS"
+            }
+          ],
+          "requireScreenlock": true
+        },
+        "regions": [
+          "US"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}",
+  "title": "chromeos_no_lock"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

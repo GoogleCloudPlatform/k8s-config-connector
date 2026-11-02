@@ -265,6 +265,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					// responseOptions.PrettyPrint = values
 					continue
 				}
+				if k == "append" {
+					// Some APIs (like AccessContextManager) accept an "append" query parameter not present in proto
+					continue
+				}
 
 				// Convert camelCase to snake_case
 				var protoKey []rune

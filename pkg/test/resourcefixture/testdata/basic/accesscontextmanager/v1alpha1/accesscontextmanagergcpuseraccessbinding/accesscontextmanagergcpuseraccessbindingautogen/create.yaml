@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ metadata:
   name: accesscontextmanagergcpuseraccessbinding-${uniqueId}
 spec:
   accessLevels:
-  - ${google_access_context_manager_access_level.access_level_id_for_user_access_binding.name}
-  groupKey: ${trimprefix(google_cloud_identity_group.group.id, "groups/")}
+  - accessPolicies/578359180191/accessLevels/accesscontextmanageraccesslevel${uniqueId}
+  groupKey: 01d520gv4vjcrht
   organizationRef:
     external: ${TEST_ORG_ID}
