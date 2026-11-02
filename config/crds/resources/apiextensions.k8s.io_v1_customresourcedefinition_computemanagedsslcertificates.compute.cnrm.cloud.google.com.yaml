@@ -171,6 +171,22 @@ spec:
                   expireTime:
                     description: Expire time of the certificate in RFC3339 text format.
                     type: string
+                  managed:
+                    description: '[Output only] Properties relevant to a managed certificate.'
+                    properties:
+                      domainStatus:
+                        additionalProperties:
+                          type: string
+                        description: '[Output only] Detailed statuses of the domains
+                          specified for managed certificate resource.'
+                        type: object
+                      status:
+                        description: '[Output only] Status of the managed certificate
+                          resource. Possible values: [ACTIVE, MANAGED_CERTIFICATE_STATUS_UNSPECIFIED,
+                          PROVISIONING, PROVISIONING_FAILED, PROVISIONING_FAILED_PERMANENTLY,
+                          RENEWAL_FAILED].'
+                        type: string
+                    type: object
                   selfLink:
                     type: string
                   subjectAlternativeNames:
@@ -332,6 +348,22 @@ spec:
                   expireTime:
                     description: Expire time of the certificate in RFC3339 text format.
                     type: string
+                  managed:
+                    description: '[Output only] Properties relevant to a managed certificate.'
+                    properties:
+                      domainStatus:
+                        additionalProperties:
+                          type: string
+                        description: '[Output only] Detailed statuses of the domains
+                          specified for managed certificate resource.'
+                        type: object
+                      status:
+                        description: '[Output only] Status of the managed certificate
+                          resource. Possible values: [ACTIVE, MANAGED_CERTIFICATE_STATUS_UNSPECIFIED,
+                          PROVISIONING, PROVISIONING_FAILED, PROVISIONING_FAILED_PERMANENTLY,
+                          RENEWAL_FAILED].'
+                        type: string
+                    type: object
                   selfLink:
                     type: string
                   subjectAlternativeNames:
