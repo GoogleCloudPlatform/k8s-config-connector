@@ -19,4 +19,4 @@ metadata:
 spec:
   resourceID: appenginedomainmapping${uniqueId}
   sslSettings:
-  - sslManagementType: AUTOMATIC
+    sslManagementType: AUTOMATIC

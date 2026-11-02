@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //appengine.googleapis.com/apps/${projectId}/domainMappings/appenginedomainmapping${uniqueId}
   group: appengine.cnrm.cloud.google.com
   kind: AppEngineDomainMapping
   name: appenginedomainmapping-${uniqueId}

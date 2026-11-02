@@ -692,3 +692,138 @@ func TestAppEngineFlexibleAppVersionStatusMapping(t *testing.T) {
 		})
 	}
 }
+
+func TestAppEngineDomainMappingSpecMapping(t *testing.T) {
+	tests := []struct {
+		name        string
+		protoDomain *pb.DomainMapping
+		krmSpec     *krmappenginev1alpha1.AppEngineDomainMappingSpec
+	}{
+		{
+			name:        "nil",
+			protoDomain: nil,
+			krmSpec:     nil,
+		},
+		{
+			name: "ssl settings automatic",
+			protoDomain: &pb.DomainMapping{
+				SslSettings: &pb.SslSettings{
+					SslManagementType:           pb.SslSettings_AUTOMATIC,
+					PendingManagedCertificateId: "cert-pending-1",
+				},
+			},
+			krmSpec: &krmappenginev1alpha1.AppEngineDomainMappingSpec{
+				SSLSettings: &krmappenginev1alpha1.DomainmappingSslSettings{
+					SSLManagementType:           "AUTOMATIC",
+					PendingManagedCertificateID: ptr.To("cert-pending-1"),
+				},
+			},
+		},
+		{
+			name: "ssl settings manual",
+			protoDomain: &pb.DomainMapping{
+				SslSettings: &pb.SslSettings{
+					CertificateId:     "cert-12345",
+					SslManagementType: pb.SslSettings_MANUAL,
+				},
+			},
+			krmSpec: &krmappenginev1alpha1.AppEngineDomainMappingSpec{
+				SSLSettings: &krmappenginev1alpha1.DomainmappingSslSettings{
+					CertificateID:     ptr.To("cert-12345"),
+					SSLManagementType: "MANUAL",
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &direct.MapContext{}
+			krm := AppEngineDomainMappingSpec_v1alpha1_FromProto(mapCtx, tc.protoDomain)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in FromProto: %v", err)
+			}
+			if !reflect.DeepEqual(krm, tc.krmSpec) {
+				t.Fatalf("FromProto mismatch: got %+v, want %+v", krm, tc.krmSpec)
+			}
+
+			mapCtx = &direct.MapContext{}
+			proto := AppEngineDomainMappingSpec_v1alpha1_ToProto(mapCtx, tc.krmSpec)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in ToProto: %v", err)
+			}
+			if !reflect.DeepEqual(proto, tc.protoDomain) {
+				t.Fatalf("ToProto mismatch: got %+v, want %+v", proto, tc.protoDomain)
+			}
+		})
+	}
+}
+
+func TestAppEngineDomainMappingStatusMapping(t *testing.T) {
+	tests := []struct {
+		name        string
+		protoDomain *pb.DomainMapping
+		krmStatus   *krmappenginev1alpha1.AppEngineDomainMappingStatus
+	}{
+		{
+			name:        "nil",
+			protoDomain: nil,
+			krmStatus:   nil,
+		},
+		{
+			name: "name and resource records",
+			protoDomain: &pb.DomainMapping{
+				Name: "apps/my-project/domainMappings/example.com",
+				ResourceRecords: []*pb.ResourceRecord{
+					{
+						Name:   "www",
+						Rrdata: "example.com",
+						Type:   pb.ResourceRecord_CNAME,
+					},
+					{
+						Name:   "@",
+						Rrdata: "192.0.2.1",
+						Type:   pb.ResourceRecord_A,
+					},
+				},
+			},
+			krmStatus: &krmappenginev1alpha1.AppEngineDomainMappingStatus{
+				Name: ptr.To("apps/my-project/domainMappings/example.com"),
+				ResourceRecords: []krmappenginev1alpha1.DomainmappingResourceRecords{
+					{
+						Name:   ptr.To("www"),
+						Rrdata: ptr.To("example.com"),
+						Type:   ptr.To("CNAME"),
+					},
+					{
+						Name:   ptr.To("@"),
+						Rrdata: ptr.To("192.0.2.1"),
+						Type:   ptr.To("A"),
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &direct.MapContext{}
+			krm := AppEngineDomainMappingStatus_v1alpha1_FromProto(mapCtx, tc.protoDomain)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in FromProto: %v", err)
+			}
+			if !reflect.DeepEqual(krm, tc.krmStatus) {
+				t.Fatalf("FromProto mismatch: got %+v, want %+v", krm, tc.krmStatus)
+			}
+
+			mapCtx = &direct.MapContext{}
+			proto := AppEngineDomainMappingStatus_v1alpha1_ToProto(mapCtx, tc.krmStatus)
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("unexpected error in ToProto: %v", err)
+			}
+			if !reflect.DeepEqual(proto, tc.protoDomain) {
+				t.Fatalf("ToProto mismatch: got %+v, want %+v", proto, tc.protoDomain)
+			}
+		})
+	}
+}
