@@ -1,0 +1,80 @@
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hostConfig": {
+    "api": "ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev",
+    "gitHttp": "ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev",
+    "gitSsh": "ssminstance-dep-${uniqueId}-${projectNumber}-ssh.us-central1.sourcemanager.dev",
+    "html": "ssminstance-dep-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev"
+  },
+  "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "instance": "projects/${projectNumber}/locations/us-central1/instances/ssminstance-dep-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-dep-${uniqueId}",
+  "scanConfig": {
+    "secretScanConfig": {},
+    "vulnerabilityScanConfig": {}
+  },
+  "uris": {
+    "api": "https://ssminstance-dep-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-dep-${uniqueId}",
+    "gitHttps": "https://ssminstance-dep-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev/${projectId}/ssmrepository-dep-${uniqueId}.git",
+    "html": "https://ssminstance-dep-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev/${projectId}/ssmrepository-dep-${uniqueId}"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Dependent Project",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${organizationID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-dep-${uniqueId}/branchRules/ssmbranchrule-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "disabled": true,
+  "includePattern": "main",
+  "name": "projects/${projectId}/locations/us-central1/repositories/ssmrepository-dep-${uniqueId}/branchRules/ssmbranchrule-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

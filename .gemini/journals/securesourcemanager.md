@@ -21,3 +21,13 @@
 - **Problem**: `SecureSourceManagerRepositoryRef` in `v1beta1` only implemented deprecated `refsv1beta1.ExternalNormalizer` and was missing `refsv1beta1.Ref` methods, which are required for `generate-identity` to normalize `spec.parentRef`.
 - **Solution**: Implemented `refsv1beta1.Ref` on `SecureSourceManagerRepositoryRef` and `FromExternal` on `RepositoryIdentity`. Modelled `spec.parentRef` on `SecureSourceManagerBranchRuleSpec` pointing to `SecureSourceManagerRepositoryRef`, moved `etag` from `spec` to `status.observedState`, and added `generate-controller` and `generate-fuzzer` to `apis/securesourcemanager/generate.sh`.
 - **Impact**: Enables clean single-parent identity resolution for `SecureSourceManagerBranchRule` and ensures controller and fuzzer stay in lockstep.
+
+### [2026-11-02] Greenfield Step 2: Direct controller, fuzzer, and E2E fixtures for SecureSourceManagerBranchRule
+- **Context**: Recorded and verified E2E fixtures against real GCP and confirmed direct controller and round-trip fuzzer for `SecureSourceManagerBranchRule`.
+- **Learnings & Observations**:
+  1. Real GCP `Repository` responses return a `scanConfig` field which is not yet defined in upstream `googleapis.pb`; added `removeKeysFromMap(obj, []string{"scanConfig"})` in `tests/e2e/normalize.go` for `/repositories` to pass V7 protobuf schema validation.
+  2. The SecureSourceManager API does not support `annotations` in `updateMask` for BranchRules and drops them on creation; excluded `annotations` from test fixtures (tracked in `alpha-missingfields.txt`).
+  3. `includePattern` cannot be changed from a specific branch name (e.g. `main`) to a wildcard on an existing rule, and SecureSourceManager requires `minimumReviewsCount >= 2` (greater than `minimumApprovalsCount`). Valid mutable fields tested in update include `disabled`, `requireCommentsResolved`, `allowStaleReviews`, and `requireLinearHistory`.
+  4. Dependent `SecureSourceManagerInstance` creation and deletion take ~30m and ~25m respectively on real GCP; running with `SUBTEST_TIMEOUT_E2E=120m` is required to avoid premature test timeouts.
+- **Impact**: E2E fixtures for minimal and maximal pass all 7/7 automated validation checks (V1-V7) against real GCP.
+

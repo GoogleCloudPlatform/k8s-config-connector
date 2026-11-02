@@ -1726,6 +1726,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		if strings.Contains(requestURL, "/networks/") && (strings.Contains(requestURL, "/networks/computenetwork-") || strings.Contains(t.Name(), "computerouterinterface")) {
 			removeKeysFromMap(obj, []string{"subnetworks"})
 		}
+		if strings.Contains(requestURL, "securesourcemanager.googleapis.com") && strings.Contains(requestURL, "/repositories") {
+			removeKeysFromMap(obj, []string{"scanConfig"})
+		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)

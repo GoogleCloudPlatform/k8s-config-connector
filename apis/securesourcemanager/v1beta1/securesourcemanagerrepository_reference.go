@@ -19,8 +19,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -84,7 +86,18 @@ func (r *SecureSourceManagerRepositoryRef) ParseExternalToIdentity() (identity.I
 }
 
 func (r *SecureSourceManagerRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*SecureSourceManagerRepository](u)
+		if err != nil {
+			return ""
+		}
+		id, err := NewRepositoryIdentity(ctx, reader, obj, u)
+		if err != nil {
+			return ""
+		}
+		return id.String()
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecureSourceManagerRepository.

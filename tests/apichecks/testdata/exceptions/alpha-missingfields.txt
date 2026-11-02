@@ -5778,17 +5778,7 @@
 [missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.blueprint.package" is not set in unstructured objects
 [missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseRequirements.upgradeableFromReleases[]" is not set in unstructured objects
 [missing_field] crd=saasservicemgmtunits.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.tenantRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowStaleReviews" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.includePattern" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.minimumApprovalsCount" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.minimumReviewsCount" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requireCommentsResolved" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requireLinearHistory" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requirePullRequest" is not set in unstructured objects
-[missing_field] crd=securesourcemanagerbranchrules.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredStatusChecks[].context" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.events[]" is not set in unstructured objects
 [missing_field] crd=securesourcemanagerhooks.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
