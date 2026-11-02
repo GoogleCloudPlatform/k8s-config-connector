@@ -73,6 +73,30 @@ func TestValuesCompatible(t *testing.T) {
 			want:        true,
 		},
 		{
+			name:        "server-redacted sensitive field [REDACTED]",
+			foundVal:    "[REDACTED]",
+			expectedVal: "secret=token2",
+			createVal:   "secret=token1",
+			diffPath:    "spec.sensitiveQueryString",
+			want:        true,
+		},
+		{
+			name:        "compatible enum int slice vs string enum slice",
+			foundVal:    []any{float64(1), float64(2)},
+			expectedVal: []any{"PUSH", "PULL_REQUEST"},
+			createVal:   []any{"PUSH"},
+			diffPath:    "spec.events",
+			want:        true,
+		},
+		{
+			name:        "incompatible enum int slice vs string enum slice different length",
+			foundVal:    []any{float64(1)},
+			expectedVal: []any{"PUSH", "PULL_REQUEST"},
+			createVal:   nil,
+			diffPath:    "spec.events",
+			want:        false,
+		},
+		{
 			name: "composite slice with omitted empty slice, int64 string coercion, and server default field",
 			foundVal: []any{
 				map[string]any{

@@ -21,3 +21,17 @@
 - **Problem**: `SecureSourceManagerRepositoryRef` in `v1beta1` only implemented deprecated `refsv1beta1.ExternalNormalizer` and was missing `refsv1beta1.Ref` methods, which are required for `generate-identity` to normalize `spec.parentRef`.
 - **Solution**: Implemented `refsv1beta1.Ref` on `SecureSourceManagerRepositoryRef` and `FromExternal` on `RepositoryIdentity`. Modelled `spec.parentRef` on `SecureSourceManagerBranchRuleSpec` pointing to `SecureSourceManagerRepositoryRef`, moved `etag` from `spec` to `status.observedState`, and added `generate-controller` and `generate-fuzzer` to `apis/securesourcemanager/generate.sh`.
 - **Impact**: Enables clean single-parent identity resolution for `SecureSourceManagerBranchRule` and ensures controller and fuzzer stay in lockstep.
+
+### [2026-11-01] Greenfield Step 2: Implement direct controller, E2E fixtures, and fuzzer for SecureSourceManagerHook
+- **Context**: Implementing direct controller, golden fixtures, and fuzzer for `SecureSourceManagerHook` (`securesourcemanager.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**:
+  1. `SecureSourceManagerInstance` dependencies take 35-45 minutes to provision and may hit regional capacity issues ("Instance creation is temporarily unavailable. Try a different region, or try again later.") in regions like `us-central1`.
+  2. Real GCP returns `scanConfig` on `Repository` responses which was not in standard googleapis protos, causing V7 validation failures.
+  3. Real GCP always redacts `sensitive_query_string` to `"[REDACTED]"` on `GET`, causing `CompareGreenfieldSpec` to detect a spurious diff during re-reconciliation unless normalized.
+- **Solution**:
+  1. Tested and used available regions (`europe-west4` and `asia-east1`) for the test fixtures.
+  2. Added scoped normalization in `tests/e2e/normalize.go` guarded by `strings.Contains(t.Name(), "securesourcemanager")` to remove `.response.scanConfig` and `.scanConfig` from HTTP responses.
+  3. Added a `normalize` callback in `HookAdapter.Update` to clear `SensitiveQueryString` when `observedGeneration == generation` and actual is `"[REDACTED]"`.
+  4. Opted out of controller overwriting by removing `// +generated:controller` marker from `pkg/controller/direct/securesourcemanager/securesourcemanagerhook_controller.go` to preserve reference normalization before identity resolution and export parent/resourceID settings.
+- **Impact**: Ensures clean re-reconciliation and passing V1-V7 HTTP lifecycle validation for `SecureSourceManagerHook`.
+

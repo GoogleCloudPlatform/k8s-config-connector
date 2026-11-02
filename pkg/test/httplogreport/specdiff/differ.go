@@ -434,6 +434,25 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if isNumericValue(expectedVal) && isEnumLikeString(foundVal) {
 		return true
 	}
+	// Allow server-redacted sensitive fields
+	if fStr, ok := foundVal.(string); ok && fStr == "[REDACTED]" {
+		return true
+	}
+	// Allow slices with compatible elements (e.g. enum int slices vs string enum slices)
+	if fSlice, fOk := foundVal.([]any); fOk {
+		if eSlice, eOk := expectedVal.([]any); eOk && len(fSlice) == len(eSlice) {
+			match := true
+			for i := range fSlice {
+				if !valuesCompatible(fSlice[i], eSlice[i], nil, diffPath) {
+					match = false
+					break
+				}
+			}
+			if match {
+				return true
+			}
+		}
+	}
 	if strings.HasSuffix(diffPath, "Ref") {
 		return true
 	}
