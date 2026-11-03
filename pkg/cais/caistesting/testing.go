@@ -199,6 +199,7 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/customJobs/"); idx != -1 {
 			start := idx + len("/customJobs/")
 			lines[i] = line[:start] + "${customJobID}"
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
 		}
 		// Normalize AIPlatformSpecialistPool specialistPools IDs: locations/.../specialistPools/<specialistPoolId>
 		if idx := strings.Index(line, "/specialistPools/"); idx != -1 {
