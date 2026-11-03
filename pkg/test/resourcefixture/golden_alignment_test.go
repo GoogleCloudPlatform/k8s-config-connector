@@ -466,6 +466,9 @@ func parseLog(t *testing.T, content string) []httpEvent {
 			idx++
 		}
 		ev.RequestBody = strings.TrimSpace(strings.Join(reqBodyLines, "\n"))
+		if ev.RequestBody == "{}" {
+			ev.RequestBody = ""
+		}
 
 		if idx < len(lines) {
 			ev.Status = lines[idx]
