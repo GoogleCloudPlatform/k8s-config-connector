@@ -170,6 +170,14 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.DatabaseReplicationEnabled = actual.Settings.DatabaseReplicationEnabled
 	}
 
+	// WARNING: spec.settings.retainBackupsOnDelete is unmanaged when unspecified in the KRM object.
+	if in.Spec.Settings.RetainBackupsOnDelete == nil && actual != nil && actual.Settings != nil {
+		// Preserve the live GCP state when unset in KRM. Otherwise DiffSettings would compare
+		// false with a live true and send an update on every reconcile for instances whose
+		// retention was set outside Config Connector.
+		out.Settings.RetainBackupsOnDelete = actual.Settings.RetainBackupsOnDelete
+	}
+
 	// Stage 2: Preserve any fields that are unmanaged by the user.
 	// This generic loop will overwrite any defaults set in Stage 1.
 	if actual == nil {
