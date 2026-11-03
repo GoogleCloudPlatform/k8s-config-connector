@@ -90,3 +90,17 @@
   2. Isolated `DataplexDataAssetSpec_FromProto` and `DataplexDataAssetSpec_ToProto` in `pkg/controller/direct/dataplex/dataplexdataasset_mapper.go` so they are excluded from `mapper.generated.go`.
   3. Moved `etag` to `DataplexDataAssetObservedState`, removed `labels` from `Spec`, and updated `apis/dataplex/generate.sh` to include `generate-controller` and `generate-fuzzer` for `DataplexDataAsset`.
 - **Impact**: Cleanly compiles and passes `TestFocusedMappers`, conforming to all Greenfield Step 1b standards and single-parent rules.
+
+### [2026-11-03] Implement Greenfield DataplexDataAsset Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataAsset` under `v1alpha1` (#14733).
+- **Problem**:
+  1. Dataplex `DataAsset` is a child resource under `DataProduct` (`projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}`).
+  2. The `resource` field expects a full IAM resource name (e.g. `//bigquery.googleapis.com/projects/{project}/datasets/{dataset}`). During testing, dependencies (`BigQueryDataset` and `DataplexDataProduct`) must be created first.
+  3. `pb.DataAsset.AccessGroupConfig` in protobuf only defines `repeated string iam_roles`, but live GCP API responses include an unmodeled server-managed `state` string property (`"state": "APPLIED"`) on each access group config object. Protobuf strict validation against `.build/googleapis.pb` flags unknown fields unless excluded or when minimal/maximal tests test resources with standard configurations.
+- **Solution**:
+  1. Verified the controller `dataplexdataasset_controller.go` and round-trip fuzzer `dataplexdataasset_fuzzer.generated.go`.
+  2. Created `dataplexdataasset-minimal` and `dataplexdataasset-maximal` E2E test suites with `BigQueryDataset` and `DataplexDataProduct` dependencies.
+  3. Recorded authentic golden HTTP traffic and objects against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
+  4. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexdataasset`), unit tests pass, and focused fuzzer passes.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexDataAsset.
+
