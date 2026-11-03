@@ -473,8 +473,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
-          ./dev/ci/presubmits/unit-tests "\${{ matrix.shard }}"
+          ./dev/ci/presubmits/unit-tests "\${SHARD_SPEC}"
         env:
+          SHARD_SPEC: \${{ matrix.shard }}
           ARTIFACTS: /tmp/artifacts
           UNIT_TEST_PATTERNS: \${{ needs.plan-tests.outputs.unit_packages }}
       - name: "Upload artifacts"
@@ -526,8 +527,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
-          ./dev/ci/presubmits/fuzz-roundtrippers "\${{ matrix.shard }}"
+          ./dev/ci/presubmits/fuzz-roundtrippers "\${SHARD_SPEC}"
         env:
+          SHARD_SPEC: \${{ matrix.shard }}
           ARTIFACTS: /tmp/artifacts
           FUZZ_SERVICES: \${{ needs.plan-tests.outputs.fuzz_services }}
       - name: "Upload artifacts"
