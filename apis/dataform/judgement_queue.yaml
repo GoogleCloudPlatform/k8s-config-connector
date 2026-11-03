@@ -99,45 +99,61 @@ entries:
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged parentRef, releaseConfigRef, serviceAccountRef, and validated KRM types and identity
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on DataformWorkflowConfigSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.invocationConfig.includedTargets[].database
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string identifying the database/project component of a Dataform action target within compilation result
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.invocationConfig.includedTargets[].schema
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string identifying the schema/dataset component of a Dataform action target within compilation result
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.invocationConfig.serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to serviceAccountRef (*refsv1beta1.IAMServiceAccountRef)
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataformRepositoryRef) per the single-parent rule; removed projectRef and location
   - kind: DataformWorkflowConfig
     group: dataform.cnrm.cloud.google.com
     field: .spec.releaseConfig
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dataform.googleapis.com/ReleaseConfig (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to releaseConfigRef (*DataformReleaseConfigRef)
   - kind: DataformWorkspace
     group: dataform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
