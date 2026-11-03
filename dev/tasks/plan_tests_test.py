@@ -247,7 +247,28 @@ class PlanTestsTest(unittest.TestCase):
                          ["compute-1-of-4", "compute-2-of-4", "compute-3-of-4", "compute-4-of-4"])
         self.assertEqual(pt.shard_targets("kms"), ["kms"])
 
+    def test_register_import_change_is_scoped(self):
+        f = "pkg/controller/direct/register/register.go"
+        diff = {f: ['\t_ "%spkg/controller/direct/vectorsearch"' % M]}
+        plan = self.plan([f], diff=diff)
+        self.assertEqual(plan["scope"], "scoped", plan["reason"])
+        self.assertEqual(plan["priority_fixtures"], ["vectorsearch"])
+        self.assertEqual(plan["fuzz_services"], ["vectorsearch"])
+
     # -- full ---------------------------------------------------------------
+
+    def test_direct_change_to_aggregator_is_full(self):
+        # The walk stops at aggregators it reaches, but editing one directly
+        # (e.g. the e2e harness that runs TestPauseInSeries) is full.
+        self.assertFull(self.plan(["tests/e2e/e2e_test.go"]), "aggregator package tests/e2e")
+
+    def test_register_non_import_change_is_full(self):
+        f = "pkg/controller/direct/register/register.go"
+        diff = {f: ["func init() { doSomething() }"]}
+        self.assertFull(self.plan([f], diff=diff), "other than service imports")
+
+    def test_register_without_diff_is_full(self):
+        self.assertFull(self.plan(["pkg/controller/direct/register/register.go"]), "cannot read the diff")
 
     def test_shared_package_is_full(self):
         self.assertFull(self.plan(["pkg/controller/direct/directbase/base.go"]), "shared package")

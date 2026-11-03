@@ -62,6 +62,12 @@ LINT_ONLY_PATH_RE = re.compile(
 # changed lines, so it is scoped by the API groups named in the diff.
 STATIC_CONFIG = "pkg/controller/resourceconfig/static_config.go"
 
+# Imports every direct controller; a change that only adds/removes service
+# imports is scoped to those services.
+REGISTER_PKG = "pkg/controller/direct/register"
+_REGISTER_IMPORT_RE = re.compile(r'^\s*_?\s*"' + re.escape("github.com/GoogleCloudPlatform/k8s-config-connector/")
+                                 + r'(pkg/controller/direct/[a-z0-9]+(?:/[a-z0-9/]+)?)"\s*$')
+
 # PR label that forces the full suite.
 FULL_LABEL = "ci/full"
 
@@ -78,7 +84,9 @@ SHARED_APIS = {"refs", "common", "kccscheme"}
 SHARED_DIRECT = {"common", "directbase", "registry", "register", "mappings", "debug"}
 
 # Packages that import (nearly) every service. The reverse import walk records
-# but does not expand past them; otherwise every change would be "full".
+# but does not expand past them when it *reaches* them; otherwise every change
+# would be "full". Changing one of them directly is "full" (except REGISTER,
+# which is scoped by the services whose imports changed).
 AGGREGATOR_PKGS = {
     "pkg/controller/direct/register",
     # The e2e harness; the fixture/sample jobs compile it.
@@ -337,6 +345,27 @@ def classify_file(repo, path, impact, fixture_services):
         if path.startswith(leaf + "/"):
             impact.unit.add(f"./{leaf}/...")
             return
+
+    if path.endswith(".go") and os.path.dirname(path) in AGGREGATOR_PKGS:
+        pkg = os.path.dirname(path)
+        if pkg != REGISTER_PKG:
+            raise Escalate(f"{path} is in aggregator package {pkg}")
+        lines = repo.diff_lines(path)
+        if lines is None:
+            raise Escalate(f"cannot read the diff of {path}")
+        changed_pkgs = set()
+        for line in lines:
+            if not line.strip() or line.strip() in ("import (", ")"):
+                continue
+            m = _REGISTER_IMPORT_RE.match(line)
+            if not m:
+                raise Escalate(f"{path} has changes other than service imports")
+            changed_pkgs.add(m.group(1))
+        if not changed_pkgs:
+            raise Escalate(f"{path} changed lines name no service")
+        # Test the (un)registered packages as if they had changed.
+        impact.go_pkgs.update(changed_pkgs)
+        return
 
     if path.endswith(".go"):
         pkg = os.path.dirname(path)
