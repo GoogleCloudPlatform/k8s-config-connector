@@ -1,0 +1,12 @@
+- caisURL: //vectorsearch.googleapis.com/projects/${projectId}/locations/us-central1/collections/vsc-min-${uniqueId}
+  group: vectorsearch.cnrm.cloud.google.com
+  kind: VectorSearchCollection
+  name: vsc-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //vectorsearch.googleapis.com/projects/${projectId}/locations/us-central1/collections/vsc-min-${uniqueId}/indexes/vsi-min-${uniqueId}
+  group: vectorsearch.cnrm.cloud.google.com
+  kind: VectorsearchIndex
+  name: vsi-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

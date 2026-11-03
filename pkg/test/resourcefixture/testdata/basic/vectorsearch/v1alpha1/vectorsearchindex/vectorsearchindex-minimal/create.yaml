@@ -1,0 +1,8 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorsearchIndex
+metadata:
+  name: vsi-min-${uniqueId}
+spec:
+  parentRef:
+    name: vsc-min-${uniqueId}
+  indexField: text_vector

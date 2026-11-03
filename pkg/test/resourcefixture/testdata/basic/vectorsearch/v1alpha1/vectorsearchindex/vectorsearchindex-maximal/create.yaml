@@ -1,0 +1,23 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorsearchIndex
+metadata:
+  name: vsi-max-${uniqueId}
+spec:
+  parentRef:
+    name: vsc-max-${uniqueId}
+  resourceID: vsi-max-${uniqueId}
+  displayName: "Maximal Vector Search Index"
+  description: "Initial description of maximal index"
+  distanceMetric: "DOT_PRODUCT"
+  indexField: "my_vector_field"
+  filterFields:
+    - "title"
+  storeFields:
+    - "plot"
+  dedicatedInfrastructure:
+    mode: "PERFORMANCE_OPTIMIZED"
+    autoscalingSpec:
+      minReplicaCount: 2
+      maxReplicaCount: 5
+  denseScann:
+    featureNormType: "NONE"

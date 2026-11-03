@@ -53,7 +53,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.vectorsearch.v1 \
   --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
-  --resource VectorSearchCollection:Collection \
   --resource VectorsearchIndex:Index
 
 ${CONTROLLERBUILDER} generate-mapper \
