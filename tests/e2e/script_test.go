@@ -728,7 +728,8 @@ func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name 
 
 // waitForReconciliationAfterPatch waits for a reconciliation to complete after an object has been patched.
 // It does this by waiting for the resourceVersion to change twice: once from the user's patch,
-// and a second time from the controller's status update during reconciliation.
+// and a second time from the controller's status update during reconciliation, ensuring the controller
+// has finished reconciling and is not in an "Updating" state.
 func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
 	t := h.T
 	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
@@ -750,8 +751,13 @@ func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstru
 		h.Fatalf("error waiting for patch to be applied (resourceVersion to change from %s): %v", prePatchRV, err)
 	}
 
-	// Now, wait for the controller to reconcile, indicated by another change in resourceVersion.
-	if err := wait.Poll(200*time.Millisecond, 5*time.Second, func() (bool, error) {
+	// Now, wait for the controller to reconcile.
+	// If the controller marks the resource as Updating, we must wait for reconciliation
+	// to finish completely (up to DefaultWaitForReadyTimeout).
+	// If the reconciliation is a no-op that does not change status, wait up to 5s.
+	timeout := 5 * time.Second
+	startTime := time.Now()
+	if err := wait.Poll(200*time.Millisecond, create.DefaultWaitForReadyTimeout, func() (bool, error) {
 		current := &unstructured.Unstructured{}
 		current.SetGroupVersionKind(obj.GroupVersionKind())
 		if err := h.GetClient().Get(h.Ctx, key, current); err != nil {
@@ -760,7 +766,36 @@ func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstru
 			}
 			return false, nil // retry other errors
 		}
-		return current.GetResourceVersion() != rvAfterPatch, nil
+
+		conditions, _, _ := unstructured.NestedSlice(current.Object, "status", "conditions")
+		isUpdating := false
+		for _, c := range conditions {
+			cond, ok := c.(map[string]any)
+			if !ok {
+				continue
+			}
+			if cond["type"] == "Ready" && cond["status"] == "False" && cond["reason"] == "Updating" {
+				isUpdating = true
+				break
+			}
+		}
+
+		// If the resource is actively updating, keep waiting regardless of rvAfterPatch
+		if isUpdating {
+			return false, nil
+		}
+
+		// If resourceVersion changed from the patch and it's not updating, reconciliation has finished
+		if current.GetResourceVersion() != rvAfterPatch {
+			return true, nil
+		}
+
+		// If resourceVersion hasn't changed, but 5 seconds have elapsed and it's not updating, assume no-op reconciliation
+		if time.Since(startTime) > timeout {
+			return true, nil
+		}
+
+		return false, nil
 	}); err != nil {
 		t.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
 	}
