@@ -51,17 +51,23 @@ on:
     paths:
       - '**'
       - '!experiments/**'
+      - '!.gemini/**'
+      - '!.agents/**'
   push:
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.gemini/**'
+      - '!.agents/**'
   merge_group:
     types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
+      - '!.gemini/**'
+      - '!.agents/**'
 
 
 jobs:
@@ -810,11 +816,15 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'experiments/**'
+      - '.gemini/**'
+      - '.agents/**'
   merge_group:
     types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
+      - '.gemini/**'
+      - '.agents/**'
 
 jobs:
   presubmit-gatekeeper:
@@ -822,7 +832,7 @@ jobs:
     if: \${{ github.event.action != 'destroyed' }}
     steps:
       - name: Bypass check
-        run: echo "Bypassing presubmit checks for experiment-only changes."
+        run: echo "Bypassing presubmit checks for experiments, skills and agents-only changes."
 
 concurrency:
   group: \${{ github.workflow }}-bypass-\${{ github.head_ref || github.ref }}
