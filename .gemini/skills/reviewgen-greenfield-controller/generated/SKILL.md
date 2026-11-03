@@ -9,11 +9,10 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 
 ---
 
-## 1. Post-Judgement Prerequisite, Deterministic `generate.sh`, & `static_config.go`
+## 1. Post-Judgement Prerequisite, One-Shot Generation (Not in `generate.sh`), & `static_config.go`
 *   **Post-Judgement Check (`apis/<service>/judgement_queue.yaml`)**: Verify that `<Kind>`'s `untriaged-bulk-generation` and all actionable entries in `apis/<service>/judgement_queue.yaml` are `status: resolved` (and top-level `Labels` is not left in `<Kind>Spec`).
-*   Verify that `apis/<service>/generate.sh` invokes both:
-    *   `${CONTROLLERBUILDER} generate-controller` (or `generate-direct-reconciler`) `--service <proto.service> --api-version <group>/<version> --prepopulate-resource --resource <Kind>:<ProtoMessage>`
-    *   `${CONTROLLERBUILDER} generate-fuzzer --prepopulate-resource --service <proto.service> --api-version <group>/<version> --resource <Kind>:<ProtoMessage>`
+*   **No `generate-controller` / `generate-fuzzer` in `generate.sh`**: Verify that `apis/<service>/generate.sh` does **not** invoke `generate-controller` (or `generate-direct-reconciler`) or `generate-fuzzer` with `--resource <Kind>:<ProtoMessage>`. The controller and fuzzer are generated once with direct `controllerbuilder` commands and committed; `generate.sh` runs on every CI build and would overwrite later customizations. **Fail** the PR if it adds such an invocation. If one already existed for `<Kind>`, the PR must remove it.
+    *   Do **not** ask the agent to add these invocations back to `generate.sh`, or to "restore deterministic generation" by re-running `generate-controller` over a customized controller: that silently discards the customizations.
 *   Verify that `pkg/controller/direct/<service>/<proto_lower>_controller.go` carries the `// +generated:controller` header marker, `pkg/controller/direct/<service>/<kind_lower>_fuzzer.generated.go` carries the `// +generated:fuzzer` header marker, and `pkg/controller/resourceconfig/static_config.go` has been updated via `python3 dev/tasks/generate_static_config.py`.
 *   Verify `TestGenerateScripts`, `TestDirectResourceFileNaming`, `TestRegisteredTemplatesMatchCAI`, and `TestVerifyLabelsTestCasesExist` pass.
 *   Verify `<Kind>` is still in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`: only the pipeline's final Release step removes it.
@@ -47,7 +46,7 @@ Use this review guide when reviewing a **Greenfield Step 2** PR for `<Kind>`. En
 ```markdown
 ### KCC Greenfield Controller Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
-* **Post-Judgement, Deterministic `generate.sh`, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` invokes `generate-controller` & `generate-fuzzer` with `--prepopulate-resource`, files have `+generated:controller` / `+generated:fuzzer`, `static_config.go` is updated, and `<Kind>` is still in `BLOCKED_KINDS`)
+* **Post-Judgement, One-Shot Generation, & `static_config.go`**: [Pass/Fail] - (Confirm `judgement_queue.yaml` is resolved, `generate.sh` does **not** invoke `generate-controller` / `generate-fuzzer` for `<Kind>`, files have `+generated:controller` / `+generated:fuzzer`, `static_config.go` is updated, and `<Kind>` is still in `BLOCKED_KINDS`)
 * **Client Creation & Reference Normalization**: [Pass/Fail] - (Confirm GAPIC REST client and `common.NormalizeGreenfieldReferences` in `AdapterForObject`)
 * **CompareGreenfieldSpec & Structured Reporting**: [Pass/Fail] - (Confirm `common.CompareGreenfieldSpec` / `CompareGreenfieldSpecAndLabels` and `structuredreporting.ReportDiff` are used in `Update`)
 * **LRO Wait & Mandatory Status Updates**: [Pass/Fail] - (Confirm `op.Wait(ctx)` and `setStatus` on both no-op and mutating paths)

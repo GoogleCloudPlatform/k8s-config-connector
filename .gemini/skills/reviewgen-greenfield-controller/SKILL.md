@@ -9,13 +9,15 @@ This skill is the entry point for reviewing **Greenfield Step 2 (Direct Controll
 
 ## Detect Mode and Route
 
-Inspect the controller file for `<Kind>` in `pkg/controller/direct/<service>/` and `apis/<service>/generate.sh`:
+Inspect the controller file for `<Kind>` in `pkg/controller/direct/<service>/`:
 
 ```bash
 grep -rn "+generated:controller" pkg/controller/direct/<service>/ 2>/dev/null
 ```
 
-- **If the controller file for `<Kind>` contains `// +generated:controller` OR `apis/<service>/generate.sh` invokes `generate-controller --prepopulate-resource` (or if the PR is a new Greenfield Step 2 PR created after deterministic controller generation)**:
+*(`apis/<service>/generate.sh` is not a routing signal: greenfield controllers and fuzzers are generated with one-shot `controllerbuilder` commands, and `generate.sh` must not invoke `generate-controller` / `generate-fuzzer`.)*
+
+- **If the controller file for `<Kind>` contains `// +generated:controller` (or if the PR is a new Greenfield Step 2 PR created after deterministic controller generation)**:
   - Read and follow **[`.gemini/skills/reviewgen-greenfield-controller/generated/SKILL.md`](generated/SKILL.md)** using `view_file`.
-- **If the PR is an in-flight handwritten controller PR whose `*_controller.go` does NOT contain `// +generated:controller` and `apis/<service>/generate.sh` does not invoke `generate-controller`**:
+- **If the PR is an in-flight handwritten controller PR whose `*_controller.go` does NOT contain `// +generated:controller`**:
   - Read and follow **[`.gemini/skills/reviewgen-greenfield-controller/legacy/SKILL.md`](legacy/SKILL.md)** using `view_file`.

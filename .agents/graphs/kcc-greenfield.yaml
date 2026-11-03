@@ -122,7 +122,7 @@ spec:
       review: |
         Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
       body: |
-        Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer via `apis/<service>/generate.sh` (`--prepopulate-resource`) and record/verify E2E fixtures against real GCP for {{ .Params.kind }}.
+        Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to autogenerate (or verify) the direct controller and fuzzer with one-shot `controllerbuilder generate-controller` / `generate-fuzzer --prepopulate-resource` commands (never added to `apis/<service>/generate.sh`) and record/verify E2E fixtures against real GCP for {{ .Params.kind }}.
 
         Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 

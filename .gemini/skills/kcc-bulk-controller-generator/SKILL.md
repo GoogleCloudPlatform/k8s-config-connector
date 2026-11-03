@@ -25,10 +25,10 @@ This skill orchestrates the two-phase workflow for bulk-generating deterministic
 ## Phase 1: Bulk Controller & Fuzzer Generation + Category Splitting
 
 Read and follow [`.gemini/skills/kcc-bulk-controller-generator/generate/SKILL.md`](generate/SKILL.md) (`IsSkillFile: true`) to:
-1. Configure `apis/<service>/generate.sh` with `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` for the target greenfield `--resource <Kind>:<ProtoMessage>` entries (strictly protecting existing handwritten controllers and fuzzers).
+1. Run `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` **once, directly** for the target greenfield `--resource <Kind>:<ProtoMessage>` entries (strictly protecting existing handwritten controllers and fuzzers). **Never add these invocations to `apis/<service>/generate.sh`**: `generate.sh` runs on every CI build (`make generate`), and `generate-controller --prepopulate-resource` overwrites any `// +generated:controller` file on every run, silently discarding later Step 2 customizations.
 2. Run batch controller and fuzzer generation across all candidate services and verify compilation and round-trip fuzzing (`FuzzAllMappers`).
 3. Classify and split the resulting services into committed branches by category:
-   - **Category 1 (`Zero-Touch`):** Adding `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` compiled cleanly and passed `FuzzAllMappers` and `TestDirectResourceFileNaming` with no extra setup.
+   - **Category 1 (`Zero-Touch`):** One-shot `generate-controller --prepopulate-resource` and `generate-fuzzer --prepopulate-resource` output compiled cleanly and passed `FuzzAllMappers` and `TestDirectResourceFileNaming` with no extra setup.
    - **Category 2 (`Initial Setup`):** Services requiring GAPIC client `go.mod`/`go.sum` upgrades or additions (e.g., `go get cloud.google.com/go/<service>/apiv1@...`).
    - **Category 3 (`Major Surgery`):** Services whose proto RPC signatures are non-standard (missing standard CRUD RPCs, custom singleton RPCs, or requiring a `FilterSpec`/`FilterStatus` fuzzer hook) that require targeted adjustments.
 
