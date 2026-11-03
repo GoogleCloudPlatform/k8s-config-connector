@@ -1,0 +1,5 @@
+### [2026-10-30] DataplexEntry entryType and parentEntry format normalization in CompareGreenfieldSpec
+- **Context**: Greenfield controller implementation for `DataplexEntry` (`#14700`).
+- **Problem**: When creating a `DataplexEntry` with `spec.entryTypeRef` (or `spec.parentEntryRef`) referencing a project by ID (`projects/my-project/...`), Dataplex API server stores or returns the resource name with project number (`projects/123456789/...`). In subsequent updates, `CompareGreenfieldSpec` detects a diff on `entry_type`, which is an immutable proto field, causing update reconciliation failures (`error updating: change to immutable field entry_type`).
+- **Solution**: In `EntryAdapter.Update`, provide a `normalize` callback to `common.CompareGreenfieldSpec` that uses `projectMapper.ReplaceProjectNumberWithIDInLink` on `p.EntryType` and `p.ParentEntry`.
+- **Impact**: Ensures that when comparing desired spec (using project ID) with actual proto from GCP (using project number), project numbers are mapped back to project IDs before diffing, preventing spurious immutable field errors during update reconciliation.
