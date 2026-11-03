@@ -817,6 +817,14 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "dnsNames")
 			delete(v, "geminiConfig")
 			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				if ipConfig, ok := settings["ipConfiguration"].(map[string]interface{}); ok {
+					// Cloud SQL defaults serverCaMode to GOOGLE_MANAGED_INTERNAL_CA on real GCP
+					// (stripped from GET responses by normalize_legacy.go, echoed in PUT requests
+					// since fb2abbb356), while mocksql omits the default (1911c1cb9d).
+					if caMode, ok := ipConfig["serverCaMode"].(string); ok && caMode == "GOOGLE_MANAGED_INTERNAL_CA" {
+						delete(ipConfig, "serverCaMode")
+					}
+				}
 				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
 					delete(backupConfig, "backupTier")
 					// Real GCP recordings from early 2026 return replicationLogArchivingEnabled=false for
