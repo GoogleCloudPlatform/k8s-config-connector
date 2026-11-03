@@ -98,11 +98,12 @@ func ValidateProtoSchemas(entries []*classifier.ClassifiedEntry, descriptorSetPa
 		respMap, _ := ce.Entry.Response.ParseJSONBody()
 
 		// 1. Validate all "@type" blocks in request and response JSON payloads.
+		allowUnknown := ce.Role == classifier.RoleDependency
 		if reqMap != nil {
-			validateTypedBlocksRecursive(reg, ce.Index, method, "request", reqMap, false, &errs)
+			validateTypedBlocksRecursive(reg, ce.Index, method, "request", reqMap, false, allowUnknown, &errs)
 		}
 		if respMap != nil {
-			validateTypedBlocksRecursive(reg, ce.Index, method, "response", respMap, expectIntEnums, &errs)
+			validateTypedBlocksRecursive(reg, ce.Index, method, "response", respMap, expectIntEnums, allowUnknown, &errs)
 		}
 
 		// 2. Validate primary resource GET / POST / PATCH / PUT JSON bodies against MessageDescriptor.
@@ -118,7 +119,7 @@ func ValidateProtoSchemas(entries []*classifier.ClassifiedEntry, descriptorSetPa
 						reqMsg = inferredPrimaryMsg
 					}
 					if reqMsg != nil {
-						if err := unmarshalDynamicJSON(reg, reqMsg, reqMap); err != nil {
+						if err := unmarshalDynamicJSON(reg, reqMsg, reqMap, false); err != nil {
 							errs = append(errs, fmt.Sprintf("stanza #%d (`%s`) request body failed protobuf schema `%s`: %v", ce.Index, method, reqMsg.FullName(), err))
 						}
 					}
@@ -134,7 +135,7 @@ func ValidateProtoSchemas(entries []*classifier.ClassifiedEntry, descriptorSetPa
 						respMsg = inferredPrimaryMsg
 					}
 					if respMsg != nil {
-						if err := unmarshalDynamicJSON(reg, respMsg, respMap); err != nil {
+						if err := unmarshalDynamicJSON(reg, respMsg, respMap, false); err != nil {
 							errs = append(errs, fmt.Sprintf("stanza #%d (`%s`) response body failed protobuf schema `%s`: %v", ce.Index, method, respMsg.FullName(), err))
 						} else if expectIntEnums {
 							checkEnumEncodingRecursive(respMsg, respMap, "", ce.Index, method, &errs)
@@ -426,7 +427,7 @@ func (r *descriptorRegistry) hasProtoPackageForType(typeURL string) bool {
 	return r.packages[fullName[:lastDot]]
 }
 
-func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method, location string, curr map[string]any, expectIntEnums bool, errs *[]string) {
+func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method, location string, curr map[string]any, expectIntEnums bool, allowUnknown bool, errs *[]string) {
 	if typeVal, hasType := curr["@type"]; hasType {
 		typeURL, ok := typeVal.(string)
 		if !ok || strings.TrimSpace(typeURL) == "" {
@@ -442,7 +443,7 @@ func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method
 						withoutType[k] = v
 					}
 				}
-				if err := unmarshalDynamicJSON(reg, msgDesc, withoutType); err != nil {
+				if err := unmarshalDynamicJSON(reg, msgDesc, withoutType, allowUnknown); err != nil {
 					*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s failed protobuf schema for `@type` %q: %v", stanzaIdx, method, location, typeURL, err))
 				} else if expectIntEnums {
 					checkEnumEncodingRecursive(msgDesc, withoutType, "", stanzaIdx, method, errs)
@@ -459,18 +460,18 @@ func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method
 	for _, k := range keys {
 		switch child := curr[k].(type) {
 		case map[string]any:
-			validateTypedBlocksRecursive(reg, stanzaIdx, method, location, child, expectIntEnums, errs)
+			validateTypedBlocksRecursive(reg, stanzaIdx, method, location, child, expectIntEnums, allowUnknown, errs)
 		case []any:
 			for _, elem := range child {
 				if m, ok := elem.(map[string]any); ok {
-					validateTypedBlocksRecursive(reg, stanzaIdx, method, location, m, expectIntEnums, errs)
+					validateTypedBlocksRecursive(reg, stanzaIdx, method, location, m, expectIntEnums, allowUnknown, errs)
 				}
 			}
 		}
 	}
 }
 
-func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageDescriptor, obj map[string]any) error {
+func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageDescriptor, obj map[string]any, discardUnknown bool) error {
 	rawBytes, err := json.Marshal(obj)
 	if err != nil {
 		return err
@@ -480,7 +481,6 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	s := strings.ReplaceAll(string(rawBytes), `"000000000000000000000"`, `"0"`)
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
-	discardUnknown := false
 	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" {
 		discardUnknown = true
 	}

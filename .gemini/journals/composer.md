@@ -19,3 +19,11 @@
   - **Masked Secret Values on GET**: GCP masks all values in `data` with `"**********"` on `GetUserWorkloadsSecret`. To prevent spurious diffs during re-reconciliation, `Update` uses a `normalize` function with `CompareGreenfieldSpec`: when `status.ObservedGeneration` matches `u.GetGeneration()` and `actual.Data` values are `"**********"`, they are normalized to the desired spec values.
   - **Cloud Composer 3 Dependency**: `userWorkloadsSecrets` is supported exclusively on Cloud Composer 3 (`composer-3-airflow-*`). E2E fixture `dependencies.yaml` provisions a standard Composer 3 environment (`imageVersion: composer-3-airflow-2.11.1-build.22`) with `roles/composer.worker`.
 
+### [2026-11-03] ComposerUserWorkloadsConfigMap Direct Controller and E2E Recording
+- **Context**: Implementing Greenfield Step 2 direct controller, E2E fixtures, and fuzzer verification for `ComposerUserWorkloadsConfigMap` (#14710).
+- **Findings & Solutions**:
+  - `UserWorkloadsConfigMap` is supported on Cloud Composer 3 environments (`composer-3-*`). Test fixtures specify `dependencies.yaml` with `IAMServiceAccount`, `IAMPolicyMember` (`roles/composer.worker`), and `ComposerEnvironment` with `imageVersion: composer-3-airflow-2.11.1-build.22`.
+  - In `AdapterForObject`, ensured `common.NormalizeGreenfieldReferences` is called before `GetIdentity`, and defaulted `id.UserWorkloadsConfigMap` to `obj.GetName()` if `spec.resourceID` was unset (per CRD spec description).
+  - In `Create`, ensured `resource.Name = a.id.String()` is set when `a.id.HasIdentitySpecified()`, allowing client-specified configmap naming in the request body.
+  - Recorded authentic golden HTTP logs against real GCP (`cnrm-barni-4`), passing all 7/7 automated validation checks for both minimal and maximal fixtures.
+

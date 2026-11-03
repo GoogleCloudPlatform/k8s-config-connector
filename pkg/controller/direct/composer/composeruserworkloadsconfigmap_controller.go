@@ -62,15 +62,15 @@ func (m *modelUserWorkloadsConfigMap) AdapterForObject(ctx context.Context, op *
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.ComposerUserWorkloadsConfigMapIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get composer GCP client
 	gcpClient, err := m.client(ctx)
@@ -130,9 +130,6 @@ var _ directbase.Adapter = &UserWorkloadsConfigMapAdapter{}
 func (a *UserWorkloadsConfigMapAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting UserWorkloadsConfigMap", "name", a.id)
-	if !a.id.HasIdentitySpecified() {
-		return false, nil
-	}
 
 	req := &servicepb.GetUserWorkloadsConfigMapRequest{
 		Name: a.id.String(),
@@ -160,6 +157,8 @@ func (a *UserWorkloadsConfigMapAdapter) Create(ctx context.Context, createOp *di
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	resource.Name = a.id.String()
 
 	req := &servicepb.CreateUserWorkloadsConfigMapRequest{
 		Parent:                 a.id.ParentString(),

@@ -1,0 +1,28 @@
+apiVersion: composer.cnrm.cloud.google.com/v1alpha1
+kind: ComposerUserWorkloadsConfigMap
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: composeruserworkloadsconfigmap-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  data:
+    key1: updated-value1
+    key2: value2
+    key3: value3
+  parentRef:
+    name: composerenvironment-${uniqueId}
+  resourceID: composeruserworkloadsconfigmap-maximal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}/userWorkloadsConfigMaps/composeruserworkloadsconfigmap-maximal-${uniqueId}
+  observedGeneration: 2
