@@ -4,7 +4,7 @@
 - **Resource Name:** `appengineflexibleappversion-${uniqueId} (resourceID: v${uniqueId})`
 - **Source Log:** `_http.log` (11 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:c05a88ec34dc527b`
+- **Integrity Hash:** `sha256:d4983fd359a4ee4e`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

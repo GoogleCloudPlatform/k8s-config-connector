@@ -666,6 +666,39 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(bs, "minor_version_id_ccfe")
 		}
 
+		// Normalize AppEngine FlexibleAppVersion fields between TF and Direct controller mock/real logs
+		if ss, ok := v["servingStatus"]; ok {
+			if f, ok := ss.(float64); ok && f == 1 {
+				v["servingStatus"] = "SERVING"
+			} else if f, ok := ss.(float64); ok && f == 2 {
+				v["servingStatus"] = "STOPPED"
+			}
+		}
+		if lc, ok := v["livenessCheck"].(map[string]interface{}); ok {
+			delete(lc, "checkInterval")
+			delete(lc, "failureThreshold")
+			delete(lc, "initialDelay")
+			delete(lc, "successThreshold")
+			delete(lc, "timeout")
+		}
+		if rc, ok := v["readinessCheck"].(map[string]interface{}); ok {
+			delete(rc, "appStartTimeout")
+			delete(rc, "checkInterval")
+			delete(rc, "failureThreshold")
+			delete(rc, "successThreshold")
+			delete(rc, "timeout")
+		}
+		if _, hasDeployment := v["deployment"]; hasDeployment {
+			delete(v, "inboundServices")
+			if v["runtime"] == "custom" {
+				delete(v, "serviceAccount")
+				delete(v, "servingStatus")
+			}
+			if ms, ok := v["manualScaling"].(map[string]interface{}); ok {
+				delete(ms, "instances")
+			}
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
