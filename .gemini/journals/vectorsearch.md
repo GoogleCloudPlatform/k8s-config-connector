@@ -22,3 +22,9 @@
 - **Solution**: Implemented `DedicatedInfrastructure_FromProto` in `vectorsearchcollection_mapper.go` to preserve pointer presence when `in.Mode != nil` via `direct.LazyPtr(in.GetMode().String())`, ensuring roundtrip fidelity between proto and KRM.
 - **Impact**: Roundtrip fuzz testing passes cleanly for `VectorsearchIndex` without dropping zero-value enums.
 
+### [2026-11-02] VectorsearchIndex Parent Reference Normalization and Update Reconciliation
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `VectorsearchIndex` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**: `VectorsearchIndex` is a child resource under `VectorSearchCollection` (`spec.parentRef`). Its identity depends on `spec.parentRef` being normalized first, and static tools (`TestGoldenIdentitiesYamlFiles`, `TestFixtureExternalRefEvidence`) require resolving `{name: ...}` references from dependencies offline. Additionally, index mutations require `UpdateIndex` with LRO polling.
+- **Solution**: Called `common.NormalizeGreenfieldReferences` before `obj.GetIdentity` in `AdapterForObject`, hand-maintained `VectorSearchCollectionRef.Normalize` using `refs.NormalizeWithFallback` and `getIdentityFromVectorSearchCollectionSpec`, and wired `UpdateIndex` with `updateMask` and `op.Wait(ctx)`.
+- **Impact**: Ensures offline identity resolution in tests and successful end-to-end reconciliation on real GCP.
+

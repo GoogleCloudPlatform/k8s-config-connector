@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:controller
 // krm.group: vectorsearch.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // krm.kind: VectorsearchIndex
@@ -62,15 +61,16 @@ func (m *modelIndex) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.VectorsearchIndexIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get vectorsearch GCP client
 	gcpClient, err := m.client(ctx)
@@ -187,7 +187,7 @@ func (a *IndexAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Index", "name", a.id)
 
-	_, report, updateMask, err := common.CompareGreenfieldSpec(
+	resource, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
@@ -201,7 +201,22 @@ func (a *IndexAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if report.HasDiff() {
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("updating VectorsearchIndex is not supported, fields modified: %v", updateMask.Paths)
+
+		resource.Name = a.id.String()
+		req := &vectorsearchpb.UpdateIndexRequest{
+			Index:      resource,
+			UpdateMask: updateMask,
+		}
+		op, err := a.gcpClient.UpdateIndex(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Index %s: %w", a.id, err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Index %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated Index", "name", a.id)
+		a.actual = updated
 	}
 
 	status := &krm.VectorsearchIndexStatus{}
@@ -227,13 +242,17 @@ func (a *IndexAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.ParentRef = &krm.VectorSearchCollectionRef{External: a.id.ParentString()}
+	obj.Spec.ResourceID = &a.id.Index
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.Index)
 	u.SetGroupVersionKind(krm.VectorsearchIndexGVK)
 
 	return u, nil

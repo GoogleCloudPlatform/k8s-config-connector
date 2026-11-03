@@ -1,0 +1,43 @@
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/vsc-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Vector Search Collection for Index Minimal",
+  "name": "projects/${projectId}/locations/us-central1/collections/vsc-dep-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vectorSchema": {
+    "text_vector": {
+      "denseVector": {
+        "dimensions": 128
+      }
+    }
+  }
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/vsc-dep-${uniqueId}/indexes/vsi-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dedicatedInfrastructure": {
+    "autoscalingSpec": {
+      "maxReplicaCount": 2,
+      "minReplicaCount": 2
+    },
+    "mode": 2
+  },
+  "denseScann": {},
+  "distanceMetric": 1,
+  "indexField": "text_vector",
+  "name": "projects/${projectId}/locations/us-central1/collections/vsc-dep-${uniqueId}/indexes/vsi-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
