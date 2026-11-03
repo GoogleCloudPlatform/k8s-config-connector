@@ -36,6 +36,23 @@
 # agent has to decide to skip Step 1a. Keep the steps the two files share in
 # sync.
 #
+# Fewer PRs: add `grouped: true` to the block, and consecutive steps share
+# one pull request (and one sandbox) instead of one each, every step
+# starting once the one before has pushed to it and it is green and
+# reviewed. `group-gate: true` below marks where the shared PR ends and must
+# merge before anything after it starts: grouped, the steps are three PRs -
+# prepopulate + types-judgement, then controller + mockgcp +
+# mockgcp-alignment, then release - instead of five. A parent can name its
+# own gates instead (`gates: [...]` in its block). See "Grouped steps" in
+# issue-graph.md.
+#
+#   ```factory-graph
+#   graph: kcc-greenfield
+#   grouped: true
+#   params:
+#     kind: SpannerInstanceConfig
+#   ```
+#
 # Validate changes with: factory graph validate .agents/graphs/kcc-greenfield.yaml
 apiVersion: factory.gemini.google.com/v1alpha1
 kind: IssueGraph
@@ -90,6 +107,9 @@ spec:
     # Step 1b.
     - id: types-judgement
       after: [prepopulate]
+      # Grouped (grouped: true): the types and judgement queue are reviewed
+      # and merged on their own before the controller builds on them.
+      group-gate: true
       title: 'Greenfield: Triage judgement queue and finalize direct KRM types and identity for {{ .Params.kind }}'
       labels: [step/types-judgement]
       review: |
