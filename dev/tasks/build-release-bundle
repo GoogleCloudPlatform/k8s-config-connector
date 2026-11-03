@@ -335,7 +335,7 @@ BLOCKED_KINDS=(
     "VertexAIPersistentResource"
     "VertexAIPipelineJob"
     "VertexAIRagCorpus"
-    "VertexAISchedule"
+    "AIPlatformSchedule"
     "AIPlatformSpecialistPool"
     "VertexAIStudy"
     "VertexAITrainingPipeline"

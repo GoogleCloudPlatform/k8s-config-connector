@@ -190,6 +190,7 @@ func CreateNotebookExecutionJobRequest_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.CreateNotebookExecutionJobRequest{}
+	out.Parent = direct.LazyPtr(in.GetParent())
 	out.NotebookExecutionJob = NotebookExecutionJob_FromProto(mapCtx, in.GetNotebookExecutionJob())
 	out.NotebookExecutionJobID = direct.LazyPtr(in.GetNotebookExecutionJobId())
 	return out
@@ -200,6 +201,7 @@ func CreateNotebookExecutionJobRequest_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.CreateNotebookExecutionJobRequest{}
+	out.Parent = direct.ValueOf(in.Parent)
 	out.NotebookExecutionJob = NotebookExecutionJob_ToProto(mapCtx, in.NotebookExecutionJob)
 	out.NotebookExecutionJobId = direct.ValueOf(in.NotebookExecutionJobID)
 	return out
@@ -282,7 +284,7 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
 	if in.GetScheduleResourceName() != "" {
-		out.ScheduleRef = &krm.VertexAIScheduleRef{External: in.GetScheduleResourceName()}
+		out.ScheduleRef = &krm.AIPlatformScheduleRef{External: in.GetScheduleResourceName()}
 	}
 	out.Labels = in.Labels
 	out.KernelName = direct.LazyPtr(in.GetKernelName())

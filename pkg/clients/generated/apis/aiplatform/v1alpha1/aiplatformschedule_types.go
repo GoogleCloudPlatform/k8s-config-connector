@@ -38,10 +38,10 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type VertexaischeduleCreateNotebookExecutionJobRequest struct {
+type AiplatformscheduleCreateNotebookExecutionJobRequest struct {
 	/* Required. The NotebookExecutionJob to create. */
 	// +optional
-	NotebookExecutionJob *VertexaischeduleNotebookExecutionJob `json:"notebookExecutionJob,omitempty"`
+	NotebookExecutionJob *AiplatformscheduleNotebookExecutionJob `json:"notebookExecutionJob,omitempty"`
 
 	/* Optional. User specified ID for the NotebookExecutionJob. */
 	// +optional
@@ -52,14 +52,14 @@ type VertexaischeduleCreateNotebookExecutionJobRequest struct {
 	Parent *string `json:"parent,omitempty"`
 }
 
-type VertexaischeduleCreatePipelineJobRequest struct {
+type AiplatformscheduleCreatePipelineJobRequest struct {
 	/* Required. Location resource name to create the PipelineJob in. Format: projects-id/locations-id */
 	// +optional
 	Parent *string `json:"parent,omitempty"`
 
 	/* Required. The PipelineJob to create. */
 	// +optional
-	PipelineJob *VertexaischedulePipelineJob `json:"pipelineJob,omitempty"`
+	PipelineJob *AiplatformschedulePipelineJob `json:"pipelineJob,omitempty"`
 
 	/* The ID to use for the PipelineJob, which will become the final component of
 	the PipelineJob name. If not provided, an ID will be automatically
@@ -71,21 +71,21 @@ type VertexaischeduleCreatePipelineJobRequest struct {
 	PipelineJobID *string `json:"pipelineJobID,omitempty"`
 }
 
-type VertexaischeduleCustomEnvironmentSpec struct {
+type AiplatformscheduleCustomEnvironmentSpec struct {
 	/* The specification of a single machine for the execution job. */
 	// +optional
-	MachineSpec *VertexaischeduleMachineSpec `json:"machineSpec,omitempty"`
+	MachineSpec *AiplatformscheduleMachineSpec `json:"machineSpec,omitempty"`
 
 	/* The network configuration to use for the execution job. */
 	// +optional
-	NetworkSpec *VertexaischeduleNetworkSpec `json:"networkSpec,omitempty"`
+	NetworkSpec *AiplatformscheduleNetworkSpec `json:"networkSpec,omitempty"`
 
 	/* The specification of a persistent disk to attach for the execution job. */
 	// +optional
-	PersistentDiskSpec *VertexaischedulePersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
+	PersistentDiskSpec *AiplatformschedulePersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
 }
 
-type VertexaischeduleDataformRepositorySource struct {
+type AiplatformscheduleDataformRepositorySource struct {
 	/* The commit SHA to read repository with. If unset, the file will be read at HEAD. */
 	// +optional
 	CommitSha *string `json:"commitSha,omitempty"`
@@ -95,13 +95,13 @@ type VertexaischeduleDataformRepositorySource struct {
 	DataformRepositoryRef *v1alpha1.ResourceRef `json:"dataformRepositoryRef,omitempty"`
 }
 
-type VertexaischeduleDirectNotebookSource struct {
+type AiplatformscheduleDirectNotebookSource struct {
 	/* The base64-encoded contents of the input notebook file. */
 	// +optional
 	Content *string `json:"content,omitempty"`
 }
 
-type VertexaischeduleDnsPeeringConfigs struct {
+type AiplatformscheduleDnsPeeringConfigs struct {
 	/* Required. The DNS name suffix of the zone being peered to, e.g., "my-internal-domain.corp.". Must end with a dot. */
 	// +optional
 	Domain *string `json:"domain,omitempty"`
@@ -115,13 +115,13 @@ type VertexaischeduleDnsPeeringConfigs struct {
 	TargetProject *string `json:"targetProject,omitempty"`
 }
 
-type VertexaischeduleEncryptionSpec struct {
+type AiplatformscheduleEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
-type VertexaischeduleGcsNotebookSource struct {
+type AiplatformscheduleGcsNotebookSource struct {
 	/* The version of the Cloud Storage object to read. If unset, the current version of the object is read. See https://cloud.google.com/storage/docs/metadata#generation-number. */
 	// +optional
 	Generation *string `json:"generation,omitempty"`
@@ -131,7 +131,7 @@ type VertexaischeduleGcsNotebookSource struct {
 	Uri *string `json:"uri,omitempty"`
 }
 
-type VertexaischeduleMachineSpec struct {
+type AiplatformscheduleMachineSpec struct {
 	/* The number of accelerators to attach to the machine. */
 	// +optional
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
@@ -158,14 +158,14 @@ type VertexaischeduleMachineSpec struct {
 
 	/* Optional. Immutable. Configuration controlling how this resource pool consumes reservation. */
 	// +optional
-	ReservationAffinity *VertexaischeduleReservationAffinity `json:"reservationAffinity,omitempty"`
+	ReservationAffinity *AiplatformscheduleReservationAffinity `json:"reservationAffinity,omitempty"`
 
 	/* Immutable. The topology of the TPUs. Corresponds to the TPU topologies available from GKE. (Example: tpu_topology: "2x2x1"). */
 	// +optional
 	TpuTopology *string `json:"tpuTopology,omitempty"`
 }
 
-type VertexaischeduleNetworkSpec struct {
+type AiplatformscheduleNetworkSpec struct {
 	/* Whether to enable public internet access. Default false. */
 	// +optional
 	EnableInternetAccess *bool `json:"enableInternetAccess,omitempty"`
@@ -179,18 +179,18 @@ type VertexaischeduleNetworkSpec struct {
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
-type VertexaischeduleNotebookExecutionJob struct {
+type AiplatformscheduleNotebookExecutionJob struct {
 	/* The custom compute configuration for an execution job. */
 	// +optional
-	CustomEnvironmentSpec *VertexaischeduleCustomEnvironmentSpec `json:"customEnvironmentSpec,omitempty"`
+	CustomEnvironmentSpec *AiplatformscheduleCustomEnvironmentSpec `json:"customEnvironmentSpec,omitempty"`
 
 	/* The Dataform Repository pointing to a single file notebook repository. */
 	// +optional
-	DataformRepositorySource *VertexaischeduleDataformRepositorySource `json:"dataformRepositorySource,omitempty"`
+	DataformRepositorySource *AiplatformscheduleDataformRepositorySource `json:"dataformRepositorySource,omitempty"`
 
 	/* The contents of an input notebook file. */
 	// +optional
-	DirectNotebookSource *VertexaischeduleDirectNotebookSource `json:"directNotebookSource,omitempty"`
+	DirectNotebookSource *AiplatformscheduleDirectNotebookSource `json:"directNotebookSource,omitempty"`
 
 	/* The display name of the NotebookExecutionJob. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
 	// +optional
@@ -198,7 +198,7 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* Customer-managed encryption key spec for the notebook execution job. This field is auto-populated if the [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate] has an encryption spec. */
 	// +optional
-	EncryptionSpec *VertexaischeduleEncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *AiplatformscheduleEncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	/* Max running time of the execution job in seconds (default 86400s / 24 hrs). */
 	// +optional
@@ -210,7 +210,7 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Cloud Storage url pointing to the ipynb file. Format: `gs://bucket/notebook_file.ipynb` */
 	// +optional
-	GcsNotebookSource *VertexaischeduleGcsNotebookSource `json:"gcsNotebookSource,omitempty"`
+	GcsNotebookSource *AiplatformscheduleGcsNotebookSource `json:"gcsNotebookSource,omitempty"`
 
 	/* The Cloud Storage location to upload the result to. Format: `gs://bucket-name` */
 	// +optional
@@ -246,10 +246,10 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Workbench runtime configuration to use for the notebook execution. */
 	// +optional
-	WorkbenchRuntime *VertexaischeduleWorkbenchRuntime `json:"workbenchRuntime,omitempty"`
+	WorkbenchRuntime *AiplatformscheduleWorkbenchRuntime `json:"workbenchRuntime,omitempty"`
 }
 
-type VertexaischedulePersistentDiskSpec struct {
+type AiplatformschedulePersistentDiskSpec struct {
 	/* Size in GB of the disk (default is 100GB). */
 	// +optional
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
@@ -259,14 +259,14 @@ type VertexaischedulePersistentDiskSpec struct {
 	DiskType *string `json:"diskType,omitempty"`
 }
 
-type VertexaischedulePipelineJob struct {
+type AiplatformschedulePipelineJob struct {
 	/* The display name of the Pipeline. The name can be up to 128 characters long and can consist of any UTF-8 characters. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
 	/* Customer-managed encryption key spec for a pipelineJob. If set, this PipelineJob and all of its sub-resources will be secured by this key. */
 	// +optional
-	EncryptionSpec *VertexaischeduleEncryptionSpec `json:"encryptionSpec,omitempty"`
+	EncryptionSpec *AiplatformscheduleEncryptionSpec `json:"encryptionSpec,omitempty"`
 
 	/* The labels with user-defined metadata to organize PipelineJob. */
 	// +optional
@@ -292,7 +292,7 @@ type VertexaischedulePipelineJob struct {
 
 	/* Optional. Configuration for PSC-I for PipelineJob. */
 	// +optional
-	PscInterfaceConfig *VertexaischedulePscInterfaceConfig `json:"pscInterfaceConfig,omitempty"`
+	PscInterfaceConfig *AiplatformschedulePscInterfaceConfig `json:"pscInterfaceConfig,omitempty"`
 
 	/* A list of names for the reserved ip ranges under the VPC network that can be used for this Pipeline Job's workload. */
 	// +optional
@@ -304,7 +304,7 @@ type VertexaischedulePipelineJob struct {
 
 	/* Runtime config of the pipeline. */
 	// +optional
-	RuntimeConfig *VertexaischeduleRuntimeConfig `json:"runtimeConfig,omitempty"`
+	RuntimeConfig *AiplatformscheduleRuntimeConfig `json:"runtimeConfig,omitempty"`
 
 	/* The service account that the pipeline workload runs as. */
 	// +optional
@@ -315,17 +315,17 @@ type VertexaischedulePipelineJob struct {
 	TemplateURI *string `json:"templateURI,omitempty"`
 }
 
-type VertexaischedulePscInterfaceConfig struct {
+type AiplatformschedulePscInterfaceConfig struct {
 	/* Optional. DNS peering configurations. */
 	// +optional
-	DnsPeeringConfigs []VertexaischeduleDnsPeeringConfigs `json:"dnsPeeringConfigs,omitempty"`
+	DnsPeeringConfigs []AiplatformscheduleDnsPeeringConfigs `json:"dnsPeeringConfigs,omitempty"`
 
 	/* Optional. The name of the Compute Engine network attachment to attach to the resource within the region and user project. */
 	// +optional
 	NetworkAttachmentRef *v1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
 }
 
-type VertexaischeduleReservationAffinity struct {
+type AiplatformscheduleReservationAffinity struct {
 	/* Optional. Corresponds to the label key of a reservation resource. To target a SPECIFIC_RESERVATION by name, use `compute.googleapis.com/reservation-name` as the key and specify the name of your reservation as its value. */
 	// +optional
 	Key *string `json:"key,omitempty"`
@@ -339,7 +339,7 @@ type VertexaischeduleReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
-type VertexaischeduleRuntimeConfig struct {
+type AiplatformscheduleRuntimeConfig struct {
 	/* Represents the failure policy of a pipeline. */
 	// +optional
 	FailurePolicy *string `json:"failurePolicy,omitempty"`
@@ -349,21 +349,21 @@ type VertexaischeduleRuntimeConfig struct {
 	GcsOutputDirectory *string `json:"gcsOutputDirectory,omitempty"`
 }
 
-type VertexaischeduleWorkbenchRuntime struct {
+type AiplatformscheduleWorkbenchRuntime struct {
 }
 
-type VertexAIScheduleSpec struct {
+type AIPlatformScheduleSpec struct {
 	/* Optional. Whether new scheduled runs can be queued when max_concurrent_runs limit is reached. If set to true, new runs will be queued instead of skipped. Default to false. */
 	// +optional
 	AllowQueueing *bool `json:"allowQueueing,omitempty"`
 
 	/* Request for [NotebookService.CreateNotebookExecutionJob][google.cloud.aiplatform.v1.NotebookService.CreateNotebookExecutionJob]. */
 	// +optional
-	CreateNotebookExecutionJobRequest *VertexaischeduleCreateNotebookExecutionJobRequest `json:"createNotebookExecutionJobRequest,omitempty"`
+	CreateNotebookExecutionJobRequest *AiplatformscheduleCreateNotebookExecutionJobRequest `json:"createNotebookExecutionJobRequest,omitempty"`
 
 	/* Request for [PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob]. The parent field of CreatePipelineJobRequest is required (format: projects-id/locations-id). */
 	// +optional
-	CreatePipelineJobRequest *VertexaischeduleCreatePipelineJobRequest `json:"createPipelineJobRequest,omitempty"`
+	CreatePipelineJobRequest *AiplatformscheduleCreatePipelineJobRequest `json:"createPipelineJobRequest,omitempty"`
 
 	/* Cron schedule (https://en.wikipedia.org/wiki/Cron) to launch scheduled runs. To explicitly set a timezone to the cron tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone database. For example, "CRON_TZ=America/New_York 1 * * * *", or "TZ=America/New_York 1 * * * *". */
 	// +optional
@@ -389,7 +389,7 @@ type VertexAIScheduleSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAISchedule name. If not given, the metadata.name will be used. */
+	/* The service-generated schedule ID. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -398,7 +398,7 @@ type VertexAIScheduleSpec struct {
 	StartTime *string `json:"startTime,omitempty"`
 }
 
-type VertexaischeduleContainerDetailStatus struct {
+type AiplatformscheduleContainerDetailStatus struct {
 	/* Output only. The names of the previously failed CustomJob for the main container executions. */
 	// +optional
 	FailedMainJobs []string `json:"failedMainJobs,omitempty"`
@@ -416,19 +416,19 @@ type VertexaischeduleContainerDetailStatus struct {
 	PreCachingCheckJob *string `json:"preCachingCheckJob,omitempty"`
 }
 
-type VertexaischeduleCreateNotebookExecutionJobRequestStatus struct {
+type AiplatformscheduleCreateNotebookExecutionJobRequestStatus struct {
 	/* Required. The NotebookExecutionJob to create. */
 	// +optional
-	NotebookExecutionJob *VertexaischeduleNotebookExecutionJobStatus `json:"notebookExecutionJob,omitempty"`
+	NotebookExecutionJob *AiplatformscheduleNotebookExecutionJobStatus `json:"notebookExecutionJob,omitempty"`
 }
 
-type VertexaischeduleCreatePipelineJobRequestStatus struct {
+type AiplatformscheduleCreatePipelineJobRequestStatus struct {
 	/* Required. The PipelineJob to create. */
 	// +optional
-	PipelineJob *VertexaischedulePipelineJobStatus `json:"pipelineJob,omitempty"`
+	PipelineJob *AiplatformschedulePipelineJobStatus `json:"pipelineJob,omitempty"`
 }
 
-type VertexaischeduleCustomJobDetailStatus struct {
+type AiplatformscheduleCustomJobDetailStatus struct {
 	/* Output only. The names of the previously failed CustomJob. */
 	// +optional
 	FailedJobs []string `json:"failedJobs,omitempty"`
@@ -438,7 +438,7 @@ type VertexaischeduleCustomJobDetailStatus struct {
 	Job *string `json:"job,omitempty"`
 }
 
-type VertexaischeduleErrorStatus struct {
+type AiplatformscheduleErrorStatus struct {
 	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
 	// +optional
 	Code *int32 `json:"code,omitempty"`
@@ -448,7 +448,7 @@ type VertexaischeduleErrorStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-type VertexaischeduleExecutionStatus struct {
+type AiplatformscheduleExecutionStatus struct {
 	/* Output only. Timestamp when this Execution was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -494,31 +494,31 @@ type VertexaischeduleExecutionStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischeduleExecutorDetailStatus struct {
+type AiplatformscheduleExecutorDetailStatus struct {
 	/* Output only. The detailed info for a container executor. */
 	// +optional
-	ContainerDetail *VertexaischeduleContainerDetailStatus `json:"containerDetail,omitempty"`
+	ContainerDetail *AiplatformscheduleContainerDetailStatus `json:"containerDetail,omitempty"`
 
 	/* Output only. The detailed info for a custom job executor. */
 	// +optional
-	CustomJobDetail *VertexaischeduleCustomJobDetailStatus `json:"customJobDetail,omitempty"`
+	CustomJobDetail *AiplatformscheduleCustomJobDetailStatus `json:"customJobDetail,omitempty"`
 }
 
-type VertexaischeduleJobDetailStatus struct {
+type AiplatformscheduleJobDetailStatus struct {
 	/* Output only. The context of the pipeline. */
 	// +optional
-	PipelineContext *VertexaischedulePipelineContextStatus `json:"pipelineContext,omitempty"`
+	PipelineContext *AiplatformschedulePipelineContextStatus `json:"pipelineContext,omitempty"`
 
 	/* Output only. The context of the current pipeline run. */
 	// +optional
-	PipelineRunContext *VertexaischedulePipelineRunContextStatus `json:"pipelineRunContext,omitempty"`
+	PipelineRunContext *AiplatformschedulePipelineRunContextStatus `json:"pipelineRunContext,omitempty"`
 
 	/* Output only. The runtime details of the tasks under the pipeline. */
 	// +optional
-	TaskDetails []VertexaischeduleTaskDetailsStatus `json:"taskDetails,omitempty"`
+	TaskDetails []AiplatformscheduleTaskDetailsStatus `json:"taskDetails,omitempty"`
 }
 
-type VertexaischeduleLastScheduledRunResponseStatus struct {
+type AiplatformscheduleLastScheduledRunResponseStatus struct {
 	/* The response of the scheduled run. */
 	// +optional
 	RunResponse *string `json:"runResponse,omitempty"`
@@ -528,7 +528,7 @@ type VertexaischeduleLastScheduledRunResponseStatus struct {
 	ScheduledRunTime *string `json:"scheduledRunTime,omitempty"`
 }
 
-type VertexaischeduleNotebookExecutionJobStatus struct {
+type AiplatformscheduleNotebookExecutionJobStatus struct {
 	/* Output only. Timestamp when this NotebookExecutionJob was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -543,25 +543,25 @@ type VertexaischeduleNotebookExecutionJobStatus struct {
 
 	/* Output only. Populated when the NotebookExecutionJob is completed. When there is an error during notebook execution, the error details are populated. */
 	// +optional
-	Status *VertexaischeduleStatusStatus `json:"status,omitempty"`
+	Status *AiplatformscheduleStatusStatus `json:"status,omitempty"`
 
 	/* Output only. Timestamp when this NotebookExecutionJob was most recently updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischeduleObservedStateStatus struct {
+type AiplatformscheduleObservedStateStatus struct {
 	/* Output only. Whether to backfill missed runs when the schedule is resumed from PAUSED state. If set to true, all missed runs will be scheduled. New runs will be scheduled after the backfill is complete. Default to false. */
 	// +optional
 	CatchUp *bool `json:"catchUp,omitempty"`
 
 	/* Request for [NotebookService.CreateNotebookExecutionJob][google.cloud.aiplatform.v1.NotebookService.CreateNotebookExecutionJob]. */
 	// +optional
-	CreateNotebookExecutionJobRequest *VertexaischeduleCreateNotebookExecutionJobRequestStatus `json:"createNotebookExecutionJobRequest,omitempty"`
+	CreateNotebookExecutionJobRequest *AiplatformscheduleCreateNotebookExecutionJobRequestStatus `json:"createNotebookExecutionJobRequest,omitempty"`
 
 	/* Request for [PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob]. CreatePipelineJobRequest.parent field is required (format: projects/{project}/locations/{location}). */
 	// +optional
-	CreatePipelineJobRequest *VertexaischeduleCreatePipelineJobRequestStatus `json:"createPipelineJobRequest,omitempty"`
+	CreatePipelineJobRequest *AiplatformscheduleCreatePipelineJobRequestStatus `json:"createPipelineJobRequest,omitempty"`
 
 	/* Output only. Timestamp when this Schedule was created. */
 	// +optional
@@ -577,11 +577,7 @@ type VertexaischeduleObservedStateStatus struct {
 
 	/* Output only. Response of the last scheduled run. This is the response for starting the scheduled requests and not the execution of the operations/jobs created by the requests (if applicable). Unset if no run has been scheduled yet. */
 	// +optional
-	LastScheduledRunResponse *VertexaischeduleLastScheduledRunResponseStatus `json:"lastScheduledRunResponse,omitempty"`
-
-	/* Immutable. The resource name of the Schedule. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	LastScheduledRunResponse *AiplatformscheduleLastScheduledRunResponseStatus `json:"lastScheduledRunResponse,omitempty"`
 
 	/* Output only. Timestamp when this Schedule should schedule the next run. Having a next_run_time in the past means the runs are being started behind schedule. */
 	// +optional
@@ -600,7 +596,7 @@ type VertexaischeduleObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischedulePipelineContextStatus struct {
+type AiplatformschedulePipelineContextStatus struct {
 	/* Output only. Timestamp when this Context was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -646,7 +642,7 @@ type VertexaischedulePipelineContextStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischedulePipelineJobStatus struct {
+type AiplatformschedulePipelineJobStatus struct {
 	/* Output only. Pipeline creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -657,11 +653,11 @@ type VertexaischedulePipelineJobStatus struct {
 
 	/* Output only. The error that occurred during pipeline execution. Only populated when the pipeline's state is FAILED or CANCELLED. */
 	// +optional
-	Error *VertexaischeduleErrorStatus `json:"error,omitempty"`
+	Error *AiplatformscheduleErrorStatus `json:"error,omitempty"`
 
 	/* Output only. The details of pipeline run. Not available in the list view. */
 	// +optional
-	JobDetail *VertexaischeduleJobDetailStatus `json:"jobDetail,omitempty"`
+	JobDetail *AiplatformscheduleJobDetailStatus `json:"jobDetail,omitempty"`
 
 	/* Output only. The resource name of the PipelineJob. */
 	// +optional
@@ -681,14 +677,14 @@ type VertexaischedulePipelineJobStatus struct {
 
 	/* Output only. Pipeline template metadata. Will fill up fields if [PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri] is from supported template registry. */
 	// +optional
-	TemplateMetadata *VertexaischeduleTemplateMetadataStatus `json:"templateMetadata,omitempty"`
+	TemplateMetadata *AiplatformscheduleTemplateMetadataStatus `json:"templateMetadata,omitempty"`
 
 	/* Output only. Timestamp when this PipelineJob was most recently updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischedulePipelineRunContextStatus struct {
+type AiplatformschedulePipelineRunContextStatus struct {
 	/* Output only. Timestamp when this Context was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -734,10 +730,10 @@ type VertexaischedulePipelineRunContextStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischedulePipelineTaskStatusStatus struct {
+type AiplatformschedulePipelineTaskStatusStatus struct {
 	/* Output only. The error that occurred during the state. */
 	// +optional
-	Error *VertexaischeduleErrorStatus `json:"error,omitempty"`
+	Error *AiplatformscheduleErrorStatus `json:"error,omitempty"`
 
 	/* Output only. The state of the task. */
 	// +optional
@@ -748,7 +744,7 @@ type VertexaischedulePipelineTaskStatusStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexaischeduleStatusStatus struct {
+type AiplatformscheduleStatusStatus struct {
 	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
 	// +optional
 	Code *int32 `json:"code,omitempty"`
@@ -758,7 +754,7 @@ type VertexaischeduleStatusStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-type VertexaischeduleTaskDetailsStatus struct {
+type AiplatformscheduleTaskDetailsStatus struct {
 	/* Output only. Task create time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -769,15 +765,15 @@ type VertexaischeduleTaskDetailsStatus struct {
 
 	/* Output only. The error that occurred during task execution. */
 	// +optional
-	Error *VertexaischeduleErrorStatus `json:"error,omitempty"`
+	Error *AiplatformscheduleErrorStatus `json:"error,omitempty"`
 
 	/* Output only. The execution metadata of the task. */
 	// +optional
-	Execution *VertexaischeduleExecutionStatus `json:"execution,omitempty"`
+	Execution *AiplatformscheduleExecutionStatus `json:"execution,omitempty"`
 
 	/* Output only. The detailed execution info. */
 	// +optional
-	ExecutorDetail *VertexaischeduleExecutorDetailStatus `json:"executorDetail,omitempty"`
+	ExecutorDetail *AiplatformscheduleExecutorDetailStatus `json:"executorDetail,omitempty"`
 
 	/* Output only. The id of the parent task if the task is within a component scope. */
 	// +optional
@@ -785,7 +781,7 @@ type VertexaischeduleTaskDetailsStatus struct {
 
 	/* Output only. A list of task status. */
 	// +optional
-	PipelineTaskStatus []VertexaischedulePipelineTaskStatusStatus `json:"pipelineTaskStatus,omitempty"`
+	PipelineTaskStatus []AiplatformschedulePipelineTaskStatusStatus `json:"pipelineTaskStatus,omitempty"`
 
 	/* Output only. Task start time. */
 	// +optional
@@ -808,17 +804,17 @@ type VertexaischeduleTaskDetailsStatus struct {
 	TaskUniqueName *string `json:"taskUniqueName,omitempty"`
 }
 
-type VertexaischeduleTemplateMetadataStatus struct {
+type AiplatformscheduleTemplateMetadataStatus struct {
 	/* The version_name in artifact registry. */
 	// +optional
 	Version *string `json:"version,omitempty"`
 }
 
-type VertexAIScheduleStatus struct {
+type AIPlatformScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAISchedule's current state. */
+	   AIPlatformSchedule's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAISchedule resource in GCP. */
+	/* A unique specifier for the AIPlatformSchedule resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -828,12 +824,12 @@ type VertexAIScheduleStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *VertexaischeduleObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *AiplatformscheduleObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaischedule;gcpvertexaischedules
+// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformschedule;gcpaiplatformschedules
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -843,25 +839,25 @@ type VertexAIScheduleStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISchedule is the Schema for the aiplatform API
+// AIPlatformSchedule is the Schema for the aiplatform API
 // +k8s:openapi-gen=true
-type VertexAISchedule struct {
+type AIPlatformSchedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAIScheduleSpec   `json:"spec,omitempty"`
-	Status VertexAIScheduleStatus `json:"status,omitempty"`
+	Spec   AIPlatformScheduleSpec   `json:"spec,omitempty"`
+	Status AIPlatformScheduleStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAIScheduleList contains a list of VertexAISchedule
-type VertexAIScheduleList struct {
+// AIPlatformScheduleList contains a list of AIPlatformSchedule
+type AIPlatformScheduleList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISchedule `json:"items"`
+	Items           []AIPlatformSchedule `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISchedule{}, &VertexAIScheduleList{})
+	SchemeBuilder.Register(&AIPlatformSchedule{}, &AIPlatformScheduleList{})
 }
