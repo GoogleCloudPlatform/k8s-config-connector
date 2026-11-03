@@ -1,6 +1,5 @@
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,9 +21,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "automaticScaling": {
@@ -85,9 +83,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -134,11 +131,11 @@ X-Xss-Protection: 0
   },
   "handlers": [
     {
-      "login": "LOGIN_OPTIONAL",
+      "login": 1,
       "script": {
         "scriptPath": "auto"
       },
-      "securityLevel": "SECURE_OPTIONAL",
+      "securityLevel": 2,
       "urlRegex": ".*"
     }
   ],
@@ -149,16 +146,15 @@ X-Xss-Protection: 0
   "runtime": "python311",
   "runtimeChannel": "default",
   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
-  "servingStatus": "SERVING",
+  "servingStatus": 1,
   "threadsafe": true,
   "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
 }
 
 ---
 
-POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automaticScaling.maxIdleInstances%2CautomaticScaling.minIdleInstances%2CinstanceClass
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "automaticScaling": {
@@ -184,27 +180,23 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     }
   },
-  "entrypoint": {
-    "shell": "gunicorn -b :$PORT main:app"
-  },
   "envVariables": {
     "PORT": "8080"
   },
   "handlers": [
     {
-      "login": "LOGIN_OPTIONAL",
+      "login": 1,
       "script": {
         "scriptPath": "auto"
       },
-      "securityLevel": "SECURE_OPTIONAL",
+      "securityLevel": 2,
       "urlRegex": ".*"
     }
   ],
-  "id": "000000000000000000000",
-  "inboundServices": [],
   "instanceClass": "F2",
   "runtime": "python311",
-  "serviceAccount": "${projectId}@appspot.gserviceaccount.com"
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "threadsafe": true
 }
 
 200 OK
@@ -222,7 +214,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
     "insertTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.appengine.v1.Versions.CreateVersion",
+    "method": "google.appengine.v1.Versions.UpdateVersion",
     "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
     "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
   },
@@ -231,9 +223,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -280,20 +271,11 @@ X-Xss-Protection: 0
   },
   "handlers": [
     {
-      "login": "LOGIN_OPTIONAL",
+      "login": 1,
       "script": {
         "scriptPath": "auto"
       },
-      "securityLevel": "SECURE_OPTIONAL",
-      "urlRegex": ".*"
-    },
-    {
-      "authFailAction": "AUTH_FAIL_ACTION_REDIRECT",
-      "login": "LOGIN_OPTIONAL",
-      "script": {
-        "scriptPath": "auto"
-      },
-      "securityLevel": "SECURE_OPTIONAL",
+      "securityLevel": 2,
       "urlRegex": ".*"
     }
   ],
@@ -304,16 +286,15 @@ X-Xss-Protection: 0
   "runtime": "python311",
   "runtimeChannel": "default",
   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
-  "servingStatus": "SERVING",
+  "servingStatus": 1,
   "threadsafe": true,
   "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
 }
 
 ---
 
-DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -335,4 +316,27 @@ X-Xss-Protection: 0
     "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
   },
   "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/applications/${projectId}/services/default/versions/v${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }

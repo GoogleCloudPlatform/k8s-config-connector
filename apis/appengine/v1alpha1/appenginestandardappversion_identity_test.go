@@ -19,10 +19,26 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/google/go-cmp/cmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
+
+func TestAppEngineStandardAppVersionIdentity_Conformance(t *testing.T) {
+	identity.AssertConformance(t, identity.ConformanceCase[AppEngineStandardAppVersionIdentity]{
+		SampleExternal: "apps/my-app/services/my-service/versions/my-version",
+		WantHost:       "appengine.googleapis.com",
+		WantParent:     "apps/my-app/services/my-service",
+		WantIdentity: &AppEngineStandardAppVersionIdentity{
+			App:     "my-app",
+			Service: "my-service",
+			Version: "my-version",
+		},
+		Ref: &AppEngineStandardAppVersionRef{},
+	})
+}
 
 func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 	ctx := context.Background()
@@ -31,11 +47,10 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
 
 	tests := []struct {
-		name                  string
-		obj                   *AppEngineStandardAppVersion
-		wantErr               bool
-		want                  *AppEngineStandardAppVersionIdentity
-		wantIdentitySpecified bool
+		name    string
+		obj     *AppEngineStandardAppVersion
+		wantErr bool
+		want    *AppEngineStandardAppVersionIdentity
 	}{
 		{
 			name: "GetIdentity with specified resourceID",
@@ -52,30 +67,13 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 				Service: "my-service",
 				Version: "v1",
 			},
-			wantIdentitySpecified: true,
 		},
 		{
-			name: "GetIdentity with server-generated identity (empty spec resourceID, defaulted from status.externalRef)",
+			name: "GetIdentity defaulting resourceID to metadata.name when unset",
 			obj: &AppEngineStandardAppVersion{
-				Spec: AppEngineStandardAppVersionSpec{
-					ServiceRef: &AppEngineServiceRef{
-						External: "apps/my-app/services/my-service",
-					},
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "defaulted-v1",
 				},
-				Status: AppEngineStandardAppVersionStatus{
-					ExternalRef: common.LazyPtr("apps/my-app/services/my-service/versions/server-gen-v1"),
-				},
-			},
-			want: &AppEngineStandardAppVersionIdentity{
-				App:     "my-app",
-				Service: "my-service",
-				Version: "server-gen-v1",
-			},
-			wantIdentitySpecified: true,
-		},
-		{
-			name: "GetIdentity without resourceID and without status.externalRef",
-			obj: &AppEngineStandardAppVersion{
 				Spec: AppEngineStandardAppVersionSpec{
 					ServiceRef: &AppEngineServiceRef{
 						External: "apps/my-app/services/my-service",
@@ -85,9 +83,8 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 			want: &AppEngineStandardAppVersionIdentity{
 				App:     "my-app",
 				Service: "my-service",
-				Version: "",
+				Version: "defaulted-v1",
 			},
-			wantIdentitySpecified: false,
 		},
 		{
 			name: "GetIdentity error on identity change (spec resourceID does not match status.externalRef)",
@@ -135,10 +132,6 @@ func TestAppEngineStandardAppVersion_GetIdentity(t *testing.T) {
 
 			if diff := cmp.Diff(tc.want, typedID); diff != "" {
 				t.Errorf("GetIdentity mismatch (-want +got):\n%s", diff)
-			}
-
-			if got := typedID.HasIdentitySpecified(); got != tc.wantIdentitySpecified {
-				t.Errorf("HasIdentitySpecified() = %v, want %v", got, tc.wantIdentitySpecified)
 			}
 		})
 	}
