@@ -43,9 +43,7 @@ func networkConnectivityDestinationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".description")
 	f.SpecField(".endpoints[].asn")
 	f.SpecField(".endpoints[].csp")
-	f.SpecField(".etag")
 	f.SpecField(".ip_prefix")
-	f.SpecField(".labels")
 
 	// Status fields
 	f.StatusField(".create_time")
@@ -57,6 +55,8 @@ func networkConnectivityDestinationFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_Etag()
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

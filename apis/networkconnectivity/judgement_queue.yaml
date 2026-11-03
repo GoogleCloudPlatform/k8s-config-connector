@@ -25,29 +25,39 @@ entries:
     group: networkconnectivity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: finalized types, parentRef to NetworkConnectivityMulticloudDataTransferConfig, moved etag to observedState, removed labels from spec
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}" contains ancestor segment(s) multicloudDataTransferConfigs/{multicloud_data_transfer_config} with no matching reference or field on NetworkConnectivityDestinationSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkConnectivityMulticloudDataTransferConfigRef) per the single-parent rule; removed projectRef and location
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, and no MulticloudDataTransferConfigRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkConnectivityMulticloudDataTransferConfigRef) per the single-parent rule; removed projectRef and location
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from spec to observedState
   - kind: NetworkConnectivityDestination
     group: networkconnectivity.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*NetworkConnectivityMulticloudDataTransferConfigRef) per the single-parent rule; removed projectRef and location
   - kind: NetworkConnectivityPolicyBasedRoute
     group: networkconnectivity.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

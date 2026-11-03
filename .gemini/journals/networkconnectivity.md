@@ -22,3 +22,13 @@
   3. Normalized `generatedActivationKey` and `peeringNetwork` in `mockgcp/mocknetworkconnectivity/normalize.go` and `tests/e2e/normalize.go`.
 - **Impact**: When testing or updating transports, only mutable fields valid in `PENDING_KEY` state (`description`, `labels`) can be modified prior to provider activation. Defaulted fields like `stackType` must be aligned in `compareTransport`.
 
+### [2026-11-03] NetworkConnectivityDestination parent hierarchy and etag
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for NetworkConnectivityDestination.
+- **Problem**: NetworkConnectivityDestination is a child resource of MulticloudDataTransferConfig (`projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}`). It had an untriaged queue entry with `parent-ref-not-modelled`, `etag-in-spec`, and `location-or-parent-ref`.
+- **Solution**:
+  1. Added `NetworkConnectivityMulticloudDataTransferConfig` to `generate-identity` in `generate.sh` to generate `NetworkConnectivityMulticloudDataTransferConfigRef`.
+  2. Modelled `spec.parentRef *NetworkConnectivityMulticloudDataTransferConfigRef` with CEL immutability (`self == oldSelf`), removing `projectRef` and `location` per the single-parent rule.
+  3. Moved concurrency-control field `etag` to `status.observedState`, and removed top-level `labels` from `spec`.
+- **Impact**: All child resources under `MulticloudDataTransferConfig` can reuse `NetworkConnectivityMulticloudDataTransferConfigRef` as `spec.parentRef`.
+
+
