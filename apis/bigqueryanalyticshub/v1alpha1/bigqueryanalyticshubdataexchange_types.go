@@ -54,10 +54,8 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	// //  size of the data by 33-36%) when using JSON on the wire.
 	// Icon *string `json:"icon,omitempty"`
 
-	// As of now SharingEnvironmentConfig is empty or output only so let's not include it as
-	// part of the spec yet.
-	// // Optional. Configurable data sharing environment option for a data exchange.
-	// SharingEnvironmentConfig *SharingEnvironmentConfig `json:"sharingEnvironmentConfig,omitempty"`
+	// Optional. Configurable data sharing environment option for a data exchange.
+	SharingEnvironmentConfig *SharingEnvironmentConfig `json:"sharingEnvironmentConfig,omitempty"`
 
 	// Optional. Type of discovery on the discovery page for all the listings
 	//  under this exchange. Updating this field also updates (overwrites) the

@@ -1,0 +1,33 @@
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryAnalyticsHubQueryTemplate
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigqueryanalyticshubquerytemplatemin${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: query_template_min_${uniqueId}
+  parentRef:
+    name: bigqueryanalyticshubdataexchange${uniqueId}
+  primaryContact: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
+  routine:
+    definitionBody: bigqueryanalyticshubquerytemplatemin${uniqueId}() AS (SELECT 2
+      AS col)
+    routineType: TABLE_VALUED_FUNCTION
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/queryTemplates/bigqueryanalyticshubquerytemplatemin${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: DRAFTED
+    updateTime: "1970-01-01T00:00:00Z"

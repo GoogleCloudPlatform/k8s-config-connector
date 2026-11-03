@@ -87,18 +87,12 @@ type Routine struct {
 	DefinitionBody *string `json:"definitionBody,omitempty"`
 }
 
-/* unreachable type SharingEnvironmentConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig
 type SharingEnvironmentConfig struct {
-	// Default Analytics Hub data exchange, used for secured data sharing.
-	DefaultExchangeConfig *SharingEnvironmentConfig_DefaultExchangeConfig `json:"defaultExchangeConfig,omitempty"`
-
 	// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
 	DcrExchangeConfig *SharingEnvironmentConfig_DcrExchangeConfig `json:"dcrExchangeConfig,omitempty"`
 }
-*/
 
-/* unreachable type SharingEnvironmentConfig_DcrExchangeConfig
 // +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DcrExchangeConfig
 type SharingEnvironmentConfig_DcrExchangeConfig struct {
 	// Output only. If True, this DCR restricts the contributors to sharing
@@ -116,13 +110,6 @@ type SharingEnvironmentConfig_DcrExchangeConfig struct {
 	//  default, all new DCRs will have the restriction set to True.
 	SingleLinkedDatasetPerCleanroom *bool `json:"singleLinkedDatasetPerCleanroom,omitempty"`
 }
-*/
-
-/* unreachable type SharingEnvironmentConfig_DefaultExchangeConfig
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.SharingEnvironmentConfig.DefaultExchangeConfig
-type SharingEnvironmentConfig_DefaultExchangeConfig struct {
-}
-*/
 
 /* unreachable type BoolValue
 // +kcc:proto=google.protobuf.BoolValue
