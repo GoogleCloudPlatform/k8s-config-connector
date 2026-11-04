@@ -16,9 +16,7 @@
   name: managedkafkacluster-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
-  error: 'resolving spec.parentRef: reference ManagedKafkaCluster ${uniqueId}/managedkafkacluster-${uniqueId}
-    is not ready'
+- caisURL: //managedkafka.googleapis.com/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/acls/cluster
   group: managedkafka.cnrm.cloud.google.com
   kind: ManagedKafkaACL
   name: managedkafkaacl-${uniqueId}
