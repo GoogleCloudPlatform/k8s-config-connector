@@ -21,11 +21,13 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
 // proto.service: google.cloud.discoveryengine.v1beta
+// proto.service: google.cloud.discoveryengine.v1alpha
 
 package discoveryengine
 
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	apiv1alphadiscoveryenginepb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -625,6 +627,92 @@ func AssistantGroundedContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Content = AssistantContent_v1alpha1_ToProto(mapCtx, in.Content)
 	return out
 }
+
+/* found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_FromProto", skipping
+func AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Reference) *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto(mapCtx, in.GetDocumentMetadata())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_ToProto", skipping
+func AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference) *pb.AssistantGroundedContent_TextGroundingMetadata_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Reference{}
+	out.Content = direct.ValueOf(in.Content)
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto(mapCtx, in.DocumentMetadata)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto", skipping
+func AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata) *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata{}
+	out.Document = in.Document
+	out.URI = in.Uri
+	out.Title = in.Title
+	out.PageIdentifier = in.PageIdentifier
+	out.Domain = in.Domain
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto", skipping
+func AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata) *pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata{}
+	out.Document = in.Document
+	out.Uri = in.URI
+	out.Title = in.Title
+	out.PageIdentifier = in.PageIdentifier
+	out.Domain = in.Domain
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto", skipping
+func AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Segment) *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Segment {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Segment{}
+	out.StartIndex = direct.LazyPtr(in.GetStartIndex())
+	out.EndIndex = direct.LazyPtr(in.GetEndIndex())
+	out.ReferenceIndices = in.ReferenceIndices
+	out.GroundingScore = direct.LazyPtr(in.GetGroundingScore())
+	out.Text = direct.LazyPtr(in.GetText())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto", skipping
+
+	func AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.AssistantGroundedContent_TextGroundingMetadata_Segment) *pb.AssistantGroundedContent_TextGroundingMetadata_Segment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AssistantGroundedContent_TextGroundingMetadata_Segment{}
+		out.StartIndex = direct.ValueOf(in.StartIndex)
+		out.EndIndex = direct.ValueOf(in.EndIndex)
+		out.ReferenceIndices = in.ReferenceIndices
+		out.GroundingScore = direct.ValueOf(in.GroundingScore)
+		out.Text = direct.ValueOf(in.Text)
+		return out
+	}
+*/
 func CmekConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krmdiscoveryenginev1alpha1.CmekConfig {
 	if in == nil {
 		return nil
@@ -931,6 +1019,24 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.StructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.StructuredDataUpdateTime)
 	out.UnstructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UnstructuredDataUpdateTime)
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
+	return out
+}
+func DiscoveryEngineACLConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv1alphadiscoveryenginepb.AclConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec{}
+	// MISSING: Name
+	out.IdpConfig = IdpConfig_v1alpha1_FromProto(mapCtx, in.GetIdpConfig())
+	return out
+}
+func DiscoveryEngineACLConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec) *apiv1alphadiscoveryenginepb.AclConfig {
+	if in == nil {
+		return nil
+	}
+	out := &apiv1alphadiscoveryenginepb.AclConfig{}
+	// MISSING: Name
+	out.IdpConfig = IdpConfig_v1alpha1_ToProto(mapCtx, in.IdpConfig)
 	return out
 }
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
@@ -1395,6 +1501,72 @@ func DiscoveryEngineServingConfigObservedState_v1alpha1_ToProto(mapCtx *direct.M
 	// MISSING: AnswerGenerationSpec
 	return out
 }
+
+/* found existing non-generated mapping function "DiscoveryEngineServingConfigSpec_v1alpha1_FromProto", skipping
+func DiscoveryEngineServingConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigSpec{}
+	out.MediaConfig = ServingConfig_MediaConfig_v1alpha1_FromProto(mapCtx, in.GetMediaConfig())
+	out.GenericConfig = ServingConfig_GenericConfig_v1alpha1_FromProto(mapCtx, in.GetGenericConfig())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SolutionType = direct.Enum_FromProto(mapCtx, in.GetSolutionType())
+	out.ModelID = direct.LazyPtr(in.GetModelId())
+	out.DiversityLevel = direct.LazyPtr(in.GetDiversityLevel())
+	out.EmbeddingConfig = EmbeddingConfig_v1alpha1_FromProto(mapCtx, in.GetEmbeddingConfig())
+	out.RankingExpression = direct.LazyPtr(in.GetRankingExpression())
+	out.FilterControlIDs = in.FilterControlIds
+	out.BoostControlIDs = in.BoostControlIds
+	out.RedirectControlIDs = in.RedirectControlIds
+	out.SynonymsControlIDs = in.SynonymsControlIds
+	out.OnewaySynonymsControlIDs = in.OnewaySynonymsControlIds
+	out.DissociateControlIDs = in.DissociateControlIds
+	out.ReplacementControlIDs = in.ReplacementControlIds
+	out.IgnoreControlIDs = in.IgnoreControlIds
+	// MISSING: PromoteControlIds
+	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_FromProto(mapCtx, in.GetPersonalizationSpec())
+	// MISSING: AnswerGenerationSpec
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "DiscoveryEngineServingConfigSpec_v1alpha1_ToProto", skipping
+
+	func DiscoveryEngineServingConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigSpec) *discoveryenginepb.ServingConfig {
+		if in == nil {
+			return nil
+		}
+		out := &discoveryenginepb.ServingConfig{}
+		if oneof := ServingConfig_MediaConfig_v1alpha1_ToProto(mapCtx, in.MediaConfig); oneof != nil {
+			out.VerticalConfig = &discoveryenginepb.ServingConfig_MediaConfig_{MediaConfig: oneof}
+		}
+		if oneof := ServingConfig_GenericConfig_v1alpha1_ToProto(mapCtx, in.GenericConfig); oneof != nil {
+			out.VerticalConfig = &discoveryenginepb.ServingConfig_GenericConfig_{GenericConfig: oneof}
+		}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.SolutionType = direct.Enum_ToProto[discoveryenginepb.SolutionType](mapCtx, in.SolutionType)
+		out.ModelId = direct.ValueOf(in.ModelID)
+		out.DiversityLevel = direct.ValueOf(in.DiversityLevel)
+		out.EmbeddingConfig = EmbeddingConfig_v1alpha1_ToProto(mapCtx, in.EmbeddingConfig)
+		out.RankingExpression = direct.ValueOf(in.RankingExpression)
+		out.FilterControlIds = in.FilterControlIDs
+		out.BoostControlIds = in.BoostControlIDs
+		out.RedirectControlIds = in.RedirectControlIDs
+		out.SynonymsControlIds = in.SynonymsControlIDs
+		out.OnewaySynonymsControlIds = in.OnewaySynonymsControlIDs
+		out.DissociateControlIds = in.DissociateControlIDs
+		out.ReplacementControlIds = in.ReplacementControlIDs
+		out.IgnoreControlIds = in.IgnoreControlIDs
+		// MISSING: PromoteControlIds
+		out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx, in.PersonalizationSpec)
+		// MISSING: AnswerGenerationSpec
+		return out
+	}
+*/
 func DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState {
 	if in == nil {
 		return nil
@@ -1627,6 +1799,40 @@ func Engine_SearchEngineConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.SearchAddOns = direct.EnumSlice_ToProto[pb.SearchAddOn](mapCtx, in.SearchAddOns)
 	return out
 }
+func IdpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv1alphadiscoveryenginepb.IdpConfig) *krmdiscoveryenginev1alpha1.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.IdpConfig{}
+	out.IdpType = direct.Enum_FromProto(mapCtx, in.GetIdpType())
+	out.ExternalIdpConfig = IdpConfig_ExternalIdpConfig_v1alpha1_FromProto(mapCtx, in.GetExternalIdpConfig())
+	return out
+}
+func IdpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.IdpConfig) *apiv1alphadiscoveryenginepb.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &apiv1alphadiscoveryenginepb.IdpConfig{}
+	out.IdpType = direct.Enum_ToProto[apiv1alphadiscoveryenginepb.IdpConfig_IdpType](mapCtx, in.IdpType)
+	out.ExternalIdpConfig = IdpConfig_ExternalIdpConfig_v1alpha1_ToProto(mapCtx, in.ExternalIdpConfig)
+	return out
+}
+func IdpConfig_ExternalIdpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *apiv1alphadiscoveryenginepb.IdpConfig_ExternalIdpConfig) *krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = direct.LazyPtr(in.GetWorkforcePoolName())
+	return out
+}
+func IdpConfig_ExternalIdpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig) *apiv1alphadiscoveryenginepb.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &apiv1alphadiscoveryenginepb.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = direct.ValueOf(in.WorkforcePoolName)
+	return out
+}
 func Query_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Query) *krmdiscoveryenginev1alpha1.Query {
 	if in == nil {
 		return nil
@@ -1737,6 +1943,366 @@ func SearchLinkPromotion_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdisc
 	out.ImageUri = direct.ValueOf(in.ImageURI)
 	out.Description = direct.ValueOf(in.Description)
 	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec{}
+	out.SnippetSpec = SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_FromProto(mapCtx, in.GetSnippetSpec())
+	out.SummarySpec = SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_FromProto(mapCtx, in.GetSummarySpec())
+	out.ExtractiveContentSpec = SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_FromProto(mapCtx, in.GetExtractiveContentSpec())
+	out.SearchResultMode = direct.Enum_FromProto(mapCtx, in.GetSearchResultMode())
+	out.ChunkSpec = SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_FromProto(mapCtx, in.GetChunkSpec())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec{}
+	out.SnippetSpec = SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_ToProto(mapCtx, in.SnippetSpec)
+	out.SummarySpec = SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_ToProto(mapCtx, in.SummarySpec)
+	out.ExtractiveContentSpec = SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_ToProto(mapCtx, in.ExtractiveContentSpec)
+	out.SearchResultMode = direct.Enum_ToProto[discoveryenginepb.SearchRequest_ContentSearchSpec_SearchResultMode](mapCtx, in.SearchResultMode)
+	out.ChunkSpec = SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_ToProto(mapCtx, in.ChunkSpec)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ChunkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ChunkSpec{}
+	out.NumPreviousChunks = direct.LazyPtr(in.GetNumPreviousChunks())
+	out.NumNextChunks = direct.LazyPtr(in.GetNumNextChunks())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ChunkSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec{}
+	out.NumPreviousChunks = direct.ValueOf(in.NumPreviousChunks)
+	out.NumNextChunks = direct.ValueOf(in.NumNextChunks)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
+	out.MaxExtractiveAnswerCount = direct.LazyPtr(in.GetMaxExtractiveAnswerCount())
+	out.MaxExtractiveSegmentCount = direct.LazyPtr(in.GetMaxExtractiveSegmentCount())
+	out.ReturnExtractiveSegmentScore = direct.LazyPtr(in.GetReturnExtractiveSegmentScore())
+	out.NumPreviousSegments = direct.LazyPtr(in.GetNumPreviousSegments())
+	out.NumNextSegments = direct.LazyPtr(in.GetNumNextSegments())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
+	out.MaxExtractiveAnswerCount = direct.ValueOf(in.MaxExtractiveAnswerCount)
+	out.MaxExtractiveSegmentCount = direct.ValueOf(in.MaxExtractiveSegmentCount)
+	out.ReturnExtractiveSegmentScore = direct.ValueOf(in.ReturnExtractiveSegmentScore)
+	out.NumPreviousSegments = direct.ValueOf(in.NumPreviousSegments)
+	out.NumNextSegments = direct.ValueOf(in.NumNextSegments)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SnippetSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SnippetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SnippetSpec{}
+	out.MaxSnippetCount = direct.LazyPtr(in.GetMaxSnippetCount())
+	out.ReferenceOnly = direct.LazyPtr(in.GetReferenceOnly())
+	out.ReturnSnippet = direct.LazyPtr(in.GetReturnSnippet())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SnippetSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SnippetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SnippetSpec{}
+	out.MaxSnippetCount = direct.ValueOf(in.MaxSnippetCount)
+	out.ReferenceOnly = direct.ValueOf(in.ReferenceOnly)
+	out.ReturnSnippet = direct.ValueOf(in.ReturnSnippet)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec{}
+	out.SummaryResultCount = direct.LazyPtr(in.GetSummaryResultCount())
+	out.IncludeCitations = direct.LazyPtr(in.GetIncludeCitations())
+	out.IgnoreAdversarialQuery = direct.LazyPtr(in.GetIgnoreAdversarialQuery())
+	out.IgnoreNonSummarySeekingQuery = direct.LazyPtr(in.GetIgnoreNonSummarySeekingQuery())
+	out.IgnoreLowRelevantContent = direct.LazyPtr(in.GetIgnoreLowRelevantContent())
+	out.IgnoreJailBreakingQuery = direct.LazyPtr(in.GetIgnoreJailBreakingQuery())
+	out.MultimodalSpec = SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_FromProto(mapCtx, in.GetMultimodalSpec())
+	out.ModelPromptSpec = SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_FromProto(mapCtx, in.GetModelPromptSpec())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.ModelSpec = SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_FromProto(mapCtx, in.GetModelSpec())
+	out.UseSemanticChunks = direct.LazyPtr(in.GetUseSemanticChunks())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_SummarySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec{}
+	out.SummaryResultCount = direct.ValueOf(in.SummaryResultCount)
+	out.IncludeCitations = direct.ValueOf(in.IncludeCitations)
+	out.IgnoreAdversarialQuery = direct.ValueOf(in.IgnoreAdversarialQuery)
+	out.IgnoreNonSummarySeekingQuery = direct.ValueOf(in.IgnoreNonSummarySeekingQuery)
+	out.IgnoreLowRelevantContent = direct.ValueOf(in.IgnoreLowRelevantContent)
+	out.IgnoreJailBreakingQuery = direct.ValueOf(in.IgnoreJailBreakingQuery)
+	out.MultimodalSpec = SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_ToProto(mapCtx, in.MultimodalSpec)
+	out.ModelPromptSpec = SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_ToProto(mapCtx, in.ModelPromptSpec)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.ModelSpec = SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_ToProto(mapCtx, in.ModelSpec)
+	out.UseSemanticChunks = direct.ValueOf(in.UseSemanticChunks)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec{}
+	out.Preamble = direct.LazyPtr(in.GetPreamble())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_ToProto", skipping
+func SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelPromptSpec{}
+	out.Preamble = direct.ValueOf(in.Preamble)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_FromProto", skipping
+func SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec{}
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_ToProto", skipping
+
+	func SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec {
+		if in == nil {
+			return nil
+		}
+		out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec{}
+		out.Version = direct.ValueOf(in.Version)
+		return out
+	}
+*/
+func SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec{}
+	out.ImageSource = direct.Enum_FromProto(mapCtx, in.GetImageSource())
+	return out
+}
+func SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec{}
+	out.ImageSource = direct.Enum_ToProto[discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_ImageSource](mapCtx, in.ImageSource)
+	return out
+}
+
+/* found existing non-generated mapping function "SearchRequest_PersonalizationSpec_v1alpha1_FromProto", skipping
+func SearchRequest_PersonalizationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_PersonalizationSpec) *krmdiscoveryenginev1alpha1.SearchRequest_PersonalizationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_PersonalizationSpec{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchRequest_PersonalizationSpec_v1alpha1_ToProto", skipping
+func SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_PersonalizationSpec) *discoveryenginepb.SearchRequest_PersonalizationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_PersonalizationSpec{}
+	out.Mode = direct.Enum_ToProto[discoveryenginepb.SearchRequest_PersonalizationSpec_Mode](mapCtx, in.Mode)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "SearchResponse_Summary_v1alpha1_FromProto", skipping
+func SearchResponse_Summary_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krmdiscoveryenginev1alpha1.SearchResponse_Summary {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary{}
+	out.SummaryText = direct.LazyPtr(in.GetSummaryText())
+	out.SummarySkippedReasons = direct.EnumSlice_FromProto(mapCtx, in.SummarySkippedReasons)
+	out.SafetyAttributes = SearchResponse_Summary_SafetyAttributes_v1alpha1_FromProto(mapCtx, in.GetSafetyAttributes())
+	out.SummaryWithMetadata = SearchResponse_Summary_SummaryWithMetadata_v1alpha1_FromProto(mapCtx, in.GetSummaryWithMetadata())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "SearchResponse_Summary_v1alpha1_ToProto", skipping
+
+	func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary) *pb.SearchResponse_Summary {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SearchResponse_Summary{}
+		out.SummaryText = direct.ValueOf(in.SummaryText)
+		out.SummarySkippedReasons = direct.EnumSlice_ToProto[pb.SearchResponse_Summary_SummarySkippedReason](mapCtx, in.SummarySkippedReasons)
+		out.SafetyAttributes = SearchResponse_Summary_SafetyAttributes_v1alpha1_ToProto(mapCtx, in.SafetyAttributes)
+		out.SummaryWithMetadata = SearchResponse_Summary_SummaryWithMetadata_v1alpha1_ToProto(mapCtx, in.SummaryWithMetadata)
+		return out
+	}
+*/
+func SearchResponse_Summary_Citation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Citation) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation{}
+	out.StartIndex = direct.LazyPtr(in.GetStartIndex())
+	out.EndIndex = direct.LazyPtr(in.GetEndIndex())
+	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, SearchResponse_Summary_CitationSource_v1alpha1_FromProto)
+	return out
+}
+func SearchResponse_Summary_Citation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation) *pb.SearchResponse_Summary_Citation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Citation{}
+	out.StartIndex = direct.ValueOf(in.StartIndex)
+	out.EndIndex = direct.ValueOf(in.EndIndex)
+	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, SearchResponse_Summary_CitationSource_v1alpha1_ToProto)
+	return out
+}
+func SearchResponse_Summary_CitationSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_CitationSource) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource{}
+	out.ReferenceIndex = direct.LazyPtr(in.GetReferenceIndex())
+	return out
+}
+func SearchResponse_Summary_CitationSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource) *pb.SearchResponse_Summary_CitationSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_CitationSource{}
+	out.ReferenceIndex = direct.ValueOf(in.ReferenceIndex)
+	return out
+}
+func SearchResponse_Summary_Reference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Reference) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Document = direct.LazyPtr(in.GetDocument())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.ChunkContents = direct.Slice_FromProto(mapCtx, in.ChunkContents, SearchResponse_Summary_Reference_ChunkContent_v1alpha1_FromProto)
+	return out
+}
+func SearchResponse_Summary_Reference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference) *pb.SearchResponse_Summary_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Reference{}
+	out.Title = direct.ValueOf(in.Title)
+	out.Document = direct.ValueOf(in.Document)
+	out.Uri = direct.ValueOf(in.URI)
+	out.ChunkContents = direct.Slice_ToProto(mapCtx, in.ChunkContents, SearchResponse_Summary_Reference_ChunkContent_v1alpha1_ToProto)
+	return out
+}
+func SearchResponse_Summary_Reference_ChunkContent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Reference_ChunkContent) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.PageIdentifier = direct.LazyPtr(in.GetPageIdentifier())
+	return out
+}
+func SearchResponse_Summary_Reference_ChunkContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent) *pb.SearchResponse_Summary_Reference_ChunkContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Reference_ChunkContent{}
+	out.Content = direct.ValueOf(in.Content)
+	out.PageIdentifier = direct.ValueOf(in.PageIdentifier)
+	return out
+}
+func SearchResponse_Summary_SafetyAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_SafetyAttributes) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes{}
+	out.Categories = in.Categories
+	out.Scores = in.Scores
+	return out
+}
+func SearchResponse_Summary_SafetyAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes) *pb.SearchResponse_Summary_SafetyAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_SafetyAttributes{}
+	out.Categories = in.Categories
+	out.Scores = in.Scores
 	return out
 }
 func ServingConfig_GenericConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig_GenericConfig) *krmdiscoveryenginev1alpha1.ServingConfig_GenericConfig {

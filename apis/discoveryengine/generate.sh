@@ -69,11 +69,29 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1alpha \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --allow-non-ga-proto \
+  --resource DiscoveryEngineACLConfig:AclConfig \
+  --prepopulate-resource
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1alpha_types.generated.go
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1alpha \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineACLConfig:AclConfig
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
-  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
+  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta,google.cloud.discoveryengine.v1alpha \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
-  --multiversion
+  --multiversion \
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
