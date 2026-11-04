@@ -1,0 +1,46 @@
+apiVersion: dataform.cnrm.cloud.google.com/v1alpha1
+kind: DataformWorkflowConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dfworkflowconfig-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  cronSchedule: 0 12 * * *
+  disabled: true
+  invocationConfig:
+    fullyRefreshIncrementalTablesEnabled: false
+    includedTags:
+    - tag-a
+    - tag-b
+    includedTargets:
+    - database: ${projectId}
+      name: test_table
+      schema: test_schema
+    queryPriority: INTERACTIVE
+    serviceAccountRef:
+      name: df-sa-${uniqueId}
+    transitiveDependenciesIncluded: true
+    transitiveDependentsIncluded: true
+  parentRef:
+    name: dfrepo-${uniqueId}
+  releaseConfigRef:
+    name: dfrelease-${uniqueId}
+  timeZone: UTC
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    internalMetadata: '{"authentication":{"authServiceAccountName":"service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"},"db_metadata_insert_time":"2026-11-04T02:04:50.102423Z","db_metadata_update_time":"2026-11-04T02:04:51.181893Z","unique_ccfe_id":"a96cc5cc-e89b-4a2a-b42e-3cac816d4404"}'
+    updateTime: "1970-01-01T00:00:00Z"

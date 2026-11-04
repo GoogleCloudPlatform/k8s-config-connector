@@ -15,3 +15,11 @@
 - **Problem**: `NotebookRuntimeOptions.gcs_output_bucket` is part of a proto `oneof execution_sink`. Converting it to `GCSOutputBucketRef *storagev1beta1.StorageBucketRef` caused `generate-mapper` to emit direct field assignment `out.GcsOutputBucket = ...`, which fails to compile because protobuf oneof variants require setting the interface wrapper struct `out.ExecutionSink = &pb.NotebookRuntimeOptions_GcsOutputBucket{...}`.
 - **Solution**: Implemented handwritten mappers for `NotebookRuntimeOptions` in `pkg/controller/direct/dataform/dataformreleaseconfig_mapper.go`. `generate-mapper` detects existing mapping functions in the package and automatically skips generating duplicates in `mapper.generated.go`. Also defined an external-only reference and IdentityV2 for `DataformCompilationResultRef` (`dataform.googleapis.com/CompilationResult`) since KCC does not have a CRD for compilation results.
 - **Impact**: Resolves mapper generation compilation issues for oneof reference fields and provides external-only reference support for DataformCompilationResult.
+
+### [2026-11-04] Implement direct controller and E2E fixtures for DataformWorkflowConfig
+- **Context**: Greenfield Step 2 implementation of direct controller, E2E fixtures, and fuzzer for `DataformWorkflowConfig`.
+- **Learnings & API Quirks**:
+  1. `serviceAccountRef`: GCP Dataform enforces strict act-as checks (`Service account must be set when strict act as checks are enabled`), requiring `invocationConfig.serviceAccountRef` on creation. In addition, `*refs.IAMServiceAccountRef` in `pkg/controller/direct/common/greenfield.go`'s `greenfieldRefNormalizer` needed explicit resolution so that referencing an `IAMServiceAccount` by `name` is resolved to its email address.
+  2. Immutable Fields: GCP Dataform returns `400 Bad Request` (`Request update_mask contains immutable fields: [invocation_config]`) if `invocationConfig` is included in the PATCH updateMask. `invocationConfig` is immutable after creation and cannot be updated in-place. Mutable fields are `cronSchedule`, `timeZone`, and `disabled`.
+  3. Hierarchy: `DataformWorkflowConfig` is scoped under `DataformRepository` (via `spec.parentRef`) and requires `spec.releaseConfigRef` pointing to a `DataformReleaseConfig`. Both parent resources must be created and ready as dependencies before creating `DataformWorkflowConfig`.
+
