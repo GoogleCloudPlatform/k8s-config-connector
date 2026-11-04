@@ -10,6 +10,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
+    updated-by: robot
   name: bigquerydatasetsample${uniqueId}
   namespace: ${uniqueId}
 spec:
