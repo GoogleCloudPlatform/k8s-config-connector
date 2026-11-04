@@ -50,11 +50,14 @@ type model struct {
 	config *config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.FeatureOnlineStoreAdminClient, error) {
+func (m *model) client(ctx context.Context, location string) (*gcp.FeatureOnlineStoreAdminClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
+	}
+	if location != "" && location != "global" {
+		opts = append(opts, option.WithEndpoint(fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)))
 	}
 	gcpClient, err := gcp.NewFeatureOnlineStoreAdminClient(ctx, opts...)
 	if err != nil {
@@ -74,15 +77,15 @@ func (m *model) AdapterForObject(ctx context.Context, reader *directbase.Adapter
 		return nil, err
 	}
 
-	// Get featureOnlineStoreAdmin client
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	typedID, ok := id.(*krm.FeatureOnlineStoreIdentity)
 	if !ok {
 		return nil, fmt.Errorf("expected FeatureOnlineStoreIdentity, got %T", id)
+	}
+
+	// Get featureOnlineStoreAdmin client
+	gcpClient, err := m.client(ctx, typedID.Location)
+	if err != nil {
+		return nil, err
 	}
 
 	return &Adapter{

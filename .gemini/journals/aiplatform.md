@@ -76,5 +76,15 @@
   5. Resolved all 10 judgement queue entries for `AIPlatformFeatureView`.
 - **Impact**: Enables clean identity resolution from `spec.parentRef`, maintains KRM standards, and ensures mapper and fuzzer tests round-trip seamlessly.
 
+### [2026-11-02] Implementing AIPlatformFeatureView Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformFeatureView` (Issue #14780).
+- **Problems & Solutions**:
+  1. **Regional Endpoint for VertexAIFeatureOnlineStore**: `VertexAIFeatureOnlineStore`'s controller previously omitted regional endpoint options, connecting to `aiplatform.googleapis.com:443` which only accepts location `global`. Calls to `us-central1` failed with `The provided location ID doesn't match the endpoint. The valid location ID is 'global'`. Fixed `vertexaifeatureonlinestore_controller.go` to configure `WithEndpoint(fmt.Sprintf("%s-aiplatform.googleapis.com:443", location))`.
+  2. **GCP Resource ID Constraints**: In GCP's `FeatureOnlineStoreAdminService`, resource IDs for `FeatureOnlineStore` and `FeatureView` must match `[a-z0-9_]` (hyphens `-` are rejected with `Invalid FeatureOnlineStore resource name`). The fixtures were updated to use hyphen-free identifiers (`featureonlinestore${uniqueId}` and `resourceID: featureview${uniqueId}`).
+  3. **Parent Reference Normalization Fallback**: During identity tests (`TestGoldenIdentitiesYamlFiles`), `spec.parentRef` (`VertexAIFeatureOnlineStore`) in `dependencies.yaml` lacks `status.externalRef`. Implemented a spec-identity fallback in `VertexAIFeatureOnlineStoreRef.Normalize` using `NormalizeWithFallback` and `getIdentityFromFeatureOnlineStoreSpec` to ensure dependent child resources can resolve the parent identity prior to full reconciliation.
+  4. **serviceAgentType Omission from GET Responses**: GCP's `GetFeatureView` does not return `service_agent_type` in its response (it returns `serviceAccountEmail`). Specifying `serviceAgentType` in KRM spec causes continuous drift during reconciliation.
+  - **Impact**: Both minimal and maximal E2E fixtures recorded and passed against real GCP with all checks (V1 through V7) passing. Mock GCP skips gracefully pending Step 3.
+
+
 
 

@@ -17,8 +17,10 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -81,5 +83,16 @@ func (r *VertexAIFeatureOnlineStoreRef) ParseExternalToIdentity() (identity.Iden
 }
 
 func (r *VertexAIFeatureOnlineStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		structuredObj, err := common.ToStructuredType[*VertexAIFeatureOnlineStore](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromFeatureOnlineStoreSpec(ctx, reader, structuredObj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
