@@ -73,3 +73,37 @@ func TestContentWarehouseDocumentSchemaIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestContentWarehouseDocumentSchemaIdentity_HasIdentitySpecified(t *testing.T) {
+	tests := []struct {
+		name string
+		id   *v1alpha1.ContentWarehouseDocumentSchemaIdentity
+		want bool
+	}{
+		{
+			name: "identity specified",
+			id: &v1alpha1.ContentWarehouseDocumentSchemaIdentity{
+				Project:        "my-project",
+				Location:       "us-central1",
+				DocumentSchema: "my-schema",
+			},
+			want: true,
+		},
+		{
+			name: "identity not specified (service-generated)",
+			id: &v1alpha1.ContentWarehouseDocumentSchemaIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+			},
+			want: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.id.HasIdentitySpecified(); got != tt.want {
+				t.Errorf("HasIdentitySpecified() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

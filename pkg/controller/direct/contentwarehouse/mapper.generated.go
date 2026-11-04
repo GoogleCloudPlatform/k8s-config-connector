@@ -114,7 +114,7 @@ func ContentWarehouseDocumentSchemaObservedState_FromProto(mapCtx *direct.MapCon
 	out := &krm.ContentWarehouseDocumentSchemaObservedState{}
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: CreateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
 func ContentWarehouseDocumentSchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseDocumentSchemaObservedState) *pb.DocumentSchema {
@@ -124,7 +124,7 @@ func ContentWarehouseDocumentSchemaObservedState_ToProto(mapCtx *direct.MapConte
 	out := &pb.DocumentSchema{}
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: CreateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
 func ContentWarehouseDocumentSchemaSpec_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.ContentWarehouseDocumentSchemaSpec {
@@ -136,7 +136,6 @@ func ContentWarehouseDocumentSchemaSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.PropertyDefinitions = direct.Slice_FromProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_FromProto)
 	out.DocumentIsFolder = direct.LazyPtr(in.GetDocumentIsFolder())
-	// MISSING: CreateTime
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
@@ -149,7 +148,6 @@ func ContentWarehouseDocumentSchemaSpec_ToProto(mapCtx *direct.MapContext, in *k
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.PropertyDefinitions = direct.Slice_ToProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_ToProto)
 	out.DocumentIsFolder = direct.ValueOf(in.DocumentIsFolder)
-	// MISSING: CreateTime
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }

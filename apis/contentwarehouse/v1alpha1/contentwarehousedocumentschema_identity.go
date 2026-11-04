@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &ContentWarehouseDocumentSchemaIdentity{}
-	_ identity.Resource   = &ContentWarehouseDocumentSchema{}
+	_ identity.ServerGeneratedIdentity = &ContentWarehouseDocumentSchemaIdentity{}
+	_ identity.Resource                = &ContentWarehouseDocumentSchema{}
 )
 
 var ContentWarehouseDocumentSchemaIdentityFormat = gcpurls.Template[ContentWarehouseDocumentSchemaIdentity]("contentwarehouse.googleapis.com", "projects/{project}/locations/{location}/documentSchemas/{documentschema}")
@@ -38,6 +38,10 @@ type ContentWarehouseDocumentSchemaIdentity struct {
 	Project        string
 	Location       string
 	DocumentSchema string
+}
+
+func (i *ContentWarehouseDocumentSchemaIdentity) HasIdentitySpecified() bool {
+	return i.DocumentSchema != ""
 }
 
 func (i *ContentWarehouseDocumentSchemaIdentity) String() string {
@@ -66,10 +70,9 @@ func (i *ContentWarehouseDocumentSchemaIdentity) ParentString() string {
 }
 
 func getIdentityFromContentWarehouseDocumentSchemaSpec(ctx context.Context, reader client.Reader, obj *ContentWarehouseDocumentSchema) (*ContentWarehouseDocumentSchemaIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
+	// For ContentWarehouseDocumentSchema, resourceID is optional and can be empty.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -102,6 +105,10 @@ func (obj *ContentWarehouseDocumentSchema) GetIdentity(ctx context.Context, read
 		statusIdentity := &ContentWarehouseDocumentSchemaIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.DocumentSchema == "" {
+			specIdentity.DocumentSchema = statusIdentity.DocumentSchema
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

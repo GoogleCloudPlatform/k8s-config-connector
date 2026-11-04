@@ -51,7 +51,7 @@ type ContentWarehouseDocumentSchemaSpec struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty"`
 
-	// The ContentWarehouseDocumentSchema name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
