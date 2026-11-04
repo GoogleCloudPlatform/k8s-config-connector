@@ -32,5 +32,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a
   observedGeneration: 2
