@@ -82,17 +82,21 @@ func (s *ConfigDeliveryServer) GetRelease(ctx context.Context, req *pb.GetReleas
 }
 
 func (s *ConfigDeliveryServer) ListReleases(ctx context.Context, req *pb.ListReleasesRequest) (*pb.ListReleasesResponse, error) {
-	tokens := strings.Split(req.GetParent(), "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "resourceBundles" {
-		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.GetParent())
-	}
-
-	project, err := s.Projects.GetProjectByID(tokens[1])
+	parentName, err := s.parseResourceBundleName(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s/resourceBundles/%s/releases/", project.ID, tokens[3], tokens[5])
+	parentFqn := parentName.String()
+	parentObj := &pb.ResourceBundle{}
+	if err := s.storage.Get(ctx, parentFqn, parentObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", parentFqn)
+		}
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s/resourceBundles/%s/releases/", parentName.Project.ID, parentName.Location, parentName.ResourceBundle)
 
 	response := &pb.ListReleasesResponse{}
 	kind := (&pb.Release{}).ProtoReflect().Descriptor()
@@ -108,6 +112,20 @@ func (s *ConfigDeliveryServer) ListReleases(ctx context.Context, req *pb.ListRel
 }
 
 func (s *ConfigDeliveryServer) CreateRelease(ctx context.Context, req *pb.CreateReleaseRequest) (*longrunning.Operation, error) {
+	parentName, err := s.parseResourceBundleName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	parentFqn := parentName.String()
+	parentObj := &pb.ResourceBundle{}
+	if err := s.storage.Get(ctx, parentFqn, parentObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", parentFqn)
+		}
+		return nil, err
+	}
+
 	reqName := req.Parent + "/releases/" + req.ReleaseId
 	name, err := s.parseReleaseName(reqName)
 	if err != nil {
@@ -123,6 +141,9 @@ func (s *ConfigDeliveryServer) CreateRelease(ctx context.Context, req *pb.Create
 	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -154,6 +175,9 @@ func (s *ConfigDeliveryServer) UpdateRelease(ctx context.Context, req *pb.Update
 
 	obj := &pb.Release{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -209,6 +233,9 @@ func (s *ConfigDeliveryServer) DeleteRelease(ctx context.Context, req *pb.Delete
 
 	oldObj := &pb.Release{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

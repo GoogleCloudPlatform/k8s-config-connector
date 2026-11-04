@@ -21,4 +21,13 @@
   3. `Release` creation requires `lifecycle: PUBLISHED` and `info.variantOciImagePaths` when publishing. Once published, the release is immutable.
 - **Impact**: Clean direct controller implementation for `ConfigDeliveryRelease` with full real GCP recording coverage.
 
+### [2026-11-04] Align MockGCP Logs with RealGCP for ConfigDeliveryRelease
+- **Context**: Aligning MockGCP logs with RealGCP for `ConfigDeliveryRelease` ([Issue 14886](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/14886)).
+- **Observations**:
+  1. Standardized GCP error formatting in MockGCP for `CreateRelease` (AlreadyExists), `UpdateRelease` (NotFound), and `DeleteRelease` (NotFound) to return `"Resource '%s' was not found"` / `"Resource '%s' already exists"`.
+  2. Verified that MockGCP HTTP logs for `configdeliveryrelease-minimal` and `configdeliveryrelease-maximal` align 100% with authentic RealGCP golden logs (`_http.log`).
+  3. Verified that `hack/compare-mock`, `TestGoldenLogAlignment`, and `./dev/ci/presubmits/tests-e2e-fixtures-suite configdelivery` pass cleanly with zero discrepancies.
+- **Impact**: Full behavioral alignment and hermetic testing support for `ConfigDeliveryRelease`.
+
+
 
