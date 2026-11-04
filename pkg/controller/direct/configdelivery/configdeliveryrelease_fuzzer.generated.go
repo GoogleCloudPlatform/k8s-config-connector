@@ -41,7 +41,6 @@ func configDeliveryReleaseFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecField(".info.variant_oci_image_paths")
-	f.SpecField(".labels")
 	f.SpecField(".lifecycle")
 	f.SpecField(".version")
 
@@ -53,6 +52,7 @@ func configDeliveryReleaseFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

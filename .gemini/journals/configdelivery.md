@@ -13,3 +13,12 @@
   2. The resource supports labels via metadata labels, which are mapped to GCP labels and compared during update reconciliation.
 - **Impact**: Clean direct controller implementation for `ConfigDeliveryResourceBundle` with full real GCP recording coverage.
 
+### [2026-11-03] Finalizing ConfigDeliveryRelease Types and Identity
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, controller, and fuzzer for `ConfigDeliveryRelease` ([Issue 14673](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/14673)).
+- **Observations**:
+  1. `ConfigDeliveryRelease` is a child resource of `ConfigDeliveryResourceBundle` with pattern `projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}`.
+  2. Followed Case B of `PARENT_AND_IDENTITY.md` to model its hierarchy as a single required, immutable `spec.parentRef` referencing `ConfigDeliveryResourceBundleRef`, removing `projectRef` and `location`.
+  3. Top-level proto `labels` field was removed from `Spec` so labels reconcile via `metadata.labels`.
+  4. Ran one-shot regeneration for controller and fuzzer in lockstep.
+- **Impact**: Clean KRM schema, identity, controller, and fuzzer for `ConfigDeliveryRelease`.
+
