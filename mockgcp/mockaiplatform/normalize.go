@@ -34,6 +34,13 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
+	if strings.Contains(event.URL(), "FeatureOnlineStoreAdminService") || strings.Contains(event.URL(), "featureViews") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateFeatureViewOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.CreateFeatureViewOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateFeatureViewOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.UpdateFeatureViewOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureView", "type.googleapis.com/google.cloud.aiplatform.v1.FeatureView")
+	}
+
 	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") || strings.Contains(event.URL(), "ScheduleService") {
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
 	}
