@@ -1,0 +1,64 @@
+88c88
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+111c111
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes?alt=json&entityTypeId=entitytype${uniqueId}
+---
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes?%24alt=json%3Benum-encoding%3Dint&entityTypeId=entitytype${uniqueId}
+126,127c126,127
+<       "anomalyDetectionBaseline": "LATEST_STATS",
+<       "state": "ENABLED"
+---
+>       "anomalyDetectionBaseline": 1,
+>       "state": 2
+163c163
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}/operations/${operationID}
+194c194
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+221,222c221,222
+<       "anomalyDetectionBaseline": "LATEST_STATS",
+<       "state": "ENABLED"
+---
+>       "anomalyDetectionBaseline": 1,
+>       "state": 2
+241c241
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?alt=json&updateMask=description%2Clabels%2CofflineStorageTtlDays
+---
+> PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CofflineStorageTtlDays%2Clabels
+256,257c256,257
+<       "anomalyDetectionBaseline": "LATEST_STATS",
+<       "state": "ENABLED"
+---
+>       "anomalyDetectionBaseline": 1,
+>       "state": 2
+263d262
+<       "monitoringInterval": "86400s",
+267a267
+>   "name": "projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}",
+295,296c295,296
+<       "anomalyDetectionBaseline": "LATEST_STATS",
+<       "state": "ENABLED"
+---
+>       "anomalyDetectionBaseline": 1,
+>       "state": 2
+314c314,315
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?alt=json
+---
+> # Phase: DELETE
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+341,342c342,343
+<       "anomalyDetectionBaseline": "LATEST_STATS",
+<       "state": "ENABLED"
+---
+>       "anomalyDetectionBaseline": 1,
+>       "state": 2
+360,361c361
+< # Phase: DELETE
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?alt=json
+---
+> DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}?%24alt=json%3Benum-encoding%3Dint
