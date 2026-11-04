@@ -40,7 +40,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource SaaSServiceMgmtRollout:Rollout \
   --resource SaaSServiceMgmtRolloutKind:RolloutKind \
   --resource SaaSServiceMgmtTenant:Tenant \
-  --resource SaaSServiceMgmtUnit:Unit
+  --resource SaaSServiceMgmtUnit:Unit \
+  --resource SaaSServiceMgmtUnitKind:UnitKind
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
