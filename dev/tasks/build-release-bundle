@@ -203,6 +203,7 @@ BLOCKED_KINDS=(
     "DeviceStreamingSession"
     "DialogflowConversationDataset"
     "DialogflowConversationModel"
+    "DialogflowConversationProfile"
     "DialogflowEnvironment"
     "DialogflowFlow"
     "DialogflowGenerator"

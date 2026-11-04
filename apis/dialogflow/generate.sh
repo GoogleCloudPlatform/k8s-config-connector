@@ -62,12 +62,14 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
-  --resource DialogflowConversationModel:ConversationModel
+  --resource DialogflowConversationModel:ConversationModel \
+  --resource DialogflowConversationProfile:ConversationProfile
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowConversationModel:ConversationModel
+  --resource DialogflowConversationModel:ConversationModel \
+  --resource DialogflowConversationProfile:ConversationProfile
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -92,6 +94,12 @@ ${CONTROLLERBUILDER} generate-identity \
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource
