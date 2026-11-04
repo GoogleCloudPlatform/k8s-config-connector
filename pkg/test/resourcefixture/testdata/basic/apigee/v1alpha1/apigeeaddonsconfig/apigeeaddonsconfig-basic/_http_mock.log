@@ -1,6 +1,5 @@
-GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+# Phase: CREATE
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -44,9 +43,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "addonsConfig": {
@@ -78,9 +76,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -111,9 +107,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+# Phase: DELETE
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -162,9 +157,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json
+POST https://apigee.googleapis.com/v1/organizations/${projectId}:setAddons?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -188,9 +184,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
