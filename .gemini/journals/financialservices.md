@@ -1,3 +1,12 @@
+### [2026-11-04] FinancialServicesBacktestResult Types Triage
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesBacktestResult` (#14921).
+- **Action**:
+  1. Resolved `judgement_queue.yaml` entries for `FinancialServicesBacktestResult`.
+  2. Modeled `FinancialServicesBacktestResult` as a child resource of `FinancialServicesInstance` using immutable `spec.parentRef` (`*FinancialServicesInstanceRef`), removing `ProjectRef`, `Location`, and guessed `InstanceRef`.
+  3. Converted `spec.dataset` to `DatasetRef` (`*FinancialServicesDatasetRef`) and `spec.model` to `ModelRef` (`*FinancialServicesModelRef`).
+  4. Removed top-level `spec.labels` as labels are managed via `metadata.labels`.
+  5. Regenerated types, identity, mappers, CRDs, direct controller, and fuzzer. Verified with `validate-prereqs.sh` and tests.
+
 ### [2026-10-08] FinancialServicesInstance MockGCP and Alignment
 - **Context**: Implementing Greenfield MockGCP and Alignment for `FinancialServicesInstance` (#13837)
 - **Action**:

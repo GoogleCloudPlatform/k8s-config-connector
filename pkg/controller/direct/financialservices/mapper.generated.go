@@ -145,6 +145,7 @@ func FinancialServicesBacktestResultObservedState_FromProto(mapCtx *direct.MapCo
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
 	return out
@@ -157,6 +158,7 @@ func FinancialServicesBacktestResultObservedState_ToProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.BacktestResult_State](mapCtx, in.State)
 	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
 	return out
@@ -167,9 +169,13 @@ func FinancialServicesBacktestResultSpec_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.FinancialServicesBacktestResultSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Dataset = direct.LazyPtr(in.GetDataset())
-	out.Model = direct.LazyPtr(in.GetModel())
+	// MISSING: Labels
+	if in.GetDataset() != "" {
+		out.DatasetRef = &krm.FinancialServicesDatasetRef{External: in.GetDataset()}
+	}
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.FinancialServicesModelRef{External: in.GetModel()}
+	}
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.BacktestPeriods = direct.LazyPtr(in.GetBacktestPeriods())
 	out.PerformanceTarget = BacktestResult_PerformanceTarget_FromProto(mapCtx, in.GetPerformanceTarget())
@@ -181,9 +187,13 @@ func FinancialServicesBacktestResultSpec_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.BacktestResult{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Dataset = direct.ValueOf(in.Dataset)
-	out.Model = direct.ValueOf(in.Model)
+	// MISSING: Labels
+	if in.DatasetRef != nil {
+		out.Dataset = in.DatasetRef.External
+	}
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.BacktestPeriods = direct.ValueOf(in.BacktestPeriods)
 	out.PerformanceTarget = BacktestResult_PerformanceTarget_ToProto(mapCtx, in.PerformanceTarget)

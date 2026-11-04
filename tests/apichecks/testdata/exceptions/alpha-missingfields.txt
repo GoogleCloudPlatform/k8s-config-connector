@@ -4424,13 +4424,11 @@
 [missing_field] crd=filestoresnapshots.filestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=filestoresnapshots.filestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.backtestPeriods" is not set in unstructured objects
-[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
+[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.endTime" is not set in unstructured objects
-[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.model" is not set in unstructured objects
+[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.performanceTarget.partyInvestigationsPerPeriodHint" is not set in unstructured objects
-[missing_field] crd=financialservicesbacktestresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.dateRange.endTime" is not set in unstructured objects
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.dateRange.startTime" is not set in unstructured objects
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects

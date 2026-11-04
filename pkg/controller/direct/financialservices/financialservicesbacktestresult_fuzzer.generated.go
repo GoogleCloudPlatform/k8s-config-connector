@@ -43,7 +43,6 @@ func financialServicesBacktestResultFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".backtest_periods")
 	f.SpecField(".dataset")
 	f.SpecField(".end_time")
-	f.SpecField(".labels")
 	f.SpecField(".model")
 	f.SpecField(".performance_target")
 
@@ -55,6 +54,7 @@ func financialServicesBacktestResultFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }
