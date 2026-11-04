@@ -808,6 +808,22 @@ func BigQueryDestination_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDest
 	out.OutputUri = direct.ValueOf(in.OutputURI)
 	return out
 }
+func BleuSpec_FromProto(mapCtx *direct.MapContext, in *pb.BleuSpec) *krm.BleuSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BleuSpec{}
+	out.UseEffectiveOrder = direct.LazyPtr(in.GetUseEffectiveOrder())
+	return out
+}
+func BleuSpec_ToProto(mapCtx *direct.MapContext, in *krm.BleuSpec) *pb.BleuSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BleuSpec{}
+	out.UseEffectiveOrder = direct.ValueOf(in.UseEffectiveOrder)
+	return out
+}
 func Blob_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.Blob {
 	if in == nil {
 		return nil
@@ -1178,6 +1194,20 @@ func EnvVarWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarWithReq
 	out := &pb.EnvVar{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func ExactMatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExactMatchSpec) *krm.ExactMatchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExactMatchSpec{}
+	return out
+}
+func ExactMatchSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExactMatchSpec) *pb.ExactMatchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExactMatchSpec{}
 	return out
 }
 func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
@@ -1872,6 +1902,124 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 	}
 	out := &pb.GcsSource{}
 	out.Uris = in.Uris
+	return out
+}
+func GenerationConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig) *krm.GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig{}
+	out.Temperature = in.Temperature
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	out.CandidateCount = in.CandidateCount
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.StopSequences = in.StopSequences
+	out.ResponseLogprobs = in.ResponseLogprobs
+	out.Logprobs = in.Logprobs
+	out.PresencePenalty = in.PresencePenalty
+	out.FrequencyPenalty = in.FrequencyPenalty
+	out.Seed = in.Seed
+	out.ResponseMimeType = direct.LazyPtr(in.GetResponseMimeType())
+	out.ResponseSchema = Schema_FromProto(mapCtx, in.GetResponseSchema())
+	out.ResponseJsonSchema = Value_FromProto(mapCtx, in.GetResponseJsonSchema())
+	out.RoutingConfig = GenerationConfig_RoutingConfig_FromProto(mapCtx, in.GetRoutingConfig())
+	out.ThinkingConfig = GenerationConfig_ThinkingConfig_FromProto(mapCtx, in.GetThinkingConfig())
+	return out
+}
+func GenerationConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig) *pb.GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig{}
+	out.Temperature = in.Temperature
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	out.CandidateCount = in.CandidateCount
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.StopSequences = in.StopSequences
+	out.ResponseLogprobs = in.ResponseLogprobs
+	out.Logprobs = in.Logprobs
+	out.PresencePenalty = in.PresencePenalty
+	out.FrequencyPenalty = in.FrequencyPenalty
+	out.Seed = in.Seed
+	out.ResponseMimeType = direct.ValueOf(in.ResponseMimeType)
+	out.ResponseSchema = Schema_ToProto(mapCtx, in.ResponseSchema)
+	out.ResponseJsonSchema = Value_ToProto(mapCtx, in.ResponseJsonSchema)
+	out.RoutingConfig = GenerationConfig_RoutingConfig_ToProto(mapCtx, in.RoutingConfig)
+	out.ThinkingConfig = GenerationConfig_ThinkingConfig_ToProto(mapCtx, in.ThinkingConfig)
+	return out
+}
+func GenerationConfig_RoutingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig) *krm.GenerationConfig_RoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig{}
+	out.AutoMode = GenerationConfig_RoutingConfig_AutoRoutingMode_FromProto(mapCtx, in.GetAutoMode())
+	out.ManualMode = GenerationConfig_RoutingConfig_ManualRoutingMode_FromProto(mapCtx, in.GetManualMode())
+	return out
+}
+func GenerationConfig_RoutingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig) *pb.GenerationConfig_RoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig{}
+	if oneof := GenerationConfig_RoutingConfig_AutoRoutingMode_ToProto(mapCtx, in.AutoMode); oneof != nil {
+		out.RoutingConfig = &pb.GenerationConfig_RoutingConfig_AutoMode{AutoMode: oneof}
+	}
+	if oneof := GenerationConfig_RoutingConfig_ManualRoutingMode_ToProto(mapCtx, in.ManualMode); oneof != nil {
+		out.RoutingConfig = &pb.GenerationConfig_RoutingConfig_ManualMode{ManualMode: oneof}
+	}
+	return out
+}
+func GenerationConfig_RoutingConfig_AutoRoutingMode_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig_AutoRoutingMode) *krm.GenerationConfig_RoutingConfig_AutoRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig_AutoRoutingMode{}
+	out.ModelRoutingPreference = direct.Enum_FromProto(mapCtx, in.GetModelRoutingPreference())
+	return out
+}
+func GenerationConfig_RoutingConfig_AutoRoutingMode_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig_AutoRoutingMode) *pb.GenerationConfig_RoutingConfig_AutoRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig_AutoRoutingMode{}
+	out.ModelRoutingPreference = direct.EnumPtr_ToProto[pb.GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference](mapCtx, in.ModelRoutingPreference)
+	return out
+}
+func GenerationConfig_RoutingConfig_ManualRoutingMode_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig_ManualRoutingMode) *krm.GenerationConfig_RoutingConfig_ManualRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig_ManualRoutingMode{}
+	out.ModelName = in.ModelName
+	return out
+}
+func GenerationConfig_RoutingConfig_ManualRoutingMode_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig_ManualRoutingMode) *pb.GenerationConfig_RoutingConfig_ManualRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig_ManualRoutingMode{}
+	out.ModelName = in.ModelName
+	return out
+}
+func GenerationConfig_ThinkingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_ThinkingConfig) *krm.GenerationConfig_ThinkingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_ThinkingConfig{}
+	out.IncludeThoughts = in.IncludeThoughts
+	out.ThinkingBudget = in.ThinkingBudget
+	return out
+}
+func GenerationConfig_ThinkingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_ThinkingConfig) *pb.GenerationConfig_ThinkingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_ThinkingConfig{}
+	out.IncludeThoughts = in.IncludeThoughts
+	out.ThinkingBudget = in.ThinkingBudget
 	return out
 }
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {
@@ -3084,6 +3232,22 @@ func PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCInterfaceC
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_ToProto)
 	return out
 }
+func PairwiseMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PairwiseMetricSpec) *krm.PairwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PairwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	return out
+}
+func PairwiseMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PairwiseMetricSpec) *pb.PairwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PairwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	return out
+}
 func Part_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krm.Part {
 	if in == nil {
 		return nil
@@ -3324,6 +3488,22 @@ func PipelineTaskExecutorDetail_CustomJobDetailObservedState_ToProto(mapCtx *dir
 	out := &pb.PipelineTaskExecutorDetail_CustomJobDetail{}
 	out.Job = direct.ValueOf(in.Job)
 	out.FailedJobs = in.FailedJobs
+	return out
+}
+func PointwiseMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PointwiseMetricSpec) *krm.PointwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PointwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	return out
+}
+func PointwiseMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PointwiseMetricSpec) *pb.PointwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PointwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
 	return out
 }
 func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {
@@ -3860,6 +4040,26 @@ func ResourceRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRunt
 	out := &pb.ResourceRuntimeSpec{}
 	out.ServiceAccountSpec = ServiceAccountSpec_ToProto(mapCtx, in.ServiceAccountSpec)
 	out.RaySpec = RaySpec_ToProto(mapCtx, in.RaySpec)
+	return out
+}
+func RougeSpec_FromProto(mapCtx *direct.MapContext, in *pb.RougeSpec) *krm.RougeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RougeSpec{}
+	out.RougeType = direct.LazyPtr(in.GetRougeType())
+	out.UseStemmer = direct.LazyPtr(in.GetUseStemmer())
+	out.SplitSummaries = direct.LazyPtr(in.GetSplitSummaries())
+	return out
+}
+func RougeSpec_ToProto(mapCtx *direct.MapContext, in *krm.RougeSpec) *pb.RougeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RougeSpec{}
+	out.RougeType = direct.ValueOf(in.RougeType)
+	out.UseStemmer = direct.ValueOf(in.UseStemmer)
+	out.SplitSummaries = direct.ValueOf(in.SplitSummaries)
 	return out
 }
 func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {

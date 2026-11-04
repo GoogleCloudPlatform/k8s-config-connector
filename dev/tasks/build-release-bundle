@@ -84,6 +84,7 @@ BLOCKED_KINDS=(
     "AIPlatformHyperparameterTuningJob"
     "AIPlatformModelMonitor"
     "AIPlatformNotebookRuntimeTemplate"
+    "AIPlatformOnlineEvaluator"
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"
     "ApigeeregistryAPIDeployment"
