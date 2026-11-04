@@ -378,7 +378,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     <tr>
         <td><code>GKEHubScope</code></td>
         <td>
-            <p><code>projects/{project}/locations/global/scopes/{scope}</code></p>
+            <p><code>projects/{projectID}/locations/{location}/scopes/{scopeID}</code></p>
         </td>
     </tr>
     <tr>

@@ -37,7 +37,7 @@ import (
 func init() {
 	registry.RegisterModel(krm.GKEHubScopeGVK, getGkeHubScopeModel,
 		registry.WithIAM(
-			"projects/{project}/locations/global/scopes/{scope}",
+			krm.GKEHubScopeIdentityFormat.CanonicalForm(),
 		),
 	)
 }
