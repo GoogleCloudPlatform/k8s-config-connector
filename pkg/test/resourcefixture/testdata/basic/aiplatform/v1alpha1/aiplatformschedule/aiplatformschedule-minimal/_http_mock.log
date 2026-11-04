@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/vertexai-schedule-bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
@@ -266,6 +267,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
@@ -542,6 +544,7 @@ OK
 
 ---
 
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
@@ -699,7 +702,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
