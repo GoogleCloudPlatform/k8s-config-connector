@@ -189,7 +189,6 @@ BLOCKED_KINDS=(
     "DataplexDataTaxonomy"
     "DataplexEncryptionConfig"
     "DataplexEntity"
-    "DataplexEntry"
     "DataplexEntryLink"
     "DataplexEnvironment"
     "DataplexGlossary"
