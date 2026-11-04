@@ -202,13 +202,26 @@ func (a *flexibleAppVersionAdapter) Update(ctx context.Context, updateOp *direct
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AppEngineFlexibleAppVersion", "name", a.id.String())
 
+	normalize := func(ctx context.Context, p *pb.Version) error {
+		if p == nil || p.Deployment == nil || p.Deployment.Container == nil {
+			return nil
+		}
+		img := p.Deployment.Container.Image
+		// GCP resolves container image tags (e.g., image:tag) to digests (image@sha256:...).
+		// Normalize image by trimming any tag or digest suffix to compare the base repository path.
+		if idx := strings.IndexAny(img, ":@"); idx != -1 {
+			p.Deployment.Container.Image = img[:idx]
+		}
+		return nil
+	}
+
 	diffs, _, err := common.CompareBrownfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		AppEngineFlexibleAppVersionSpec_v1alpha1_FromProto,
 		AppEngineFlexibleAppVersionSpec_v1alpha1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
