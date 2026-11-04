@@ -17,9 +17,11 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -42,13 +44,11 @@ type DialogflowCXAgentRef struct {
 	Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}". */
 	External string `json:"external,omitempty"`
 
-	/* NOTYET
 	// The name of a DialogflowCXAgent resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of a DialogflowCXAgent resource.
 	Namespace string `json:"namespace,omitempty"`
-	*/
 }
 
 func init() {
@@ -60,7 +60,10 @@ func (r *DialogflowCXAgentRef) GetGVK() schema.GroupVersionKind {
 }
 
 func (r *DialogflowCXAgentRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{}
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 func (r *DialogflowCXAgentRef) GetExternal() string {
@@ -88,8 +91,23 @@ func (r *DialogflowCXAgentRef) ParseExternalToIdentity() (identity.Identity, err
 }
 
 func (r *DialogflowCXAgentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External == "" {
-		return fmt.Errorf("external reference must be specified for %s", DialogflowCXAgentGVK.Kind)
+	fallback := func(u *unstructured.Unstructured) string {
+		startFlow, _, _ := unstructured.NestedString(u.Object, "status", "startFlow")
+		if idx := strings.Index(startFlow, "/flows/"); idx != -1 {
+			return startFlow[:idx]
+		}
+		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+		if name != "" {
+			if strings.HasPrefix(name, "projects/") {
+				return name
+			}
+			location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+			projectID, _ := refsv1beta1.ResolveProjectID(ctx, reader, u)
+			if projectID != "" && location != "" {
+				return fmt.Sprintf("projects/%s/locations/%s/agents/%s", projectID, location, name)
+			}
+		}
+		return ""
 	}
-	return r.ValidateExternal(r.External)
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

@@ -1,0 +1,32 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook/updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}

@@ -1,0 +1,44 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+  "startFlow": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "disabled": true,
+  "displayName": "webhook-max-updated-${uniqueId}",
+  "genericWebService": {
+    "httpMethod": 1,
+    "parameterMapping": {
+      "param1": "response.updated-key"
+    },
+    "requestBody": "{\"key\": \"updated-value\"}",
+    "requestHeaders": {
+      "X-Custom-Header": "updated-value"
+    },
+    "serviceAgentAuth": 1,
+    "uri": "https://example.com/webhook/updated",
+    "webhookType": 2
+  },
+  "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a",
+  "timeout": "20s"
+}
