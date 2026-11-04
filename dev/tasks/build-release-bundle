@@ -249,7 +249,6 @@ BLOCKED_KINDS=(
     "LicenseManagerConfiguration"
     "LiveStreamAsset"
     "LiveStreamDVRSession"
-    "LoggingLogScope"
     "ManagedKafkaACL"
     "ManagedKafkaConnector"
     "ManagedKafkaSchemaRegistry"
