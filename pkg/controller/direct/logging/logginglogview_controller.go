@@ -45,7 +45,6 @@ func init() {
 			krm.ProjectLogViewIdentityFormat.CanonicalForm(),
 			krm.FolderLogViewIdentityFormat.CanonicalForm(),
 			krm.OrganizationLogViewIdentityFormat.CanonicalForm(),
-			krm.BillingAccountLogViewIdentityFormat.CanonicalForm(),
 		),
 	)
 }
