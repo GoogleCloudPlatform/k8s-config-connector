@@ -2073,20 +2073,6 @@
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseCompilationResultRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataformreleaseconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cronSchedule" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disabled" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.fullyRefreshIncrementalTablesEnabled" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTags[]" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTargets[].database" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTargets[].name" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.includedTargets[].schema" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.queryPriority" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.transitiveDependenciesIncluded" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.invocationConfig.transitiveDependentsIncluded" is not set in unstructured objects
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseConfigRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataformworkflowconfigs.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
 [missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableMoves" is not set in unstructured objects
 [missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=dataformworkspaces.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

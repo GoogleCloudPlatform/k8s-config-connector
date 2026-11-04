@@ -684,6 +684,13 @@ func (r *greenfieldRefNormalizer) VisitField(path string, v any) error {
 		return r.refNormalizer.VisitField(path, v)
 	}
 
+	if saRef, ok := v.(*refs.IAMServiceAccountRef); ok {
+		if saRef != nil && saRef.External == "" && saRef.Name != "" {
+			return saRef.Resolve(r.ctx, r.kube, r.src)
+		}
+		return nil
+	}
+
 	if extNorm, ok := v.(refs.ExternalNormalizer); ok {
 		if isNonEmptyExternalNormalizer(v) {
 			if _, err := extNorm.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {

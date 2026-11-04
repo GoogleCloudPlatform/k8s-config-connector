@@ -84,10 +84,30 @@ func (r *DataformRepositoryRef) ParseExternalToIdentity() (identity.Identity, er
 func (r *DataformRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
 		identity, err := getIdentityFromDataformRepositorySpec(ctx, reader, u)
+		if err == nil {
+			return identity.String()
+		}
+		// DataformRepository specifies spec.region instead of spec.location.
+		resourceID, err := refs.GetResourceID(u)
 		if err != nil {
 			return ""
 		}
-		return identity.String()
+		location, _, _ := unstructured.NestedString(u.Object, "spec", "region")
+		if location == "" {
+			location, _, _ = unstructured.NestedString(u.Object, "spec", "location")
+		}
+		if location == "" {
+			return ""
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return (&DataformRepositoryIdentity{
+			Project:    projectID,
+			Location:   location,
+			Repository: resourceID,
+		}).String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
