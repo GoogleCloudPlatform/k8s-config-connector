@@ -161,11 +161,6 @@ func (a *splitTrafficAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AppEngineServiceSplitTraffic", "name", a.id.String())
 
-	mburMatch, err := updateOp.CompareMBUR(a.computeMBUR)
-	if err != nil {
-		return fmt.Errorf("comparing MBUR: %w", err)
-	}
-
 	diffRes, err := common.CompareSpecifiedSpec(
 		ctx,
 		&a.desired.Spec,
@@ -179,11 +174,18 @@ func (a *splitTrafficAdapter) Update(ctx context.Context, updateOp *directbase.U
 		return err
 	}
 
-	if diffRes.Empty() && mburMatch {
+	if diffRes.Empty() {
 		log.V(2).Info("no diff detected for AppEngineServiceSplitTraffic", "name", a.id.String())
+		if err := updateOp.SetMBUR(ctx, a.computeMBUR); err != nil {
+			return fmt.Errorf("setting MBUR: %w", err)
+		}
 		return a.updateStatus(ctx, updateOp)
 	}
 
+	mburMatch, err := updateOp.CompareMBUR(a.computeMBUR)
+	if err != nil {
+		return fmt.Errorf("comparing MBUR: %w", err)
+	}
 	if !mburMatch {
 		diffRes.Diff.AddField("migrate_traffic", nil, direct.ValueOf(a.desired.Spec.MigrateTraffic))
 	}
