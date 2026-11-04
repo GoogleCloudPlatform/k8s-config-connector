@@ -1,7 +1,6 @@
 # Phase: CREATE
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,9 +22,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "deployment": {
@@ -36,26 +34,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "env": "flex",
   "id": "000000000000000000000",
   "livenessCheck": {
-    "checkInterval": "30s",
-    "failureThreshold": 4,
-    "initialDelay": "300s",
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "manualScaling": {
     "instances": 1
   },
   "readinessCheck": {
-    "appStartTimeout": "300s",
-    "checkInterval": "5s",
-    "failureThreshold": 2,
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
-  "runtime": "custom",
-  "servingStatus": "SERVING"
+  "runtime": "custom"
 }
 
 200 OK
@@ -82,9 +69,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -112,12 +98,7 @@ X-Xss-Protection: 0
   "env": "flexible",
   "id": "000000000000000000000",
   "livenessCheck": {
-    "checkInterval": "30s",
-    "failureThreshold": 4,
-    "initialDelay": "300s",
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "manualScaling": {
     "instances": 1
@@ -125,16 +106,11 @@ X-Xss-Protection: 0
   "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
   "network": {},
   "readinessCheck": {
-    "appStartTimeout": "300s",
-    "checkInterval": "5s",
-    "failureThreshold": 2,
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "runtime": "custom",
   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
-  "servingStatus": "SERVING",
+  "servingStatus": 1,
   "threadsafe": true,
   "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
 }
@@ -142,9 +118,8 @@ X-Xss-Protection: 0
 ---
 
 # Phase: UPDATE
-POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "deployment": {
@@ -154,29 +129,16 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "env": "flex",
   "id": "000000000000000000000",
-  "inboundServices": [],
   "livenessCheck": {
-    "checkInterval": "30s",
-    "failureThreshold": 4,
-    "initialDelay": "300s",
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "manualScaling": {
     "instances": 2
   },
   "readinessCheck": {
-    "appStartTimeout": "300s",
-    "checkInterval": "5s",
-    "failureThreshold": 2,
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
-  "runtime": "custom",
-  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
-  "servingStatus": "SERVING"
+  "runtime": "custom"
 }
 
 200 OK
@@ -203,9 +165,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json&view=FULL
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint&view=FULL
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -233,12 +194,7 @@ X-Xss-Protection: 0
   "env": "flexible",
   "id": "000000000000000000000",
   "livenessCheck": {
-    "checkInterval": "30s",
-    "failureThreshold": 4,
-    "initialDelay": "300s",
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "manualScaling": {
     "instances": 2
@@ -246,16 +202,11 @@ X-Xss-Protection: 0
   "name": "apps/${projectId}/services/default/versions/v${uniqueId}",
   "network": {},
   "readinessCheck": {
-    "appStartTimeout": "300s",
-    "checkInterval": "5s",
-    "failureThreshold": 2,
-    "path": "/",
-    "successThreshold": 2,
-    "timeout": "4s"
+    "path": "/"
   },
   "runtime": "custom",
   "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
-  "servingStatus": "SERVING",
+  "servingStatus": 1,
   "threadsafe": true,
   "versionUrl": "https://v${uniqueId}-dot-${projectId}.uc.r.appspot.com"
 }
@@ -263,9 +214,8 @@ X-Xss-Protection: 0
 ---
 
 # Phase: DELETE
-DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?alt=json
+DELETE https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions/v${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
