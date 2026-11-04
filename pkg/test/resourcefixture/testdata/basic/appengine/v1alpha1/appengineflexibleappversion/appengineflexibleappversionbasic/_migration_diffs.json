@@ -1,0 +1,171 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "AppEngineFlexibleAppVersion/appengineflexibleappversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "delete_service_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "deployment.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "deployment.0.container.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "deployment.0.container.0.image",
+        "old": "",
+        "new": "gcr.io/google-samples/hello-app:1.0"
+      },
+      {
+        "id": "handlers.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "liveness_check.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "liveness_check.0.check_interval",
+        "old": "",
+        "new": "30s"
+      },
+      {
+        "id": "liveness_check.0.failure_threshold",
+        "old": "",
+        "new": "4"
+      },
+      {
+        "id": "liveness_check.0.initial_delay",
+        "old": "",
+        "new": "300s"
+      },
+      {
+        "id": "liveness_check.0.path",
+        "old": "",
+        "new": "/"
+      },
+      {
+        "id": "liveness_check.0.success_threshold",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "liveness_check.0.timeout",
+        "old": "",
+        "new": "4s"
+      },
+      {
+        "id": "manual_scaling.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "manual_scaling.0.instances",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "noop_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "readiness_check.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "readiness_check.0.app_start_timeout",
+        "old": "",
+        "new": "300s"
+      },
+      {
+        "id": "readiness_check.0.check_interval",
+        "old": "",
+        "new": "5s"
+      },
+      {
+        "id": "readiness_check.0.failure_threshold",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "readiness_check.0.path",
+        "old": "",
+        "new": "/"
+      },
+      {
+        "id": "readiness_check.0.success_threshold",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "readiness_check.0.timeout",
+        "old": "",
+        "new": "4s"
+      },
+      {
+        "id": "runtime",
+        "old": "",
+        "new": "custom"
+      },
+      {
+        "id": "runtime_api_version",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "default"
+      },
+      {
+        "id": "service_account",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "serving_status",
+        "old": "",
+        "new": "SERVING"
+      },
+      {
+        "id": "version_id",
+        "old": "",
+        "new": "v${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "AppEngineFlexibleAppVersion/appengineflexibleappversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "deployment.0.container.0.image",
+        "old": "gcr.io/google-samples/hello-app@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e",
+        "new": "gcr.io/google-samples/hello-app:1.0"
+      }
+    ]
+  }
+]
