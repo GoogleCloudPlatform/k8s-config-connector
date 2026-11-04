@@ -1,0 +1,61 @@
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-dep-${uniqueId}",
+  "saas": "projects/${projectId}/locations/us-central1/saas/kcc-test-saas",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "annotations": {
+    "description": "updated maximal unit kind test"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dependencies": [
+    {
+      "alias": "dep1",
+      "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-dep-${uniqueId}"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "inputVariableMappings": [
+    {
+      "to": {
+        "dependency": "dep1",
+        "ignoreForLookup": true,
+        "inputVariable": "depInputVar1"
+      },
+      "variable": "inputVar1"
+    }
+  ],
+  "labels": {
+    "env": "prod",
+    "team": "alpha"
+  },
+  "name": "projects/${projectId}/locations/us-central1/unitKinds/saasservicemgmtunitkind-${uniqueId}",
+  "outputVariableMappings": [
+    {
+      "from": {
+        "dependency": "dep1",
+        "outputVariable": "depOutputVar1"
+      },
+      "variable": "outputVar1"
+    }
+  ],
+  "saas": "projects/${projectId}/locations/us-central1/saas/kcc-test-saas",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
