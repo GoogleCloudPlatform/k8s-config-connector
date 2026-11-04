@@ -623,6 +623,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
 		delete(v, "activityDataRetentionPeriodDays")
+		// WebSecurityScanner targetPlatforms is returned by real GCP (e.g. [1] for App Engine) but not in v1 proto
 		delete(v, "targetPlatforms")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {

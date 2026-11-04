@@ -78,7 +78,7 @@ func (s *WebSecurityScannerServer) populateDefaultsForScanConfig(obj *pb.ScanCon
 	if obj.UserAgent == pb.ScanConfig_USER_AGENT_UNSPECIFIED {
 		obj.UserAgent = pb.ScanConfig_CHROME_LINUX
 	}
-	// Note: target_platforms is returned by real GCP (e.g. [1] for App Engine),
+	// TODO: target_platforms is returned by real GCP (e.g. [1] for App Engine),
 	// but is not present in google.cloud.websecurityscanner.v1 ScanConfig proto.
 }
 
@@ -134,6 +134,8 @@ func (s *WebSecurityScannerServer) GetScanConfig(ctx context.Context, req *pb.Ge
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	s.populateDefaultsForScanConfig(obj)
 
 	return obj, nil
 }
@@ -256,6 +258,7 @@ func (s *WebSecurityScannerServer) ListScanConfigs(ctx context.Context, req *pb.
 		Prefix: findPrefix,
 	}, func(obj proto.Message) error {
 		item := obj.(*pb.ScanConfig)
+		s.populateDefaultsForScanConfig(item)
 		response.ScanConfigs = append(response.ScanConfigs, item)
 		return nil
 	}); err != nil {
