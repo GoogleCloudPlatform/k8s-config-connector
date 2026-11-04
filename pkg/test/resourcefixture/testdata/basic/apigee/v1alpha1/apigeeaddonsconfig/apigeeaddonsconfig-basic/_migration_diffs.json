@@ -1,0 +1,24 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "ApigeeAddonsConfig/apigeeaddonsconfig-${uniqueId}",
+    "fields": [
+      {
+        "id": "addons_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "addons_config.0.api_security_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "addons_config.0.api_security_config.0.enabled",
+        "old": "",
+        "new": "true"
+      }
+    ]
+  }
+]
