@@ -64,13 +64,20 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformOnlineEvaluator:OnlineEvaluator
+
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
-  --service google.cloud.aiplatform.v1 \
+  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
-  --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
+  --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
+  --resource AIPlatformOnlineEvaluator:OnlineEvaluator
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \

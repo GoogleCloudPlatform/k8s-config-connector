@@ -35,6 +35,7 @@
 // resource: AIPlatformHyperparameterTuningJob:HyperparameterTuningJob
 // resource: AIPlatformSchedule:Schedule
 // resource: AIPlatformModelMonitor:ModelMonitor
+// resource: AIPlatformOnlineEvaluator:OnlineEvaluator
 
 package v1alpha1
 
@@ -3188,6 +3189,104 @@ type BatchDedicatedResources struct {
 	Spot *bool `json:"spot,omitempty"`
 }
 
+/* unreachable type CustomCodeExecutionSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.CustomCodeExecutionSpec
+type CustomCodeExecutionSpec struct {
+	// Required. Python function.
+	//  Expected user to define the following function, e.g.:
+	//    def evaluate(instance: dict[str, Any]) -> float:
+	//  Please include this function signature in the code snippet.
+	//  Instance is the evaluation instance, any fields populated in the instance
+	//  are available to the function as instance[field_name].
+	//
+	//  Example:
+	//   Example input:
+	//   ```
+	//   instance= EvaluationInstance(
+	//       response=EvaluationInstance.InstanceData(text="The answer is 4."),
+	//       reference=EvaluationInstance.InstanceData(text="4")
+	//   )
+	//   ```
+	//
+	//   Example converted input:
+	//   ```
+	//   {
+	//    'response': {'text': 'The answer is 4.'},
+	//    'reference': {'text': '4'}
+	//   }
+	//   ```
+	//
+	//   Example python function:
+	//   ```
+	//    def evaluate(instance: dict[str, Any]) -> float:
+	//      if instance['response']['text'] == instance['reference']['text']:
+	//        return 1.0
+	//      return 0.0
+	//   ```
+	//
+	//  CustomCodeExecutionSpec is also supported in Batch Evaluation (EvalDataset
+	//  RPC) and Tuning Evaluation. Each line in the input jsonl file will be
+	//  converted to dict[str, Any] and passed to the evaluation function.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomCodeExecutionSpec.evaluation_function
+	EvaluationFunction *string `json:"evaluationFunction,omitempty"`
+}
+*/
+
+/* unreachable type EvaluationParserConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.EvaluationParserConfig
+type EvaluationParserConfig struct {
+	// Optional. Use custom code to parse the LLM response.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EvaluationParserConfig.custom_code_parser_config
+	CustomCodeParserConfig *EvaluationParserConfig_CustomCodeParserConfig `json:"customCodeParserConfig,omitempty"`
+}
+*/
+
+/* unreachable type EvaluationParserConfig_CustomCodeParserConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.EvaluationParserConfig.CustomCodeParserConfig
+type EvaluationParserConfig_CustomCodeParserConfig struct {
+	// Required. Python function for parsing results. The function should be
+	//  defined within this string.
+	//
+	//  The function takes a list of strings (LLM responses) and should return
+	//  either a list of dictionaries (for rubrics) or a single dictionary
+	//  (for a metric result).
+	//
+	//  Example function signature:
+	//  def parse(responses: list[str]) -> list[dict[str, Any]] | dict[str, Any]:
+	//
+	//   When parsing rubrics, return a list of dictionaries, where each
+	//   dictionary represents a Rubric.
+	//   Example for rubrics:
+	//   [
+	//     {
+	//       "content": {"property": {"description": "The response is
+	//   factual."}},
+	//       "type": "FACTUALITY",
+	//       "importance": "HIGH"
+	//     },
+	//     {
+	//       "content": {"property": {"description": "The response is
+	//   fluent."}},
+	//       "type": "FLUENCY",
+	//       "importance": "MEDIUM"
+	//     }
+	//   ]
+	//
+	//   When parsing critique results, return a dictionary representing a
+	//   MetricResult.
+	//   Example for a metric result:
+	//   {
+	//     "score": 0.8,
+	//     "explanation": "The model followed most instructions.",
+	//     "rubric_verdicts": [...]
+	//   }
+	//
+	//   ... code for result extraction and aggregation
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EvaluationParserConfig.CustomCodeParserConfig.parsing_function
+	ParsingFunction *string `json:"parsingFunction,omitempty"`
+}
+*/
+
 /* unreachable type ExamplesWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Examples
 type ExamplesWithRequired struct {
@@ -3265,6 +3364,15 @@ type GCSSourceWithRequired struct {
 }
 */
 
+/* unreachable type GenerationConfig_ModelConfig
+// +kcc:proto=google.cloud.aiplatform.v1beta1.GenerationConfig.ModelConfig
+type GenerationConfig_ModelConfig struct {
+	// Required. Feature selection preference.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GenerationConfig.ModelConfig.feature_selection_preference
+	FeatureSelectionPreference *string `json:"featureSelectionPreference,omitempty"`
+}
+*/
+
 /* unreachable type IntegratedGradientsAttributionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution
 type IntegratedGradientsAttributionWithRequired struct {
@@ -3296,6 +3404,57 @@ type IntegratedGradientsAttributionWithRequired struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 */
+
+/* unreachable type MetricMetadata
+// +kcc:proto=google.cloud.aiplatform.v1beta1.MetricMetadata
+type MetricMetadata struct {
+	// Optional. The user-friendly name for the metric. If not set for a
+	//  registered metric, it will default to the metric's display name.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. The range of possible scores for this metric, used for plotting.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.score_range
+	ScoreRange *MetricMetadata_ScoreRange `json:"scoreRange,omitempty"`
+
+	// Optional. Flexible metadata for user-defined attributes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.other_metadata
+	OtherMetadata apiextensionsv1.JSON `json:"otherMetadata,omitempty"`
+}
+*/
+
+/* unreachable type MetricMetadata_ScoreRange
+// +kcc:proto=google.cloud.aiplatform.v1beta1.MetricMetadata.ScoreRange
+type MetricMetadata_ScoreRange struct {
+	// Required. The minimum value of the score range (inclusive).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.ScoreRange.min
+	Min *float64 `json:"min,omitempty"`
+
+	// Required. The maximum value of the score range (inclusive).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.ScoreRange.max
+	Max *float64 `json:"max,omitempty"`
+
+	// Optional. The distance between discrete steps in the range.
+	//  If unset, the range is assumed to be continuous.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.ScoreRange.step
+	Step *float64 `json:"step,omitempty"`
+
+	// Optional. The description of the score explaining the directionality etc.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricMetadata.ScoreRange.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.MetricSource
+type MetricSource struct {
+	// Inline metric config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricSource.metric
+	Metric *Metric `json:"metric,omitempty"`
+
+	// Resource name for registered metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricSource.metric_resource_name
+	MetricResourceName *string `json:"metricResourceName,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget
 type ModelMonitor_ModelMonitoringTarget struct {
@@ -3613,61 +3772,6 @@ type ModelMonitoringSchema_FieldSchema struct {
 	Repeated *bool `json:"repeated,omitempty"`
 }
 
-/* unreachable type SampledShapleyAttributionWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution
-type SampledShapleyAttributionWithRequired struct {
-	// Required. The number of feature permutations to consider when approximating
-	//  the Shapley values.
-	//
-	//  Valid range of its value is [1, 50], inclusively.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count
-	// +required
-	PathCount *int32 `json:"pathCount,omitempty"`
-}
-*/
-
-/* unreachable type XraiAttributionWithRequired
-// +kcc:proto=google.cloud.aiplatform.v1beta1.XraiAttribution
-type XraiAttributionWithRequired struct {
-	// Required. The number of steps for approximating the path integral.
-	//  A good value to start is 50 and gradually increase until the
-	//  sum to diff property is met within the desired error range.
-	//
-	//  Valid range of its value is [1, 100], inclusively.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.step_count
-	// +required
-	StepCount *int32 `json:"stepCount,omitempty"`
-
-	// Config for SmoothGrad approximation of gradients.
-	//
-	//  When enabled, the gradients are approximated by averaging the gradients
-	//  from noisy samples in the vicinity of the inputs. Adding
-	//  noise can help improve the computed gradients. Refer to this paper for more
-	//  details: https://arxiv.org/pdf/1706.03825.pdf
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.smooth_grad_config
-	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
-
-	// Config for XRAI with blur baseline.
-	//
-	//  When enabled, a linear path from the maximally blurred image to the input
-	//  image is created. Using a blurred baseline instead of zero (black image) is
-	//  motivated by the BlurIG approach explained here:
-	//  https://arxiv.org/abs/2004.03383
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.blur_baseline_config
-	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetricSource
-type MetricSource struct {
-	// Inline metric config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricSource.metric
-	Metric *Metric `json:"metric,omitempty"`
-
-	// Resource name for registered metric.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetricSource.metric_resource_name
-	MetricResourceName *string `json:"metricResourceName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1beta1.OnlineEvaluator.CloudObservability
 type OnlineEvaluatorCloudObservability struct {
 	// Scope online evaluation to single traces.
@@ -3852,6 +3956,78 @@ type OnlineEvaluator_Config_RandomSampling struct {
 /* unreachable type OnlineEvaluator_StateDetails
 // +kcc:proto=google.cloud.aiplatform.v1beta1.OnlineEvaluator.StateDetails
 type OnlineEvaluator_StateDetails struct {
+}
+*/
+
+/* unreachable type RubricGenerationSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.RubricGenerationSpec
+type RubricGenerationSpec struct {
+	// Template for the prompt used to generate rubrics.
+	//  The details should be updated based on the most-recent recipe requirements.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.RubricGenerationSpec.prompt_template
+	PromptTemplate *string `json:"promptTemplate,omitempty"`
+
+	// Configuration for the model used in rubric generation.
+	//  Configs including sampling count and base model can be specified here.
+	//  Flipping is not supported for rubric generation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.RubricGenerationSpec.model_config
+	ModelConfig *AutoraterConfig `json:"modelConfig,omitempty"`
+
+	// The type of rubric content to be generated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.RubricGenerationSpec.rubric_content_type
+	RubricContentType *string `json:"rubricContentType,omitempty"`
+
+	// Optional. An optional, pre-defined list of allowed types for generated
+	//  rubrics. If this field is provided, it implies `include_rubric_type` should
+	//  be true, and the generated rubric types should be chosen from this
+	//  ontology.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.RubricGenerationSpec.rubric_type_ontology
+	RubricTypeOntology []string `json:"rubricTypeOntology,omitempty"`
+}
+*/
+
+/* unreachable type SampledShapleyAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution
+type SampledShapleyAttributionWithRequired struct {
+	// Required. The number of feature permutations to consider when approximating
+	//  the Shapley values.
+	//
+	//  Valid range of its value is [1, 50], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count
+	// +required
+	PathCount *int32 `json:"pathCount,omitempty"`
+}
+*/
+
+/* unreachable type XraiAttributionWithRequired
+// +kcc:proto=google.cloud.aiplatform.v1beta1.XraiAttribution
+type XraiAttributionWithRequired struct {
+	// Required. The number of steps for approximating the path integral.
+	//  A good value to start is 50 and gradually increase until the
+	//  sum to diff property is met within the desired error range.
+	//
+	//  Valid range of its value is [1, 100], inclusively.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.step_count
+	// +required
+	StepCount *int32 `json:"stepCount,omitempty"`
+
+	// Config for SmoothGrad approximation of gradients.
+	//
+	//  When enabled, the gradients are approximated by averaging the gradients
+	//  from noisy samples in the vicinity of the inputs. Adding
+	//  noise can help improve the computed gradients. Refer to this paper for more
+	//  details: https://arxiv.org/pdf/1706.03825.pdf
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.smooth_grad_config
+	SmoothGradConfig *SmoothGradConfig `json:"smoothGradConfig,omitempty"`
+
+	// Config for XRAI with blur baseline.
+	//
+	//  When enabled, a linear path from the maximally blurred image to the input
+	//  image is created. Using a blurred baseline instead of zero (black image) is
+	//  motivated by the BlurIG approach explained here:
+	//  https://arxiv.org/abs/2004.03383
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.XraiAttribution.blur_baseline_config
+	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 */
 
