@@ -292,6 +292,7 @@ BLOCKED_KINDS=(
     "RetailModel"
     "RetailServingConfig"
     "SaasServiceMgmtRelease"
+    "SaaSServiceMgmtUnitKind"
     "SecretManagerRegionalSecret"
     "SecureSourceManagerBranchRule"
     "SecureSourceManagerHook"
