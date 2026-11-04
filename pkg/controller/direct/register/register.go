@@ -203,6 +203,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/visionai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmmigration"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/websecurityscanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflowexecutions"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workloadmanager"
