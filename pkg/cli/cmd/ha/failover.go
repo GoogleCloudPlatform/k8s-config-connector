@@ -25,15 +25,12 @@ import (
 	"github.com/spf13/pflag"
 )
 
-const (
-	targetClusterFlag = "target-cluster"
-)
-
 // failoverOptions holds flags and configuration for `config-connector ha failover`.
 type failoverOptions struct {
 	baseOptions
 
 	targetCluster string
+	dryRun        bool
 }
 
 func newFailoverOptions() failoverOptions {
@@ -59,16 +56,15 @@ func NewFailoverCmd() *cobra.Command {
 	return cmd
 }
 
-func runFailover(ctx context.Context, opts failoverOptions) error {
-	if _, err := buildClusterHandles(ctx, opts.contexts); err != nil {
-		return err
-	}
-	return fmt.Errorf("ha failover is not yet implemented")
-}
+const (
+	targetClusterFlag  = "target-cluster"
+	failoverDryRunFlag = "dry-run"
+)
 
 func (o *failoverOptions) addFlags(flags *pflag.FlagSet) {
 	o.baseOptions.addFlags(flags)
 	flags.StringVar(&o.targetCluster, targetClusterFlag, o.targetCluster, "Kubeconfig context name of the standby cluster to promote to leader.")
+	flags.BoolVar(&o.dryRun, failoverDryRunFlag, o.dryRun, "If true, print planned actions without making changes.")
 }
 
 func (o *failoverOptions) validate() error {
@@ -83,4 +79,11 @@ func (o *failoverOptions) validate() error {
 		errs = append(errs, fmt.Errorf("--%s %q must be one of the contexts specified in --%s (%v)", targetClusterFlag, o.targetCluster, contextsFlag, o.contexts))
 	}
 	return errors.Join(errs...)
+}
+
+func runFailover(ctx context.Context, opts failoverOptions) error {
+	if _, err := buildClusterHandles(ctx, opts.contexts); err != nil {
+		return err
+	}
+	return fmt.Errorf("ha failover is not yet implemented")
 }
