@@ -158,7 +158,6 @@ BLOCKED_KINDS=(
     "ComposerUserWorkloadsConfigMap"
     "ComposerUserWorkloadsSecret"
     "ConfigDeliveryFleetPackage"
-    "ConfigDeliveryRelease"
     "ConfigdeliveryVariant"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
