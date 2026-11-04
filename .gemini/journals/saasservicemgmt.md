@@ -1,3 +1,11 @@
+### [2026-11-04] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtUnitKind
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtUnitKind`.
+- **Observations**:
+  - **Dependencies Validation**: GCP validates `dependencies` in `SaaSServiceMgmtUnitKind` by looking up the referenced `UnitKind` resources. Creating a prerequisite `SaaSServiceMgmtUnitKind` in `dependencies.yaml` resolves this.
+  - **Deletion Order**: GCP enforces dependency checks on deletion (`ValidateDelete fails: cannot delete UnitKind ... because there is another UnitKind with a dependency on UnitKind ...`). KCC's deletion order correctly cleans up dependent resources before deleting dependencies.
+  - **Synchronous API**: `CreateUnitKind`, `GetUnitKind`, `UpdateUnitKind`, and `DeleteUnitKind` on `SaasDeploymentsClient` are synchronous (do not return LROs).
+  - **Client Selection**: Utilized GAPIC REST client (`NewSaasDeploymentsRESTClient`) with `m.config.RESTClientOptions()`.
+
 ### [2026-10-21] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtRolloutKind
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtRolloutKind`.
 - **Observations**:
