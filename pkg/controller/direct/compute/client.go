@@ -18,6 +18,7 @@
 // proto.service: google.cloud.compute.v1.NetworkAttachments
 // proto.service: google.cloud.compute.v1.HealthChecks
 // proto.service: google.cloud.compute.v1.Images
+// proto.service: google.cloud.compute.v1.MachineImages
 // proto.service: google.cloud.compute.v1.SecurityPolicies
 // proto.service: google.cloud.compute.v1.RegionSecurityPolicies
 // proto.service: google.cloud.compute.v1.Addresses
@@ -502,6 +503,18 @@ func (m *gcpClient) newNetworkEndpointGroupsClient(ctx context.Context) (*comput
 	client, err := compute.NewNetworkEndpointGroupsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute NetworkEndpointGroups client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newMachineImagesClient(ctx context.Context) (*compute.MachineImagesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewMachineImagesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute MachineImages client: %w", err)
 	}
 	return client, err
 }
