@@ -42,9 +42,10 @@ import (
 func init() {
 	registry.RegisterModel(krm.LoggingLogViewGVK, NewLoggingLogViewModel,
 		registry.WithIAM(
-			"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
-			"folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}",
-			"organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}",
+			krm.ProjectLogViewIdentityFormat.CanonicalForm(),
+			krm.FolderLogViewIdentityFormat.CanonicalForm(),
+			krm.OrganizationLogViewIdentityFormat.CanonicalForm(),
+			krm.BillingAccountLogViewIdentityFormat.CanonicalForm(),
 		),
 	)
 }

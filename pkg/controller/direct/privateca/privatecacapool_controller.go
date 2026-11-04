@@ -42,7 +42,7 @@ import (
 func init() {
 	registry.RegisterModel(krm.PrivateCACAPoolGVK, newCAPoolModel,
 		registry.WithIAM(
-			"projects/{project}/locations/{location}/caPools/{caPool}",
+			krm.PrivateCACAPoolIdentityFormat.CanonicalForm(),
 		),
 	)
 }

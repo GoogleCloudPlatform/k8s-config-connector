@@ -411,6 +411,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
             <p><code>projects/{project}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
             <p><code>folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
             <p><code>organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
+            <p><code>billingAccounts/{billingAccount}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
         </td>
     </tr>
     <tr>

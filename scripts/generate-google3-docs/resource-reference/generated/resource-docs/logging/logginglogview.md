@@ -73,6 +73,8 @@ title: "LoggingLogView"
         
         <p>organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}</p>
         
+        <p>billingAccounts/{billingAccount}/locations/{location}/buckets/{bucket}/views/{view}</p>
+        
     </td>
 </tr>
 
