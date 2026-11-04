@@ -40,7 +40,11 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.PrivateCACAPoolGVK, newCAPoolModel)
+	registry.RegisterModel(krm.PrivateCACAPoolGVK, newCAPoolModel,
+		registry.WithIAM(
+			krm.PrivateCACAPoolIdentityFormat.CanonicalForm(),
+		),
+	)
 }
 
 func newCAPoolModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {

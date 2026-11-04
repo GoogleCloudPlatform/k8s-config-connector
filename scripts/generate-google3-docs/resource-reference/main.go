@@ -52,6 +52,7 @@ import (
 
 	// Ensure built-in types are registered.
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -365,9 +366,6 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind, crd 
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, d.smLoader, d.serviceMetadataLoader).Seconds())
-	if err != nil {
-		return nil, fmt.Errorf("error checking whether GVK is direct: %w", err)
-	}
 	if dclmetadata.IsDCLBasedResourceKind(gvk, d.serviceMetadataLoader) {
 		resourceMetadata, found := d.serviceMetadataLoader.GetResourceWithGVK(gvk)
 		if !found {
@@ -377,11 +375,21 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind, crd 
 		if err := d.handleAnnotationsAndIAMSettingsForDCLBasedResource(r, gvk); err != nil {
 			return nil, fmt.Errorf("error processing the DCL based resource %v: %w", gvk, err)
 		}
+		if registry.IsIAMDirect(gvk.GroupKind()) {
+			if err := d.handleAnnotationsAndIAMSettingsForDirectResource(r, gvk); err != nil {
+				return nil, fmt.Errorf("error processing direct IAM for resource %v: %w", gvk, err)
+			}
+		}
 	} else {
 		if err := d.handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk); err != nil {
-			// TODO: Add annotation and IAM settings handling logic for direct GKs.
 			if strings.Contains(err.Error(), fmt.Sprintf("unable to get service mapping: no mapping with name '%s' found", gvk.Group)) {
-				log.Printf("reference doc for GK '%v' doesn't cover annotations and IAM settings", gvk.GroupKind().String())
+				if d.directGVKs[gvk] {
+					if err := d.handleAnnotationsAndIAMSettingsForDirectResource(r, gvk); err != nil {
+						return nil, fmt.Errorf("error processing direct resource %v: %w", gvk, err)
+					}
+				} else {
+					log.Printf("reference doc for GK '%v' doesn't cover annotations and IAM settings", gvk.GroupKind().String())
+				}
 			} else {
 				return nil, fmt.Errorf("error processing the TF based resource %v: %w", gvk, err)
 			}
@@ -812,10 +820,46 @@ func (d *DocGenerator) referencesSupportedByIAMPolicyMember() ([]iamPolicyMember
 			ExternalReferenceFormats: []string{extOnlyType.ExternalFormat},
 		})
 	}
+	for gvk := range registry.AllDirectGVKs() {
+		if registry.IsIAMDirect(gvk.GroupKind()) {
+			formats, err := iamExternalReferenceFormatsForDirect(gvk)
+			if err != nil {
+				return nil, err
+			}
+			refs = append(refs, iamPolicyMemberReference{
+				Kind:                     gvk.Kind,
+				SupportsConditions:       true,
+				ExternalReferenceFormats: formats,
+			})
+		}
+	}
 	sort.Slice(refs, func(i, j int) bool {
 		return refs[i].Kind < refs[j].Kind
 	})
 	return refs, nil
+}
+
+func (d *DocGenerator) handleAnnotationsAndIAMSettingsForDirectResource(r *resource, gvk schema.GroupVersionKind) error {
+	if registry.IsIAMDirect(gvk.GroupKind()) {
+		formats, err := iamExternalReferenceFormatsForDirect(gvk)
+		if err != nil {
+			return err
+		}
+		r.IAM = &IAM{
+			SupportsConditions:       true,
+			SupportsAuditConfigs:     false,
+			ExternalReferenceFormats: formats,
+		}
+	}
+	return nil
+}
+
+func iamExternalReferenceFormatsForDirect(gvk schema.GroupVersionKind) ([]string, error) {
+	formats, ok := registry.IAMExternalReferenceFormats(gvk.GroupKind())
+	if !ok || len(formats) == 0 {
+		return nil, fmt.Errorf("no IAM external reference formats registered for direct resource %v", gvk)
+	}
+	return formats, nil
 }
 
 func (d *DocGenerator) referencesSupportedByIAMAuditConfig() ([]iamAuditConfigReference, error) {
