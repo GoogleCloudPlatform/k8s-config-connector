@@ -62,14 +62,18 @@ func (m *modelUserWorkloadsSecret) AdapterForObject(ctx context.Context, op *dir
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.ComposerUserWorkloadsSecretIdentity)
 
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
+	if !id.HasIdentitySpecified() && obj.GetName() != "" {
+		id.UserWorkloadsSecret = obj.GetName()
 	}
 
 	// Get composer GCP client
@@ -161,6 +165,14 @@ func (a *UserWorkloadsSecretAdapter) Create(ctx context.Context, createOp *direc
 		return mapCtx.Err()
 	}
 
+	if resource.Name == "" {
+		if a.id.HasIdentitySpecified() {
+			resource.Name = a.id.String()
+		} else if a.desired.GetName() != "" {
+			resource.Name = a.id.ParentString() + "/userWorkloadsSecrets/" + a.desired.GetName()
+		}
+	}
+
 	req := &servicepb.CreateUserWorkloadsSecretRequest{
 		Parent:              a.id.ParentString(),
 		UserWorkloadsSecret: resource,
@@ -172,6 +184,7 @@ func (a *UserWorkloadsSecretAdapter) Create(ctx context.Context, createOp *direc
 	log.V(2).Info("successfully created UserWorkloadsSecret", "name", a.id)
 
 	status := &krm.ComposerUserWorkloadsSecretStatus{}
+	status.ObservedGeneration = direct.LazyPtr(createOp.GetUnstructured().GetGeneration())
 	parsedID := &krm.ComposerUserWorkloadsSecretIdentity{}
 	if err := parsedID.FromExternal(created.Name); err != nil {
 		return err
@@ -186,13 +199,29 @@ func (a *UserWorkloadsSecretAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating UserWorkloadsSecret", "name", a.id)
 
+	u := updateOp.GetUnstructured()
+	isUpToDate := a.desired.Status.ObservedGeneration != nil && u.GetGeneration() == *a.desired.Status.ObservedGeneration
+
+	normalize := func(ctx context.Context, pb *servicepb.UserWorkloadsSecret) error {
+		if isUpToDate && pb != nil && pb.Data != nil {
+			for k, v := range pb.Data {
+				if v == "**********" {
+					if desiredVal, ok := a.desired.Spec.Data[k]; ok {
+						pb.Data[k] = desiredVal
+					}
+				}
+			}
+		}
+		return nil
+	}
+
 	resource, report, _, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		ComposerUserWorkloadsSecretSpec_v1alpha1_FromProto,
 		ComposerUserWorkloadsSecretSpec_v1alpha1_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err
@@ -214,6 +243,7 @@ func (a *UserWorkloadsSecretAdapter) Update(ctx context.Context, updateOp *direc
 	}
 
 	status := &krm.ComposerUserWorkloadsSecretStatus{}
+	status.ObservedGeneration = direct.LazyPtr(u.GetGeneration())
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

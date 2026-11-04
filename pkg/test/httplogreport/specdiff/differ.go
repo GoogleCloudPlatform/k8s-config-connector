@@ -440,6 +440,9 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	fStr, fIsStr := foundVal.(string)
 	eStr, eIsStr := expectedVal.(string)
 	if fIsStr && eIsStr {
+		if fStr == "**********" {
+			return true
+		}
 		fl := strings.ToLower(fStr)
 		el := strings.ToLower(eStr)
 		if fl != "" && el != "" && (strings.Contains(fl, el) || strings.Contains(el, fl)) {

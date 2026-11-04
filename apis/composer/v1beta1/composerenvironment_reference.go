@@ -17,8 +17,10 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,6 +40,10 @@ type EnvironmentRef struct {
 
 	// The namespace of a ComposerEnvironment resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&EnvironmentRef{}, &ComposerEnvironment{})
 }
 
 func (r *EnvironmentRef) GetGVK() schema.GroupVersionKind {
@@ -70,7 +76,18 @@ func (r *EnvironmentRef) ValidateExternal(ref string) error {
 }
 
 func (r *EnvironmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComposerEnvironment](u)
+		if err != nil {
+			return ""
+		}
+		id, err := obj.GetIdentity(ctx, reader)
+		if err != nil {
+			return ""
+		}
+		return id.String()
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 func (r *EnvironmentRef) ParseExternalToIdentity() (identity.Identity, error) {

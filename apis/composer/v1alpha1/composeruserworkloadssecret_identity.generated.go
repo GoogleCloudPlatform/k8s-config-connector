@@ -24,7 +24,6 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -75,24 +74,6 @@ func (i *ComposerUserWorkloadsSecretIdentity) Host() string {
 
 func (i *ComposerUserWorkloadsSecretIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location + "/environments/" + i.Environment
-}
-
-func getIdentityFromComposerUserWorkloadsSecretSpec(ctx context.Context, reader client.Reader, obj *ComposerUserWorkloadsSecret) (*ComposerUserWorkloadsSecretIdentity, error) {
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-
-	if obj.Spec.ParentRef == nil {
-		return nil, fmt.Errorf("spec.parentRef is required")
-	}
-	parentRef := *obj.Spec.ParentRef
-	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
-	}
-	parsed := &ComposerUserWorkloadsSecretIdentity{}
-	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/userWorkloadsSecrets" + "/_"); err != nil {
-		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
-	}
-	parsed.UserWorkloadsSecret = resourceID
-	return parsed, nil
 }
 
 func (obj *ComposerUserWorkloadsSecret) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

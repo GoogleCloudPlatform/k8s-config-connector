@@ -480,8 +480,12 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	s := strings.ReplaceAll(string(rawBytes), `"000000000000000000000"`, `"0"`)
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
+	discardUnknown := false
+	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" {
+		discardUnknown = true
+	}
 	opts := protojson.UnmarshalOptions{
-		DiscardUnknown: false,
+		DiscardUnknown: discardUnknown,
 		Resolver:       reg.types,
 	}
 	return opts.Unmarshal([]byte(s), dynMsg)
