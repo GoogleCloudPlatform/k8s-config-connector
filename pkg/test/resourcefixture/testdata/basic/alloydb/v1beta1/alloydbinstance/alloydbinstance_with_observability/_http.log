@@ -886,11 +886,21 @@ X-Xss-Protection: 0
       "trackWaitEventTypes": true,
       "trackWaitEvents": false
     },
+    "observabilityInstanceInfo": {
+      "maxQueryStringLength": 1024,
+      "queryPlansPerMinute": 10,
+      "trackWaitEventTypes": true
+    },
     "queryInsightsConfig": {
       "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": false,
       "recordClientAddress": false
+    },
+    "queryInsightsInfo": {
+      "enabled": true,
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
     },
     "reconciling": false,
     "state": "READY",
@@ -955,11 +965,21 @@ X-Xss-Protection: 0
     "trackWaitEventTypes": true,
     "trackWaitEvents": false
   },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 1024,
+    "queryPlansPerMinute": 10,
+    "trackWaitEventTypes": true
+  },
   "queryInsightsConfig": {
     "queryPlansPerMinute": 5,
     "queryStringLength": 1024,
     "recordApplicationTags": false,
     "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
   },
   "reconciling": false,
   "state": 1,
@@ -1091,7 +1111,23 @@ X-Xss-Protection: 0
       "trackWaitEventTypes": true,
       "trackWaitEvents": true
     },
+    "observabilityInstanceInfo": {
+      "assistiveExperiencesEnabled": true,
+      "enabled": true,
+      "maxQueryStringLength": 1025,
+      "preserveComments": true,
+      "queryPlansPerMinute": 11,
+      "recordApplicationTags": true,
+      "trackActiveQueries": true,
+      "trackClientAddress": true,
+      "trackWaitEventTypes": true,
+      "trackWaitEvents": true
+    },
     "queryInsightsConfig": {},
+    "queryInsightsInfo": {
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 1024
+    },
     "reconciling": false,
     "state": "READY",
     "uid": "111111111111111111111",
@@ -1155,7 +1191,23 @@ X-Xss-Protection: 0
     "trackWaitEventTypes": true,
     "trackWaitEvents": true
   },
+  "observabilityInstanceInfo": {
+    "assistiveExperiencesEnabled": true,
+    "enabled": true,
+    "maxQueryStringLength": 1025,
+    "preserveComments": true,
+    "queryPlansPerMinute": 11,
+    "recordApplicationTags": true,
+    "trackActiveQueries": true,
+    "trackClientAddress": true,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
   "queryInsightsConfig": {},
+  "queryInsightsInfo": {
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
+  },
   "reconciling": false,
   "state": 1,
   "uid": "111111111111111111111",

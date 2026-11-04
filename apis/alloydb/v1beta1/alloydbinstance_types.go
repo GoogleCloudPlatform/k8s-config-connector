@@ -196,6 +196,14 @@ type AlloyDBInstanceObservedState struct {
 
 	// Output for Managed Connection Pool (MCP).
 	ConnectionPoolConfig *Instance_ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
+
+	// Output only. Observability feature status for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.observability_instance_info
+	ObservabilityInstanceInfo *Instance_ObservabilityInstanceInfoObservedState `json:"observabilityInstanceInfo,omitempty"`
+
+	// Output only. Query Insights feature status for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.query_insights_info
+	QueryInsightsInfo *Instance_QueryInsightsInstanceInfoObservedState `json:"queryInsightsInfo,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
@@ -204,6 +212,80 @@ type Instance_ConnectionPoolConfigObservedState struct {
 	// Output only. The number of running poolers per instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
 	PoolerCount *int32 `json:"poolerCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo
+type Instance_ObservabilityInstanceInfoObservedState struct {
+	// Output only. Observability feature status for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. Preserve comments in query string for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.preserve_comments
+	PreserveComments *bool `json:"preserveComments,omitempty"`
+
+	// Output only. Track wait events during query execution for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.track_wait_events
+	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
+
+	// Output only. Track wait event types during query execution for an
+	//  instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.track_wait_event_types
+	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
+
+	// Output only. Query string length. The default value is 10k.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.max_query_string_length
+	MaxQueryStringLength *int32 `json:"maxQueryStringLength,omitempty"`
+
+	// Output only. Record application tags for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.record_application_tags
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	// Output only. Number of query execution plans captured by Insights per
+	//  minute for all queries combined.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.query_plans_per_minute
+	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
+
+	// Output only. Track actively running queries on the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.track_active_queries
+	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
+
+	// Output only. Track client address for an instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.track_client_address
+	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+
+	// Output only. Whether assistive experiences are enabled for this AlloyDB
+	//  instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.assistive_experiences_enabled
+	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
+
+	// Output only. Indicates whether to track active query plans for an
+	//  instance. Deprecated: Use track_active_queries instead.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceInfo.track_active_query_plan
+	TrackActiveQueryPlan *bool `json:"trackActiveQueryPlan,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo
+type Instance_QueryInsightsInstanceInfoObservedState struct {
+	// Output only. Whether Query Insights is enabled.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Output only. Whether to record application tags.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo.record_application_tags
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	// Output only. Whether to record client address.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo.record_client_address
+	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
+
+	// Output only. Maximum query string length.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo.query_string_length
+	QueryStringLength *uint32 `json:"queryStringLength,omitempty"`
+
+	// Output only. Number of query execution plans captured per minute.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceInfo.query_plans_per_minute
+	QueryPlansPerMinute *uint32 `json:"queryPlansPerMinute,omitempty"`
 }
 
 // +genclient

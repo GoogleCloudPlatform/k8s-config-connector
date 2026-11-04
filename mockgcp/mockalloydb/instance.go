@@ -17,7 +17,6 @@ package mockalloydb
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -103,6 +102,10 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
 		obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
 	}
+
+	setObservabilityInstanceInfo(obj)
+	setQueryInsightsInstanceInfo(obj, obsEnabled)
+
 	if obj.InstanceType != pb.Instance_READ_POOL &&
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
 		obj.AvailabilityType = pb.Instance_REGIONAL
@@ -141,6 +144,39 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	}
 }
 
+func setObservabilityInstanceInfo(obj *pb.Instance) {
+	obj.ObservabilityInstanceInfo = &pb.Instance_ObservabilityInstanceInfo{
+		Enabled:                     obj.ObservabilityConfig.GetEnabled(),
+		PreserveComments:            obj.ObservabilityConfig.GetPreserveComments(),
+		TrackWaitEvents:             obj.ObservabilityConfig.GetTrackWaitEvents(),
+		TrackWaitEventTypes:         obj.ObservabilityConfig.GetTrackWaitEventTypes(),
+		MaxQueryStringLength:        obj.ObservabilityConfig.GetMaxQueryStringLength(),
+		RecordApplicationTags:       obj.ObservabilityConfig.GetRecordApplicationTags(),
+		QueryPlansPerMinute:         obj.ObservabilityConfig.GetQueryPlansPerMinute(),
+		TrackActiveQueries:          obj.ObservabilityConfig.GetTrackActiveQueries(),
+		TrackClientAddress:          obj.ObservabilityConfig.GetTrackClientAddress(),
+		AssistiveExperiencesEnabled: obj.ObservabilityConfig.GetAssistiveExperiencesEnabled(),
+	}
+}
+
+func setQueryInsightsInstanceInfo(obj *pb.Instance, obsEnabled bool) {
+	if !obsEnabled {
+		obj.QueryInsightsInfo = &pb.Instance_QueryInsightsInstanceInfo{
+			Enabled:               true,
+			RecordApplicationTags: obj.QueryInsightsConfig.GetRecordApplicationTags(),
+			RecordClientAddress:   obj.QueryInsightsConfig.GetRecordClientAddress(),
+			QueryStringLength:     obj.QueryInsightsConfig.GetQueryStringLength(),
+			QueryPlansPerMinute:   obj.QueryInsightsConfig.GetQueryPlansPerMinute(),
+		}
+	} else {
+		obj.QueryInsightsInfo = &pb.Instance_QueryInsightsInstanceInfo{
+			Enabled:             false,
+			QueryPlansPerMinute: 5,
+			QueryStringLength:   1024,
+		}
+	}
+}
+
 func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/instances/" + req.GetInstanceId()
 	name, err := s.parseInstanceName(reqName)
@@ -152,7 +188,6 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
-	log.Printf("vkanishk: Creating instance with name: %s", fqn)
 	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

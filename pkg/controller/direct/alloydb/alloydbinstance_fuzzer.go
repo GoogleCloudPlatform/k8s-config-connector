@@ -55,6 +55,8 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".outbound_public_ip_addresses")
 	f.StatusField(".observability_config.track_wait_event_types")
 	f.StatusField(".connection_pool_config.pooler_count")
+	f.StatusField(".observability_instance_info")
+	f.StatusField(".query_insights_info")
 
 	f.Unimplemented_Internal(".satisfies_pzs")
 
@@ -65,6 +67,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".update_policy")
 	f.Unimplemented_NotYetTriaged(".client_connection_config")
 	f.Unimplemented_NotYetTriaged(".psc_instance_config")
+	f.Unimplemented_NotYetTriaged(".psc_instance_info")
 	f.Unimplemented_NotYetTriaged(".gca_config")
 	f.Unimplemented_NotYetTriaged(".delete_time")
 	f.Unimplemented_NotYetTriaged(".etag")

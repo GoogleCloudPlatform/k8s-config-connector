@@ -45,11 +45,22 @@ X-Xss-Protection: 0
     "trackWaitEventTypes": true,
     "trackWaitEvents": true
   },
+  "observabilityInstanceInfo": {
+    "maxQueryStringLength": 10240,
+    "queryPlansPerMinute": 20,
+    "trackWaitEventTypes": true,
+    "trackWaitEvents": true
+  },
   "queryInsightsConfig": {
     "queryPlansPerMinute": 5,
     "queryStringLength": 1024,
     "recordApplicationTags": false,
     "recordClientAddress": false
+  },
+  "queryInsightsInfo": {
+    "enabled": true,
+    "queryPlansPerMinute": 5,
+    "queryStringLength": 1024
   },
   "state": 1,
   "uid": "111111111111111111111",
