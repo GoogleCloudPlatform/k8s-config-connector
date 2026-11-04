@@ -11,3 +11,14 @@
 - **Problem**: `ManagedKafkaACL` is a child resource of `ManagedKafkaCluster` (`.../clusters/{cluster}/acls/{acl}`). The generator guessed `.spec.clusterRef`, and placed `etag` in Spec because the proto lacked `OUTPUT_ONLY`.
 - **Solution**: Replaced `projectRef`, `location`, and guessed `clusterRef` with `ParentRef *ClusterRef` per the single-parent rule (using the existing `ClusterRef` type from `v1alpha1`). Moved `etag` from `Spec` to `ObservedState`, regenerated types, identity, mapper, controller, and fuzzer.
 - **Impact**: Child resources under `ManagedKafkaCluster` must use `spec.parentRef *ClusterRef`. All ancestor segments are resolved from `parentRef`.
+
+### [2026-11-02] ManagedKafkaACL Direct Controller, Concurrency Control, and E2E Testing
+- **Context**: Implementing Greenfield direct controller, fuzzer, and recording E2E fixtures for `ManagedKafkaACL`.
+- **Problem**:
+  1. `UpdateAcl` requires `etag` for concurrency control. Because `etag` is modelled in `ObservedState`, `CompareGreenfieldSpec` constructs `resource` from desired spec without `etag`.
+  2. GCP Managed Kafka enforces specific ACL resource pattern IDs: `cluster`, `allTopics`, `allConsumerGroups`, `allTransactionalIds`, or path patterns (`topic/{name}`). Arbitrary resource IDs are rejected by GCP.
+  3. E2E tests for `ManagedKafkaACL` require a `ManagedKafkaCluster` dependency. Cluster provisioning and deletion take ~5-10 minutes each.
+- **Solution**:
+  1. In `Update`, explicitly set `resource.Etag = a.actual.Etag` before calling `UpdateAcl`.
+  2. Configured test fixtures using canonical valid ACL IDs: `resourceID: cluster` for minimal fixture and `resourceID: allTopics` for maximal fixture.
+- **Impact**: Greenfield direct controller reconciliation, roundtrip fuzzer, and real-GCP recorded fixtures verified for `ManagedKafkaACL`.

@@ -201,6 +201,7 @@ func (a *AclAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String()
+		resource.Etag = a.actual.Etag
 		req := &managedkafkapb.UpdateAclRequest{
 			UpdateMask: updateMask,
 			Acl:        resource,
