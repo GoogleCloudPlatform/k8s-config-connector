@@ -888,6 +888,7 @@ type TypeSchema_SchemaReference struct {
 	// The tool that contains this schema definition.
 	//  Format:
 	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:guess=possible-reference target=DialogflowTool
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TypeSchema.SchemaReference.tool
 	Tool *string `json:"tool,omitempty"`
 

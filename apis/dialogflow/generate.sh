@@ -52,6 +52,20 @@ ${CONTROLLERBUILDER} generate-types \
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/siptrunk_types.generated.go
 
 ${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.dialogflow.cx.v3beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-ga-proto \
+  --prepopulate-resource \
+  --resource DialogflowTool:Tool
+mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/tool_types.generated.go
+sed -i '/\/\/ +kcc:proto=.*DataStoreConnection/,/^}/d' "${REPO_ROOT}/apis/dialogflow/v1alpha1/tool_types.generated.go"
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.cx.v3beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowTool:Tool
+
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
@@ -91,7 +105,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DialogflowPage:Page
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.dialogflow.cx.v3 \
+  --service google.cloud.dialogflow.cx.v3,google.cloud.dialogflow.cx.v3beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource
