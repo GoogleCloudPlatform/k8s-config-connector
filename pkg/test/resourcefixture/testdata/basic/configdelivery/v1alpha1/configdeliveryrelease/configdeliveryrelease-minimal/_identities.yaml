@@ -1,0 +1,12 @@
+- caisURL: //configdelivery.googleapis.com/projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}
+  group: configdelivery.cnrm.cloud.google.com
+  kind: ConfigDeliveryResourceBundle
+  name: cdrbundle-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //configdelivery.googleapis.com/projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}/releases/v1-0-0
+  group: configdelivery.cnrm.cloud.google.com
+  kind: ConfigDeliveryRelease
+  name: v1-0-0
+  namespace: ${uniqueId}
+  version: v1alpha1

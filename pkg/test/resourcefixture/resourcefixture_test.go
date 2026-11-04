@@ -83,6 +83,8 @@ func testCreateAndUpdateUnstructShouldDiffer(t *testing.T, fixture resourcefixtu
 		"bigquerydatasetnochangeupdate-direct":          true,
 		"bigquerytable-view":                            true,
 		"certificatemanagercertificateissuanceconfig":   true,
+		"configdeliveryrelease-maximal":                 true,
+		"configdeliveryrelease-minimal":                 true,
 		"containercluster-resourcemanagertags-standard": true,
 		"dataformrepository-basic":                      true,
 		"datalabelinginstruction-maximal":               true,
