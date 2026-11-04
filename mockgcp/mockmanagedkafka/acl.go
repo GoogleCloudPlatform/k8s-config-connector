@@ -102,13 +102,13 @@ func computeEtag(obj proto.Message) string {
 }
 
 func (s *managedKafka) ListAcls(ctx context.Context, req *pb.ListAclsRequest) (*pb.ListAclsResponse, error) {
-	name, err := s.parseClusterName(req.GetParent() + "/clusters/dummy")
+	name, err := s.parseClusterName(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
 
 	response := &pb.ListAclsResponse{}
-	findPrefix := strings.TrimSuffix(name.String(), "dummy") + "acls/"
+	findPrefix := name.String() + "/acls/"
 
 	listKind := (&pb.Acl{}).ProtoReflect().Descriptor()
 
