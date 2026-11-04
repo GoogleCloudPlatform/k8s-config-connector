@@ -733,6 +733,88 @@ func AIPlatformPersistentResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	return out
 }
 
+func AIPlatformPipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.AIPlatformPipelineJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformPipelineJobObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.JobDetail = PipelineJobDetailObservedState_FromProto(mapCtx, in.GetJobDetail())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.TemplateMetadata = PipelineTemplateMetadata_FromProto(mapCtx, in.GetTemplateMetadata())
+	out.ScheduleName = direct.LazyPtr(in.GetScheduleName())
+	return out
+}
+
+func AIPlatformPipelineJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformPipelineJobObservedState) *pb.PipelineJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
+	out.JobDetail = PipelineJobDetailObservedState_ToProto(mapCtx, in.JobDetail)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.TemplateMetadata = PipelineTemplateMetadata_ToProto(mapCtx, in.TemplateMetadata)
+	out.ScheduleName = direct.ValueOf(in.ScheduleName)
+	return out
+}
+
+func AIPlatformPipelineJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.AIPlatformPipelineJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformPipelineJobSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PipelineSpec = direct.Struct_FromProto(mapCtx, in.GetPipelineSpec())
+	out.Labels = in.Labels
+	out.RuntimeConfig = PipelineJobRuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.TemplateURI = direct.LazyPtr(in.GetTemplateUri())
+	out.PreflightValidations = direct.LazyPtr(in.GetPreflightValidations())
+	return out
+}
+
+func AIPlatformPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformPipelineJobSpec) *pb.PipelineJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PipelineSpec = direct.Struct_ToProto(mapCtx, in.PipelineSpec)
+	out.Labels = in.Labels
+	out.RuntimeConfig = PipelineJobRuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.TemplateUri = direct.ValueOf(in.TemplateURI)
+	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
+	return out
+}
+
 func AIPlatformRAGCorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RagCorpus) *krm.AIPlatformRAGCorpusObservedState {
 	if in == nil {
 		return nil
@@ -4544,6 +4626,7 @@ func PipelineJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	return out
 }
 
+/* found existing non-generated mapping function "PipelineJobRuntimeConfig_FromProto", skipping
 func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJobRuntimeConfig {
 	if in == nil {
 		return nil
@@ -4556,7 +4639,9 @@ func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.Pipeli
 	// MISSING: InputArtifacts
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "PipelineJobRuntimeConfig_ToProto", skipping
 func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
 	if in == nil {
 		return nil
@@ -4569,6 +4654,7 @@ func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.Pipelin
 	// MISSING: InputArtifacts
 	return out
 }
+*/
 
 func PipelineTaskDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetailObservedState {
 	if in == nil {
@@ -7271,88 +7357,6 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Labels = in.Labels
 	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	return out
-}
-
-func VertexAIPipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIPipelineJobObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.JobDetail = PipelineJobDetailObservedState_FromProto(mapCtx, in.GetJobDetail())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	out.TemplateMetadata = PipelineTemplateMetadata_FromProto(mapCtx, in.GetTemplateMetadata())
-	out.ScheduleName = direct.LazyPtr(in.GetScheduleName())
-	return out
-}
-
-func VertexAIPipelineJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPipelineJobObservedState) *pb.PipelineJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PipelineJob{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
-	out.JobDetail = PipelineJobDetailObservedState_ToProto(mapCtx, in.JobDetail)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	out.TemplateMetadata = PipelineTemplateMetadata_ToProto(mapCtx, in.TemplateMetadata)
-	out.ScheduleName = direct.ValueOf(in.ScheduleName)
-	return out
-}
-
-func VertexAIPipelineJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIPipelineJobSpec{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.PipelineSpec = direct.Struct_FromProto(mapCtx, in.GetPipelineSpec())
-	out.Labels = in.Labels
-	out.RuntimeConfig = PipelineJobRuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.ReservedIPRanges = in.ReservedIpRanges
-	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
-	out.TemplateURI = direct.LazyPtr(in.GetTemplateUri())
-	out.PreflightValidations = direct.LazyPtr(in.GetPreflightValidations())
-	return out
-}
-
-func VertexAIPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPipelineJobSpec) *pb.PipelineJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PipelineJob{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.PipelineSpec = direct.Struct_ToProto(mapCtx, in.PipelineSpec)
-	out.Labels = in.Labels
-	out.RuntimeConfig = PipelineJobRuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.ReservedIpRanges = in.ReservedIPRanges
-	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
-	out.TemplateUri = direct.ValueOf(in.TemplateURI)
-	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
 	return out
 }
 

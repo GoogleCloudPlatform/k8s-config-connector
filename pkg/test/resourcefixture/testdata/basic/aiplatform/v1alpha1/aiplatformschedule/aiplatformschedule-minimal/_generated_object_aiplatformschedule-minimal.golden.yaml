@@ -45,7 +45,8 @@ spec:
       projectRef:
         external: ${projectId}
       runtimeConfig:
-        gcsOutputDirectory: gs://vertexai-schedule-bucket-${uniqueId}
+        gcsOutputDirectoryRef:
+          name: vertexai-schedule-bucket-${uniqueId}
   cron: 0 2 * * *
   displayName: Minimal Schedule Updated
   location: us-central1
