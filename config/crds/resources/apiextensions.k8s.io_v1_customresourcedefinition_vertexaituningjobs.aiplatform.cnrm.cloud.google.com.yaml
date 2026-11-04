@@ -469,15 +469,62 @@ spec:
                                           with the parameters and their values.
                                         properties:
                                           args:
-                                            description: Optional. Required. The function
-                                              parameters and values in JSON object
-                                              format. See [FunctionDeclaration.parameters]
-                                              for parameter details.
+                                            description: Optional. The function parameters
+                                              and values in JSON object format. See
+                                              [FunctionDeclaration.parameters] for
+                                              parameter details.
                                             x-kubernetes-preserve-unknown-fields: true
                                           name:
-                                            description: Required. The name of the
+                                            description: Optional. The name of the
                                               function to call. Matches [FunctionDeclaration.name].
                                             type: string
+                                          partialArgs:
+                                            description: Optional. The partial argument
+                                              value of the function call. If provided,
+                                              represents the arguments/fields that
+                                              are streamed incrementally.
+                                            items:
+                                              properties:
+                                                boolValue:
+                                                  description: Optional. Represents
+                                                    a boolean value.
+                                                  type: boolean
+                                                jsonPath:
+                                                  description: Required. A JSON Path
+                                                    (RFC 9535) to the argument being
+                                                    streamed. https://datatracker.ietf.org/doc/html/rfc9535.
+                                                    e.g. "$.foo.bar[0].data".
+                                                  type: string
+                                                nullValue:
+                                                  description: Optional. Represents
+                                                    a null value.
+                                                  type: string
+                                                numberValue:
+                                                  description: Optional. Represents
+                                                    a double value.
+                                                  type: number
+                                                stringValue:
+                                                  description: Optional. Represents
+                                                    a string value.
+                                                  type: string
+                                                willContinue:
+                                                  description: Optional. Whether this
+                                                    is not the last part of the same
+                                                    json_path. If true, another PartialArg
+                                                    message for the current json_path
+                                                    is expected to follow.
+                                                  type: boolean
+                                              required:
+                                              - jsonPath
+                                              type: object
+                                            type: array
+                                          willContinue:
+                                            description: Optional. Whether this is
+                                              the last part of the FunctionCall. If
+                                              true, another partial message for the
+                                              current FunctionCall is expected to
+                                              follow.
+                                            type: boolean
                                         type: object
                                       functionResponse:
                                         description: Optional. The result output of
@@ -514,6 +561,15 @@ spec:
                                               MIME type of the source data.
                                             type: string
                                         type: object
+                                      mediaResolution:
+                                        description: per part media resolution. Media
+                                          resolution for the input media.
+                                        properties:
+                                          level:
+                                            description: The tokenization quality
+                                              used for given media.
+                                            type: string
+                                        type: object
                                       text:
                                         description: Optional. Text part (can be code).
                                         type: string
@@ -536,6 +592,12 @@ spec:
                                             description: Optional. The end offset
                                               of the video.
                                             type: string
+                                          fps:
+                                            description: Optional. The frame rate
+                                              of the video sent to the model. If not
+                                              specified, the default value is 1.0.
+                                              The valid range is (0.0, 24.0].
+                                            type: number
                                           startOffset:
                                             description: Optional. The start offset
                                               of the video.
