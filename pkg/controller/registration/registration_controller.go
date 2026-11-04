@@ -415,11 +415,13 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 					if err != nil {
 						return nil, fmt.Errorf("error creating new terraform reconciler: %w", err)
 					}
+					schemaUpdater = reconcilers.TF
 				case k8s.ReconcilerTypeDCL:
 					reconcilers.DCL, err = dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
 					if err != nil {
 						return nil, fmt.Errorf("error creating new dcl reconciler: %w", err)
 					}
+					schemaUpdater = reconcilers.DCL
 				case k8s.ReconcilerTypeDirect:
 					model, err := registry.GetModel(gvk.GroupKind())
 					if err != nil {
