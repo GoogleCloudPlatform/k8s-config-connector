@@ -406,10 +406,10 @@ type NotebookExecutionJobObservedState struct {
 }
 
 // +k8s:deepcopy-gen=false
-type PipelineJob = VertexAIPipelineJobSpec
+type PipelineJob = AIPlatformPipelineJobSpec
 
 // +k8s:deepcopy-gen=false
-type PipelineJobObservedState = VertexAIPipelineJobObservedState
+type PipelineJobObservedState = AIPlatformPipelineJobObservedState
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
 type NotebookExecutionJob_GCSNotebookSource struct {

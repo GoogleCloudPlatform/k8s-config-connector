@@ -1,5 +1,5 @@
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
-kind: VertexAIPipelineJob
+kind: AIPlatformPipelineJob
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -7,10 +7,13 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: vertexaipipelinejob-minimal-${uniqueId}
+  name: aiplatformpipelinejob-maximal-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: Minimal Pipeline Job
+  displayName: Maximal Pipeline Job
+  labels:
+    baz: qux
+    foo: bar
   location: us-central1
   pipelineSpec:
     components:
@@ -38,10 +41,13 @@ spec:
             taskInfo:
               name: hello-world-task
     schemaVersion: 2.1.0
+  preflightValidations: false
   projectRef:
     external: ${projectId}
   runtimeConfig:
-    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+    failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
+    gcsOutputDirectoryRef:
+      name: bucket-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -49,10 +55,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-maximal-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    name: projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}
+    name: projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-maximal-${uniqueId}
     state: PIPELINE_STATE_PENDING
     updateTime: "1970-01-01T00:00:00Z"

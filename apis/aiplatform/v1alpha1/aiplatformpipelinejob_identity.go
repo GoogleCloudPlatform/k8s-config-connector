@@ -26,46 +26,46 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &VertexAIPipelineJobIdentity{}
-	_ identity.Resource   = &VertexAIPipelineJob{}
+	_ identity.IdentityV2 = &AIPlatformPipelineJobIdentity{}
+	_ identity.Resource   = &AIPlatformPipelineJob{}
 )
 
-var VertexAIPipelineJobIdentityFormat = gcpurls.Template[VertexAIPipelineJobIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/pipelineJobs/{pipelineJob}")
+var AIPlatformPipelineJobIdentityFormat = gcpurls.Template[AIPlatformPipelineJobIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/pipelineJobs/{pipelineJob}")
 
-// VertexAIPipelineJobIdentity is the identity of a GCP VertexAIPipelineJob resource.
+// AIPlatformPipelineJobIdentity is the identity of a GCP AIPlatformPipelineJob resource.
 // +k8s:deepcopy-gen=false
-type VertexAIPipelineJobIdentity struct {
+type AIPlatformPipelineJobIdentity struct {
 	Project     string
 	Location    string
 	PipelineJob string
 }
 
-func (i *VertexAIPipelineJobIdentity) String() string {
-	return VertexAIPipelineJobIdentityFormat.ToString(*i)
+func (i *AIPlatformPipelineJobIdentity) String() string {
+	return AIPlatformPipelineJobIdentityFormat.ToString(*i)
 }
 
-func (i *VertexAIPipelineJobIdentity) FromExternal(ref string) error {
-	parsed, match, err := VertexAIPipelineJobIdentityFormat.Parse(ref)
+func (i *AIPlatformPipelineJobIdentity) FromExternal(ref string) error {
+	parsed, match, err := AIPlatformPipelineJobIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of VertexAIPipelineJob external=%q was not known (use %s): %w", ref, VertexAIPipelineJobIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of AIPlatformPipelineJob external=%q was not known (use %s): %w", ref, AIPlatformPipelineJobIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of VertexAIPipelineJob external=%q was not known (use %s)", ref, VertexAIPipelineJobIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of AIPlatformPipelineJob external=%q was not known (use %s)", ref, AIPlatformPipelineJobIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *VertexAIPipelineJobIdentity) Host() string {
-	return VertexAIPipelineJobIdentityFormat.Host()
+func (i *AIPlatformPipelineJobIdentity) Host() string {
+	return AIPlatformPipelineJobIdentityFormat.Host()
 }
 
-func (i *VertexAIPipelineJobIdentity) ParentString() string {
+func (i *AIPlatformPipelineJobIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromVertexAIPipelineJobSpec(ctx context.Context, reader client.Reader, obj *VertexAIPipelineJob) (*VertexAIPipelineJobIdentity, error) {
+func getIdentityFromAIPlatformPipelineJobSpec(ctx context.Context, reader client.Reader, obj *AIPlatformPipelineJob) (*AIPlatformPipelineJobIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -81,7 +81,7 @@ func getIdentityFromVertexAIPipelineJobSpec(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &VertexAIPipelineJobIdentity{
+	identity := &AIPlatformPipelineJobIdentity{
 		Project:     projectID,
 		Location:    location,
 		PipelineJob: resourceID,
@@ -89,8 +89,8 @@ func getIdentityFromVertexAIPipelineJobSpec(ctx context.Context, reader client.R
 	return identity, nil
 }
 
-func (obj *VertexAIPipelineJob) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromVertexAIPipelineJobSpec(ctx, reader, obj)
+func (obj *AIPlatformPipelineJob) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAIPlatformPipelineJobSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -98,13 +98,13 @@ func (obj *VertexAIPipelineJob) GetIdentity(ctx context.Context, reader client.R
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &VertexAIPipelineJobIdentity{}
+		statusIdentity := &AIPlatformPipelineJobIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIPipelineJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change AIPlatformPipelineJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

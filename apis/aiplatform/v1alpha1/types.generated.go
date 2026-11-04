@@ -23,7 +23,6 @@
 // resource: AIPlatformSpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
-// resource: VertexAIPipelineJob:PipelineJob
 // resource: VertexAITuningJob:TuningJob
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
@@ -38,6 +37,7 @@
 // resource: AIPlatformOnlineEvaluator:OnlineEvaluator
 // resource: AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob
 // resource: AIPlatformCachedContent:CachedContent
+// resource: AIPlatformPipelineJob:PipelineJob
 // resource: AIPlatformRAGCorpus:RagCorpus
 
 package v1alpha1

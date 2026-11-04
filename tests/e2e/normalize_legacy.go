@@ -360,7 +360,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			}
 		}
 
-		if !strings.Contains(strings.ToLower(t.Name()), "vertexaipipelinejob") {
+		if !strings.Contains(strings.ToLower(t.Name()), "aiplatformpipelinejob") {
 			return
 		}
 		if !strings.Contains(requestURL, "PipelineService") && !strings.Contains(requestURL, "Operations") {

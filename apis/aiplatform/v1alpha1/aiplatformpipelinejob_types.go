@@ -19,16 +19,17 @@ import (
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var VertexAIPipelineJobGVK = GroupVersion.WithKind("VertexAIPipelineJob")
+var AIPlatformPipelineJobGVK = GroupVersion.WithKind("AIPlatformPipelineJob")
 
-// VertexAIPipelineJobSpec defines the desired state of VertexAIPipelineJob
+// AIPlatformPipelineJobSpec defines the desired state of AIPlatformPipelineJob
 // +kcc:spec:proto=google.cloud.aiplatform.v1.PipelineJob
-type VertexAIPipelineJobSpec struct {
+type AIPlatformPipelineJobSpec struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -37,7 +38,7 @@ type VertexAIPipelineJobSpec struct {
 	// +required
 	Location string `json:"location"`
 
-	// The VertexAIPipelineJob name. If not given, the metadata.name will be used.
+	// The AIPlatformPipelineJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The display name of the Pipeline.
@@ -91,10 +92,13 @@ type VertexAIPipelineJobSpec struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig
 type PipelineJobRuntimeConfig struct {
-	// Required. A path in a Cloud Storage bucket, which will be treated as the
-	//  root output directory of the pipeline.
+	// Deprecated: Use gcsOutputDirectoryRef instead.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.gcs_output_directory
 	GCSOutputDirectory *string `json:"gcsOutputDirectory,omitempty"`
+
+	// A path in a Cloud Storage bucket, which will be treated as the root output directory of the pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.gcs_output_directory
+	GCSOutputDirectoryRef *storagev1beta1.StorageBucketRef `json:"gcsOutputDirectoryRef,omitempty"`
 
 	// Represents the failure policy of a pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.failure_policy
@@ -127,8 +131,8 @@ type DNSPeeringConfig struct {
 	TargetNetworkRef *computev1beta1.ComputeNetworkRef `json:"targetNetworkRef,omitempty"`
 }
 
-// VertexAIPipelineJobStatus defines the config connector machine state of VertexAIPipelineJob
-type VertexAIPipelineJobStatus struct {
+// AIPlatformPipelineJobStatus defines the config connector machine state of AIPlatformPipelineJob
+type AIPlatformPipelineJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -136,16 +140,16 @@ type VertexAIPipelineJobStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VertexAIPipelineJob resource in GCP.
+	// A unique specifier for the AIPlatformPipelineJob resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VertexAIPipelineJobObservedState `json:"observedState,omitempty"`
+	ObservedState *AIPlatformPipelineJobObservedState `json:"observedState,omitempty"`
 }
 
-// VertexAIPipelineJobObservedState is the state of the VertexAIPipelineJob resource as most recently observed in GCP.
+// AIPlatformPipelineJobObservedState is the state of the AIPlatformPipelineJob resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.PipelineJob
-type VertexAIPipelineJobObservedState struct {
+type AIPlatformPipelineJobObservedState struct {
 	// Output only. The resource name of the PipelineJob.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.name
 	Name *string `json:"name,omitempty"`
@@ -418,7 +422,7 @@ type PipelineTemplateMetadata struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaipipelinejob;gcpvertexaipipelinejobs
+// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformpipelinejob;gcpaiplatformpipelinejobs
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -428,25 +432,25 @@ type PipelineTemplateMetadata struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAIPipelineJob is the Schema for the VertexAIPipelineJob API
+// AIPlatformPipelineJob is the Schema for the AIPlatformPipelineJob API
 // +k8s:openapi-gen=true
-type VertexAIPipelineJob struct {
+type AIPlatformPipelineJob struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   VertexAIPipelineJobSpec   `json:"spec,omitempty"`
-	Status VertexAIPipelineJobStatus `json:"status,omitempty"`
+	Spec   AIPlatformPipelineJobSpec   `json:"spec,omitempty"`
+	Status AIPlatformPipelineJobStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// VertexAIPipelineJobList contains a list of VertexAIPipelineJob
-type VertexAIPipelineJobList struct {
+// AIPlatformPipelineJobList contains a list of AIPlatformPipelineJob
+type AIPlatformPipelineJobList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAIPipelineJob `json:"items"`
+	Items           []AIPlatformPipelineJob `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAIPipelineJob{}, &VertexAIPipelineJobList{})
+	SchemeBuilder.Register(&AIPlatformPipelineJob{}, &AIPlatformPipelineJobList{})
 }
