@@ -34,6 +34,7 @@ import (
 
 	pb_v2 "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
+	cxpb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 )
 
 func init() {
@@ -58,7 +59,10 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"dialogflow.googleapis.com"}
+	return []string{
+		"dialogflow.googleapis.com",
+		"{location}-dialogflow.googleapis.com",
+	}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -66,6 +70,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
 	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
 	pb_v2.RegisterConversationDatasetsServer(grpcServer, &conversationDatasetsServer{MockService: s})
+	cxpb.RegisterWebhooksServer(grpcServer, &webhooksServer{MockService: s})
+	cxpb.RegisterAgentsServer(grpcServer, &cxAgentsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -74,6 +80,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		grpcpb.RegisterGeneratorsHandler,
 		grpcpb.RegisterKnowledgeBasesHandler,
 		RegisterConversationDatasetsHandler,
+		RegisterWebhooksHandler,
+		RegisterCXAgentsHandler,
 		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2beta1/{prefix=**}/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v2/operations/{name}"),

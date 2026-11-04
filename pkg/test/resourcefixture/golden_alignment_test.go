@@ -515,6 +515,7 @@ func cleanURL(u string) string {
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
 	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
+	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
 	return u
 }
 
@@ -1298,6 +1299,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${dnsAuthorizationID}"}
 	case "HealthcareDataset":
 		return []string{"${datasetID}"}
+	case "DialogflowCXAgent":
+		return []string{"${agentID}"}
 	}
 	return nil
 }
