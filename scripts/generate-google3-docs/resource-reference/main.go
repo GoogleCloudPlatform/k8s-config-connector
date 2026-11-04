@@ -822,10 +822,14 @@ func (d *DocGenerator) referencesSupportedByIAMPolicyMember() ([]iamPolicyMember
 	}
 	for gvk := range registry.AllDirectGVKs() {
 		if registry.IsIAMDirect(gvk.GroupKind()) {
+			formats, err := iamExternalReferenceFormatsForDirect(gvk)
+			if err != nil {
+				return nil, err
+			}
 			refs = append(refs, iamPolicyMemberReference{
 				Kind:                     gvk.Kind,
 				SupportsConditions:       true,
-				ExternalReferenceFormats: iamExternalReferenceFormatsForDirect(gvk),
+				ExternalReferenceFormats: formats,
 			})
 		}
 	}
@@ -837,33 +841,25 @@ func (d *DocGenerator) referencesSupportedByIAMPolicyMember() ([]iamPolicyMember
 
 func (d *DocGenerator) handleAnnotationsAndIAMSettingsForDirectResource(r *resource, gvk schema.GroupVersionKind) error {
 	if registry.IsIAMDirect(gvk.GroupKind()) {
+		formats, err := iamExternalReferenceFormatsForDirect(gvk)
+		if err != nil {
+			return err
+		}
 		r.IAM = &IAM{
 			SupportsConditions:       true,
 			SupportsAuditConfigs:     false,
-			ExternalReferenceFormats: iamExternalReferenceFormatsForDirect(gvk),
+			ExternalReferenceFormats: formats,
 		}
 	}
 	return nil
 }
 
-func iamExternalReferenceFormatsForDirect(gvk schema.GroupVersionKind) []string {
-	switch gvk.GroupKind() {
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
-		return []string{
-			"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
-			"folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}",
-			"organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}",
-		}
-	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
-		return []string{
-			"projects/{project}/locations/{location}/caPools/{caPool}",
-		}
-	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:
-		return []string{
-			"projects/{project}/locations/global/scopes/{scope}",
-		}
+func iamExternalReferenceFormatsForDirect(gvk schema.GroupVersionKind) ([]string, error) {
+	formats, ok := registry.IAMExternalReferenceFormats(gvk.GroupKind())
+	if !ok || len(formats) == 0 {
+		return nil, fmt.Errorf("no IAM external reference formats registered for direct resource %v", gvk)
 	}
-	return nil
+	return formats, nil
 }
 
 func (d *DocGenerator) referencesSupportedByIAMAuditConfig() ([]iamAuditConfigReference, error) {

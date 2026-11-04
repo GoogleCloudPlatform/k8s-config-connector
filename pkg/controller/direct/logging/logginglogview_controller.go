@@ -40,7 +40,13 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.LoggingLogViewGVK, NewLoggingLogViewModel)
+	registry.RegisterModel(krm.LoggingLogViewGVK, NewLoggingLogViewModel,
+		registry.WithIAM(
+			"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
+			"folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}",
+			"organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}",
+		),
+	)
 }
 
 func NewLoggingLogViewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {

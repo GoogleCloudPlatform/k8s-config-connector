@@ -36,6 +36,9 @@ type registration struct {
 	gvk     schema.GroupVersionKind
 	factory ModelFactoryFunc
 	model   directbase.Model
+
+	supportsIAM              bool
+	externalReferenceFormats []string
 }
 
 type ModelFactoryFunc func(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error)
@@ -108,6 +111,15 @@ func CannotBeDeleted() ModelOption {
 	}
 }
 
+// WithIAM marks the model as supporting direct IAM reconciliation, and optionally specifies
+// the external reference format templates for the resource.
+func WithIAM(externalReferenceFormats ...string) ModelOption {
+	return func(r *registration) {
+		r.supportsIAM = true
+		r.externalReferenceFormats = externalReferenceFormats
+	}
+}
+
 func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, options ...ModelOption) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
@@ -149,17 +161,16 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 	if registration == nil {
 		return false
 	}
+	return registration.supportsIAM
+}
 
-	// TODO: Move to registration somehow?
-	switch groupKind {
-	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
-		return true
-	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:
-		return true
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
-		return true
+// IAMExternalReferenceFormats returns the external reference formats for a direct resource that supports IAM.
+func IAMExternalReferenceFormats(groupKind schema.GroupKind) ([]string, bool) {
+	registration := singleton.registrations[groupKind]
+	if registration == nil || !registration.supportsIAM {
+		return nil, false
 	}
-	return false
+	return registration.externalReferenceFormats, true
 }
 
 // SupportsIAM returns true if this resource supports IAM (not all GCP resources do).
@@ -167,8 +178,6 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 	// TODO: Move to registration somehow?
 	switch groupKind {
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
-		return true, nil
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		return false, nil
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:

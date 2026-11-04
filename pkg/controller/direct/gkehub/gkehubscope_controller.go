@@ -35,7 +35,11 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.GKEHubScopeGVK, getGkeHubScopeModel)
+	registry.RegisterModel(krm.GKEHubScopeGVK, getGkeHubScopeModel,
+		registry.WithIAM(
+			"projects/{project}/locations/global/scopes/{scope}",
+		),
+	)
 }
 
 func getGkeHubScopeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
