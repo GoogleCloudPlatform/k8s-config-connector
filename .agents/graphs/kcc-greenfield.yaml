@@ -40,9 +40,9 @@
 # one pull request (and one sandbox) instead of one each, every step
 # starting once the one before has pushed to it and it is green and
 # reviewed. `group-gate: true` below marks where the shared PR ends and must
-# merge before anything after it starts: grouped, the steps are three PRs -
+# merge before anything after it starts: grouped, the steps are two PRs -
 # prepopulate + types-judgement, then controller + mockgcp +
-# mockgcp-alignment, then release - instead of five. A parent can name its
+# mockgcp-alignment + release - instead of six. A parent can name its
 # own gates instead (`gates: [...]` in its block). See "Grouped steps" in
 # issue-graph.md.
 #
@@ -177,9 +177,6 @@ spec:
     # Step 4.
     - id: mockgcp-alignment
       after: [mockgcp]
-      # Grouped: the controller + mockgcp + alignment PR merges before the
-      # release step ships the Kind in a PR of its own.
-      group-gate: true
       # MockGCP already matches RealGCP: the fix makes no commit and says so,
       # which closes this step's issue and moves on (in a group, the PR
       # carries on without a commit for this step).
