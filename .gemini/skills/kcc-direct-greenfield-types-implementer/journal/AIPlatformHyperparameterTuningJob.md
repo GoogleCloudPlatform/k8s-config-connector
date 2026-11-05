@@ -20,17 +20,18 @@
 
 ## Step 1b: Judgement Queue Triage & KRM Types Finalization
 
-1. **Parent & Location Ref**:
+1. **Parent & Location Ref and Labels**:
    - Replaced `ProjectRef *refsv1beta1.ProjectRef` and `Location *string` with inlined `*parent.ProjectAndLocationRef json:",inline"` in `AIPlatformHyperparameterTuningJobSpec`.
-   - Removed top-level `Labels map[string]string` from `spec` (reconciled via `metadata.labels`).
+   - Retained top-level `Labels map[string]string` in `spec` consistent with existing `aiplatform.cnrm.cloud.google.com/v1alpha1` resources.
 
 2. **Resource Documentation Link**:
    - Updated `+kcc:source:resource-docs` link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`.
 
-3. **Nested Struct `CustomJobSpec`**:
-   - `CustomJobSpec` is shared with `AIPlatformCustomJob` and defined in `aiplatformcustomjob_types.go`.
-   - All references (`PersistentResourceRef`, `ServiceAccountRef`, `NetworkRef`, `ModelRefs`, `ExperimentRef`, `ExperimentRunRef`, `TensorboardRef`) are modeled as typed KCC references on `CustomJobSpec`.
-   - No references need to be deferred in `refs_deferred.txt`.
+3. **Strict Nested Structs (`WithRequired`)**:
+   - Generated `CustomJobSpecWithRequired` in `aiplatformhyperparametertuningjob_types.go` enforcing required fields on `BaseOutputDirectory *GCSDestinationWithRequired`, `WorkerPoolSpecs []WorkerPoolSpecWithRequired`, and `PSCInterfaceConfig *PSCInterfaceConfigWithRequired`.
+   - Generated `StudySpec_ParameterSpec_ConditionalParameterSpecWithRequired` enforcing required fields on `ParentCategoricalValues`, `ParentDiscreteValues`, and `ParentIntValues`.
+   - Generated `DNSPeeringConfigWithRequired` enforcing required fields on `Domain`, `TargetProjectRef`, and `TargetNetworkRef`.
+   - Retained typed references (`PersistentResourceRef`, `ServiceAccountRef`, `NetworkRef`, `ModelRefs`, `ExperimentRef`, `ExperimentRunRef`, `TensorboardRef`, `NetworkAttachmentRef`).
 
 4. **Shared Structs Kept Optional**:
-   - `EncryptionSpec` (`kmsKeyRef`), `StudySpec_ParameterSpec_ConditionalParameterSpec` (`parent*Values`), `DNSPeeringConfig`, and `ReservationAffinity` are shared across existing resources in `aiplatform` and kept optional (`resolution: accepted`) to remain consistent with existing definitions without unnecessary forks.
+   - `EncryptionSpec` (`kmsKeyRef`) is shared across existing resources in `aiplatform` and kept optional (`resolution: accepted`) to remain consistent with existing definitions without unnecessary forks.

@@ -106,6 +106,19 @@ spec:
                         type: string
                     type: object
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. The labels with user-defined metadata to organize
+                   HyperparameterTuningJobs.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+                type: object
               location:
                 description: The location that this resource belongs to.
                 type: string
@@ -588,6 +601,8 @@ spec:
                           automatically appended. The directory is created if it doesn't
                           exist.
                         type: string
+                    required:
+                    - outputURIPrefix
                     type: object
                   enableDashboardAccess:
                     description: |-
@@ -681,7 +696,22 @@ spec:
                        At most 50 model names can be specified. For each specified model, its
                        version alias is created for the custom job. The alias name format is
                        `customjob-{job_id}`. The model version alias is deleted when the custom
-                       job is deleted. There will be at most one version alias for each model
+                       job is deleted.
+
+                       If the model names are of the form:
+                       `projects/{project}/locations/{location}/models/{model}`:
+                       The default version will be returned.
+
+                       If the model names are of the form:
+                       `projects/{project}/locations/{location}/models/{model}@{version_id}`
+                       or
+                       `projects/{project}/locations/{location}/models/{model}@{version_alias}`:
+                       The specified model version will be used.
+
+                       Example: `projects/{project}/locations/{location}/models/{model}@2`
+                                  or
+                                `projects/{project}/locations/{location}/models/{model}@golden`
+                       If no version ID or alias is specified, the "default" version will be
                        returned. The "default" version alias is created for the first version of
                        the model, and can be moved to other versions later on. There will be
                        exactly one default version.
@@ -755,7 +785,7 @@ spec:
                         description: The namespace of a ComputeNetwork resource.
                         type: string
                     type: object
-                  persistentResourceID:
+                  persistentResourceRef:
                     description: |-
                       Optional. The ID of the PersistentResource in the same Project and Location
                        which to run
@@ -764,7 +794,33 @@ spec:
                        PersistentResource instead of on-demand short-live machines.
                        The network and CMEK configs on the job should be consistent with those on
                        the PersistentResource, otherwise, the job will be rejected.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed AIPlatformPersistentResource
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/persistentResources/{persistentResource}"
+                        type: string
+                      name:
+                        description: The name of an AIPlatformPersistentResource resource.
+                        type: string
+                      namespace:
+                        description: The namespace of an AIPlatformPersistentResource
+                          resource.
+                        type: string
+                    type: object
                   protectedArtifactLocationID:
                     description: 'The ID of the location to store protected artifacts.
                       e.g. us-central1. Populate only when the location is different
@@ -846,6 +902,10 @@ spec:
                                     resource.
                                   type: string
                               type: object
+                          required:
+                          - domain
+                          - targetNetworkRef
+                          - targetProjectRef
                           type: object
                         type: array
                       networkAttachmentRef:
@@ -1027,6 +1087,9 @@ spec:
                                       be expanded, regardless of whether the variable
                                       exists or not.'
                                     type: string
+                                required:
+                                - name
+                                - value
                                 type: object
                               type: array
                             imageURI:
@@ -1034,6 +1097,8 @@ spec:
                                 in the Container Registry that is to be run on each
                                 worker replica.
                               type: string
+                          required:
+                          - imageURI
                           type: object
                         diskSpec:
                           description: Disk spec.
@@ -1070,6 +1135,11 @@ spec:
                                 description: Required. The unique identifier of the
                                   Lustre volume.
                                 type: string
+                            required:
+                            - filesystem
+                            - instanceIP
+                            - mountPoint
+                            - volumeHandle
                             type: object
                           type: array
                         machineSpec:
@@ -1140,6 +1210,8 @@ spec:
                                   items:
                                     type: string
                                   type: array
+                              required:
+                              - reservationAffinityType
                               type: object
                             tpuTopology:
                               description: 'Immutable. The topology of the TPUs. Corresponds
@@ -1164,6 +1236,10 @@ spec:
                               server:
                                 description: Required. IP address of the NFS server.
                                 type: string
+                            required:
+                            - mountPoint
+                            - path
+                            - server
                             type: object
                           type: array
                         pythonPackageSpec:

@@ -248,6 +248,7 @@
 [missing_field] crd=aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexRagSource.uri" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxFailedTrialCount" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxTrialCount" is not set in unstructured objects
@@ -299,7 +300,7 @@
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.experimentRunRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.modelRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.persistentResourceID" is not set in unstructured objects
+[missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.persistentResourceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.protectedArtifactLocationID" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
