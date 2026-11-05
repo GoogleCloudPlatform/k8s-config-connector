@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,35 +30,23 @@ var FinancialServicesPredictionResultGVK = GroupVersion.WithKind("FinancialServi
 // +kcc:spec:proto=google.cloud.financialservices.v1.PredictionResult
 // +kcc:required-from-proto
 type FinancialServicesPredictionResultSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project_num}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *FinancialServicesInstanceRef `json:"instanceRef,omitempty"`
+	// The FinancialServicesInstance this FinancialServicesPredictionResult is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FinancialServicesInstanceRef `json:"parentRef"`
 
 	// The FinancialServicesPredictionResult name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Labels
-	// +kcc:proto:field=google.cloud.financialservices.v1.PredictionResult.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
-	// Required. The resource name of the Dataset to do predictions on
-	//  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}`
+	// Required. The Dataset to do predictions on.
 	// +kcc:proto:field=google.cloud.financialservices.v1.PredictionResult.dataset
 	// +required
-	Dataset *string `json:"dataset,omitempty"`
+	DatasetRef *FinancialServicesDatasetRef `json:"datasetRef,omitempty"`
 
-	// Required. The resource name of the Model to use to use to make predictions
-	//  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`
+	// Required. The Model to use to make predictions.
 	// +kcc:proto:field=google.cloud.financialservices.v1.PredictionResult.model
 	// +required
-	Model *string `json:"model,omitempty"`
+	ModelRef *FinancialServicesModelRef `json:"modelRef,omitempty"`
 
 	// Required. Specifies the latest time from which data is used to generate
 	//  features for predictions.  This time should be no later than the end of the

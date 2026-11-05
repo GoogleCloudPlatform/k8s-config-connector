@@ -413,6 +413,7 @@ func FinancialServicesPredictionResultObservedState_FromProto(mapCtx *direct.Map
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
 	return out
@@ -425,6 +426,7 @@ func FinancialServicesPredictionResultObservedState_ToProto(mapCtx *direct.MapCo
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.PredictionResult_State](mapCtx, in.State)
 	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
 	return out
@@ -435,9 +437,13 @@ func FinancialServicesPredictionResultSpec_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.FinancialServicesPredictionResultSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Dataset = direct.LazyPtr(in.GetDataset())
-	out.Model = direct.LazyPtr(in.GetModel())
+	// MISSING: Labels
+	if in.GetDataset() != "" {
+		out.DatasetRef = &krm.FinancialServicesDatasetRef{External: in.GetDataset()}
+	}
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.FinancialServicesModelRef{External: in.GetModel()}
+	}
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.PredictionPeriods = direct.LazyPtr(in.GetPredictionPeriods())
 	out.Outputs = PredictionResult_Outputs_FromProto(mapCtx, in.GetOutputs())
@@ -449,9 +455,13 @@ func FinancialServicesPredictionResultSpec_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.PredictionResult{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.Dataset = direct.ValueOf(in.Dataset)
-	out.Model = direct.ValueOf(in.Model)
+	// MISSING: Labels
+	if in.DatasetRef != nil {
+		out.Dataset = in.DatasetRef.External
+	}
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.PredictionPeriods = direct.ValueOf(in.PredictionPeriods)
 	out.Outputs = PredictionResult_Outputs_ToProto(mapCtx, in.Outputs)
