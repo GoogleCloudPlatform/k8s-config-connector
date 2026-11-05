@@ -16,9 +16,11 @@ package v1beta1
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -83,5 +85,27 @@ func (r *VertexAIIndexRef) ParseExternalToIdentity() (identity.Identity, error) 
 }
 
 func (r *VertexAIIndexRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+		if name != "" {
+			return name
+		}
+		resourceID, err := refs.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+		location, _, _ := unstructured.NestedString(u.Object, "spec", "region")
+		if location == "" {
+			location, _, _ = unstructured.NestedString(u.Object, "spec", "location")
+		}
+		if location == "" {
+			return ""
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil || projectID == "" {
+			return ""
+		}
+		return fmt.Sprintf("projects/%s/locations/%s/indexes/%s", projectID, location, resourceID)
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

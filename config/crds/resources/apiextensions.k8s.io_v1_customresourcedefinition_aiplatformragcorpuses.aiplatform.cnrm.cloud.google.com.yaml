@@ -303,14 +303,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed VertexAIIndexEndpoint
+                            description: A reference to an externally managed AIPlatformIndexEndpoint
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/indexEndpoints/{{indexEndpointID}}".
                             type: string
                           name:
-                            description: The name of a VertexAIIndexEndpoint resource.
+                            description: The name of an AIPlatformIndexEndpoint resource.
                             type: string
                           namespace:
-                            description: The namespace of a VertexAIIndexEndpoint
+                            description: The namespace of an AIPlatformIndexEndpoint
                               resource.
                             type: string
                         type: object

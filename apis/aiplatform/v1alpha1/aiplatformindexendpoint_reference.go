@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 import (
 	"context"
@@ -24,64 +24,64 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &VertexAIIndexEndpointRef{}
+var _ refs.Ref = &AIPlatformIndexEndpointRef{}
 
-var VertexAIIndexEndpointGVK = GroupVersion.WithKind("VertexAIIndexEndpoint")
+var AIPlatformIndexEndpointGVK = GroupVersion.WithKind("AIPlatformIndexEndpoint")
 
-// VertexAIIndexEndpointRef is a reference to a VertexAIIndexEndpoint.
-type VertexAIIndexEndpointRef struct {
-	// A reference to an externally managed VertexAIIndexEndpoint resource.
+// AIPlatformIndexEndpointRef is a reference to an AIPlatformIndexEndpoint.
+type AIPlatformIndexEndpointRef struct {
+	// A reference to an externally managed AIPlatformIndexEndpoint resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/indexEndpoints/{{indexEndpointID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a VertexAIIndexEndpoint resource.
+	// The name of an AIPlatformIndexEndpoint resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a VertexAIIndexEndpoint resource.
+	// The namespace of an AIPlatformIndexEndpoint resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&VertexAIIndexEndpointRef{})
+	refs.Register(&AIPlatformIndexEndpointRef{})
 }
 
-func (r *VertexAIIndexEndpointRef) GetGVK() schema.GroupVersionKind {
-	return VertexAIIndexEndpointGVK
+func (r *AIPlatformIndexEndpointRef) GetGVK() schema.GroupVersionKind {
+	return AIPlatformIndexEndpointGVK
 }
 
-func (r *VertexAIIndexEndpointRef) GetNamespacedName() types.NamespacedName {
+func (r *AIPlatformIndexEndpointRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *VertexAIIndexEndpointRef) GetExternal() string {
+func (r *AIPlatformIndexEndpointRef) GetExternal() string {
 	return r.External
 }
 
-func (r *VertexAIIndexEndpointRef) SetExternal(ref string) {
+func (r *AIPlatformIndexEndpointRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *VertexAIIndexEndpointRef) ValidateExternal(ref string) error {
-	id := &VertexAIIndexEndpointIdentity{}
+func (r *AIPlatformIndexEndpointRef) ValidateExternal(ref string) error {
+	id := &AIPlatformIndexEndpointIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *VertexAIIndexEndpointRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &VertexAIIndexEndpointIdentity{}
+func (r *AIPlatformIndexEndpointRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &AIPlatformIndexEndpointIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *VertexAIIndexEndpointRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *AIPlatformIndexEndpointRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }

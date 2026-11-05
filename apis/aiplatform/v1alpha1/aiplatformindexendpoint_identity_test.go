@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 import (
 	"testing"
@@ -20,17 +20,17 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestVertexAIIndexEndpointIdentity_FromExternal(t *testing.T) {
+func TestAIPlatformIndexEndpointIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VertexAIIndexEndpointIdentity
+		want    *AIPlatformIndexEndpointIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/indexEndpoints/my-index-endpoint",
-			want: &VertexAIIndexEndpointIdentity{
+			want: &AIPlatformIndexEndpointIdentity{
 				Project:       "my-project",
 				Location:      "us-central1",
 				IndexEndpoint: "my-index-endpoint",
@@ -45,7 +45,7 @@ func TestVertexAIIndexEndpointIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := &VertexAIIndexEndpointIdentity{}
+			got := &AIPlatformIndexEndpointIdentity{}
 			err := got.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Fatalf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)

@@ -187,7 +187,7 @@ type RagVectorDbConfig_VertexVectorSearch struct {
 	//  Format:
 	//  `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.RagVectorDbConfig.VertexVectorSearch.index_endpoint
-	IndexEndpointRef *vertexaiv1beta1.VertexAIIndexEndpointRef `json:"indexEndpointRef,omitempty"`
+	IndexEndpointRef *AIPlatformIndexEndpointRef `json:"indexEndpointRef,omitempty"`
 
 	// The resource name of the Index.
 	//  Format:

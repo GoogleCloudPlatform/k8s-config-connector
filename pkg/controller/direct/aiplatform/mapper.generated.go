@@ -5116,7 +5116,7 @@ func RagVectorDbConfig_VertexVectorSearch_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krm.RagVectorDbConfig_VertexVectorSearch{}
 	if in.GetIndexEndpoint() != "" {
-		out.IndexEndpointRef = &krmvertexaiv1beta1.VertexAIIndexEndpointRef{External: in.GetIndexEndpoint()}
+		out.IndexEndpointRef = &krm.AIPlatformIndexEndpointRef{External: in.GetIndexEndpoint()}
 	}
 	if in.GetIndex() != "" {
 		out.IndexRef = &krmvertexaiv1beta1.VertexAIIndexRef{External: in.GetIndex()}

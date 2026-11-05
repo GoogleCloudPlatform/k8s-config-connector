@@ -996,7 +996,7 @@ entries:
     detail: the description has the resource-name template "projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}"
     status: resolved
     resolution: edited
-    note: Converted indexEndpoint to indexEndpointRef (*vertexaiv1beta1.VertexAIIndexEndpointRef).
+    note: Converted indexEndpoint to indexEndpointRef (*AIPlatformIndexEndpointRef).
   - kind: AIPlatformRAGCorpus
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.vertexAiSearchConfig.servingConfig
