@@ -89,6 +89,14 @@ func (r *VertexAIEndpointRef) ParseExternalToIdentity() (identity.Identity, erro
 
 func (r *VertexAIEndpointRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
+		// First check status.externalRef or status.name if present on the fetched object
+		if externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef"); externalRef != "" {
+			return externalRef
+		}
+		if name, _, _ := unstructured.NestedString(u.Object, "status", "name"); name != "" {
+			return name
+		}
+
 		// Verify the resource is ready
 		ready := false
 		conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
