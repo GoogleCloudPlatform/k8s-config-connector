@@ -1,0 +1,12 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformReasoningEngine
+  name: reasoningengine-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/onlineEvaluators/${onlineEvaluatorID}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformOnlineEvaluator
+  name: aiplatformonlineevaluator-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

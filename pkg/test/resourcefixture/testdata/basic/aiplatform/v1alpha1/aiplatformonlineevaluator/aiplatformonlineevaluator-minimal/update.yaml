@@ -1,0 +1,27 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformOnlineEvaluator
+metadata:
+  name: aiplatformonlineevaluator-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: onlineevaluator-updated-${uniqueId}
+  agentRef:
+    name: reasoningengine-${uniqueId}
+  config:
+    maxEvaluatedSamplesPerRun: 100
+    randomSampling:
+      percentage: 10
+  cloudObservability:
+    openTelemetry:
+      semconvVersion: "1.39.0"
+    traceScope:
+      filter:
+        - duration:
+            comparisonOperator: GREATER
+            value: 1
+  metricSources:
+    - metric:
+        predefinedMetricSpec:
+          metricSpecName: safety_v1

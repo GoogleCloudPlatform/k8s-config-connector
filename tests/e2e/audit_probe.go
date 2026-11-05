@@ -204,9 +204,24 @@ func grpcEventToRESTProbeURL(e *test.LogEntry) (string, bool) {
 	if !ok || serviceFullName == "" || !strings.HasPrefix(methodName, "Get") {
 		return "", false
 	}
+	if serviceFullName == "google.cloud.aiplatform.v1beta1.OnlineEvaluatorService" {
+		if reqBody := e.Request.ParseBody(); reqBody != nil {
+			if name, ok := reqBody["name"].(string); ok && name != "" {
+				u := "https://aiplatform.googleapis.com/v1beta1/" + name
+				if shouldProbeURL(u) && !isListOrOperationResponse(e.Response.ParseBody()) {
+					return u, true
+				}
+			}
+		}
+	}
 	desc, err := protoregistry.GlobalFiles.FindDescriptorByName(protoreflect.FullName(serviceFullName))
 	if err != nil {
-		return "", false
+		if serviceFullName == "google.cloud.aiplatform.v1beta1.OnlineEvaluatorService" {
+			desc, err = protoregistry.GlobalFiles.FindDescriptorByName("google.cloud.aiplatform.v1beta1.onlineevaluator.OnlineEvaluatorService")
+		}
+		if err != nil {
+			return "", false
+		}
 	}
 	sd, ok := desc.(protoreflect.ServiceDescriptor)
 	if !ok {

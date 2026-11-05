@@ -204,6 +204,11 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/reasoningEngines/")
 			lines[i] = line[:start] + "${reasoningEngineID}"
 		}
+		// Normalize AIPlatformOnlineEvaluator onlineEvaluators IDs: locations/.../onlineEvaluators/<onlineEvaluatorId>
+		if idx := strings.Index(line, "/onlineEvaluators/"); idx != -1 {
+			start := idx + len("/onlineEvaluators/")
+			lines[i] = line[:start] + "${onlineEvaluatorID}"
+		}
 		// Normalize AIPlatformCustomJob customJobs IDs: locations/.../customJobs/<customJobId>
 		if idx := strings.Index(line, "/customJobs/"); idx != -1 {
 			start := idx + len("/customJobs/")
