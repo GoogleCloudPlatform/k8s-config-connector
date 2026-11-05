@@ -171,7 +171,6 @@ BLOCKED_KINDS=(
     "DatabaseMigrationMigrationJob"
     "DatabaseMigrationPrivateConnection"
     "DataformFolder"
-    "DataformReleaseConfig"
     "DataformTeamFolder"
     "DataformWorkflowConfig"
     "DataformWorkspace"
