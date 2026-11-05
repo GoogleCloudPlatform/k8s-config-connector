@@ -97,59 +97,79 @@ entries:
     group: financialservices.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged parentRef, engineVersion, sourceEngineConfigRef, primaryDatasetRef, performanceTarget, tuning, and validated KRM types and identity
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesEngineConfigSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*FinancialServicesInstanceRef); removed ProjectRef and Location
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateEngineConfigRequest has engine_config_id parameter for client-specified ID
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .spec.engineVersion
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to financialservices.googleapis.com/EngineVersion (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: EngineVersion is a system-provided read-only GCP resource not managed by KCC, so engineVersion remains a string
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .spec.hyperparameterSource.sourceEngineConfig
     reason: possible-reference-by-description
     detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to sourceEngineConfigRef (*FinancialServicesEngineConfigRef)
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .spec.instanceRef
     reason: parent-ref-guessed
     detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*FinancialServicesInstanceRef)
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced Location and ProjectRef with spec.parentRef (*FinancialServicesInstanceRef)
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .spec.tuning.primaryDataset
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to financialservices.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to primaryDatasetRef (*FinancialServicesDatasetRef)
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .status.observedState.performanceTarget
     reason: possible-output-only-pattern-in-comment
     detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.performanceTarget. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.performanceTarget if it is confirmed output only. Proto comment: Optional. PerformanceTarget gives information on how the tuning and training will be evaluated. This field is required if `hyperparameter_source.type` is not `INHERITED`, and output-only otherwise.'
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-configurable in Spec when hyperparameterSourceType is TUNING (or not INHERITED)
   - kind: FinancialServicesEngineConfig
     group: financialservices.cnrm.cloud.google.com
     field: .status.observedState.tuning
     reason: possible-output-only-pattern-in-comment
     detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.tuning. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.tuning if it is confirmed output only. Proto comment: Optional. Configuration for tuning in creation of the EngineConfig. This field is required if `hyperparameter_source.type` is not `INHERITED`, and output-only otherwise.'
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: user-configurable in Spec when hyperparameterSourceType is TUNING (or not INHERITED)
   - kind: FinancialServicesModel
     group: financialservices.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

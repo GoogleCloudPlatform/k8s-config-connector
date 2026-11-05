@@ -72,7 +72,9 @@ func EngineConfig_HyperparameterSource_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.EngineConfig_HyperparameterSource{}
-	out.SourceEngineConfig = direct.LazyPtr(in.GetSourceEngineConfig())
+	if in.GetSourceEngineConfig() != "" {
+		out.SourceEngineConfigRef = &krm.FinancialServicesEngineConfigRef{External: in.GetSourceEngineConfig()}
+	}
 	// MISSING: SourceEngineVersion
 	return out
 }
@@ -81,7 +83,9 @@ func EngineConfig_HyperparameterSource_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.EngineConfig_HyperparameterSource{}
-	out.SourceEngineConfig = direct.ValueOf(in.SourceEngineConfig)
+	if in.SourceEngineConfigRef != nil {
+		out.SourceEngineConfig = in.SourceEngineConfigRef.External
+	}
 	// MISSING: SourceEngineVersion
 	return out
 }
@@ -124,7 +128,9 @@ func EngineConfig_Tuning_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfi
 		return nil
 	}
 	out := &krm.EngineConfig_Tuning{}
-	out.PrimaryDataset = direct.LazyPtr(in.GetPrimaryDataset())
+	if in.GetPrimaryDataset() != "" {
+		out.PrimaryDatasetRef = &krm.FinancialServicesDatasetRef{External: in.GetPrimaryDataset()}
+	}
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
@@ -133,7 +139,9 @@ func EngineConfig_Tuning_ToProto(mapCtx *direct.MapContext, in *krm.EngineConfig
 		return nil
 	}
 	out := &pb.EngineConfig_Tuning{}
-	out.PrimaryDataset = direct.ValueOf(in.PrimaryDataset)
+	if in.PrimaryDatasetRef != nil {
+		out.PrimaryDataset = in.PrimaryDatasetRef.External
+	}
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
@@ -243,6 +251,7 @@ func FinancialServicesEngineConfigObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
 	out.HyperparameterSource = EngineConfig_HyperparameterSourceObservedState_FromProto(mapCtx, in.GetHyperparameterSource())
@@ -256,6 +265,7 @@ func FinancialServicesEngineConfigObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.EngineConfig_State](mapCtx, in.State)
 	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
 	out.HyperparameterSource = EngineConfig_HyperparameterSourceObservedState_ToProto(mapCtx, in.HyperparameterSource)
@@ -267,7 +277,7 @@ func FinancialServicesEngineConfigSpec_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.FinancialServicesEngineConfigSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.Tuning = EngineConfig_Tuning_FromProto(mapCtx, in.GetTuning())
 	out.PerformanceTarget = EngineConfig_PerformanceTarget_FromProto(mapCtx, in.GetPerformanceTarget())
@@ -281,7 +291,7 @@ func FinancialServicesEngineConfigSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.EngineConfig{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.EngineVersion = direct.ValueOf(in.EngineVersion)
 	out.Tuning = EngineConfig_Tuning_ToProto(mapCtx, in.Tuning)
 	out.PerformanceTarget = EngineConfig_PerformanceTarget_ToProto(mapCtx, in.PerformanceTarget)

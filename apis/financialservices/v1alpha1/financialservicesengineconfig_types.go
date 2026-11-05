@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,21 +30,13 @@ var FinancialServicesEngineConfigGVK = GroupVersion.WithKind("FinancialServicesE
 // +kcc:spec:proto=google.cloud.financialservices.v1.EngineConfig
 // +kcc:required-from-proto
 type FinancialServicesEngineConfigSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project_num}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *FinancialServicesInstanceRef `json:"instanceRef,omitempty"`
+	// The FinancialServicesInstance this FinancialServicesEngineConfig is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FinancialServicesInstanceRef `json:"parentRef"`
 
 	// The FinancialServicesEngineConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Labels
-	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The resource name of the EngineVersion used in this model tuning.
 	//  format:
@@ -76,6 +67,47 @@ type FinancialServicesEngineConfigSpec struct {
 	// Optional. Configuration of hyperparameters source EngineConfig.
 	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.hyperparameter_source
 	HyperparameterSource *EngineConfig_HyperparameterSource `json:"hyperparameterSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource
+type EngineConfig_HyperparameterSource struct {
+	// Required. The resource name of the source EngineConfig whose outputs are
+	//  used. Format:
+	//  `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource.source_engine_config
+	// +required
+	SourceEngineConfigRef *FinancialServicesEngineConfigRef `json:"sourceEngineConfigRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget
+type EngineConfig_PerformanceTarget struct {
+	// Required. A number that gives the tuner a hint on the number of parties
+	//  from this data that will be investigated per period (monthly). This is
+	//  used to control how the model is evaluated. For example, when trying AML
+	//  AI for the first time, we recommend setting this to the number of parties
+	//  investigated in an average month, based on alerts from your existing
+	//  automated alerting system.
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget.party_investigations_per_period_hint
+	// +required
+	PartyInvestigationsPerPeriodHint *int64 `json:"partyInvestigationsPerPeriodHint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.Tuning
+type EngineConfig_Tuning struct {
+	// Required. The resource name of the Primary Dataset used in this model
+	//  tuning. For information about how primary and auxiliary datasets are
+	//  used, refer to the engine version's documentation.  Format:
+	//  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.primary_dataset
+	// +required
+	PrimaryDatasetRef *FinancialServicesDatasetRef `json:"primaryDatasetRef,omitempty"`
+
+	// Required. End_time specifies the latest time from which labels are used
+	//  and from which data is used to generate features for tuning.  End_time
+	//  should be no later than the end of the date_range of the dataset.
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.end_time
+	// +required
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // FinancialServicesEngineConfigStatus defines the config connector machine state of FinancialServicesEngineConfig
