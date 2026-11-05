@@ -99,12 +99,7 @@ func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta
 	} else if v, ok := d.GetOkExists("key_value"); !tpgresource.IsEmptyValue(reflect.ValueOf(keyValueProp)) && (ok || !reflect.DeepEqual(v, keyValueProp)) {
 		obj["keyValue"] = keyValueProp
 	}
-	backendBucketProp, err := expandNestedComputeBackendBucketSignedUrlKeyBackendBucket(d.Get("backend_bucket"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("backend_bucket"); !tpgresource.IsEmptyValue(reflect.ValueOf(backendBucketProp)) && (ok || !reflect.DeepEqual(v, backendBucketProp)) {
-		obj["backendBucket"] = backendBucketProp
-	}
+	// backend_bucket is part of the request URL, not the SignedUrlKey request body.
 
 	lockName, err := tpgresource.ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
 	if err != nil {
