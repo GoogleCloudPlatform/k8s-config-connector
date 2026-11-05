@@ -115,6 +115,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvision"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvisionai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmmigration"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockwebsecurityscanner"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkloadmanager"
 )
