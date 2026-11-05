@@ -160,18 +160,28 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return fmt.Errorf("creating VertexAIDeploymentResourcePool %s: %w", a.id, err)
 	}
-	if _, err := op.Wait(ctx); err != nil {
+	created, err := op.Wait(ctx)
+	if err != nil {
 		return fmt.Errorf("waiting VertexAIDeploymentResourcePool %s creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created VertexAIDeploymentResourcePool", "name", a.id)
 
-	// The LRO result only contains the name, so fetch the fully-populated resource.
-	latest, err := a.gcpClient.GetDeploymentResourcePool(ctx, &pb.GetDeploymentResourcePoolRequest{Name: a.id.String()})
+	latest, err := a.populatedOrGet(ctx, created)
 	if err != nil {
 		return fmt.Errorf("getting VertexAIDeploymentResourcePool %s after creation: %w", a.id, err)
 	}
 
 	return a.updateStatus(ctx, createOp, latest)
+}
+
+// populatedOrGet returns the resource from a create/update LRO if it is fully populated.
+// Real GCP currently returns only the resource name in the LRO result, so in that case
+// it fetches the full resource.
+func (a *Adapter) populatedOrGet(ctx context.Context, fromLRO *pb.DeploymentResourcePool) (*pb.DeploymentResourcePool, error) {
+	if fromLRO.GetCreateTime() != nil {
+		return fromLRO, nil
+	}
+	return a.gcpClient.GetDeploymentResourcePool(ctx, &pb.GetDeploymentResourcePoolRequest{Name: a.id.String()})
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -199,13 +209,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		if err != nil {
 			return fmt.Errorf("updating VertexAIDeploymentResourcePool %s: %w", a.id, err)
 		}
-		if _, err := op.Wait(ctx); err != nil {
+		updated, err := op.Wait(ctx)
+		if err != nil {
 			return fmt.Errorf("waiting VertexAIDeploymentResourcePool %s update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated VertexAIDeploymentResourcePool", "name", a.id)
 
-		// The LRO result only contains the name, so fetch the fully-populated resource.
-		latest, err = a.gcpClient.GetDeploymentResourcePool(ctx, &pb.GetDeploymentResourcePoolRequest{Name: a.id.String()})
+		latest, err = a.populatedOrGet(ctx, updated)
 		if err != nil {
 			return fmt.Errorf("getting VertexAIDeploymentResourcePool %s after update: %w", a.id, err)
 		}
