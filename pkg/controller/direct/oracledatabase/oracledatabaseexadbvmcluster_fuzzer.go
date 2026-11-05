@@ -74,10 +74,10 @@ func oracleDatabaseExadbVMClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// References mapped to Ref in Spec
-	f.Unimplemented_NotYetTriaged(".odb_network")
-	f.Unimplemented_NotYetTriaged(".odb_subnet")
-	f.Unimplemented_NotYetTriaged(".backup_odb_subnet")
-	f.Unimplemented_NotYetTriaged(".properties.exascale_db_storage_vault")
+	f.SpecField(".odb_network")
+	f.SpecField(".odb_subnet")
+	f.SpecField(".backup_odb_subnet")
+	f.SpecField(".properties.exascale_db_storage_vault")
 
 	return f
 }
