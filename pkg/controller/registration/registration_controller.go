@@ -207,8 +207,6 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 	if err != nil {
 		return err
 	}
-	// return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
-	// 	&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate{}))
 	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
 		&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate[*apiextensions.CustomResourceDefinition]{}))
 }
@@ -294,10 +292,6 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 	start := time.Now()
 	r.mu.Lock()
 	logger.V(2).Info("Obtained lock", "kind", crd.Spec.Names.Kind, "elapsed (μs)", time.Since(start).Microseconds())
-	defer func() {
-		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
-		r.mu.Unlock()
-	}()
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
 		Version: k8s.GetVersionFromCRD(crd),
@@ -306,9 +300,13 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 	if kindMapForGroup, exists := r.controllers[gvk.Group]; exists {
 		if kindMapForGroup[gvk.Kind].registered {
 			logger.Info("controller already registered for kind in API group", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			if kindMapForGroup[gvk.Kind].schemaUpdater != nil {
+			schemaUpdater := kindMapForGroup[gvk.Kind].schemaUpdater
+			logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
+			r.mu.Unlock()
+
+			if schemaUpdater != nil {
 				logger.Info("updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-				if err := kindMapForGroup[gvk.Kind].schemaUpdater.UpdateSchema(crd); err != nil {
+				if err := schemaUpdater.UpdateSchema(crd); err != nil {
 					logger.Error(err, "error updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 					return reconcile.Result{}, fmt.Errorf("error updating schema for controller: %w", err)
 				}
@@ -318,6 +316,11 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 	} else {
 		r.controllers[gvk.Group] = make(map[string]controllerContext)
 	}
+
+	defer func() {
+		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
+		r.mu.Unlock()
+	}()
 
 	schemaUpdater, err := r.registrationFunc(r, crd, gvk)
 	if err != nil {
@@ -332,8 +335,8 @@ func (r *ReconcileRegistration) controllerContextFor(gvk schema.GroupVersionKind
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if groupMap, exists := r.controllers[gvk.Group]; exists {
-		if ctx, exists := groupMap[gvk.Kind]; exists {
-			return ctx.registered, ctx.schemaUpdater != nil
+		if controllerCtx, exists := groupMap[gvk.Kind]; exists {
+			return controllerCtx.registered, controllerCtx.schemaUpdater != nil
 		}
 	}
 	return false, false
