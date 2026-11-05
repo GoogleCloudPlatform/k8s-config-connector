@@ -35,3 +35,11 @@
   2. Verified that server defaults (`inputConfig`, `logConfig`, `timecodeConfig`, `manifests`, `elementaryStreams` H264 & Audio settings) and project number canonicalization in `inputAttachments` and `staticOverlays` match Real GCP behavior.
   3. Verified both `livestreamchannel-minimal` and `livestreamchannel-maximal` test fixtures pass `hack/compare-mock "fixtures/livestreamchannel"` and `TestGoldenLogAlignment` with 0 diffs.
 
+### [2026-11-05] LiveStreamDVRSession types judgement triage
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and reference types for `LiveStreamDVRSession` (`livestream.cnrm.cloud.google.com/v1alpha1`).
+- **Findings**:
+  1. `LiveStreamDVRSession` is a child resource under `LiveStreamChannel` with resource pattern `projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}`.
+  2. Modeled its parent as required, immutable `spec.parentRef` (`*LiveStreamChannelRef`), removing `ProjectRef` and `Location` from `LiveStreamDVRSessionSpec`.
+  3. Removed top-level `spec.labels` from `LiveStreamDVRSessionSpec`.
+  4. Updated REST documentation links to `https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels.dvrSessions`.
+
