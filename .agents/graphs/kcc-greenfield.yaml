@@ -177,6 +177,10 @@ spec:
     # Step 4.
     - id: mockgcp-alignment
       after: [mockgcp]
+      # MockGCP already matches RealGCP: the fix makes no commit and says so,
+      # which closes this step's issue and moves on (in a group, the PR
+      # carries on without a commit for this step).
+      no-change: ok
       title: 'Greenfield: Align MockGCP logs with RealGCP for {{ .Params.kind }}'
       labels: [step/mockgcp-alignment]
       review: |
@@ -185,6 +189,8 @@ spec:
         Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {{ .Params.kind }}.
 
         MockGCP for {{ .Params.kind }} was implemented in #{{ (step "mockgcp").Issue }}.
+
+        If the MockGCP logs already match the RealGCP output, don't change anything: make no commit, and say so (naming the fixtures you compared); that closes this issue, and the graph moves on.
 
         When creating the PR, include the release note block set to NONE:
         ```release-note
