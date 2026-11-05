@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,36 +30,23 @@ var FinancialServicesModelGVK = GroupVersion.WithKind("FinancialServicesModel")
 // +kcc:spec:proto=google.cloud.financialservices.v1.Model
 // +kcc:required-from-proto
 type FinancialServicesModelSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project_num}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *FinancialServicesInstanceRef `json:"instanceRef,omitempty"`
+	// The FinancialServicesInstance this FinancialServicesModel is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FinancialServicesInstanceRef `json:"parentRef"`
 
 	// The FinancialServicesModel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Labels
-	// +kcc:proto:field=google.cloud.financialservices.v1.Model.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
-	// Required. The resource name of the EngineConfig the model training will be
-	//  based on. Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}`
+	// Required. The EngineConfig the model training will be based on.
 	// +kcc:proto:field=google.cloud.financialservices.v1.Model.engine_config
 	// +required
-	EngineConfig *string `json:"engineConfig,omitempty"`
+	EngineConfigRef *FinancialServicesEngineConfigRef `json:"engineConfigRef,omitempty"`
 
-	// Required. The resource name of the Primary Dataset used in this model
-	//  training. For information about how primary and auxiliary datasets are
-	//  used, refer to the engine version's documentation.  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
+	// Required. The Primary Dataset used in this model training.
 	// +kcc:proto:field=google.cloud.financialservices.v1.Model.primary_dataset
 	// +required
-	PrimaryDataset *string `json:"primaryDataset,omitempty"`
+	PrimaryDatasetRef *FinancialServicesDatasetRef `json:"primaryDatasetRef,omitempty"`
 
 	// Required. End_time specifies the latest time from which labels are used and
 	//  from which data is used to generate features for training.  End_time should

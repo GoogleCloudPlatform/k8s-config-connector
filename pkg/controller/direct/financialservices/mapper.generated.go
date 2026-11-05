@@ -363,6 +363,7 @@ func FinancialServicesModelObservedState_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
 	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
@@ -376,6 +377,7 @@ func FinancialServicesModelObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.Model_State](mapCtx, in.State)
 	out.EngineVersion = direct.ValueOf(in.EngineVersion)
 	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
@@ -387,9 +389,13 @@ func FinancialServicesModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Mode
 	}
 	out := &krm.FinancialServicesModelSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.EngineConfig = direct.LazyPtr(in.GetEngineConfig())
-	out.PrimaryDataset = direct.LazyPtr(in.GetPrimaryDataset())
+	// MISSING: Labels
+	if in.GetEngineConfig() != "" {
+		out.EngineConfigRef = &krm.FinancialServicesEngineConfigRef{External: in.GetEngineConfig()}
+	}
+	if in.GetPrimaryDataset() != "" {
+		out.PrimaryDatasetRef = &krm.FinancialServicesDatasetRef{External: in.GetPrimaryDataset()}
+	}
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
@@ -399,9 +405,13 @@ func FinancialServicesModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.Finan
 	}
 	out := &pb.Model{}
 	// MISSING: Name
-	out.Labels = in.Labels
-	out.EngineConfig = direct.ValueOf(in.EngineConfig)
-	out.PrimaryDataset = direct.ValueOf(in.PrimaryDataset)
+	// MISSING: Labels
+	if in.EngineConfigRef != nil {
+		out.EngineConfig = in.EngineConfigRef.External
+	}
+	if in.PrimaryDatasetRef != nil {
+		out.PrimaryDataset = in.PrimaryDatasetRef.External
+	}
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }

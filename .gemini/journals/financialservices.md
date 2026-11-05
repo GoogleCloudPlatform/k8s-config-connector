@@ -1,3 +1,12 @@
+### [2026-11-05] FinancialServicesModel Greenfield Types Judgement and Identity Finalization
+- **Context**: Triaging judgement queue and finalizing direct KRM types and identity for `FinancialServicesModel` (#14928)
+- **Action**:
+  1. Replaced `ProjectRef`, `Location`, and guessed `InstanceRef` on `FinancialServicesModelSpec` with `ParentRef *FinancialServicesInstanceRef` (`spec.parentRef`).
+  2. Converted `EngineConfig` and `PrimaryDataset` to `EngineConfigRef *FinancialServicesEngineConfigRef` and `PrimaryDatasetRef *FinancialServicesDatasetRef`.
+  3. Removed top-level `Labels` from `FinancialServicesModelSpec`.
+  4. Resolved all open entries for `FinancialServicesModel` in `apis/financialservices/judgement_queue.yaml`.
+  5. Regenerated code via `./apis/financialservices/generate.sh` and updated controller/fuzzer via `controllerbuilder`.
+
 ### [2026-11-05] FinancialServicesPredictionResult Types Triage
 - **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesPredictionResult` (#14960).
 - **Action**:
