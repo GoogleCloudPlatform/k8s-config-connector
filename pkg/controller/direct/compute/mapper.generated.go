@@ -3318,6 +3318,136 @@ func ComputeMachineImageStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: TotalStorageBytes
 	return out
 }
+func ComputeManagedSSLCertificateManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateManaged {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeManagedSSLCertificateManaged{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
+	return out
+}
+func ComputeManagedSSLCertificateManaged_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeManagedSSLCertificateManaged) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	// MISSING: DomainStatus
+	out.Domains = in.Domains
+	// MISSING: Status
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto", skipping
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificateManagedSslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState{}
+	out.DomainStatus = in.DomainStatus
+	// MISSING: Domains
+	out.Status = in.Status
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto", skipping
+func ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeManagedSSLCertificateManagedObservedState) *pb.SslCertificateManagedSslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificateManagedSslCertificate{}
+	out.DomainStatus = in.DomainStatus
+	// MISSING: Domains
+	out.Status = in.Status
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1beta1_FromProto", skipping
+func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeManagedSSLCertificateObservedState{}
+	// MISSING: Certificate
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	// MISSING: ID
+	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_FromProto(mapCtx, in.GetManaged())
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfManaged
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateObservedState_v1beta1_ToProto", skipping
+func ComputeManagedSSLCertificateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeManagedSSLCertificateObservedState) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	// MISSING: Certificate
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	// MISSING: ID
+	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManagedObservedState_v1beta1_ToProto(mapCtx, in.Managed)
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfManaged
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateSpec_v1beta1_FromProto", skipping
+func ComputeManagedSSLCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1beta1.ComputeManagedSSLCertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeManagedSSLCertificateSpec{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManaged_v1beta1_FromProto(mapCtx, in.GetManaged())
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeManagedSSLCertificateSpec_v1beta1_ToProto", skipping
+func ComputeManagedSSLCertificateSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeManagedSSLCertificateSpec) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	// MISSING: Certificate
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	out.Managed = ComputeManagedSSLCertificateManaged_v1beta1_ToProto(mapCtx, in.Managed)
+	// MISSING: Name
+	// MISSING: PrivateKey
+	// MISSING: Region
+	// MISSING: SelfManaged
+	out.Type = in.Type
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "ComputeNetworkAttachmentObservedState_v1alpha1_FromProto", skipping
 func ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachment) *krmcomputev1alpha1.ComputeNetworkAttachmentObservedState {
@@ -3992,6 +4122,156 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec{}
+	out.AttachmentID = in.AttachmentId
+	// MISSING: DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec) *pb.SecurityPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAssociation{}
+	out.AttachmentId = in.AttachmentID
+	// MISSING: DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus{}
+	// MISSING: AttachmentID
+	out.DisplayName = in.DisplayName
+	// MISSING: ExcludedFolders
+	// MISSING: ExcludedProjects
+	// MISSING: Name
+	// MISSING: SecurityPolicyID
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto", skipping
+
+	func ComputeOrganizationSecurityPolicyAssociationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationStatus) *pb.SecurityPolicyAssociation {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SecurityPolicyAssociation{}
+		// MISSING: AttachmentID
+		out.DisplayName = in.DisplayName
+		// MISSING: ExcludedFolders
+		// MISSING: ExcludedProjects
+		// MISSING: Name
+		// MISSING: SecurityPolicyID
+		// MISSING: ShortName
+		return out
+	}
+*/
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState{}
+	// MISSING: Disabled
+	// MISSING: Kind
+	// MISSING: Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetSecureTags
+	// MISSING: TLSInspect
+	return out
+}
+func ComputeOrganizationSecurityPolicyRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleObservedState) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	// MISSING: Disabled
+	// MISSING: Kind
+	// MISSING: Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetSecureTags
+	// MISSING: TLSInspect
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.Direction = in.Direction
+	// MISSING: Disabled
+	out.EnableLogging = in.EnableLogging
+	// MISSING: Kind
+	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_FromProto(mapCtx, in.GetMatch())
+	// MISSING: Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = in.TargetResources
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = in.TargetServiceAccounts
+	// MISSING: TLSInspect
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyRuleSpec) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.Direction = in.Direction
+	// MISSING: Disabled
+	out.EnableLogging = in.EnableLogging
+	// MISSING: Kind
+	out.Match = OrganizationSecurityPolicyRuleMatch_v1alpha1_ToProto(mapCtx, in.Match)
+	// MISSING: Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = in.TargetResources
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = in.TargetServiceAccounts
+	// MISSING: TLSInspect
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto", skipping
 func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec {

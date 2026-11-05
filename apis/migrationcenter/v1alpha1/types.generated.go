@@ -19,6 +19,9 @@
 // proto.service: google.cloud.migrationcenter.v1
 // resource: MigrationCenterGroup:Group
 // resource: MigrationCenterPreferenceSet:PreferenceSet
+// resource: MigrationCenterSource:Source
+// resource: MigrationCenterImportJob:ImportJob
+// resource: MigrationCenterReportConfig:ReportConfig
 
 package v1alpha1
 
@@ -33,6 +36,39 @@ type ComputeEnginePreferences struct {
 	//  based on the default licensing plan.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.ComputeEnginePreferences.license_type
 	LicenseType *string `json:"licenseType,omitempty"`
+}
+
+/* unreachable type ExecutionReport
+// +kcc:proto=google.cloud.migrationcenter.v1.ExecutionReport
+type ExecutionReport struct {
+	// Total number of asset frames reported for the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.frames_reported
+	FramesReported *int32 `json:"framesReported,omitempty"`
+
+	// Validation errors encountered during the execution of the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.execution_errors
+	ExecutionErrors *ValidationReport `json:"executionErrors,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.migrationcenter.v1.FileValidationReport
+type FileValidationReport struct {
+	// The name of the file.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.file_name
+	FileName *string `json:"fileName,omitempty"`
+
+	// Partial list of rows that encountered validation error.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.row_errors
+	RowErrors []ImportRowError `json:"rowErrors,omitempty"`
+
+	// Flag indicating that processing was aborted due to maximum number of
+	//  errors.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.partial_report
+	PartialReport *bool `json:"partialReport,omitempty"`
+
+	// List of file level errors.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.FileValidationReport.file_errors
+	FileErrors []ImportError `json:"fileErrors,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Group", skipping
@@ -53,6 +89,55 @@ type Group struct {
 	Description *string `json:"description,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ImportError
+type ImportError struct {
+	// The error information.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportError.error_details
+	ErrorDetails *string `json:"errorDetails,omitempty"`
+
+	// The severity of the error.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportError.severity
+	Severity *string `json:"severity,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportJob", skipping
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ImportJob
+type ImportJob struct {
+
+	// User-friendly display name. Maximum length is 63 characters.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Labels as key value pairs.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Reference to a source.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.asset_source
+	AssetSource *string `json:"assetSource,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ImportRowError
+type ImportRowError struct {
+	// The row number where the error was detected.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportRowError.row_number
+	RowNumber *int32 `json:"rowNumber,omitempty"`
+
+	// The name of the VM in the row.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportRowError.vm_name
+	VMName *string `json:"vmName,omitempty"`
+
+	// The VM UUID.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportRowError.vm_uuid
+	VMUuid *string `json:"vmUuid,omitempty"`
+
+	// The list of errors detected in the row.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportRowError.errors
+	Errors []ImportError `json:"errors,omitempty"`
+}
 
 // +kcc:proto=google.cloud.migrationcenter.v1.MachinePreferences
 type MachinePreferences struct {
@@ -101,6 +186,38 @@ type RegionPreferences struct {
 	PreferredRegions []string `json:"preferredRegions,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ReportConfig", skipping
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportConfig
+type ReportConfig struct {
+
+	// User-friendly display name. Maximum length is 63 characters.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Free-text description.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Collection of combinations of groups and preference sets.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.group_preferenceset_assignments
+	GroupPreferencesetAssignments []ReportConfig_GroupPreferenceSetAssignment `json:"groupPreferencesetAssignments,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment
+type ReportConfig_GroupPreferenceSetAssignment struct {
+	// Required. Name of the group.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.group
+	// +required
+	Group *string `json:"group,omitempty"`
+
+	// Required. Name of the Preference Set.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.GroupPreferenceSetAssignment.preference_set
+	// +required
+	PreferenceSet *string `json:"preferenceSet,omitempty"`
+}
+
 // +kcc:proto=google.cloud.migrationcenter.v1.SoleTenancyPreferences
 type SoleTenancyPreferences struct {
 	// CPU overcommit ratio.
@@ -131,6 +248,45 @@ type SoleTenantNodeType struct {
 	//  https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.SoleTenantNodeType.node_name
 	NodeName *string `json:"nodeName,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
+
+// +kcc:proto=google.cloud.migrationcenter.v1.Source
+type Source struct {
+
+	// User-friendly display name.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Free-text description.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.description
+	Description *string `json:"description,omitempty"`
+
+	// Data source type.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.type
+	Type *string `json:"type,omitempty"`
+
+	// The information confidence of the source.
+	//  The higher the value, the higher the confidence.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// If `true`, the source is managed by other service(s).
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.managed
+	Managed *bool `json:"managed,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.migrationcenter.v1.ValidationReport
+type ValidationReport struct {
+	// List of errors found in files.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ValidationReport.file_validations
+	FileValidations []FileValidationReport `json:"fileValidations,omitempty"`
+
+	// List of job level errors.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ValidationReport.job_errors
+	JobErrors []ImportError `json:"jobErrors,omitempty"`
 }
 
 // +kcc:proto=google.cloud.migrationcenter.v1.VirtualMachinePreferences
@@ -208,6 +364,21 @@ type VmwareEnginePreferences struct {
 	CommitmentPlan *string `json:"commitmentPlan,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ExecutionReport
+type ExecutionReportObservedState struct {
+	// Total number of asset frames reported for the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.frames_reported
+	FramesReported *int32 `json:"framesReported,omitempty"`
+
+	// Validation errors encountered during the execution of the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.execution_errors
+	ExecutionErrors *ValidationReport `json:"executionErrors,omitempty"`
+
+	// Output only. Total number of rows in the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ExecutionReport.total_rows_count
+	TotalRowsCount *int32 `json:"totalRowsCount,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Group", skipping
 
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Group
@@ -226,6 +397,40 @@ type GroupObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ImportJob", skipping
+
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ImportJob
+type ImportJobObservedState struct {
+	// Output only. The full name of the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The timestamp when the import job was created.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the import job was last updated.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The timestamp when the import job was completed.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.complete_time
+	CompleteTime *string `json:"completeTime,omitempty"`
+
+	// Output only. The state of the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The report with the validation results of the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.validation_report
+	ValidationReport *ValidationReport `json:"validationReport,omitempty"`
+
+	// Output only. The report with the results of running the import job.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ImportJob.execution_report
+	ExecutionReport *ExecutionReportObservedState `json:"executionReport,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.PreferenceSet", skipping
 
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.PreferenceSet
@@ -241,5 +446,54 @@ type PreferenceSetObservedState struct {
 	// Output only. The timestamp when the preference set was last updated.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.PreferenceSet.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.ReportConfig", skipping
+
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.ReportConfig
+type ReportConfigObservedState struct {
+	// Output only. Name of resource.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.ReportConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
+
+// +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Source
+type SourceObservedState struct {
+	// Output only. The full name of the source.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The timestamp when the source was created.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the source was last updated.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Number of frames that are still being processed.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.pending_frame_count
+	PendingFrameCount *int32 `json:"pendingFrameCount,omitempty"`
+
+	// Output only. The number of frames that were reported by the source and
+	//  contained errors.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.error_frame_count
+	ErrorFrameCount *int32 `json:"errorFrameCount,omitempty"`
+
+	// Output only. The state of the source.
+	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.state
+	State *string `json:"state,omitempty"`
 }
 */

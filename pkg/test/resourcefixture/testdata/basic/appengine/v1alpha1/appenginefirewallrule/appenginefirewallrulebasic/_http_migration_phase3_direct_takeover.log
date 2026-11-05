@@ -1,0 +1,21 @@
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F1000
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "Sample firewall rule",
+  "priority": 1000,
+  "sourceRange": "192.168.1.0/24"
+}

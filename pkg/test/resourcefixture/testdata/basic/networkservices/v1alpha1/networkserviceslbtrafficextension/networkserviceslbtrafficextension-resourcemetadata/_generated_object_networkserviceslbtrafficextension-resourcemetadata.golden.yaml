@@ -1,0 +1,45 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesLBTrafficExtension
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: lbtrafficextension-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated LBTrafficExtension with resource level metadata
+  extensionChains:
+  - extensions:
+    - authority: updated.ext1.example.com
+      backendServiceRef:
+        name: ${backendServiceID}
+      name: ext1
+      supportedEvents:
+      - REQUEST_HEADERS
+      timeout: 0.200s
+    matchCondition:
+      celExpression: request.host == 'updated.example.com'
+    name: chain1
+  forwardingRuleRefs:
+  - name: ${forwardingRuleID}
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-central1
+  metadata:
+    resource_level_key: updated_resource_level_value
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lbTrafficExtensions/lbtrafficextension-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

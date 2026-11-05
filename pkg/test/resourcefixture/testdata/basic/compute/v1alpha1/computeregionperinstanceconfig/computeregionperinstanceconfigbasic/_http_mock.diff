@@ -1,0 +1,86 @@
+675c675
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs
+692c692
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/createInstances?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/createInstances
+736c736,737
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+767c768
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs
+797,827c798
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "items": [
+<     {
+<       "fingerprint": "ASTsD2uIITQ=",
+<       "name": "instance-${uniqueId}",
+<       "preservedState": {
+<         "metadata": {
+<           "key": "value"
+<         }
+<       },
+<       "status": "APPLYING"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/updatePerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/updatePerInstanceConfigs
+871c842,843
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+902c874
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listManagedInstances?alt=json&maxResults=1
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listManagedInstances?maxResults=1
+943c915
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/applyUpdatesToInstances?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/applyUpdatesToInstances
+982c954,955
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1013c986
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs
+1043c1016
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/listPerInstanceConfigs
+1073c1046
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/deletePerInstanceConfigs?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}/deletePerInstanceConfigs
+1110c1083,1084
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json

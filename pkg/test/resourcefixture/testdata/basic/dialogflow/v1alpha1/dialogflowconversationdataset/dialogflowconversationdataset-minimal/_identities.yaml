@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowConversationDataset
+  name: dialogflowconversationdataset-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

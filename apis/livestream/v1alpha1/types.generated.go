@@ -20,6 +20,7 @@
 // resource: LiveStreamAsset:Asset
 // resource: LiveStreamChannel:Channel
 // resource: LiveStreamInput:Input
+// resource: LiveStreamDVRSession:DvrSession
 
 package v1alpha1
 
@@ -136,6 +137,23 @@ type Channel_Output struct {
 	// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.Channel.Output.uri
 	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest
+type DvrSession_DvrManifest struct {
+	// Required. A unique key that identifies a manifest config in the parent
+	//  channel. This key is the same as `channel.manifests.key` for the selected
+	//  manifest.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrManifest.manifest_key
+	// +required
+	ManifestKey *string `json:"manifestKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.DvrSession.DvrWindow
+type DvrSession_DvrWindow struct {
+	// A time interval in the form of a tuple of Unix epoch time.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrWindow.time_interval
+	TimeInterval *TimeInterval `json:"timeInterval,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.ElementaryStream
@@ -476,6 +494,17 @@ type TextStream struct {
 	Codec *string `json:"codec,omitempty"`
 }
 
+// +kcc:proto=google.cloud.video.livestream.v1.TimeInterval
+type TimeInterval struct {
+	// Optional. The start time of the interval.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.TimeInterval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. The end time of the interval.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.TimeInterval.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.video.livestream.v1.TimecodeConfig
 type TimecodeConfig struct {
 	// The source of the timecode that will later be used in outputs/manifests.
@@ -658,4 +687,15 @@ type TimeZone struct {
 	// Optional. IANA Time Zone Database version number, e.g. "2019a".
 	// +kcc:proto:field=google.type.TimeZone.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest
+type DvrSession_DvrManifestObservedState struct {
+	// Output only. The output URI of the DVR manifest. The DVR output will be
+	//  placed in a directory named `dvr/dvrSessionId/` under the parent
+	//  channel's output uri. Format:
+	//  {channel.output.uri}/dvr/{dvrSessionId}/{channel.manifests.fileName}
+	//  Example: gs://my-bucket/outputs/dvr/my-dvr-session/main.m3u8
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrManifest.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
 }

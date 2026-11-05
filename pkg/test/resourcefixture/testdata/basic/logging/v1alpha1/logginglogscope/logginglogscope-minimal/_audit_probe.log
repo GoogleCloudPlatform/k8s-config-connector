@@ -1,0 +1,14 @@
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/logScopes/logginglogscope-min-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/logScopes/logginglogscope-min-${uniqueId}",
+  "resourceNames": [
+    "projects/${projectId}"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

@@ -32,6 +32,29 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+/* found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_FromProto", skipping
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_ToProto", skipping
+
+	func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+		out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+		return out
+	}
+*/
 func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfig {
 	if in == nil {
 		return nil
@@ -303,6 +326,28 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: PSCAutoConnection
 	// (near miss): "PSCAutoConnection" vs "PscAutoConnection"
 	// MISSING: PSCConnection
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Instance_GCSBackupSource_FromProto", skipping
+func Instance_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Instance_GcsBackupSource) *krm.Instance_GCSBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_GCSBackupSource{}
+	out.Uris = in.Uris
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Instance_GCSBackupSource_ToProto", skipping
+func Instance_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Instance_GCSBackupSource) *pb.Instance_GcsBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_GcsBackupSource{}
+	out.Uris = in.Uris
 	return out
 }
 */
@@ -637,7 +682,6 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.MemorystoreInstanceObservedState{}
-	// MISSING: GCSSource
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -667,7 +711,6 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Instance{}
-	// MISSING: GCSSource
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -697,7 +740,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 		return nil
 	}
 	out := &krm.MemorystoreInstanceSpec{}
-	// MISSING: GCSSource
+	out.GCSSource = Instance_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.Labels = in.Labels
@@ -732,7 +775,9 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 		return nil
 	}
 	out := &pb.Instance{}
-	// MISSING: GCSSource
+	if oneof := Instance_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.ImportSources = &pb.Instance_GcsSource{GcsSource: oneof}
+	}
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.Labels = in.Labels

@@ -68,3 +68,28 @@
 - **Problem**: When a `Control` is created under a `dataStore` that is attached to an `Engine`, the real GCP DiscoveryEngine API returns the resource `name` in responses under the `engines/{engine}` hierarchy rather than `dataStores/{dataStore}`.
 - **Solution**: Implemented `buildControlResponseName` in `mockdiscoveryengine/control.go` to inspect whether the target `dataStore` is attached to an `Engine` and return the matching engine control URI. Verified log alignment across minimal and maximal test fixtures with zero drift.
 - **Impact**: Ensures accurate MockGCP simulation for DiscoveryEngine controls under both standalone and engine-associated datastores.
+
+### [2026-09-30] DiscoveryEngineSitemap Direct Controller Implementation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineSitemap` (Issue #13528).
+- **Problem**:
+  1. `CreateSitemap` requires Advanced Site Search to be enabled on the parent `DataStore` / `SiteSearchEngine`, otherwise returning `400 Bad Request: Only Advanced Site Search data stores are permitted to use the Sitemap API`.
+  2. The DiscoveryEngine API returns the project number instead of the project ID in resource names on create/fetch and strictly requires the canonical project number in the resource name for `DeleteSitemap`.
+  3. `DiscoveryEngineSitemap` has server-generated IDs and has no Update RPC in GCP API (it is immutable).
+- **Solution**:
+  1. In `Create`, if `CreateSitemap` reports that Advanced Site Search is required, call `EnableAdvancedSiteSearch` on the parent `siteSearchEngine` LRO and retry `CreateSitemap`.
+  2. During `Create`, only set `a.id.Sitemap` to preserve the user's project ID in `a.id.String()` for KRM status consistency, while in `Delete`, call `Find` first and use `a.actual.GetName()` (which carries the server-assigned project number) for `DeleteSitemap`.
+  3. Handled immutability in `Update` by performing spec diff comparison and no-oping if diffs are detected to avoid reconciliation loops.
+- **Impact**: Enables smooth creation, re-reconciliation, and deletion of `DiscoveryEngineSitemap` resources with automatic advanced site search provisioning.
+
+### [2026-10-07] DiscoveryEngineSchema Direct Controller Implementation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineSchema` (Issue #13771).
+- **Problem**:
+  1. DiscoveryEngine automatically creates a system-managed `default_schema` for each DataStore upon creation. Attempting to call `CreateSchema` with a custom schema ID on a DataStore that already has an active schema returns `409 Conflict: Active schema already exists for data store`.
+  2. GCP returns the `jsonSchema` string compacted without whitespace, whereas KRM manifests typically format JSON schema with indentation, causing false string diffs in top-level diff comparison during re-reconciliation.
+  3. The GAPIC REST Client returns `unsupported result type <nil>: <nil>` on `DeleteSchema` LRO's `op.Wait(ctx)` because the delete operation finishes with an empty response.
+- **Solution**:
+  1. Tested and documented managing the schema with `resourceID: default_schema` on the parent `DiscoveryEngineDataStore`.
+  2. Added semantic JSON comparison in `compare()` to unmarshal and check `DeepEqual` between desired and actual `jsonSchema` before diff reporting, preventing spurious updates.
+  3. Handled the `unsupported result type <nil>: <nil>` error gracefully in `Delete()` during `op.Wait(ctx)`.
+- **Impact**: Enables reliable creation, modification, re-reconciliation, and deletion of `DiscoveryEngineSchema` resources against real GCP.
+

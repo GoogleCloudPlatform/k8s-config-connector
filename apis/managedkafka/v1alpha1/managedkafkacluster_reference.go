@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -76,7 +77,18 @@ func (r *ClusterRef) ValidateExternal(ref string) error {
 }
 
 func (r *ClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		obj := &ManagedKafkaCluster{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		id, err := NewClusterIdentity(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return id.String()
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ManagedKafkaCluster.
@@ -111,6 +123,14 @@ func (r *ClusterRef) NormalizedExternal(ctx context.Context, reader client.Reade
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if actualExternalRef == "" {
+		obj := &ManagedKafkaCluster{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err == nil {
+			if id, err := NewClusterIdentity(ctx, reader, obj); err == nil {
+				actualExternalRef = id.String()
+			}
+		}
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)

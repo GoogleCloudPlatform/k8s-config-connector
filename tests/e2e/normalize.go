@@ -81,6 +81,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		return replacements.ApplyReplacements(s)
 	})
 
+	revisionIDRegex := regexp.MustCompile(`\brunworkerpool-([a-zA-Z0-9_\-${}]+)-(\d+)-([a-z0-9]+)\b`)
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return revisionIDRegex.ReplaceAllString(s, "runworkerpool-${uniqueId}-$2-abc")
+	})
+
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
 	visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
@@ -90,6 +95,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 	visitor.replacePaths[".status.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
@@ -101,20 +107,30 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.expireTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.resources[].resourceID"] = int64(12345678)
+	visitor.replacePaths[".status.observedState.networkCookie"] = 12345678
+
+	// NetworkConnectivity
+	visitor.replacePaths[".status.observedState.generatedActivationKey"] = "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0="
+	visitor.replacePaths[".status.observedState.peeringNetwork"] = "projects/123456789012/global/networks/transport-1234567890abcdef-vpc"
 
 	// LicenseManager
 	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Connectors
+	visitor.replacePaths[".status.observedState.connectionRevision"] = int64(1234567890)
 
 	// Apigee
 	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
@@ -134,6 +150,14 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	if u.GroupVersionKind().Group == "kms.cnrm.cloud.google.com" && u.GroupVersionKind().Kind == "KMSCryptoKeyVersion" {
+		visitor.replacePaths[".status.generateTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
+
+	// Specific to ArtifactRegistry
+	if u.GroupVersionKind().Group == "artifactregistry.cnrm.cloud.google.com" {
+		visitor.SortSliceBy(".spec.cleanupPolicies", "id")
+	}
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
@@ -375,6 +399,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
+	// Specific to AIPlatformSchedule
+	if u.GetKind() == "AIPlatformSchedule" {
+		visitor.replacePaths[".spec.startTime"] = mockgcpregistry.PlaceholderTime
+		visitor.replacePaths[".spec.endTime"] = mockgcpregistry.PlaceholderTime
+	}
 	if u.GetKind() == "DocumentAIProcessorVersion" {
 		visitor.replacePaths[".status.observedState.create_time"] = mockgcpregistry.PlaceholderTime
 	}
@@ -465,6 +494,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to RunService
 	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+
+	// Specific to RunWorkerPool
+	if u.GetKind() == "RunWorkerPool" {
+		visitor.replacePaths[".status.observedState.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
 
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = mockgcpregistry.PlaceholderTime
@@ -561,6 +596,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			if typeName == "indexes" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${indexID}")
+				})
+			}
+			if typeName == "schedules" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${scheduleID}")
 				})
 			}
 		}
@@ -778,8 +818,15 @@ type sortSliceBy struct {
 
 func (o *sortSliceBy) sortSlice(s []any) ([]any, error) {
 	sort.Slice(s, func(i, j int) bool {
-		v1 := s[i].(map[string]any)[o.sortBy]
-		v2 := s[j].(map[string]any)[o.sortBy]
+		m1, _ := s[i].(map[string]any)
+		m2, _ := s[j].(map[string]any)
+		var v1, v2 any
+		if m1 != nil {
+			v1 = m1[o.sortBy]
+		}
+		if m2 != nil {
+			v2 = m2[o.sortBy]
+		}
 
 		s1 := fmt.Sprintf("%v", v1)
 		s2 := fmt.Sprintf("%v", v2)
@@ -1287,6 +1334,22 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 		}
 	}
 
+	// Find Cloud Run revision IDs in URL or Body and add to PathIDs
+	revisionIDRegexHttp := regexp.MustCompile(`\brunworkerpool-([a-zA-Z0-9_\-${}]+)-(\d+)-([a-z0-9]+)\b`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "run.googleapis.com") {
+			continue
+		}
+		for _, matches := range revisionIDRegexHttp.FindAllStringSubmatch(event.Request.URL, -1) {
+			normalizer.Replacements.PathIDs[matches[0]] = "runworkerpool-${uniqueId}-" + matches[2] + "-abc"
+		}
+		if event.Response.Body != "" {
+			for _, matches := range revisionIDRegexHttp.FindAllStringSubmatch(event.Response.Body, -1) {
+				normalizer.Replacements.PathIDs[matches[0]] = "runworkerpool-${uniqueId}-" + matches[2] + "-abc"
+			}
+		}
+	}
+
 	// Remove idempotency tokens
 	events.ReplaceRequestQueryParameter("requestId", "123456")
 
@@ -1603,6 +1666,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".importJobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".importJobs[].expireTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".importJobs[].generateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.removePaths.Insert(".publicKey.data")
+		visitor.removePaths.Insert(".importJobs[].publicKey.data")
 	}
 
 	// Network Management
@@ -1619,6 +1684,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Connectors
+	visitor.replacePaths[".connectionRevision"] = "1234567890"
+	visitor.replacePaths[".response.connectionRevision"] = "1234567890"
 
 	// Dataplex
 	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1667,6 +1736,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		}
 		if strings.Contains(requestURL, "/networks/") && (strings.Contains(requestURL, "/networks/computenetwork-") || strings.Contains(t.Name(), "computerouterinterface")) {
 			removeKeysFromMap(obj, []string{"subnetworks"})
+		}
+		if strings.Contains(requestURL, "securesourcemanager.googleapis.com") && strings.Contains(requestURL, "/repositories") {
+			removeKeysFromMap(obj, []string{"scanConfig"})
 		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {

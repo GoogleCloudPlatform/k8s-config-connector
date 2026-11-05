@@ -16,6 +16,7 @@ package workstations
 
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -188,8 +189,12 @@ func WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.WorkstationConfig_CustomerEncryptionKey{}
-	out.KmsCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKey}
-	out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.KmsKeyServiceAccount}
+	if in.KmsKey != "" {
+		out.KmsCryptoKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.KmsKey}
+	}
+	if in.KmsKeyServiceAccount != "" {
+		out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.KmsKeyServiceAccount}
+	}
 	return out
 }
 
@@ -198,8 +203,12 @@ func WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.WorkstationConfig_CustomerEncryptionKey{}
-	out.KmsKey = in.KmsCryptoKeyRef.External
-	out.KmsKeyServiceAccount = in.ServiceAccountRef.External
+	if in.KmsCryptoKeyRef != nil {
+		out.KmsKey = in.KmsCryptoKeyRef.External
+	}
+	if in.ServiceAccountRef != nil {
+		out.KmsKeyServiceAccount = in.ServiceAccountRef.External
+	}
 	return out
 }
 

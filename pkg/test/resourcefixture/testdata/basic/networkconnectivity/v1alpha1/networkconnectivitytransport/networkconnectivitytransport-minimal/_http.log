@@ -1,0 +1,182 @@
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/transports?alt=json&prettyPrint=false&transportId=transport-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "bandwidth": "BPS_1G",
+  "network": "projects/${projectId}/global/networks/default",
+  "remoteAccountId": "123456789012",
+  "remoteProfile": "projects/${projectId}/locations/us-east4/remoteTransportProfiles/aws-us-east-1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Transport",
+    "bandwidth": "BPS_1G",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generatedActivationKey": "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0=",
+    "name": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "peeringNetwork": "projects/123456789012/global/networks/transport-1234567890abcdef-vpc",
+    "remoteAccountId": "123456789012",
+    "remoteProfile": "projects/${projectId}/locations/us-east4/remoteTransportProfiles/aws-us-east-1",
+    "stackType": "IPV4_ONLY",
+    "state": "PENDING_KEY",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bandwidth": "BPS_1G",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generatedActivationKey": "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0=",
+  "name": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "peeringNetwork": "projects/123456789012/global/networks/transport-1234567890abcdef-vpc",
+  "remoteAccountId": "123456789012",
+  "remoteProfile": "projects/${projectId}/locations/us-east4/remoteTransportProfiles/aws-us-east-1",
+  "stackType": "IPV4_ONLY",
+  "state": "PENDING_KEY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

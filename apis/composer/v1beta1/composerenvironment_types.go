@@ -18,6 +18,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 
@@ -289,7 +290,7 @@ type EncryptionConfig struct {
 	//  Management Service. Cannot be updated. If not specified, Google-managed key
 	//  will be used.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EncryptionConfig.kms_key_name
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.NodeConfig

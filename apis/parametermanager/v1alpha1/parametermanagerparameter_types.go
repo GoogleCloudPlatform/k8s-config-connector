@@ -16,7 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -42,7 +42,7 @@ type ParameterManagerParameterSpec struct {
 	//  Parameter. The expected format is
 	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.parametermanager.v1.Parameter.kms_key
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // ParameterManagerParameterStatus defines the config connector machine state of ParameterManagerParameter

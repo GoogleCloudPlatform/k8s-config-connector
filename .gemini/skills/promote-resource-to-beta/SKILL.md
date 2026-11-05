@@ -29,7 +29,7 @@ Before promoting a resource to beta, ensure it has full API test coverage.
    - In `v1beta1/generate.sh`, update `--api-version` to `v1beta1` and specify the promoted resource kind.
 
 2. **Copy and Update Core API Files**:
-   - Copy `_types.go`, `_identity.go`, and `_reference.go` to `v1beta1/`.
+   - Copy `_types.go` (and any hand-written `_identity.go` / `_reference.go` overrides) to `v1beta1/`. If the resource uses `controllerbuilder generate-identity` in `apis/<service>/generate.sh`, add a `generate-identity --api-version <service>.cnrm.cloud.google.com/v1beta1 --resource <Kind>:<Proto>` invocation so `<kind>_identity.generated.go`, `<kind>_reference.generated.go`, and `<kind>_identity_generated_test.go` are regenerated in `v1beta1/`.
    - Update package name to `package v1beta1`.
    - Update import paths within the files if needed.
 

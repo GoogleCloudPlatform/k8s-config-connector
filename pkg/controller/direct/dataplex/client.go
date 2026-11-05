@@ -45,6 +45,14 @@ func (m *gcpClient) options() ([]option.ClientOption, error) {
 	return opts, nil
 }
 
+func (m *gcpClient) restOptions() ([]option.ClientOption, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	return opts, nil
+}
+
 func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 	opts, err := m.options()
 	if err != nil {
@@ -71,6 +79,20 @@ func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, erro
 	}
 
 	return grpcClient, err
+}
+
+func (m *gcpClient) catalogRESTClient(ctx context.Context) (*api.CatalogClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewCatalogRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex catalog client: %w", err)
+	}
+
+	return restClient, nil
 }
 
 func (m *gcpClient) dataTaxonomyClient(ctx context.Context, location string) (*api.DataTaxonomyClient, error) {
@@ -104,4 +126,18 @@ func (m *gcpClient) dataProductClient(ctx context.Context) (*api.DataProductClie
 	}
 
 	return restClient, nil
+}
+
+func (m *gcpClient) dataScanRESTClient(ctx context.Context) (*api.DataScanClient, error) {
+	opts, err := m.restOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewDataScanRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data scan REST client: %w", err)
+	}
+
+	return restClient, err
 }

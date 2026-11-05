@@ -36,6 +36,9 @@ go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto 
   };
 EOF
 
+sed -i 's/{project=projects\/\*}:addFirebase/{name=projects\/\*}:addFirebase/' ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/firebase/v1beta1/service.proto
+
+
 # SQL patches
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message BackupConfiguration --mode append <<EOF
@@ -51,6 +54,15 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
   // The server certificate rotation mode.
 
   optional string server_certificate_rotation_mode = 10;
+
+  // The server CA mode.
+  optional string server_ca_mode = 11;
+
+  // The server CA pool.
+  optional string server_ca_pool = 12;
+
+  // Custom Subject Alternative Names.
+  repeated string custom_subject_alternative_names = 13;
 
 EOF
 
@@ -289,6 +301,136 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1b
   optional PrivilegedAdmissionConfig desired_privileged_admission_config = 157;
 EOF
 
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message ContainerdConfig --mode append <<'EOF'
+
+  // Defines writable cgroups configuration.
+  message WritableCgroups {
+    // Optional. Whether writable cgroups is enabled.
+    bool enabled = 1 [(google.api.field_behavior) = OPTIONAL];
+  }
+
+  // RegistryHostConfig configures the top-level structure for a single
+  // containerd registry server's configuration, which represents one hosts.toml
+  // file on the node. It will override the same fqdns in
+  // PrivateRegistryAccessConfig.
+  message RegistryHostConfig {
+    // CertificateConfig configures certificate for the registry.
+    message CertificateConfig {
+      // One of the methods to configure the certificate.
+      oneof certificate {
+        // The URI configures a secret from
+        // [Secret Manager](https://cloud.google.com/secret-manager)
+        // in the format
+        // "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION" for
+        // global secret or
+        // "projects/$PROJECT_ID/locations/$REGION/secrets/$SECRET_NAME/versions/$VERSION"
+        // for regional secret. Version can be fixed (e.g. "2") or "latest"
+        string gcp_secret_manager_secret_uri = 1;
+      }
+    }
+
+    // CertificateConfigPair configures pairs of certificates, which is used for
+    // client certificate and key pairs under a registry.
+    message CertificateConfigPair {
+      // Cert configures the client certificate.
+      CertificateConfig cert = 1;
+
+      // Key configures the client private key. Optional.
+      CertificateConfig key = 2;
+    }
+
+    // RegistryHeader configures headers for the registry.
+    message RegistryHeader {
+      // Key configures the header key.
+      string key = 1;
+
+      // Value configures the header value.
+      repeated string value = 2;
+    }
+
+    // HostCapability configures capabilities for the registry host.
+    enum HostCapability {
+      // UNKNOWN should never be set.
+      HOST_CAPABILITY_UNSPECIFIED = 0;
+
+      // Pull represents the capability to fetch manifests and blobs by digest.
+      HOST_CAPABILITY_PULL = 1;
+
+      // Resolve represents the capability to fetch manifests by name.
+      HOST_CAPABILITY_RESOLVE = 2;
+
+      // Push represents the capability to push blobs and manifests.
+      HOST_CAPABILITY_PUSH = 3;
+    }
+
+    // HostConfig configures the registry host under a given Server.
+    message HostConfig {
+      // Host configures the registry host/mirror.
+      // It supports fully qualified domain names (FQDNs) and IP addresses.
+      // Specifying scheme, port or path is supported. Scheme can only be http
+      // or https.
+      // Wildcards are NOT supported.
+      // Examples:
+      // - `my.customdomain.com`
+      // - `https://my.customdomain.com/path`
+      // - `10.0.1.2:5000`
+      string host = 1;
+
+      // Capabilities represent the capabilities of the registry host,
+      // specifying what operations a host is capable of performing.
+      // If not set, containerd enables all capabilities by default.
+      repeated HostCapability capabilities = 2;
+
+      // OverridePath is used to indicate the host's API root endpoint is
+      // defined in the URL path rather than by the API specification. This may
+      // be used with non-compliant OCI registries which are missing the /v2
+      // prefix.
+      // If not set, containerd sets default false.
+      bool override_path = 3;
+
+      // Header configures the registry host headers.
+      repeated RegistryHeader header = 4;
+
+      // CA configures the registry host certificate.
+      repeated CertificateConfig ca = 5;
+
+      // Client configures the registry host client certificate and key.
+      repeated CertificateConfigPair client = 6;
+
+      // Specifies the maximum duration allowed for a connection attempt to
+      // complete. A shorter timeout helps reduce delays when falling back to
+      // the original registry if the mirror is unreachable.
+      // Maximum allowed value is 180s. If not set, containerd sets default 30s.
+      // The value should be a decimal number of seconds with an `s` suffix.
+      google.protobuf.Duration dial_timeout = 7;
+    }
+
+    // Defines the host name of the registry server, which will be used to
+    // create configuration file as /etc/containerd/hosts.d/<server>/hosts.toml.
+    // It supports fully qualified domain names (FQDN) and IP addresses:
+    // Specifying port is supported, while scheme and path are NOT supported.
+    // Wildcards are NOT supported.
+    // Examples:
+    // - `my.customdomain.com`
+    // - `10.0.1.2:5000`
+    string server = 1;
+
+    // HostConfig configures a list of host-specific configurations for the
+    // server.
+    // Each server can have at most 10 host configurations.
+    repeated HostConfig hosts = 2;
+  }
+
+  // Optional. WritableCgroups defines writable cgroups configuration for the
+  // node pool.
+  WritableCgroups writable_cgroups = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // RegistryHostConfig configures containerd registry host configuration.
+  // Each registry_hosts represents a hosts.toml file.
+  // At most 25 registry_hosts are allowed.
+  repeated RegistryHostConfig registry_hosts = 3;
+EOF
+
 
 
 # ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2
@@ -339,6 +481,131 @@ EOF
 fi
 
 # Dataform patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto --service "Dataform" --mode "append" <<EOF
+  // Fetches a single Folder.
+  rpc GetFolder(GetFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new Folder in a given project and location.
+  rpc CreateFolder(CreateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/locations/*}/folders"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "parent,folder,folder_id";
+  }
+
+  // Updates a single Folder.
+  rpc UpdateFolder(UpdateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{folder.name=projects/*/locations/*/folders/*}"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "folder,update_mask";
+  }
+
+  // Deletes a single Folder.
+  rpc DeleteFolder(DeleteFolderRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+EOF
+
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto <<EOF
+
+// \`GetFolder\` request message.
+message GetFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// \`CreateFolderRequest\` request message.
+message CreateFolderRequest {
+  // Required. The location in which to create the Folder. Must be in the
+  // format \`projects/*/locations/*\`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "locations.googleapis.com/Location"
+    }
+  ];
+
+  // Required. The Folder to create.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The ID to use for the Folder, which will become the final component of
+  // the Folder's resource name.
+  string folder_id = 3;
+}
+
+// \`UpdateFolder\` request message.
+message UpdateFolderRequest {
+  // Optional. Specifies the fields to be updated in the Folder. If left unset,
+  // all fields will be updated.
+  google.protobuf.FieldMask update_mask = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The updated Folder.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// \`DeleteFolder\` request message.
+message DeleteFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// Represents a Dataform folder.
+message Folder {
+  option (google.api.resource) = {
+    type: "dataform.googleapis.com/Folder"
+    pattern: "projects/{project}/locations/{location}/folders/{folder}"
+  };
+
+  // Identifier. The Folder's name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Required. The Folder's user-friendly name.
+  string display_name = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The containing Folder resource name.
+  optional string containing_folder = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. The resource name of the TeamFolder that this Folder is
+  // associated with.
+  optional string team_folder_name = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was created.
+  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was last updated.
+  google.protobuf.Timestamp update_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. All the metadata information that is used internally to serve the resource.
+  optional string internal_metadata = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The IAM principal identifier of the creator of the Folder.
+  optional string creator_iam_principal = 8 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+EOF
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1/dataform.proto --service "Dataform" --mode "append" <<EOF
   // Fetches a single TeamFolder.

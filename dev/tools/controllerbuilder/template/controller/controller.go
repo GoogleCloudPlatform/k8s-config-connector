@@ -25,10 +25,93 @@ type ControllerArgs struct {
 	ProtoResource string
 	// The GCP API version.
 	ProtoVersion string
+
+	// --- Pass 1-5 Deterministic Specialization Args ---
+
+	// Import paths and package aliases
+	GCPClientImportPath  string // e.g., "cloud.google.com/go/beyondcorp/appconnections/apiv1"
+	GCPClientType        string // e.g., "*gcp.Client" or "*gcp.KeyManagementClient"
+	GCPClientConstructor string // e.g., "gcp.NewRESTClient" or "gcp.NewKeyManagementRESTClient"
+	UseGRPCClient        bool   // true if GAPIC package uses GRPCClientOptions() and New<Service>Client
+	PBImportPath         string // e.g., "cloud.google.com/go/beyondcorp/appconnections/apiv1/appconnectionspb"
+	PBPackageAlias       string // e.g., "appconnectionspb"
+
+	// Method availability & names (Pass 1)
+	HasGet          bool   // true if standard Get RPC exists
+	GetMethodName   string // e.g., "GetAppConnection"
+	GetRequestType  string // e.g., "GetAppConnectionRequest"
+	GetNameField    string // Go struct field name on GetRequest, e.g., "Name"
+	FindUsesList    bool   // Archetype B: true if Get RPC is absent and Find() iterates via List RPC
+	ListMethodName  string // e.g., "ListAssignments"
+	ListRequestType string // e.g., "ListAssignmentsRequest"
+	ListParentField string // e.g., "Parent"
+
+	HasCreate              bool
+	CreateMethodName       string // e.g., "CreateAppConnection"
+	CreateRequestType      string // e.g., "CreateAppConnectionRequest"
+	CreateParentField      string // e.g., "Parent" (empty if no parent field)
+	CreateNameField        string // e.g., "Name" (when CreateRequest has top-level Name and no BodyField)
+	CreateBodyField        string // e.g., "AppConnection"
+	CreateIDField          string // e.g., "AppConnectionId" (empty if no ID query param)
+	CreateIDFieldIsPointer bool   // true if CreateIDField is proto3 optional (*string in Go)
+	CreateIsLRO            bool
+	CreateLROIsEmpty       bool // true if Create LRO response type is google.protobuf.Empty
+	CreateSyncIsEmpty      bool // true if synchronous Create response type is google.protobuf.Empty
+
+	HasUpdate             bool
+	UpdateMethodName      string // e.g., "UpdateAppConnection"
+	UpdateRequestType     string // e.g., "UpdateAppConnectionRequest"
+	UpdateBodyField       string // e.g., "AppConnection" (empty if top-level or no body)
+	UpdateMaskField       string // e.g., "UpdateMask" (empty if Pass 3 Archetype F)
+	UpdateHasTopLevelName bool   // true if UpdateRequest has its own top-level Name field alongside BodyField
+	UpdateIsLRO           bool
+	UpdateLROIsEmpty      bool // true if Update LRO response type is google.protobuf.Empty
+	UpdateSyncIsEmpty     bool // true if synchronous Update response type is google.protobuf.Empty
+
+	HasDelete         bool
+	DeleteMethodName  string // e.g., "DeleteAppConnection"
+	DeleteRequestType string // e.g., "DeleteAppConnectionRequest"
+	DeleteNameField   string // e.g., "Name"
+	DeleteIsLRO       bool
+	DeleteLROIsEmpty  bool // true if Delete LRO response type is google.protobuf.Empty
+	DeleteSyncIsEmpty bool // true if synchronous Delete response type is google.protobuf.Empty
+
+	// ID Strategy (Pass 2)
+	IsSingleton                bool // Archetype D: no Create, no Delete
+	IsServerGeneratedID        bool // Archetype C Variant 3B: Server-generated resource ID
+	HasIdentitySpecifiedMethod bool // true if Identity defines HasIdentitySpecified()
+	ServerIDUsesEmptyIDGuard   bool // true if server-generated Identity leaves IDExpr empty before creation
+	SetResourceNameInCreate    bool // Archetype C Variant 3A: Create has no ID param, so set resource.Name = a.id.String()
+
+	// Proto & KRM Traits (Pass 5)
+	PackageName                    string // Go package name for the controller file (defaults to KCCService)
+	MapperPackageImport            string // Optional import path when controller is in a sub-package and mappers are in parent package
+	MapperPrefix                   string // Optional package qualifier (e.g. "apihub.") for mapper calls
+	ResourceNameField              string // Go field name on resource proto, e.g., "Name" (empty if resource proto has no name field)
+	HasReferences                  bool   // Spec has *Ref fields -> emit common.NormalizeGreenfieldReferences
+	HasObservedState               bool   // Status has ObservedState
+	MapperVersionSuffix            string // "" by default, or "_v1alpha1" / "_v1beta1" when multiversion mappers are used
+	ObservedStateVersionSuffix     string // Optional override when ObservedState mapper version suffix differs from Spec mapper
+	HasExplicitObservedStateSuffix bool   // true if ObservedStateVersionSuffix was explicitly determined
+	RegionalEndpoint               string // "" (global), "prefix" ({loc}-{service}), or "rep" ({service}.{loc}.rep.googleapis.com)
+	ServiceHost                    string // e.g., "cloudbuild.googleapis.com" from google.api.default_host
+	LocationExpr                   string // e.g., "direct.ValueOf(obj.Spec.Location)" or "obj.Spec.Location"
+
+	// Identity expressions (inspected from apis/<service>/<version> AST)
+	IdentityImportPath      string // Optional extra import path if Identity is in apis/refs
+	IdentityType            string // e.g., "krm.BeyondCorpAppConnectionIdentity" or "krm.AppConnectionIdentity"
+	IdentityConstructorExpr string // e.g., "krm.NewAppConnectionIdentity(ctx, reader, obj)"
+	UseGetIdentity          bool   // true if (obj *Kind) GetIdentity(ctx, reader) exists
+	ParentStringExpr        string // e.g., "a.id.ParentString()" or "a.id.Parent().String()"
+	IDExpr                  string // e.g., "a.id.ID()" or "a.id.Instance()"
+	HasIdentityFromExternal bool   // true if Identity has FromExternal(string) error method
+
+	// Indicates whether deterministic passes have already been applied.
+	PassesApplied bool
 }
 
 const ControllerTemplate = `
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

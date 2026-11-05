@@ -14,8 +14,6 @@
 
 package v1beta1
 
-import refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
 // +kcc:proto=google.cloud.bigquery.v2.Access
 type Access struct {
 	// An IAM role ID that should be granted to the user, group,
@@ -107,14 +105,6 @@ type DatasetReference struct {
 	// The ID of the project containing this dataset.
 	// +required
 	ProjectId *string `json:"projectId,omitempty"`
-}
-
-// +kcc:proto=google.cloud.bigquery.v2.EncryptionConfiguration
-type EncryptionConfiguration struct {
-	// Optional. Describes the Cloud KMS encryption key that will be used to
-	//  protect destination BigQuery table. The BigQuery Service Account associated
-	//  with your project requires access to this encryption key.
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.ExternalCatalogDatasetOptions

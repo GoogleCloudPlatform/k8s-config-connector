@@ -43,7 +43,7 @@ func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Documentation = direct.LazyPtr(in.GetDocumentation())
 	// s := string(in.GetIcon())
 	// out.Icon = &s // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
+	out.SharingEnvironmentConfig = SharingEnvironmentConfig_FromProto(mapCtx, in.GetSharingEnvironmentConfig())
 	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
 	return out
 }
@@ -58,10 +58,37 @@ func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
 	out.Documentation = direct.ValueOf(in.Documentation)
 	// out.Icon = []byte(direct.ValueOf(in.Icon)) // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
+	out.SharingEnvironmentConfig = SharingEnvironmentConfig_ToProto(mapCtx, in.SharingEnvironmentConfig)
 	dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
 	out.DiscoveryType = &dtype
 
+	return out
+}
+
+func SharingEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.SharingEnvironmentConfig) *krm.SharingEnvironmentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SharingEnvironmentConfig{}
+	if in.GetDcrExchangeConfig() != nil {
+		out.DcrExchangeConfig = &krm.SharingEnvironmentConfig_DcrExchangeConfig{
+			SingleSelectedResourceSharingRestriction: direct.LazyPtr(in.GetDcrExchangeConfig().GetSingleSelectedResourceSharingRestriction()),
+			SingleLinkedDatasetPerCleanroom:          direct.LazyPtr(in.GetDcrExchangeConfig().GetSingleLinkedDatasetPerCleanroom()),
+		}
+	}
+	return out
+}
+
+func SharingEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.SharingEnvironmentConfig) *pb.SharingEnvironmentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SharingEnvironmentConfig{}
+	if in.DcrExchangeConfig != nil {
+		out.Environment = &pb.SharingEnvironmentConfig_DcrExchangeConfig_{
+			DcrExchangeConfig: &pb.SharingEnvironmentConfig_DcrExchangeConfig{},
+		}
+	}
 	return out
 }
 

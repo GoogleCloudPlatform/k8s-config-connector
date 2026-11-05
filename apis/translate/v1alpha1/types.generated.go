@@ -17,49 +17,279 @@
 // krm.group: translate.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.translation.v3
-// resource: TranslateAdaptiveMtDataset:AdaptiveMtDataset
+// resource: TranslateDataset:Dataset
+// resource: TranslateGlossary:Glossary
+// resource: TranslateGlossaryEntry:GlossaryEntry
+// resource: TranslateModel:Model
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.translation.v3.AdaptiveMtDataset", skipping
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Dataset", skipping
 
-// +kcc:proto=google.cloud.translation.v3.AdaptiveMtDataset
-type AdaptiveMtDataset struct {
-	// Required. The resource name of the dataset, in form of
-	//  `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset_id}`
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.name
+// +kcc:proto=google.cloud.translation.v3.Dataset
+type Dataset struct {
+	// The resource name of the dataset, in form of
+	//  `projects/{project-number-or-id}/locations/{location_id}/datasets/{dataset_id}`
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.name
 	Name *string `json:"name,omitempty"`
 
 	// The name of the dataset to show in the interface. The name can be
 	//  up to 32 characters long and can consist only of ASCII Latin letters A-Z
 	//  and a-z, underscores (_), and ASCII digits 0-9.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.display_name
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The BCP-47 language code of the source language.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.source_language_code
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.source_language_code
 	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
 
 	// The BCP-47 language code of the target language.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.target_language_code
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.target_language_code
 	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
-
-	// The number of examples in the dataset.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.example_count
-	ExampleCount *int32 `json:"exampleCount,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.translation.v3.AdaptiveMtDataset", skipping
+// +kcc:proto=google.cloud.translation.v3.GcsSource
+type GCSSource struct {
+	// Required. Source data URI. For example, `gs://my_bucket/my_object`.
+	// +kcc:proto:field=google.cloud.translation.v3.GcsSource.input_uri
+	// +required
+	InputURI *string `json:"inputURI,omitempty"`
+}
 
-// +kcc:observedstate:proto=google.cloud.translation.v3.AdaptiveMtDataset
-type AdaptiveMtDatasetObservedState struct {
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Glossary", skipping
+
+// +kcc:proto=google.cloud.translation.v3.Glossary
+type Glossary struct {
+	// Required. The resource name of the glossary. Glossary names have the form
+	//  `projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}`.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.name
+	Name *string `json:"name,omitempty"`
+
+	// Used with unidirectional glossaries.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.language_pair
+	LanguagePair *Glossary_LanguageCodePair `json:"languagePair,omitempty"`
+
+	// Used with equivalent term set glossaries.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.language_codes_set
+	LanguageCodesSet *Glossary_LanguageCodesSet `json:"languageCodesSet,omitempty"`
+
+	// Required. Provides examples to build the glossary from.
+	//  Total glossary must not exceed 10M Unicode codepoints.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.input_config
+	InputConfig *GlossaryInputConfig `json:"inputConfig,omitempty"`
+
+	// Optional. The display name of the glossary.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.translation.v3.Glossary.LanguageCodePair
+type Glossary_LanguageCodePair struct {
+	// Required. The ISO-639 language code of the input text, for example,
+	//  "en-US". Expected to be an exact match for GlossaryTerm.language_code.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodePair.source_language_code
+	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
+
+	// Required. The ISO-639 language code for translation output, for example,
+	//  "zh-CN". Expected to be an exact match for GlossaryTerm.language_code.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodePair.target_language_code
+	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.translation.v3.Glossary.LanguageCodesSet
+type Glossary_LanguageCodesSet struct {
+	// The ISO-639 language code(s) for terms defined in the glossary.
+	//  All entries are unique. The list contains at least two entries.
+	//  Expected to be an exact match for GlossaryTerm.language_code.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.LanguageCodesSet.language_codes
+	LanguageCodes []string `json:"languageCodes,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.GlossaryEntry", skipping
+
+// +kcc:proto=google.cloud.translation.v3.GlossaryEntry
+type GlossaryEntry struct {
+	// Identifier. The resource name of the entry.
+	//  Format:
+	//    `projects/* /locations/* /glossaries/* /glossaryEntries/*`
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.name
+	Name *string `json:"name,omitempty"`
+
+	// Used for an unidirectional glossary.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.terms_pair
+	TermsPair *GlossaryEntry_GlossaryTermsPair `json:"termsPair,omitempty"`
+
+	// Used for an equivalent term sets glossary.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.terms_set
+	TermsSet *GlossaryEntry_GlossaryTermsSet `json:"termsSet,omitempty"`
+
+	// Describes the glossary entry.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.translation.v3.GlossaryEntry.GlossaryTermsPair
+type GlossaryEntry_GlossaryTermsPair struct {
+	// The source term is the term that will get match in the text,
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.GlossaryTermsPair.source_term
+	SourceTerm *GlossaryTerm `json:"sourceTerm,omitempty"`
+
+	// The term that will replace the match source term.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.GlossaryTermsPair.target_term
+	TargetTerm *GlossaryTerm `json:"targetTerm,omitempty"`
+}
+
+// +kcc:proto=google.cloud.translation.v3.GlossaryEntry.GlossaryTermsSet
+type GlossaryEntry_GlossaryTermsSet struct {
+	// Each term in the set represents a term that can be replaced by the other
+	//  terms.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryEntry.GlossaryTermsSet.terms
+	Terms []GlossaryTerm `json:"terms,omitempty"`
+}
+
+// +kcc:proto=google.cloud.translation.v3.GlossaryInputConfig
+type GlossaryInputConfig struct {
+	// Required. Google Cloud Storage location of glossary data.
+	//  File format is determined based on the filename extension. API returns
+	//  [google.rpc.Code.INVALID_ARGUMENT] for unsupported URI-s and file
+	//  formats. Wildcards are not allowed. This must be a single file in one of
+	//  the following formats:
+	//
+	//  For unidirectional glossaries:
+	//
+	//  - TSV/CSV (`.tsv`/`.csv`): Two column file, tab- or comma-separated.
+	//    The first column is source text. The second column is target text.
+	//    No headers in this file. The first row contains data and not column
+	//    names.
+	//
+	//  - TMX (`.tmx`): TMX file with parallel data defining source/target term
+	//  pairs.
+	//
+	//  For equivalent term sets glossaries:
+	//
+	//  - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms
+	//    in multiple languages. See documentation for more information -
+	//    [glossaries](https://cloud.google.com/translate/docs/advanced/glossary).
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryInputConfig.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.translation.v3.GlossaryTerm
+type GlossaryTerm struct {
+	// The language for this glossary term.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryTerm.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+
+	// The text for the glossary term.
+	// +kcc:proto:field=google.cloud.translation.v3.GlossaryTerm.text
+	Text *string `json:"text,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Model", skipping
+
+// +kcc:proto=google.cloud.translation.v3.Model
+type Model struct {
+	// The resource name of the model, in form of
+	//  `projects/{project-number-or-id}/locations/{location_id}/models/{model_id}`
+	// +kcc:proto:field=google.cloud.translation.v3.Model.name
+	Name *string `json:"name,omitempty"`
+
+	// The name of the model to show in the interface. The name can be
+	//  up to 32 characters long and can consist only of ASCII Latin letters A-Z
+	//  and a-z, underscores (_), and ASCII digits 0-9.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The dataset from which the model is trained, in form of
+	//  `projects/{project-number-or-id}/locations/{location_id}/datasets/{dataset_id}`
+	// +kcc:proto:field=google.cloud.translation.v3.Model.dataset
+	Dataset *string `json:"dataset,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Dataset", skipping
+
+// +kcc:observedstate:proto=google.cloud.translation.v3.Dataset
+type DatasetObservedState struct {
+	// Output only. The number of examples in the dataset.
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.example_count
+	ExampleCount *int32 `json:"exampleCount,omitempty"`
+
+	// Output only. Number of training examples (sentence pairs).
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.train_example_count
+	TrainExampleCount *int32 `json:"trainExampleCount,omitempty"`
+
+	// Output only. Number of validation examples (sentence pairs).
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.validate_example_count
+	ValidateExampleCount *int32 `json:"validateExampleCount,omitempty"`
+
+	// Output only. Number of test examples (sentence pairs).
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.test_example_count
+	TestExampleCount *int32 `json:"testExampleCount,omitempty"`
+
 	// Output only. Timestamp when this dataset was created.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.create_time
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Timestamp when this dataset was last updated.
-	// +kcc:proto:field=google.cloud.translation.v3.AdaptiveMtDataset.update_time
+	// +kcc:proto:field=google.cloud.translation.v3.Dataset.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Glossary", skipping
+
+// +kcc:observedstate:proto=google.cloud.translation.v3.Glossary
+type GlossaryObservedState struct {
+	// Output only. The number of entries defined in the glossary.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.entry_count
+	EntryCount *int32 `json:"entryCount,omitempty"`
+
+	// Output only. When CreateGlossary was called.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.submit_time
+	SubmitTime *string `json:"submitTime,omitempty"`
+
+	// Output only. When the glossary creation was finished.
+	// +kcc:proto:field=google.cloud.translation.v3.Glossary.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.translation.v3.Model", skipping
+
+// +kcc:observedstate:proto=google.cloud.translation.v3.Model
+type ModelObservedState struct {
+	// Output only. The BCP-47 language code of the source language.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.source_language_code
+	SourceLanguageCode *string `json:"sourceLanguageCode,omitempty"`
+
+	// Output only. The BCP-47 language code of the target language.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.target_language_code
+	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
+
+	// Output only. Number of examples (sentence pairs) used to train the model.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.train_example_count
+	TrainExampleCount *int32 `json:"trainExampleCount,omitempty"`
+
+	// Output only. Number of examples (sentence pairs) used to validate the
+	//  model.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.validate_example_count
+	ValidateExampleCount *int32 `json:"validateExampleCount,omitempty"`
+
+	// Output only. Number of examples (sentence pairs) used to test the model.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.test_example_count
+	TestExampleCount *int32 `json:"testExampleCount,omitempty"`
+
+	// Output only. Timestamp when the model resource was created, which is also
+	//  when the training started.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this model was last updated.
+	// +kcc:proto:field=google.cloud.translation.v3.Model.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */

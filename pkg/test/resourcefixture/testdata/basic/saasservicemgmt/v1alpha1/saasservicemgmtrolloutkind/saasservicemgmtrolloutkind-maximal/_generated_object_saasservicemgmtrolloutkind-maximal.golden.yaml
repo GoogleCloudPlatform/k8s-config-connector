@@ -1,0 +1,35 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtRolloutKind
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: saasservicemgmtrolloutkind-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  errorBudget:
+    allowedCount: 10
+    allowedPercentage: 20
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  rolloutOrchestrationStrategy: Google.Cloud.Simple.OneLocationAtATime
+  unitFilter: unit.labels.tier == 'staging'
+  unitKind: projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind
+  updateUnitKindStrategy: UPDATE_UNIT_KIND_STRATEGY_NEVER
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/rolloutKinds/saasservicemgmtrolloutkind-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    updateTime: "1970-01-01T00:00:00Z"

@@ -40,7 +40,7 @@ func Singular(s string) string {
 		// addresses -> address
 		return s[:len(s)-2]
 	case strings.HasSuffix(s, "ss"), strings.HasSuffix(s, "us"),
-		strings.HasSuffix(s, "is"):
+		strings.HasSuffix(s, "is") && !strings.HasSuffix(strings.ToLower(s), "apis") && !strings.HasSuffix(strings.ToLower(s), "uris"):
 		// access, status, analysis: not plurals at all.
 		return s
 	case strings.HasSuffix(s, "s") && len(s) > 2:

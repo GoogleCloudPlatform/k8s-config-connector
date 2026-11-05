@@ -18,13 +18,16 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservatio
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-disable2
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-enable
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-remove-project
-pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/machineimageautogen
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/computemachineimageautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment/computenetworkattachment-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice/computenetworkedgesecurityservice-minimal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkendpoint/computenetworkendpointbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyrulebasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyruleegress
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeorganizationsecuritypolicy/organizationsecuritypolicyautogen
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeorganizationsecuritypolicyassociation/computeorganizationsecuritypolicyassociationbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeregiondiskresourcepolicyattachment/regiondiskresourcepolicyattachmentautogen
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeregionperinstanceconfig/computeregionperinstanceconfigbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/computeaddressipcollection
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/computeaddressipcollection-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/globalcomputeaddress
@@ -101,6 +104,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/cloudruncomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/portmapcomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/privateserviceconnectioncomputeregionnetworkendpointgroup
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/acquirereservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/basicreservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/fullreservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/sharereservation-add-project
@@ -122,6 +126,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/compute
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterpeer
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-ratelimit
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-regional
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeserviceattachment
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpchostproject
@@ -162,6 +167,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapredirect
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap

@@ -31,7 +31,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.developerconnect.v1 \
   --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
@@ -40,14 +39,26 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DevConnectAccountConnector:AccountConnector \
   --prune-unused-types=false
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.developerconnect.v1 \
+  --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DeveloperConnectGitRepositoryLink:GitRepositoryLink
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.developerconnect.v1 \
+  --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
+  --resource DeveloperConnectGitRepositoryLink:GitRepositoryLink
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.developerconnect.v1 \
-  --api-version developerconnect.cnrm.cloud.google.com/v1alpha1
-
-# Format generated code
+  --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/developerconnect" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/developerconnect/

@@ -164,6 +164,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>Y</td>
     </tr>
     <tr>
+        <td><code>GKEHubScope</code></td>
+        <td>Y</td>
+    </tr>
+    <tr>
         <td><code>IAMServiceAccount</code></td>
         <td>Y</td>
     </tr>
@@ -180,6 +184,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>Y</td>
     </tr>
     <tr>
+        <td><code>LoggingLogView</code></td>
+        <td>Y</td>
+    </tr>
+    <tr>
         <td><code>NetworkSecurityAuthorizationPolicy</code></td>
         <td></td>
     </tr>
@@ -193,6 +201,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>Organization</code></td>
+        <td>Y</td>
+    </tr>
+    <tr>
+        <td><code>PrivateCACAPool</code></td>
         <td>Y</td>
     </tr>
     <tr>
@@ -364,6 +376,12 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         </td>
     </tr>
     <tr>
+        <td><code>GKEHubScope</code></td>
+        <td>
+            <p><code>projects/{projectID}/locations/{location}/scopes/{scopeID}</code></p>
+        </td>
+    </tr>
+    <tr>
         <td><code>IAMServiceAccount</code></td>
         <td>
             <p><code>projects/{{project}}/serviceAccounts/{{account_id}}@{{project}}.iam.gserviceaccount.com</code></p>
@@ -388,6 +406,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         </td>
     </tr>
     <tr>
+        <td><code>LoggingLogView</code></td>
+        <td>
+            <p><code>projects/{project}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
+            <p><code>folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
+            <p><code>organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}</code></p>
+        </td>
+    </tr>
+    <tr>
         <td><code>NetworkSecurityAuthorizationPolicy</code></td>
         <td>
             <p><code>projects/{{project}}/locations/{{location}}/authorizationPolicies/{{name}}</code></p>
@@ -409,6 +435,12 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td><code>Organization</code></td>
         <td>
             <p><code>{{org_id}}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>PrivateCACAPool</code></td>
+        <td>
+            <p><code>projects/{project}/locations/{location}/caPools/{caPool}</code></p>
         </td>
     </tr>
     <tr>

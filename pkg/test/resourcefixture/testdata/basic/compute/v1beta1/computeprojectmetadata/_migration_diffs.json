@@ -1,0 +1,51 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "ComputeProjectMetadata/computeprojectmetadata-${uniqueId}",
+    "fields": [
+      {
+        "id": "metadata.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "metadata.baz",
+        "old": "",
+        "new": "bat"
+      },
+      {
+        "id": "metadata.foo",
+        "old": "",
+        "new": "bar"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "Project/metadata-${uniqueId}",
+    "fields": [
+      {
+        "id": "labels.%",
+        "old": "4",
+        "new": "2"
+      },
+      {
+        "id": "labels.firebase",
+        "old": "enabled",
+        "new": ""
+      },
+      {
+        "id": "labels.firebase-core",
+        "old": "disabled",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "${projectId}",
+        "new": "Dependent Project"
+      }
+    ]
+  }
+]

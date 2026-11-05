@@ -1,0 +1,35 @@
+# Phase: CREATE
+POST https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets?widgetId=widget-${uniqueId}
+Content-Type: application/json
+
+{
+  "description": "initial description"
+}
+
+200 OK
+
+{
+  "description": "initial description",
+  "name": "projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}"
+}
+
+---
+
+# Phase: UPDATE
+GET https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}
+
+200 OK
+
+{
+  "description": "initial description",
+  "name": "projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}
+
+200 OK
+
+{}

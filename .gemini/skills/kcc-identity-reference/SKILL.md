@@ -7,7 +7,35 @@ description: Creates or updates the _identity.go and _reference.go files for a C
 
 ## Overview
 
-This skill guides you through creating or updating the `_identity.go` and `_reference.go` files for a given Config Connector resource (e.g. `MemoryStoreInstance`). The goal is to implement `identity.IdentityV2` and `refs.Ref` using the canonical `gcpurls.Template` pattern, identical to the pattern used in `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go`.
+This skill guides you through creating or updating the identity and reference files for a given Config Connector resource (e.g. `MemoryStoreInstance`). The goal is to implement `identity.IdentityV2` and `refs.Ref` using the canonical `gcpurls.Template` pattern, identical to the pattern used in `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go`.
+
+### Preferred: Deterministic Generation via `controllerbuilder generate-identity`
+
+Before writing `<kind>_identity.go` or `<kind>_reference.go` by hand, add `${CONTROLLERBUILDER} generate-identity` to `apis/<service>/generate.sh` right after `generate-types`:
+
+```bash
+${CONTROLLERBUILDER} generate-identity \
+  --service <proto.service> \
+  --api-version <group>.cnrm.cloud.google.com/<version> \
+  --resource <Kind>:<ProtoResource>
+```
+
+Running `apis/<service>/generate.sh` deterministically emits:
+- `apis/<service>/<version>/<kind>_identity.generated.go`
+- `apis/<service>/<version>/<kind>_reference.generated.go`
+- `apis/<service>/<version>/<kind>_identity_generated_test.go` (calling `identity.AssertConformance`)
+
+**Declaration-by-declaration override ("hand-written wins"):** If a resource has a non-standard parent or legacy `NormalizeWithFallback`, keep only the custom function (for example `getIdentityFrom<Kind>Spec` in `<kind>_identity.go` or `Normalize` in `<kind>_reference.go`); `generate-identity` will still emit the `Identity` struct, `gcpurls.Template`, `String()`, `FromExternal()`, `Host()`, `ParentString()`, `GetIdentity()`, and `<Kind>Ref` boilerplate in the `.generated.go` files without colliding.
+
+**Explicit pattern override (`--pattern`):** If a proto message lacks `(google.api.resource)` patterns (producing an `identity-root-unknown` judgement entry) or you want to explicitly lock in a pattern for a multi-pattern proto (suppressing `identity-multi-pattern`), pass `--pattern <Kind>=<pattern>` (or `--pattern <Kind>=//<host>/<pattern>`) to `generate-identity` in `apis/<service>/generate.sh` instead of hand-writing `<kind>_identity.go` from scratch:
+
+```bash
+${CONTROLLERBUILDER} generate-identity \
+  --service <proto.service> \
+  --api-version <group>.cnrm.cloud.google.com/<version> \
+  --resource <Kind>:<ProtoResource> \
+  --pattern <Kind>=projects/{project}/locations/{location}/things/{thing}
+```
 
 ## Hints
 
@@ -50,6 +78,7 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `ParentString()` to return the GCP parent URI string (e.g., `projects/{project}` or `projects/{project}/locations/{location}`) to simplify parent path construction in controllers.
 - Implement `getIdentityFrom<Kind>Spec(ctx context.Context, reader client.Reader, obj *<Kind>) (*<Kind>Identity, error)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
   - **Important:** This function MUST take a typed pointer `*<Kind>` directly. If any callers (such as `Normalize` fallback) only have an `*unstructured.Unstructured` object, those callers must first convert it using `common.ToStructuredType[*<Kind>](unstructuredObj)` before calling `getIdentityFrom<Kind>Spec`. This keeps the extraction code highly type-safe and avoids manual unstructured field parsing.
+  - **Organization References:** `refs.ResolveOrganization` strictly expects the external reference string to follow `organizations/{organizationID}`. If a resource allows a plain numeric organization ID (e.g. `123456789`), or if `spec.organizationRef` is defined locally to match a legacy CRD schema, normalize it in `getIdentityFrom<Kind>Spec` by prefixing `"organizations/"` if `!strings.Contains(external, "/")`. Also handle fallback to `cnrm.cloud.google.com/organization-id` annotation (trimming any `"organizations/"` prefix to store just the ID).
 - Implement Boilerplate and GetIdentity(ctx, reader) on the Resource struct:
   - **CRITICAL / MANDATORY STATUS CROSS-CHECK IN GETIDENTITY:** In `GetIdentity`, you MUST always cross-check the parsed identity from spec against `status.externalRef` or whatever other status field holds the identity for created objects (e.g. `status.name`). This prevents drift and guarantees that the identity resolved is authoritative for created objects. If the resource is created, its identity MUST come from status; we cross-check spec against status to detect drift.
   - **CRITICAL / MANDATORY:** Do NOT change the schema (e.g., do not add `status.externalRef` or `status.name` fields to the `_types.go` file if they are not already there) in this phase. If the resource's `Status` struct does not already contain an `ExternalRef` or `Name` field, do NOT perform any cross-check against the status in `GetIdentity`. Simply return the parsed `specIdentity` without checking status. **We should never change the schema to introduce an identity or reference.**

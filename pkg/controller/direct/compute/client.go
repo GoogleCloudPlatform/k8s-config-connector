@@ -18,6 +18,7 @@
 // proto.service: google.cloud.compute.v1.NetworkAttachments
 // proto.service: google.cloud.compute.v1.HealthChecks
 // proto.service: google.cloud.compute.v1.Images
+// proto.service: google.cloud.compute.v1.MachineImages
 // proto.service: google.cloud.compute.v1.SecurityPolicies
 // proto.service: google.cloud.compute.v1.RegionSecurityPolicies
 // proto.service: google.cloud.compute.v1.Addresses
@@ -29,6 +30,7 @@
 // proto.service: google.cloud.compute.v1.Autoscalers
 // proto.service: google.cloud.compute.v1.NodeTemplates
 // proto.service: google.cloud.compute.v1.Firewalls
+// proto.service: google.cloud.compute.v1.Projects
 
 package compute
 
@@ -177,6 +179,18 @@ func (m *gcpClient) newSslPoliciesClient(ctx context.Context) (*compute.SslPolic
 	client, err := compute.NewSslPoliciesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute SslPolicies client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newSslCertificatesClient(ctx context.Context) (*compute.SslCertificatesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewSslCertificatesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute SslCertificates client: %w", err)
 	}
 	return client, err
 }
@@ -453,6 +467,54 @@ func (m *gcpClient) newExternalVpnGatewaysClient(ctx context.Context) (*compute.
 	client, err := compute.NewExternalVpnGatewaysRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeExternalVpnGateways client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newProjectsClient(ctx context.Context) (*compute.ProjectsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewProjectsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeProjects client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworkFirewallPoliciesClient(ctx context.Context) (*compute.NetworkFirewallPoliciesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkFirewallPoliciesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeNetworkFirewallPolicies client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworkEndpointGroupsClient(ctx context.Context) (*compute.NetworkEndpointGroupsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkEndpointGroupsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute NetworkEndpointGroups client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newMachineImagesClient(ctx context.Context) (*compute.MachineImagesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewMachineImagesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute MachineImages client: %w", err)
 	}
 	return client, err
 }

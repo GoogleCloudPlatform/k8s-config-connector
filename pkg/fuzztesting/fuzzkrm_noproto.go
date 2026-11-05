@@ -121,24 +121,24 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzStatus(t *te
 	fuzzer.Fuzz(t, seed)
 }
 
-// // NewKRMTypedSpecFuzzer_NoProto is a convenience function for creating a fuzzer that only
-// // fuzzes the spec fields of a KRM type.
-// func NewKRMTypedSpecFuzzer_NoProto[ProtoT proto.Message, SpecType any](
-// 	protoType ProtoT,
-// 	specFromProto func(ctx *direct.MapContext, in ProtoT) *SpecType,
-// 	specToProto func(ctx *direct.MapContext, in *SpecType) ProtoT,
-// ) *KRMTypedFuzzer_NoProto[ProtoT, SpecType] {
-// 	return &KRMTypedFuzzer_NoProto[ProtoT, SpecType]{
-// 		ProtoType:           protoType,
-// 		SpecFromProto:       specFromProto,
-// 		SpecToProto:         specToProto,
-// 		StatusFromProto:     nil, // No status functions
-// 		StatusToProto:       nil, // No status functions
-// 		UnimplementedFields: sets.New[string](),
-// 		SpecFields:          sets.New[string](),
-// 		StatusFields:        sets.New[string](),
-// 	}
-// }
+// NewKRMTypedSpecFuzzer_NoProto is a convenience function for creating a fuzzer that only
+// fuzzes the spec fields of a KRM type.
+func NewKRMTypedSpecFuzzer_NoProto[APIType any, SpecType any](
+	apiType APIType,
+	specFromAPI func(ctx *direct.MapContext, in APIType) *SpecType,
+	specToAPI func(ctx *direct.MapContext, in *SpecType) APIType,
+) *KRMTypedFuzzer_NoProto[APIType, SpecType, NoStatus] {
+	return &KRMTypedFuzzer_NoProto[APIType, SpecType, NoStatus]{
+		APIType:             apiType,
+		SpecFromAPI:         specFromAPI,
+		SpecToAPI:           specToAPI,
+		StatusFromAPI:       nil, // No status functions
+		StatusToAPI:         nil, // No status functions
+		UnimplementedFields: sets.New[string](),
+		SpecFields:          sets.New[string](),
+		StatusFields:        sets.New[string](),
+	}
+}
 
 type FuzzTest_NoProto[APIType any, KRMType any] struct {
 	APIType APIType

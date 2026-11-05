@@ -104,6 +104,8 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 			obj.Description = req.GetCertificateMapEntry().GetDescription()
 		case "labels":
 			obj.Labels = req.GetCertificateMapEntry().GetLabels()
+		case "certificates":
+			obj.Certificates = req.GetCertificateMapEntry().GetCertificates()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

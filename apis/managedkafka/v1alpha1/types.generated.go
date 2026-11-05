@@ -17,374 +17,183 @@
 // krm.group: managedkafka.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.managedkafka.v1
-// resource: ManagedKafkaCluster:Cluster
-// resource: ManagedKafkaConnectCluster:ConnectCluster
-// resource: ManagedKafkaConsumerGroup:ConsumerGroup
-// resource: ManagedKafkaTopic:Topic
+// proto.service: google.cloud.managedkafka.schemaregistry.v1
+// resource: ManagedKafkaACL:Acl
+// resource: ManagedKafkaConnector:Connector
+// resource: ManagedKafkaSchemaRegistry:SchemaRegistry
 
 package v1alpha1
 
-/* found existing non-generated go type "AccessConfig", skipping
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry", skipping
 
-// +kcc:proto=google.cloud.managedkafka.v1.AccessConfig
-type AccessConfig struct {
-	// Required. Virtual Private Cloud (VPC) networks that must be granted direct
-	//  access to the Kafka cluster. Minimum of 1 network is required. Maximum 10
-	//  networks can be specified.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.AccessConfig.network_configs
-	NetworkConfigs []NetworkConfig `json:"networkConfigs,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "CapacityConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.CapacityConfig
-type CapacityConfig struct {
-	// Required. The number of vCPUs to provision for the cluster. Minimum: 3.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.CapacityConfig.vcpu_count
-	VcpuCount *int64 `json:"vcpuCount,omitempty"`
-
-	// Required. The memory to provision for the cluster in bytes.
-	//  The CPU:memory ratio (vCPU:GiB) must be between 1:1 and 1:8.
-	//  Minimum: 3221225472 (3 GiB).
-	// +kcc:proto:field=google.cloud.managedkafka.v1.CapacityConfig.memory_bytes
-	MemoryBytes *int64 `json:"memoryBytes,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Cluster", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
-type Cluster struct {
-	// Required. Configuration properties for a Kafka cluster deployed to Google
-	//  Cloud Platform.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.gcp_config
-	GcpConfig *GcpConfig `json:"gcpConfig,omitempty"`
-
-	// Identifier. The name of the cluster. Structured like:
-	//  projects/{project_number}/locations/{location}/clusters/{cluster_id}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.name
+// +kcc:proto=google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry
+type SchemaRegistry struct {
+	// Identifier. The name of the schema registry instance. Structured like:
+	//  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}`
+	//  The instance name {schema_registry} can contain the following:
+	//  * Up to 255 characters.
+	//  * Letters (uppercase or lowercase), numbers, and underscores.
+	// +kcc:proto:field=google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry.name
 	Name *string `json:"name,omitempty"`
-
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. Capacity configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.capacity_config
-	CapacityConfig *CapacityConfig `json:"capacityConfig,omitempty"`
-
-	// Optional. Rebalance configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.rebalance_config
-	RebalanceConfig *RebalanceConfig `json:"rebalanceConfig,omitempty"`
-
-	// Optional. TLS configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.tls_config
-	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
 }
 */
 
-/* found existing non-generated go type "ConnectAccessConfig", skipping
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Acl", skipping
 
-// +kcc:proto=google.cloud.managedkafka.v1.ConnectAccessConfig
-type ConnectAccessConfig struct {
-	// Required.
-	//  Virtual Private Cloud (VPC) networks that must be granted direct access to
-	//  the Kafka Connect cluster. Minimum of 1 network is required. Maximum 10
-	//  networks can be specified.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectAccessConfig.network_configs
-	NetworkConfigs []ConnectNetworkConfig `json:"networkConfigs,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectCluster", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.ConnectCluster
-type ConnectCluster struct {
-	// Required. Configuration properties for a Kafka Connect cluster deployed
-	//  to Google Cloud Platform.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.gcp_config
-	GcpConfig *ConnectGcpConfig `json:"gcpConfig,omitempty"`
-
-	// Identifier. The name of the Kafka Connect cluster. Structured like:
-	//  projects/{project_number}/locations/{location}/connectClusters/{connect_cluster_id}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Immutable. The name of the Kafka cluster this Kafka Connect
-	//  cluster is attached to. Structured like:
-	//  projects/{project}/locations/{location}/clusters/{cluster}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.kafka_cluster
-	KafkaCluster *string `json:"kafkaCluster,omitempty"`
-
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. Capacity configuration for the Kafka Connect cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.capacity_config
-	CapacityConfig *CapacityConfig `json:"capacityConfig,omitempty"`
-
-	// Optional. Configurations for the worker that are overridden from the
-	//  defaults. The key of the map is a Kafka Connect worker property name, for
-	//  example: `exactly.once.source.support`.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.config
-	Config map[string]string `json:"config,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectGcpConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.ConnectGcpConfig
-type ConnectGcpConfig struct {
-	// Required. Access configuration for the Kafka Connect cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectGcpConfig.access_config
-	AccessConfig *ConnectAccessConfig `json:"accessConfig,omitempty"`
-
-	// Optional. Secrets to load into workers. Exact SecretVersions from Secret
-	//  Manager must be provided -- aliases are not supported. Up to 32 secrets may
-	//  be loaded into one cluster. Format:
-	//  projects/<project-id>/secrets/<secret-name>/versions/<version-id>
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectGcpConfig.secret_paths
-	SecretPaths []string `json:"secretPaths,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "ConnectNetworkConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.ConnectNetworkConfig
-type ConnectNetworkConfig struct {
-	// Required. VPC subnet to make available to the Kafka Connect cluster.
+// +kcc:proto=google.cloud.managedkafka.v1.Acl
+type Acl struct {
+	// Identifier. The name for the acl. Represents a single Resource Pattern.
 	//  Structured like:
-	//  projects/{project}/regions/{region}/subnetworks/{subnet_id}
+	//  projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}
 	//
-	//  It is used to create a Private Service Connect (PSC) interface for the
-	//  Kafka Connect workers. It must be located in the same region as the
-	//  Kafka Connect cluster.
+	//  The structure of `acl_id` defines the Resource Pattern (resource_type,
+	//  resource_name, pattern_type) of the acl. `acl_id` is structured like one of
+	//  the following:
 	//
-	//  The CIDR range of the subnet must be within the IPv4 address ranges for
-	//  private networks, as specified in RFC 1918. The primary subnet CIDR range
-	//  must have a minimum size of /22 (1024 addresses).
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.primary_subnet
-	PrimarySubnet *string `json:"primarySubnet,omitempty"`
-
-	// Optional. Additional subnets may be specified. They may be in another
-	//  region, but must be in the same VPC network. The Connect workers can
-	//  communicate with network endpoints in either the primary or additional
-	//  subnets.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.additional_subnets
-	AdditionalSubnets []string `json:"additionalSubnets,omitempty"`
-
-	// Optional. Additional DNS domain names from the subnet's network to be made
-	//  visible to the Connect Cluster. When using MirrorMaker2, it's necessary to
-	//  add the bootstrap address's dns domain name of the target cluster to make
-	//  it visible to the connector. For example:
-	//  my-kafka-cluster.us-central1.managedkafka.my-project.cloud.goog
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.dns_domain_names
-	DNSDomainNames []string `json:"dnsDomainNames,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConsumerGroup", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
-type ConsumerGroup struct {
-	// Identifier. The name of the consumer group. The `consumer_group` segment is
-	//  used when connecting directly to the cluster. Structured like:
-	//  projects/{project}/locations/{location}/clusters/{cluster}/consumerGroups/{consumer_group}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerGroup.name
+	//  For acls on the cluster:
+	//    `cluster`
+	//
+	//  For acls on a single resource within the cluster:
+	//    `topic/{resource_name}`
+	//    `consumerGroup/{resource_name}`
+	//    `transactionalId/{resource_name}`
+	//
+	//  For acls on all resources that match a prefix:
+	//    `topicPrefixed/{resource_name}`
+	//    `consumerGroupPrefixed/{resource_name}`
+	//    `transactionalIdPrefixed/{resource_name}`
+	//
+	//  For acls on all resources of a given type (i.e. the wildcard literal "*"):
+	//    `allTopics` (represents `topic/*`)
+	//    `allConsumerGroups` (represents `consumerGroup/*`)
+	//    `allTransactionalIds` (represents `transactionalId/*`)
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.name
 	Name *string `json:"name,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// Required. The ACL entries that apply to the resource pattern. The maximum
+	//  number of allowed entries 100.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.acl_entries
+	AclEntries []AclEntry `json:"aclEntries,omitempty"`
 
+	// Optional. `etag` is used for concurrency control. An `etag` is returned in
+	//  the response to `GetAcl` and `CreateAcl`. Callers are required to put that
+	//  etag in the request to `UpdateAcl` to ensure that their change will be
+	//  applied to the same version of the acl that exists in the Kafka Cluster.
+	//
+	//  A terminal 'T' character in the etag indicates that the AclEntries were
+	//  truncated; more entries for the Acl exist on the Kafka Cluster, but can't
+	//  be returned in the Acl due to repeated field limits.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.etag
+	Etag *string `json:"etag,omitempty"`
 }
 */
 
-/* found existing non-generated go type "ConsumerPartitionMetadata", skipping
+// +kcc:proto=google.cloud.managedkafka.v1.AclEntry
+type AclEntry struct {
+	// Required. The principal. Specified as Google Cloud account, with the Kafka
+	//  StandardAuthorizer prefix "User:". For example:
+	//  "User:test-kafka-client@test-project.iam.gserviceaccount.com".
+	//  Can be the wildcard "User:*" to refer to all users.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.principal
+	// +required
+	Principal *string `json:"principal,omitempty"`
 
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerPartitionMetadata
-type ConsumerPartitionMetadata struct {
-	// Required. The current offset for this partition, or 0 if no offset has been
-	//  committed.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.offset
-	Offset *int64 `json:"offset,omitempty"`
+	// Required. The permission type. Accepted values are (case insensitive):
+	//  ALLOW, DENY.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.permission_type
+	// +required
+	PermissionType *string `json:"permissionType,omitempty"`
 
-	// Optional. The associated metadata for this partition, or empty if it does
-	//  not exist.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.metadata
-	Metadata *string `json:"metadata,omitempty"`
+	// Required. The operation type. Allowed values are (case insensitive): ALL,
+	//  READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION,
+	//  DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE. See
+	//  https://kafka.apache.org/documentation/#operations_resources_and_protocols
+	//  for valid combinations of resource_type and operation for different Kafka
+	//  API requests.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.operation
+	// +required
+	Operation *string `json:"operation,omitempty"`
+
+	// Required. The host. Must be set to "*" for Managed Service for Apache
+	//  Kafka.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.host
+	// +required
+	Host *string `json:"host,omitempty"`
 }
-*/
 
-/* found existing non-generated go type "ConsumerTopicMetadata", skipping
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Connector", skipping
 
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerTopicMetadata
-type ConsumerTopicMetadata struct {
+// +kcc:proto=google.cloud.managedkafka.v1.Connector
+type Connector struct {
+	// Optional. Restarts the individual tasks of a Connector.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.task_restart_policy
+	TaskRestartPolicy *TaskRetryPolicy `json:"taskRestartPolicy,omitempty"`
 
-	// TODO: unsupported map type with key int32 and value message
-
-}
-*/
-
-/* found existing non-generated go type "GcpConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.GcpConfig
-type GcpConfig struct {
-	// Required. Access configuration for the Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.GcpConfig.access_config
-	AccessConfig *AccessConfig `json:"accessConfig,omitempty"`
-
-	// Optional. Immutable. The Cloud KMS Key name to use for encryption. The key
-	//  must be located in the same region as the cluster and cannot be changed.
+	// Identifier. The name of the connector.
 	//  Structured like:
-	//  projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.GcpConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "NetworkConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.NetworkConfig
-type NetworkConfig struct {
-	// Required. Name of the VPC subnet in which to create Private Service Connect
-	//  (PSC) endpoints for the Kafka brokers and bootstrap address. Structured
-	//  like: projects/{project}/regions/{region}/subnetworks/{subnet_id}
-	//
-	//  The subnet must be located in the same region as the Kafka cluster. The
-	//  project may differ. Multiple subnets from the same parent network must not
-	//  be specified.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.NetworkConfig.subnet
-	Subnet *string `json:"subnet,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "RebalanceConfig", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig
-type RebalanceConfig struct {
-	// Optional. The rebalance behavior for the cluster.
-	//  When not specified, defaults to `NO_REBALANCE`.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.RebalanceConfig.mode
-	Mode *string `json:"mode,omitempty"`
-}
-*/
-
-/* unreachable type TLSConfig
-// +kcc:proto=google.cloud.managedkafka.v1.TlsConfig
-type TLSConfig struct {
-	// Optional. The configuration of the broker truststore. If specified, clients
-	//  can use mTLS for authentication.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.TlsConfig.trust_config
-	TrustConfig *TrustConfig `json:"trustConfig,omitempty"`
-
-	// Optional. A list of rules for mapping from SSL principal names to
-	//  short names. These are applied in order by Kafka.
-	//  Refer to the Apache Kafka documentation for `ssl.principal.mapping.rules`
-	//  for the precise formatting details and syntax.
-	//  Example: "RULE:^CN=(.*?),OU=ServiceUsers.*$/$1@example.com/,DEFAULT"
-	//
-	//  This is a static Kafka broker configuration. Setting or modifying this
-	//  field will trigger a rolling restart of the Kafka brokers to apply
-	//  the change. An empty string means no rules are applied (Kafka default).
-	// +kcc:proto:field=google.cloud.managedkafka.v1.TlsConfig.ssl_principal_mapping_rules
-	SSLPrincipalMappingRules *string `json:"sslPrincipalMappingRules,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Topic", skipping
-
-// +kcc:proto=google.cloud.managedkafka.v1.Topic
-type Topic struct {
-	// Identifier. The name of the topic. The `topic` segment is used when
-	//  connecting directly to the cluster. Structured like:
-	//  projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.name
+	//  projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.name
 	Name *string `json:"name,omitempty"`
 
-	// Required. The number of partitions this topic has. The partition count can
-	//  only be increased, not decreased. Please note that if partitions are
-	//  increased for a topic that has a key, the partitioning logic or the
-	//  ordering of the messages will be affected.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.partition_count
-	PartitionCount *int32 `json:"partitionCount,omitempty"`
-
-	// Required. Immutable. The number of replicas of each partition. A
-	//  replication factor of 3 is recommended for high availability.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.replication_factor
-	ReplicationFactor *int32 `json:"replicationFactor,omitempty"`
-
-	// Optional. Configurations for the topic that are overridden from the cluster
-	//  defaults. The key of the map is a Kafka topic property name, for example:
-	//  `cleanup.policy`, `compression.type`.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Topic.configs
+	// Optional. Connector config as keys/values.
+	//  The keys of the map are connector property names, for example:
+	//  `connector.class`, `tasks.max`, `key.converter`.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.configs
 	Configs map[string]string `json:"configs,omitempty"`
 }
 */
 
-/* unreachable type TrustConfig
-// +kcc:proto=google.cloud.managedkafka.v1.TrustConfig
-type TrustConfig struct {
-	// Optional. Configuration for the Google Certificate Authority Service.
-	//  Maximum 10.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.cas_configs
-	CasConfigs []TrustConfig_CertificateAuthorityServiceConfig `json:"casConfigs,omitempty"`
+// +kcc:proto=google.cloud.managedkafka.v1.TaskRetryPolicy
+type TaskRetryPolicy struct {
+	// Optional. The minimum amount of time to wait before retrying a failed task.
+	//  This sets a lower bound for the backoff delay.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TaskRetryPolicy.minimum_backoff
+	MinimumBackoff *string `json:"minimumBackoff,omitempty"`
+
+	// Optional. The maximum amount of time to wait before retrying a failed task.
+	//  This sets an upper bound for the backoff delay.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TaskRetryPolicy.maximum_backoff
+	MaximumBackoff *string `json:"maximumBackoff,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry", skipping
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry
+type SchemaRegistryObservedState struct {
+	// Output only. The contexts of the schema registry instance.
+	// +kcc:proto:field=google.cloud.managedkafka.schemaregistry.v1.SchemaRegistry.contexts
+	Contexts []string `json:"contexts,omitempty"`
 }
 */
 
-/* unreachable type TrustConfig_CertificateAuthorityServiceConfig
-// +kcc:proto=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig
-type TrustConfig_CertificateAuthorityServiceConfig struct {
-	// Required. The name of the CA pool to pull CA certificates from.
-	//  Structured like:
-	//  projects/{project}/locations/{location}/caPools/{ca_pool}.
-	//  The CA pool does not need to be in the same project or location as the
-	//  Kafka cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig.ca_pool
-	CAPool *string `json:"caPool,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Acl", skipping
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Acl
+type AclObservedState struct {
+	// Output only. The ACL resource type derived from the name. One of: CLUSTER,
+	//  TOPIC, GROUP, TRANSACTIONAL_ID.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Output only. The ACL resource name derived from the name. For cluster
+	//  resource_type, this is always "kafka-cluster". Can be the wildcard literal
+	//  "*".
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.resource_name
+	ResourceName *string `json:"resourceName,omitempty"`
+
+	// Output only. The ACL pattern type derived from the name. One of: LITERAL,
+	//  PREFIXED.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.pattern_type
+	PatternType *string `json:"patternType,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Cluster", skipping
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Connector", skipping
 
-// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Cluster
-type ClusterObservedState struct {
-	// Output only. The time when the cluster was created.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the cluster was last updated.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The current state of the cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectCluster", skipping
-
-// +kcc:observedstate:proto=google.cloud.managedkafka.v1.ConnectCluster
-type ConnectClusterObservedState struct {
-	// Output only. The time when the cluster was created.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the cluster was last updated.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. The current state of the cluster.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.state
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Connector
+type ConnectorObservedState struct {
+	// Output only. The current state of the connector.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.state
 	State *string `json:"state,omitempty"`
 }
 */

@@ -66,10 +66,8 @@ func (i *AIPlatformSpecialistPoolIdentity) Host() string {
 }
 
 func getIdentityFromAIPlatformSpecialistPoolSpec(ctx context.Context, reader client.Reader, obj *AIPlatformSpecialistPool) (*AIPlatformSpecialistPoolIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// AIPlatformSpecialistPool only supports service-generated IDs (GCP assigns an ID upon creation).
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -101,6 +99,13 @@ func (obj *AIPlatformSpecialistPool) GetIdentity(ctx context.Context, reader cli
 		statusIdentity := &AIPlatformSpecialistPoolIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.SpecialistPool == "" {
+			if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change AIPlatformSpecialistPool parent (old parent=%s/%s, new parent=%s/%s)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+			}
+			return statusIdentity, nil
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

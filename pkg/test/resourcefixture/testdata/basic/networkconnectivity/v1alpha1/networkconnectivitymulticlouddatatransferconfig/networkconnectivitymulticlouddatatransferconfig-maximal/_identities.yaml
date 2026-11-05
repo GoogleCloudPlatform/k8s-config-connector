@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}
   group: networkconnectivity.cnrm.cloud.google.com
   kind: NetworkConnectivityMulticloudDataTransferConfig
   name: nc-mcdt-${uniqueId}

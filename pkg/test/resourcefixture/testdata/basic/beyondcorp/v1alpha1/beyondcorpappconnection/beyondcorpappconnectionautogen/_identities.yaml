@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appConnectors/beyondcorpappconnector${uniqueId}
   group: beyondcorp.cnrm.cloud.google.com
   kind: BeyondCorpAppConnector
   name: beyondcorpappconnector-${uniqueId}
@@ -10,7 +10,7 @@
   name: iamserviceaccount-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appConnections/beyondcorpappconnection${uniqueId}
   group: beyondcorp.cnrm.cloud.google.com
   kind: BeyondCorpAppConnection
   name: beyondcorpappconnection-${uniqueId}

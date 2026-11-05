@@ -21,6 +21,7 @@ package mockaiplatform
 import (
 	"context"
 	"fmt"
+	"hash/fnv"
 	"strings"
 	"time"
 
@@ -54,7 +55,7 @@ func (s *scheduleService) GetSchedule(ctx context.Context, req *pb.GetScheduleRe
 		return nil, err
 	}
 
-	obj.Name = strings.Replace(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number), -1)
+	obj.Name = name.StringWithProjectNumber()
 	return obj, nil
 }
 
@@ -74,7 +75,7 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 		if err != nil {
 			return err
 		}
-		scheduleCopy.Name = strings.Replace(scheduleCopy.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number), -1)
+		scheduleCopy.Name = name.StringWithProjectNumber()
 
 		response.Schedules = append(response.Schedules, scheduleCopy)
 		return nil
@@ -85,7 +86,11 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 }
 
 func (s *scheduleService) CreateSchedule(ctx context.Context, req *pb.CreateScheduleRequest) (*pb.Schedule, error) {
-	reqName := req.Parent + "/schedules/" + req.Schedule.DisplayName
+	h := fnv.New64a()
+	h.Write([]byte(req.Schedule.DisplayName))
+	id := fmt.Sprintf("%d", h.Sum64())
+
+	reqName := req.Parent + "/schedules/" + id
 	name, err := s.parseScheduleName(reqName)
 	if err != nil {
 		return nil, err
@@ -94,18 +99,19 @@ func (s *scheduleService) CreateSchedule(ctx context.Context, req *pb.CreateSche
 	fqn := name.String()
 
 	obj := proto.CloneOf(req.Schedule)
-	obj.Name = fqn
+	obj.Name = name.StringWithProjectNumber()
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.NextRunTime = timestamppb.New(time.Now())
-	obj.StartTime = timestamppb.New(time.Now())
+	if obj.StartTime == nil {
+		obj.StartTime = timestamppb.New(time.Now())
+	}
 	obj.State = pb.Schedule_ACTIVE
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	obj.Name = strings.Replace(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number), -1)
 	return obj, nil
 }
 
@@ -149,6 +155,7 @@ func (s *scheduleService) UpdateSchedule(ctx context.Context, req *pb.UpdateSche
 		return nil, err
 	}
 
+	obj.Name = name.StringWithProjectNumber()
 	return obj, nil
 }
 
@@ -222,12 +229,16 @@ func (n *scheduleName) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/schedules/%s", n.Project.ID, n.Location, n.ScheduleName)
 }
 
+func (n *scheduleName) StringWithProjectNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/schedules/%s", n.Project.Number, n.Location, n.ScheduleName)
+}
+
 // parseScheduleName parses a string into a scheduleName.
 // The expected form is `projects/*/locations/*/schedules/*`.
 func (s *MockService) parseScheduleName(name string) (*scheduleName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "schedules" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

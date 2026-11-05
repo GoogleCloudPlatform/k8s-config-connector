@@ -20,6 +20,13 @@ import (
 	"reflect"
 	"strconv"
 	"testing"
+
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/dynamicpb"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 // This is a placeholder struct for all possible types, native or not,
@@ -196,4 +203,94 @@ func TestRandomFillerFields(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestClearFieldsHasPath(t *testing.T) {
+	cf := &ClearFields{
+		Paths: sets.New[string](
+			".deployment.files[].mime_type",
+			".simple_field",
+			".list_field[]",
+		),
+	}
+
+	tests := []struct {
+		path string
+		want bool
+	}{
+		{".simple_field", true},
+		{".unknown_field", false},
+		{".list_field[]", true},
+		{".deployment.files[foo].mime_type", true},
+		{".deployment.files[123456].mime_type", true},
+		{".deployment.files[foo].other_field", false},
+	}
+
+	for _, tt := range tests {
+		got := cf.hasPath(tt.path)
+		if got != tt.want {
+			t.Errorf("hasPath(%q) = %v, want %v", tt.path, got, tt.want)
+		}
+	}
+}
+
+func TestFillWithRandomOptionalEnumSkipsZero(t *testing.T) {
+	msgDesc := mustBuildOptionalEnumWidgetDescriptor(t)
+	modeField := msgDesc.Fields().ByName("mode")
+
+	stream := rand.New(rand.NewSource(42))
+	sawSet := false
+	sawUnset := false
+	for i := 0; i < 100; i++ {
+		msg := dynamicpb.NewMessage(msgDesc)
+		FillWithRandom(t, stream, msg)
+		if msg.Has(modeField) {
+			sawSet = true
+			if got := msg.Get(modeField).Enum(); got == 0 {
+				t.Fatalf("iteration %d: optional enum was populated with 0 (UNSPECIFIED), which loses presence on round-trip", i)
+			}
+		} else {
+			sawUnset = true
+		}
+	}
+	if !sawSet || !sawUnset {
+		t.Fatalf("expected both set and unset states across 100 iterations; sawSet=%v sawUnset=%v", sawSet, sawUnset)
+	}
+}
+
+func mustBuildOptionalEnumWidgetDescriptor(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	fdp := &descriptorpb.FileDescriptorProto{
+		Syntax:  proto.String("proto3"),
+		Name:    proto.String("optional_enum.proto"),
+		Package: proto.String("google.cloud.test.v1"),
+		EnumType: []*descriptorpb.EnumDescriptorProto{{
+			Name: proto.String("Mode"),
+			Value: []*descriptorpb.EnumValueDescriptorProto{
+				{Name: proto.String("MODE_UNSPECIFIED"), Number: proto.Int32(0)},
+				{Name: proto.String("MODE_ACTIVE"), Number: proto.Int32(1)},
+			},
+		}},
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: proto.String("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{{
+				Name:           proto.String("mode"),
+				JsonName:       proto.String("mode"),
+				Number:         proto.Int32(1),
+				Type:           descriptorpb.FieldDescriptorProto_TYPE_ENUM.Enum(),
+				TypeName:       proto.String(".google.cloud.test.v1.Mode"),
+				Label:          descriptorpb.FieldDescriptorProto_LABEL_OPTIONAL.Enum(),
+				Proto3Optional: proto.Bool(true),
+				OneofIndex:     proto.Int32(0),
+			}},
+			OneofDecl: []*descriptorpb.OneofDescriptorProto{{
+				Name: proto.String("_mode"),
+			}},
+		}},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("protodesc.NewFile: %v", err)
+	}
+	return fd.Messages().ByName("Widget")
 }

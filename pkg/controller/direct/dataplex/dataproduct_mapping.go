@@ -53,3 +53,53 @@ func AccessGroups_ToProto(mapCtx *direct.MapContext, in map[string]v1alpha1.Data
 	}
 	return out
 }
+
+func AccessGroupConfigs_FromProto(mapCtx *direct.MapContext, in map[string]*pb.DataAsset_AccessGroupConfig) map[string]v1alpha1.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]v1alpha1.DataAsset_AccessGroupConfig, len(in))
+	for k, v := range in {
+		if mapped := DataAsset_AccessGroupConfig_FromProto(mapCtx, v); mapped != nil {
+			out[k] = *mapped
+		}
+	}
+	return out
+}
+
+func AccessGroupConfigs_ToProto(mapCtx *direct.MapContext, in map[string]v1alpha1.DataAsset_AccessGroupConfig) map[string]*pb.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.DataAsset_AccessGroupConfig, len(in))
+	for k, v := range in {
+		v := v
+		out[k] = DataAsset_AccessGroupConfig_ToProto(mapCtx, &v)
+	}
+	return out
+}
+
+func Aspects_FromProto(mapCtx *direct.MapContext, in map[string]*pb.Aspect) map[string]v1alpha1.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]v1alpha1.Aspect, len(in))
+	for k, v := range in {
+		if mapped := Aspect_FromProto(mapCtx, v); mapped != nil {
+			out[k] = *mapped
+		}
+	}
+	return out
+}
+
+func Aspects_ToProto(mapCtx *direct.MapContext, in map[string]v1alpha1.Aspect) map[string]*pb.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.Aspect, len(in))
+	for k, v := range in {
+		v := v
+		out[k] = Aspect_ToProto(mapCtx, &v)
+	}
+	return out
+}

@@ -67,10 +67,20 @@ type APIArgs struct {
 	// SkipGVK leaves out the <Kind>GVK declaration because the package already
 	// has one, usually in a hand-written <kind>_reference.go.
 	SkipGVK bool
+	// SourceLinks is the pre-rendered "API sources" comment block, with the
+	// +kcc:source markers, written between the license and the package
+	// clause. Empty unless --emit-source-links is on.
+	SourceLinks string
+	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec,
+	// so generate-types puts +required on the fields the proto marks REQUIRED
+	// for this Kind. Set by --emit-required-from-proto. The text must match
+	// codegen.RequiredFromProtoMarker; a scaffold test checks it.
+	RequiredFromProto bool
+	PrepopulateSpec   bool
 }
 
 const TypesTemplate = `
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,6 +93,10 @@ const TypesTemplate = `
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+{{- if .SourceLinks }}
+
+{{ .SourceLinks }}
+{{- end }}
 
 package {{ .Version }}
 
@@ -102,6 +116,9 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
 // +kcc:spec:proto={{ .KindProtoTag }}
+{{- end }}
+{{- if .RequiredFromProto }}
+// +kcc:required-from-proto
 {{- end }}
 type {{ .Kind }}Spec struct {
 {{- if .RootRefField }}
@@ -133,19 +150,28 @@ type {{ .Kind }}Status struct {
 	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
+{{- if or (not .PrepopulateSpec) .ObservedStateFields }}
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
+{{- else }}
+	// ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
+{{- end }}
 }
 
 // {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 {{- if .KindProtoTag }}
 // +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
+{{- if or (not .PrepopulateSpec) .ObservedStateFields }}
 type {{ .Kind }}ObservedState struct {
 {{ .ObservedStateFields }}}
+{{- else }}
+// type {{ .Kind }}ObservedState struct {
+// }
+{{- end }}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcp{{ .Kind | ToLower }};gcp{{ .Kind | ToLower }}s
+// +kubebuilder:resource:categories=gcp,shortName=gcp{{ .Kind | ToLower }};gcp{{ .Kind | ToLower | Plural }}
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

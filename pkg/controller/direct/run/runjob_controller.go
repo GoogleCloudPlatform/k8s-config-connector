@@ -75,6 +75,10 @@ func (m *modelJob) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewJobIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err

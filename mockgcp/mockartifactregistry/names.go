@@ -39,7 +39,7 @@ func (s *MockService) parseArtifactRegistryName(name string) (*artifactRegistryN
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "repositories" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
@@ -48,6 +48,45 @@ func (s *MockService) parseArtifactRegistryName(name string) (*artifactRegistryN
 			Project:    project,
 			Location:   tokens[3],
 			Repository: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type ruleName struct {
+	Project    *projects.ProjectData
+	Location   string
+	Repository string
+	Rule       string
+}
+
+func (n *ruleName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/repositories/" + n.Repository + "/rules/" + n.Rule
+}
+
+func (n *ruleName) Parent() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/repositories/" + n.Repository
+}
+
+// parseRuleName parses a string into a ruleName.
+// The expected form is projects/<projectID>/locations/<region>/repositories/<repositoryName>/rules/<ruleName>
+func (s *MockService) parseRuleName(name string) (*ruleName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "repositories" && tokens[6] == "rules" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &ruleName{
+			Project:    project,
+			Location:   tokens[3],
+			Repository: tokens[5],
+			Rule:       tokens[7],
 		}
 
 		return name, nil

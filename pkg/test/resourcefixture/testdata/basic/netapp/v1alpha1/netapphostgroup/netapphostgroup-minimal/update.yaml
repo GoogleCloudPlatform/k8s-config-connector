@@ -1,0 +1,12 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppHostGroup
+metadata:
+  name: netapphostgroup-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  type: ISCSI_INITIATOR
+  osType: LINUX
+  hosts:
+    - "iqn.1994-05.com.redhat:minimal2"

@@ -1,0 +1,76 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "HealthcareConsentStore/healthcareconsentstore-${uniqueId}",
+    "fields": [
+      {
+        "id": "dataset",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/datasets/healthcareconsentstore${uniqueId}"
+      },
+      {
+        "id": "default_consent_ttl",
+        "old": "",
+        "new": "90000s"
+      },
+      {
+        "id": "enable_consent_create_on_update",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "healthcareconsentstore-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "HealthcareDataset/healthcareconsentstore-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "healthcareconsentstore${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "time_zone",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

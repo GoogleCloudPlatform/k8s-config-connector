@@ -83,14 +83,6 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	if obj.Spec.KmsKeyRef != nil {
-		resolved, err := refsv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.KmsKeyRef)
-		if err != nil {
-			return nil, fmt.Errorf("resolving kmsKeyRef: %w", err)
-		}
-		obj.Spec.KmsKeyRef = resolved
-	}
-
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -256,6 +248,12 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			// We don't want to upgrade/downgrade engine versions if the user didn't specify one (how would we choose a version?)
 			if path == "engine_version" && desired.EngineVersion == "" {
 				log.V(2).Info("skipping update for engine_version since desired value is empty", "name", a.id)
+				continue
+			}
+
+			// We don't want to upgrade/downgrade maintenance versions if the user didn't specify one
+			if path == "maintenance_version" && desired.MaintenanceVersion == nil {
+				log.V(2).Info("skipping update for maintenance_version since desired value is empty", "name", a.id)
 				continue
 			}
 

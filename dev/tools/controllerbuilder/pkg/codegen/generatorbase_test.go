@@ -16,7 +16,13 @@ package codegen
 
 import (
 	"maps"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsedImports(t *testing.T) {
@@ -79,5 +85,82 @@ func TestUsedImports(t *testing.T) {
 				t.Errorf("usedImports() = %v, want %v", got, tc.want)
 			}
 		})
+	}
+}
+
+func TestGeneratedFileWriteAdditiveMerge(t *testing.T) {
+	baseDir := t.TempDir()
+	key := generatedFileKey{
+		GoPackage: "dialogflowcx/v1alpha1",
+		FileName:  "types.generated.go",
+	}
+
+	writeService := func(service, resource, body string) {
+		f := &generatedFile{
+			baseDir:   baseDir,
+			key:       key,
+			goPackage: "v1alpha1",
+			fileAnnotation: &annotations.FileAnnotation{
+				Key: "+generated:types",
+				Attributes: map[string][]string{
+					"krm.group":     {"dialogflowcx.cnrm.cloud.google.com"},
+					"krm.version":   {"v1alpha1"},
+					"proto.service": {service},
+					"resource":      {resource},
+				},
+			},
+		}
+
+		f.body.WriteString(body)
+		if err := f.Write(true, true, true); err != nil {
+			t.Fatalf("Write(%s) failed: %v", service, err)
+		}
+	}
+
+	firstBody := `
+// +kcc:proto=google.cloud.dialogflow.cx.v3.SpeechToTextSettings
+type SpeechToTextSettings struct {
+	EnableSpeechAdaptation *bool ` + "`json:\"enableSpeechAdaptation,omitempty\"`" + `
+}
+`
+	secondBody := `
+// +kcc:proto=google.cloud.dialogflow.v2.Intent.Message
+type Intent_Message struct {
+	Platform *string ` + "`json:\"platform,omitempty\"`" + `
+}
+`
+
+	writeService("google.cloud.dialogflow.cx.v3", "DialogflowCXAgent:Agent", firstBody)
+	writeService("google.cloud.dialogflow.v2", "DialogflowCXIntent:Intent", secondBody)
+
+	targetPath := filepath.Join(baseDir, "dialogflowcx", "v1alpha1", "types.generated.go")
+	firstPassBytes, err := os.ReadFile(targetPath)
+	if err != nil {
+		t.Fatalf("reading generated file: %v", err)
+	}
+
+	firstPass := string(firstPassBytes)
+
+	for _, want := range []string{
+		"// proto.service: google.cloud.dialogflow.cx.v3",
+		"// proto.service: google.cloud.dialogflow.v2",
+		"type SpeechToTextSettings struct",
+		"type Intent_Message struct",
+	} {
+		if !strings.Contains(firstPass, want) {
+			t.Errorf("expected types.generated.go to contain %q, got:\n%s", want, firstPass)
+		}
+	}
+
+	// Re-running both writes must be idempotent.
+	writeService("google.cloud.dialogflow.cx.v3", "DialogflowCXAgent:Agent", firstBody)
+	writeService("google.cloud.dialogflow.v2", "DialogflowCXIntent:Intent", secondBody)
+	secondPassBytes, err := os.ReadFile(targetPath)
+	if err != nil {
+		t.Fatalf("reading generated file after re-run: %v", err)
+	}
+
+	if diff := cmp.Diff(firstPass, string(secondPassBytes)); diff != "" {
+		t.Errorf("re-running additive Write was not idempotent (-first +second):\n%s", diff)
 	}
 }

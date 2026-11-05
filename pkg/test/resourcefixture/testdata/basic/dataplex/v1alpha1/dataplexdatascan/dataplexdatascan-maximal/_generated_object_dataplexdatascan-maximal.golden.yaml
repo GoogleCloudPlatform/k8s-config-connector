@@ -1,0 +1,42 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexDataScan
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataplexdatascan-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  data:
+    resource: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
+  dataProfileSpec:
+    rowFilter: id IS NOT NULL AND TRUE
+    samplingPercent: 80
+  description: Maximal description updated
+  displayName: Maximal Data Scan Updated
+  executionSpec:
+    field: id
+    trigger:
+      onDemand: {}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/dataScans/dataplexdatascan-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    executionStatus: {}
+    state: ACTIVE
+    type: DATA_PROFILE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

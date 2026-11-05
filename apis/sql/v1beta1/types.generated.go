@@ -18,6 +18,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.sql.v1beta4
 // resource: SQLInstance:DatabaseInstance
+// resource: SQLSSLCert:SslCert
 
 package v1beta1
 

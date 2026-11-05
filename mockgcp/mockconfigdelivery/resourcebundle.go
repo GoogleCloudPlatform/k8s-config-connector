@@ -29,6 +29,7 @@ import (
 
 	pb "cloud.google.com/go/configdelivery/apiv1/configdeliverypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type resourceBundleName struct {
@@ -76,6 +77,32 @@ func (s *ConfigDeliveryServer) GetResourceBundle(ctx context.Context, req *pb.Ge
 	}
 
 	return obj, nil
+}
+
+func (s *ConfigDeliveryServer) ListResourceBundles(ctx context.Context, req *pb.ListResourceBundlesRequest) (*pb.ListResourceBundlesResponse, error) {
+	tokens := strings.Split(req.GetParent(), "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.GetParent())
+	}
+
+	project, err := s.Projects.GetProjectByID(tokens[1])
+	if err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s/resourceBundles/", project.ID, tokens[3])
+
+	response := &pb.ListResourceBundlesResponse{}
+	kind := (&pb.ResourceBundle{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		item := obj.(*pb.ResourceBundle)
+		response.ResourceBundles = append(response.ResourceBundles, item)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *ConfigDeliveryServer) CreateResourceBundle(ctx context.Context, req *pb.CreateResourceBundleRequest) (*longrunning.Operation, error) {

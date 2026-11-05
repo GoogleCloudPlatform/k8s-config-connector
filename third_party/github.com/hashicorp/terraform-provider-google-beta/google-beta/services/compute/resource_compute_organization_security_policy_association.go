@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -73,11 +74,22 @@ func ResourceComputeOrganizationSecurityPolicyAssociation() *schema.Resource {
 	}
 }
 
+func normalizeSecurityPolicyId(policyId string) string {
+	if !strings.Contains(policyId, "locations/global/securityPolicies/") {
+		return "locations/global/securityPolicies/" + strings.TrimPrefix(policyId, "/")
+	}
+	return policyId
+}
+
 func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*transport_tpg.Config)
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	obj := make(map[string]interface{})
@@ -169,6 +181,10 @@ func resourceComputeOrganizationSecurityPolicyAssociationRead(d *schema.Resource
 		return err
 	}
 
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
+	}
+
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getAssociation?name={{name}}")
 	if err != nil {
 		return err
@@ -210,6 +226,10 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	billingProject := ""
@@ -280,6 +300,10 @@ func resourceComputeOrganizationSecurityPolicyAssociationImport(d *schema.Resour
 		"(?P<policy_id>.+)/association/(?P<name>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
+	}
+
+	if policyId, ok := d.GetOk("policy_id"); ok {
+		d.Set("policy_id", normalizeSecurityPolicyId(policyId.(string)))
 	}
 
 	// Replace import id for the resource id

@@ -87,6 +87,8 @@
         external: bigquerydatasetsamplehnf4t2squ1g1ghnendt0
   resourceConfigId: BigQueryTable
 # not supported by asset inventory
+- resourceConfigId: BigQueryDatasetAccess
+# not supported by asset inventory
 - resourceConfigId: BigQueryJob
 # not supported by asset inventory
 - resourceConfigId: BigtableAppProfile

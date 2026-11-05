@@ -20,6 +20,7 @@ import (
 	krmrunv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apipb "google.golang.org/genproto/googleapis/api"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool) *pb.BinaryAuthorization_UseDefault {
@@ -27,6 +28,20 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 		return nil
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
+}
+
+func BinaryAuthorization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krmrunv1alpha1.BinaryAuthorization {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.BinaryAuthorization{}
+	switch x := in.BinauthzMethod.(type) {
+	case *pb.BinaryAuthorization_UseDefault:
+		val := x.UseDefault
+		out.UseDefault = &val
+	}
+	out.BreakglassJustification = direct.LazyPtr(in.GetBreakglassJustification())
+	return out
 }
 
 func EnvVar_Value_ToProto(mapCtx *direct.MapContext, in *string) *pb.EnvVar_Value {
@@ -85,6 +100,34 @@ func RunWorkerPoolObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	return out
 }
 
+func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.RunWorkerPoolObservedState) *pb.WorkerPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerPool{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Generation = direct.ValueOf(in.Generation)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	out.Template = WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx, in.Template)
+	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
+	out.TerminalCondition = RunCondition_v1alpha1_ToProto(mapCtx, in.TerminalCondition)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.ObservedConditions, RunCondition_v1alpha1_ToProto)
+	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
+	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
+	out.InstanceSplitStatuses = direct.Slice_ToProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_ToProto)
+	out.CustomAudiences = in.CustomAudiences
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
 func ServiceMesh_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.ServiceMesh) *pb.ServiceMesh {
 	if in == nil {
 		return nil
@@ -117,9 +160,26 @@ func RunCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Condition
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.LastTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastTransitionTime())
 	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
-	out.Reason = direct.Enum_FromProto(mapCtx, in.GetReason())
-	out.RevisionReason = direct.Enum_FromProto(mapCtx, in.GetRevisionReason())
-	out.ExecutionReason = direct.Enum_FromProto(mapCtx, in.GetExecutionReason())
+	switch x := in.Reasons.(type) {
+	case *pb.Condition_Reason:
+		val := x.Reason.Descriptor().Values().ByNumber(protoreflect.EnumNumber(x.Reason))
+		if val != nil {
+			s := string(val.Name())
+			out.Reason = &s
+		}
+	case *pb.Condition_RevisionReason_:
+		val := x.RevisionReason.Descriptor().Values().ByNumber(protoreflect.EnumNumber(x.RevisionReason))
+		if val != nil {
+			s := string(val.Name())
+			out.RevisionReason = &s
+		}
+	case *pb.Condition_ExecutionReason_:
+		val := x.ExecutionReason.Descriptor().Values().ByNumber(protoreflect.EnumNumber(x.ExecutionReason))
+		if val != nil {
+			s := string(val.Name())
+			out.ExecutionReason = &s
+		}
+	}
 	return out
 }
 

@@ -1,0 +1,6 @@
+- caisURL: //netapp.googleapis.com/projects/${projectId}/locations/us-west2/activeDirectories/netappactivedirectory-maximal-${uniqueId}
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppActiveDirectory
+  name: netappactivedirectory-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

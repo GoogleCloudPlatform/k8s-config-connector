@@ -1,86 +1,27 @@
 ---
 name: kcc-direct-greenfield-types-implementer
-description: Automate the initial scaffolding of a KCC "direct" resource, including CRD types and generation scripts. Use this when starting a new "direct" implementation for a GCP resource.
+description: Entry point for KCC greenfield types generation and judgement-queue triage. Routes between Step 1a (`prepopulate/SKILL.md` for initial mechanical `--prepopulate-resource` scaffolding) and Step 1b (`judgement/SKILL.md` for `judgement_queue.yaml` triage and finalization).
 ---
 
-# KCC Direct Greenfield Types Implementer
+# KCC Direct Greenfield Types Implementer (Router)
 
-This skill guides the initial scaffolding of *new* (greenfield) KCC "direct" resources, ensuring standardized CRD generation and adherence to project-wide validation patterns.
+This skill is the entry point for **Greenfield Step 1a (Prepopulate)** and **Greenfield Step 1b (Judgement Queue Triage)**. It routes to one of two sub-workflows depending on whether `<Kind>` has already been prepopulated in `master` (`apis/<service>/judgement_queue.yaml` and `apis/<service>/<version>/<kind_lowercase>_types.go`).
 
 ## Prerequisites
-You **must** also apply the standards from the base skill: `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`.
+You **must** always apply the baseline KRM standards in:
+- [`.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-base-types-implementer/SKILL.md)
+- [`.gemini/skills/kcc-identity-reference/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-identity-reference/SKILL.md)
 
-## Inputs
-- `service`: The Google API service name (e.g., `google.cloud.aiplatform.v1`).
-- `resource`: The mapping of KCC Kind to GCP Resource (e.g., `VertexAIExampleStore:ExampleStore`).
-- `api_version`: The KCC API version (default: `v1alpha1`).
+## Detect Mode and Route
 
-## Workflow
+Check whether `<Kind>` already has an entry in `apis/<service>/judgement_queue.yaml` and `apis/<service>/<version>/<kind_lowercase>_types.go` on `master` (or if the issue is labeled `step/types-judgement`):
 
-### 1. Add to generate.sh
-Locate `apis/<service_short>/generate.sh`. If it doesn't exist, create it following the standard KCC template:
 ```bash
-#!/bin/bash
-# Copyright 2026 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-set -o errexit
-set -o nounset
-set -o pipefail
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-
-CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
-if [[ -z "${CONTROLLERBUILDER}" ]]; then
-  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
-    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
-  else
-    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
-  fi
-fi
-source "${REPO_ROOT}/dev/tools/goimports.sh"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-# Note: generate-proto.sh reuses cached .build/googleapis-<SHA>.pb files by default.
-# Pass --force (or FORCE_GENERATE_PROTOS=1) to force re-compiling proto descriptors when testing proto edits:
-./generate-proto.sh
-
-${CONTROLLERBUILDER} generate-types \
-  --service <service> \
-  --api-version <group>.cnrm.cloud.google.com/<api_version> \
-  --resource <resource>
+git show origin/master:apis/<service>/judgement_queue.yaml 2>/dev/null | grep -q "kind: <Kind>"
 ```
 
-### 2. Generate Types
-Set executable permissions and run the `generate.sh` script:
-```bash
-chmod +x apis/<service_short>/generate.sh
-./apis/<service_short>/generate.sh
-```
+- **If `<Kind>` is NOT yet in `apis/<service>/judgement_queue.yaml` on `master` (Step 1a / `step/gen-types`: Prepopulate Resource & Judgement Queue)**:
+  - Read and follow **[`.gemini/skills/kcc-direct-greenfield-types-implementer/prepopulate/SKILL.md`](prepopulate/SKILL.md)** using `view_file`.
+- **If `<Kind>` ALREADY exists in `apis/<service>/judgement_queue.yaml` on `master` (Step 1b / `step/types-judgement`: Triage Judgement Queue & Finalize KRM Types)**:
+  - Read and follow **[`.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/SKILL.md`](judgement/SKILL.md)** using `view_file`.
 
-### 3. Validate and Enhance Output
-Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
-
-- **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
-- **1:1 Kind to Proto Mapping**: Enforce a strict 1:1 relationship between resource Kinds and Proto definitions. Ensure no single Proto is shared by multiple Kinds, and no single Kind points to multiple Protos.
-- **Field Validation**: Manually add or verify kubebuilder tags:
-  - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
-  - Use `// +kubebuilder:validation:Optional` for all other fields.
-- **Pointers**: Ensure all Go scalar primitive types (e.g., `string`, `bool`, `int`, etc.) are pointers (e.g., `*string`, `*bool`). Pay special attention to the `Location` field, which must also be a pointer (`*string`).
-- **Enums**: 
-  - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
-  - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
-- **Exception Files**: Do not add exceptions to any exception files (e.g., in `dev/tools/controllerbuilder/`) other than `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
-
-### 4. Journaling
-Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

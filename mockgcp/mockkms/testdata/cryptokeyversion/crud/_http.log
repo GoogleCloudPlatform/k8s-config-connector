@@ -1,0 +1,219 @@
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "ENABLED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "ENABLED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    },
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 2
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2?alt=json&updateMask=state
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+{
+  "state": "DISABLED"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "DISABLED"
+}
+
+---
+
+PATCH https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2?alt=json&updateMask=state
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+{
+  "state": "ENABLED"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "ENABLED"
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2:destroy?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2:restore?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+X-Allowed-Locations: 0x7ffffffffffffffe
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}/cryptoKeyVersions/2",
+  "protectionLevel": "SOFTWARE",
+  "state": "DISABLED"
+}

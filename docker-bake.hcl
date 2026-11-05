@@ -28,6 +28,10 @@ variable "GKE_DISTROLESS_IMG" {
   default = "gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0"
 }
 
+variable "PLATFORM" {
+  default = "linux/amd64"
+}
+
 target "builder" {
   dockerfile = "build/builder/Dockerfile"
   context    = "."
@@ -36,6 +40,7 @@ target "builder" {
 target "manager" {
   dockerfile = "build/manager/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}controller:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -49,6 +54,7 @@ target "manager" {
 target "recorder" {
   dockerfile = "build/recorder/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}recorder:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -62,6 +68,7 @@ target "recorder" {
 target "webhook" {
   dockerfile = "build/webhook/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}webhook:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -75,6 +82,7 @@ target "webhook" {
 target "deletiondefender" {
   dockerfile = "build/deletiondefender/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -88,6 +96,7 @@ target "deletiondefender" {
 target "unmanageddetector" {
   dockerfile = "build/unmanageddetector/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -101,6 +110,7 @@ target "unmanageddetector" {
 target "config-connector" {
   dockerfile = "build/config-connector/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}"]
   contexts = {
     "builder:${IMAGE_TAG}" = "target:builder"
@@ -114,6 +124,7 @@ target "config-connector" {
 target "operator" {
   dockerfile = "operator/Dockerfile"
   context    = "."
+  platforms  = split(",", PLATFORM)
   tags       = ["${IMAGE_PREFIX}operator:${IMAGE_TAG}"]
   args = {
     GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"

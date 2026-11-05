@@ -1,0 +1,163 @@
+POST https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "displayName": "websecurityscannerscanconfig-minimal-${uniqueId}",
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "websecurityscannerscanconfig-minimal-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/330447838333858258",
+  "riskLevel": 1,
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+GET https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/330447838333858258?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F330447838333858258
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "websecurityscannerscanconfig-minimal-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/330447838333858258",
+  "riskLevel": 1,
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+PATCH https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/330447838333858258?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: scan_config.name=projects%2F${projectId}%2FscanConfigs%2F330447838333858258
+
+{
+  "displayName": "websecurityscannerscanconfig-min-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/330447838333858258",
+  "riskLevel": 1,
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "userAgent": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "websecurityscannerscanconfig-min-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/330447838333858258",
+  "riskLevel": 1,
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+GET https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/330447838333858258?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F330447838333858258
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "websecurityscannerscanconfig-min-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/330447838333858258",
+  "riskLevel": 1,
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+DELETE https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/330447838333858258?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F330447838333858258
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

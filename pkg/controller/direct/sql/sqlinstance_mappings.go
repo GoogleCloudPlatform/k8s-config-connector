@@ -18,12 +18,14 @@ import (
 	"fmt"
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -63,7 +65,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
+func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *kmsv1beta1.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -416,11 +418,14 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 	out := &api.IpConfiguration{
 		AllocatedIpRange:                        direct.ValueOf(in.AllocatedIpRange),
 		AuthorizedNetworks:                      InstanceAuthorizedNetworksKRMToGCP(in.AuthorizedNetworks),
+		CustomSubjectAlternativeNames:           in.CustomSubjectAlternativeNames,
 		EnablePrivatePathForGoogleCloudServices: direct.ValueOf(in.EnablePrivatePathForGoogleCloudServices),
 		Ipv4Enabled:                             direct.ValueOf(in.Ipv4Enabled),
 		PrivateNetwork:                          InstancePrivateNetworkRefKRMToGCP(in.PrivateNetworkRef),
 		PscConfig:                               InstancePscConfigKRMToGCP(in.PscConfig),
 		RequireSsl:                              direct.ValueOf(in.RequireSsl),
+		ServerCaMode:                            direct.ValueOf(in.ServerCAMode),
+		ServerCaPool:                            InstanceServerCAPoolRefKRMToGCP(in.ServerCAPoolRef),
 		SslMode:                                 direct.ValueOf(in.SslMode),
 	}
 
@@ -434,8 +439,25 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 	if in.RequireSsl != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "RequireSsl")
 	}
+	if in.ServerCAMode != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ServerCaMode")
+	}
+	if in.ServerCAPoolRef != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "ServerCaPool")
+	}
+	if in.CustomSubjectAlternativeNames != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "CustomSubjectAlternativeNames")
+	}
 
 	return out
+}
+
+func InstanceServerCAPoolRefKRMToGCP(in *privatecarefs.PrivateCACAPoolRef) string {
+	if in == nil {
+		return ""
+	}
+
+	return privatecarefs.StripCAPoolPrefix(in.External)
 }
 
 func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*api.AclEntry {
@@ -674,12 +696,12 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfiguration) *refs.KMSCryptoKeyRef {
+func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfiguration) *kmsv1beta1.KMSCryptoKeyRef {
 	if in == nil {
 		return nil
 	}
 
-	out := &refs.KMSCryptoKeyRef{
+	out := &kmsv1beta1.KMSCryptoKeyRef{
 		External: in.KmsKeyName,
 	}
 
@@ -972,15 +994,28 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 	out := &krm.InstanceIpConfiguration{
 		AllocatedIpRange:                        direct.LazyPtr(in.AllocatedIpRange),
 		AuthorizedNetworks:                      InstanceAuthorizedNetworksGCPToKRM(in.AuthorizedNetworks),
+		CustomSubjectAlternativeNames:           in.CustomSubjectAlternativeNames,
 		EnablePrivatePathForGoogleCloudServices: direct.PtrTo(in.EnablePrivatePathForGoogleCloudServices),
 		Ipv4Enabled:                             direct.PtrTo(in.Ipv4Enabled),
 		PrivateNetworkRef:                       InstancePrivateNetworkRefRefGCPToKRM(in.PrivateNetwork),
 		PscConfig:                               InstancePscConfigGCPToKRM(in.PscConfig),
 		RequireSsl:                              direct.PtrTo(in.RequireSsl),
+		ServerCAMode:                            direct.LazyPtr(in.ServerCaMode),
+		ServerCAPoolRef:                         InstanceServerCAPoolRefGCPToKRM(in.ServerCaPool),
 		SslMode:                                 direct.LazyPtr(in.SslMode),
 	}
 
 	return out
+}
+
+func InstanceServerCAPoolRefGCPToKRM(in string) *privatecarefs.PrivateCACAPoolRef {
+	if in == "" {
+		return nil
+	}
+
+	return &privatecarefs.PrivateCACAPoolRef{
+		External: in,
+	}
 }
 
 func InstanceAuthorizedNetworksGCPToKRM(in []*api.AclEntry) []krm.InstanceAuthorizedNetworks {

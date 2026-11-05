@@ -101,6 +101,14 @@ func TestParentRef(t *testing.T) {
 			refSource: "package v1alpha1\n\ntype OrganizationRef struct{}\n",
 		},
 		{
+			name:       "an acronym parent segment uses uppercase acronym casing",
+			pattern:    "projects/{project}/locations/{location}/apis/{api}/versions/{version}",
+			refSource:  "package v1alpha1\n\ntype APIHubAPIRef struct{}\n",
+			wantField:  "APIRef *APIHubAPIRef `json:\"apiRef,omitempty\"`",
+			wantReason: "parent-ref-guessed",
+			wantPath:   "projects/{project}/locations/{location}/apis/{api}",
+		},
+		{
 			name:      "a resource with no pattern has no parent to name",
 			pattern:   "",
 			wantField: "",
@@ -363,7 +371,7 @@ func TestRootRef(t *testing.T) {
 // whose name has none is a field its API rejects, and a reference may replace
 // any location the generator does write.
 func TestLocationRef(t *testing.T) {
-	const field = "Location string `json:\"location\"`"
+	const field = "Location *string `json:\"location\"`"
 	grid := []struct {
 		name       string
 		pattern    string

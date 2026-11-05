@@ -22,7 +22,30 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storageinsights/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/type/date"
 )
+
+func Date_FromProto(mapCtx *direct.MapContext, in *date.Date) *krm.Date {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Date{}
+	out.Year = direct.LazyPtr(in.GetYear())
+	out.Month = direct.LazyPtr(in.GetMonth())
+	out.Day = direct.LazyPtr(in.GetDay())
+	return out
+}
+
+func Date_ToProto(mapCtx *direct.MapContext, in *krm.Date) *date.Date {
+	if in == nil {
+		return nil
+	}
+	out := &date.Date{}
+	out.Year = direct.ValueOf(in.Year)
+	out.Month = direct.ValueOf(in.Month)
+	out.Day = direct.ValueOf(in.Day)
+	return out
+}
 
 func parseBucketName(external string) string {
 	if strings.Contains(external, "/buckets/") {
@@ -33,6 +56,29 @@ func parseBucketName(external string) string {
 		return strings.TrimPrefix(external, "gs://")
 	}
 	return external
+}
+
+func CloudStorageDestinationOptions_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageDestinationOptions) *pb.CloudStorageDestinationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageDestinationOptions{}
+	if in.BucketRef != nil {
+		out.Bucket = parseBucketName(in.BucketRef.External)
+	}
+	out.DestinationPath = direct.ValueOf(in.DestinationPath)
+	return out
+}
+
+func CloudStorageFilters_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageFilters) *pb.CloudStorageFilters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageFilters{}
+	if in.BucketRef != nil {
+		out.Bucket = parseBucketName(in.BucketRef.External)
+	}
+	return out
 }
 
 func DatasetConfig_CloudStorageBuckets_CloudStorageBucket_FromProto(mapCtx *direct.MapContext, in *pb.DatasetConfig_CloudStorageBuckets_CloudStorageBucket) *krm.DatasetConfig_CloudStorageBuckets_CloudStorageBucket {

@@ -1,0 +1,7 @@
+apiVersion: example.cnrm.cloud.google.com/v1alpha1
+kind: ExamplePolicy
+metadata:
+  name: policy-${uniqueId}
+spec:
+  displayName: "v2"
+  priority: 200

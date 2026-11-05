@@ -47,10 +47,94 @@ func (s *workerPools) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolRe
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 
-	return obj, nil
+	ret := proto.CloneOf(obj)
+	// CustomAudiences is mutable-but-unreadable in real GCP Cloud Run v2 API
+	ret.CustomAudiences = nil
+	return ret, nil
+}
+
+func (s *workerPools) populateWorkerPoolDefaults(name *workerPoolName, obj *pb.WorkerPool, isUpdate bool, templateChanged bool) {
+	if obj.LaunchStage == 0 {
+		obj.LaunchStage = 4 // LaunchStage_GA
+	}
+
+	if obj.Scaling == nil {
+		defaultCount := int32(1)
+		obj.Scaling = &pb.WorkerPoolScaling{
+			ManualInstanceCount: &defaultCount,
+		}
+	} else if obj.Scaling.ManualInstanceCount == nil {
+		defaultCount := int32(1)
+		obj.Scaling.ManualInstanceCount = &defaultCount
+	}
+
+	if len(obj.InstanceSplits) == 0 {
+		obj.InstanceSplits = []*pb.InstanceSplit{
+			{
+				Type:    pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
+				Percent: 100,
+			},
+		}
+	}
+
+	obj.LastModifier = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
+	obj.ObservedGeneration = obj.Generation
+
+	revID := fmt.Sprintf("%s-00001-abc", name.WorkerPool)
+	if isUpdate && templateChanged {
+		revID = fmt.Sprintf("%s-%05d-abc", name.WorkerPool, obj.Generation)
+	}
+	revName := fmt.Sprintf("%s/revisions/%s", obj.Name, revID)
+
+	if !isUpdate || obj.LatestCreatedRevision == "" {
+		obj.LatestCreatedRevision = revName
+		obj.LatestReadyRevision = revName
+	} else if templateChanged {
+		obj.LatestCreatedRevision = revName
+		obj.LatestReadyRevision = revName
+	}
+
+	if len(obj.InstanceSplitStatuses) == 0 {
+		obj.InstanceSplitStatuses = []*pb.InstanceSplitStatus{
+			{
+				Type:     pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST,
+				Percent:  100,
+				Revision: revID,
+			},
+		}
+	} else {
+		for _, status := range obj.InstanceSplitStatuses {
+			if status.Type == pb.InstanceSplitAllocationType_INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST {
+				status.Revision = revID
+			}
+		}
+	}
+
+	if obj.Template != nil {
+		if obj.Template.ServiceAccount == "" {
+			obj.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+		}
+		for _, container := range obj.Template.Containers {
+			if container.Resources == nil {
+				container.Resources = &pb.ResourceRequirements{}
+			}
+			if container.Resources.Limits == nil {
+				container.Resources.Limits = make(map[string]string)
+			}
+			if _, ok := container.Resources.Limits["cpu"]; !ok {
+				container.Resources.Limits["cpu"] = "1000m"
+			}
+			if _, ok := container.Resources.Limits["memory"]; !ok {
+				container.Resources.Limits["memory"] = "512Mi"
+			}
+		}
+	}
 }
 
 func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorkerPoolRequest) (*longrunning.Operation, error) {
@@ -67,8 +151,8 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 	obj.CreateTime = timestamppb.Now()
 	obj.UpdateTime = timestamppb.Now()
 	obj.Etag = fields.ComputeWeakEtag(obj)
-	obj.Creator = "test@google.com"
-	obj.LastModifier = "test@google.com"
+	obj.Creator = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
+	obj.LastModifier = fmt.Sprintf("overseer-kcc-tester@%s.iam.gserviceaccount.com", name.Project.ID)
 
 	obj.Uid = uuid.NewString()
 	obj.Generation = 1
@@ -86,11 +170,33 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 		}
 	}
 
+	s.populateWorkerPoolDefaults(name, obj, false, false)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return s.operations.StartLRO(ctx, req.Parent, obj, func() (proto.Message, error) {
-		return obj, nil
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.InstanceSplitStatuses = nil
+	initialMeta.LatestCreatedRevision = ""
+	initialMeta.LatestReadyRevision = ""
+	initialMeta.ObservedGeneration = 0
+	initialMeta.TerminalCondition = &pb.Condition{
+		State: pb.Condition_CONDITION_PENDING,
+	}
+
+	return s.operations.StartLRO(ctx, req.Parent, initialMeta, func() (proto.Message, error) {
+		initialMeta.Reconciling = false
+		initialMeta.InstanceSplitStatuses = obj.InstanceSplitStatuses
+		initialMeta.LatestCreatedRevision = obj.LatestCreatedRevision
+		initialMeta.LatestReadyRevision = obj.LatestReadyRevision
+		initialMeta.ObservedGeneration = obj.ObservedGeneration
+		initialMeta.TerminalCondition = obj.TerminalCondition
+
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
@@ -104,15 +210,44 @@ func (s *workerPools) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorker
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 	if err := s.storage.Delete(ctx, fqn, &pb.WorkerPool{}); err != nil {
 		return nil, err
 	}
 
+	oldObservedGeneration := obj.ObservedGeneration
+	obj.DeleteTime = timestamppb.Now()
+	obj.ExpireTime = timestamppb.Now()
+	obj.Generation++
+	obj.ObservedGeneration = obj.Generation
+
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.ObservedGeneration = oldObservedGeneration
+	initialMeta.TerminalCondition = &pb.Condition{
+		LastTransitionTime: timestamppb.Now(),
+		State:              pb.Condition_CONDITION_PENDING,
+		Type:               "Ready",
+	}
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
-		return obj, nil
+	return s.operations.StartLRO(ctx, lroPrefix, initialMeta, func() (protoreflect.ProtoMessage, error) {
+		initialMeta.Reconciling = false
+		initialMeta.ObservedGeneration = obj.Generation
+		initialMeta.TerminalCondition = &pb.Condition{
+			LastTransitionTime: timestamppb.Now(),
+			State:              pb.Condition_CONDITION_SUCCEEDED,
+			Type:               "Ready",
+		}
+
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
@@ -126,32 +261,101 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' of kind 'WORKER_POOL' in region '%s' in project '%s' does not exist.", name.WorkerPool, name.Location, name.Project.ID)
+		}
 		return nil, err
 	}
 
+	oldTemplate := proto.CloneOf(obj.Template)
+	oldLatestCreatedRevision := obj.LatestCreatedRevision
+	oldLatestReadyRevision := obj.LatestReadyRevision
+	oldObservedGeneration := obj.ObservedGeneration
+	var oldInstanceSplitStatuses []*pb.InstanceSplitStatus
+	for _, status := range obj.InstanceSplitStatuses {
+		oldInstanceSplitStatuses = append(oldInstanceSplitStatuses, proto.Clone(status).(*pb.InstanceSplitStatus))
+	}
 	updated := req.GetWorkerPool()
 
-	// Basic update logic
-	if updated.Labels != nil {
-		obj.Labels = updated.Labels
-	}
-	if updated.Annotations != nil {
-		obj.Annotations = updated.Annotations
-	}
-	if updated.Template != nil {
-		obj.Template = updated.Template
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// Basic update logic fallback
+		if updated.Labels != nil {
+			obj.Labels = updated.Labels
+		}
+		if updated.Annotations != nil {
+			obj.Annotations = updated.Annotations
+		}
+		if updated.Template != nil {
+			obj.Template = updated.Template
+		}
+		if updated.Description != "" {
+			obj.Description = updated.Description
+		}
+		if updated.Scaling != nil {
+			obj.Scaling = updated.Scaling
+		}
+		if updated.LaunchStage != 0 {
+			obj.LaunchStage = updated.LaunchStage
+		}
+		if updated.CustomAudiences != nil {
+			obj.CustomAudiences = updated.CustomAudiences
+		}
+	} else {
+		if err := fields.UpdateByFieldMask(obj, updated, paths); err != nil {
+			return nil, status.Errorf(codes.Internal, "updating by field mask: %v", err)
+		}
 	}
 
 	obj.UpdateTime = timestamppb.Now()
-	obj.Generation++
+	templateChanged := !proto.Equal(oldTemplate, obj.Template)
+	if templateChanged {
+		obj.Generation++
+	}
+
+	s.populateWorkerPoolDefaults(name, obj, true, templateChanged)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
-		return obj, nil
+	if !templateChanged {
+		meta := proto.CloneOf(obj)
+		meta.CustomAudiences = nil
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return s.operations.DoneLRO(ctx, lroPrefix, meta, ret)
+	}
+
+	initialMeta := proto.CloneOf(obj)
+	initialMeta.CustomAudiences = nil
+	initialMeta.Reconciling = true
+	initialMeta.ObservedGeneration = oldObservedGeneration
+	initialMeta.LatestCreatedRevision = oldLatestCreatedRevision
+	initialMeta.LatestReadyRevision = oldLatestReadyRevision
+	initialMeta.InstanceSplitStatuses = oldInstanceSplitStatuses
+	initialMeta.TerminalCondition = &pb.Condition{
+		LastTransitionTime: timestamppb.Now(),
+		State:              pb.Condition_CONDITION_PENDING,
+		Type:               "Ready",
+	}
+
+	return s.operations.StartLRO(ctx, lroPrefix, initialMeta, func() (protoreflect.ProtoMessage, error) {
+		initialMeta.Reconciling = false
+		initialMeta.ObservedGeneration = obj.ObservedGeneration
+		initialMeta.LatestCreatedRevision = obj.LatestCreatedRevision
+		initialMeta.LatestReadyRevision = obj.LatestReadyRevision
+		initialMeta.InstanceSplitStatuses = obj.InstanceSplitStatuses
+		initialMeta.TerminalCondition = &pb.Condition{
+			LastTransitionTime: timestamppb.Now(),
+			State:              pb.Condition_CONDITION_SUCCEEDED,
+			Type:               "Ready",
+		}
+
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 

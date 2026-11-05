@@ -1,0 +1,44 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexMetadataFeed
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: metadatafeed-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  filters:
+    aspectTypeRefs:
+    - name: aspecttype-dep-${uniqueId}
+    changeTypes:
+    - CREATE
+    - UPDATE
+    - DELETE
+    entryTypeRefs:
+    - name: entrytype-dep-${uniqueId}
+  labels:
+    label-a: value-b
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  pubsubTopicRef:
+    name: pubsubtopic-dep-${uniqueId}
+  scope:
+    entryGroupRefs:
+    - name: entrygroup-dep-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

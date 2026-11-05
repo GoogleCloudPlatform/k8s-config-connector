@@ -22,6 +22,6 @@ spec:
   bucketRef:
     name: ${PROJECT_ID?}-storageanywherecache-dep
   zone: us-central1-a
-  admissionPolicy: admit-on-second-miss
+  admissionPolicy: admit-on-first-miss
   desiredState: running
   ttl: 56400s

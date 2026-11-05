@@ -44,11 +44,22 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CCInsightsAnalysisRule:AnalysisRule \
   --prune-unused-types=false
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource CCInsightsQaQuestion:QaQuestion \
+  --prune-unused-types=false
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
+  --resource CCInsightsQaQuestion:QaQuestion
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
-
-# Format generated code
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

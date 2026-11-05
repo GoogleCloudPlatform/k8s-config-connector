@@ -27,8 +27,7 @@ status:
     endTime: "1970-01-01T00:00:00Z"
     serviceRevision:
       databaseType: MYSQL
-      encryptionConfig:
-        kmsKeyRef: {}
+      encryptionConfig: {}
       hiveMetastoreConfig:
         configOverrides:
           hive.metastore.warehouse.dir: gs://gcs-bucket-mssvc-${uniqueId}/hive-warehouse

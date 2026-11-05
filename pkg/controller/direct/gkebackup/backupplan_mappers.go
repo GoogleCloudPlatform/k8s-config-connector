@@ -22,7 +22,7 @@ import (
 
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -176,7 +176,7 @@ func EncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *k
 	}
 	out := &krm.EncryptionKey{}
 	if in.GetGcpKmsEncryptionKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{
 			External: in.GetGcpKmsEncryptionKey(),
 		}
 	}

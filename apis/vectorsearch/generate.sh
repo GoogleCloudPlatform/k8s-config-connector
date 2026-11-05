@@ -42,10 +42,24 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VectorSearchCollection:Collection \
     --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource VectorsearchIndex:Index
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --resource VectorsearchIndex:Index
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.vectorsearch.v1 \
     --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
-    --proto-source-path ${PROTO_OUT}
+    --proto-source-path ${PROTO_OUT} \
+    --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -44,6 +44,9 @@ func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultObservedState) *pb.BackupVault {
@@ -61,6 +64,9 @@ func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupV
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultSpec {
@@ -77,6 +83,9 @@ func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *k
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec) *pb.BackupVault {
@@ -93,8 +102,145 @@ func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec)
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
+func DestinationVolumeParameters_FromProto(mapCtx *direct.MapContext, in *pb.DestinationVolumeParameters) *krm.DestinationVolumeParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DestinationVolumeParameters{}
+	out.StoragePool = direct.LazyPtr(in.GetStoragePool())
+	out.VolumeID = direct.LazyPtr(in.GetVolumeId())
+	out.ShareName = direct.LazyPtr(in.GetShareName())
+	out.Description = in.Description
+	out.TieringPolicy = TieringPolicy_FromProto(mapCtx, in.GetTieringPolicy())
+	return out
+}
+func DestinationVolumeParameters_ToProto(mapCtx *direct.MapContext, in *krm.DestinationVolumeParameters) *pb.DestinationVolumeParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DestinationVolumeParameters{}
+	out.StoragePool = direct.ValueOf(in.StoragePool)
+	out.VolumeId = direct.ValueOf(in.VolumeID)
+	out.ShareName = direct.ValueOf(in.ShareName)
+	out.Description = in.Description
+	out.TieringPolicy = TieringPolicy_ToProto(mapCtx, in.TieringPolicy)
+	return out
+}
+func HybridPeeringDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HybridPeeringDetails) *krm.HybridPeeringDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HybridPeeringDetailsObservedState{}
+	out.SubnetIP = direct.LazyPtr(in.GetSubnetIp())
+	out.Command = direct.LazyPtr(in.GetCommand())
+	out.CommandExpiryTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCommandExpiryTime())
+	out.Passphrase = direct.LazyPtr(in.GetPassphrase())
+	out.PeerVolumeName = direct.LazyPtr(in.GetPeerVolumeName())
+	out.PeerClusterName = direct.LazyPtr(in.GetPeerClusterName())
+	out.PeerSvmName = direct.LazyPtr(in.GetPeerSvmName())
+	return out
+}
+func HybridPeeringDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.HybridPeeringDetailsObservedState) *pb.HybridPeeringDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HybridPeeringDetails{}
+	out.SubnetIp = direct.ValueOf(in.SubnetIP)
+	out.Command = direct.ValueOf(in.Command)
+	out.CommandExpiryTime = direct.StringTimestamp_ToProto(mapCtx, in.CommandExpiryTime)
+	out.Passphrase = direct.ValueOf(in.Passphrase)
+	out.PeerVolumeName = direct.ValueOf(in.PeerVolumeName)
+	out.PeerClusterName = direct.ValueOf(in.PeerClusterName)
+	out.PeerSvmName = direct.ValueOf(in.PeerSvmName)
+	return out
+}
+func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppActiveDirectoryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	return out
+}
+func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectoryObservedState) *pb.ActiveDirectory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ActiveDirectory{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[pb.ActiveDirectory_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	return out
+}
+
+/* found existing non-generated mapping function "NetAppActiveDirectorySpec_FromProto", skipping
+func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppActiveDirectorySpec{}
+	// MISSING: Name
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.Site = direct.LazyPtr(in.GetSite())
+	out.DNS = direct.LazyPtr(in.GetDns())
+	out.NetBiosPrefix = direct.LazyPtr(in.GetNetBiosPrefix())
+	out.OrganizationalUnit = direct.LazyPtr(in.GetOrganizationalUnit())
+	out.AesEncryption = direct.LazyPtr(in.GetAesEncryption())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.BackupOperators = in.BackupOperators
+	out.Administrators = in.Administrators
+	out.SecurityOperators = in.SecurityOperators
+	out.KdcHostname = direct.LazyPtr(in.GetKdcHostname())
+	out.KdcIP = direct.LazyPtr(in.GetKdcIp())
+	out.NfsUsersWithLdap = direct.LazyPtr(in.GetNfsUsersWithLdap())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.LdapSigning = direct.LazyPtr(in.GetLdapSigning())
+	out.EncryptDcConnections = direct.LazyPtr(in.GetEncryptDcConnections())
+	out.Labels = in.Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NetAppActiveDirectorySpec_ToProto", skipping
+
+	func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectorySpec) *pb.ActiveDirectory {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ActiveDirectory{}
+		// MISSING: Name
+		out.Domain = direct.ValueOf(in.Domain)
+		out.Site = direct.ValueOf(in.Site)
+		out.Dns = direct.ValueOf(in.DNS)
+		out.NetBiosPrefix = direct.ValueOf(in.NetBiosPrefix)
+		out.OrganizationalUnit = direct.ValueOf(in.OrganizationalUnit)
+		out.AesEncryption = direct.ValueOf(in.AesEncryption)
+		out.Username = direct.ValueOf(in.Username)
+		out.Password = NetAppActiveDirectorySpec_Password_ToProto(mapCtx, in.Password)
+		out.BackupOperators = in.BackupOperators
+		out.Administrators = in.Administrators
+		out.SecurityOperators = in.SecurityOperators
+		out.KdcHostname = direct.ValueOf(in.KdcHostname)
+		out.KdcIp = direct.ValueOf(in.KdcIP)
+		out.NfsUsersWithLdap = direct.ValueOf(in.NfsUsersWithLdap)
+		out.Description = direct.ValueOf(in.Description)
+		out.LdapSigning = direct.ValueOf(in.LdapSigning)
+		out.EncryptDcConnections = direct.ValueOf(in.EncryptDcConnections)
+		out.Labels = in.Labels
+		return out
+	}
+*/
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {
 	if in == nil {
 		return nil
@@ -145,5 +291,291 @@ func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBac
 	out.Description = in.Description
 	out.Enabled = in.Enabled
 	// MISSING: Labels
+	return out
+}
+func NetAppHostGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppHostGroupObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func NetAppHostGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupObservedState) *pb.HostGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostGroup{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.HostGroup_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func NetAppHostGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppHostGroupSpec{}
+	// MISSING: Name
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Hosts = in.Hosts
+	out.OSType = direct.Enum_FromProto(mapCtx, in.GetOsType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func NetAppHostGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupSpec) *pb.HostGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostGroup{}
+	// MISSING: Name
+	out.Type = direct.Enum_ToProto[pb.HostGroup_Type](mapCtx, in.Type)
+	out.Hosts = in.Hosts
+	out.OsType = direct.Enum_ToProto[pb.OsType](mapCtx, in.OSType)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+func NetAppKMSConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetAppKMSConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppKMSConfigObservedState{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Labels
+	out.Instructions = direct.LazyPtr(in.GetInstructions())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+func NetAppKMSConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigObservedState) *pb.KmsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KmsConfig{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.State = direct.Enum_ToProto[pb.KmsConfig_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Labels
+	out.Instructions = direct.ValueOf(in.Instructions)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+
+/* found existing non-generated mapping function "NetAppKMSConfigSpec_FromProto", skipping
+func NetAppKMSConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetAppKMSConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppKMSConfigSpec{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NetAppKMSConfigSpec_ToProto", skipping
+
+	func NetAppKMSConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigSpec) *pb.KmsConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.KmsConfig{}
+		// MISSING: Name
+		// MISSING: CryptoKeyName
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: Labels
+		return out
+	}
+*/
+func NetappQuotaRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaRule) *krm.NetappQuotaRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappQuotaRuleObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func NetappQuotaRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappQuotaRuleObservedState) *pb.QuotaRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaRule{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.QuotaRule_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func NetappQuotaRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaRule) *krm.NetappQuotaRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappQuotaRuleSpec{}
+	// MISSING: Name
+	out.Target = direct.LazyPtr(in.GetTarget())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.DiskLimitMIB = direct.LazyPtr(in.GetDiskLimitMib())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func NetappQuotaRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappQuotaRuleSpec) *pb.QuotaRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaRule{}
+	// MISSING: Name
+	out.Target = direct.ValueOf(in.Target)
+	out.Type = direct.Enum_ToProto[pb.QuotaRule_Type](mapCtx, in.Type)
+	out.DiskLimitMib = direct.ValueOf(in.DiskLimitMIB)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+func NetappReplicationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Replication) *krm.NetappReplicationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappReplicationObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
+	out.MirrorState = direct.Enum_FromProto(mapCtx, in.GetMirrorState())
+	out.Healthy = in.Healthy
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestinationVolume = direct.LazyPtr(in.GetDestinationVolume())
+	out.TransferStats = TransferStats_FromProto(mapCtx, in.GetTransferStats())
+	out.SourceVolume = direct.LazyPtr(in.GetSourceVolume())
+	out.HybridPeeringDetails = HybridPeeringDetailsObservedState_FromProto(mapCtx, in.GetHybridPeeringDetails())
+	out.HybridReplicationType = direct.Enum_FromProto(mapCtx, in.GetHybridReplicationType())
+	out.HybridReplicationUserCommands = UserCommandsObservedState_FromProto(mapCtx, in.GetHybridReplicationUserCommands())
+	return out
+}
+func NetappReplicationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappReplicationObservedState) *pb.Replication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Replication{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Replication_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.Role = direct.Enum_ToProto[pb.Replication_ReplicationRole](mapCtx, in.Role)
+	out.MirrorState = direct.Enum_ToProto[pb.Replication_MirrorState](mapCtx, in.MirrorState)
+	out.Healthy = in.Healthy
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestinationVolume = direct.ValueOf(in.DestinationVolume)
+	out.TransferStats = TransferStats_ToProto(mapCtx, in.TransferStats)
+	out.SourceVolume = direct.ValueOf(in.SourceVolume)
+	out.HybridPeeringDetails = HybridPeeringDetailsObservedState_ToProto(mapCtx, in.HybridPeeringDetails)
+	out.HybridReplicationType = direct.Enum_ToProto[pb.Replication_HybridReplicationType](mapCtx, in.HybridReplicationType)
+	out.HybridReplicationUserCommands = UserCommandsObservedState_ToProto(mapCtx, in.HybridReplicationUserCommands)
+	return out
+}
+func NetappReplicationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Replication) *krm.NetappReplicationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappReplicationSpec{}
+	// MISSING: Name
+	out.ReplicationSchedule = direct.Enum_FromProto(mapCtx, in.GetReplicationSchedule())
+	out.Labels = in.Labels
+	out.Description = in.Description
+	out.DestinationVolumeParameters = DestinationVolumeParameters_FromProto(mapCtx, in.GetDestinationVolumeParameters())
+	out.ClusterLocation = direct.LazyPtr(in.GetClusterLocation())
+	return out
+}
+func NetappReplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappReplicationSpec) *pb.Replication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Replication{}
+	// MISSING: Name
+	out.ReplicationSchedule = direct.Enum_ToProto[pb.Replication_ReplicationSchedule](mapCtx, in.ReplicationSchedule)
+	out.Labels = in.Labels
+	out.Description = in.Description
+	out.DestinationVolumeParameters = DestinationVolumeParameters_ToProto(mapCtx, in.DestinationVolumeParameters)
+	out.ClusterLocation = direct.ValueOf(in.ClusterLocation)
+	return out
+}
+func TieringPolicy_FromProto(mapCtx *direct.MapContext, in *pb.TieringPolicy) *krm.TieringPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TieringPolicy{}
+	out.TierAction = direct.Enum_FromProto(mapCtx, in.GetTierAction())
+	out.CoolingThresholdDays = in.CoolingThresholdDays
+	out.HotTierBypassModeEnabled = in.HotTierBypassModeEnabled
+	return out
+}
+func TieringPolicy_ToProto(mapCtx *direct.MapContext, in *krm.TieringPolicy) *pb.TieringPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TieringPolicy{}
+	out.TierAction = direct.EnumPtr_ToProto[pb.TieringPolicy_TierAction](mapCtx, in.TierAction)
+	out.CoolingThresholdDays = in.CoolingThresholdDays
+	out.HotTierBypassModeEnabled = in.HotTierBypassModeEnabled
+	return out
+}
+func TransferStats_FromProto(mapCtx *direct.MapContext, in *pb.TransferStats) *krm.TransferStats {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransferStats{}
+	out.TransferBytes = in.TransferBytes
+	out.TotalTransferDuration = direct.StringDuration_FromProto(mapCtx, in.GetTotalTransferDuration())
+	out.LastTransferBytes = in.LastTransferBytes
+	out.LastTransferDuration = direct.StringDuration_FromProto(mapCtx, in.GetLastTransferDuration())
+	out.LagDuration = direct.StringDuration_FromProto(mapCtx, in.GetLagDuration())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastTransferEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastTransferEndTime())
+	out.LastTransferError = in.LastTransferError
+	return out
+}
+func TransferStats_ToProto(mapCtx *direct.MapContext, in *krm.TransferStats) *pb.TransferStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransferStats{}
+	out.TransferBytes = in.TransferBytes
+	out.TotalTransferDuration = direct.StringDuration_ToProto(mapCtx, in.TotalTransferDuration)
+	out.LastTransferBytes = in.LastTransferBytes
+	out.LastTransferDuration = direct.StringDuration_ToProto(mapCtx, in.LastTransferDuration)
+	out.LagDuration = direct.StringDuration_ToProto(mapCtx, in.LagDuration)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastTransferEndTime = direct.StringTimestamp_ToProto(mapCtx, in.LastTransferEndTime)
+	out.LastTransferError = in.LastTransferError
+	return out
+}
+func UserCommandsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UserCommands) *krm.UserCommandsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserCommandsObservedState{}
+	out.Commands = in.Commands
+	return out
+}
+func UserCommandsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UserCommandsObservedState) *pb.UserCommands {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UserCommands{}
+	out.Commands = in.Commands
 	return out
 }

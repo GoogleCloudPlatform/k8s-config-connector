@@ -15,11 +15,20 @@
 package bigquery
 
 import (
+	"context"
 	"testing"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestAdapter_IsUnreadableButDeletable(t *testing.T) {
@@ -82,4 +91,126 @@ func TestAdapter_IsUnreadableButDeletable(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBigQueryTable_NormalizeReferences(t *testing.T) {
+	ctx := context.Background()
+
+	readyKey := &unstructured.Unstructured{}
+	readyKey.SetGroupVersionKind(kmsv1beta1.KMSCryptoKeyGVK)
+	readyKey.SetName("test-key")
+	readyKey.SetNamespace("test-ns")
+	selfLink := "projects/test-project/locations/us-central1/keyRings/test-keyring/cryptoKeys/test-key"
+	if err := unstructured.SetNestedField(readyKey.Object, selfLink, "status", "selfLink"); err != nil {
+		t.Fatalf("failed to set status.selfLink: %v", err)
+	}
+
+	scheme := runtime.NewScheme()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey).Build()
+
+	t.Run("resolves KmsKeyRef by name", func(t *testing.T) {
+		obj := &krm.BigQueryTable{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-table",
+				Namespace: "test-ns",
+			},
+			Spec: krm.BigQueryTableSpec{
+				EncryptionConfiguration: &krm.TableEncryptionConfiguration{
+					KmsKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+						Name: "test-key",
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if obj.Spec.EncryptionConfiguration.KmsKeyRef.External != selfLink {
+			t.Errorf("NormalizeReferences() External = %q, want %q", obj.Spec.EncryptionConfiguration.KmsKeyRef.External, selfLink)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := EncryptionConfiguration_ToProto(mapCtx, obj.Spec.EncryptionConfiguration)
+		if mapCtx.Err() != nil {
+			t.Fatalf("EncryptionConfiguration_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.KmsKeyName != selfLink {
+			t.Errorf("protoObj KmsKeyName = %q, want %q", protoObj.KmsKeyName, selfLink)
+		}
+
+		fromProto := EncryptionConfiguration_FromProto(mapCtx, protoObj)
+		if mapCtx.Err() != nil {
+			t.Fatalf("EncryptionConfiguration_FromProto unexpected error: %v", mapCtx.Err())
+		}
+		if fromProto.KmsKeyRef == nil || fromProto.KmsKeyRef.External != selfLink {
+			t.Errorf("fromProto KmsKeyRef.External = %v, want %q", fromProto.KmsKeyRef, selfLink)
+		}
+	})
+
+	t.Run("handles external KmsKeyRef directly", func(t *testing.T) {
+		externalKey := "projects/test-project/locations/us-central1/keyRings/test-keyring/cryptoKeys/external-key"
+		obj := &krm.BigQueryTable{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-table",
+				Namespace: "test-ns",
+			},
+			Spec: krm.BigQueryTableSpec{
+				EncryptionConfiguration: &krm.TableEncryptionConfiguration{
+					KmsKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+						External: externalKey,
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if obj.Spec.EncryptionConfiguration.KmsKeyRef.External != externalKey {
+			t.Errorf("NormalizeReferences() External = %q, want %q", obj.Spec.EncryptionConfiguration.KmsKeyRef.External, externalKey)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := EncryptionConfiguration_ToProto(mapCtx, obj.Spec.EncryptionConfiguration)
+		if mapCtx.Err() != nil {
+			t.Fatalf("EncryptionConfiguration_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.KmsKeyName != externalKey {
+			t.Errorf("protoObj KmsKeyName = %q, want %q", protoObj.KmsKeyName, externalKey)
+		}
+
+		fromProto := EncryptionConfiguration_FromProto(mapCtx, protoObj)
+		if mapCtx.Err() != nil {
+			t.Fatalf("EncryptionConfiguration_FromProto unexpected error: %v", mapCtx.Err())
+		}
+		if fromProto.KmsKeyRef == nil || fromProto.KmsKeyRef.External != externalKey {
+			t.Errorf("fromProto KmsKeyRef.External = %v, want %q", fromProto.KmsKeyRef, externalKey)
+		}
+	})
+
+	t.Run("handles nil EncryptionConfiguration", func(t *testing.T) {
+		obj := &krm.BigQueryTable{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-table",
+				Namespace: "test-ns",
+			},
+			Spec: krm.BigQueryTableSpec{},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := EncryptionConfiguration_ToProto(mapCtx, obj.Spec.EncryptionConfiguration)
+		if mapCtx.Err() != nil {
+			t.Fatalf("EncryptionConfiguration_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj != nil {
+			t.Errorf("protoObj = %v, want nil", protoObj)
+		}
+	})
 }

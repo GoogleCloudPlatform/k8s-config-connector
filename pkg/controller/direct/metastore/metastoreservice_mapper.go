@@ -28,8 +28,8 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
@@ -81,7 +81,9 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krmv1alpha1.EncryptionConfig{}
-	out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EncryptionConfig) *pb.EncryptionConfig {
@@ -89,7 +91,9 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Encrypt
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	out.KmsKey = in.KMSKeyRef.External
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
+	}
 	return out
 }
 func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krmv1alpha1.HiveMetastoreConfig {

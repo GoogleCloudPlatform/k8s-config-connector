@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
 go 1.26.0
 
-toolchain go1.26.4
+toolchain go1.26.10
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 
@@ -113,6 +113,7 @@ require (
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
+	cloud.google.com/go/oslogin v1.18.0 // indirect
 	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
 	cloud.google.com/go/resourcemanager v1.15.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect

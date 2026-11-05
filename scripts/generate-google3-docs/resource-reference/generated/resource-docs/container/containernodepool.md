@@ -819,7 +819,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -829,7 +829,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -839,7 +839,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -959,7 +959,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -969,7 +969,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -979,7 +979,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1069,7 +1069,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1079,7 +1079,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1089,7 +1089,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1159,7 +1159,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1169,7 +1169,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1179,7 +1179,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1209,7 +1209,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+            <p>A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1219,7 +1219,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The name of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -1229,7 +1229,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+            <p>The namespace of a SecretManagerSecretVersion resource.</p>
         </td>
     </tr>
     <tr>
@@ -2089,7 +2089,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>IAMServiceAccountRef is a reference to a GCP IAMServiceAccount.</p>
         </td>
     </tr>
     <tr>
@@ -2099,7 +2099,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>A reference to an externally managed IAMServiceAccount resource. Should be in the format "{{serviceAccountID}}@{{projectID}}.iam.gserviceaccount.com".</p>
         </td>
     </tr>
     <tr>
@@ -2109,7 +2109,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of an IAMServiceAccount resource.</p>
         </td>
     </tr>
     <tr>
@@ -2119,7 +2119,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of an IAMServiceAccount resource.</p>
         </td>
     </tr>
     <tr>

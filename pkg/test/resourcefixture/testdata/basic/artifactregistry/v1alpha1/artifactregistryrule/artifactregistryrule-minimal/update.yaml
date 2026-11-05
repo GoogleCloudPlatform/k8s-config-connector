@@ -1,0 +1,9 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1alpha1
+kind: ArtifactRegistryRule
+metadata:
+  name: arrule-${uniqueId}
+spec:
+  parentRef:
+    name: arrepository-${uniqueId}
+  action: DENY
+  operation: DOWNLOAD

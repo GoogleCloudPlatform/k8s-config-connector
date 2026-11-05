@@ -36,17 +36,17 @@ import (
 
 type TypeGenerator struct {
 	generatorBase
-	api                     *protoapi.Proto
-	goPackage               string
-	visitedMessages         []protoreflect.MessageDescriptor
-	outputMessages          []*OutputMessageDetails
-	observedStateMessages   sets.String
+	api                   *protoapi.Proto
+	goPackage             string
+	visitedMessages       []protoreflect.MessageDescriptor
+	outputMessages        []*OutputMessageDetails
+	observedStateMessages sets.String
 
 	// siblingGuesses are fields of a nested message that the sibling rule
 	// flagged. PrepopulateSpec records the resource's own fields; this generator
 	// writes the nested messages, so their markers are read back out of the
 	// rendered body.
-	siblingGuesses []SiblingGuess
+	siblingGuesses          []SiblingGuess
 	generatedFileAnnotation *codegenannotations.FileAnnotation
 	includeSkippedOutput    bool
 	writeOptions            WriteOptions
@@ -72,11 +72,41 @@ type TypeGenerator struct {
 	// rootMessageFQN is the full name of the message VisitProto is visiting.
 	// isServerSet uses it to tell that message from the nested ones below it.
 	rootMessageFQN string
+
+	// requiredPlan says which structs get +required markers. It is nil
+	// unless PlanRequiredStructs ran.
+	requiredPlan *requiredPlan
+
+	activeJudgementMessages map[string]bool
+
+	// referencedAsField holds the full names of proto messages referenced by
+	// fields of visited messages (as opposed to only being top-level --resource
+	// messages).
+	referencedAsField map[string]bool
+}
+
+// isReferencedAsField reports whether fqn is referenced as a field by a visited
+// message during a --prepopulate-spec run. When a resource proto message (such
+// as google.cloud.ces.v1beta.App, which has +kcc:spec:proto on CESAppSpec) is
+// also used as a nested field of another message (such as AppSnapshot.App *App),
+// its generated struct (App / AppObservedState) must still be emitted in
+// types.generated.go unless a hand-written type of that Go name exists.
+func (g *TypeGenerator) isReferencedAsField(fqn string) bool {
+	return g.writeOptions.Prepopulating && g.referencedAsField[fqn]
+}
+
+// WithActiveJudgementMessages restricts proto-message judgement collection and
+// sibling guess markers to the given set of message full names. When nil, all
+// visited messages are included.
+func (g *TypeGenerator) WithActiveJudgementMessages(msgs map[string]bool) *TypeGenerator {
+	g.activeJudgementMessages = msgs
+	return g
 }
 
 type OutputMessageDetails struct {
 	Message      protoreflect.MessageDescriptor
 	OutputFields []protoreflect.FieldDescriptor
+	ForceAll     bool
 }
 
 // WriteOptions configures optional KRM marker generation derived from proto annotations.
@@ -89,7 +119,15 @@ type OutputMessageDetails struct {
 type WriteOptions struct {
 	// EmitRequired generates "// +required" markers for fields annotated with
 	// google.api.field_behavior = REQUIRED.
+	//
+	// generate-types sets it for the whole service, and PlanRequiredStructs
+	// narrows it down: only structs that opted-in Kinds use get the markers.
 	EmitRequired bool
+	// RequiredStructs holds the messages written as two structs: Foo for
+	// everyone else, and FooWithRequired for opted-in Kinds. A field of one of
+	// these types holds FooWithRequired. Only the strict options set it; see
+	// StrictWriteOptions.
+	RequiredStructs map[string]bool
 	// Prepopulating indicates whether --prepopulate-spec is enabled for this run.
 	//
 	// Generator enhancements that would otherwise cause churn across existing
@@ -169,11 +207,12 @@ func (g *TypeGenerator) WithWriteOptions(opts WriteOptions) *TypeGenerator {
 
 // OutputFieldsFor returns the output-only fields identified for the given message
 // during the proto traversal, or false if none were found. The scaffolder uses
-// these details to populate resource-level ObservedState structs, preserving the
-// inherited output-only behavior from parent messages.
+// these details to populate resource-level ObservedState structs, ignoring
+// ForceAll entries produced when another resource references this message via
+// an OUTPUT_ONLY field.
 func (g *TypeGenerator) OutputFieldsFor(fqn string) (*OutputMessageDetails, bool) {
 	for _, details := range g.outputMessages {
-		if string(details.Message.FullName()) == fqn {
+		if !details.ForceAll && string(details.Message.FullName()) == fqn {
 			return details, true
 		}
 	}
@@ -221,6 +260,12 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 	msgs, err := FindDependenciesForMessage(message, nil) // TODO: explicitly set ignored fields when generating Go types
 	if err != nil {
 		return err
+	}
+	if g.referencedAsField == nil {
+		g.referencedAsField = make(map[string]bool)
+	}
+	for _, m := range msgs {
+		g.referencedAsField[string(m.FullName())] = true
 	}
 	g.visitedMessages = append(g.visitedMessages, msgs...)
 
@@ -319,7 +364,7 @@ func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen
 	}
 	seen[seenKey] = "visiting"
 
-	details := &OutputMessageDetails{Message: msg}
+	details := &OutputMessageDetails{Message: msg, ForceAll: forceAll}
 	hasOutputs := false
 
 	for i := 0; i < msg.Fields().Len(); i++ {
@@ -403,6 +448,10 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
+		// Options for the plain struct, and whether a Required copy follows it.
+		// A skipped message is written as a comment with the same options.
+		opts, writeRequired := g.structOptions(string(msg.FullName()))
+
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
@@ -412,50 +461,69 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), g.writeOptions)
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), opts)
 			}
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
-		if err != nil {
-			return fmt.Errorf("looking up go type by proto tag: %w", err)
-		}
-		if goType != nil {
-			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
-			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.writeOptions)
+		if !g.isReferencedAsField(string(msg.FullName())) {
+			goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+			if err != nil {
+				return fmt.Errorf("looking up go type by proto tag: %w", err)
 			}
-			continue
+			if goType != nil {
+				klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+				if g.includeSkippedOutput {
+					WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), opts)
+				}
+				continue
+			}
 		}
 
 		if g.reservedTypeNames[goTypeName] {
 			klog.V(1).Infof("go type %q is a Kind the scaffolder will declare, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), g.writeOptions)
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), opts)
 			}
 			continue
 		}
 
+		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
+		renderOpts := opts
+		if !activeForJudgement {
+			renderOpts.Siblings = nil
+		}
 		// Render the message to a buffer to scan for markers emitted by WriteField.
 		var rendered bytes.Buffer
-		WriteMessage(&rendered, msg, g.writeOptions)
-		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
-		if g.writeOptions.EmitMessageMaps {
-			for i := 0; i < msg.Fields().Len(); i++ {
-				f := msg.Fields().Get(i)
-				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
-					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
-						Message:   string(msg.FullName()),
-						Field:     GetJSONForKRM(f, g.writeOptions),
-						ProtoType: protoMsg,
-						GoType:    goType,
-					})
+		WriteMessage(&rendered, msg, renderOpts)
+		if activeForJudgement {
+			g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+			if g.writeOptions.EmitMessageMaps {
+				for i := 0; i < msg.Fields().Len(); i++ {
+					f := msg.Fields().Get(i)
+					if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+						g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+							Message:   string(msg.FullName()),
+							Field:     GetJSONForKRM(f, g.writeOptions),
+							ProtoType: protoMsg,
+							GoType:    goType,
+						})
+					}
 				}
 			}
+			g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		}
-		g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		out.body.Write(rendered.Bytes())
+
+		// The Required copy has the same fields as the plain struct, so the
+		// scans above cover it too.
+		if writeRequired {
+			strictOpts := g.StrictWriteOptions()
+			if !activeForJudgement {
+				strictOpts.Siblings = nil
+			}
+			writeMessageNamed(&out.body, msg, RequiredStructName(msg), strictOpts)
+		}
 	}
 	return errors.Join(g.errors...)
 }
@@ -504,16 +572,18 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
-		if err != nil {
-			return fmt.Errorf("looking up go type by proto tag: %w", err)
-		}
-		if goType != nil {
-			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
-			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages, g.writeOptions)
+		if !g.isReferencedAsField(string(msg.FullName())) {
+			goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+			if err != nil {
+				return fmt.Errorf("looking up go type by proto tag: %w", err)
 			}
-			continue
+			if goType != nil {
+				klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+				if g.includeSkippedOutput {
+					WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages, g.writeOptions)
+				}
+				continue
+			}
 		}
 
 		if g.reservedTypeNames[goTypeName] {
@@ -524,7 +594,8 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		if g.writeOptions.EmitMessageMaps {
+		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
+		if activeForJudgement && g.writeOptions.EmitMessageMaps {
 			for _, f := range msgDetails.OutputFields {
 				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
 					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
@@ -566,20 +637,114 @@ func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessage
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteOptions) {
-	goType := GoNameForProtoMessage(msg)
+	writeMessageNamed(out, msg, GoNameForProtoMessage(msg), opts)
+}
 
+// writeMessageNamed writes msg as a struct named goType. The Required copy of
+// a split message is written this way, with the strict options. Both structs
+// have the same proto annotation, so generate-mapper writes converters for
+// each.
+func writeMessageNamed(out io.Writer, msg protoreflect.MessageDescriptor, goType string, opts WriteOptions) {
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
+	fieldIndex := 0
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
-			// Only write non-output fields.
-			WriteField(out, field, msg, i, false, opts, "")
+		if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			fieldIndex++
+			continue
 		}
+		if opts.Prepopulating && IsFieldAllOutputOnlyMessage(field) {
+			continue
+		}
+		// Only write non-output fields.
+		WriteField(out, field, msg, fieldIndex, false, opts, "")
+		fieldIndex++
 	}
 	fmt.Fprintf(out, "}\n")
 }
+
+// IsFieldAllOutputOnlyMessage reports whether field is a non-map message field
+// whose target message has only OUTPUT_ONLY fields, AND if field belongs to a
+// real proto oneof, every alternative in that oneof is also output-only.
+//
+// Map fields are excluded because in protoreflect a map has Kind == MessageKind
+// with a synthetic {key, value} MapEntry message, and identifyOutputs only
+// places a map field into ObservedState when the map field itself is annotated
+// OUTPUT_ONLY.
+func IsFieldAllOutputOnlyMessage(field protoreflect.FieldDescriptor) bool {
+	if !isNonMapMessageField(field) {
+		return false
+	}
+	if !isAllOutputOnlyMessage(field.Message(), make(map[string]bool)) {
+		return false
+	}
+	if oneof := field.ContainingOneof(); oneof != nil && !oneof.IsSynthetic() {
+		return isOneofAllOutputOnly(oneof)
+	}
+	return true
+}
+
+// isNonMapMessageField reports whether field is a singular or repeated message
+// field (excluding proto map fields, whose Message() is the synthetic MapEntry).
+func isNonMapMessageField(field protoreflect.FieldDescriptor) bool {
+	return field != nil && field.Kind() == protoreflect.MessageKind && !field.IsMap() && field.Message() != nil
+}
+
+// isOneofAllOutputOnly reports whether every alternative in a real proto oneof
+// is output-only (either directly marked OUTPUT_ONLY or a message whose fields
+// are all output-only). When a oneof mixes an all-output-only message (such as
+// DefaultSecuritySettings) with input alternatives (such as CustomPolicy), the
+// empty struct in Spec serves as the oneof branch selector and must be kept.
+func isOneofAllOutputOnly(oneof protoreflect.OneofDescriptor) bool {
+	for i := 0; i < oneof.Fields().Len(); i++ {
+		sibling := oneof.Fields().Get(i)
+		if !isFieldOutputOnly(sibling, make(map[string]bool)) {
+			return false
+		}
+	}
+	return true
+}
+
+// isAllOutputOnlyMessage reports whether msg has at least one field and every
+// field (recursively) is output-only. A 0-field proto message (such as an empty
+// oneof marker) returns false because it is a valid Spec choice.
+func isAllOutputOnlyMessage(msg protoreflect.MessageDescriptor, visiting map[string]bool) bool {
+	if msg == nil || msg.Fields().Len() == 0 {
+		return false
+	}
+	fqn := string(msg.FullName())
+	if visiting[fqn] {
+		return true
+	}
+	visiting[fqn] = true
+
+	isAllOutput := true
+	for i := 0; i < msg.Fields().Len(); i++ {
+		if !isFieldOutputOnly(msg.Fields().Get(i), visiting) {
+			isAllOutput = false
+			break
+		}
+	}
+	return isAllOutput
+}
+
+// isFieldOutputOnly reports whether field is marked OUTPUT_ONLY or is a nested
+// struct message whose fields are all output-only.
+func isFieldOutputOnly(field protoreflect.FieldDescriptor, visiting map[string]bool) bool {
+	if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+		return true
+	}
+	if !isNonMapMessageField(field) {
+		return false
+	}
+	if _, special := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; special {
+		return false
+	}
+	return isAllOutputOnlyMessage(field.Message(), visiting)
+}
+
 
 // ObservedStateFieldNote records how WriteObservedStateFields handled one
 // field. Callers use it to add a judgement queue entry for a field that did
@@ -603,9 +768,13 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	emitted := 0
 	var notes []ObservedStateFieldNote
 
-	// ObservedState structs describe status and must not emit +required markers.
+	// ObservedState structs describe status, so they never get +required.
+	// For the same reason, their fields hold a message's plain struct, never
+	// its Required copy.
 	observedOpts := opts
 	observedOpts.EmitRequired = false
+	observedOpts.RequiredStructs = nil
+	observedOpts.Siblings = nil
 
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
@@ -700,7 +869,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 			if goType, ok := protoMessagesNotMappedToGoStruct[valueName]; ok {
 				return "map[string]" + goType, nil
 			}
-			return "map[string]" + GoNameForProtoMessage(valueField.Message()), nil
+			return "map[string]" + specStructName(valueField.Message(), opts), nil
 		default:
 			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
 		}
@@ -712,7 +881,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 		if isTransitiveOutput {
 			goType = goNameForOutputProtoMessage(field.Message())
 		} else {
-			goType = GoNameForProtoMessage(field.Message())
+			goType = specStructName(field.Message(), opts)
 		}
 	case protoreflect.EnumKind:
 		goType = "string"
@@ -900,19 +1069,16 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	case protoreflect.StringKind:
 		goType = "string"
 
-	case protoreflect.Int32Kind:
+	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
 		goType = "int32"
 
-	case protoreflect.Int64Kind:
+	case protoreflect.Int64Kind, protoreflect.Sint64Kind, protoreflect.Sfixed64Kind:
 		goType = "int64"
 
-	case protoreflect.Uint32Kind:
+	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
 		goType = "uint32"
 
-	case protoreflect.Uint64Kind:
-		goType = "uint64"
-
-	case protoreflect.Fixed64Kind:
+	case protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
 		goType = "uint64"
 
 	case protoreflect.BoolKind:
@@ -1244,5 +1410,3 @@ func MessageMapValueInfo(field protoreflect.FieldDescriptor) (protoMsg, goType s
 	}
 	return protoMsg, GoNameForProtoMessage(valMsg), true
 }
-
-

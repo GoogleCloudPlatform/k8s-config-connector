@@ -1455,6 +1455,28 @@ func MosaicLayout_Tile_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout_T
 }
 */
 
+/* found existing non-generated mapping function "OpsAnalyticsQuery_FromProto", skipping
+func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *dashboardpb.OpsAnalyticsQuery) *krm.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpsAnalyticsQuery{}
+	out.SQL = direct.LazyPtr(in.GetSql())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "OpsAnalyticsQuery_ToProto", skipping
+func OpsAnalyticsQuery_ToProto(mapCtx *direct.MapContext, in *krm.OpsAnalyticsQuery) *dashboardpb.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &dashboardpb.OpsAnalyticsQuery{}
+	out.Sql = direct.ValueOf(in.SQL)
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "PickTimeSeriesFilter_FromProto", skipping
 func PickTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *dashboardpb.PickTimeSeriesFilter) *krm.PickTimeSeriesFilter {
 	if in == nil {
@@ -1943,6 +1965,7 @@ func TimeSeriesQuery_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSe
 	out.TimeSeriesFilterRatio = TimeSeriesFilterRatio_FromProto(mapCtx, in.GetTimeSeriesFilterRatio())
 	out.TimeSeriesQueryLanguage = direct.LazyPtr(in.GetTimeSeriesQueryLanguage())
 	out.PrometheusQuery = direct.LazyPtr(in.GetPrometheusQuery())
+	out.OpsAnalyticsQuery = OpsAnalyticsQuery_FromProto(mapCtx, in.GetOpsAnalyticsQuery())
 	out.UnitOverride = direct.LazyPtr(in.GetUnitOverride())
 	out.OutputFullDuration = direct.LazyPtr(in.GetOutputFullDuration())
 	return out
@@ -1966,6 +1989,9 @@ func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery)
 	}
 	if oneof := TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx, in.PrometheusQuery); oneof != nil {
 		out.Source = oneof
+	}
+	if oneof := OpsAnalyticsQuery_ToProto(mapCtx, in.OpsAnalyticsQuery); oneof != nil {
+		out.Source = &dashboardpb.TimeSeriesQuery_OpsAnalyticsQuery{OpsAnalyticsQuery: oneof}
 	}
 	out.UnitOverride = direct.ValueOf(in.UnitOverride)
 	out.OutputFullDuration = direct.ValueOf(in.OutputFullDuration)

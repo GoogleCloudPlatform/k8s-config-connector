@@ -1,0 +1,495 @@
+# Phase: CREATE
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "df-sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Dataform Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform Service Account",
+  "email": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform Service Account",
+  "email": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=dfrepo-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}",
+  "teamFolderName": ""
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FreleaseConfigs%2Fdfrelease-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs?%24alt=json%3Benum-encoding%3Dint&releaseConfigId=dfrelease-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}
+
+{
+  "gitCommitish": "main"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "gitCommitish": "main",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FworkflowConfigs%2Fdfworkflowconfig-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs?%24alt=json%3Benum-encoding%3Dint&workflowConfigId=dfworkflowconfig-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}
+
+{
+  "invocationConfig": {
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "invocationConfig": {
+    "executionMode": 1,
+    "queryPriority": 0,
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}",
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FworkflowConfigs%2Fdfworkflowconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "invocationConfig": {
+    "executionMode": 1,
+    "queryPriority": 0,
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}",
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=cronSchedule%2CtimeZone
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: workflow_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FworkflowConfigs%2Fdfworkflowconfig-${uniqueId}
+
+{
+  "cronSchedule": "0 6 * * *",
+  "invocationConfig": {
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}",
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}",
+  "timeZone": "UTC"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cronSchedule": "0 6 * * *",
+  "invocationConfig": {
+    "executionMode": 1,
+    "queryPriority": 0,
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}",
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}",
+  "timeZone": "UTC",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FworkflowConfigs%2Fdfworkflowconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cronSchedule": "0 6 * * *",
+  "invocationConfig": {
+    "executionMode": 1,
+    "queryPriority": 0,
+    "serviceAccount": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}",
+  "releaseConfig": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}",
+  "timeZone": "UTC",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/workflowConfigs/dfworkflowconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FworkflowConfigs%2Fdfworkflowconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FreleaseConfigs%2Fdfrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "gitCommitish": "main",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}"
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}/releaseConfigs/dfrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}%2FreleaseConfigs%2Fdfrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}",
+  "teamFolderName": ""
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/repositories/dfrepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fdfrepo-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform Service Account",
+  "email": "df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

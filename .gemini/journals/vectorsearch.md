@@ -15,3 +15,23 @@
 - **Problem**: Regionalizing endpoints (e.g. `us-central1-vectorsearch.googleapis.com`) results in 404 HTML errors on creation, and creating collections with empty `vector_schema` and `data_schema` returns a 400 Bad Request.
 - **Solution**: Explicitly set the client endpoint to the global REST endpoint `https://vectorsearch.googleapis.com` and updated the minimal fixture to configure a simple `vectorSchema`.
 - **Impact**: The controller reconciled correctly on real GCP, and recorded golden logs are extremely stable.
+
+### [2026-10-29] DedicatedInfrastructure Optional Enum Presence on Roundtrip
+- **Context**: Triaging judgement queue and finalizing types/fuzzer for `VectorsearchIndex` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**: Proto field `DedicatedInfrastructure.mode` is an `optional Mode mode = 1` enum. `direct.Enum_FromProto` maps 0 (`MODE_UNSPECIFIED`) to `nil`, losing presence on roundtrip in `TestFocusedMappers`.
+- **Solution**: Implemented `DedicatedInfrastructure_FromProto` in `vectorsearchcollection_mapper.go` to preserve pointer presence when `in.Mode != nil` via `direct.LazyPtr(in.GetMode().String())`, ensuring roundtrip fidelity between proto and KRM.
+- **Impact**: Roundtrip fuzz testing passes cleanly for `VectorsearchIndex` without dropping zero-value enums.
+
+### [2026-11-03] VectorsearchIndex Controller, Reference Resolution Fallback, and DenseScann Mode Constraints
+- **Context**: Implementing Greenfield direct controller, fuzzer, and real-GCP E2E fixtures for `VectorsearchIndex` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**:
+  1. `TestGoldenIdentitiesYamlFiles` and `TestFixtureExternalRefEvidence` evaluate `spec.parentRef: {name: ...}` statically where dependency objects lack status. Standard `refs.Normalize` failed to resolve the parent collection.
+  2. Live GCP rejects index creation if `dense_scann` is configured when `dedicatedInfrastructure.mode` is `STORAGE_OPTIMIZED` (`googleapi: Error 400: The request was invalid: dense_scann is not supported for STORAGE_OPTIMIZED mode`).
+  3. `common.NormalizeGreenfieldReferences` must run before `obj.GetIdentity` so `spec.parentRef` identity is populated before index identity extraction.
+- **Solution**:
+  1. Implemented hand-maintained `VectorSearchCollectionRef.Normalize` using `refs.NormalizeWithFallback` and `getIdentityFromVectorSearchCollectionSpec`.
+  2. Used `mode: "PERFORMANCE_OPTIMIZED"` in maximal fixture when testing `denseScann`.
+  3. Ordered `NormalizeGreenfieldReferences` before `GetIdentity` in `AdapterForObject`, implemented `a.gcpClient.UpdateIndex` for in-place updates, and exported `ParentRef`, `ResourceID`, and `u.SetName(a.id.Index)`.
+- **Impact**: Clean real-GCP recording (7/7 lifecycle report checks pass, Cloud Audit Logs verified) and 100% CRD field coverage without modifying global test files or `dev/tools/controllerbuilder/`.
+
+

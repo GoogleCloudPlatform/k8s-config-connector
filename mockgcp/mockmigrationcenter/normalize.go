@@ -30,6 +30,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Group
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.TransformObject("", func(m map[string]any) {
 		if val, found := m["done"]; found && val == false {

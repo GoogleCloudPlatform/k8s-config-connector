@@ -1,0 +1,12 @@
+- caisURL: //cloudkms.googleapis.com/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}
+  group: kms.cnrm.cloud.google.com
+  kind: KMSKeyRing
+  name: kmskeyringimportjob-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //cloudkms.googleapis.com/projects/${projectId}/locations/us-west2/keyRings/kmskeyringimportjob-${uniqueId}/importJobs/kmskeyringimportjob-${uniqueId}
+  group: kms.cnrm.cloud.google.com
+  kind: KMSKeyRingImportJob
+  name: kmskeyringimportjob-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

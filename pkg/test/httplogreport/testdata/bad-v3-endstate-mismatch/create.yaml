@@ -1,0 +1,6 @@
+apiVersion: example.cnrm.cloud.google.com/v1alpha1
+kind: ExampleWidget
+metadata:
+  name: widget-${uniqueId}
+spec:
+  description: "initial description"

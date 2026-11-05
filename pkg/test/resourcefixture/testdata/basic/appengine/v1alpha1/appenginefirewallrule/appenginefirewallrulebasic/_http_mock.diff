@@ -1,0 +1,48 @@
+1c1
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?alt=json
+---
+> POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?%24alt=json%3Benum-encoding%3Dint
+28c28
+<   "action": "ALLOW",
+---
+>   "action": 1,
+45c45
+<   "action": "ALLOW",
+---
+>   "action": 1,
+53c53
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
+67c67
+<   "action": "ALLOW",
+---
+>   "action": 1,
+75c75
+< PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json&updateMask=description%2CsourceRange%2Caction
+---
+> PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2Cdescription%2CsourceRange
+79c79
+<   "action": "DENY",
+---
+>   "action": 2,
+96c96
+<   "action": "DENY",
+---
+>   "action": 2,
+104c104
+< GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+---
+> GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint
+118c118
+<   "action": "DENY",
+---
+>   "action": 2,
+126c126
+< DELETE https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+---
+> DELETE https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?%24alt=json%3Benum-encoding%3Dint

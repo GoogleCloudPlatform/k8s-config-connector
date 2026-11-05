@@ -289,3 +289,21 @@ func BlankView_ToProto(mapCtx *direct.MapContext, in *krm.BlankView) *emptypb.Em
 	out := &emptypb.Empty{}
 	return out
 }
+
+func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *pb.OpsAnalyticsQuery) *krm.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpsAnalyticsQuery{}
+	out.SQL = direct.LazyPtr(in.GetSql())
+	return out
+}
+
+func OpsAnalyticsQuery_ToProto(mapCtx *direct.MapContext, in *krm.OpsAnalyticsQuery) *pb.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpsAnalyticsQuery{}
+	out.Sql = direct.ValueOf(in.SQL)
+	return out
+}

@@ -100,9 +100,63 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize ComputeOrganizationSecurityPolicy IDs: locations/global/securityPolicies/<securityPolicyId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/locations/global/securityPolicies/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize OSLoginSSHPublicKey IDs: users/.../sshPublicKeys/<fingerprint>
+		// Since it has a server-generated ID (fingerprint), we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sshPublicKeys/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize SQLSSLCert IDs: projects/.../instances/.../sslCerts/<sha1Fingerprint>
+		// Since it has a server-generated ID (fingerprint), we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sslCerts/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize VertexAITensorboard IDs: locations/.../tensorboards/<tensorboardId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/tensorboards/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize StorageInsightsReportConfig UUIDs: locations/.../reportConfigs/<reportConfigId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/reportConfigs/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize AccessContextManagerGCPUserAccessBinding IDs: organizations/.../gcpUserAccessBindings/<bindingId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/gcpUserAccessBindings/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize Schedule IDs: locations/.../schedules/<scheduleId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/schedules/"); idx != -1 {
 			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
 				lines[i] = "- caisURL: unknown"
 			} else {
@@ -118,10 +172,39 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/keyHandles/")
 			lines[i] = line[:start] + "${keyHandleID}"
 		}
+		// Normalize KMSCryptoKeyVersion IDs: projects/.../cryptoKeys/.../cryptoKeyVersions/<cryptoKeyVersionId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/cryptoKeyVersions/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize KMSSecretCiphertext ciphertext: cryptoKeys/.../ciphertext/<ciphertext>
+		// Since it has a server-generated ID (ciphertext), we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/ciphertext/"); idx != -1 && strings.Contains(line, "cloudkms") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize AIPlatformReasoningEngine reasoningEngines IDs: locations/.../reasoningEngines/<reasoningEngineId>
 		if idx := strings.Index(line, "/reasoningEngines/"); idx != -1 {
 			start := idx + len("/reasoningEngines/")
 			lines[i] = line[:start] + "${reasoningEngineID}"
+		}
+		// Normalize AIPlatformCustomJob customJobs IDs: locations/.../customJobs/<customJobId>
+		if idx := strings.Index(line, "/customJobs/"); idx != -1 {
+			start := idx + len("/customJobs/")
+			lines[i] = line[:start] + "${customJobID}"
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
+		}
+		// Normalize AIPlatformSpecialistPool specialistPools IDs: locations/.../specialistPools/<specialistPoolId>
+		if idx := strings.Index(line, "/specialistPools/"); idx != -1 {
+			start := idx + len("/specialistPools/")
+			lines[i] = line[:start] + "${specialistPoolID}"
 		}
 		// Normalize Monitoring Notification Channel numeric IDs
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
@@ -142,6 +225,15 @@ func NormalizeDynamicIDs(s string) string {
 		// Normalize CCInsightsView IDs: locations/.../views/<viewId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/views/"); idx != -1 && strings.Contains(line, "contactcenterinsights") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize DiscoveryEngineSitemap IDs: locations/.../sitemaps/<sitemapId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sitemaps/"); idx != -1 && strings.Contains(line, "discoveryengine") {
 			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
 				lines[i] = "- caisURL: unknown"
 			} else {
@@ -205,6 +297,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${styleConfigId}"
 			}
 			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/styleConfigs/", "projects/${projectId}/styleConfigs/", 1)
+		}
+		// Normalize DialogflowWebhook IDs: locations/.../agents/.../webhooks/<webhookId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/webhooks/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
 		}
 	}
 	return strings.Join(lines, "\n")

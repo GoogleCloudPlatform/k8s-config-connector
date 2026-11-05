@@ -19,7 +19,32 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/oracledatabase/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	datetime "google.golang.org/genproto/googleapis/type/datetime"
+	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 )
+
+func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krm.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeOfDay{}
+	out.Hours = direct.LazyPtr(in.GetHours())
+	out.Minutes = direct.LazyPtr(in.GetMinutes())
+	out.Seconds = direct.LazyPtr(in.GetSeconds())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+
+func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdaypb.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &timeofdaypb.TimeOfDay{}
+	out.Hours = direct.ValueOf(in.Hours)
+	out.Minutes = direct.ValueOf(in.Minutes)
+	out.Seconds = direct.ValueOf(in.Seconds)
+	out.Nanos = direct.ValueOf(in.Nanos)
+	return out
+}
 
 func TimeZone_FromProto(mapCtx *direct.MapContext, in *datetime.TimeZone) *krm.TimeZone {
 	if in == nil {

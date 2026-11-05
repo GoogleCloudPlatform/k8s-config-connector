@@ -473,7 +473,7 @@ func findFixtureDir(path string) string {
 }
 
 func isReferenceFile(file string) bool {
-	if strings.HasSuffix(file, "_reference.go") {
+	if strings.HasSuffix(file, "_reference.go") || strings.HasSuffix(file, "_reference.generated.go") {
 		return true
 	}
 	if strings.HasPrefix(file, "apis/refs/") {
@@ -554,7 +554,7 @@ func (r *TargetResolver) extractKindFromResourceFile(file string) string {
 	// 3. API types / identity: apis/<service>/<version>/<kind_lowercase>_{types,identity,identity_test,mappings}.go
 	if strings.HasPrefix(file, "apis/") && strings.HasSuffix(file, ".go") {
 		base := filepath.Base(file)
-		for _, suffix := range []string{"_types.go", "_identity.go", "_identity_test.go", "_mappings.go"} {
+		for _, suffix := range []string{"_types.go", "_identity.go", "_identity.generated.go", "_identity_test.go", "_identity_generated_test.go", "_mappings.go"} {
 			if strings.HasSuffix(base, suffix) {
 				prefix := strings.TrimSuffix(base, suffix)
 				return r.findKindByPrefix(prefix)

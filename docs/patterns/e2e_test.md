@@ -83,6 +83,32 @@ hack/record-gcp pkg/test/resourcefixture/testdata/basic/tags/v1alpha1/tagslocati
 
 This is usually done when creating the test for the first time or when the mock needs to be updated with real API behavior.
 
+### Running a Single Fixture with `go test` and Envtest
+
+You can also run a single fixture test directly using `go test`. First, configure the `KUBEBUILDER_ASSETS` environment variable for envtest:
+
+```bash
+source dev/tasks/setup-envtest
+```
+
+Then run the fixture against Mock GCP:
+
+```bash
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock go test -test.count=1 -timeout 3600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/<testname>$'
+```
+
+Or against Real GCP (recording golden outputs):
+
+```bash
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/<testname>$'
+```
+
+Alternatively, you can run a single fixture using `dev/tasks/run-e2e` by specifying `RUN_TESTS`:
+
+```bash
+RUN_TESTS='TestAllInSeries/fixtures/<testname>$' dev/tasks/run-e2e
+```
+
 ## Tips
 
 *   Use `${uniqueId}` in names to avoid collisions.

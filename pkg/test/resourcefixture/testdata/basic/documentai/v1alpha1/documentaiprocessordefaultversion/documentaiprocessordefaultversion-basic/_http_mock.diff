@@ -1,0 +1,8 @@
+1c1
+< GET https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?alt=json
+---
+> GET https://us-documentai.googleapis.com:443/v1/projects/${projectNumber}/locations/us/processors/${processorID}?%24alt=json%3Benum-encoding%3Dint
+39c39
+<   "state": "ENABLED",
+---
+>   "state": 1,

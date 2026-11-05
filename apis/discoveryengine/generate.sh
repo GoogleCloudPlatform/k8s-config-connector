@@ -55,7 +55,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation \
   --resource DiscoveryEngineSession:Session \
-  --resource DiscoveryEngineSitemap:Sitemap
+  --resource DiscoveryEngineSitemap:Sitemap \
+  --resource DiscoveryEngineSchema:Schema
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
 
 ${CONTROLLERBUILDER} generate-types \

@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -112,7 +113,14 @@ type MemorystoreInstanceSpec struct {
 
 	// Optional. The KMS key reference for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.kms_key
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// Optional. Immutable. Backups that stored in Cloud Storage buckets.
+	//  The Cloud Storage buckets need to be the same region as the instances.
+	//  Read permission is required to import from the provided Cloud Storage
+	//  Objects.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.gcs_source
+	GCSSource *Instance_GCSBackupSource `json:"gcsSource,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}
@@ -557,4 +565,11 @@ type EncryptionInfoObservedState struct {
 	// Output only. Latest update timestamp of the encryption info.
 	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.last_update_time
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.Instance.GcsBackupSource
+type Instance_GCSBackupSource struct {
+	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.GcsBackupSource.uris
+	Uris []string `json:"uris,omitempty"`
 }

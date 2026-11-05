@@ -1,0 +1,73 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.iam.v3.AccessPolicy declares 3 resource name patterns (organizations/{organization}/locations/{location}/accessPolicies/{access_policy}, folders/{folder}/locations/{location}/accessPolicies/{access_policy}, projects/{project}/locations/{location}/accessPolicies/{access_policy}); generated identity uses "organizations/{organization}/locations/{location}/accessPolicies/{access_policy}" (pass --pattern IAMAccessPolicy=<pattern> to override)
+    status: open
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v3/organizations.locations.accessPolicies: https://docs.cloud.google.com/iam/docs/reference/rest/v3/organizations.locations.accessPolicies'
+    status: open
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    field: .spec.details.rules[].conditions
+    reason: message-map-derived
+    detail: derived as map[string]Expr from proto google.type.Expr; verify Go type and mapping
+    status: open
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: IAMAccessPolicy
+    group: iam.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
+    status: open
+  - kind: IAMPrincipalAccessBoundaryPolicy
+    group: iam.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: IAMPrincipalAccessBoundaryPolicy
+    group: iam.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: IAMPrincipalAccessBoundaryPolicy
+    group: iam.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
+    status: open

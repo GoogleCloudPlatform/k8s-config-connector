@@ -156,11 +156,11 @@ func AnnotatorSelector_SummarizationConfig_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.AnnotatorSelector_SummarizationConfig{}
-	if oneof := in.GetConversationProfile(); oneof != "" {
-		out.ConversationProfile = direct.LazyPtr(oneof)
-	}
-	if oneof := in.GetSummarizationModel(); oneof != 0 {
-		out.SummarizationModel = direct.Enum_FromProto(mapCtx, oneof)
+	switch modelSource := in.GetModelSource().(type) {
+	case *pb.AnnotatorSelector_SummarizationConfig_ConversationProfile:
+		out.ConversationProfile = direct.LazyPtr(modelSource.ConversationProfile)
+	case *pb.AnnotatorSelector_SummarizationConfig_SummarizationModel_:
+		out.SummarizationModel = direct.ZeroBasedEnum_FromProto(mapCtx, modelSource.SummarizationModel)
 	}
 	return out
 }

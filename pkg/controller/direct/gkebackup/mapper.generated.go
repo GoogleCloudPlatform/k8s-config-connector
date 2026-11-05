@@ -216,6 +216,34 @@ func GKEBackupBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBac
 	// MISSING: SatisfiesPzi
 	return out
 }
+func GKEBackupRestoreChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.RestoreChannel) *krm.GKEBackupRestoreChannelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupRestoreChannelSpec{}
+	// MISSING: Name
+	if in.GetDestinationProject() != "" {
+		out.DestinationProjectRef = &refsv1beta1.ProjectRef{External: in.GetDestinationProject()}
+	}
+	// MISSING: Uid
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func GKEBackupRestoreChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestoreChannelSpec) *pb.RestoreChannel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreChannel{}
+	// MISSING: Name
+	if in.DestinationProjectRef != nil {
+		out.DestinationProject = in.DestinationProjectRef.External
+	}
+	// MISSING: Uid
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanSpec) *pb.RestorePlan {
 	if in == nil {
 		return nil

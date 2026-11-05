@@ -1,0 +1,123 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSCryptoKey/kmssecretciphertext-${uniqueId}",
+    "fields": [
+      {
+        "id": "destroy_scheduled_duration",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "import_only",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "key_ring",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmssecretciphertext-${uniqueId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "ENCRYPT_DECRYPT"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "version_template.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "version_template.0.algorithm",
+        "old": "",
+        "new": "GOOGLE_SYMMETRIC_ENCRYPTION"
+      },
+      {
+        "id": "version_template.0.protection_level",
+        "old": "",
+        "new": "SOFTWARE"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRing/kmssecretciphertext-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmssecretciphertext-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSSecretCiphertext/kmssecretciphertext-${uniqueId}",
+    "fields": [
+      {
+        "id": "additional_authenticated_data",
+        "old": "",
+        "new": "my-aad"
+      },
+      {
+        "id": "ciphertext",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "crypto_key",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/keyRings/kmssecretciphertext-${uniqueId}/cryptoKeys/kmssecretciphertext-${uniqueId}"
+      },
+      {
+        "id": "plaintext",
+        "old": "",
+        "new": "my-secret-data"
+      }
+    ]
+  }
+]

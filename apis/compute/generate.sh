@@ -44,6 +44,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
   --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
+  --resource ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation \
+  --resource ComputeOrganizationSecurityPolicyRule:FirewallPolicyRule \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
@@ -87,6 +89,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeSnapshot:Snapshot \
   --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSSLCertificate:SslCertificate \
+  --resource ComputeManagedSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetGRPCProxy:TargetGrpcProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \

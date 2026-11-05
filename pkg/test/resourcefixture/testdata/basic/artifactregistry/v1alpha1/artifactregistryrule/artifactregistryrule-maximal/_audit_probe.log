@@ -1,0 +1,46 @@
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Repository for ArtifactRegistryRule maximal test",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-central1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}/rules/arrule-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "action": 2,
+  "condition": {
+    "description": "Deny downloads for prod tag",
+    "expression": "pkg.version.tag == 'prod'",
+    "location": "rule-condition-updated",
+    "title": "Prod rule"
+  },
+  "name": "projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}/rules/arrule-max-${uniqueId}",
+  "operation": 1,
+  "packageId": "my-package-2"
+}

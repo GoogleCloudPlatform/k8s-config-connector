@@ -24,7 +24,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
@@ -365,14 +364,6 @@ func (a *ComputeInstanceGroupAdapter) updateStatus(ctx context.Context, op direc
 		return mapCtx.Err()
 	}
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func lastComponent(path string) string {
-	idx := strings.LastIndex(path, "/")
-	if idx >= 0 {
-		return path[idx+1:]
-	}
-	return path
 }
 
 func compareComputeInstanceGroup(ctx context.Context, actual, desired *pb.InstanceGroup) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {

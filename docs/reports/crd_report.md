@@ -341,7 +341,7 @@
 | firebase.cnrm.cloud.google.com                 | FirebaseAndroidApp                                       | True         | False       | False  | Terraform  | False       |
 | firebasedatabase.cnrm.cloud.google.com         | FirebaseDatabaseInstance                                 | True         | False       | False  | Terraform  | False       |
 | firebasehosting.cnrm.cloud.google.com          | FirebaseHostingChannel                                   | True         | False       | False  | Terraform  | False       |
-| firebasehosting.cnrm.cloud.google.com          | FirebaseHostingSite                                      | True         | False       | False  | Terraform  | False       |
+| firebasehosting.cnrm.cloud.google.com          | FirebaseHostingSite                                      | True         | False       | False  | Terraform  | True        |
 | firebase.cnrm.cloud.google.com                 | FirebaseProject                                          | True         | False       | False  | Terraform  | False       |
 | firebasestorage.cnrm.cloud.google.com          | FirebaseStorageBucket                                    | True         | False       | False  | Terraform  | False       |
 | firebase.cnrm.cloud.google.com                 | FirebaseWebApp                                           | True         | False       | False  | Terraform  | False       |
@@ -367,7 +367,7 @@
 | gkehub.cnrm.cloud.google.com                   | GKEHubScope                                              | True         | False       | False  | Direct     | True        |
 | gkemulticloud.cnrm.cloud.google.com            | GKEMulticloudAttachedCluster                             | True         | False       | False  | Direct     | True        |
 | grafeas.cnrm.cloud.google.com                  | GrafeasNote                                              | True         | False       | False  | Direct     | True        |
-| healthcare.cnrm.cloud.google.com               | HealthcareConsentStore                                   | True         | False       | False  | Terraform  | False       |
+| healthcare.cnrm.cloud.google.com               | HealthcareConsentStore                                   | True         | False       | False  | Terraform  | True        |
 | healthcare.cnrm.cloud.google.com               | HealthcareDataset                                        | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareDICOMStore                                     | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareFHIRStore                                      | True         | False       | False  | Terraform  | False       |
@@ -580,14 +580,14 @@
 | vertexai.cnrm.cloud.google.com                 | VertexAIExampleStore                                     | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIFeatureGroup                                     | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIFeatureOnlineStore                               | True         | False       | False  | Direct     | True        |
-| vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestoreEntityTypeFeature                    | True         | False       | False  | Terraform  | False       |
-| vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestoreEntityType                           | True         | False       | False  | Terraform  | False       |
+| vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestoreEntityTypeFeature                    | True         | False       | False  | Terraform  | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestoreEntityType                           | True         | False       | False  | Terraform  | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestore                                     | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIIndexEndpoint                                    | True         | False       | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                 | VertexAIIndex                                            | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                 | VertexAIMetadataStore                                    | True         | True        | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIPipelineJob                                      | True         | False       | False  | Direct     | True        |
-| aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
+| aiplatform.cnrm.cloud.google.com               | AIPlatformSchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |

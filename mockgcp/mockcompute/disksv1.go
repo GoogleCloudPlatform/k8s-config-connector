@@ -86,13 +86,21 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 	if obj.SourceImage != nil {
 		tokens := strings.Split(*obj.SourceImage, "/")
 		if len(tokens) == 2 {
-			// debian-cloud/debian-11
-			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+			// debian-cloud/debian-11 or debian-cloud/debian-12
+			imageName := "debian-11-bullseye-v20231010"
+			if tokens[1] == "debian-12" {
+				imageName = "debian-12-bookworm-v20261023"
+			}
+			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/"+imageName))
 			obj.SourceImageId = PtrTo("2443108620951880213")
 		}
 		if len(tokens) == 6 {
-			// projects/debian-cloud/global/images/family/debian-11
-			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+			// projects/debian-cloud/global/images/family/debian-11 or debian-12
+			imageName := "debian-11-bullseye-v20231010"
+			if tokens[5] == "debian-12" {
+				imageName = "debian-12-bookworm-v20261023"
+			}
+			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/"+imageName))
 			obj.SourceImageId = PtrTo("2443108620951880213")
 		}
 	}

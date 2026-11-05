@@ -17,8 +17,8 @@ package managedkafka
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -29,7 +29,7 @@ func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *k
 	out := &krm.GcpConfig{}
 	out.AccessConfig = AccessConfig_v1beta1_FromProto(mapCtx, in.GetAccessConfig())
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	return out
 }

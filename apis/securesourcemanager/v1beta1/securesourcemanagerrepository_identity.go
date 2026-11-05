@@ -21,9 +21,12 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &RepositoryIdentity{}
 
 type RepositoryIdentity struct {
 	id     string
@@ -33,6 +36,15 @@ type RepositoryIdentity struct {
 func (i *RepositoryIdentity) String() string {
 	p := i.id
 	return i.parent.String() + "/repositories/" + p
+}
+
+func (i *RepositoryIdentity) FromExternal(ref string) error {
+	parsed, err := parseSecureSourceManagerRepositoryExternal(ref)
+	if err != nil {
+		return err
+	}
+	*i = *parsed
+	return nil
 }
 
 func (i *RepositoryIdentity) Parent() *RepositoryParent {

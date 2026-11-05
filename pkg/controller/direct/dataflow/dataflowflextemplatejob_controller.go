@@ -117,6 +117,10 @@ func (m *dataFlowFlexTemplateJobModel) AdapterForObject(ctx context.Context, op 
 
 	jobID := obj.Status.JobID
 
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// TODO: Move from monitoring package into shared package (and make refs implement an interface)
 	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
 		return nil, err

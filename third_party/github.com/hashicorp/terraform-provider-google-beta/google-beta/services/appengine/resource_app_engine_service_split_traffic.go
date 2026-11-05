@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -218,6 +219,14 @@ func resourceAppEngineServiceSplitTrafficRead(d *schema.ResourceData, meta inter
 		return fmt.Errorf("Error reading ServiceSplitTraffic: %s", err)
 	}
 
+	if err := d.Set("split", flattenAppEngineServiceSplitTrafficSplit(res["split"], d, config)); err != nil {
+		return fmt.Errorf("Error reading ServiceSplitTraffic: %s", err)
+	}
+
+	if err := d.Set("migrate_traffic", false); err != nil {
+		return fmt.Errorf("Error reading ServiceSplitTraffic: %s", err)
+	}
+
 	return nil
 }
 
@@ -342,6 +351,37 @@ func resourceAppEngineServiceSplitTrafficImport(d *schema.ResourceData, meta int
 
 func flattenAppEngineServiceSplitTrafficService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
+}
+
+func flattenAppEngineServiceSplitTrafficSplit(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original, ok := v.(map[string]interface{})
+	if !ok || len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	if shardBy, ok := original["shardBy"]; ok && shardBy != nil {
+		transformed["shard_by"] = shardBy
+	}
+	if allocations, ok := original["allocations"]; ok && allocations != nil {
+		if allocMap, ok := allocations.(map[string]interface{}); ok {
+			resAlloc := make(map[string]string, len(allocMap))
+			for k, val := range allocMap {
+				switch valTyped := val.(type) {
+				case float64:
+					resAlloc[k] = strconv.FormatFloat(valTyped, 'f', -1, 64)
+				case string:
+					resAlloc[k] = valTyped
+				default:
+					resAlloc[k] = fmt.Sprintf("%v", valTyped)
+				}
+			}
+			transformed["allocations"] = resAlloc
+		}
+	}
+	return []interface{}{transformed}
 }
 
 func expandAppEngineServiceSplitTrafficService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {

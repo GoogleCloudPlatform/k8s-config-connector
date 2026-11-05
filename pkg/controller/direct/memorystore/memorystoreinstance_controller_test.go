@@ -19,8 +19,16 @@ import (
 	"testing"
 
 	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/testing/protocmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestIsConnectionSubset(t *testing.T) {
@@ -394,4 +402,122 @@ func TestCompareInstanceDuplicateConnectionsNoDrift(t *testing.T) {
 	if diffs.HasDiff() {
 		t.Errorf("compareInstance() reported diffs %v, expected 0 diffs when GCP returns 1 connection for duplicate desired connections", diffs.Fields)
 	}
+}
+
+func TestMemorystoreInstance_NormalizeReferences(t *testing.T) {
+	ctx := context.Background()
+
+	readyKey := &unstructured.Unstructured{}
+	readyKey.SetGroupVersionKind(kmsv1beta1.KMSCryptoKeyGVK)
+	readyKey.SetName("test-key")
+	readyKey.SetNamespace("test-ns")
+	selfLink := "projects/test-project/locations/us-central1/keyRings/test-keyring/cryptoKeys/test-key"
+	if err := unstructured.SetNestedField(readyKey.Object, selfLink, "status", "selfLink"); err != nil {
+		t.Fatalf("failed to set status.selfLink: %v", err)
+	}
+
+	scheme := runtime.NewScheme()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey).Build()
+
+	t.Run("resolves KmsKeyRef by name", func(t *testing.T) {
+		obj := &krm.MemorystoreInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.MemorystoreInstanceSpec{
+				KmsKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+					Name: "test-key",
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if obj.Spec.KmsKeyRef.External != selfLink {
+			t.Errorf("NormalizeReferences() External = %q, want %q", obj.Spec.KmsKeyRef.External, selfLink)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := MemorystoreInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("MemorystoreInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.GetKmsKey() != selfLink {
+			t.Errorf("protoObj KmsKey = %q, want %q", protoObj.GetKmsKey(), selfLink)
+		}
+
+		fromProto := MemorystoreInstanceSpec_FromProto(mapCtx, protoObj)
+		if mapCtx.Err() != nil {
+			t.Fatalf("MemorystoreInstanceSpec_FromProto unexpected error: %v", mapCtx.Err())
+		}
+		if fromProto.KmsKeyRef == nil || fromProto.KmsKeyRef.External != selfLink {
+			t.Errorf("fromProto KmsKeyRef.External = %v, want %q", fromProto.KmsKeyRef, selfLink)
+		}
+	})
+
+	t.Run("handles external KmsKeyRef directly", func(t *testing.T) {
+		externalKey := "projects/test-project/locations/us-central1/keyRings/test-keyring/cryptoKeys/external-key"
+		obj := &krm.MemorystoreInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.MemorystoreInstanceSpec{
+				KmsKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
+					External: externalKey,
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if obj.Spec.KmsKeyRef.External != externalKey {
+			t.Errorf("NormalizeReferences() External = %q, want %q", obj.Spec.KmsKeyRef.External, externalKey)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := MemorystoreInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("MemorystoreInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.GetKmsKey() != externalKey {
+			t.Errorf("protoObj KmsKey = %q, want %q", protoObj.GetKmsKey(), externalKey)
+		}
+
+		fromProto := MemorystoreInstanceSpec_FromProto(mapCtx, protoObj)
+		if mapCtx.Err() != nil {
+			t.Fatalf("MemorystoreInstanceSpec_FromProto unexpected error: %v", mapCtx.Err())
+		}
+		if fromProto.KmsKeyRef == nil || fromProto.KmsKeyRef.External != externalKey {
+			t.Errorf("fromProto KmsKeyRef.External = %v, want %q", fromProto.KmsKeyRef, externalKey)
+		}
+	})
+
+	t.Run("handles nil KmsKeyRef", func(t *testing.T) {
+		obj := &krm.MemorystoreInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.MemorystoreInstanceSpec{},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := MemorystoreInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("MemorystoreInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.GetKmsKey() != "" {
+			t.Errorf("protoObj KmsKey = %q, want empty", protoObj.GetKmsKey())
+		}
+	})
 }

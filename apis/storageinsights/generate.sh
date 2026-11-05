@@ -35,7 +35,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.storageinsights.v1 \
   --api-version storageinsights.cnrm.cloud.google.com/v1alpha1  \
-  --resource StorageInsightsDatasetConfig:DatasetConfig
+  --resource StorageInsightsDatasetConfig:DatasetConfig \
+  --resource StorageInsightsReportConfig:ReportConfig
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.storageinsights.v1 \

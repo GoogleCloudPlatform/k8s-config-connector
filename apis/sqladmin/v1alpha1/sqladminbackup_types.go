@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -55,7 +56,7 @@ type SQLAdminBackupSpec struct {
 // +kcc:proto=google.cloud.sql.v1.DiskEncryptionConfiguration
 type DiskEncryptionConfiguration struct {
 	// KMS key used to encrypt the backup.
-	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // SQLAdminBackupStatus defines the config connector machine state of SQLAdminBackup

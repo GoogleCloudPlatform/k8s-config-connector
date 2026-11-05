@@ -24,18 +24,26 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataformClient interface {
 	// Lists Repositories in a given project and location.
+	//
+	// **Note:** *This method can return repositories not shown in the [Dataform
+	// UI](https://console.cloud.google.com/bigquery/dataform)*.
 	ListRepositories(ctx context.Context, in *ListRepositoriesRequest, opts ...grpc.CallOption) (*ListRepositoriesResponse, error)
 	// Fetches a single Repository.
 	GetRepository(ctx context.Context, in *GetRepositoryRequest, opts ...grpc.CallOption) (*Repository, error)
 	// Creates a new Repository in a given project and location.
 	CreateRepository(ctx context.Context, in *CreateRepositoryRequest, opts ...grpc.CallOption) (*Repository, error)
 	// Updates a single Repository.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateRepository(ctx context.Context, in *UpdateRepositoryRequest, opts ...grpc.CallOption) (*Repository, error)
 	// Deletes a single Repository.
 	DeleteRepository(ctx context.Context, in *DeleteRepositoryRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Applies a Git commit to a Repository. The Repository must not have a value
 	// for `git_remote_settings.url`.
-	CommitRepositoryChanges(ctx context.Context, in *CommitRepositoryChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	CommitRepositoryChanges(ctx context.Context, in *CommitRepositoryChangesRequest, opts ...grpc.CallOption) (*CommitRepositoryChangesResponse, error)
 	// Returns the contents of a file (inside a Repository). The Repository
 	// must not have a value for `git_remote_settings.url`.
 	ReadRepositoryFile(ctx context.Context, in *ReadRepositoryFileRequest, opts ...grpc.CallOption) (*ReadRepositoryFileResponse, error)
@@ -60,32 +68,34 @@ type DataformClient interface {
 	// Installs dependency NPM packages (inside a Workspace).
 	InstallNpmPackages(ctx context.Context, in *InstallNpmPackagesRequest, opts ...grpc.CallOption) (*InstallNpmPackagesResponse, error)
 	// Pulls Git commits from the Repository's remote into a Workspace.
-	PullGitCommits(ctx context.Context, in *PullGitCommitsRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	PullGitCommits(ctx context.Context, in *PullGitCommitsRequest, opts ...grpc.CallOption) (*PullGitCommitsResponse, error)
 	// Pushes Git commits from a Workspace to the Repository's remote.
-	PushGitCommits(ctx context.Context, in *PushGitCommitsRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	PushGitCommits(ctx context.Context, in *PushGitCommitsRequest, opts ...grpc.CallOption) (*PushGitCommitsResponse, error)
 	// Fetches Git statuses for the files in a Workspace.
 	FetchFileGitStatuses(ctx context.Context, in *FetchFileGitStatusesRequest, opts ...grpc.CallOption) (*FetchFileGitStatusesResponse, error)
 	// Fetches Git ahead/behind against a remote branch.
 	FetchGitAheadBehind(ctx context.Context, in *FetchGitAheadBehindRequest, opts ...grpc.CallOption) (*FetchGitAheadBehindResponse, error)
 	// Applies a Git commit for uncommitted files in a Workspace.
-	CommitWorkspaceChanges(ctx context.Context, in *CommitWorkspaceChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	CommitWorkspaceChanges(ctx context.Context, in *CommitWorkspaceChangesRequest, opts ...grpc.CallOption) (*CommitWorkspaceChangesResponse, error)
 	// Performs a Git reset for uncommitted files in a Workspace.
-	ResetWorkspaceChanges(ctx context.Context, in *ResetWorkspaceChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	ResetWorkspaceChanges(ctx context.Context, in *ResetWorkspaceChangesRequest, opts ...grpc.CallOption) (*ResetWorkspaceChangesResponse, error)
 	// Fetches Git diff for an uncommitted file in a Workspace.
 	FetchFileDiff(ctx context.Context, in *FetchFileDiffRequest, opts ...grpc.CallOption) (*FetchFileDiffResponse, error)
 	// Returns the contents of a given Workspace directory.
 	QueryDirectoryContents(ctx context.Context, in *QueryDirectoryContentsRequest, opts ...grpc.CallOption) (*QueryDirectoryContentsResponse, error)
+	// Finds the contents of a given Workspace directory by filter.
+	SearchFiles(ctx context.Context, in *SearchFilesRequest, opts ...grpc.CallOption) (*SearchFilesResponse, error)
 	// Creates a directory inside a Workspace.
 	MakeDirectory(ctx context.Context, in *MakeDirectoryRequest, opts ...grpc.CallOption) (*MakeDirectoryResponse, error)
 	// Deletes a directory (inside a Workspace) and all of its contents.
-	RemoveDirectory(ctx context.Context, in *RemoveDirectoryRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	RemoveDirectory(ctx context.Context, in *RemoveDirectoryRequest, opts ...grpc.CallOption) (*RemoveDirectoryResponse, error)
 	// Moves a directory (inside a Workspace), and all of its contents, to a new
 	// location.
 	MoveDirectory(ctx context.Context, in *MoveDirectoryRequest, opts ...grpc.CallOption) (*MoveDirectoryResponse, error)
 	// Returns the contents of a file (inside a Workspace).
 	ReadFile(ctx context.Context, in *ReadFileRequest, opts ...grpc.CallOption) (*ReadFileResponse, error)
 	// Deletes a file (inside a Workspace).
-	RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*RemoveFileResponse, error)
 	// Moves a file (inside a Workspace) to a new location.
 	MoveFile(ctx context.Context, in *MoveFileRequest, opts ...grpc.CallOption) (*MoveFileResponse, error)
 	// Writes to a file (inside a Workspace).
@@ -97,6 +107,11 @@ type DataformClient interface {
 	// Creates a new ReleaseConfig in a given Repository.
 	CreateReleaseConfig(ctx context.Context, in *CreateReleaseConfigRequest, opts ...grpc.CallOption) (*ReleaseConfig, error)
 	// Updates a single ReleaseConfig.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateReleaseConfig(ctx context.Context, in *UpdateReleaseConfigRequest, opts ...grpc.CallOption) (*ReleaseConfig, error)
 	// Deletes a single ReleaseConfig.
 	DeleteReleaseConfig(ctx context.Context, in *DeleteReleaseConfigRequest, opts ...grpc.CallOption) (*empty.Empty, error)
@@ -115,6 +130,11 @@ type DataformClient interface {
 	// Creates a new WorkflowConfig in a given Repository.
 	CreateWorkflowConfig(ctx context.Context, in *CreateWorkflowConfigRequest, opts ...grpc.CallOption) (*WorkflowConfig, error)
 	// Updates a single WorkflowConfig.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateWorkflowConfig(ctx context.Context, in *UpdateWorkflowConfigRequest, opts ...grpc.CallOption) (*WorkflowConfig, error)
 	// Deletes a single WorkflowConfig.
 	DeleteWorkflowConfig(ctx context.Context, in *DeleteWorkflowConfigRequest, opts ...grpc.CallOption) (*empty.Empty, error)
@@ -127,9 +147,26 @@ type DataformClient interface {
 	// Deletes a single WorkflowInvocation.
 	DeleteWorkflowInvocation(ctx context.Context, in *DeleteWorkflowInvocationRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Requests cancellation of a running WorkflowInvocation.
-	CancelWorkflowInvocation(ctx context.Context, in *CancelWorkflowInvocationRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	CancelWorkflowInvocation(ctx context.Context, in *CancelWorkflowInvocationRequest, opts ...grpc.CallOption) (*CancelWorkflowInvocationResponse, error)
 	// Returns WorkflowInvocationActions in a given WorkflowInvocation.
 	QueryWorkflowInvocationActions(ctx context.Context, in *QueryWorkflowInvocationActionsRequest, opts ...grpc.CallOption) (*QueryWorkflowInvocationActionsResponse, error)
+	// Get default config for a given project and location.
+	GetConfig(ctx context.Context, in *GetConfigRequest, opts ...grpc.CallOption) (*Config, error)
+	// Update default config for a given project and location.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
+	UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*Config, error)
+	// Fetches a single Folder.
+	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	// Creates a new Folder in a given project and location.
+	CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	// Updates a single Folder.
+	UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	// Deletes a single Folder.
+	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type dataformClient struct {
@@ -185,8 +222,8 @@ func (c *dataformClient) DeleteRepository(ctx context.Context, in *DeleteReposit
 	return out, nil
 }
 
-func (c *dataformClient) CommitRepositoryChanges(ctx context.Context, in *CommitRepositoryChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) CommitRepositoryChanges(ctx context.Context, in *CommitRepositoryChangesRequest, opts ...grpc.CallOption) (*CommitRepositoryChangesResponse, error) {
+	out := new(CommitRepositoryChangesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/CommitRepositoryChanges", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -284,8 +321,8 @@ func (c *dataformClient) InstallNpmPackages(ctx context.Context, in *InstallNpmP
 	return out, nil
 }
 
-func (c *dataformClient) PullGitCommits(ctx context.Context, in *PullGitCommitsRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) PullGitCommits(ctx context.Context, in *PullGitCommitsRequest, opts ...grpc.CallOption) (*PullGitCommitsResponse, error) {
+	out := new(PullGitCommitsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/PullGitCommits", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -293,8 +330,8 @@ func (c *dataformClient) PullGitCommits(ctx context.Context, in *PullGitCommitsR
 	return out, nil
 }
 
-func (c *dataformClient) PushGitCommits(ctx context.Context, in *PushGitCommitsRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) PushGitCommits(ctx context.Context, in *PushGitCommitsRequest, opts ...grpc.CallOption) (*PushGitCommitsResponse, error) {
+	out := new(PushGitCommitsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/PushGitCommits", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -320,8 +357,8 @@ func (c *dataformClient) FetchGitAheadBehind(ctx context.Context, in *FetchGitAh
 	return out, nil
 }
 
-func (c *dataformClient) CommitWorkspaceChanges(ctx context.Context, in *CommitWorkspaceChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) CommitWorkspaceChanges(ctx context.Context, in *CommitWorkspaceChangesRequest, opts ...grpc.CallOption) (*CommitWorkspaceChangesResponse, error) {
+	out := new(CommitWorkspaceChangesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/CommitWorkspaceChanges", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -329,8 +366,8 @@ func (c *dataformClient) CommitWorkspaceChanges(ctx context.Context, in *CommitW
 	return out, nil
 }
 
-func (c *dataformClient) ResetWorkspaceChanges(ctx context.Context, in *ResetWorkspaceChangesRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) ResetWorkspaceChanges(ctx context.Context, in *ResetWorkspaceChangesRequest, opts ...grpc.CallOption) (*ResetWorkspaceChangesResponse, error) {
+	out := new(ResetWorkspaceChangesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/ResetWorkspaceChanges", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -356,6 +393,15 @@ func (c *dataformClient) QueryDirectoryContents(ctx context.Context, in *QueryDi
 	return out, nil
 }
 
+func (c *dataformClient) SearchFiles(ctx context.Context, in *SearchFilesRequest, opts ...grpc.CallOption) (*SearchFilesResponse, error) {
+	out := new(SearchFilesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/SearchFiles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dataformClient) MakeDirectory(ctx context.Context, in *MakeDirectoryRequest, opts ...grpc.CallOption) (*MakeDirectoryResponse, error) {
 	out := new(MakeDirectoryResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/MakeDirectory", in, out, opts...)
@@ -365,8 +411,8 @@ func (c *dataformClient) MakeDirectory(ctx context.Context, in *MakeDirectoryReq
 	return out, nil
 }
 
-func (c *dataformClient) RemoveDirectory(ctx context.Context, in *RemoveDirectoryRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) RemoveDirectory(ctx context.Context, in *RemoveDirectoryRequest, opts ...grpc.CallOption) (*RemoveDirectoryResponse, error) {
+	out := new(RemoveDirectoryResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/RemoveDirectory", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -392,8 +438,8 @@ func (c *dataformClient) ReadFile(ctx context.Context, in *ReadFileRequest, opts
 	return out, nil
 }
 
-func (c *dataformClient) RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) RemoveFile(ctx context.Context, in *RemoveFileRequest, opts ...grpc.CallOption) (*RemoveFileResponse, error) {
+	out := new(RemoveFileResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/RemoveFile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -581,8 +627,8 @@ func (c *dataformClient) DeleteWorkflowInvocation(ctx context.Context, in *Delet
 	return out, nil
 }
 
-func (c *dataformClient) CancelWorkflowInvocation(ctx context.Context, in *CancelWorkflowInvocationRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *dataformClient) CancelWorkflowInvocation(ctx context.Context, in *CancelWorkflowInvocationRequest, opts ...grpc.CallOption) (*CancelWorkflowInvocationResponse, error) {
+	out := new(CancelWorkflowInvocationResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/CancelWorkflowInvocation", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -599,23 +645,85 @@ func (c *dataformClient) QueryWorkflowInvocationActions(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *dataformClient) GetConfig(ctx context.Context, in *GetConfigRequest, opts ...grpc.CallOption) (*Config, error) {
+	out := new(Config)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/GetConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataformClient) UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*Config, error) {
+	out := new(Config)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/UpdateConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataformClient) GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
+	out := new(Folder)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/GetFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataformClient) CreateFolder(ctx context.Context, in *CreateFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
+	out := new(Folder)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/CreateFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataformClient) UpdateFolder(ctx context.Context, in *UpdateFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
+	out := new(Folder)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/UpdateFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataformClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataform.v1beta1.Dataform/DeleteFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataformServer is the server API for Dataform service.
 // All implementations must embed UnimplementedDataformServer
 // for forward compatibility
 type DataformServer interface {
 	// Lists Repositories in a given project and location.
+	//
+	// **Note:** *This method can return repositories not shown in the [Dataform
+	// UI](https://console.cloud.google.com/bigquery/dataform)*.
 	ListRepositories(context.Context, *ListRepositoriesRequest) (*ListRepositoriesResponse, error)
 	// Fetches a single Repository.
 	GetRepository(context.Context, *GetRepositoryRequest) (*Repository, error)
 	// Creates a new Repository in a given project and location.
 	CreateRepository(context.Context, *CreateRepositoryRequest) (*Repository, error)
 	// Updates a single Repository.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateRepository(context.Context, *UpdateRepositoryRequest) (*Repository, error)
 	// Deletes a single Repository.
 	DeleteRepository(context.Context, *DeleteRepositoryRequest) (*empty.Empty, error)
 	// Applies a Git commit to a Repository. The Repository must not have a value
 	// for `git_remote_settings.url`.
-	CommitRepositoryChanges(context.Context, *CommitRepositoryChangesRequest) (*empty.Empty, error)
+	CommitRepositoryChanges(context.Context, *CommitRepositoryChangesRequest) (*CommitRepositoryChangesResponse, error)
 	// Returns the contents of a file (inside a Repository). The Repository
 	// must not have a value for `git_remote_settings.url`.
 	ReadRepositoryFile(context.Context, *ReadRepositoryFileRequest) (*ReadRepositoryFileResponse, error)
@@ -640,32 +748,34 @@ type DataformServer interface {
 	// Installs dependency NPM packages (inside a Workspace).
 	InstallNpmPackages(context.Context, *InstallNpmPackagesRequest) (*InstallNpmPackagesResponse, error)
 	// Pulls Git commits from the Repository's remote into a Workspace.
-	PullGitCommits(context.Context, *PullGitCommitsRequest) (*empty.Empty, error)
+	PullGitCommits(context.Context, *PullGitCommitsRequest) (*PullGitCommitsResponse, error)
 	// Pushes Git commits from a Workspace to the Repository's remote.
-	PushGitCommits(context.Context, *PushGitCommitsRequest) (*empty.Empty, error)
+	PushGitCommits(context.Context, *PushGitCommitsRequest) (*PushGitCommitsResponse, error)
 	// Fetches Git statuses for the files in a Workspace.
 	FetchFileGitStatuses(context.Context, *FetchFileGitStatusesRequest) (*FetchFileGitStatusesResponse, error)
 	// Fetches Git ahead/behind against a remote branch.
 	FetchGitAheadBehind(context.Context, *FetchGitAheadBehindRequest) (*FetchGitAheadBehindResponse, error)
 	// Applies a Git commit for uncommitted files in a Workspace.
-	CommitWorkspaceChanges(context.Context, *CommitWorkspaceChangesRequest) (*empty.Empty, error)
+	CommitWorkspaceChanges(context.Context, *CommitWorkspaceChangesRequest) (*CommitWorkspaceChangesResponse, error)
 	// Performs a Git reset for uncommitted files in a Workspace.
-	ResetWorkspaceChanges(context.Context, *ResetWorkspaceChangesRequest) (*empty.Empty, error)
+	ResetWorkspaceChanges(context.Context, *ResetWorkspaceChangesRequest) (*ResetWorkspaceChangesResponse, error)
 	// Fetches Git diff for an uncommitted file in a Workspace.
 	FetchFileDiff(context.Context, *FetchFileDiffRequest) (*FetchFileDiffResponse, error)
 	// Returns the contents of a given Workspace directory.
 	QueryDirectoryContents(context.Context, *QueryDirectoryContentsRequest) (*QueryDirectoryContentsResponse, error)
+	// Finds the contents of a given Workspace directory by filter.
+	SearchFiles(context.Context, *SearchFilesRequest) (*SearchFilesResponse, error)
 	// Creates a directory inside a Workspace.
 	MakeDirectory(context.Context, *MakeDirectoryRequest) (*MakeDirectoryResponse, error)
 	// Deletes a directory (inside a Workspace) and all of its contents.
-	RemoveDirectory(context.Context, *RemoveDirectoryRequest) (*empty.Empty, error)
+	RemoveDirectory(context.Context, *RemoveDirectoryRequest) (*RemoveDirectoryResponse, error)
 	// Moves a directory (inside a Workspace), and all of its contents, to a new
 	// location.
 	MoveDirectory(context.Context, *MoveDirectoryRequest) (*MoveDirectoryResponse, error)
 	// Returns the contents of a file (inside a Workspace).
 	ReadFile(context.Context, *ReadFileRequest) (*ReadFileResponse, error)
 	// Deletes a file (inside a Workspace).
-	RemoveFile(context.Context, *RemoveFileRequest) (*empty.Empty, error)
+	RemoveFile(context.Context, *RemoveFileRequest) (*RemoveFileResponse, error)
 	// Moves a file (inside a Workspace) to a new location.
 	MoveFile(context.Context, *MoveFileRequest) (*MoveFileResponse, error)
 	// Writes to a file (inside a Workspace).
@@ -677,6 +787,11 @@ type DataformServer interface {
 	// Creates a new ReleaseConfig in a given Repository.
 	CreateReleaseConfig(context.Context, *CreateReleaseConfigRequest) (*ReleaseConfig, error)
 	// Updates a single ReleaseConfig.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateReleaseConfig(context.Context, *UpdateReleaseConfigRequest) (*ReleaseConfig, error)
 	// Deletes a single ReleaseConfig.
 	DeleteReleaseConfig(context.Context, *DeleteReleaseConfigRequest) (*empty.Empty, error)
@@ -695,6 +810,11 @@ type DataformServer interface {
 	// Creates a new WorkflowConfig in a given Repository.
 	CreateWorkflowConfig(context.Context, *CreateWorkflowConfigRequest) (*WorkflowConfig, error)
 	// Updates a single WorkflowConfig.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
 	UpdateWorkflowConfig(context.Context, *UpdateWorkflowConfigRequest) (*WorkflowConfig, error)
 	// Deletes a single WorkflowConfig.
 	DeleteWorkflowConfig(context.Context, *DeleteWorkflowConfigRequest) (*empty.Empty, error)
@@ -707,9 +827,26 @@ type DataformServer interface {
 	// Deletes a single WorkflowInvocation.
 	DeleteWorkflowInvocation(context.Context, *DeleteWorkflowInvocationRequest) (*empty.Empty, error)
 	// Requests cancellation of a running WorkflowInvocation.
-	CancelWorkflowInvocation(context.Context, *CancelWorkflowInvocationRequest) (*empty.Empty, error)
+	CancelWorkflowInvocation(context.Context, *CancelWorkflowInvocationRequest) (*CancelWorkflowInvocationResponse, error)
 	// Returns WorkflowInvocationActions in a given WorkflowInvocation.
 	QueryWorkflowInvocationActions(context.Context, *QueryWorkflowInvocationActionsRequest) (*QueryWorkflowInvocationActionsResponse, error)
+	// Get default config for a given project and location.
+	GetConfig(context.Context, *GetConfigRequest) (*Config, error)
+	// Update default config for a given project and location.
+	//
+	// **Note:** *This method does not fully implement
+	// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+	// as a bad request, and when the `field_mask` is omitted, the request is
+	// treated as a full update on all modifiable fields.*
+	UpdateConfig(context.Context, *UpdateConfigRequest) (*Config, error)
+	// Fetches a single Folder.
+	GetFolder(context.Context, *GetFolderRequest) (*Folder, error)
+	// Creates a new Folder in a given project and location.
+	CreateFolder(context.Context, *CreateFolderRequest) (*Folder, error)
+	// Updates a single Folder.
+	UpdateFolder(context.Context, *UpdateFolderRequest) (*Folder, error)
+	// Deletes a single Folder.
+	DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedDataformServer()
 }
 
@@ -732,7 +869,7 @@ func (UnimplementedDataformServer) UpdateRepository(context.Context, *UpdateRepo
 func (UnimplementedDataformServer) DeleteRepository(context.Context, *DeleteRepositoryRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRepository not implemented")
 }
-func (UnimplementedDataformServer) CommitRepositoryChanges(context.Context, *CommitRepositoryChangesRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) CommitRepositoryChanges(context.Context, *CommitRepositoryChangesRequest) (*CommitRepositoryChangesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommitRepositoryChanges not implemented")
 }
 func (UnimplementedDataformServer) ReadRepositoryFile(context.Context, *ReadRepositoryFileRequest) (*ReadRepositoryFileResponse, error) {
@@ -765,10 +902,10 @@ func (UnimplementedDataformServer) DeleteWorkspace(context.Context, *DeleteWorks
 func (UnimplementedDataformServer) InstallNpmPackages(context.Context, *InstallNpmPackagesRequest) (*InstallNpmPackagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InstallNpmPackages not implemented")
 }
-func (UnimplementedDataformServer) PullGitCommits(context.Context, *PullGitCommitsRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) PullGitCommits(context.Context, *PullGitCommitsRequest) (*PullGitCommitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PullGitCommits not implemented")
 }
-func (UnimplementedDataformServer) PushGitCommits(context.Context, *PushGitCommitsRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) PushGitCommits(context.Context, *PushGitCommitsRequest) (*PushGitCommitsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PushGitCommits not implemented")
 }
 func (UnimplementedDataformServer) FetchFileGitStatuses(context.Context, *FetchFileGitStatusesRequest) (*FetchFileGitStatusesResponse, error) {
@@ -777,10 +914,10 @@ func (UnimplementedDataformServer) FetchFileGitStatuses(context.Context, *FetchF
 func (UnimplementedDataformServer) FetchGitAheadBehind(context.Context, *FetchGitAheadBehindRequest) (*FetchGitAheadBehindResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchGitAheadBehind not implemented")
 }
-func (UnimplementedDataformServer) CommitWorkspaceChanges(context.Context, *CommitWorkspaceChangesRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) CommitWorkspaceChanges(context.Context, *CommitWorkspaceChangesRequest) (*CommitWorkspaceChangesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommitWorkspaceChanges not implemented")
 }
-func (UnimplementedDataformServer) ResetWorkspaceChanges(context.Context, *ResetWorkspaceChangesRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) ResetWorkspaceChanges(context.Context, *ResetWorkspaceChangesRequest) (*ResetWorkspaceChangesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetWorkspaceChanges not implemented")
 }
 func (UnimplementedDataformServer) FetchFileDiff(context.Context, *FetchFileDiffRequest) (*FetchFileDiffResponse, error) {
@@ -789,10 +926,13 @@ func (UnimplementedDataformServer) FetchFileDiff(context.Context, *FetchFileDiff
 func (UnimplementedDataformServer) QueryDirectoryContents(context.Context, *QueryDirectoryContentsRequest) (*QueryDirectoryContentsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryDirectoryContents not implemented")
 }
+func (UnimplementedDataformServer) SearchFiles(context.Context, *SearchFilesRequest) (*SearchFilesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchFiles not implemented")
+}
 func (UnimplementedDataformServer) MakeDirectory(context.Context, *MakeDirectoryRequest) (*MakeDirectoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MakeDirectory not implemented")
 }
-func (UnimplementedDataformServer) RemoveDirectory(context.Context, *RemoveDirectoryRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) RemoveDirectory(context.Context, *RemoveDirectoryRequest) (*RemoveDirectoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveDirectory not implemented")
 }
 func (UnimplementedDataformServer) MoveDirectory(context.Context, *MoveDirectoryRequest) (*MoveDirectoryResponse, error) {
@@ -801,7 +941,7 @@ func (UnimplementedDataformServer) MoveDirectory(context.Context, *MoveDirectory
 func (UnimplementedDataformServer) ReadFile(context.Context, *ReadFileRequest) (*ReadFileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadFile not implemented")
 }
-func (UnimplementedDataformServer) RemoveFile(context.Context, *RemoveFileRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) RemoveFile(context.Context, *RemoveFileRequest) (*RemoveFileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveFile not implemented")
 }
 func (UnimplementedDataformServer) MoveFile(context.Context, *MoveFileRequest) (*MoveFileResponse, error) {
@@ -864,11 +1004,29 @@ func (UnimplementedDataformServer) CreateWorkflowInvocation(context.Context, *Cr
 func (UnimplementedDataformServer) DeleteWorkflowInvocation(context.Context, *DeleteWorkflowInvocationRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWorkflowInvocation not implemented")
 }
-func (UnimplementedDataformServer) CancelWorkflowInvocation(context.Context, *CancelWorkflowInvocationRequest) (*empty.Empty, error) {
+func (UnimplementedDataformServer) CancelWorkflowInvocation(context.Context, *CancelWorkflowInvocationRequest) (*CancelWorkflowInvocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelWorkflowInvocation not implemented")
 }
 func (UnimplementedDataformServer) QueryWorkflowInvocationActions(context.Context, *QueryWorkflowInvocationActionsRequest) (*QueryWorkflowInvocationActionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryWorkflowInvocationActions not implemented")
+}
+func (UnimplementedDataformServer) GetConfig(context.Context, *GetConfigRequest) (*Config, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConfig not implemented")
+}
+func (UnimplementedDataformServer) UpdateConfig(context.Context, *UpdateConfigRequest) (*Config, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConfig not implemented")
+}
+func (UnimplementedDataformServer) GetFolder(context.Context, *GetFolderRequest) (*Folder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFolder not implemented")
+}
+func (UnimplementedDataformServer) CreateFolder(context.Context, *CreateFolderRequest) (*Folder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFolder not implemented")
+}
+func (UnimplementedDataformServer) UpdateFolder(context.Context, *UpdateFolderRequest) (*Folder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFolder not implemented")
+}
+func (UnimplementedDataformServer) DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFolder not implemented")
 }
 func (UnimplementedDataformServer) mustEmbedUnimplementedDataformServer() {}
 
@@ -1311,6 +1469,24 @@ func _Dataform_QueryDirectoryContents_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DataformServer).QueryDirectoryContents(ctx, req.(*QueryDirectoryContentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_SearchFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchFilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).SearchFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/SearchFiles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).SearchFiles(ctx, req.(*SearchFilesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1801,6 +1977,114 @@ func _Dataform_QueryWorkflowInvocationActions_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dataform_GetConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).GetConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/GetConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).GetConfig(ctx, req.(*GetConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_UpdateConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).UpdateConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/UpdateConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).UpdateConfig(ctx, req.(*UpdateConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_GetFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).GetFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/GetFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).GetFolder(ctx, req.(*GetFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_CreateFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).CreateFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/CreateFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).CreateFolder(ctx, req.(*CreateFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_UpdateFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).UpdateFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/UpdateFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).UpdateFolder(ctx, req.(*UpdateFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dataform_DeleteFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataformServer).DeleteFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.dataform.v1beta1.Dataform/DeleteFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataformServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Dataform_ServiceDesc is the grpc.ServiceDesc for Dataform service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1903,6 +2187,10 @@ var Dataform_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryDirectoryContents",
 			Handler:    _Dataform_QueryDirectoryContents_Handler,
+		},
+		{
+			MethodName: "SearchFiles",
+			Handler:    _Dataform_SearchFiles_Handler,
 		},
 		{
 			MethodName: "MakeDirectory",
@@ -2011,6 +2299,30 @@ var Dataform_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryWorkflowInvocationActions",
 			Handler:    _Dataform_QueryWorkflowInvocationActions_Handler,
+		},
+		{
+			MethodName: "GetConfig",
+			Handler:    _Dataform_GetConfig_Handler,
+		},
+		{
+			MethodName: "UpdateConfig",
+			Handler:    _Dataform_UpdateConfig_Handler,
+		},
+		{
+			MethodName: "GetFolder",
+			Handler:    _Dataform_GetFolder_Handler,
+		},
+		{
+			MethodName: "CreateFolder",
+			Handler:    _Dataform_CreateFolder_Handler,
+		},
+		{
+			MethodName: "UpdateFolder",
+			Handler:    _Dataform_UpdateFolder_Handler,
+		},
+		{
+			MethodName: "DeleteFolder",
+			Handler:    _Dataform_DeleteFolder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

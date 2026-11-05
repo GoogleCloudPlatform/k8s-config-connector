@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -194,18 +195,61 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 			}
 			var paths []string
 			for _, j := range got.Judgement {
-				if j.Reason == "possible-reference" {
+				if j.Reason == "authoritative-proto-reference" {
 					paths = append(paths, j.FieldPath)
 				}
 			}
 			if len(paths) != 1 || paths[0] != tc.wantPath {
-				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+				t.Errorf("authoritative-proto-reference paths = %v, want [%s]", paths, tc.wantPath)
 			}
 			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
 			if !strings.Contains(got.SpecFields, tag) {
 				t.Errorf("SpecFields has no %s, so the entry names a field the struct lacks:\n%s", tag, got.SpecFields)
 			}
 		})
+	}
+}
+
+// TestPrepopulateSpecQueuesResourceReferences checks the
+// authoritative-proto-reference entry for a top-level field with
+// google.api.resource_reference, once with type and once with child_type, and
+// verifies that heuristic sibling matching is suppressed when
+// google.api.resource_reference is present. ReferenceHints queues the nested
+// ones; see TestReferenceHintsQueuesNestedResourceReferences.
+func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
+	// Arrange
+	msg := ragStoreMessage(t)
+	want := []JudgementItem{
+		{
+			Reason: "untriaged-bulk-generation",
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.corpus",
+			Reason:    "authoritative-proto-reference",
+			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
+		},
+		{
+			FieldPath: ".spec.parent",
+			Reason:    "authoritative-proto-reference",
+			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
+		},
+	}
+
+	// Act
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{
+		Siblings: map[string]string{"corpus": "AIPlatformRagCorpus"},
+	})
+
+	// Assert
+	if err != nil {
+		t.Fatalf("PrepopulateSpec() error: %v", err)
+	}
+	if diff := cmp.Diff(want, got.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() Judgement mismatch (-want +got):\n%s", diff)
+	}
+	if strings.Contains(got.SpecFields, codegen.SiblingGuessMarker) {
+		t.Errorf("expected no %s comment when google.api.resource_reference is present:\n%s", codegen.SiblingGuessMarker, got.SpecFields)
 	}
 }
 
@@ -348,51 +392,142 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 		"Output only. Set by the server.",                   // field_0, the long-standing spelling
 		"[Output Only] IP address on the Google side.",      // field_1, how Compute writes it
 		"The display name of the widget.",                   // field_2, no signal
-		"Set by the user. Output only in some other sense.", // field_3, marker not at the front
+		"Set by the user. Output only in some other sense.", // field_3, marker not at the front, so the weaker reason
 	)
-	want := []string{".spec.field0", ".spec.field1"}
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. Set by the server."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output Only] IP address on the Google side."},
+		{FieldPath: ".spec.field3", Reason: "possible-output-only-pattern-in-comment", Comment: "Set by the user. Output only in some other sense."},
+	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var paths []string
-	for _, c := range got {
-		paths = append(paths, c.FieldPath)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
-	if len(paths) != len(want) {
-		t.Fatalf("got %v, want %v", paths, want)
+}
+
+// Any other mention of "output only" gets the weaker reason, in any case, in
+// brackets or with a hyphen. That covers the words after other text, as in
+// websecurityscanner's managed_scan, and a comment that starts with the words
+// but not with a marker: a typo, or a condition. A sentence break between the
+// words is not a match.
+func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
+	// Arrange
+	msg := commentedMessage(t,
+		"Whether the scan config is managed by Web Security Scanner, output only.",      // field_0, websecurityscanner
+		"When the version was created. Output-only field, populated by the system.",     // field_1, dlp's hyphen
+		"Required. [Output Only] Set by the server.",                                    // field_2, a marker further on
+		"The job output. Only the last run is kept.",                                    // field_3, a sentence break
+		"Output only . The translated content.",                                         // field_4, automl's typo
+		"Output only\n When true, the index configuration is being reverted.",           // field_5, firestore, the words on their own line
+		"[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key.", // field_6, compute, conditional
+		"Output only for the create operation. Required for update.",                    // field_7, spanner-style, conditional
+	)
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+		{FieldPath: ".spec.field1", Reason: "possible-output-only-pattern-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
+		{FieldPath: ".spec.field2", Reason: "possible-output-only-pattern-in-comment", Comment: "Required. [Output Only] Set by the server."},
+		{FieldPath: ".spec.field4", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only . The translated content."},
+		{FieldPath: ".spec.field5", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only When true, the index configuration is being reverted."},
+		{FieldPath: ".spec.field6", Reason: "possible-output-only-pattern-in-comment", Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
+		{FieldPath: ".spec.field7", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only for the create operation. Required for update."},
 	}
-	for i := range want {
-		if paths[i] != want[i] {
-			t.Errorf("got %v, want %v", paths, want)
-		}
+
+	// Act
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
+
+	// Assert
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestDetectOutputOnlyWalksNestedFields checks that both rules reach nested
+// Spec fields, including ones in a list. TestOutputOnlyCandidateItem checks
+// the path the queue entry gives a nested field.
+func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
+	// Arrange
+	msg := nestedConfigMessage(t)
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.config.state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.config.managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.peers[].state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.peers[].managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
+	}
+
+	// Act
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
+
+	// Assert
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestOutputOnlyCandidateItem checks the entry for each reason. The entry
+// names the field's place under ObservedState and keeps the rest of a nested
+// path. The detail ends with the comment, so a reviewer can decide without
+// opening the proto.
+func TestOutputOnlyCandidateItem(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		cand OutputOnlyCandidate
+		want JudgementItem
+	}{
+		{
+			name: "comment starts with the marker",
+			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. When it was created."},
+			want: JudgementItem{
+				FieldPath: ".status.observedState.createTime",
+				Reason:    "well-known-output-only-pattern-in-comment",
+				Detail:    "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.createTime. Move the field to .status.observedState.createTime if it is confirmed output only. Proto comment: Output only. When it was created.",
+			},
+		},
+		{
+			name: "comment mentions the words in a nested field",
+			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+			want: JudgementItem{
+				FieldPath: ".status.observedState.config.managedScan",
+				Reason:    "possible-output-only-pattern-in-comment",
+				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec at .spec.config.managedScan. " +
+					"The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.config.managedScan if it is confirmed output only. Proto comment: Whether the scan config is managed by Web Security Scanner, output only.",
+			},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got := tc.cand.Item()
+
+			// Assert
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("Item() mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
 
 // Compute writes both "[Output Only]" and "[Output only]", so the prefixes
-// match in any case. A comment where the words run on into a condition does not
-// match, because the field is only output some of the time.
+// match in any case.
 func TestDetectOutputOnlyIgnoresCase(t *testing.T) {
 	// Arrange
 	msg := commentedMessage(t,
-		"[Output only] Number of network endpoints in the group.",                       // field_0, compute's other spelling
-		"Output Only. The overall outcome of the test.",                                 // field_1, devtools.testing
-		"[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key.", // field_2, compute, conditional
-		"Output only for the create operation. Required for update.",                    // field_3, spanner-style, conditional
+		"[Output only] Number of network endpoints in the group.", // field_0, compute's other spelling
+		"Output Only. The overall outcome of the test.",           // field_1, devtools.testing
 	)
-	want := []string{".spec.field0", ".spec.field1"}
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output only] Number of network endpoints in the group."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output Only. The overall outcome of the test."},
+	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var paths []string
-	for _, c := range got {
-		paths = append(paths, c.FieldPath)
-	}
-	if strings.Join(paths, ",") != strings.Join(want, ",") {
-		t.Errorf("got %v, want %v", paths, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -451,6 +586,128 @@ func TestDetectOutputOnlySkipsServerSetFields(t *testing.T) {
 	}
 }
 
+// TestSpecFieldsMatchesPrepopulateSpec checks that SpecFields lists the fields
+// PrepopulateSpec writes, in the same order. generate-types uses SpecFields to
+// plan a new Kind's structs before PrepopulateSpec runs.
+func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		msg  protoreflect.MessageDescriptor
+		opts codegen.WriteOptions
+	}{
+		{name: "field_behavior annotations", msg: testMessage(t)},
+		{
+			name: "server-set fields placed in status",
+			msg:  namedCommentedMessage(t, [][2]string{{"etag", ""}, {"description", ""}, {"self_link", ""}}),
+			opts: codegen.WriteOptions{PlaceServerSetFields: true},
+		},
+		{name: "deprecated top-level fields", msg: deprecatedMessage(t)},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			fields := SpecFields(tc.msg, tc.opts)
+			got, err := PrepopulateSpec(tc.msg, tc.opts)
+			if err != nil {
+				t.Fatalf("PrepopulateSpec: %v", err)
+			}
+
+			// Assert
+			var want []string
+			for _, line := range strings.Split(got.SpecFields, "\n") {
+				if v, ok := strings.CutPrefix(strings.TrimSpace(line), "// "+codegen.KCCProtoFieldAnnotation+"="); ok {
+					want = append(want, v)
+				}
+			}
+			var names []string
+			for _, f := range fields {
+				names = append(names, string(f.FullName()))
+			}
+			if !reflect.DeepEqual(names, want) {
+				t.Errorf("SpecFields() = %v, PrepopulateSpec wrote %v", names, want)
+			}
+		})
+	}
+}
+
+func TestWellKnownProtoTypeQueuedInSpecAndObservedState(t *testing.T) {
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	files, err := protodesc.NewFiles(&descriptorpb.FileDescriptorSet{
+		File: []*descriptorpb.FileDescriptorProto{
+			{
+				Name:    strPtr("google/protobuf/wrappers.proto"),
+				Package: strPtr("google.protobuf"),
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("DoubleValue"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("value"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_DOUBLE)},
+						},
+					},
+					{
+						Name: strPtr("Duration"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("seconds"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_INT64)},
+						},
+					},
+				},
+			},
+			{
+				Name:       strPtr("engine.proto"),
+				Package:    strPtr("google.cloud.test.v1"),
+				Dependency: []string{"google/protobuf/wrappers.proto"},
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("PerformanceTarget"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("target_metric"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.protobuf.DoubleValue")},
+							{Name: strPtr("timeout"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.protobuf.Duration")},
+						},
+					},
+					{
+						Name: strPtr("EngineConfig"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("performance_target"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.PerformanceTarget")},
+							{Name: strPtr("observed_target"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.PerformanceTarget"), Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("protodesc.NewFiles: %v", err)
+	}
+	desc, err := files.FindDescriptorByName("google.cloud.test.v1.EngineConfig")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName: %v", err)
+	}
+	msg := desc.(protoreflect.MessageDescriptor)
+
+	gotSpec := ReferenceHints(msg, codegen.WriteOptions{})
+	wantSpec := []JudgementItem{{
+		FieldPath: ".spec.performanceTarget.targetMetric",
+		Reason:    "well-known-proto-type",
+		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
+	}}
+	if diff := cmp.Diff(wantSpec, gotSpec); diff != "" {
+		t.Errorf("ReferenceHints() well-known-proto-type mismatch (-want +got):\n%s", diff)
+	}
+
+	details := &codegen.OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("observed_target")},
+	}
+	_, gotObs := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
+	wantObs := []JudgementItem{{
+		FieldPath: ".status.observedState.observedTarget.targetMetric",
+		Reason:    "well-known-proto-type",
+		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
+	}}
+	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
+		t.Errorf("PrepopulateObservedState() well-known-proto-type mismatch (-want +got):\n%s", diff)
+	}
+}
+
 // commentedMessage builds a message whose fields carry leading comments, which
 // is what DetectOutputOnlyInComments reads. The fields are named field_0,
 // field_1 and so on.
@@ -494,3 +751,319 @@ func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.Message
 	}
 	return fd.Messages().ByName("Widget")
 }
+
+// nestedConfigMessage builds a Widget that holds a Config directly and in a
+// list. In Config, state's comment starts with "Output only.", managed's says
+// it later on, and target's doesn't mention it.
+func nestedConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	comment := func(path []int32, text string) *descriptorpb.SourceCodeInfo_Location {
+		return &descriptorpb.SourceCodeInfo_Location{Path: path, Span: []int32{0, 0, 1}, LeadingComments: strPtr(" " + text + "\n")}
+	}
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("nested.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
+					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+				},
+			},
+			{
+				Name: strPtr("Config"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("state"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("managed"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("target"), Number: i32Ptr(3), Type: str},
+				},
+			},
+		},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{
+			comment([]int32{4, 1, 2, 0}, "Output only. The state of the config."),
+			comment([]int32{4, 1, 2, 1}, "Whether the config is managed by the service, output only."),
+			comment([]int32{4, 1, 2, 2}, "The target the config points at."),
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("Widget")
+}
+
+func TestPrepopulateSpecQueuesEtagInSpec(t *testing.T) {
+	msg := namedCommentedMessage(t, [][2]string{
+		{"etag", "For optimistic concurrency control."},
+		{"description", "Human-readable description."},
+	})
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	wantItem := JudgementItem{
+		FieldPath: ".spec.etag",
+		Reason:    judgement.ReasonEtagInSpec,
+		Detail:    "etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState",
+	}
+	found := false
+	for _, item := range got.Judgement {
+		if item == wantItem {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("PrepopulateSpec judgements %+v did not contain %+v", got.Judgement, wantItem)
+	}
+}
+
+func TestPrepopulateSpecAndObservedStateQueueNestedJudgements(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	i32 := fieldType(descriptorpb.FieldDescriptorProto_TYPE_INT32)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("nested_judgements.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("TargetMessage"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("data_store"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name: strPtr("Config"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("key"), Number: i32Ptr(1), Type: i32},
+							{Name: strPtr("value"), Number: i32Ptr(2), Type: str},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+					{
+						Name: strPtr("TasksEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("key"), Number: i32Ptr(1), Type: str},
+							{Name: strPtr("value"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.TargetMessage")},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("data_store"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("by_index"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config.ByIndexEntry"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+					{Name: strPtr("tasks"), Number: i32Ptr(3), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config.TasksEntry"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+				},
+			},
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
+					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+					{Name: strPtr("observed_config"), Number: i32Ptr(3), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	opts := codegen.WriteOptions{
+		EmitMessageMaps: true,
+		Siblings:        map[string]string{"datastore": "TestDataStore"},
+	}
+
+	gotSpec, err := PrepopulateSpec(msg, opts)
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	wantSpec := []JudgementItem{
+		{
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.config.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.config.byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".spec.config.tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+		{
+			FieldPath: ".spec.config.tasks.KEY.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.peers[].dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.peers[].byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".spec.peers[].tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+		{
+			FieldPath: ".spec.peers[].tasks.KEY.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+	}
+	if diff := cmp.Diff(wantSpec, gotSpec.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+
+	details := &codegen.OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("observed_config")},
+	}
+	_, gotObs := PrepopulateObservedState(details, sets.NewString(), opts)
+	wantObs := []JudgementItem{
+		{
+			FieldPath: ".status.observedState.observedConfig.byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".status.observedState.observedConfig.tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+	}
+	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
+		t.Errorf("PrepopulateObservedState() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateObservedStateQueuesOutputOnlyNameAsIdentityServerGeneratedID(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("output_only_name.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Artifact"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("name"), Number: i32Ptr(1), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+					{Name: strPtr("create_time"), Number: i32Ptr(2), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Artifact")
+	details := &codegen.OutputMessageDetails{
+		Message: msg,
+		OutputFields: []protoreflect.FieldDescriptor{
+			msg.Fields().ByName("name"),
+			msg.Fields().ByName("create_time"),
+		},
+	}
+
+	fields, got := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
+	if strings.Contains(fields, "Name *string") {
+		t.Errorf("expected name to be omitted from ObservedState, got:\n%s", fields)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonIdentityServerGeneratedID,
+			Detail: "proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter",
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("PrepopulateObservedState() judgement mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateSpecQueuesPossibleStatusFieldsAndLocations(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("status_and_location.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Settings"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("region"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("id"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("state"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("start_time"), Number: i32Ptr(3), Type: str, Options: behaviorOptions(annotations.FieldBehavior_REQUIRED)},
+					{Name: strPtr("end_time"), Number: i32Ptr(4), Type: str},
+					{Name: strPtr("zone"), Number: i32Ptr(5), Type: str},
+					{Name: strPtr("settings"), Number: i32Ptr(6), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Settings")},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitRequired: true})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.id",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "id was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.state",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.endTime",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "endTime was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.zone",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+		{
+			FieldPath: ".spec.settings.region",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+	}
+	if diff := cmp.Diff(want, got.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() judgement mismatch (-want +got):\n%s", diff)
+	}
+}
+

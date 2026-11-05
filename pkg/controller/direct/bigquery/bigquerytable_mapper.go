@@ -18,7 +18,7 @@ import (
 	"encoding/json"
 
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/api/bigquery/v2"
 )
@@ -494,7 +494,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 	}
 	out := &krmv1beta1.TableEncryptionConfiguration{}
 	if in.KmsKeyName != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKeyName}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.KmsKeyName}
 	}
 	return out
 }

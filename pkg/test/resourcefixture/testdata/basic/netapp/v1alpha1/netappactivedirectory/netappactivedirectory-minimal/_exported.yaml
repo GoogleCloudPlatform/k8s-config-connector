@@ -1,0 +1,16 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppActiveDirectory
+metadata:
+  name: netappactivedirectory-minimal-${uniqueId}
+spec:
+  dns: 10.0.0.2
+  domain: ad${uniqueId}.example.com
+  location: us-west2
+  netBiosPrefix: adnetbios
+  organizationalUnit: CN=Computers
+  password:
+    value: '******************'
+  projectRef:
+    external: ${projectId}
+  resourceID: netappactivedirectory-minimal-${uniqueId}
+  username: adadmin

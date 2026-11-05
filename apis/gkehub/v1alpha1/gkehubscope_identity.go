@@ -28,10 +28,12 @@ import (
 var _ identity.Identity = &GKEHubScopeIdentity{}
 var _ identity.Resource = &GKEHubScope{}
 
-var scopeURL = gcpurls.Template[GKEHubScopeIdentity](
+var GKEHubScopeIdentityFormat = gcpurls.Template[GKEHubScopeIdentity](
 	"gkehub.googleapis.com",
 	"projects/{projectID}/locations/{location}/scopes/{scopeID}",
 )
+
+var scopeURL = GKEHubScopeIdentityFormat
 
 // GKEHubScopeIdentity is the identity of a GKEHubScope.
 // +k8s:deepcopy-gen=false

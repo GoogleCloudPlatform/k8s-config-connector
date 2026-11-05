@@ -51,7 +51,29 @@ title: "LoggingLogView"
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
     <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>projects/{project}/locations/{location}/buckets/{bucket}/views/{view}</p>
+        
+        <p>folders/{folder}/locations/{location}/buckets/{bucket}/views/{view}</p>
+        
+        <p>organizations/{organization}/locations/{location}/buckets/{bucket}/views/{view}</p>
+        
+    </td>
 </tr>
 
 <tr>

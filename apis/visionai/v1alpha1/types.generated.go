@@ -18,10 +18,39 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.visionai.v1
 // resource: VisionAIApplication:Application
+// resource: VisionAIAnnotation:Annotation
+// resource: VisionAIAsset:Asset
+// resource: VisionAICluster:Cluster
+// resource: VisionAICollection:Collection
+// resource: VisionAICorpus:Corpus
+// resource: VisionAIDataSchema:DataSchema
+// resource: VisionAIIndex:Index
+// resource: VisionAIIndexEndpoint:IndexEndpoint
+// resource: VisionAIOperator:Operator
+// resource: VisionAIProcessor:Processor
+// resource: VisionAISearchConfig:SearchConfig
+// resource: VisionAISearchHypernym:SearchHypernym
+// resource: VisionAIStream:Stream
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.visionai.v1.AnnotationCustomizedStruct
+type AnnotationCustomizedStruct struct {
+	// A map from elements' keys to element's annotation value.
+	// +kcc:proto:field=google.cloud.visionai.v1.AnnotationCustomizedStruct.elements
+	Elements map[string]AnnotationValue `json:"elements,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.AnnotationList
+type AnnotationList struct {
+	// The values of `LIST` data type annotation.
+	// +kcc:proto:field=google.cloud.visionai.v1.AnnotationList.values
+	Values []AnnotationValue `json:"values,omitempty"`
+}
 
 // +kcc:proto=google.cloud.visionai.v1.Application.ApplicationRuntimeInfo
 type Application_ApplicationRuntimeInfo struct {
@@ -92,6 +121,32 @@ type ApplicationConfigs_EventDeliveryConfig struct {
 	//  identified by <event_id, app_platform_metadata>.
 	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig.minimal_delivery_interval
 	MinimalDeliveryInterval *string `json:"minimalDeliveryInterval,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.AssetSource.AssetGcsSource
+type AssetSource_AssetGCSSource struct {
+	// Cloud storage uri.
+	// +kcc:proto:field=google.cloud.visionai.v1.AssetSource.AssetGcsSource.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.AttributeValue
+type AttributeValue struct {
+	// int.
+	// +kcc:proto:field=google.cloud.visionai.v1.AttributeValue.i
+	I *int64 `json:"i,omitempty"`
+
+	// float.
+	// +kcc:proto:field=google.cloud.visionai.v1.AttributeValue.f
+	F *float32 `json:"f,omitempty"`
+
+	// bool.
+	// +kcc:proto:field=google.cloud.visionai.v1.AttributeValue.b
+	B *bool `json:"b,omitempty"`
+
+	// string.
+	// +kcc:proto:field=google.cloud.visionai.v1.AttributeValue.s
+	S []byte `json:"s,omitempty"`
 }
 
 // +kcc:proto=google.cloud.visionai.v1.AutoscalingMetricSpec
@@ -166,6 +221,147 @@ type BigQueryConfig struct {
 	CreateDefaultTableIfNotExists *bool `json:"createDefaultTableIfNotExists,omitempty"`
 }
 
+// +kcc:proto=google.cloud.visionai.v1.CustomProcessorSourceInfo
+type CustomProcessorSourceInfo struct {
+	// The resource name original model hosted in the vertex AI platform.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.vertex_model
+	VertexModel *string `json:"vertexModel,omitempty"`
+
+	// Artifact for product recognizer.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.product_recognizer_artifact
+	ProductRecognizerArtifact *CustomProcessorSourceInfo_ProductRecognizerArtifact `json:"productRecognizerArtifact,omitempty"`
+
+	// The original product which holds the custom processor's functionality.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+
+	// Model schema files which specifies the signature of the model.
+	//  For VERTEX_CUSTOM models, instances schema is required.
+	//  If instances schema is not specified during the processor creation,
+	//  VisionAI Platform will try to get it from Vertex, if it doesn't exist, the
+	//  creation will fail.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.model_schema
+	ModelSchema *CustomProcessorSourceInfo_ModelSchema `json:"modelSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.CustomProcessorSourceInfo.ModelSchema
+type CustomProcessorSourceInfo_ModelSchema struct {
+	// Cloud Storage location to a YAML file that defines the format of a single
+	//  instance used in prediction and explanation requests.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.ModelSchema.instances_schema
+	InstancesSchema *GCSSource `json:"instancesSchema,omitempty"`
+
+	// Cloud Storage location to a YAML file that defines the prediction and
+	//  explanation parameters.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.ModelSchema.parameters_schema
+	ParametersSchema *GCSSource `json:"parametersSchema,omitempty"`
+
+	// Cloud Storage location to a YAML file that defines the format of a single
+	//  prediction or explanation.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.ModelSchema.predictions_schema
+	PredictionsSchema *GCSSource `json:"predictionsSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.CustomProcessorSourceInfo.ProductRecognizerArtifact
+type CustomProcessorSourceInfo_ProductRecognizerArtifact struct {
+	// Required. Resource name of RetailProductRecognitionIndex.
+	//  Format is
+	//  'projects/*/locations/*/retailCatalogs/*/retailProductRecognitionIndexes/*'
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.ProductRecognizerArtifact.retail_product_recognition_index
+	// +required
+	RetailProductRecognitionIndex *string `json:"retailProductRecognitionIndex,omitempty"`
+
+	// Optional. The resource name of embedding model hosted in Vertex AI
+	//  Platform.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.ProductRecognizerArtifact.vertex_model
+	VertexModel *string `json:"vertexModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.DataSchemaDetails.CustomizedStructConfig
+type DataSchemaDetails_CustomizedStructConfig struct {
+	// Direct child elements data schemas.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.CustomizedStructConfig.field_schemas
+	FieldSchemas map[string]DataSchemaDetails `json:"fieldSchemas,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.DataSchemaDetails.ListConfig
+type DataSchemaDetails_ListConfig struct {
+	// The value's data schema in the list.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.ListConfig.value_schema
+	ValueSchema *DataSchemaDetails `json:"valueSchema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.DataSchemaDetails.ProtoAnyConfig
+type DataSchemaDetails_ProtoAnyConfig struct {
+	// The type URI of the proto message.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.ProtoAnyConfig.type_uri
+	TypeURI *string `json:"typeURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy
+type DataSchemaDetails_SearchStrategy struct {
+	// The type of search strategy to be applied on the `key` above.
+	//  The allowed `search_strategy_type` is different for different data types,
+	//  which is documented in the DataSchemaDetails.DataType. Specifying
+	//  unsupported `search_strategy_type` for data types will result in
+	//  INVALID_ARGUMENT error.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy.search_strategy_type
+	SearchStrategyType *string `json:"searchStrategyType,omitempty"`
+
+	// Optional. Configs the path to the confidence score, and the threshold.
+	//  Only if the score is greater than the threshold, current field will be
+	//  built into the index. Only applies to leaf nodes using EXACT_SEARCH or
+	//  SMART_SEARCH.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy.confidence_score_index_config
+	ConfidenceScoreIndexConfig *DataSchemaDetails_SearchStrategy_ConfidenceScoreIndexConfig `json:"confidenceScoreIndexConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy.ConfidenceScoreIndexConfig
+type DataSchemaDetails_SearchStrategy_ConfidenceScoreIndexConfig struct {
+	// Required. The path to the confidence score field. It is a string that
+	//  concatenates all the data schema keys along the path. See the example
+	//  above. If the data schema contains LIST, use '_ENTRIES' to concatenate.
+	//  Example data schema contains a list:
+	//  "key": "list-name-score",
+	//  "schemaDetails": {
+	//    "type": "LIST",
+	//    "granularity": "GRANULARITY_PARTITION_LEVEL",
+	//    "listConfig": {
+	//      "valueSchema": {
+	//        "type": "CUSTOMIZED_STRUCT",
+	//        "granularity": "GRANULARITY_PARTITION_LEVEL",
+	//        "customizedStructConfig": {
+	//          "fieldSchemas": {
+	//            "name": {
+	//              "type": "STRING",
+	//              "granularity": "GRANULARITY_PARTITION_LEVEL",
+	//              "searchStrategy": {
+	//                "searchStrategyType": "SMART_SEARCH"
+	//                "confidence_score_index_config": {
+	//                  "field_path": "list-name-score._ENTRIES.score",
+	//                  "threshold": "0.9",
+	//                }
+	//              }
+	//            },
+	//            "score": {
+	//              "type": "FLOAT",
+	//              "granularity": "GRANULARITY_PARTITION_LEVEL",
+	//            }
+	//          }
+	//        }
+	//      }
+	//    }
+	//  }
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy.ConfidenceScoreIndexConfig.field_path
+	// +required
+	FieldPath *string `json:"fieldPath,omitempty"`
+
+	// Required. The threshold.
+	// +kcc:proto:field=google.cloud.visionai.v1.DataSchemaDetails.SearchStrategy.ConfidenceScoreIndexConfig.threshold
+	// +required
+	Threshold *float32 `json:"threshold,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.DedicatedResources
 type DedicatedResources struct {
 	// Required. Immutable. The specification of a single machine used by the
@@ -227,11 +423,140 @@ type DedicatedResources struct {
 	AutoscalingMetricSpecs []AutoscalingMetricSpec `json:"autoscalingMetricSpecs,omitempty"`
 }
 
+/* unreachable type DeployedIndex
+// +kcc:proto=google.cloud.visionai.v1.DeployedIndex
+type DeployedIndex struct {
+	// Required. Name of the deployed Index.
+	//  Format:
+	//  `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/indexes/{index_id}`
+	// +kcc:proto:field=google.cloud.visionai.v1.DeployedIndex.index
+	Index *string `json:"index,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.visionai.v1.DeployedIndexReference
+type DeployedIndexReference struct {
+	// Immutable. A resource name of the IndexEndpoint.
+	// +kcc:proto:field=google.cloud.visionai.v1.DeployedIndexReference.index_endpoint
+	IndexEndpoint *string `json:"indexEndpoint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.FacetProperty
+type FacetProperty struct {
+	// Fixed range facet bucket config.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.fixed_range_bucket_spec
+	FixedRangeBucketSpec *FacetProperty_FixedRangeBucketSpec `json:"fixedRangeBucketSpec,omitempty"`
+
+	// Custom range facet bucket config.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.custom_range_bucket_spec
+	CustomRangeBucketSpec *FacetProperty_CustomRangeBucketSpec `json:"customRangeBucketSpec,omitempty"`
+
+	// Datetime range facet bucket config.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.datetime_bucket_spec
+	DatetimeBucketSpec *FacetProperty_DateTimeBucketSpec `json:"datetimeBucketSpec,omitempty"`
+
+	// Name of the facets, which are the dimensions users want to use to refine
+	//  search results. `mapped_fields` will match UserSpecifiedDataSchema keys.
+	//
+	//  For example, user can add a bunch of UGAs with the same key, such as
+	//  player:adam, player:bob, player:charles. When multiple mapped_fields are
+	//  specified, will merge their value together as final facet value. E.g.
+	//  home_team: a, home_team:b, away_team:a, away_team:c, when facet_field =
+	//  [home_team, away_team], facet_value will be [a, b, c].
+	//
+	//  UNLESS this is a 1:1 facet dimension (mapped_fields.size() == 1) AND the
+	//  mapped_field equals the parent SearchConfig.name, the parent must
+	//  also contain a SearchCriteriaProperty that maps to the same fields.
+	//  mapped_fields must not be empty.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.mapped_fields
+	MappedFields []string `json:"mappedFields,omitempty"`
+
+	// Display name of the facet. To be used by UI for facet rendering.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Maximum number of unique bucket to return for one facet. Bucket number can
+	//  be large for high-cardinality facet such as "player". We only return top-n
+	//  most related ones to user. If it's <= 0, the server will decide the
+	//  appropriate result_size.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.result_size
+	ResultSize *int64 `json:"resultSize,omitempty"`
+
+	// Facet bucket type e.g. value, range.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.bucket_type
+	BucketType *string `json:"bucketType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.FacetProperty.CustomRangeBucketSpec
+type FacetProperty_CustomRangeBucketSpec struct {
+	// Currently, only integer type is supported for this field.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.CustomRangeBucketSpec.endpoints
+	Endpoints []FacetValue `json:"endpoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.FacetProperty.DateTimeBucketSpec
+type FacetProperty_DateTimeBucketSpec struct {
+	// Granularity of date type facet.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.DateTimeBucketSpec.granularity
+	Granularity *string `json:"granularity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.FacetProperty.FixedRangeBucketSpec
+type FacetProperty_FixedRangeBucketSpec struct {
+	// Lower bound of the bucket. NOTE: Only integer type is currently supported
+	//  for this field.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.FixedRangeBucketSpec.bucket_start
+	BucketStart *FacetValue `json:"bucketStart,omitempty"`
+
+	// Bucket granularity. NOTE: Only integer type is currently supported for
+	//  this field.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.FixedRangeBucketSpec.bucket_granularity
+	BucketGranularity *FacetValue `json:"bucketGranularity,omitempty"`
+
+	// Total number of buckets.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetProperty.FixedRangeBucketSpec.bucket_count
+	BucketCount *int32 `json:"bucketCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.FacetValue
+type FacetValue struct {
+	// String type value.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetValue.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Integer type value.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetValue.integer_value
+	IntegerValue *int64 `json:"integerValue,omitempty"`
+
+	// Datetime type value.
+	// +kcc:proto:field=google.cloud.visionai.v1.FacetValue.datetime_value
+	DatetimeValue *DateTime `json:"datetimeValue,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.GcsOutputConfig
 type GCSOutputConfig struct {
 	// The Cloud Storage path for Vision AI Platform to ingest annotations to.
 	// +kcc:proto:field=google.cloud.visionai.v1.GcsOutputConfig.gcs_path
 	GCSPath *string `json:"gcsPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.GcsSource
+type GCSSource struct {
+	// Required. References to a Google Cloud Storage paths.
+	// +kcc:proto:field=google.cloud.visionai.v1.GcsSource.uris
+	// +required
+	URIs []string `json:"uris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.GeoCoordinate
+type GeoCoordinate struct {
+	// Latitude Coordinate. Degrees [-90 .. 90]
+	// +kcc:proto:field=google.cloud.visionai.v1.GeoCoordinate.latitude
+	Latitude *float64 `json:"latitude,omitempty"`
+
+	// Longitude Coordinate. Degrees [-180 .. 180]
+	// +kcc:proto:field=google.cloud.visionai.v1.GeoCoordinate.longitude
+	Longitude *float64 `json:"longitude,omitempty"`
 }
 
 // +kcc:proto=google.cloud.visionai.v1.MachineSpec
@@ -367,6 +692,133 @@ type OccupancyCountConfig struct {
 	EnableDwellingTimeTracking *bool `json:"enableDwellingTimeTracking,omitempty"`
 }
 
+// +kcc:proto=google.cloud.visionai.v1.OperatorDefinition
+type OperatorDefinition struct {
+	// The name of this operator.
+	//
+	//  Tentatively [A-Z][a-zA-Z0-9]*, e.g., BboxCounter, PetDetector,
+	//  PetDetector1.
+	// +kcc:guess=possible-reference target=VisionAIOperator
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.operator
+	Operator *string `json:"operator,omitempty"`
+
+	// Declares input arguments.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.input_args
+	InputArgs []OperatorDefinition_ArgumentDefinition `json:"inputArgs,omitempty"`
+
+	// Declares output arguments.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.output_args
+	OutputArgs []OperatorDefinition_ArgumentDefinition `json:"outputArgs,omitempty"`
+
+	// Declares the attributes.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.attributes
+	Attributes []OperatorDefinition_AttributeDefinition `json:"attributes,omitempty"`
+
+	// The resources for running the operator.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.resources
+	Resources *ResourceSpecification `json:"resources,omitempty"`
+
+	// Short description of the operator.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.short_description
+	ShortDescription *string `json:"shortDescription,omitempty"`
+
+	// Full description of the operator.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.OperatorDefinition.ArgumentDefinition
+type OperatorDefinition_ArgumentDefinition struct {
+	// The name of the argument.
+	//
+	//  Tentatively [a-z]([_a-z0-9]*[a-z0-9])?, e.g., video, audio,
+	//  high_fps_frame.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.ArgumentDefinition.argument
+	Argument *string `json:"argument,omitempty"`
+
+	// The data type of the argument.
+	//
+	//  This should match the textual representation of a stream/Packet type.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.ArgumentDefinition.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.OperatorDefinition.AttributeDefinition
+type OperatorDefinition_AttributeDefinition struct {
+	// The name of the attribute.
+	//
+	//  Tentatively [a-z]([_a-z0-9]*[a-z0-9])?, e.g., max_frames_per_video,
+	//  resize_height.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.AttributeDefinition.attribute
+	Attribute *string `json:"attribute,omitempty"`
+
+	// The type of this attribute.
+	//
+	//  See attribute_value.proto for possibilities.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.AttributeDefinition.type
+	Type *string `json:"type,omitempty"`
+
+	// The default value for the attribute.
+	// +kcc:proto:field=google.cloud.visionai.v1.OperatorDefinition.AttributeDefinition.default_value
+	DefaultValue *AttributeValue `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.Partition
+type Partition struct {
+	// Partition of asset in time.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.temporal_partition
+	TemporalPartition *Partition_TemporalPartition `json:"temporalPartition,omitempty"`
+
+	// Partition of asset in space.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.spatial_partition
+	SpatialPartition *Partition_SpatialPartition `json:"spatialPartition,omitempty"`
+
+	// Partition of asset in time.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.relative_temporal_partition
+	RelativeTemporalPartition *Partition_RelativeTemporalPartition `json:"relativeTemporalPartition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.Partition.RelativeTemporalPartition
+type Partition_RelativeTemporalPartition struct {
+	// Start time offset of the partition.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.RelativeTemporalPartition.start_offset
+	StartOffset *string `json:"startOffset,omitempty"`
+
+	// End time offset of the partition.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.RelativeTemporalPartition.end_offset
+	EndOffset *string `json:"endOffset,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.Partition.SpatialPartition
+type Partition_SpatialPartition struct {
+	// The minimum x coordinate value.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.SpatialPartition.x_min
+	XMin *int64 `json:"xMin,omitempty"`
+
+	// The minimum y coordinate value.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.SpatialPartition.y_min
+	YMin *int64 `json:"yMin,omitempty"`
+
+	// The maximum x coordinate value.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.SpatialPartition.x_max
+	XMax *int64 `json:"xMax,omitempty"`
+
+	// The maximum y coordinate value.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.SpatialPartition.y_max
+	YMax *int64 `json:"yMax,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.Partition.TemporalPartition
+type Partition_TemporalPartition struct {
+	// Start time of the partition.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.TemporalPartition.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// End time of the partition.
+	// +kcc:proto:field=google.cloud.visionai.v1.Partition.TemporalPartition.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.PersonBlurConfig
 type PersonBlurConfig struct {
 	// Person blur type.
@@ -480,6 +932,107 @@ type ProcessorConfig struct {
 	ExperimentalConfig apiextensionsv1.JSON `json:"experimentalConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.visionai.v1.ProcessorIOSpec
+type ProcessorIoSpec struct {
+	// For processors with input_channel_specs, the processor must be explicitly
+	//  connected to another processor.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.graph_input_channel_specs
+	GraphInputChannelSpecs []ProcessorIoSpec_GraphInputChannelSpec `json:"graphInputChannelSpecs,omitempty"`
+
+	// The output artifact specifications for the current processor.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.graph_output_channel_specs
+	GraphOutputChannelSpecs []ProcessorIoSpec_GraphOutputChannelSpec `json:"graphOutputChannelSpecs,omitempty"`
+
+	// The input resource that needs to be fed from the application instance.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.instance_resource_input_binding_specs
+	InstanceResourceInputBindingSpecs []ProcessorIoSpec_InstanceResourceInputBindingSpec `json:"instanceResourceInputBindingSpecs,omitempty"`
+
+	// The output resource that the processor will generate per instance.
+	//  Other than the explicitly listed output bindings here, all the processors'
+	//  GraphOutputChannels can be binded to stream resource. The bind name then is
+	//  the same as the GraphOutputChannel's name.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.instance_resource_output_binding_specs
+	InstanceResourceOutputBindingSpecs []ProcessorIoSpec_InstanceResourceOutputBindingSpec `json:"instanceResourceOutputBindingSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec
+type ProcessorIoSpec_GraphInputChannelSpec struct {
+	// The name of the current input channel.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// The data types of the current input channel.
+	//  When this field has more than 1 value, it means this input channel can be
+	//  connected to either of these different data types.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// If specified, only those detailed data types can be connected to the
+	//  processor. For example, jpeg stream for MEDIA, or PredictionResult proto
+	//  for PROTO type. If unspecified, then any proto is accepted.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec.accepted_data_type_uris
+	AcceptedDataTypeURIs []string `json:"acceptedDataTypeURIs,omitempty"`
+
+	// Whether the current input channel is required by the processor.
+	//  For example, for a processor with required video input and optional audio
+	//  input, if video input is missing, the application will be rejected while
+	//  the audio input can be missing as long as the video input exists.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec.required
+	Required *bool `json:"required,omitempty"`
+
+	// How many input edges can be connected to this input channel. 0 means
+	//  unlimited.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphInputChannelSpec.max_connection_allowed
+	MaxConnectionAllowed *int64 `json:"maxConnectionAllowed,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ProcessorIOSpec.GraphOutputChannelSpec
+type ProcessorIoSpec_GraphOutputChannelSpec struct {
+	// The name of the current output channel.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphOutputChannelSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// The data type of the current output channel.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphOutputChannelSpec.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.GraphOutputChannelSpec.data_type_uri
+	DataTypeURI *string `json:"dataTypeURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceInputBindingSpec
+type ProcessorIoSpec_InstanceResourceInputBindingSpec struct {
+	// The configuration proto that includes the Googleapis resources. I.e.
+	//  type.googleapis.com/google.cloud.vision.v1.StreamWithAnnotation
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceInputBindingSpec.config_type_uri
+	ConfigTypeURI *string `json:"configTypeURI,omitempty"`
+
+	// The direct type url of Googleapis resource. i.e.
+	//  type.googleapis.com/google.cloud.vision.v1.Asset
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceInputBindingSpec.resource_type_uri
+	ResourceTypeURI *string `json:"resourceTypeURI,omitempty"`
+
+	// Name of the input binding, unique within the processor.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceInputBindingSpec.name
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceOutputBindingSpec
+type ProcessorIoSpec_InstanceResourceOutputBindingSpec struct {
+	// Name of the output binding, unique within the processor.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceOutputBindingSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// The resource type uri of the acceptable output resource.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceOutputBindingSpec.resource_type_uri
+	ResourceTypeURI *string `json:"resourceTypeURI,omitempty"`
+
+	// Whether the output resource needs to be explicitly set in the instance.
+	//  If it is false, the processor will automatically generate it if required.
+	// +kcc:proto:field=google.cloud.visionai.v1.ProcessorIOSpec.InstanceResourceOutputBindingSpec.explicit
+	Explicit *bool `json:"explicit,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.ProductRecognizerConfig
 type ProductRecognizerConfig struct {
 	// The resource name of retail endpoint to use.
@@ -490,6 +1043,109 @@ type ProductRecognizerConfig struct {
 	//  default value will be used.
 	// +kcc:proto:field=google.cloud.visionai.v1.ProductRecognizerConfig.recognition_confidence_threshold
 	RecognitionConfidenceThreshold *float32 `json:"recognitionConfidenceThreshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ResourceSpecification
+type ResourceSpecification struct {
+	// CPU specification.
+	//
+	//  Examples:
+	//  "100m", "0.5", "1", "2", ... correspond to
+	//  0.1, half, 1, or 2 cpus.
+	//
+	//  Leave empty to let the system decide.
+	//
+	//  Note that this does *not* determine the cpu vender/make,
+	//  or its underlying clock speed and specific SIMD features.
+	//  It is only the amount time it requires in timeslicing.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.cpu
+	CPU *string `json:"cpu,omitempty"`
+
+	// CPU limit.
+	//
+	//  Examples:
+	//  "100m", "0.5", "1", "2", ... correspond to
+	//  0.1, half, 1, or 2 cpus.
+	//
+	//  Leave empty to indicate no limit.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.cpu_limits
+	CPULimits *string `json:"cpuLimits,omitempty"`
+
+	// Memory specification (in bytes).
+	//
+	//  Examples:
+	//  "128974848", "129e6", "129M", "123Mi", ... correspond to
+	//  128974848 bytes, 129000000 bytes, 129 mebibytes, 123 megabytes.
+	//
+	//  Leave empty to let the system decide.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.memory
+	Memory *string `json:"memory,omitempty"`
+
+	// Memory usage limits.
+	//
+	//  Examples:
+	//  "128974848", "129e6", "129M", "123Mi", ... correspond to
+	//  128974848 bytes, 129000000 bytes, 129 mebibytes, 123 megabytes.
+	//
+	//  Leave empty to indicate no limit.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.memory_limits
+	MemoryLimits *string `json:"memoryLimits,omitempty"`
+
+	// Number of gpus.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.gpus
+	Gpus *int32 `json:"gpus,omitempty"`
+
+	// The maximum latency that this operator may use to process an element.
+	//
+	//  If non positive, then a system default will be used.
+	//  Operator developers should arrange for the system compute resources to be
+	//  aligned with this latency budget; e.g. if you want a ML model to produce
+	//  results within 500ms, then you should make sure you request enough
+	//  cpu/gpu/memory to achieve that.
+	// +kcc:proto:field=google.cloud.visionai.v1.ResourceSpecification.latency_budget_ms
+	LatencyBudgetMs *int32 `json:"latencyBudgetMs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.SearchCapability
+type SearchCapability struct {
+	// The search capability to enable.
+	// +kcc:proto:field=google.cloud.visionai.v1.SearchCapability.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.SearchCapabilitySetting
+type SearchCapabilitySetting struct {
+	// The metadata of search capability to enable.
+	// +kcc:proto:field=google.cloud.visionai.v1.SearchCapabilitySetting.search_capabilities
+	SearchCapabilities []SearchCapability `json:"searchCapabilities,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.SearchCriteriaProperty
+type SearchCriteriaProperty struct {
+	// Each mapped_field corresponds to a UGA key. To understand how this property
+	//  works, take the following example. In the SearchConfig table, the
+	//  user adds this entry:
+	//    search_config {
+	//      name: "person"
+	//      search_criteria_property {
+	//        mapped_fields: "player"
+	//        mapped_fields: "coach"
+	//      }
+	//    }
+	//
+	//  Now, when a user issues a query like:
+	//    criteria {
+	//      field: "person"
+	//      text_array {
+	//        txt_values: "Tom Brady"
+	//        txt_values: "Bill Belichick"
+	//      }
+	//    }
+	//
+	//  MWH search will return search documents where (player=Tom Brady ||
+	//  coach=Tom Brady || player=Bill Belichick || coach=Bill Belichick).
+	// +kcc:proto:field=google.cloud.visionai.v1.SearchCriteriaProperty.mapped_fields
+	MappedFields []string `json:"mappedFields,omitempty"`
 }
 
 // +kcc:proto=google.cloud.visionai.v1.StreamAnnotation
@@ -590,6 +1246,24 @@ type TagRecognizerConfig struct {
 	TagParsingConfig *TagParsingConfig `json:"tagParsingConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.visionai.v1.UserSpecifiedAnnotation
+type UserSpecifiedAnnotation struct {
+	// Required. Key of the annotation. The key must be set with type by
+	//  CreateDataSchema.
+	// +kcc:proto:field=google.cloud.visionai.v1.UserSpecifiedAnnotation.key
+	// +required
+	Key *string `json:"key,omitempty"`
+
+	// Value of the annotation. The value must be able to convert
+	//  to the type according to the data schema.
+	// +kcc:proto:field=google.cloud.visionai.v1.UserSpecifiedAnnotation.value
+	Value *AnnotationValue `json:"value,omitempty"`
+
+	// Partition information in time and space for the sub-asset level annotation.
+	// +kcc:proto:field=google.cloud.visionai.v1.UserSpecifiedAnnotation.partition
+	Partition *Partition `json:"partition,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.VertexAutoMLVideoConfig
 type VertexAutoMlVideoConfig struct {
 	// Only entities with higher score than the threshold will be returned.
@@ -688,4 +1362,116 @@ type VideoStreamInputConfig struct {
 
 	// +kcc:proto:field=google.cloud.visionai.v1.VideoStreamInputConfig.streams_with_annotation
 	StreamsWithAnnotation []StreamWithAnnotation `json:"streamsWithAnnotation,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.type.DateTime
+type DateTime struct {
+	// Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
+	//  datetime without a year.
+	// +kcc:proto:field=google.type.DateTime.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Required. Month of year. Must be from 1 to 12.
+	// +kcc:proto:field=google.type.DateTime.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Required. Day of month. Must be from 1 to 31 and valid for the year and
+	//  month.
+	// +kcc:proto:field=google.type.DateTime.day
+	Day *int32 `json:"day,omitempty"`
+
+	// Required. Hours of day in 24 hour format. Should be from 0 to 23. An API
+	//  may choose to allow the value "24:00:00" for scenarios like business
+	//  closing time.
+	// +kcc:proto:field=google.type.DateTime.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Required. Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.DateTime.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
+	//  API may allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.DateTime.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Required. Fractions of seconds in nanoseconds. Must be from 0 to
+	//  999,999,999.
+	// +kcc:proto:field=google.type.DateTime.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// UTC offset. Must be whole seconds, between -18 hours and +18 hours.
+	//  For example, a UTC offset of -4:00 would be represented as
+	//  { seconds: -14400 }.
+	// +kcc:proto:field=google.type.DateTime.utc_offset
+	UtcOffset *string `json:"utcOffset,omitempty"`
+
+	// Time zone.
+	// +kcc:proto:field=google.type.DateTime.time_zone
+	TimeZone *TimeZone `json:"timeZone,omitempty"`
+}
+
+// +kcc:proto=google.type.TimeZone
+type TimeZone struct {
+	// IANA Time Zone Database time zone, e.g. "America/New_York".
+	// +kcc:proto:field=google.type.TimeZone.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. IANA Time Zone Database version number, e.g. "2019a".
+	// +kcc:proto:field=google.type.TimeZone.version
+	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.visionai.v1.CustomProcessorSourceInfo
+type CustomProcessorSourceInfoObservedState struct {
+	// Output only. Additional info related to the imported custom processor.
+	//  Data is filled in by app platform during the processor creation.
+	// +kcc:proto:field=google.cloud.visionai.v1.CustomProcessorSourceInfo.additional_info
+	AdditionalInfo map[string]string `json:"additionalInfo,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.visionai.v1.DeployedIndex
+type DeployedIndexObservedState struct {
+	// Required. Name of the deployed Index.
+	//  Format:
+	//  `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/indexes/{index_id}`
+	// +kcc:proto:field=google.cloud.visionai.v1.DeployedIndex.index
+	Index *string `json:"index,omitempty"`
 }

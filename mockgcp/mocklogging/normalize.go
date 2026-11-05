@@ -24,6 +24,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Bucket
 	replacements.ReplacePath(".buckets[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".buckets[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// LogMetric
+	replacements.RemovePath(".resourceName")
+
+	// LogScope
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".logScopes[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".logScopes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

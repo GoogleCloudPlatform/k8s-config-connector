@@ -173,7 +173,7 @@ Only declare the PR as fully passed/verified if no failures are returned across 
 
 ### Step 1: Direct API Types
 
-The resource must have a direct KRM type (`_types.go`) scaffolded and updated via `generate.sh` using the controllerbuilder tool, ensuring strict schema compatibility with the existing CRD.
+The resource must have a direct KRM type (`_types.go`) scaffolded and updated via `generate.sh` using the controllerbuilder tool, ensuring strict schema compatibility with the existing CRD, while including `ExternalRef` under Status.
 
 1. Check if the resource already has direct types under `apis/` and a `generate.sh` script configured for the resource's service.
 2. Existing Terraform/DCL Resource**: Open a GitHub issue referencing `.gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md`.
@@ -187,6 +187,13 @@ The resource must have a direct KRM type (`_types.go`) scaffolded and updated vi
     Please follow the skill .gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md for {kind}.
 
     Make sure to configure/update `generate.sh` in the resource's service directory (e.g., `apis/{service}/{version}/generate.sh`), ensuring that the direct KRM type is strictly schema-compatible with the existing CRD.
+
+    Under `{kind}Status`, include `ExternalRef`:
+    ```go
+    	// A unique specifier for the {kind} resource in GCP.
+    	ExternalRef *string `json:"externalRef,omitempty"`
+    ```
+    (For example: `apis/accesscontextmanager/v1beta1/accesscontextmanagerserviceperimeter_types.go:L338`). Note that adding `status.externalRef` is allowed and ignored by `dev/tasks/diff-crds --allow-status-external-ref-addition`.
 
     For reference on setting up `generate.sh`, renaming files/fields to match acronyms, handling pointers, and ensuring proper directory structure, please also refer to the skill .gemini/skills/generate-sh-checker/SKILL.md.
 

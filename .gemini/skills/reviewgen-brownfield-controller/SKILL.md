@@ -27,6 +27,7 @@ Please respect the following review criteria and invariants when reviewing PRs f
 
 ## 6. General Controller Structure & Client Creation
 *   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library REST constructor (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooRESTClient`) instead of gRPC where possible.
+*   **Desired Object in Adapter**: Verify that the `Adapter` struct stores the KRM object (`desired *krm.<Kind>`) rather than the GCP API/Proto representation, and that premature mapping is not performed in `AdapterForObject`.
 *   **Do Not Change Default Controller**: Verify that the PR does NOT switch the default controller to `direct` in `pkg/controller/resourceconfig/static_config.go` (or via the `cnrm.cloud.google.com/default-controller=direct` label comment in KRM type definitions). The legacy controller must remain the `DefaultController` for now, and the direct controller should only be added to `SupportedControllers` to allow side-by-side testing.
 *   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
 

@@ -17,165 +17,290 @@
 // krm.group: netapp.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.netapp.v1
-// resource: NetAppBackupPolicy:BackupPolicy
-// resource: NetAppBackupVault:BackupVault
+// resource: NetappQuotaRule:QuotaRule
+// resource: NetappReplication:Replication
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupPolicy", skipping
+// +kcc:proto=google.cloud.netapp.v1.DestinationVolumeParameters
+type DestinationVolumeParameters struct {
+	// Required. Existing destination StoragePool name.
+	// +kcc:proto:field=google.cloud.netapp.v1.DestinationVolumeParameters.storage_pool
+	// +required
+	StoragePool *string `json:"storagePool,omitempty"`
 
-// +kcc:proto=google.cloud.netapp.v1.BackupPolicy
-type BackupPolicy struct {
-	// Identifier. The resource name of the backup policy.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.name
-	Name *string `json:"name,omitempty"`
+	// Desired destination volume resource id. If not specified, source volume's
+	//  resource id will be used.
+	//  This value must start with a lowercase letter followed by up to 62
+	//  lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
+	// +kcc:proto:field=google.cloud.netapp.v1.DestinationVolumeParameters.volume_id
+	VolumeID *string `json:"volumeID,omitempty"`
 
-	// Number of daily backups to keep. Note that the minimum daily backup limit
-	//  is 2.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.daily_backup_limit
-	DailyBackupLimit *int32 `json:"dailyBackupLimit,omitempty"`
+	// Destination volume's share name. If not specified, source volume's share
+	//  name will be used.
+	// +kcc:proto:field=google.cloud.netapp.v1.DestinationVolumeParameters.share_name
+	ShareName *string `json:"shareName,omitempty"`
 
-	// Number of weekly backups to keep. Note that the sum of daily, weekly and
-	//  monthly backups should be greater than 1.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.weekly_backup_limit
-	WeeklyBackupLimit *int32 `json:"weeklyBackupLimit,omitempty"`
-
-	// Number of monthly backups to keep. Note that the sum of daily, weekly and
-	//  monthly backups should be greater than 1.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.monthly_backup_limit
-	MonthlyBackupLimit *int32 `json:"monthlyBackupLimit,omitempty"`
-
-	// Description of the backup policy.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.description
+	// Description for the destination volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.DestinationVolumeParameters.description
 	Description *string `json:"description,omitempty"`
 
-	// If enabled, make backups automatically according to the schedules.
-	//  This will be applied to all volumes that have this policy attached and
-	//  enforced on volume level. If not specified, default is true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	// Optional. Tiering policy for the volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.DestinationVolumeParameters.tiering_policy
+	TieringPolicy *TieringPolicy `json:"tieringPolicy,omitempty"`
+}
 
-	// Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.labels
+/* unreachable type HybridPeeringDetails
+// +kcc:proto=google.cloud.netapp.v1.HybridPeeringDetails
+type HybridPeeringDetails struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.QuotaRule", skipping
+
+// +kcc:proto=google.cloud.netapp.v1.QuotaRule
+type QuotaRule struct {
+	// Identifier. The resource name of the quota rule.
+	//  Format:
+	//  `projects/{project_number}/locations/{location_id}/volumes/volumes/{volume_id}/quotaRules/{quota_rule_id}`.
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The quota rule applies to the specified user or group, identified
+	//  by a Unix UID/GID, Windows SID, or null for default.
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.target
+	Target *string `json:"target,omitempty"`
+
+	// Required. The type of quota rule.
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. The maximum allowed disk space in MiB.
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.disk_limit_mib
+	DiskLimitMIB *int32 `json:"diskLimitMIB,omitempty"`
+
+	// Optional. Description of the quota rule
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels of the quota rule
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupVault", skipping
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.Replication", skipping
 
-// +kcc:proto=google.cloud.netapp.v1.BackupVault
-type BackupVault struct {
-	// Identifier. The resource name of the backup vault.
+// +kcc:proto=google.cloud.netapp.v1.Replication
+type Replication struct {
+	// Identifier. The resource name of the Replication.
 	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.name
+	//  `projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}`.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.name
 	Name *string `json:"name,omitempty"`
 
-	// Description of the backup vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.description
-	Description *string `json:"description,omitempty"`
+	// Required. Indicates the schedule for replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.replication_schedule
+	ReplicationSchedule *string `json:"replicationSchedule,omitempty"`
 
 	// Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.labels
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. Type of backup vault to be created.
-	//  Default is IN_REGION.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_vault_type
-	BackupVaultType *string `json:"backupVaultType,omitempty"`
+	// A description about this replication relationship.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.description
+	Description *string `json:"description,omitempty"`
 
-	// Optional. Region where the backups are stored.
-	//  Format: `projects/{project_id}/locations/{location}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_region
-	BackupRegion *string `json:"backupRegion,omitempty"`
+	// Required. Input only. Destination volume parameters
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.destination_volume_parameters
+	DestinationVolumeParameters *DestinationVolumeParameters `json:"destinationVolumeParameters,omitempty"`
 
-	// Optional. Backup retention policy defining the retenton of backups.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_retention_policy
-	BackupRetentionPolicy *BackupVault_BackupRetentionPolicy `json:"backupRetentionPolicy,omitempty"`
+	// Optional. Location of the user cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.cluster_location
+	ClusterLocation *string `json:"clusterLocation,omitempty"`
 }
 */
 
-/* unreachable type BackupVault_BackupRetentionPolicy
-// +kcc:proto=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
-type BackupVault_BackupRetentionPolicy struct {
-	// Required. Minimum retention duration in days for backups in the backup
-	//  vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.backup_minimum_enforced_retention_days
-	BackupMinimumEnforcedRetentionDays *int32 `json:"backupMinimumEnforcedRetentionDays,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.TieringPolicy
+type TieringPolicy struct {
+	// Optional. Flag indicating if the volume has tiering policy enable/pause.
+	//  Default is PAUSED.
+	// +kcc:proto:field=google.cloud.netapp.v1.TieringPolicy.tier_action
+	TierAction *string `json:"tierAction,omitempty"`
 
-	// Optional. Indicates if the daily backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.daily_backup_immutable
-	DailyBackupImmutable *bool `json:"dailyBackupImmutable,omitempty"`
+	// Optional. Time in days to mark the volume's data block as cold and make it
+	//  eligible for tiering, can be range from 2-183. Default is 31.
+	// +kcc:proto:field=google.cloud.netapp.v1.TieringPolicy.cooling_threshold_days
+	CoolingThresholdDays *int32 `json:"coolingThresholdDays,omitempty"`
 
-	// Optional. Indicates if the weekly backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.weekly_backup_immutable
-	WeeklyBackupImmutable *bool `json:"weeklyBackupImmutable,omitempty"`
+	// Optional. Flag indicating that the hot tier bypass mode is enabled. Default
+	//  is false. This is only applicable to Flex service level.
+	// +kcc:proto:field=google.cloud.netapp.v1.TieringPolicy.hot_tier_bypass_mode_enabled
+	HotTierBypassModeEnabled *bool `json:"hotTierBypassModeEnabled,omitempty"`
+}
 
-	// Optional. Indicates if the monthly backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.monthly_backup_immutable
-	MonthlyBackupImmutable *bool `json:"monthlyBackupImmutable,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.TransferStats
+type TransferStats struct {
+	// Cumulative bytes transferred so far for the replication relationship.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.transfer_bytes
+	TransferBytes *int64 `json:"transferBytes,omitempty"`
 
-	// Optional. Indicates if the manual backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.manual_backup_immutable
-	ManualBackupImmutable *bool `json:"manualBackupImmutable,omitempty"`
+	// Cumulative time taken across all transfers for the replication
+	//  relationship.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.total_transfer_duration
+	TotalTransferDuration *string `json:"totalTransferDuration,omitempty"`
+
+	// Last transfer size in bytes.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.last_transfer_bytes
+	LastTransferBytes *int64 `json:"lastTransferBytes,omitempty"`
+
+	// Time taken during last transfer.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.last_transfer_duration
+	LastTransferDuration *string `json:"lastTransferDuration,omitempty"`
+
+	// Lag duration indicates the duration by which Destination region volume
+	//  content lags behind the primary region volume content.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.lag_duration
+	LagDuration *string `json:"lagDuration,omitempty"`
+
+	// Time when progress was updated last.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Time when last transfer completed.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.last_transfer_end_time
+	LastTransferEndTime *string `json:"lastTransferEndTime,omitempty"`
+
+	// A message describing the cause of the last transfer failure.
+	// +kcc:proto:field=google.cloud.netapp.v1.TransferStats.last_transfer_error
+	LastTransferError *string `json:"lastTransferError,omitempty"`
+}
+
+/* unreachable type UserCommands
+// +kcc:proto=google.cloud.netapp.v1.UserCommands
+type UserCommands struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupPolicy", skipping
+// +kcc:observedstate:proto=google.cloud.netapp.v1.HybridPeeringDetails
+type HybridPeeringDetailsObservedState struct {
+	// Output only. IP address of the subnet.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.subnet_ip
+	SubnetIP *string `json:"subnetIP,omitempty"`
 
-// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupPolicy
-type BackupPolicyObservedState struct {
-	// Output only. The total number of volumes assigned by this backup policy.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.assigned_volume_count
-	AssignedVolumeCount *int32 `json:"assignedVolumeCount,omitempty"`
+	// Output only. Copy-paste-able commands to be used on user's ONTAP to accept
+	//  peering requests.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.command
+	Command *string `json:"command,omitempty"`
 
-	// Output only. The time when the backup policy was created.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.create_time
+	// Output only. Expiration time for the peering command to be executed on
+	//  user's ONTAP.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.command_expiry_time
+	CommandExpiryTime *string `json:"commandExpiryTime,omitempty"`
+
+	// Output only. Temporary passphrase generated to accept cluster peering
+	//  command.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.passphrase
+	Passphrase *string `json:"passphrase,omitempty"`
+
+	// Output only. Name of the user's local source volume to be peered with the
+	//  destination volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.peer_volume_name
+	PeerVolumeName *string `json:"peerVolumeName,omitempty"`
+
+	// Output only. Name of the user's local source cluster to be peered with the
+	//  destination cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.peer_cluster_name
+	PeerClusterName *string `json:"peerClusterName,omitempty"`
+
+	// Output only. Name of the user's local source vserver svm to be peered with
+	//  the destination vserver svm.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridPeeringDetails.peer_svm_name
+	PeerSvmName *string `json:"peerSvmName,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.QuotaRule", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.QuotaRule
+type QuotaRuleObservedState struct {
+	// Output only. State of the quota rule
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. State details of the quota rule
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// Output only. Create time of the quota rule
+	// +kcc:proto:field=google.cloud.netapp.v1.QuotaRule.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.Replication", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.Replication
+type ReplicationObservedState struct {
+	// Output only. State of the replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. State details of the replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// Output only. Indicates whether this points to source or destination.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.role
+	Role *string `json:"role,omitempty"`
+
+	// Output only. Indicates the state of mirroring.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.mirror_state
+	MirrorState *string `json:"mirrorState,omitempty"`
+
+	// Output only. Condition of the relationship. Can be one of the following:
+	//  - true: The replication relationship is healthy. It has not missed the most
+	//  recent scheduled transfer.
+	//  - false: The replication relationship is not healthy. It has missed the
+	//  most recent scheduled transfer.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.healthy
+	Healthy *bool `json:"healthy,omitempty"`
+
+	// Output only. Replication create time.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The backup policy state.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.state
-	State *string `json:"state,omitempty"`
+	// Output only. Full name of destination volume resource.
+	//  Example : "projects/{project}/locations/{location}/volumes/{volume_id}"
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.destination_volume
+	DestinationVolume *string `json:"destinationVolume,omitempty"`
+
+	// Output only. Replication transfer statistics.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.transfer_stats
+	TransferStats *TransferStats `json:"transferStats,omitempty"`
+
+	// Output only. Full name of source volume resource.
+	//  Example : "projects/{project}/locations/{location}/volumes/{volume_id}"
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.source_volume
+	SourceVolume *string `json:"sourceVolume,omitempty"`
+
+	// Output only. Hybrid peering details.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.hybrid_peering_details
+	HybridPeeringDetails *HybridPeeringDetailsObservedState `json:"hybridPeeringDetails,omitempty"`
+
+	// Output only. Type of the hybrid replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.hybrid_replication_type
+	HybridReplicationType *string `json:"hybridReplicationType,omitempty"`
+
+	// Output only. Copy pastable snapmirror commands to be executed on onprem
+	//  cluster by the customer.
+	// +kcc:proto:field=google.cloud.netapp.v1.Replication.hybrid_replication_user_commands
+	HybridReplicationUserCommands *UserCommandsObservedState `json:"hybridReplicationUserCommands,omitempty"`
 }
 */
 
-/* found existing non-generated go type "BackupVaultObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupVault
-type BackupVaultObservedState struct {
-	// Output only. The backup vault state.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Create time of the backup vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Region in which the backup vault is created.
-	//  Format: `projects/{project_id}/locations/{location}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.source_region
-	SourceRegion *string `json:"sourceRegion,omitempty"`
-
-	// Output only. Name of the Backup vault created in source region.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.source_backup_vault
-	SourceBackupVault *string `json:"sourceBackupVault,omitempty"`
-
-	// Output only. Name of the Backup vault created in backup region.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.destination_backup_vault
-	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
+// +kcc:observedstate:proto=google.cloud.netapp.v1.UserCommands
+type UserCommandsObservedState struct {
+	// Output only. List of commands to be executed by the customer.
+	// +kcc:proto:field=google.cloud.netapp.v1.UserCommands.commands
+	Commands []string `json:"commands,omitempty"`
 }
-*/

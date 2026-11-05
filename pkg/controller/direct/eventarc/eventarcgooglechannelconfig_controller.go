@@ -36,6 +36,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -66,6 +67,10 @@ func (m *googleChannelConfigModel) AdapterForObject(ctx context.Context, op *dir
 	id, err := krm.NewGoogleChannelConfigIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	// Get eventarc GCP client
@@ -131,10 +136,6 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating eventarc googlechannelconfig", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
 
 	desired := a.desired.DeepCopy()
 	resource := EventarcGoogleChannelConfigSpec_ToProto(mapCtx, &desired.Spec)
@@ -212,16 +213,4 @@ func (a *googleChannelConfigAdapter) Delete(ctx context.Context, deleteOp *direc
 	log.V(2).Info("deleting eventarc googlechannelconfig is a no-op", "name", a.id)
 	// GoogleChannelConfig is a singleton resource that cannot be deleted.
 	return true, nil
-}
-
-func (a *googleChannelConfigAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.CryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.CryptoKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.CryptoKeyRef = kmsKeyRef
-	}
-	return nil
 }

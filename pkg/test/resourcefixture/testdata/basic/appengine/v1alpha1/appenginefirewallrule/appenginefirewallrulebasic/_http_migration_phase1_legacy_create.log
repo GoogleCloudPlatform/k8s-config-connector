@@ -1,0 +1,74 @@
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No rule found at position 1000",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "action": "ALLOW",
+  "description": "Sample firewall rule",
+  "priority": 1000,
+  "sourceRange": "192.168.1.0/24"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": "ALLOW",
+  "description": "Sample firewall rule",
+  "priority": 1000,
+  "sourceRange": "192.168.1.0/24"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/1000?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": "ALLOW",
+  "description": "Sample firewall rule",
+  "priority": 1000,
+  "sourceRange": "192.168.1.0/24"
+}

@@ -55,7 +55,10 @@ export GCP_PROJECT_ID
 echo "Using project: ${GCP_PROJECT_ID}"
 
 if [[ -z "${TEST_FOLDER_ID:-}" ]]; then
-  TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+  parent_type=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.type)')
+  if [[ "${parent_type}" == "folder" ]]; then
+    TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+  fi
 fi
 export TEST_FOLDER_ID
 

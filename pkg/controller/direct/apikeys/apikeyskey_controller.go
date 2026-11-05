@@ -84,8 +84,8 @@ type adapter struct {
 // adapter implements the Adapter interface.
 var _ directbase.Adapter = &adapter{}
 
-func (m *model) client(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+func (m *model) client(ctx context.Context, project string) (*api.Client, error) {
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(project))
 	if err != nil {
 		return nil, err
 	}
@@ -101,10 +101,6 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	gcp, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
 
 	obj := &krm.APIKeysKey{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -116,8 +112,15 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, err
 	}
 
+	keyIdentity := id.(*krm.APIKeysKeyIdentity)
+
+	gcp, err := m.client(ctx, keyIdentity.Project)
+	if err != nil {
+		return nil, err
+	}
+
 	return &adapter{
-		id:      id.(*krm.APIKeysKeyIdentity),
+		id:      keyIdentity,
 		desired: obj,
 		gcp:     gcp,
 	}, nil
@@ -175,21 +178,6 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func (a *adapter) buildCreateRequest() (*pb.CreateKeyRequest, error) {
-	// You can configure only the `display_name`, `restrictions`, and
-	// `annotations` fields.
-	desired := &pb.Key{}
-	if err := keyMapping.Map(a.desired, desired); err != nil {
-		return nil, err
-	}
-
-	return &pb.CreateKeyRequest{
-		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
-		KeyId:  a.id.Key,
-		Key:    desired,
-	}, nil
-}
-
 // Create implements the Adapter interface.
 func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
@@ -216,6 +204,21 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	return nil
 }
 
+func (a *adapter) buildCreateRequest() (*pb.CreateKeyRequest, error) {
+	// You can configure only the `display_name`, `restrictions`, and
+	// `annotations` fields.
+	desired := &pb.Key{}
+	if err := keyMapping.Map(a.desired, desired); err != nil {
+		return nil, err
+	}
+
+	return &pb.CreateKeyRequest{
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		KeyId:  a.id.Key,
+		Key:    desired,
+	}, nil
+}
+
 // Update implements the Adapter interface.
 func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	// u := Op.GetUnstructured()
@@ -238,7 +241,6 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// }
 
 	if len(updateMask.Paths) == 0 {
-		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
 		return nil
 	}
 

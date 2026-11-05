@@ -1,0 +1,14 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppActiveDirectory
+metadata:
+  name: netappactivedirectory-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  domain: ad${uniqueId}.example.com
+  dns: 10.0.0.2
+  netBiosPrefix: adnetbios
+  username: adadmin
+  password:
+    value: UpdatedPassword123!

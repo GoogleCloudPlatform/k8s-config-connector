@@ -741,6 +741,9 @@
         external: kcc-test
   ResourceConfigId: BigQueryDataset
   URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydataset23ud716o5e16ibc3j9kc"
+- ExpectedSkeleton: null
+  ResourceConfigId: BigQueryDatasetAccess
+  URI: ""
 - ExpectedSkeleton:
     apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
     kind: BigQueryJob

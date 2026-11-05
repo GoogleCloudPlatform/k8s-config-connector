@@ -17,7 +17,7 @@ package apihub
 import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -28,7 +28,7 @@ func APIHubInstance_Config_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubIns
 	out := &krm.APIHubInstance_Config{}
 
 	if in.GetCmekKeyName() != "" {
-		out.CmekKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
+		out.CmekKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
 	}
 
 	return out
@@ -81,5 +81,48 @@ func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttrib
 	if in.Cardinality != nil {
 		out.Cardinality = *in.Cardinality
 	}
+	return out
+}
+
+func ApihubSpecSpec_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubSpecSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SpecType = AttributeValuesWithRequired_FromProto(mapCtx, in.GetSpecType())
+	out.Contents = SpecContents_FromProto(mapCtx, in.GetContents())
+	out.SourceURI = direct.LazyPtr(in.GetSourceUri())
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]krm.AttributeValuesWithRequired, len(in.Attributes))
+		for k, v := range in.Attributes {
+			if mapped := AttributeValuesWithRequired_FromProto(mapCtx, v); mapped != nil {
+				out.Attributes[k] = *mapped
+			}
+		}
+	}
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.ParsingMode = direct.Enum_FromProto(mapCtx, in.GetParsingMode())
+	return out
+}
+
+func ApihubSpecSpec_ToProto(mapCtx *direct.MapContext, in *krm.ApihubSpecSpec) *pb.Spec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Spec{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SpecType = AttributeValuesWithRequired_ToProto(mapCtx, in.SpecType)
+	out.Contents = SpecContents_ToProto(mapCtx, in.Contents)
+	out.SourceUri = direct.ValueOf(in.SourceURI)
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]*pb.AttributeValues, len(in.Attributes))
+		for k, v := range in.Attributes {
+			v := v
+			out.Attributes[k] = AttributeValuesWithRequired_ToProto(mapCtx, &v)
+		}
+	}
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.ParsingMode = direct.Enum_ToProto[pb.Spec_ParsingMode](mapCtx, in.ParsingMode)
 	return out
 }

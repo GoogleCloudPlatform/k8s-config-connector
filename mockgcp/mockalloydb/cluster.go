@@ -16,6 +16,7 @@ package mockalloydb
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -143,7 +144,12 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// This field needs to be handled differently in mockgcp after we fix the
 	// behavior in the controller.
 	if obj.DatabaseVersion == pb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED {
-		obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_16
+		obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_18
+	}
+	if obj.DataplexConfig == nil {
+		obj.DataplexConfig = &pb.Cluster_DataplexConfig{
+			Enabled: true,
+		}
 	}
 	if obj.EncryptionConfig != nil && obj.EncryptionConfig.KmsKeyName != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
@@ -157,6 +163,9 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	obj.Reconciling = false
 	obj.State = pb.Cluster_READY
 	obj.Uid = "111111111111111111111"
+	if obj.ServiceAccountEmail == "" {
+		obj.ServiceAccountEmail = fmt.Sprintf("c-%d-12345678@gcp-sa-alloydb.iam.gserviceaccount.com", name.Project.Number)
+	}
 	// TODO: Validate the logic for PrimaryConfig.
 	// PrimaryConfig is probably set when the primary cluster has a secondary
 	// cluster associated with it.

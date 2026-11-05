@@ -23,9 +23,10 @@
 // resource: VertexAIExampleStore:ExampleStore
 // resource: VertexAIFeatureGroup:FeatureGroup
 // resource: VertexAIDataLabelingJob:DataLabelingJob
-// resource: VertexAICustomJob:CustomJob
 // resource: VertexAITensorboard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
+// resource: VertexAIFeaturestoreEntityTypeFeature:Feature
+// resource: VertexAIFeaturestoreEntityType:EntityType
 
 package v1alpha1
 
@@ -87,6 +88,7 @@ type BigQuerySource struct {
 	InputURI *string `json:"inputURI,omitempty"`
 }
 
+/* unreachable type ContainerSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ContainerSpec
 type ContainerSpec struct {
 	// Required. The URI of a container image in the Container Registry that is to
@@ -108,6 +110,7 @@ type ContainerSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ContainerSpec.env
 	Env []EnvVar `json:"env,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DedicatedResources
 type DedicatedResources struct {
@@ -186,6 +189,7 @@ type DedicatedResources struct {
 	FlexStart *FlexStart `json:"flexStart,omitempty"`
 }
 
+/* unreachable type DiskSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DiskSpec
 type DiskSpec struct {
 	// Type of the boot disk. For non-A3U machines, the default value is
@@ -199,7 +203,9 @@ type DiskSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DiskSpec.boot_disk_size_gb
 	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
+*/
 
+/* unreachable type DNSPeeringConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.DnsPeeringConfig
 type DNSPeeringConfig struct {
 	// Required. The DNS name suffix of the zone being peered to, e.g.,
@@ -219,7 +225,9 @@ type DNSPeeringConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DnsPeeringConfig.target_network
 	TargetNetwork *string `json:"targetNetwork,omitempty"`
 }
+*/
 
+/* unreachable type EnvVar
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
@@ -236,6 +244,7 @@ type EnvVar struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.value
 	Value *string `json:"value,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
 type ExampleStoreConfig struct {
@@ -249,6 +258,12 @@ type ExampleStoreConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
 	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
 }
+
+/* unreachable type Feature_MonitoringStatsAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly
+type Feature_MonitoringStatsAnomaly struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
 type FeatureGroup_BigQuery struct {
@@ -299,6 +314,112 @@ type FeatureGroup_BigQuery_TimeSeries struct {
 	TimestampColumn *string `json:"timestampColumn,omitempty"`
 }
 
+/* unreachable type FeatureStatsAndAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly
+type FeatureStatsAndAnomaly struct {
+	// Feature Id.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_id
+	FeatureID *string `json:"featureID,omitempty"`
+
+	// Feature stats. e.g. histogram buckets.
+	//  In the format of tensorflow.metadata.v0.DatasetFeatureStatistics.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_stats
+	FeatureStats *Value `json:"featureStats,omitempty"`
+
+	// Deviation from the current stats to baseline stats.
+	//    1. For categorical feature, the distribution distance is calculated by
+	//       L-inifinity norm.
+	//    2. For numerical feature, the distribution distance is calculated by
+	//       Jensen–Shannon divergence.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.distribution_deviation
+	DistributionDeviation *float64 `json:"distributionDeviation,omitempty"`
+
+	// This is the threshold used when detecting drifts, which is set in
+	//  FeatureMonitor.FeatureSelectionConfig.FeatureConfig.drift_threshold
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.drift_detection_threshold
+	DriftDetectionThreshold *float64 `json:"driftDetectionThreshold,omitempty"`
+
+	// If set to true, indicates current stats is detected as and comparing
+	//  with baseline stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.drift_detected
+	DriftDetected *bool `json:"driftDetected,omitempty"`
+
+	// The timestamp we take snapshot for feature values to generate stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.stats_time
+	StatsTime *string `json:"statsTime,omitempty"`
+
+	// The ID of the FeatureMonitorJob that generated this FeatureStatsAndAnomaly.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_monitor_job_id
+	FeatureMonitorJobID *int64 `json:"featureMonitorJobID,omitempty"`
+
+	// The ID of the FeatureMonitor that this FeatureStatsAndAnomaly generated
+	//  according to.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAndAnomaly.feature_monitor_id
+	FeatureMonitorID *string `json:"featureMonitorID,omitempty"`
+}
+*/
+
+/* unreachable type FeatureStatsAnomaly
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly
+type FeatureStatsAnomaly struct {
+	// Feature importance score, only populated when cross-feature monitoring is
+	//  enabled. For now only used to represent feature attribution score within
+	//  range [0, 1] for
+	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW]
+	//  and
+	//  [ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.score
+	Score *float64 `json:"score,omitempty"`
+
+	// Path of the stats file for current feature values in Cloud Storage bucket.
+	//  Format: gs://<bucket_name>/<object_name>/stats.
+	//  Example: gs://monitoring_bucket/feature_name/stats.
+	//  Stats are stored as binary format with Protobuf message
+	//  [tensorflow.metadata.v0.FeatureNameStatistics](https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/statistics.proto).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.stats_uri
+	StatsURI *string `json:"statsURI,omitempty"`
+
+	// Path of the anomaly file for current feature values in Cloud Storage
+	//  bucket.
+	//  Format: gs://<bucket_name>/<object_name>/anomalies.
+	//  Example: gs://monitoring_bucket/feature_name/anomalies.
+	//  Stats are stored as binary format with Protobuf message
+	//  Anoamlies are stored as binary format with Protobuf message
+	//  [tensorflow.metadata.v0.AnomalyInfo]
+	//  (https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/anomalies.proto).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.anomaly_uri
+	AnomalyURI *string `json:"anomalyURI,omitempty"`
+
+	// Deviation from the current stats to baseline stats.
+	//    1. For categorical feature, the distribution distance is calculated by
+	//       L-inifinity norm.
+	//    2. For numerical feature, the distribution distance is calculated by
+	//       Jensen–Shannon divergence.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.distribution_deviation
+	DistributionDeviation *float64 `json:"distributionDeviation,omitempty"`
+
+	// This is the threshold used when detecting anomalies.
+	//  The threshold can be changed by user, so this one might be different from
+	//  [ThresholdConfig.value][google.cloud.aiplatform.v1beta1.ThresholdConfig.value].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.anomaly_detection_threshold
+	AnomalyDetectionThreshold *float64 `json:"anomalyDetectionThreshold,omitempty"`
+
+	// The start timestamp of window where stats were generated.
+	//  For objectives where time window doesn't make sense (e.g. Featurestore
+	//  Snapshot Monitoring), start_time is only used to indicate the monitoring
+	//  intervals, so it always equals to (end_time - monitoring_interval).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The end timestamp of window where stats were generated.
+	//  For objectives where time window doesn't make sense (e.g. Featurestore
+	//  Snapshot Monitoring), end_time indicates the timestamp of the data used to
+	//  generate stats (e.g. timestamp we take snapshots for feature values).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeatureStatsAnomaly.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
 type Featurestore_OnlineServingConfig struct {
 	// The number of nodes for the online store. The number of nodes doesn't
@@ -338,6 +459,46 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig
+type FeaturestoreMonitoringConfig struct {
+	// The config for Snapshot Analysis Based Feature Monitoring.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.snapshot_analysis
+	SnapshotAnalysis *FeaturestoreMonitoringConfig_SnapshotAnalysis `json:"snapshotAnalysis,omitempty"`
+
+	// The config for ImportFeatures Analysis Based Feature Monitoring.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.import_features_analysis
+	ImportFeaturesAnalysis *FeaturestoreMonitoringConfig_ImportFeaturesAnalysis `json:"importFeaturesAnalysis,omitempty"`
+
+	// Threshold for numerical features of anomaly detection.
+	//  This is shared by all objectives of Featurestore Monitoring for numerical
+	//  features (i.e. Features with type
+	//  ([Feature.ValueType][google.cloud.aiplatform.v1beta1.Feature.ValueType])
+	//  DOUBLE or INT64).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.numerical_threshold_config
+	NumericalThresholdConfig *FeaturestoreMonitoringConfig_ThresholdConfig `json:"numericalThresholdConfig,omitempty"`
+
+	// Threshold for categorical features of anomaly detection.
+	//  This is shared by all types of Featurestore Monitoring for categorical
+	//  features (i.e. Features with type
+	//  ([Feature.ValueType][google.cloud.aiplatform.v1beta1.Feature.ValueType])
+	//  BOOL or STRING).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.categorical_threshold_config
+	CategoricalThresholdConfig *FeaturestoreMonitoringConfig_ThresholdConfig `json:"categoricalThresholdConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis
+type FeaturestoreMonitoringConfig_ImportFeaturesAnalysis struct {
+	// Whether to enable / disable / inherite default hebavior for import
+	//  features analysis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis.state
+	State *string `json:"state,omitempty"`
+
+	// The baseline used to do anomaly detection for the statistics generated by
+	//  import features analysis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FeaturestoreMonitoringConfig.ImportFeaturesAnalysis.anomaly_detection_baseline
+	AnomalyDetectionBaseline *string `json:"anomalyDetectionBaseline,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
 type FlexStart struct {
 	// The max duration of the deployment is max_runtime_duration. The
@@ -347,6 +508,7 @@ type FlexStart struct {
 	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
 }
 
+/* unreachable type GCSDestination
 // +kcc:proto=google.cloud.aiplatform.v1beta1.GcsDestination
 type GCSDestination struct {
 	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
@@ -356,6 +518,7 @@ type GCSDestination struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsDestination.output_uri_prefix
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -433,6 +596,7 @@ type MetadataStore_MetadataStoreState struct {
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }
 
+/* unreachable type NfsMount
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NfsMount
 type NfsMount struct {
 	// Required. IP address of the NFS server.
@@ -450,7 +614,9 @@ type NfsMount struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NfsMount.mount_point
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
+*/
 
+/* unreachable type PSCInterfaceConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PscInterfaceConfig
 type PSCInterfaceConfig struct {
 	// Optional. The name of the Compute Engine
@@ -471,6 +637,7 @@ type PSCInterfaceConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PscInterfaceConfig.dns_peering_configs
 	DNSPeeringConfigs []DNSPeeringConfig `json:"dnsPeeringConfigs,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
@@ -508,6 +675,7 @@ type SampleConfig struct {
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
+/* unreachable type Scheduling
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Scheduling
 type Scheduling struct {
 	// The maximum job running time. The default is 7 days.
@@ -537,6 +705,7 @@ type Scheduling struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.max_wait_duration
 	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.TrainingConfig
 type TrainingConfig struct {
@@ -546,6 +715,7 @@ type TrainingConfig struct {
 	TimeoutTrainingMilliHours *int64 `json:"timeoutTrainingMilliHours,omitempty"`
 }
 
+/* unreachable type WorkerPoolSpec
 // +kcc:proto=google.cloud.aiplatform.v1beta1.WorkerPoolSpec
 type WorkerPoolSpec struct {
 	// The custom container task.
@@ -572,6 +742,7 @@ type WorkerPoolSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.WorkerPoolSpec.disk_spec
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
+*/
 
 /* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
@@ -631,3 +802,16 @@ type Money struct {
 	// +kcc:proto:field=google.type.Money.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
+
+/* unreachable type Feature_MonitoringStatsAnomalyObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly
+type Feature_MonitoringStatsAnomalyObservedState struct {
+	// Output only. The objective for each stats.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly.objective
+	Objective *string `json:"objective,omitempty"`
+
+	// Output only. The stats and anomalies generated at specific timestamp.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Feature.MonitoringStatsAnomaly.feature_stats_anomaly
+	FeatureStatsAnomaly *FeatureStatsAnomaly `json:"featureStatsAnomaly,omitempty"`
+}
+*/

@@ -1,0 +1,29 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "FirebaseHostingSite/site-${uniqueId}",
+    "fields": [
+      {
+        "id": "default_url",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "site_id",
+        "old": "",
+        "new": "site-${uniqueId}"
+      }
+    ]
+  }
+]

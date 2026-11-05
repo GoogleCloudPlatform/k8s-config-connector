@@ -21,6 +21,7 @@ package v1alpha1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
@@ -990,12 +991,12 @@ func (in *SecretKeySelector) DeepCopyInto(out *SecretKeySelector) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 }
@@ -1015,7 +1016,7 @@ func (in *SecretVolumeSource) DeepCopyInto(out *SecretVolumeSource) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(secretmanagerv1beta1.SecretRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 	if in.Items != nil {
@@ -1154,7 +1155,7 @@ func (in *VersionToPath) DeepCopyInto(out *VersionToPath) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(secretmanagerv1beta1.SecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretManagerSecretVersionRef)
 		**out = **in
 	}
 	if in.Mode != nil {
@@ -1285,7 +1286,7 @@ func (in *WorkerPoolRevisionTemplate) DeepCopyInto(out *WorkerPoolRevisionTempla
 	}
 	if in.EncryptionKeyRef != nil {
 		in, out := &in.EncryptionKeyRef, &out.EncryptionKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.ServiceMesh != nil {

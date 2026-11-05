@@ -29,15 +29,11 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+./generate-proto.sh
 
-# We need a newer googleapis to get Folder (required because of shared package/multiversion mappers)
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
-
-# --- v1alpha1 ---
-
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1beta1 \
@@ -51,25 +47,40 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DataformTeamFolder:TeamFolder \
   --proto-source-path ${PROTO_OUT}
 
-
-
-# --- v1beta1 ---
-
-
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1beta1 \
   --api-version dataform.cnrm.cloud.google.com/v1beta1 \
   --resource DataformRepository:Repository \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DataformWorkflowConfig:WorkflowConfig \
+  --resource DataformReleaseConfig:ReleaseConfig \
+  --resource DataformWorkspace:Workspace
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataformWorkflowConfig:WorkflowConfig \
+  --resource DataformReleaseConfig:ReleaseConfig \
+  --resource DataformWorkspace:Workspace
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dataform.v1,google.cloud.dataform.v1beta1 \
-  --api-version "dataform.cnrm.cloud.google.com/v1beta1" \
+  --api-version dataform.cnrm.cloud.google.com/v1beta1 \
   --proto-source-path ${PROTO_OUT} \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
-cd "${REPO_ROOT}"
-dev/tasks/generate-crds
+cd ${REPO_ROOT}
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/dataform" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dataform/

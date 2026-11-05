@@ -24,6 +24,7 @@ import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -77,6 +78,10 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get ResourceID
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
@@ -126,15 +131,6 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 			return nil, err
 		}
 		obj.Spec.DatasetRef.External = datasetID.Dataset
-	}
-
-	// Resolve KMSCryptoKey Ref
-	if obj.Spec.EncryptionConfiguration != nil {
-		kmsCryptoKeyRef, err := refv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.EncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.EncryptionConfiguration.KmsKeyRef = kmsCryptoKeyRef
 	}
 
 	// Resolve ServiceAccount Ref

@@ -75,6 +75,10 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewBackupScheduleIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err

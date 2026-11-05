@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ArtifactRegistryV1 struct {
@@ -141,6 +142,10 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 			obj.Description = req.Repository.GetDescription()
 		case "labels":
 			obj.Labels = req.Repository.GetLabels()
+		case "cleanup_policies", "cleanupPolicies":
+			obj.CleanupPolicies = req.Repository.GetCleanupPolicies()
+		case "cleanup_policy_dry_run", "cleanupPolicyDryRun":
+			obj.CleanupPolicyDryRun = req.Repository.GetCleanupPolicyDryRun()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
@@ -166,6 +171,19 @@ func (s *ArtifactRegistryV1) DeleteRepository(ctx context.Context, req *pb.Delet
 	oldObj := &pb.Repository{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
+	}
+
+	// Also delete any rules in the repository
+	ruleKind := (&pb.Rule{}).ProtoReflect().Descriptor()
+	var rulesToDelete []string
+	if err := s.storage.List(ctx, ruleKind, storage.ListOptions{Prefix: fqn + "/rules/"}, func(obj proto.Message) error {
+		rule := obj.(*pb.Rule)
+		rulesToDelete = append(rulesToDelete, rule.GetName())
+		return nil
+	}); err == nil {
+		for _, r := range rulesToDelete {
+			_ = s.storage.Delete(ctx, r, &pb.Rule{})
+		}
 	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)

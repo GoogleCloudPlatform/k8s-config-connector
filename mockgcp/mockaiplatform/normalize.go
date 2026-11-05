@@ -34,7 +34,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") {
+	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") || strings.Contains(event.URL(), "ScheduleService") {
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
 	}
 
@@ -78,6 +78,63 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 		event.VisitResponseStringValues(func(path string, value string) {
 			previsitReasoningEngine(value)
+		})
+	}
+
+	if strings.Contains(event.URL(), "SpecialistPoolService") || strings.Contains(event.URL(), "specialistPools") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateSpecialistPoolOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.CreateSpecialistPoolOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateSpecialistPoolOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.UpdateSpecialistPoolOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.SpecialistPool", "type.googleapis.com/google.cloud.aiplatform.v1.SpecialistPool")
+
+		previsitSpecialistPool := func(val string) {
+			if strings.Contains(val, "/specialistPools/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "specialistPools" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${specialistPoolID}")
+						}
+					}
+				}
+			}
+		}
+		previsitSpecialistPool(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitSpecialistPool(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitSpecialistPool(value)
+		})
+	}
+
+	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") {
+		previsitCustomJob := func(val string) {
+			if strings.Contains(val, "/customJobs/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "customJobs" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${customJobID}")
+						}
+					}
+				}
+			}
+		}
+		previsitCustomJob(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitCustomJob(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitCustomJob(value)
 		})
 	}
 }

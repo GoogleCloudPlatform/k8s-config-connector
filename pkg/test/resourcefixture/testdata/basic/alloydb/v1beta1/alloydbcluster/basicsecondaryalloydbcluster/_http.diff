@@ -14,7 +14,7 @@
 < GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}
-283,364d282
+287,372d286
 < GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}?alt=json
 < Content-Type: application/json
 < 
@@ -74,7 +74,10 @@
 <     ]
 <   },
 <   "createTime": "2024-04-01T12:34:56.123456Z",
-<   "databaseVersion": "POSTGRES_16",
+<   "databaseVersion": "POSTGRES_18",
+<   "dataplexConfig": {
+<     "enabled": true
+<   },
 <   "encryptionInfo": {
 <     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
 <   },
@@ -89,6 +92,7 @@
 <     "network": "projects/${projectNumber}/global/networks/${networkID}"
 <   },
 <   "reconciling": false,
+<   "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
 <   "state": "READY",
 <   "subscriptionType": "STANDARD",
 <   "uid": "111111111111111111111",
@@ -97,11 +101,19 @@
 < 
 < ---
 < 
-1791c1709
+915c829
+<       "zoneId": "us-west1-a"
+---
+>       "zoneId": "us-west1-b"
+1618c1532
+<     "zoneId": "us-west1-a"
+---
+>     "zoneId": "us-west1-b"
+1929c1843
 < GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}?alt=json
 ---
 > GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1814,1820c1732,1738
+1952,1958c1866,1872
 <         "MONDAY",
 <         "TUESDAY",
 <         "WEDNESDAY",
@@ -117,15 +129,15 @@
 >         5,
 >         6,
 >         7
-1829c1747
+1967c1881
 <   "clusterType": "PRIMARY",
 ---
 >   "clusterType": 1,
-1837c1755
+1975c1889
 <       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
 ---
 >       "encryptionType": 1
-1840,1846c1758,1764
+1978,1984c1892,1898
 <       "MONDAY",
 <       "TUESDAY",
 <       "WEDNESDAY",
@@ -141,25 +153,25 @@
 >       5,
 >       6,
 >       7
-1850c1768
-<   "databaseVersion": "POSTGRES_16",
+1988c1902
+<   "databaseVersion": "POSTGRES_18",
 ---
->   "databaseVersion": 4,
-1852c1770
+>   "databaseVersion": 6,
+1993c1907
 <     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
 ---
 >     "encryptionType": 1
-1866,1867c1784,1785
+2008,2009c1922,1923
 <   "state": "READY",
 <   "subscriptionType": "STANDARD",
 ---
 >   "state": 1,
 >   "subscriptionType": 1,
-1874c1792
+2016c1930
 < DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}?alt=json
 ---
 > DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1902c1820
+2044c1958
 < GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 ---
 > GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west1/operations/${operationID}

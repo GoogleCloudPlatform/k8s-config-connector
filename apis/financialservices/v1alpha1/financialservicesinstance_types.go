@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,7 +47,7 @@ type FinancialServicesInstanceSpec struct {
 	// VPC-SC restrictions apply.
 	// +kcc:proto:field=google.cloud.financialservices.v1.Instance.kms_key
 	// +required
-	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
 }
 
 // FinancialServicesInstanceStatus defines the config connector machine state of FinancialServicesInstance

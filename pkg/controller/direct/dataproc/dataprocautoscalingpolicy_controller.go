@@ -26,6 +26,7 @@ import (
 
 	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -34,8 +35,11 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -144,9 +148,7 @@ func (a *dataprocAutoscalingPolicyAdapter) Create(ctx context.Context, createOp 
 	}
 	log.V(2).Info("successfully created dataproc autoscalingpolicy in gcp", "name", a.id)
 
-	status := &krm.DataprocAutoscalingPolicyStatus{}
-	status.ExternalRef = direct.LazyPtr(created.GetName())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *dataprocAutoscalingPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -163,18 +165,51 @@ func (a *dataprocAutoscalingPolicyAdapter) Update(ctx context.Context, updateOp 
 	policy.Id = a.id.AutoscalingPolicy
 	policy.Name = a.id.String()
 
-	req := &pb.UpdateAutoscalingPolicyRequest{
-		Policy: policy,
-	}
-	updated, err := a.gcpClient.UpdateAutoscalingPolicy(ctx, req)
+	diffs, err := compareDataprocAutoscalingPolicy(ctx, a.actual, policy)
 	if err != nil {
-		return fmt.Errorf("updating dataproc autoscalingpolicy %s: %w", a.id.String(), err)
+		return err
 	}
-	log.V(2).Info("successfully updated dataproc autoscalingpolicy", "name", a.id)
 
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		req := &pb.UpdateAutoscalingPolicyRequest{
+			Policy: policy,
+		}
+		updated, err := a.gcpClient.UpdateAutoscalingPolicy(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating dataproc autoscalingpolicy %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated dataproc autoscalingpolicy", "name", a.id)
+		latest = updated
+	}
+
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *dataprocAutoscalingPolicyAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.AutoscalingPolicy) error {
 	status := &krm.DataprocAutoscalingPolicyStatus{}
-	status.ExternalRef = direct.LazyPtr(updated.GetName())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	status.ExternalRef = direct.LazyPtr(latest.GetName())
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareDataprocAutoscalingPolicy(ctx context.Context, actual, desired *pb.AutoscalingPolicy) (*structuredreporting.Diff, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, DataprocAutoscalingPolicySpec_v1beta1_FromProto, DataprocAutoscalingPolicySpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, err
+	}
+	maskedActual.Id = desired.Id
+	maskedActual.Name = desired.Name
+
+	clonedDesired := proto.Clone(desired).(*pb.AutoscalingPolicy)
+
+	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, err
+	}
+	return diffs, nil
 }
 
 func (a *dataprocAutoscalingPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {

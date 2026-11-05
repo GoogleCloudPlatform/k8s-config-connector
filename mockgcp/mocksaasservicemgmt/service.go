@@ -15,6 +15,7 @@
 // +tool:mockgcp-service
 // http.host: saasservicemgmt.googleapis.com
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1.SaasDeployments
+// proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1.SaasRollouts
 
 package mocksaasservicemgmt
 
@@ -43,6 +44,7 @@ type MockService struct {
 	storage storage.Storage
 
 	saasDeploymentsServer *SaasDeploymentsServer
+	saasRolloutsServer    *SaasRolloutsServer
 }
 
 // New creates a MockService.
@@ -52,6 +54,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 	}
 	s.saasDeploymentsServer = &SaasDeploymentsServer{MockService: s}
+	s.saasRolloutsServer = &SaasRolloutsServer{MockService: s}
 	return s
 }
 
@@ -64,17 +67,27 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSaasDeploymentsServer(grpcServer, s.saasDeploymentsServer)
+	pb.RegisterSaasRolloutsServer(grpcServer, s.saasRolloutsServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pbhttp.RegisterSaasDeploymentsHandler)
+		pbhttp.RegisterSaasDeploymentsHandler,
+		pbhttp.RegisterSaasRolloutsHandler,
+	)
 	if err != nil {
 		return nil, err
 	}
 
 	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
 		response.Header().Del("Cache-Control")
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

@@ -1,3 +1,15 @@
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValue -> Parameter -> ParamValue
+[recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValueObservedState -> ParameterObservedState -> ParamValueObservedState
+[recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParameterSpecObservedState -> ParameterSpecObservedState
 [recursive_type] package=apis/datacatalog/v1alpha1: ColumnSchema -> ColumnSchema
 [recursive_type] package=apis/dataplex/v1alpha1: AspectType_MetadataTemplate -> AspectType_MetadataTemplate
+[recursive_type] package=apis/dataplex/v1alpha1: Schema_SchemaField -> Schema_SchemaField
+[recursive_type] package=apis/dialogflow/v1alpha1: Fulfillment_ConditionalCases -> Fulfillment_ConditionalCases_Case -> Fulfillment_ConditionalCases_Case_CaseContent -> Fulfillment_ConditionalCases
+[recursive_type] package=apis/dialogflow/v1alpha1: InlineSchema -> TypeSchema -> InlineSchema
+[recursive_type] package=apis/dialogflow/v1alpha1: ListValue -> Value -> ListValue
+[recursive_type] package=apis/dialogflow/v1alpha1: Playbook_Step -> Playbook_Step
+[recursive_type] package=apis/gsuiteaddons/v1alpha1: ListValue -> Value -> ListValue
+[recursive_type] package=apis/visionai/v1alpha1: AnnotationCustomizedStruct -> AnnotationValue -> AnnotationCustomizedStruct
+[recursive_type] package=apis/visionai/v1alpha1: AnnotationList -> AnnotationValue -> AnnotationList
+[recursive_type] package=apis/visionai/v1alpha1: DataSchemaDetails -> DataSchemaDetails_CustomizedStructConfig -> DataSchemaDetails
+[recursive_type] package=apis/visionai/v1alpha1: DataSchemaDetails -> DataSchemaDetails_ListConfig -> DataSchemaDetails

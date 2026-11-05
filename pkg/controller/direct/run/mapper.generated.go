@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmrunv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	krmrunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
@@ -37,16 +38,6 @@ import (
 	apipb "google.golang.org/genproto/googleapis/api"
 )
 
-func BinaryAuthorization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krmrunv1alpha1.BinaryAuthorization {
-	if in == nil {
-		return nil
-	}
-	out := &krmrunv1alpha1.BinaryAuthorization{}
-	out.UseDefault = direct.LazyPtr(in.GetUseDefault())
-	// MISSING: Policy
-	out.BreakglassJustification = direct.LazyPtr(in.GetBreakglassJustification())
-	return out
-}
 func BinaryAuthorization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.BinaryAuthorization) *pb.BinaryAuthorization {
 	if in == nil {
 		return nil
@@ -1003,33 +994,6 @@ func RunJobSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.Run
 	// MISSING: RunExecutionToken
 	return out
 }
-func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.RunWorkerPoolObservedState) *pb.WorkerPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkerPool{}
-	// MISSING: Name
-	out.Uid = direct.ValueOf(in.Uid)
-	out.Generation = direct.ValueOf(in.Generation)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Creator = direct.ValueOf(in.Creator)
-	out.LastModifier = direct.ValueOf(in.LastModifier)
-	out.Template = WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx, in.Template)
-	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
-	out.TerminalCondition = RunCondition_v1alpha1_ToProto(mapCtx, in.TerminalCondition)
-	// MISSING: Conditions
-	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
-	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
-	out.InstanceSplitStatuses = direct.Slice_ToProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_ToProto)
-	out.CustomAudiences = in.CustomAudiences
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
 func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krmrunv1alpha1.RunWorkerPoolSpec {
 	if in == nil {
 		return nil
@@ -1196,7 +1160,7 @@ func TaskTemplate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskTempla
 	}
 	out.ExecutionEnvironment = direct.Enum_FromProto(mapCtx, in.GetExecutionEnvironment())
 	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+		out.EncryptionKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.VPCAccess = VPCAccess_v1beta1_FromProto(mapCtx, in.GetVpcAccess())
 	// MISSING: NodeSelector
@@ -1507,7 +1471,7 @@ func WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_v1alpha1_FromProto)
 	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_v1alpha1_FromProto)
 	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+		out.EncryptionKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.ServiceMesh = ServiceMesh_v1alpha1_FromProto(mapCtx, in.GetServiceMesh())
 	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())

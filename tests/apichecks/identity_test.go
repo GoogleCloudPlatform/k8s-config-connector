@@ -119,7 +119,7 @@ func loadIdentityCollections(apisDir string) (map[string][]string, error) {
 		if err != nil {
 			return err
 		}
-		if info.IsDir() || !strings.HasSuffix(path, "_identity.go") {
+		if info.IsDir() || (!strings.HasSuffix(path, "_identity.go") && !strings.HasSuffix(path, "_identity.generated.go")) {
 			return nil
 		}
 		data, err := os.ReadFile(path)

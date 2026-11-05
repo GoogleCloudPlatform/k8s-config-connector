@@ -18,6 +18,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/refs"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -26,10 +27,31 @@ import (
 
 // ReferenceHints inspects spec fields using heuristic rules (name matching,
 // URI templates, loose descriptions) and proposes potential references for review.
+//
+// It also queues a field that names another resource in a way KCC cannot
+// express as a reference, so a reviewer sees why it stays a string, and a
+// field whose name says it holds a password. A nested field with a
+// google.api.resource_reference annotation gets the same entry that
+// PrepopulateSpec gives a top-level one.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
-		if item, ok := referenceHint(path, desc); ok {
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, field protoreflect.FieldDescriptor) {
+		// PrepopulateSpec already checks the annotation on top-level fields.
+		// The walk never re-enters msg, so any field of msg is top-level.
+		// When google.api.resource_reference is present, suppress heuristic
+		// reference hints on that field so authoritative-proto-reference is
+		// the sole reference finding.
+		if item, ok := judgementFor(field, path); ok {
+			if field.ContainingMessage().FullName() != msg.FullName() {
+				out = append(out, item)
+			}
+		} else if item, ok := referenceHint(path, desc, field); ok {
+			out = append(out, item)
+		}
+		if item, ok := sensitiveField(path, msg); ok {
+			out = append(out, item)
+		}
+		if item, ok := wellKnownProtoTypeItem(field, path); ok {
 			out = append(out, item)
 		}
 	})
@@ -41,7 +63,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // message fields the same way.
 //
 // It skips what the generator leaves out of the Spec: OUTPUT_ONLY fields at any
-// depth, and at the top level the identity fields and server-set fields that
+// depth, and at the top level the identity, server-set and deprecated fields
 // PrepopulateSpec drops. A field the generator cannot type is absent from the
 // CRD too, so it is skipped with its subtree. So is a field the generator
 // already writes as a reference, which needs no hint.
@@ -49,7 +71,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // onPath holds the messages between msg and the root. Proto messages can
 // contain themselves, and the generated struct breaks the cycle with a
 // pointer, so a message already on the path is not entered again.
-func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string)) {
+func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string, field protoreflect.FieldDescriptor)) {
 	if onPath[msg.FullName()] {
 		return
 	}
@@ -62,14 +84,14 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 			continue
 		}
 		// Skip the fields PrepopulateSpec drops, or a hint names a path the CRD
-		// does not have. This applies to identity fields, and to server-set
-		// fields when --place-server-set-fields is enabled. PrepopulateSpec only
-		// drops them from the resource's top-level message, so they are only
-		// checked at the top.
-		if top && identityFields[string(field.Name())] {
+		// does not have: identity fields, server-set fields when
+		// --place-server-set-fields is enabled, and deprecated fields.
+		// PrepopulateSpec only drops them from the resource's top-level
+		// message, so they are only checked at the top.
+		if top && topLevelSkip(field, msg, opts) != inSpec {
 			continue
 		}
-		if top && codegen.IsServerSetField(field, msg, opts) {
+		if codegen.IsFieldAllOutputOnlyMessage(field) {
 			continue
 		}
 		goType, err := codegen.GoTypeForField(field, false, opts)
@@ -81,7 +103,7 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		}
 
 		path := prefix + "." + codegen.GetJSONForKRM(field, opts)
-		visit(path, fieldComment(field))
+		visit(path, fieldComment(field), field)
 
 		switch {
 		case field.IsMap():
@@ -119,21 +141,83 @@ func fieldComment(field protoreflect.FieldDescriptor) string {
 }
 
 // referenceHint returns the queue entry the rules give a field, trying the
-// strict description rule, then the loose one, then the name rules. Only an
-// IsReference verdict ends the search, so a field Classify calls
-// NotRepresentable can still match a later rule.
-func referenceHint(path, desc string) (JudgementItem, bool) {
+// strict description rule, then the loose one, then the name rules. A verdict
+// from the strict rule ends the search. For IsReference, the entry says which
+// of Classify's rules matched. For NotRepresentable, the entry says the field
+// cannot be a reference, instead of a looser hint that would contradict that.
+func referenceHint(path, desc string, field protoreflect.FieldDescriptor) (JudgementItem, bool) {
 	if refs.IsReferenceFieldPath(path) {
 		return JudgementItem{}, false
 	}
-	if verdict, _ := refs.Classify(path, desc); verdict == refs.IsReference {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-description"}, true
+	switch verdict, reason := refs.Classify(path, desc); verdict {
+	case refs.IsReference:
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonPossibleReferenceByDescription,
+			Detail:    strings.Join(refs.ReferenceRules(path, desc), "; "),
+		}, true
+	case refs.NotRepresentable:
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonReferenceNotRepresentable,
+			Detail:    reason + ": names another resource, but KCC cannot express it as a reference today, so it stays a string",
+		}, true
 	}
 	if refs.MatchDescriptionLoose(path, desc) {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-description-loose"}, true
+		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescriptionLoose}, true
 	}
 	if target, ok := refs.MatchName(path); ok {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-name", Detail: target}, true
+		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByName, Detail: target}, true
+	}
+	if field != nil && field.Kind() == protoreflect.StringKind && !field.IsMap() && hasResourceIDSuffix(path) {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonPossibleReferenceByName,
+			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
+		}, true
+	}
+	return JudgementItem{}, false
+}
+
+// hasResourceIDSuffix reports whether the leaf segment of path ends in ID, Id,
+// IDs, or Ids with a non-empty prefix (e.g. "sourceProjectID", "customIDs"),
+// excluding "resourceID".
+func hasResourceIDSuffix(path string) bool {
+	leaf := path
+	if i := strings.LastIndex(leaf, "."); i >= 0 {
+		leaf = leaf[i+1:]
+	}
+	leaf = strings.TrimSuffix(leaf, "[]")
+	if strings.EqualFold(leaf, "resourceID") {
+		return false
+	}
+	for _, suffix := range []string{"IDs", "Ids", "ID", "Id"} {
+		if len(leaf) > len(suffix) && strings.HasSuffix(leaf, suffix) {
+			return true
+		}
+	}
+	return false
+}
+
+// sensitiveField returns a queue entry for a field whose name says it holds a
+// password. It uses the rule from TestNoSensitiveField in tests/apichecks: the
+// KRM path, lowercased, ends in "password". The generator still writes the
+// field as a plain value. We haven't settled how a new Kind should take a
+// secret, so the entry only flags the field.
+func sensitiveField(path string, rootMsg protoreflect.MessageDescriptor) (JudgementItem, bool) {
+	if strings.HasSuffix(strings.ToLower(path), "password") {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonSensitiveField,
+			Detail:    "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets",
+		}, true
+	}
+	if path == ".spec.data" && rootMsg != nil && strings.HasSuffix(strings.ToLower(string(rootMsg.Name())), "secret") {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonSensitiveField,
+			Detail:    "holds secret data as a plain value on a Secret resource. Leave this open until we settle how new Kinds take secrets",
+		}, true
 	}
 	return JudgementItem{}, false
 }

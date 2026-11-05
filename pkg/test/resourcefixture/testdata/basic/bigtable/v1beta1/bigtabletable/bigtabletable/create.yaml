@@ -19,6 +19,7 @@ metadata:
 spec:
   columnFamily:
   - family: family1
+    type: intsum
   - family: family2
   instanceRef:
     name: bigtable-dep-${uniqueId}

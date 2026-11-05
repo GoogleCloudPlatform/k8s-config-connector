@@ -17,6 +17,7 @@ package certificatemanager
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
@@ -273,6 +274,11 @@ func (a *CertificateMapEntryAdapter) Delete(ctx context.Context, deleteOp *direc
 	return true, nil
 }
 
+var (
+	reProjectNumber = regexp.MustCompile(`^projects/\d+/`)
+	reProjectID     = regexp.MustCompile(`^projects/[^/]+/`)
+)
+
 func compareCertificateMapEntry(ctx context.Context, actual, desired *pb.CertificateMapEntry) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerCertificateMapEntrySpec_v1beta1_FromProto, CertificateManagerCertificateMapEntrySpec_v1beta1_ToProto)
 	if err != nil {
@@ -280,9 +286,63 @@ func compareCertificateMapEntry(ctx context.Context, actual, desired *pb.Certifi
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+
+	// In CertificateMapEntry, GCP returns certificates with project number instead of project ID.
+	// If the certificates match (ignoring project number vs project ID differences), align maskedActual with desired
+	// to avoid a false diff and unnecessary update.
+	if equalCertificateSlices(desired.Certificates, maskedActual.Certificates) {
+		maskedActual.Certificates = desired.Certificates
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
 	return diffs, updateMask, nil
+}
+
+func equalCertificateSlices(desired, actual []string) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	allMatch := true
+	for i := range desired {
+		if !equalCertificateRef(desired[i], actual[i]) {
+			allMatch = false
+			break
+		}
+	}
+	if allMatch {
+		return true
+	}
+	matched := make([]bool, len(actual))
+	for _, d := range desired {
+		found := false
+		for j, a := range actual {
+			if !matched[j] && equalCertificateRef(d, a) {
+				matched[j] = true
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
+}
+
+func equalCertificateRef(a, b string) bool {
+	if a == b {
+		return true
+	}
+	// Suppress diffs when the value read from GCP API has the project number instead of the project ID.
+	// Format: projects/<project>/locations/<location>/certificates/<certificate>
+	if reProjectNumber.MatchString(a) && !reProjectNumber.MatchString(b) && reProjectID.MatchString(b) {
+		return reProjectNumber.ReplaceAllString(a, "projects/_/") == reProjectID.ReplaceAllString(b, "projects/_/")
+	}
+	if !reProjectNumber.MatchString(a) && reProjectID.MatchString(a) && reProjectNumber.MatchString(b) {
+		return reProjectID.ReplaceAllString(a, "projects/_/") == reProjectNumber.ReplaceAllString(b, "projects/_/")
+	}
+	return false
 }

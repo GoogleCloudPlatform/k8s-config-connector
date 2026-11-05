@@ -39,11 +39,23 @@ ${CONTROLLERBUILDER} generate-types \
   --resource IAPSettings:IapSettings \
   --resource IAPBrand:Brand
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.iap.v1 \
+  --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource IAPTunnelDestGroup:TunnelDestGroup
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.iap.v1 \
+  --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+  --resource IAPTunnelDestGroup:TunnelDestGroup
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.iap.v1 \
   --api-version iap.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

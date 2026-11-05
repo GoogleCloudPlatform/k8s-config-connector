@@ -1,0 +1,15 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1alpha1
+kind: ArtifactRegistryRule
+metadata:
+  name: arrule-max-${uniqueId}
+spec:
+  parentRef:
+    name: arrepository-${uniqueId}
+  action: DENY
+  operation: DOWNLOAD
+  condition:
+    expression: "pkg.version.tag == 'prod'"
+    title: "Prod rule"
+    description: "Deny downloads for prod tag"
+    location: "rule-condition-updated"
+  packageID: "my-package-2"

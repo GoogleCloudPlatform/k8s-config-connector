@@ -1,6 +1,0 @@
-- caisURL: unknown
-  group: apigee.cnrm.cloud.google.com
-  kind: ApigeeAddonsConfig
-  name: apigeeaddonsconfig-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1alpha1

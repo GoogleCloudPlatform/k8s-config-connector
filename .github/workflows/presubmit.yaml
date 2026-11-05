@@ -33,7 +33,7 @@ on:
       - '**'
       - '!experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
@@ -44,23 +44,28 @@ jobs:
   validations:
     name: "validations"
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'destroyed' }}
     steps:
       - name: "No-op validation check for branch protection"
         run: echo "validations completed successfully"
 
   build-images:
     runs-on: ubuntu-22.04
+    if: ${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
       - uses: ./dev/actions/cache-go
       - name: "dev/tasks/build-images"
         run: |
           dev/tasks/build-images
     env:
       PROJECT_ID: cnrm-test
+      PLATFORM: linux/amd64,linux/arm64
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true

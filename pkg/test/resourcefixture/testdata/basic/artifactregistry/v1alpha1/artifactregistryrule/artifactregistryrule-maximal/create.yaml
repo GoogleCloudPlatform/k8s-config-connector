@@ -1,0 +1,15 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1alpha1
+kind: ArtifactRegistryRule
+metadata:
+  name: arrule-max-${uniqueId}
+spec:
+  parentRef:
+    name: arrepository-${uniqueId}
+  action: ALLOW
+  operation: DOWNLOAD
+  condition:
+    expression: "pkg.version.tag == 'staging'"
+    title: "Staging rule"
+    description: "Allow downloads for staging tag"
+    location: "rule-condition"
+  packageID: "my-package"

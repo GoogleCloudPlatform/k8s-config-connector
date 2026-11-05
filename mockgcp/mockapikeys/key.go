@@ -24,6 +24,7 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 )
 
 type APIKeysV2 struct {
@@ -42,6 +43,10 @@ func (s *APIKeysV2) GetKey(ctx context.Context, req *pb.GetKeyRequest) (*pb.Key,
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+
+	if obj.Etag == "" {
+		obj.Etag = fields.ComputeWeakEtag(obj)
 	}
 
 	return obj, nil
@@ -81,6 +86,7 @@ func (s *APIKeysV2) CreateKey(ctx context.Context, req *pb.CreateKeyRequest) (*l
 
 	obj := proto.CloneOf(req.Key)
 	obj.Name = fqn
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -146,6 +152,8 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 	if isSpecified("annotations") {
 		obj.Annotations = req.GetKey().GetAnnotations()
 	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

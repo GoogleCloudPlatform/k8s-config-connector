@@ -154,7 +154,9 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	http.Error(w, "not found", http.StatusNotFound)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Method not found.\",\n    \"status\": \"NOT_FOUND\"\n  }\n}\n"))
 }
 
 // serveHTTPMethod serves a single HTTP method mapped to a gRPC method.
@@ -261,6 +263,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 				if k == "prettyPrint" || k == "pretty_print" {
 					// Pretty-print not implemented; ignore, for now
 					// responseOptions.PrettyPrint = values
+					continue
+				}
+				if k == "append" {
+					// Some APIs (like AccessContextManager) accept an "append" query parameter not present in proto
 					continue
 				}
 

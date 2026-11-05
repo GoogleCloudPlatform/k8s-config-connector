@@ -267,4 +267,16 @@ type InstanceRef struct{}
 			t.Errorf("parentRefTypes for kms cryptoKey = %v, want map[KMSCryptoKeyRef:refsv1beta1]", got)
 		}
 	})
+
+	t.Run("disambiguates exact service prefix match in same package", func(t *testing.T) {
+		apihubDir := t.TempDir()
+		const apihubRefs = "package v1alpha1\n\ntype APIHubAPIRef struct{}\ntype APIHubExternalAPIRef struct{}\n"
+		if err := os.WriteFile(filepath.Join(apihubDir, "refs.go"), []byte(apihubRefs), 0644); err != nil {
+			t.Fatal(err)
+		}
+		got := parentRefTypes(repo, apihubDir, "apihub", "api")
+		if len(got) != 1 || got["APIHubAPIRef"] != "" {
+			t.Errorf("parentRefTypes for apihub api = %v, want map[APIHubAPIRef:]", got)
+		}
+	})
 }

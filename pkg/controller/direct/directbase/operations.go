@@ -16,6 +16,7 @@ package directbase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -28,6 +29,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -59,6 +61,12 @@ type Operation interface {
 
 	// CompareLastModifiedCookie compares the last-changed-cookie annotation on the object with the hashes of the desired and actual state.
 	CompareLastModifiedCookie(desired, actual proto.Message) (bool, error)
+
+	// SetMBUR computes the MBUR hash value using the provided compute function and updates the mutable-but-unreadable-fields-hash annotation on the object.
+	SetMBUR(ctx context.Context, computeMBUR func() (string, error)) error
+
+	// CompareMBUR compares the mutable-but-unreadable-fields-hash annotation on the object with the computed MBUR hash from the compute function.
+	CompareMBUR(computeMBUR func() (string, error)) (bool, error)
 }
 
 // GetUnstructured returns the object being reconciled, in unstructured format.
@@ -243,6 +251,58 @@ func (o *operationBase) CompareLastModifiedCookie(desired, actual proto.Message)
 	}
 	u := o.GetUnstructured()
 	return u.GetAnnotations()[k8s.LastChangedCookieAnnotation] == cookie, nil
+}
+
+func (o *operationBase) SetMBUR(ctx context.Context, computeMBUR func() (string, error)) error {
+	if computeMBUR == nil {
+		return nil
+	}
+	hash, err := computeMBUR()
+	if err != nil {
+		return err
+	}
+	u := o.GetUnstructured()
+	existingHash, exists := u.GetAnnotations()[k8s.MutableButUnreadableFieldsHashAnnotation]
+	if existingHash == hash && (hash != "" || !exists) {
+		return nil
+	}
+	var val any = hash
+	if hash == "" {
+		val = nil
+	}
+	patchBytes, err := json.Marshal(map[string]any{
+		"metadata": map[string]any{
+			"annotations": map[string]any{
+				k8s.MutableButUnreadableFieldsHashAnnotation: val,
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	// Use client.RawPatch with MergePatchType to update or clear only the MBUR hash annotation,
+	// preventing 409 Conflict errors or overwriting concurrent annotation changes during long-running LROs.
+	if err := o.client.Patch(ctx, u, client.RawPatch(types.MergePatchType, patchBytes)); err != nil {
+		return fmt.Errorf("patching object to set %s: %w", k8s.MutableButUnreadableFieldsHashAnnotation, err)
+	}
+	return nil
+}
+
+func (o *operationBase) CompareMBUR(computeMBUR func() (string, error)) (bool, error) {
+	if computeMBUR == nil {
+		return false, nil
+	}
+	hash, err := computeMBUR()
+	if err != nil {
+		return false, err
+	}
+	u := o.GetUnstructured()
+	annotations := u.GetAnnotations()
+	storedHash := annotations[k8s.MutableButUnreadableFieldsHashAnnotation]
+	if hash == "" {
+		return storedHash == "", nil
+	}
+	return storedHash == hash, nil
 }
 
 type statusWithConditions struct {

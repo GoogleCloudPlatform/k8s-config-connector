@@ -71,6 +71,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		return true
 	}
 
+	// Changes to the actuation mode annotation should trigger a reconcile
+	if e.ObjectOld.GetAnnotations()[k8s.ActuationModeAnnotation] != e.ObjectNew.GetAnnotations()[k8s.ActuationModeAnnotation] {
+		return true
+	}
+
 	// Changes to the reconcile interval annotation should trigger a reconcile
 	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation]; oldValue != newValue {
 		newValueInt, err := strconv.ParseInt(newValue, 10, 32)
@@ -83,6 +88,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		} else {
 			return true
 		}
+	}
+
+	// Changes to the backoff max delay annotation should trigger a reconcile
+	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.BackoffMaxDelayInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.BackoffMaxDelayInSecondsAnnotation]; oldValue != newValue {
+		return true
 	}
 
 	// The object's generation will increment when the spec is updated, so a different

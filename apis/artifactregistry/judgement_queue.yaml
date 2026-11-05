@@ -1,0 +1,94 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/attachments/{attachment}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on ArtifactRegistryAttachmentSpec
+    status: open
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    field: .spec.files
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to artifactregistry.googleapis.com/File (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: ArtifactRegistryAttachment
+    group: artifactregistry.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: resolved parent hierarchy via spec.parentRef, verified no output-only fields or unflagged references
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: resolved
+    resolution: edited
+    note: no output-only fields in proto; ObservedState commented out
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/repositories/{repository}/rules/{rule}" contains ancestor segment(s) repositories/{repository} with no matching reference or field on ArtifactRegistryRuleSpec
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ArtifactRegistryRepositoryRef) per the single-parent rule; removed projectRef and location
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, and no RepositoryRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ArtifactRegistryRepositoryRef) per the single-parent rule; removed projectRef and location
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/repositories/{repository}, which already names the location; a reference to it could replace location and the root reference
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ArtifactRegistryRepositoryRef) per the single-parent rule; removed projectRef and location
+  - kind: ArtifactRegistryRule
+    group: artifactregistry.cnrm.cloud.google.com
+    field: .spec.packageID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: resolved
+    resolution: not-applicable
+    note: package ID string identifying an artifact package within the repository (data-plane object not managed by KCC)

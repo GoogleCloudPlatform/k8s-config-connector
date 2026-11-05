@@ -90,14 +90,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                         type: string
                       name:
-                        description: The `name` of a `KMSCryptoKey` resource.
+                        description: The name of a KMSCryptoKey resource.
                         type: string
                       namespace:
-                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
                   kmsKeyRefs:
@@ -118,6 +118,7 @@ spec:
                        Multi-regional location KMS keys are not supported for USER_MANAGED
                        instance configs.
                     items:
+                      description: KMSCryptoKeyRef is a reference to a KMSCryptoKey.
                       oneOf:
                       - not:
                           required:
@@ -134,14 +135,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: A reference to an externally managed KMSCryptoKey.
-                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                          description: A reference to an externally managed KMSCryptoKey
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                           type: string
                         name:
-                          description: The `name` of a `KMSCryptoKey` resource.
+                          description: The name of a KMSCryptoKey resource.
                           type: string
                         namespace:
-                          description: The `namespace` of a `KMSCryptoKey` resource.
+                          description: The namespace of a KMSCryptoKey resource.
                           type: string
                       type: object
                     type: array
@@ -358,14 +359,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                         type: string
                       name:
-                        description: The `name` of a `KMSCryptoKey` resource.
+                        description: The name of a KMSCryptoKey resource.
                         type: string
                       namespace:
-                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
                   kmsKeyRefs:
@@ -386,6 +387,7 @@ spec:
                        Multi-regional location KMS keys are not supported for USER_MANAGED
                        instance configs.
                     items:
+                      description: KMSCryptoKeyRef is a reference to a KMSCryptoKey.
                       oneOf:
                       - not:
                           required:
@@ -402,14 +404,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: A reference to an externally managed KMSCryptoKey.
-                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                          description: A reference to an externally managed KMSCryptoKey
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                           type: string
                         name:
-                          description: The `name` of a `KMSCryptoKey` resource.
+                          description: The name of a KMSCryptoKey resource.
                           type: string
                         namespace:
-                          description: The `namespace` of a `KMSCryptoKey` resource.
+                          description: The namespace of a KMSCryptoKey resource.
                           type: string
                       type: object
                     type: array

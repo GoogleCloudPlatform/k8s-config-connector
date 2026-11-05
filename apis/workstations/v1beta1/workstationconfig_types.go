@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -247,7 +248,7 @@ type WorkstationConfig_CustomerEncryptionKey struct {
 	// Immutable. A reference to the Google Cloud KMS encryption key. For example,
 	//  `"projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"`.
 	//  The key must be in the same region as the workstation configuration.
-	KmsCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
+	KmsCryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	// Immutable. A reference to a service account to use with the specified
 	//  KMS key. We recommend that you use a separate service account

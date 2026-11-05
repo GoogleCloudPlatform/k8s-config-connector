@@ -51,9 +51,16 @@ func (e BlockedGCPError) Error() string {
 // ExtractBlockedGCPError will unwrap a BlockedGCPError.
 // To tolerate terraform using string-wrapping of error messages, we also parse a json-encoded form.
 func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
-	var e *BlockedGCPError
-	if errors.As(err, &e) {
-		return e, true
+	if err == nil {
+		return nil, false
+	}
+	var ptr *BlockedGCPError
+	if errors.As(err, &ptr) {
+		return ptr, true
+	}
+	var val BlockedGCPError
+	if errors.As(err, &val) {
+		return &val, true
 	}
 
 	// Look for a string-wrapped message
@@ -78,6 +85,30 @@ func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
 		}
 	}
 	return nil, false
+}
+
+// IsBlockedError returns true if the error was caused by preview mode intentionally blocking a GCP or Kubernetes write operation.
+func IsBlockedError(err error) bool {
+	if err == nil {
+		return false
+	}
+	if _, ok := ExtractBlockedGCPError(err); ok {
+		return true
+	}
+	msg := err.Error()
+	if strings.Contains(msg, "blocked in preview mode") {
+		return true
+	}
+	if strings.Contains(msg, "GRPC method blocked by InterceptingGCPClient") {
+		return true
+	}
+	if strings.Contains(msg, "call to GCP blocked") {
+		return true
+	}
+	if strings.Contains(msg, "Writes are not allowed in preview mode") {
+		return true
+	}
+	return false
 }
 
 // interceptingGCPClient is a GCP client that intercepts GCP API calls.

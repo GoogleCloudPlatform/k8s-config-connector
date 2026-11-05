@@ -152,6 +152,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 
 	// Create and reconcile all resources & dependencies
+	if t.Events != nil {
+		t.Events.SetPhase("CREATE")
+	}
 	for _, u := range opt.Create {
 		if opt.DoNotUseServerSideApplyForCreate {
 			t.Log("using legacy create to create object (should ideally use server-side apply)", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
@@ -174,6 +177,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if len(opt.Updates) != 0 {
+		if t.Events != nil {
+			t.Events.SetPhase("UPDATE")
+		}
 		// Record the generation of all resources before patching to detect metadata-only updates
 		for _, updateUnstruct := range opt.Updates {
 			name := k8s.GetNamespacedName(updateUnstruct)
@@ -360,6 +366,9 @@ func isTerminalError(reason, message string) (bool, string) {
 
 func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
+	if t.Events != nil {
+		t.Events.SetPhase("DELETE")
+	}
 
 	unstructs := opts.Create
 	for i := len(unstructs) - 1; i >= 0; i-- {

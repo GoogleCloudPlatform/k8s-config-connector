@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -36,7 +37,7 @@ type SecureSourceManagerInstanceSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Immutable. Customer-managed encryption key name.
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 	// Optional. PrivateConfig includes settings for private instance.
 	PrivateConfig *Instance_PrivateConfig `json:"privateConfig,omitempty"`
 }

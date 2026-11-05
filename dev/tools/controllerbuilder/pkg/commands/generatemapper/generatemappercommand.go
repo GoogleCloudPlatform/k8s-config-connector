@@ -42,8 +42,11 @@ type GenerateMapperOptions struct {
 
 	Multiversion bool
 
-	EmitPluralAcronyms bool
-	EmitMessageMaps    bool
+	PrepopulateResource bool
+	EmitPluralAcronyms  bool
+	EmitMessageMaps     bool
+
+	SkipProtos []string
 }
 
 func (o *GenerateMapperOptions) InitDefaults() error {
@@ -64,8 +67,10 @@ func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
 	cmd.Flags().BoolVar(&o.Multiversion, "multiversion", o.Multiversion, "generate mappers with version specifiers, to support mixed versions")
+	cmd.Flags().BoolVar(&o.PrepopulateResource, "prepopulate-resource", false, "enable plural acronym casing and message map conversion loops matching generate-types --prepopulate-resource")
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "match KRM field names that case plural acronyms as KRM conventions want, so related_uris maps to relatedURIs. Pass it for a service whose generate-types call passes it. Opt in one service at a time: it maps fields that existing mappers leave out, which changes those controllers")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "write the conversion loop for map<string, Message> fields instead of calling a <Field>_FromProto helper. Pass it for a service whose generate-types call passes it. Opt in one service at a time: it also rewrites hand-written map fields in existing mappers")
+	cmd.Flags().StringSliceVar(&o.SkipProtos, "skip-proto", o.SkipProtos, "proto message name(s) to skip generating mappers for; can be specified multiple times or comma-separated")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -128,6 +133,11 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Metadata") && !strings.HasSuffix(fullName, "VideoMetadata") && !strings.HasSuffix(fullName, "DocumentMetadata") {
 			return "", false
 		}
+		for _, skip := range o.SkipProtos {
+			if fullName == skip || string(msg.Name()) == skip {
+				return "", false
+			}
+		}
 		matchedService := false
 		for _, serviceName := range o.ServiceNames {
 			if strings.HasPrefix(fullName, serviceName+".") {
@@ -152,10 +162,12 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
 	mapperGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
-	mapperGenerator.WithEmitPluralAcronyms(o.EmitPluralAcronyms)
-	mapperGenerator.WithEmitMessageMaps(o.EmitMessageMaps)
+	mapperGenerator.WithEmitPluralAcronyms(o.PrepopulateResource || o.EmitPluralAcronyms)
+	mapperGenerator.WithEmitMessageMaps(o.PrepopulateResource || o.EmitMessageMaps)
+	mapperGenerator.LoadExistingImports(goPackage)
 
-	// Ensure that our first proto package is always imported with the "pb" alias.
+	// Ensure that our first proto package is always imported with the "pb" alias
+	// (unless an existing mapper.generated.go already binds "pb" to another package).
 	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])
 	if err != nil {
 		return err

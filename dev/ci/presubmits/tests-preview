@@ -25,7 +25,9 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-. ${REPO_ROOT}/dev/tasks/install-gcloud
+if ! command -v gcloud >/dev/null 2>&1; then
+  . ${REPO_ROOT}/dev/tasks/install-gcloud
+fi
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running preview CLI tests..."

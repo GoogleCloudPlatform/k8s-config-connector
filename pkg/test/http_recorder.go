@@ -30,6 +30,7 @@ import (
 
 type LogEntry struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
+	Phase     string    `json:"phase,omitempty"`
 	Request   Request   `json:"request,omitempty"`
 	Response  Response  `json:"response,omitempty"`
 	Error     string    `json:"error,omitempty"`

@@ -1,0 +1,57 @@
+POST https://appengine.googleapis.com/v1/apps/${projectId}/services/default/versions?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "deployment": {
+    "container": {
+      "image": "gcr.io/google-samples/hello-app:1.0"
+    }
+  },
+  "env": "flex",
+  "id": "000000000000000000000",
+  "inboundServices": [],
+  "livenessCheck": {
+    "checkInterval": "30s",
+    "failureThreshold": 4,
+    "initialDelay": "300s",
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "manualScaling": {
+    "instances": 1
+  },
+  "readinessCheck": {
+    "appStartTimeout": "300s",
+    "checkInterval": "5s",
+    "failureThreshold": 2,
+    "path": "/",
+    "successThreshold": 2,
+    "timeout": "4s"
+  },
+  "runtime": "custom",
+  "serviceAccount": "${projectId}@appspot.gserviceaccount.com",
+  "servingStatus": "SERVING"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Versions.CreateVersion",
+    "target": "apps/${projectId}/services/default/versions/v${uniqueId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}

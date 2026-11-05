@@ -312,6 +312,10 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 						continue
 					}
 					if !tfresource.TFResourceHasField(tfResource, f) {
+						// sqlinstance_advanced_dr is a KCC direct controller annotation directive, not a TF schema field.
+						if rc.Name == "google_sql_database_instance" && f == "sqlinstance_advanced_dr" {
+							continue
+						}
 						// TODO(b/278948939): Remove once the unknown fields are cleaned up in google_apigee_addons_config.
 						if rc.Name == "google_apigee_addons_config" {
 							t.Logf("field '%v' mentioned in ServiceMapping for the auto-generated v1alpha1 resource '%v' but is not found in resource schema", f, rc.Name)

@@ -44,6 +44,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
@@ -277,6 +278,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				}
 				if fixture.GVK.Group == "ces.cnrm.cloud.google.com" && fixture.GVK.Kind == "CESApp" {
 					t.Skip("skipping CESApp as the controller is not implemented yet")
+				}
+				if os.Getenv("E2E_PARALLEL") == "true" {
+					t.Parallel()
 				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
@@ -745,6 +749,8 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				if ShouldTestRereconiliation(t, testName, primaryResource) {
 					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
 					eventsBefore := h.Events.GetHTTPEvents()
+					prevPhase := h.Events.GetPhase()
+					h.Events.SetPhase("RERECONCILE")
 
 					oldGeneration := getGeneration(h, primaryResource)
 					touchObject(h, primaryResource)
@@ -755,6 +761,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					eventsAfter := h.Events.GetHTTPEvents()
 
 					h.Events.SetHTTPEvents(eventsBefore)
+					h.Events.SetPhase(prevPhase)
 
 					for i := len(eventsBefore); i < len(eventsAfter); i++ {
 						event := eventsAfter[i]
@@ -762,6 +769,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						switch event.Request.Method {
 						case "GET":
 							isReadOnly = true
+						case "POST":
+							if strings.Contains(event.Request.URL, "/listNetworkEndpoints") ||
+								strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
+								isReadOnly = true
+							}
 						case "GRPC":
 							if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
 								isReadOnly = true
@@ -891,10 +903,35 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
 
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
+
+						validateAndWriteHTTPLogReport(t, fixture, options, targetGCP, got)
 					}
 				}
 			}
 		}
+	}
+}
+
+func validateAndWriteHTTPLogReport(t *testing.T, fixture resourcefixture.ResourceFixture, options ScenarioOptions, targetGCP string, got string) {
+	if targetGCP != "real" || options.FallbackToOldController || options.TestPause {
+		return
+	}
+	report, err := httplogreport.AnalyzeFixtureWithLogContent(fixture.AbsoluteSourceDir, got)
+	if err != nil {
+		t.Logf("warning: failed to analyze HTTP log for report: %v", err)
+		return
+	}
+	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+		reportPath, err := httplogreport.WriteReport(fixture.AbsoluteSourceDir, report)
+		if err != nil {
+			t.Errorf("FAIL: failed to write _http_report.md: %v", err)
+		} else {
+			t.Logf("wrote HTTP lifecycle report to %s", reportPath)
+		}
+	}
+	t.Logf("\n%s", httplogreport.RenderTerminal(report, "compact"))
+	if os.Getenv("SKIP_VALIDATE_HTTP_LOG") == "" && !report.Passed {
+		t.Errorf("FAIL: HTTP log validation failed for %s:\n%s", fixture.Name, httplogreport.RenderTerminal(report, "normal"))
 	}
 }
 

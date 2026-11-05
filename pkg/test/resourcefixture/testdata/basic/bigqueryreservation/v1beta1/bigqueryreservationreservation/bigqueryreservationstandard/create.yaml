@@ -25,5 +25,7 @@ spec:
   location: us-west2
   projectRef:
     external: ${projectId}
+  reservationGroupRef:
+    name: sample-group-${uniqueId}
   resourceID: bigqueryreservationreservation${uniqueId}
   slotCapacity: 0

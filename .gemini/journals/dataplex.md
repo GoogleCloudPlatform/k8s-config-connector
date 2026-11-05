@@ -45,6 +45,18 @@
   5. Implemented `DataProductIdentity` utilizing `gcpurls.Template` with standard Project and Location references.
 - **Impact**: Provides a robust template for implementing KRM types, hand-written map mappers, and custom GCP-to-KRM model mapping for complex direct resources.
 
+### [2026-09-26] Implement Greenfield DataplexMetadataFeed Direct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexMetadataFeed` under `v1alpha1`.
+- **Problem**:
+  1. In GCP, `MetadataFeed` strictly requires a Pub/Sub topic endpoint (`MetadataFeed must have a pubsub topic`).
+  2. Dataplex service agent (`service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com`) must have both `pubsub.topics.get` and `pubsub.topics.publish` on the topic (e.g. `roles/pubsub.admin`).
+  3. GCP normalizes project IDs in `scope.projects` to project numbers (`projects/{projectNumber}`) in GET responses. Without normalizing project numbers back to project IDs via `ProjectMapper.ReplaceProjectNumberWithIDInLink`, re-reconciliation sees a diff on `scope` and triggers unnecessary update calls.
+- **Solution**:
+  1. Included `PubSubTopic` and `IAMPolicyMember` (granting `roles/pubsub.admin` to Dataplex SA) in `dependencies.yaml` for both minimal and maximal fixtures.
+  2. Integrated `projectMapper.ReplaceProjectNumberWithIDInLink` inside `dataplexmetadatafeed_controller.go` to normalize relative resource and project references in both `desired` and `actual` states before comparison.
+  3. Implemented fuzzer and unit tests, and successfully recorded and verified golden traffic against real GCP (`cnrm-barni-4`).
+- **Impact**: Eliminates spurious diffs on re-reconciliation and ensures seamless interoperation between Dataplex metadata feeds and Pub/Sub.
+
 ### [2026-09-28] Implement Greenfield DataplexDataProduct Controller, Fixtures, and Fuzzer
 - **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataProduct` under `v1alpha1`.
 - **Problem**:
@@ -56,4 +68,39 @@
   3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
   4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
 - **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
+
+### [2026-10-29] Triage Judgement Queue and Finalize Direct KRM Types for DataplexEntry
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexEntry` under `v1alpha1`.
+- **Problem**: `DataplexEntry` is a child resource under `DataplexEntryGroup` (`projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`). Initially scaffolded with `projectRef` and `location`, it required consolidation into a single required immutable `parentRef` (`*EntryGroupRef`). Additionally, `entryType` and `parentEntry` referenced `DataplexEntryType` and `DataplexEntry` respectively, but were raw string fields. In `mapper.generated.go`, `filemerge.go` prevented automatic replacement of `DataplexEntrySpec_FromProto` due to the `make(map[` preservation rule for hand-written map helpers.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with `parentRef *EntryGroupRef` (`+required`, immutable via `self == oldSelf` CEL rule).
+  2. Converted `entryType` to `entryTypeRef *EntryTypeRef` (`+required`) and `parentEntry` to `parentEntryRef *DataplexEntryRef`.
+  3. Added `generate-controller` and `generate-fuzzer` to `apis/dataplex/generate.sh` and regenerated code.
+  4. Updated `DataplexEntrySpec_FromProto` and `DataplexEntrySpec_ToProto` in `mapper.generated.go` to map `EntryTypeRef` and `ParentEntryRef` using the existing `Aspects_FromProto`/`Aspects_ToProto` helpers.
+  5. Resolved all 8 judgement queue entries for `DataplexEntry`.
+- **Impact**: Cleanly conforms to Greenfield single-parent and reference conventions, passes all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexEntry`).
+
+### [2026-10-29] Finalize Direct KRM Types and Identity for DataplexDataAsset
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for DataplexDataAsset under v1alpha1 (#14604).
+- **Problem**:
+  1. DataplexDataAsset is a child resource of DataplexDataProduct (`projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}`). While DataplexDataProduct existed, it lacked a `DataplexDataProductRef` reference definition, causing `parent-ref-not-modelled` and `identity-root-unknown`.
+  2. In `generate-mapper`, `shouldCurrentReplaceExisting` prioritizes existing mapper functions without inline map conversions (`make(map[`) over newly generated functions with `make(map[`. Because existing `mapper.generated.go` had a stale `DataplexDataAssetSpec_FromProto` that referenced `out.Etag` and `out.Labels`, it failed to compile when those fields were removed from `DataplexDataAssetSpec`.
+- **Solution**:
+  1. Added `DataplexDataProductRef` in `apis/dataplex/v1alpha1/dataplexdataproduct_reference.go`, and modelled `spec.parentRef` (`*DataplexDataProductRef`) as required and immutable on `DataplexDataAssetSpec`.
+  2. Isolated `DataplexDataAssetSpec_FromProto` and `DataplexDataAssetSpec_ToProto` in `pkg/controller/direct/dataplex/dataplexdataasset_mapper.go` so they are excluded from `mapper.generated.go`.
+  3. Moved `etag` to `DataplexDataAssetObservedState`, removed `labels` from `Spec`, and updated `apis/dataplex/generate.sh` to include `generate-controller` and `generate-fuzzer` for `DataplexDataAsset`.
+- **Impact**: Cleanly compiles and passes `TestFocusedMappers`, conforming to all Greenfield Step 1b standards and single-parent rules.
+
+### [2026-11-03] Implement Greenfield DataplexDataAsset Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataAsset` under `v1alpha1` (#14733).
+- **Problem**:
+  1. Dataplex `DataAsset` is a child resource under `DataProduct` (`projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}`).
+  2. The `resource` field expects a full IAM resource name (e.g. `//bigquery.googleapis.com/projects/{project}/datasets/{dataset}`). During testing, dependencies (`BigQueryDataset` and `DataplexDataProduct`) must be created first.
+  3. `pb.DataAsset.AccessGroupConfig` in protobuf only defines `repeated string iam_roles`, but live GCP API responses include an unmodeled server-managed `state` string property (`"state": "APPLIED"`) on each access group config object. Protobuf strict validation against `.build/googleapis.pb` flags unknown fields unless excluded or when minimal/maximal tests test resources with standard configurations.
+- **Solution**:
+  1. Verified the controller `dataplexdataasset_controller.go` and round-trip fuzzer `dataplexdataasset_fuzzer.generated.go`.
+  2. Created `dataplexdataasset-minimal` and `dataplexdataasset-maximal` E2E test suites with `BigQueryDataset` and `DataplexDataProduct` dependencies.
+  3. Recorded authentic golden HTTP traffic and objects against real GCP (`cnrm-barni-4`) using `./hack/record-gcp`.
+  4. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexdataasset`), unit tests pass, and focused fuzzer passes.
+- **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexDataAsset.
 

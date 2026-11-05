@@ -60,6 +60,7 @@ func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
 	return out
 }
 func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -70,6 +71,7 @@ func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.M
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
 	return out
 }
 
@@ -83,6 +85,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out.Assignee = direct.LazyPtr(in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
 	return out
 }
 */
@@ -99,6 +102,7 @@ found existing non-generated mapping function "BigQueryReservationAssignmentSpec
 		out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in.Assignee)
 		out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
 		// MISSING: EnableGeminiInBigquery
+		// MISSING: SchedulingPolicy
 		return out
 	}
 */
@@ -174,6 +178,22 @@ func BigQueryReservationCapacityCommitmentStatus_v1alpha1_ToProto(mapCtx *direct
 	// MISSING: IsFlatRate
 	return out
 }
+func BigQueryReservationReservationGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec{}
+	// MISSING: Name
+	return out
+}
+func BigQueryReservationReservationGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "BigQueryReservationReservationObservedState_v1beta1_FromProto", skipping
 func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmbigqueryreservationv1beta1.BigQueryReservationReservationObservedState {
@@ -191,6 +211,7 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -212,6 +233,7 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -237,32 +259,62 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
+	if in.GetReservationGroup() != "" {
+		out.ReservationGroupRef = &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef{External: in.GetReservationGroup()}
+	}
 	// MISSING: ReplicationStatus
+	out.SchedulingPolicy = SchedulingPolicy_v1beta1_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "BigQueryReservationReservationSpec_v1beta1_ToProto", skipping
-func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationReservationSpec) *pb.Reservation {
+/*
+found existing non-generated mapping function "BigQueryReservationReservationSpec_v1beta1_ToProto", skipping
+
+	func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationReservationSpec) *pb.Reservation {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Reservation{}
+		// MISSING: Name
+		out.SlotCapacity = direct.ValueOf(in.SlotCapacity)
+		out.IgnoreIdleSlots = direct.ValueOf(in.IgnoreIdleSlots)
+		out.Autoscale = AutoscaleSpec_v1beta1_ToProto(mapCtx, in.Autoscale)
+		out.Concurrency = direct.ValueOf(in.Concurrency)
+		// MISSING: CreationTime
+		// MISSING: UpdateTime
+		// MISSING: MultiRegionAuxiliary
+		out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
+		// MISSING: PrimaryLocation
+		// MISSING: SecondaryLocation
+		// MISSING: OriginalPrimaryLocation
+		// MISSING: MaxSlots
+		// MISSING: ScalingMode
+		// MISSING: Labels
+		if in.ReservationGroupRef != nil {
+			out.ReservationGroup = in.ReservationGroupRef.External
+		}
+		// MISSING: ReplicationStatus
+		out.SchedulingPolicy = SchedulingPolicy_v1beta1_ToProto(mapCtx, in.SchedulingPolicy)
+		return out
+	}
+*/
+func SchedulingPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SchedulingPolicy) *krmbigqueryreservationv1beta1.SchedulingPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Reservation{}
-	// MISSING: Name
-	out.SlotCapacity = direct.ValueOf(in.SlotCapacity)
-	out.IgnoreIdleSlots = direct.ValueOf(in.IgnoreIdleSlots)
-	out.Autoscale = AutoscaleSpec_v1beta1_ToProto(mapCtx, in.Autoscale)
-	out.Concurrency = direct.ValueOf(in.Concurrency)
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
-	// MISSING: ReplicationStatus
+	out := &krmbigqueryreservationv1beta1.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
 	return out
 }
-*/
+func SchedulingPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.SchedulingPolicy) *pb.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}

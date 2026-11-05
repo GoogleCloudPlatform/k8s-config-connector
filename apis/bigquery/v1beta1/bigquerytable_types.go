@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -606,7 +606,7 @@ type TableEncryptionConfiguration struct {
 	//  protect destination BigQuery table. The BigQuery Service Account associated
 	//  with your project requires access to this encryption key.
 	// +required
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	/* DEPRECATED.
 	// The table will be encrypted with the primary version of Cloud KMS encryption key.

@@ -119,6 +119,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
 
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
+	pb.RegisterNetworkEndpointGroupsServer(grpcServer, &NetworkEndpointGroupsV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
@@ -126,6 +127,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterFirewallPoliciesServer(grpcServer, &FirewallPoliciesV1{MockService: s})
 	pb.RegisterNetworkFirewallPoliciesServer(grpcServer, &NetworkFirewallPoliciesV1{MockService: s})
+	pb.RegisterOrganizationSecurityPoliciesServer(grpcServer, &OrganizationSecurityPoliciesV1{MockService: s})
 
 	pb.RegisterGlobalForwardingRulesServer(grpcServer, &GlobalForwardingRulesV1{MockService: s})
 	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
@@ -133,6 +135,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRoutersServer(grpcServer, &RoutersV1{MockService: s})
 
 	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
+	pb.RegisterMachineImagesServer(grpcServer, &MachineImagesV1{MockService: s})
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
@@ -143,6 +146,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 	pb.RegisterReservationsServer(grpcServer, &ReservationsV1{MockService: s})
+	pb.RegisterProjectsServer(grpcServer, &ProjectsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -230,6 +234,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+
+	if err := pb.RegisterProjectsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -285,6 +293,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterOrganizationSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -334,12 +346,18 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
 	if err := pb.RegisterImagesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterMachineImagesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterInstancesHandler(ctx, mux.ServeMux, conn); err != nil {
@@ -359,6 +377,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
 		error.Status = ""
+		if error.Code == 400 && len(error.Errors) == 0 {
+			error.Errors = append(error.Errors, httpmux.ErrorResponseDetails{
+				Domain:  "global",
+				Message: error.Message,
+				Reason:  "invalid",
+			})
+		}
 	}
 
 	// Does not return Cache-Control header
@@ -433,6 +458,30 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 				u2.Path = strings.ReplaceAll(u2.Path, "/global/httpHealthChecks", "/global/healthChecks")
 			}
 			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		if strings.Contains(r.URL.Path, "/setCommonInstanceMetadata") {
+			if r.Body != nil && (r.Method == http.MethodPost || r.Method == http.MethodPut) {
+				bodyBytes, err := io.ReadAll(r.Body)
+				if err == nil && len(bodyBytes) > 0 {
+					var rawMap map[string]any
+					if err := json.Unmarshal(bodyBytes, &rawMap); err == nil {
+						if items, ok := rawMap["items"].([]any); ok {
+							var nonNullItems []any
+							for _, it := range items {
+								if it != nil {
+									nonNullItems = append(nonNullItems, it)
+								}
+							}
+							rawMap["items"] = nonNullItems
+							if filteredBytes, err := json.Marshal(rawMap); err == nil {
+								r.Body = io.NopCloser(bytes.NewBuffer(filteredBytes))
+								r.ContentLength = int64(len(filteredBytes))
+							}
+						}
+					}
+				}
+			}
 		}
 
 		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.

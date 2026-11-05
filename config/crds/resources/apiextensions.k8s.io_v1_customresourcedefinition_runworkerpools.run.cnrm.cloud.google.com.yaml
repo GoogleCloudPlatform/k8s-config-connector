@@ -259,7 +259,7 @@ spec:
                                           external:
                                             description: A reference to an externally
                                               managed SecretManagerSecret resource.
-                                              Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                                              Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
                                             type: string
                                           name:
                                             description: The name of a SecretManagerSecret
@@ -291,7 +291,7 @@ spec:
                                           external:
                                             description: A reference to an externally
                                               managed SecretManagerSecretVersion resource.
-                                              Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+                                              Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                             type: string
                                           name:
                                             description: The name of a SecretManagerSecretVersion
@@ -593,14 +593,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                         type: string
                       name:
-                        description: The `name` of a `KMSCryptoKey` resource.
+                        description: The name of a KMSCryptoKey resource.
                         type: string
                       namespace:
-                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
                   encryptionKeyRevocationAction:
@@ -855,7 +855,7 @@ spec:
                                       external:
                                         description: A reference to an externally
                                           managed SecretManagerSecretVersion resource.
-                                          Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+                                          Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                         type: string
                                       name:
                                         description: The name of a SecretManagerSecretVersion
@@ -889,7 +889,7 @@ spec:
                                 external:
                                   description: A reference to an externally managed
                                     SecretManagerSecret resource. Should be in the
-                                    format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                                    format "projects/{{projectID}}/secrets/{{secretID}}".
                                   type: string
                                 name:
                                   description: The name of a SecretManagerSecret resource.

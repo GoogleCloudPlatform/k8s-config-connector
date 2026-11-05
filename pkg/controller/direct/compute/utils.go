@@ -72,3 +72,11 @@ func ConvertIntToInt32(in *int) *int32 {
 	v := int32(*in)
 	return &v
 }
+
+func lastComponent(path string) string {
+	idx := strings.LastIndex(path, "/")
+	if idx >= 0 {
+		return path[idx+1:]
+	}
+	return path
+}

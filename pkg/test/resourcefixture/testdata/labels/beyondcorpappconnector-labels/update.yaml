@@ -20,9 +20,11 @@ metadata:
     label-three: three
   name: beyondcorpappconnector-${uniqueId}
 spec:
+  displayName: Sample App Connector
   principalInfo:
-  - serviceAccount:
-    - email: ${google_service_account.service_account.email}
+    serviceAccount:
+      email: sa${uniqueId}@${projectId}.iam.gserviceaccount.com
   projectRef:
     external: ${projectId}
+  region: us-central1
   resourceID: beyondcorpappconnector${uniqueId}

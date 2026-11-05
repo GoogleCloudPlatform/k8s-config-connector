@@ -51,12 +51,22 @@ export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
 cd ${REPO_ROOT}
-
 # Create and switch to a container-based buildx builder if not already active
 docker buildx create --name container-builder --driver docker-container --use 2>/dev/null || docker buildx use container-builder 2>/dev/null || true
 
+PLATFORM="${PLATFORM:-linux/amd64}"
+export PLATFORM
+
+if [[ "$PLATFORM" == *","* ]]; then
+  # Multi-platform build: use type=image, cannot load to local docker daemon
+  OUTPUT_FLAG="--set *.output=type=image"
+else
+  # Single platform build: safe to load into docker daemon
+  OUTPUT_FLAG="--load"
+fi
+
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
-IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake --load --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
+IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" PLATFORM="${PLATFORM}" docker buildx bake ${OUTPUT_FLAG} --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed core image builds."
 
 cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
@@ -79,3 +89,6 @@ sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' operator/config/manager/ma
 
 cp -f operator/config/autopilot-manager/manager_image_patch_template.yaml operator/config/autopilot-manager/manager_image_patch.yaml
 sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' operator/config/autopilot-manager/manager_image_patch.yaml
+
+# Remove images that are not artifacts we would want to promote / keep
+docker image rm ${BUILDER_IMG} || true

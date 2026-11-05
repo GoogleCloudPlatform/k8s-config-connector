@@ -283,3 +283,60 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 		})
 	}
 }
+
+func TestApplyRouterNATCreationDefaults(t *testing.T) {
+	tests := []struct {
+		name string
+		in   *computepb.RouterNat
+		want *computepb.RouterNat
+	}{
+		{
+			name: "nil object",
+			in:   nil,
+			want: nil,
+		},
+		{
+			name: "empty object applies all defaults",
+			in:   &computepb.RouterNat{},
+			want: &computepb.RouterNat{
+				IcmpIdleTimeoutSec:               proto.Int32(30),
+				TcpEstablishedIdleTimeoutSec:     proto.Int32(1200),
+				TcpTimeWaitTimeoutSec:            proto.Int32(120),
+				TcpTransitoryIdleTimeoutSec:      proto.Int32(30),
+				UdpIdleTimeoutSec:                proto.Int32(30),
+				EnableEndpointIndependentMapping: proto.Bool(true),
+				Type:                             proto.String("PUBLIC"),
+			},
+		},
+		{
+			name: "explicitly set fields are not overridden",
+			in: &computepb.RouterNat{
+				IcmpIdleTimeoutSec:               proto.Int32(60),
+				TcpEstablishedIdleTimeoutSec:     proto.Int32(600),
+				TcpTimeWaitTimeoutSec:            proto.Int32(240),
+				TcpTransitoryIdleTimeoutSec:      proto.Int32(15),
+				UdpIdleTimeoutSec:                proto.Int32(45),
+				EnableEndpointIndependentMapping: proto.Bool(false),
+				Type:                             proto.String("PRIVATE"),
+			},
+			want: &computepb.RouterNat{
+				IcmpIdleTimeoutSec:               proto.Int32(60),
+				TcpEstablishedIdleTimeoutSec:     proto.Int32(600),
+				TcpTimeWaitTimeoutSec:            proto.Int32(240),
+				TcpTransitoryIdleTimeoutSec:      proto.Int32(15),
+				UdpIdleTimeoutSec:                proto.Int32(45),
+				EnableEndpointIndependentMapping: proto.Bool(false),
+				Type:                             proto.String("PRIVATE"),
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			ApplyRouterNATCreationDefaults(tc.in)
+			if diff := cmp.Diff(tc.want, tc.in, cmp.Comparer(proto.Equal)); diff != "" {
+				t.Errorf("ApplyRouterNATCreationDefaults() diff (-want +got):\n%s", diff)
+			}
+		})
+	}
+}

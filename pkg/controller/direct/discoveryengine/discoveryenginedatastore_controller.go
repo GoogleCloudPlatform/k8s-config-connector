@@ -108,9 +108,10 @@ func (m *dataStoreModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	return &dataStoreAdapter{
-		gcpClient: gcpClient,
-		id:        id,
-		desired:   desired,
+		gcpClient:                 gcpClient,
+		id:                        id,
+		desired:                   desired,
+		skipDefaultSchemaCreation: obj.Spec.SkipDefaultSchemaCreation,
 	}, nil
 }
 
@@ -135,10 +136,11 @@ func (m *dataStoreModel) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type dataStoreAdapter struct {
-	gcpClient *gcp.DataStoreClient
-	id        *krm.DiscoveryEngineDataStoreID
-	desired   *pb.DataStore
-	actual    *pb.DataStore
+	gcpClient                 *gcp.DataStoreClient
+	id                        *krm.DiscoveryEngineDataStoreID
+	desired                   *pb.DataStore
+	actual                    *pb.DataStore
+	skipDefaultSchemaCreation *bool
 }
 
 var _ directbase.Adapter = &dataStoreAdapter{}
@@ -168,9 +170,10 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	desired.Name = a.id.String()
 
 	req := &pb.CreateDataStoreRequest{
-		Parent:      a.id.CollectionLink.String(),
-		DataStore:   desired,
-		DataStoreId: a.id.DataStore,
+		Parent:                    a.id.CollectionLink.String(),
+		DataStore:                 desired,
+		DataStoreId:               a.id.DataStore,
+		SkipDefaultSchemaCreation: direct.ValueOf(a.skipDefaultSchemaCreation),
 	}
 	op, err := a.gcpClient.CreateDataStore(ctx, req)
 	if err != nil {

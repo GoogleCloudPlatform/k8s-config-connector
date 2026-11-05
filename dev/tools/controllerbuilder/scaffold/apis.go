@@ -22,7 +22,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"text/template"
+
+	// text/template scaffolds Go API source files (.go), not YAML.
+	"text/template" // NOLINT
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
@@ -52,10 +54,47 @@ type APIScaffolder struct {
 	// type for it already exists. Off by default: it adds a field to the CRD of a
 	// resource people already use, so a service opts in one at a time.
 	EmitParentRefs bool
+
+	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec
+	// of each <kind>_types.go it scaffolds, so generate-types puts +required
+	// on the fields the proto marks REQUIRED, for that Kind only. Kinds
+	// scaffolded earlier keep their optional fields, since making a field
+	// required breaks objects that omit it.
+	RequiredFromProto bool
 }
 
 // resourceMetadata looks up what the proto states about a resource, or nil if we
 // have no proto loaded or the message is not an annotated resource.
+// resolveProtoMessageFullName resolves a short or qualified proto message name
+// against a.PackageProtoTag (which may be a comma-separated list of service
+// packages). When a.Proto is loaded, it checks each service package for a
+// matching MessageDescriptor before falling back to the first service package.
+func (a *APIScaffolder) resolveProtoMessageFullName(protoName string) string {
+	if strings.Contains(protoName, ".") {
+		return protoName
+	}
+	pkgs := strings.Split(a.PackageProtoTag, ",")
+	if a.Proto != nil {
+		for _, rawPkg := range pkgs {
+			pkg := strings.TrimSpace(rawPkg)
+			if pkg == "" {
+				continue
+			}
+			candidate := pkg + "." + protoName
+			if d, err := a.Proto.Files().FindDescriptorByName(protoreflect.FullName(candidate)); err == nil {
+				if _, ok := d.(protoreflect.MessageDescriptor); ok {
+					return candidate
+				}
+			}
+		}
+	}
+	firstPkg := strings.TrimSpace(pkgs[0])
+	if firstPkg == "" {
+		return protoName
+	}
+	return firstPkg + "." + protoName
+}
+
 func (a *APIScaffolder) resourceMetadata(fullName string) *protoapi.ResourceMetadata {
 	if a.Proto == nil || fullName == "" {
 		return nil
@@ -136,24 +175,17 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 	// Without a pattern to read, every resource gets projectRef and a required
 	// location. AddTypeFile replaces both from the pattern when prepopulating.
 	args.RootRefField, _ = a.rootRef("")
-	args.LocationField, _ = a.locationRef("")
+	args.LocationField = legacyLocationField
 
 	if resource != nil {
 		args.Kind = resource.Kind
 
-		if strings.Contains(resource.ProtoName, ".") {
-			args.KindProtoTag = resource.ProtoName
-		} else {
-			pkg := a.PackageProtoTag
-			if strings.Contains(pkg, ",") {
-				pkg = strings.Split(pkg, ",")[0]
-			}
-			args.KindProtoTag = pkg + "." + resource.ProtoName
-		}
+		fullName := a.resolveProtoMessageFullName(resource.ProtoName)
+		args.KindProtoTag = fullName
 		args.ProtoResource = resource.ProtoName
 
 		args.ProtoMessageName = resource.ProtoMessageName()
-		args.ProtoMessageFullName = resource.ProtoMessageFullName(a.PackageProtoTag)
+		args.ProtoMessageFullName = fullName
 
 		if md := a.resourceMetadata(args.ProtoMessageFullName); md != nil {
 			args.Collection = md.Collection
@@ -210,37 +242,61 @@ func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
 //
 // When prepopulated is non-nil, the Spec and ObservedState struct bodies are
 // generated from the proto message definitions along with any required package imports.
-func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult) error {
+//
+// sourceLinks is the comment block from sourcelinks.Render, written above the
+// package clause. Pass "" to leave it out.
+func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult, sourceLinks string) error {
 	typeFilePath := a.PathToTypeFile(resource)
 	cArgs := a.buildAPIArgs(&resource)
+	cArgs.SourceLinks = sourceLinks
 	cArgs.SkipGVK = packageDeclaresGVK(filepath.Join(a.BaseDir, a.GoPackage), cArgs.Kind)
+	cArgs.RequiredFromProto = a.RequiredFromProto
 	if prepopulated != nil {
 		cArgs.SpecFields = prepopulated.SpecFields
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
 		cArgs.ExtraImports = prepopulated.ExtraImports
-		root, item := a.rootRef(cArgs.ResourcePattern)
-		cArgs.RootRefField = root
-		if item != nil {
-			prepopulated.Judgement = append(prepopulated.Judgement, *item)
-		}
-		location, item := a.locationRef(cArgs.ResourcePattern)
-		cArgs.LocationField = location
-		if item != nil {
-			prepopulated.Judgement = append(prepopulated.Judgement, *item)
-		}
-
-		// The parent field rides on prepopulated because that is the only way its
-		// queue entry reaches the caller. A field emitted without its entry would
-		// leave a +kcc:guess in the Spec that nothing flags.
-		if a.EmitParentRefs {
-			field, item := a.parentRef(cArgs.ResourcePattern)
-			cArgs.ParentRefField = field
-			if item != nil {
-				prepopulated.Judgement = append(prepopulated.Judgement, *item)
-			}
-		}
+		cArgs.PrepopulateSpec = true
+		a.applyParentFields(cArgs, prepopulated)
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
+}
+
+// applyParentFields populates RootRefField, LocationField, and ParentRefField
+// on cArgs from cArgs.ResourcePattern and appends any corresponding judgement
+// items to prepopulated.
+func (a *APIScaffolder) applyParentFields(cArgs *apis.APIArgs, prepopulated *PrepopulateResult) {
+	root, item := a.rootRef(cArgs.ResourcePattern)
+	cArgs.RootRefField = root
+	if item != nil {
+		prepopulated.Judgement = append(prepopulated.Judgement, *item)
+	}
+	location, item := a.locationRef(cArgs.ResourcePattern)
+	cArgs.LocationField = location
+	if item != nil {
+		prepopulated.Judgement = append(prepopulated.Judgement, *item)
+	}
+
+	// The parent field rides on prepopulated because that is the only way its
+	// queue entry reaches the caller. A field emitted without its entry would
+	// leave a +kcc:guess in the Spec that nothing flags.
+	if a.EmitParentRefs {
+		field, item := a.parentRef(cArgs.ResourcePattern)
+		cArgs.ParentRefField = field
+		if item != nil {
+			prepopulated.Judgement = append(prepopulated.Judgement, *item)
+		}
+	}
+}
+
+// ParentJudgement returns the judgement queue items that AddTypeFile records
+// from the resource pattern (rootRef, locationRef, and parentRef). It is used
+// when recovering queue entries for an existing prepopulated <kind>_types.go
+// file whose judgement_queue.yaml entries were lost during a rebase or merge.
+func (a *APIScaffolder) ParentJudgement(resource options.Resource) []JudgementItem {
+	cArgs := a.buildAPIArgs(&resource)
+	var res PrepopulateResult
+	a.applyParentFields(cArgs, &res)
+	return res.Judgement
 }
 
 // packageDeclaresGVK reports whether a Go file in dir, other than a

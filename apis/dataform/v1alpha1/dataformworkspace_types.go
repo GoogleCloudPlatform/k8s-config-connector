@@ -1,0 +1,120 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// API sources for DataformWorkspace, recorded by generate-types:
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/cdc919ff596e263f2cc55a9780d2f74633da1ced/google/cloud/dataform/v1/dataform.proto
+// +kcc:source:service-docs=https://cloud.google.com/dataform/docs
+// +kcc:source:resource-docs=https://docs.cloud.google.com/dataform/reference/rest/v1/projects.locations.repositories.workspaces
+
+package v1alpha1
+
+import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var DataformWorkspaceGVK = GroupVersion.WithKind("DataformWorkspace")
+
+// DataformWorkspaceSpec defines the desired state of DataformWorkspace
+// +kcc:spec:proto=google.cloud.dataform.v1.Workspace
+// +kcc:required-from-proto
+type DataformWorkspaceSpec struct {
+	// The project that this resource belongs to.
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+
+	// The location of this resource.
+	Location *string `json:"location"`
+
+	// The DataformWorkspace name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+	// Optional. If set to true, workspaces will not be moved if its linked
+	//  Repository is moved. Instead, it will be deleted.
+	// +kcc:proto:field=google.cloud.dataform.v1.Workspace.disable_moves
+	DisableMoves *bool `json:"disableMoves,omitempty"`
+}
+
+// DataformWorkspaceStatus defines the config connector machine state of DataformWorkspace
+type DataformWorkspaceStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the DataformWorkspace resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *DataformWorkspaceObservedState `json:"observedState,omitempty"`
+}
+
+// DataformWorkspaceObservedState is the state of the DataformWorkspace resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.dataform.v1.Workspace
+type DataformWorkspaceObservedState struct {
+	// Output only. The timestamp of when the workspace was created.
+	// +kcc:proto:field=google.cloud.dataform.v1.Workspace.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. A data encryption state of a Git repository if this Workspace
+	//  is protected by a KMS key.
+	// +kcc:proto:field=google.cloud.dataform.v1.Workspace.data_encryption_state
+	DataEncryptionState *DataEncryptionStateObservedState `json:"dataEncryptionState,omitempty"`
+
+	// Output only. All the metadata information that is used internally to serve
+	//  the resource. For example: timestamps, flags, status fields, etc. The
+	//  format of this field is a JSON string.
+	// +kcc:proto:field=google.cloud.dataform.v1.Workspace.internal_metadata
+	InternalMetadata *string `json:"internalMetadata,omitempty"`
+
+	// Output only. Metadata indicating whether this resource is user-scoped. For
+	//  `Workspace` resources, the `user_scoped` field is always `true`.
+	// +kcc:proto:field=google.cloud.dataform.v1.Workspace.private_resource_metadata
+	PrivateResourceMetadata *PrivateResourceMetadataObservedState `json:"privateResourceMetadata,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdataformworkspace;gcpdataformworkspaces
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// DataformWorkspace is the Schema for the DataformWorkspace API
+// +k8s:openapi-gen=true
+type DataformWorkspace struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   DataformWorkspaceSpec   `json:"spec,omitempty"`
+	Status DataformWorkspaceStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// DataformWorkspaceList contains a list of DataformWorkspace
+type DataformWorkspaceList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataformWorkspace `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataformWorkspace{}, &DataformWorkspaceList{})
+}

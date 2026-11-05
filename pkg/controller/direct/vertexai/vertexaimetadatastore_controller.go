@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -34,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -79,7 +79,7 @@ func (m *modelMetadataStore) AdapterForObject(ctx context.Context, op *directbas
 		return nil, err
 	}
 
-	if err = normalizeExternal(ctx, reader, u, obj); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 
@@ -100,18 +100,6 @@ func (m *modelMetadataStore) AdapterForObject(ctx context.Context, op *directbas
 func (m *modelMetadataStore) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
-}
-
-func normalizeExternal(ctx context.Context, reader client.Reader, src client.Object, store *krm.VertexAIMetadataStore) error {
-	// Normalize the kmsKeyRef in the encryptionSpec.
-	if store.Spec.EncryptionSpec != nil && store.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, store.Spec.EncryptionSpec.KMSKeyRef)
-		if err != nil {
-			return err
-		}
-		store.Spec.EncryptionSpec.KMSKeyRef = kmsKey
-	}
-	return nil
 }
 
 type MetadataStoreAdapter struct {

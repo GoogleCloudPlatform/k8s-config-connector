@@ -23,5 +23,6 @@
 // resource: NetworkServicesLBTrafficExtension:LbTrafficExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 // resource: NetworkServicesAuthzExtension:AuthzExtension
+// resource: NetworkServicesServiceLBPolicy:ServiceLbPolicy
 
 package v1alpha1

@@ -93,3 +93,39 @@ func (s *MockService) parseSpokeName(name string) (*spokeName, error) {
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+type transportName struct {
+	Project     *projects.ProjectData
+	Location    string
+	TransportID string
+}
+
+func (n *transportName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/transports/" + n.TransportID
+}
+
+// StringWithProjectNumber returns the transport name with project number instead of project ID.
+func (n *transportName) StringWithProjectNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/transports/%s", n.Project.Number, n.Location, n.TransportID)
+}
+
+func (s *MockService) parseTransportName(name string) (*transportName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "transports" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &transportName{
+			Project:     project,
+			Location:    tokens[3],
+			TransportID: tokens[5],
+		}
+
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}

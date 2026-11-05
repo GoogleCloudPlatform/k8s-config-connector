@@ -166,7 +166,10 @@ func (a *ComputeDiskResourcePolicyAttachmentAdapter) Create(ctx context.Context,
 func (a *ComputeDiskResourcePolicyAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeDiskResourcePolicyAttachment", "id", a.id)
-	return fmt.Errorf("ComputeDiskResourcePolicyAttachment is immutable and cannot be updated")
+
+	status := &krm.ComputeDiskResourcePolicyAttachmentStatus{}
+	status.ObservedGeneration = direct.PtrTo(updateOp.GetUnstructured().GetGeneration())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *ComputeDiskResourcePolicyAttachmentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {

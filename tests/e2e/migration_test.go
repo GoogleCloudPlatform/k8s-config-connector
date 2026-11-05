@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -159,8 +160,16 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 				opt.Create = append(opt.Create, depUnstruct)
 			}
 		}
+		if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+			// If we're checking or recording golden output, create and delete synchronously
+			// so that the HTTP logs and _migration_diffs.json are reproducible.
+			// Note that this does introduce a dependency that objects are ordered correctly.
+			opt.CreateInOrder = true
+			opt.DeleteInOrder = true
+		}
 		opt.Create = append(opt.Create, primaryResource)
 		opt.PrimaryResource = primaryResource
+
 		return primaryResource, opt
 	}
 
@@ -228,9 +237,14 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		if err := h.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
+		if opt.CreateInOrder && !opt.SkipWaitForReady {
+			create.WaitForReady(h, create.DefaultWaitForReadyTimeout, u)
+		}
 	}
 	// Wait for them to be ready
-	create.WaitForReady(h, create.DefaultWaitForReadyTimeout, opt.Create...)
+	if !opt.CreateInOrder && !opt.SkipWaitForReady {
+		create.WaitForReady(h, create.DefaultWaitForReadyTimeout, opt.Create...)
+	}
 
 	// Record HTTP log for Phase 1
 	eventsPhase1 := h.Events.GetHTTPEvents()
@@ -309,6 +323,10 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		switch event.Request.Method {
 		case "GET":
 			isReadOnly = true
+		case "POST":
+			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") || strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
+				isReadOnly = true
+			}
 		case "GRPC":
 			if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
 				isReadOnly = true
@@ -360,6 +378,10 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		switch event.Request.Method {
 		case "GET":
 			isReadOnly = true
+		case "POST":
+			if strings.Contains(event.Request.URL, ":getSyncAuthorization") || strings.Contains(event.Request.URL, "/listNetworkEndpoints") || strings.Contains(event.Request.URL, "/listPerInstanceConfigs") {
+				isReadOnly = true
+			}
 		case "GRPC":
 			if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
 				isReadOnly = true
@@ -378,8 +400,13 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 
 	// Record raw structured diffs
 	if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		rawDiffsStr := formatDiffsRaw(t, diffListener)
+		rawDiffsStr := formatDiffsRaw(t, diffListener, uniqueID)
 		_, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(h.Events.GetHTTPEvents()))
+		// Normalize terraform list/set hashes (e.g. health_checks.4167120872 -> health_checks.${hash})
+		rHash := regexp.MustCompile(`"id": "([a-zA-Z0-9_\-]+)\.([0-9]{5,})"`)
+		normalizers = append(normalizers, func(s string) string {
+			return rHash.ReplaceAllString(s, `"id": "$1.${hash}"`)
+		})
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_migration_diffs.json"), rawDiffsStr, normalizers...)
 	}
 
@@ -441,7 +468,7 @@ type rawDiff struct {
 	Fields      []rawDiffField `json:"fields,omitempty"`
 }
 
-func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
+func formatDiffsRaw(t *testing.T, listener *migrationDiffListener, uniqueID string) string {
 	var rawDiffs []rawDiff
 	for _, diff := range listener.diffs {
 		rd := rawDiff{
@@ -468,6 +495,25 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 		}
 		rawDiffs = append(rawDiffs, rd)
 	}
+
+	// Sort rawDiffs by Resource, Controller, and IsNewObject to ensure deterministic output.
+	// Resource names are compared with the uniqueID normalized away, because the random
+	// ID could otherwise change the relative order of names that share a prefix.
+	resourceKey := func(rd rawDiff) string {
+		return strings.ReplaceAll(rd.Resource, uniqueID, "${uniqueId}")
+	}
+	sort.SliceStable(rawDiffs, func(i, j int) bool {
+		if ki, kj := resourceKey(rawDiffs[i]), resourceKey(rawDiffs[j]); ki != kj {
+			return ki < kj
+		}
+		if rawDiffs[i].Controller != rawDiffs[j].Controller {
+			return rawDiffs[i].Controller < rawDiffs[j].Controller
+		}
+		if rawDiffs[i].IsNewObject != rawDiffs[j].IsNewObject {
+			return rawDiffs[i].IsNewObject
+		}
+		return false
+	})
 
 	// Marshal to pretty JSON
 	bytes, err := json.MarshalIndent(rawDiffs, "", "  ")

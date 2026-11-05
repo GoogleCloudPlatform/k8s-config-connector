@@ -90,6 +90,28 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(obj, "satisfiesPzi")
 			delete(obj, "sizeGb")
 			delete(obj, "recommendedSize")
+			delete(obj, "resourceMetadata")
+			delete(obj, "loadBalancer")
+			delete(obj, "cpuPlatform")
+			delete(obj, "lastStartTimestamp")
+			delete(obj, "lastAttachTimestamp")
+
+			if disks, ok := obj["disks"].([]any); ok {
+				for _, d := range disks {
+					if dMap, ok := d.(map[string]any); ok {
+						delete(dMap, "lastAttachTimestamp")
+					}
+				}
+			}
+			if nics, ok := obj["networkInterfaces"].([]any); ok {
+				for _, nic := range nics {
+					if nicMap, ok := nic.(map[string]any); ok {
+						if nicMap["fingerprint"] != nil {
+							nicMap["fingerprint"] = PlaceholderFingerprint
+						}
+					}
+				}
+			}
 
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
@@ -270,12 +292,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				switch kind {
 				case "addresses":
 					placeholder = "${addressID}"
+				case "projects":
+					placeholder = "${projectNumber}"
 				}
 
 				namePlaceholder := placeholder
 				switch kind {
 				case "routes":
 					namePlaceholder = "${routeName}"
+				case "projects":
+					namePlaceholder = "${projectId}"
 				}
 
 				// We _should_ differentiate between ID and number.

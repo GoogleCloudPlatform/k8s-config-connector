@@ -85,7 +85,8 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 		return err
 	}
 	opt := controller.Options{
-		SkipNameValidation: ptr.To(deps.SkipNameValidation),
+		SkipNameValidation:      ptr.To(deps.SkipNameValidation),
+		MaxConcurrentReconciles: deps.MaxConcurrentReconciles,
 	}
 	return add(mgr, reconciler, opt)
 }
@@ -116,6 +117,7 @@ func add(mgr manager.Manager, r *Reconciler, opt controller.Options) error {
 	if opt.MaxConcurrentReconciles == 0 {
 		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
 	}
+	r.ReconcilerMetrics.MaxConcurrentReconciles = int64(opt.MaxConcurrentReconciles)
 	if opt.RateLimiter == nil {
 		opt.RateLimiter = kccratelimiter.NewRateLimiter()
 	}
@@ -196,7 +198,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	uObj.SetName(memberPolicy.GetName())
 	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyMemberGVK)
 	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPolicyMember)
-	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicyMember)
+	defer func() {
+		structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicyMember)
+	}()
 	requeue, err := reconcileContext.doReconcile(&memberPolicy)
 	if err != nil {
 		return reconcile.Result{}, err

@@ -33,7 +33,7 @@ func ResolveRunWorkerPoolRefs(ctx context.Context, kube client.Reader, desired *
 		return nil
 	}
 	template := desired.Spec.Template
-	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.EncryptionKeyRef, template.ServiceAccountRef, template.VPCAccess); err != nil {
+	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.ServiceAccountRef, template.VPCAccess); err != nil {
 		return err
 	}
 
@@ -69,7 +69,7 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 		return nil
 	}
 	template := desired.Spec.Template.Template
-	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.EncryptionKeyRef, template.ServiceAccountRef, template.VPCAccess); err != nil {
+	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.ServiceAccountRef, template.VPCAccess); err != nil {
 		return err
 	}
 
@@ -103,13 +103,8 @@ type genericSecretVolumeSource interface {
 	GetVersionRefs() []*secretmanagerv1beta1.SecretVersionRef
 }
 
-func resolveCommonTemplateRefs(ctx context.Context, kube client.Reader, owner client.Object, encryptionKeyRef *refs.KMSCryptoKeyRef, serviceAccountRef *refs.IAMServiceAccountRef, vpcAccess any) error {
+func resolveCommonTemplateRefs(ctx context.Context, kube client.Reader, owner client.Object, serviceAccountRef *refs.IAMServiceAccountRef, vpcAccess any) error {
 	var err error
-	if encryptionKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, owner, encryptionKeyRef); err != nil {
-			return err
-		}
-	}
 	if serviceAccountRef != nil {
 		if err := serviceAccountRef.Resolve(ctx, kube, owner); err != nil {
 			return err
@@ -139,6 +134,9 @@ func resolveCommonTemplateRefs(ctx context.Context, kube client.Reader, owner cl
 	return nil
 }
 
+// resolveSecretKeySelector resolves secretRef and versionRef. We resolve the
+// short version name because all current callers need the short version name.
+// We should improve this function in the future if more formats are needed.
 func resolveSecretKeySelector(ctx context.Context, kube client.Reader, namespace string, secretRef **secretmanagerv1beta1.SecretRef, versionRef *secretmanagerv1beta1.SecretVersionRef) error {
 	var err error
 	if *secretRef != nil {
@@ -147,19 +145,23 @@ func resolveSecretKeySelector(ctx context.Context, kube client.Reader, namespace
 			return err
 		}
 	}
-	if versionRef != nil && versionRef.External == "" {
-		versionRef.External, err = versionRef.NormalizedExternal(ctx, kube, namespace)
-		if err != nil {
-			return err
-		}
-		fullSecretVersionExternal := versionRef.External
-
-		if *secretRef == nil {
-			*secretRef = &secretmanagerv1beta1.SecretRef{
-				External: strings.Split(fullSecretVersionExternal, "/versions/")[0],
+	if versionRef != nil {
+		if versionRef.External == "" {
+			versionRef.External, err = versionRef.NormalizedExternal(ctx, kube, namespace)
+			if err != nil {
+				return err
 			}
 		}
-		versionRef.External = strings.Split(versionRef.External, "/versions/")[1]
+		if strings.Contains(versionRef.External, "/versions/") {
+			fullSecretVersionExternal := versionRef.External
+
+			if *secretRef == nil {
+				*secretRef = &secretmanagerv1beta1.SecretRef{
+					External: strings.Split(fullSecretVersionExternal, "/versions/")[0],
+				}
+			}
+			versionRef.External = strings.Split(versionRef.External, "/versions/")[1]
+		}
 	}
 	return nil
 }
@@ -196,10 +198,12 @@ func resolveCommonVolumeRefs(ctx context.Context, kube client.Reader, owner clie
 			}
 		}
 		for _, vRef := range versionRefs {
-			if vRef != nil && vRef.External == "" {
-				vRef.External, err = vRef.NormalizedExternal(ctx, kube, owner.GetNamespace())
-				if err != nil {
-					return err
+			if vRef != nil {
+				if vRef.External == "" {
+					vRef.External, err = vRef.NormalizedExternal(ctx, kube, owner.GetNamespace())
+					if err != nil {
+						return err
+					}
 				}
 				if strings.Contains(vRef.External, "/versions/") {
 					vRef.External = strings.Split(vRef.External, "/versions/")[1]

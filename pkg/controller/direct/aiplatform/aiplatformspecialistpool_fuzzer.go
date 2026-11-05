@@ -33,14 +33,14 @@ func aiPlatformSpecialistPoolFuzzer() fuzztesting.KRMFuzzer {
 		AIPlatformSpecialistPoolObservedState_FromProto, AIPlatformSpecialistPoolObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name") // Special resource name field
+	f.Unimplemented_Identity(".name")
 
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".specialist_manager_emails")
-	f.SpecFields.Insert(".specialist_worker_emails")
+	f.SpecField(".display_name")
+	f.SpecField(".specialist_manager_emails")
+	f.SpecField(".specialist_worker_emails")
 
-	f.StatusFields.Insert(".specialist_managers_count")
-	f.StatusFields.Insert(".pending_data_labeling_jobs")
+	f.StatusField(".specialist_managers_count")
+	f.StatusField(".pending_data_labeling_jobs")
 
 	return f
 }

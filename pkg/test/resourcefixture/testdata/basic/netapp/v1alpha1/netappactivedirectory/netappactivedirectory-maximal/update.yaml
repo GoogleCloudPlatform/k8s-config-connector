@@ -1,0 +1,31 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppActiveDirectory
+metadata:
+  name: netappactivedirectory-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  domain: admax${uniqueId}.example.com
+  site: Default-First-Site-Name
+  dns: 10.0.0.2
+  netBiosPrefix: maxnetbios
+  organizationalUnit: CN=Computers
+  aesEncryption: false
+  username: adadmin
+  password:
+    value: UpdatedPassword123!
+  backupOperators:
+    - backup_user_updated
+  administrators:
+    - admin_user_updated
+  securityOperators:
+    - security_user_updated
+  kdcHostname: kdc2.admax${uniqueId}.example.com
+  kdcIP: 10.0.0.4
+  nfsUsersWithLdap: false
+  description: Updated Active Directory description
+  ldapSigning: false
+  encryptDcConnections: false
+  labels:
+    label-one: value-one-updated

@@ -58,9 +58,30 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 		case codes.NotFound:
 			httpErrorResponse.Error.Code = http.StatusNotFound
 			httpErrorResponse.Error.Status = "NOT_FOUND"
+		case codes.AlreadyExists:
+			httpErrorResponse.Error.Code = http.StatusConflict
+			httpErrorResponse.Error.Status = "ALREADY_EXISTS"
+		case codes.PermissionDenied:
+			httpErrorResponse.Error.Code = http.StatusForbidden
+			httpErrorResponse.Error.Status = "PERMISSION_DENIED"
+		case codes.Unauthenticated:
+			httpErrorResponse.Error.Code = http.StatusUnauthorized
+			httpErrorResponse.Error.Status = "UNAUTHENTICATED"
+		case codes.FailedPrecondition:
+			httpErrorResponse.Error.Code = http.StatusBadRequest
+			httpErrorResponse.Error.Status = "FAILED_PRECONDITION"
+		case codes.Aborted:
+			httpErrorResponse.Error.Code = http.StatusConflict
+			httpErrorResponse.Error.Status = "ABORTED"
+		case codes.ResourceExhausted:
+			httpErrorResponse.Error.Code = http.StatusTooManyRequests
+			httpErrorResponse.Error.Status = "RESOURCE_EXHAUSTED"
 		case codes.Internal:
 			httpErrorResponse.Error.Code = http.StatusInternalServerError
 			httpErrorResponse.Error.Status = "INTERNAL"
+		case codes.Unavailable:
+			httpErrorResponse.Error.Code = http.StatusServiceUnavailable
+			httpErrorResponse.Error.Status = "UNAVAILABLE"
 		}
 
 		body, err := json.Marshal(httpErrorResponse)

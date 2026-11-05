@@ -41,7 +41,7 @@ You are strictly responsible for reviewing the following files generated or modi
 ---
 
 # Guardrails & Operational Rules
-*   **Review Trigger Criteria:** You must only perform a review if the PR is labeled with BOTH `step/gen-types` and `greenfield`.
+*   **Review Trigger Criteria:** You must only perform a review if the PR is labeled with `greenfield` AND either `step/gen-types` or `step/types-judgement`.
 *   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or if you have already submitted an `/lgtm` review on this PR (unless explicitly re-assigned with no other reviewers present).
 *   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or someone else has already started a review. Use `gh pr view <PR_NUMBER> --json reviews --jq '.reviews[].author.login'` to check existing reviews. If anyone besides the reviewer bots (`codebot-robot`, `reviewbot-robot`) has submitted a review you **must stop reviewing this PR.**
     *  **Exception: You can review or re-review a PR even if someone else has reviewed it if they have explicitly asked you to**. Use `gh pr view <PR_NUMBER> --json reviewRequests --jq '.reviewRequests[].login'` and verify that the last `login` in the list matches `codebot-robot` or `reviewbot-robot`. 

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ package vertexai
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
-	krmaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
-	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmvertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmvertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
@@ -107,124 +105,6 @@ func BigQuerySource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.InputUri = direct.ValueOf(in.InputURI)
 	return out
 }
-func ContainerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krmvertexaiv1alpha1.ContainerSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.ContainerSpec{}
-	out.ImageURI = direct.LazyPtr(in.GetImageUri())
-	out.Command = in.Command
-	out.Args = in.Args
-	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_v1alpha1_FromProto)
-	return out
-}
-func ContainerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ContainerSpec) *pb.ContainerSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContainerSpec{}
-	out.ImageUri = direct.ValueOf(in.ImageURI)
-	out.Command = in.Command
-	out.Args = in.Args
-	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_v1alpha1_ToProto)
-	return out
-}
-func CustomJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krmvertexaiv1alpha1.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.CustomJobSpec{}
-	out.PersistentResourceID = direct.LazyPtr(in.GetPersistentResourceId())
-	out.WorkerPoolSpecs = direct.Slice_FromProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_v1alpha1_FromProto)
-	out.Scheduling = Scheduling_v1alpha1_FromProto(mapCtx, in.GetScheduling())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.ReservedIPRanges = in.ReservedIpRanges
-	out.PSCInterfaceConfig = PSCInterfaceConfig_v1alpha1_FromProto(mapCtx, in.GetPscInterfaceConfig())
-	out.BaseOutputDirectory = GCSDestination_v1alpha1_FromProto(mapCtx, in.GetBaseOutputDirectory())
-	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
-	if in.GetTensorboard() != "" {
-		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorboardRef{External: in.GetTensorboard()}
-	}
-	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
-	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
-	if in.GetExperiment() != "" {
-		out.ExperimentRef = &krmvertexaiv1alpha1.VertexAIExperimentRef{External: in.GetExperiment()}
-	}
-	if in.GetExperimentRun() != "" {
-		out.ExperimentRunRef = &krmvertexaiv1alpha1.VertexAIExperimentRunRef{External: in.GetExperimentRun()}
-	}
-
-	if v := in.GetModels(); len(v) != 0 {
-		for i := range v {
-			out.ModelRefs = append(out.ModelRefs, krmaiplatformv1alpha1.AIPlatformModelRef{External: v[i]})
-		}
-	}
-
-	return out
-}
-func CustomJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.CustomJobSpec) *pb.CustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJobSpec{}
-	out.PersistentResourceId = direct.ValueOf(in.PersistentResourceID)
-	out.WorkerPoolSpecs = direct.Slice_ToProto(mapCtx, in.WorkerPoolSpecs, WorkerPoolSpec_v1alpha1_ToProto)
-	out.Scheduling = Scheduling_v1alpha1_ToProto(mapCtx, in.Scheduling)
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.ReservedIpRanges = in.ReservedIPRanges
-	out.PscInterfaceConfig = PSCInterfaceConfig_v1alpha1_ToProto(mapCtx, in.PSCInterfaceConfig)
-	out.BaseOutputDirectory = GCSDestination_v1alpha1_ToProto(mapCtx, in.BaseOutputDirectory)
-	out.ProtectedArtifactLocationId = direct.ValueOf(in.ProtectedArtifactLocationID)
-	if in.TensorboardRef != nil {
-		out.Tensorboard = in.TensorboardRef.External
-	}
-	out.EnableWebAccess = direct.ValueOf(in.EnableWebAccess)
-	out.EnableDashboardAccess = direct.ValueOf(in.EnableDashboardAccess)
-	if in.ExperimentRef != nil {
-		out.Experiment = in.ExperimentRef.External
-	}
-	if in.ExperimentRunRef != nil {
-		out.ExperimentRun = in.ExperimentRunRef.External
-	}
-
-	if v := in.ModelRefs; len(v) != 0 {
-		for i := range v {
-			out.Models = append(out.Models, v[i].External)
-		}
-	}
-
-	return out
-}
-func DNSPeeringConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krmvertexaiv1alpha1.DNSPeeringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.DNSPeeringConfig{}
-	out.Domain = direct.LazyPtr(in.GetDomain())
-	out.TargetProject = direct.LazyPtr(in.GetTargetProject())
-	out.TargetNetwork = direct.LazyPtr(in.GetTargetNetwork())
-	return out
-}
-func DNSPeeringConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DNSPeeringConfig) *pb.DnsPeeringConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DnsPeeringConfig{}
-	out.Domain = direct.ValueOf(in.Domain)
-	out.TargetProject = direct.ValueOf(in.TargetProject)
-	out.TargetNetwork = direct.ValueOf(in.TargetNetwork)
-	return out
-}
 func DedicatedResources_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources) *krmvertexaiv1alpha1.DedicatedResources {
 	if in == nil {
 		return nil
@@ -251,24 +131,6 @@ func DedicatedResources_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_v1alpha1_ToProto)
 	out.Spot = direct.ValueOf(in.Spot)
 	out.FlexStart = FlexStart_v1alpha1_ToProto(mapCtx, in.FlexStart)
-	return out
-}
-func DiskSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krmvertexaiv1alpha1.DiskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.DiskSpec{}
-	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
-	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
-	return out
-}
-func DiskSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DiskSpec) *pb.DiskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DiskSpec{}
-	out.BootDiskType = direct.ValueOf(in.BootDiskType)
-	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
 
@@ -317,24 +179,6 @@ found existing non-generated mapping function "EncryptionSpec_v1beta1_ToProto", 
 		return out
 	}
 */
-func EnvVar_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krmvertexaiv1alpha1.EnvVar {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.EnvVar{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Value = direct.LazyPtr(in.GetValue())
-	return out
-}
-func EnvVar_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.EnvVar) *pb.EnvVar {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EnvVar{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Value = direct.ValueOf(in.Value)
-	return out
-}
 func ExampleStoreConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExampleStoreConfig) *krmvertexaiv1alpha1.ExampleStoreConfig {
 	if in == nil {
 		return nil
@@ -391,6 +235,109 @@ func FeatureGroup_BigQuery_TimeSeries_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
 	return out
 }
+func FeaturestoreMonitoringConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto(mapCtx, in.GetSnapshotAnalysis())
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_FromProto(mapCtx, in.GetImportFeaturesAnalysis())
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx, in.GetNumericalThresholdConfig())
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx, in.GetCategoricalThresholdConfig())
+	return out
+}
+func FeaturestoreMonitoringConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig) *pb.FeaturestoreMonitoringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig{}
+	out.SnapshotAnalysis = FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto(mapCtx, in.SnapshotAnalysis)
+	out.ImportFeaturesAnalysis = FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_ToProto(mapCtx, in.ImportFeaturesAnalysis)
+	out.NumericalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx, in.NumericalThresholdConfig)
+	out.CategoricalThresholdConfig = FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx, in.CategoricalThresholdConfig)
+	return out
+}
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.AnomalyDetectionBaseline = direct.Enum_FromProto(mapCtx, in.GetAnomalyDetectionBaseline())
+	return out
+}
+func FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis) *pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis{}
+	out.State = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_State](mapCtx, in.State)
+	out.AnomalyDetectionBaseline = direct.Enum_ToProto[pb.FeaturestoreMonitoringConfig_ImportFeaturesAnalysis_Baseline](mapCtx, in.AnomalyDetectionBaseline)
+	return out
+}
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto", skipping
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MonitoringInterval = direct.StringDuration_FromProto(mapCtx, in.GetMonitoringInterval())
+	out.MonitoringIntervalDays = direct.LazyPtr(in.GetMonitoringIntervalDays())
+	out.StalenessDays = direct.LazyPtr(in.GetStalenessDays())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto", skipping
+func FeaturestoreMonitoringConfig_SnapshotAnalysis_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_SnapshotAnalysis) *pb.FeaturestoreMonitoringConfig_SnapshotAnalysis {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_SnapshotAnalysis{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MonitoringInterval = direct.StringDuration_ToProto(mapCtx, in.MonitoringInterval)
+	out.MonitoringIntervalDays = direct.ValueOf(in.MonitoringIntervalDays)
+	out.StalenessDays = direct.ValueOf(in.StalenessDays)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto", skipping
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeaturestoreMonitoringConfig_ThresholdConfig) *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	out.Value = in.GetValue()
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto", skipping
+func FeaturestoreMonitoringConfig_ThresholdConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeaturestoreMonitoringConfig_ThresholdConfig) *pb.FeaturestoreMonitoringConfig_ThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeaturestoreMonitoringConfig_ThresholdConfig{}
+	if oneof := FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx, in.Value); oneof != nil {
+		out.Threshold = oneof
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto", skipping
+
+	func FeaturestoreMonitoringConfig_ThresholdConfig_Value_ToProto(mapCtx *direct.MapContext, in float64) *pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value {
+		if in == nil {
+			return nil
+		}
+		return &pb.FeaturestoreMonitoringConfig_ThresholdConfig_Value{Value: *in}
+	}
+*/
 func Featurestore_OnlineServingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmvertexaiv1alpha1.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
@@ -443,22 +390,6 @@ func FlexStart_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alph
 	}
 	out := &pb.FlexStart{}
 	out.MaxRuntimeDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRuntimeDuration)
-	return out
-}
-func GCSDestination_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krmvertexaiv1alpha1.GCSDestination {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.GCSDestination{}
-	out.OutputURIPrefix = direct.LazyPtr(in.GetOutputUriPrefix())
-	return out
-}
-func GCSDestination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.GCSDestination) *pb.GcsDestination {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcsDestination{}
-	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
 	return out
 }
 func MachineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krmvertexaiv1alpha1.MachineSpec {
@@ -553,70 +484,6 @@ func MetadataStore_MetadataStoreState_v1beta1_ToProto(mapCtx *direct.MapContext,
 	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }
-func NfsMount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NfsMount) *krmvertexaiv1alpha1.NfsMount {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.NfsMount{}
-	out.Server = direct.LazyPtr(in.GetServer())
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
-	return out
-}
-func NfsMount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.NfsMount) *pb.NfsMount {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NfsMount{}
-	out.Server = direct.ValueOf(in.Server)
-	out.Path = direct.ValueOf(in.Path)
-	out.MountPoint = direct.ValueOf(in.MountPoint)
-	return out
-}
-func PSCInterfaceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscInterfaceConfig) *krmvertexaiv1alpha1.PSCInterfaceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.PSCInterfaceConfig{}
-	out.NetworkAttachment = direct.LazyPtr(in.GetNetworkAttachment())
-	out.DNSPeeringConfigs = direct.Slice_FromProto(mapCtx, in.DnsPeeringConfigs, DNSPeeringConfig_v1alpha1_FromProto)
-	return out
-}
-func PSCInterfaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.PSCInterfaceConfig) *pb.PscInterfaceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscInterfaceConfig{}
-	out.NetworkAttachment = direct.ValueOf(in.NetworkAttachment)
-	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_v1alpha1_ToProto)
-	return out
-}
-func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmvertexaiv1alpha1.PythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.PythonPackageSpec{}
-	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
-	out.Args = in.Args
-	// MISSING: Env
-	return out
-}
-func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.PythonPackageSpec) *pb.PythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PythonPackageSpec{}
-	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.ValueOf(in.PythonModule)
-	out.Args = in.Args
-	// MISSING: Env
-	return out
-}
 func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmvertexaiv1alpha1.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -673,30 +540,6 @@ func SampleConfig_FollowingBatchSamplePercentage_ToProto(mapCtx *direct.MapConte
 	}
 	return &pb.SampleConfig_FollowingBatchSamplePercentage{FollowingBatchSamplePercentage: *in}
 }
-func Scheduling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krmvertexaiv1alpha1.Scheduling {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.Scheduling{}
-	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.RestartJobOnWorkerRestart = direct.LazyPtr(in.GetRestartJobOnWorkerRestart())
-	out.Strategy = direct.Enum_FromProto(mapCtx, in.GetStrategy())
-	out.DisableRetries = direct.LazyPtr(in.GetDisableRetries())
-	out.MaxWaitDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxWaitDuration())
-	return out
-}
-func Scheduling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Scheduling) *pb.Scheduling {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Scheduling{}
-	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	out.RestartJobOnWorkerRestart = direct.ValueOf(in.RestartJobOnWorkerRestart)
-	out.Strategy = direct.Enum_ToProto[pb.Scheduling_Strategy](mapCtx, in.Strategy)
-	out.DisableRetries = direct.ValueOf(in.DisableRetries)
-	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
-	return out
-}
 func TrainingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrainingConfig) *krmvertexaiv1alpha1.TrainingConfig {
 	if in == nil {
 		return nil
@@ -711,66 +554,6 @@ func TrainingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	}
 	out := &pb.TrainingConfig{}
 	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
-	return out
-}
-func VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAICustomJobObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func VertexAICustomJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICustomJobObservedState) *pb.CustomJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJob{}
-	out.Name = direct.ValueOf(in.Name)
-	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	return out
-}
-func VertexAICustomJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAICustomJobSpec{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.JobSpec = CustomJobSpec_v1alpha1_FromProto(mapCtx, in.GetJobSpec())
-	out.Labels = in.Labels
-	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
-	// MISSING: WebAccessUris
-	return out
-}
-func VertexAICustomJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICustomJobSpec) *pb.CustomJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomJob{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.JobSpec = CustomJobSpec_v1alpha1_ToProto(mapCtx, in.JobSpec)
-	out.Labels = in.Labels
-	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
-	// MISSING: WebAccessUris
 	return out
 }
 func VertexAIDataLabelingJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krmvertexaiv1alpha1.VertexAIDataLabelingJobObservedState {
@@ -1077,6 +860,174 @@ func VertexAIFeatureGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.ServiceAgentType = direct.Enum_ToProto[pb.FeatureGroup_ServiceAgentType](mapCtx, in.ServiceAgentType)
 	return out
 }
+
+/* found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto", skipping
+func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto", skipping
+
+	func VertexAIFeaturestoreEntityTypeFeatureSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureSpec) *pb.Feature {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Feature{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		out.ValueType = direct.Enum_ToProto[pb.Feature_ValueType](mapCtx, in.ValueType)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		// MISSING: Etag
+		// MISSING: MonitoringConfig
+		// MISSING: DisableMonitoring
+		// MISSING: MonitoringStats
+		// MISSING: MonitoringStatsAnomalies
+		// MISSING: FeatureStatsAndAnomaly
+		// MISSING: VersionColumnName
+		// MISSING: PointOfContact
+		return out
+	}
+*/
+func VertexAIFeaturestoreEntityTypeFeatureStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feature) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+func VertexAIFeaturestoreEntityTypeFeatureStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeFeatureStatus) *pb.Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feature{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: ValueType
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: MonitoringConfig
+	// MISSING: DisableMonitoring
+	// MISSING: MonitoringStats
+	// MISSING: MonitoringStatsAnomalies
+	// MISSING: FeatureStatsAndAnomaly
+	// MISSING: VersionColumnName
+	// MISSING: PointOfContact
+	return out
+}
+
+/* found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto", skipping
+func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Etag
+	out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_FromProto(mapCtx, in.GetMonitoringConfig())
+	out.OfflineStorageTTLDays = direct.LazyPtr(in.GetOfflineStorageTtlDays())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto", skipping
+
+	func VertexAIFeaturestoreEntityTypeSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeSpec) *pb.EntityType {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EntityType{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		// MISSING: Labels
+		// MISSING: Etag
+		out.MonitoringConfig = FeaturestoreMonitoringConfig_v1alpha1_ToProto(mapCtx, in.MonitoringConfig)
+		out.OfflineStorageTtlDays = direct.ValueOf(in.OfflineStorageTTLDays)
+		// MISSING: SatisfiesPzs
+		// MISSING: SatisfiesPzi
+		return out
+	}
+*/
+func VertexAIFeaturestoreEntityTypeStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTTLDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreEntityTypeStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreEntityTypeStatus) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: MonitoringConfig
+	// MISSING: OfflineStorageTTLDays
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func VertexAIFeaturestoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krmvertexaiv1alpha1.VertexAIFeaturestoreObservedState {
 	if in == nil {
 		return nil
@@ -1321,35 +1272,5 @@ func VertexAITensorboardSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Labels
 	// MISSING: Etag
 	out.IsDefault = direct.ValueOf(in.IsDefault)
-	return out
-}
-func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krmvertexaiv1alpha1.WorkerPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.WorkerPoolSpec{}
-	out.ContainerSpec = ContainerSpec_v1alpha1_FromProto(mapCtx, in.GetContainerSpec())
-	out.PythonPackageSpec = PythonPackageSpec_v1alpha1_FromProto(mapCtx, in.GetPythonPackageSpec())
-	out.MachineSpec = MachineSpec_v1alpha1_FromProto(mapCtx, in.GetMachineSpec())
-	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
-	out.NfsMounts = direct.Slice_FromProto(mapCtx, in.NfsMounts, NfsMount_v1alpha1_FromProto)
-	out.DiskSpec = DiskSpec_v1alpha1_FromProto(mapCtx, in.GetDiskSpec())
-	return out
-}
-func WorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.WorkerPoolSpec) *pb.WorkerPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkerPoolSpec{}
-	if oneof := ContainerSpec_v1alpha1_ToProto(mapCtx, in.ContainerSpec); oneof != nil {
-		out.Task = &pb.WorkerPoolSpec_ContainerSpec{ContainerSpec: oneof}
-	}
-	if oneof := PythonPackageSpec_v1alpha1_ToProto(mapCtx, in.PythonPackageSpec); oneof != nil {
-		out.Task = &pb.WorkerPoolSpec_PythonPackageSpec{PythonPackageSpec: oneof}
-	}
-	out.MachineSpec = MachineSpec_v1alpha1_ToProto(mapCtx, in.MachineSpec)
-	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
-	out.NfsMounts = direct.Slice_ToProto(mapCtx, in.NfsMounts, NfsMount_v1alpha1_ToProto)
-	out.DiskSpec = DiskSpec_v1alpha1_ToProto(mapCtx, in.DiskSpec)
 	return out
 }

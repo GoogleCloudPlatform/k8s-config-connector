@@ -26,6 +26,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	ccTemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/fatih/color"
 	"golang.org/x/tools/go/ast/astutil"
@@ -36,10 +37,14 @@ import (
 const (
 	currRelPath             = "dev/tools/controllerbuilder"
 	directControllerRelPath = "pkg/controller/direct"
+
+	// GeneratedControllerMarker marks controller files produced by generate-controller --prepopulate-resource.
+	GeneratedControllerMarker = "// +generated:controller"
 )
 
 var funcMap = template.FuncMap{
 	"ToLower": strings.ToLower,
+	"Plural":  codegen.Plural,
 }
 
 func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
@@ -51,9 +56,21 @@ func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
 }
 
 type ControllerBuilder struct {
-	rootPath string
-	service  string
-	proto    string
+	rootPath            string
+	service             string
+	proto               string
+	overwrite           bool
+	prepopulateResource bool
+}
+
+func (c *ControllerBuilder) WithOverwrite(overwrite bool) *ControllerBuilder {
+	c.overwrite = overwrite
+	return c
+}
+
+func (c *ControllerBuilder) WithPrepopulateResource(prepopulate bool) *ControllerBuilder {
+	c.prepopulateResource = prepopulate
+	return c
 }
 
 func (c *ControllerBuilder) RegisterController() error {
@@ -85,8 +102,38 @@ func (c *ControllerBuilder) RegisterController() error {
 	return nil
 }
 
+// RenderController executes the GreenfieldControllerTemplate with cArgs and formats
+// the resulting Go source code and imports.
+func RenderController(cArgs *ccTemplate.ControllerArgs) ([]byte, error) {
+	cArgs.EnsureDefaults()
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.GreenfieldControllerTemplate)
+	if err != nil {
+		return nil, fmt.Errorf("parse controller template: %w", err)
+	}
+	controllerOutput := &bytes.Buffer{}
+	if err := tmpl.Execute(controllerOutput, cArgs); err != nil {
+		return nil, err
+	}
+	importOps := &imports.Options{
+		Comments:  true,
+		AllErrors: true,
+		Fragment:  true,
+	}
+	formattedOut, err := imports.Process(strings.ToLower(cArgs.Kind)+"_controller.go", controllerOutput.Bytes(), importOps)
+	if err != nil {
+		return nil, fmt.Errorf("format rendered controller for %s: %w", cArgs.Kind, err)
+	}
+	return formattedOut, nil
+}
+
 func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs) error {
-	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(ccTemplate.ControllerTemplate)
+	usePrepopulate := c.prepopulateResource || cArgs.PassesApplied
+	tmplText := ccTemplate.ControllerTemplate
+	if usePrepopulate {
+		cArgs.EnsureDefaults()
+		tmplText = ccTemplate.GreenfieldControllerTemplate
+	}
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(tmplText)
 	if err != nil {
 		return fmt.Errorf("parse controller template: %w", err)
 	}
@@ -100,18 +147,28 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	if err != nil {
 		return err
 	}
-	if _, err := os.Stat(controllerFilePath); err == nil {
-		klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
-		return nil
-	} else if !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("unexpected controller file: %w", err)
+	if usePrepopulate {
+		shouldSkip, err := c.shouldSkipControllerWrite(controllerFilePath, cArgs)
+		if err != nil {
+			return err
+		}
+		if shouldSkip {
+			return nil
+		}
+	} else if !c.overwrite {
+		if _, err := os.Stat(controllerFilePath); err == nil {
+			klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
+			return nil
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("unexpected controller file: %w", err)
+		}
 	}
 
-	// Write the generated controller.go to  pkg/controller/direct/<service>/<resource>_controller.go
+	// Write the generated controller.go to pkg/controller/direct/<service>/<resource>_controller.go
 	if err := WriteToFile(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
-	// Format and adjust the go imports in the generated controller file.
+	// Format and adjust the go imports in the generated controller file.
 	if err := FormatImports(controllerFilePath, controllerOutput.Bytes()); err != nil {
 		return err
 	}
@@ -119,9 +176,52 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 	return nil
 }
 
-func (c *ControllerBuilder) getDirectPath() string {
-	seg := strings.Split(c.rootPath, currRelPath)
-	return filepath.Join(seg[0], directControllerRelPath)
+func (c *ControllerBuilder) shouldSkipControllerWrite(controllerFilePath string, cArgs *ccTemplate.ControllerArgs) (bool, error) {
+	if c.overwrite {
+		return false, nil
+	}
+	existing, err := os.ReadFile(controllerFilePath)
+	if err == nil {
+		if (c.prepopulateResource || cArgs.PassesApplied) && bytes.Contains(existing, []byte(GeneratedControllerMarker)) {
+			return false, nil
+		}
+		klog.V(1).Infof("file %s already exists (handwritten), skipping\n", controllerFilePath)
+		return true, nil
+	}
+	if !errors.Is(err, os.ErrNotExist) {
+		return false, fmt.Errorf("unexpected controller file: %w", err)
+	}
+	if hasExistingHandwrittenController(filepath.Dir(controllerFilePath), cArgs.Kind) {
+		klog.V(1).Infof("handwritten controller for %s already exists in %s, skipping\n", cArgs.Kind, filepath.Dir(controllerFilePath))
+		return true, nil
+	}
+	return false, nil
+}
+
+func hasExistingHandwrittenController(serviceDir, kind string) bool {
+	if kind == "" {
+		return false
+	}
+	gvkToken := "." + kind + "GVK"
+	found := false
+	_ = filepath.WalkDir(serviceDir, func(p string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(d.Name(), ".go") || strings.HasSuffix(d.Name(), "_test.go") {
+			return nil
+		}
+		src, err := os.ReadFile(p)
+		if err != nil {
+			return nil
+		}
+		if bytes.Contains(src, []byte(GeneratedControllerMarker)) {
+			return nil
+		}
+		if bytes.Contains(src, []byte("RegisterModel(")) && bytes.Contains(src, []byte(gvkToken)) {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+	return found
 }
 
 func (c *ControllerBuilder) getControllerPath() (string, error) {
@@ -133,6 +233,11 @@ func (c *ControllerBuilder) getControllerPath() (string, error) {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
 	}
 	return filepath.Join(controllerDir, filename), nil
+}
+
+func (c *ControllerBuilder) getDirectPath() string {
+	seg := strings.Split(c.rootPath, currRelPath)
+	return filepath.Join(seg[0], directControllerRelPath)
 }
 
 func FormatImports(path string, out []byte) error {

@@ -39,6 +39,8 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".concurrency")
 	f.SpecFields.Insert(".edition")
 	f.SpecFields.Insert(".secondary_location")
+	f.SpecFields.Insert(".scheduling_policy")
+	f.SpecFields.Insert(".reservation_group")
 
 	f.StatusFields.Insert(".primary_location")
 	f.StatusFields.Insert(".original_primary_location")
@@ -54,8 +56,6 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".max_slots")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
-	f.Unimplemented_NotYetTriaged(".reservation_group")
-	f.Unimplemented_NotYetTriaged(".scheduling_policy")
 
 	return f
 }

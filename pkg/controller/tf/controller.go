@@ -192,7 +192,9 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	}
 
 	structuredreporting.ReportReconcileStart(ctx, u, k8s.ReconcilerTypeTerraform)
-	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeTerraform)
+	defer func() {
+		structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeTerraform)
+	}()
 
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {

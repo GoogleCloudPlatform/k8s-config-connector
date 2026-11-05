@@ -30,6 +30,82 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CustomConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomConfig) *krm.CustomConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomConfig{}
+	out.Predicate = Expr_FromProto(mapCtx, in.GetPredicate())
+	out.CustomOutput = CustomConfig_CustomOutputSpec_FromProto(mapCtx, in.GetCustomOutput())
+	out.ResourceSelector = CustomConfig_ResourceSelector_FromProto(mapCtx, in.GetResourceSelector())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Recommendation = direct.LazyPtr(in.GetRecommendation())
+	return out
+}
+func CustomConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomConfig) *pb.CustomConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomConfig{}
+	out.Predicate = Expr_ToProto(mapCtx, in.Predicate)
+	out.CustomOutput = CustomConfig_CustomOutputSpec_ToProto(mapCtx, in.CustomOutput)
+	out.ResourceSelector = CustomConfig_ResourceSelector_ToProto(mapCtx, in.ResourceSelector)
+	out.Severity = direct.Enum_ToProto[pb.CustomConfig_Severity](mapCtx, in.Severity)
+	out.Description = direct.ValueOf(in.Description)
+	out.Recommendation = direct.ValueOf(in.Recommendation)
+	return out
+}
+func CustomConfig_CustomOutputSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomConfig_CustomOutputSpec) *krm.CustomConfig_CustomOutputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomConfig_CustomOutputSpec{}
+	out.Properties = direct.Slice_FromProto(mapCtx, in.Properties, CustomConfig_CustomOutputSpec_Property_FromProto)
+	return out
+}
+func CustomConfig_CustomOutputSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomConfig_CustomOutputSpec) *pb.CustomConfig_CustomOutputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomConfig_CustomOutputSpec{}
+	out.Properties = direct.Slice_ToProto(mapCtx, in.Properties, CustomConfig_CustomOutputSpec_Property_ToProto)
+	return out
+}
+func CustomConfig_CustomOutputSpec_Property_FromProto(mapCtx *direct.MapContext, in *pb.CustomConfig_CustomOutputSpec_Property) *krm.CustomConfig_CustomOutputSpec_Property {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomConfig_CustomOutputSpec_Property{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ValueExpression = Expr_FromProto(mapCtx, in.GetValueExpression())
+	return out
+}
+func CustomConfig_CustomOutputSpec_Property_ToProto(mapCtx *direct.MapContext, in *krm.CustomConfig_CustomOutputSpec_Property) *pb.CustomConfig_CustomOutputSpec_Property {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomConfig_CustomOutputSpec_Property{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ValueExpression = Expr_ToProto(mapCtx, in.ValueExpression)
+	return out
+}
+func CustomConfig_ResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.CustomConfig_ResourceSelector) *krm.CustomConfig_ResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomConfig_ResourceSelector{}
+	out.ResourceTypes = in.ResourceTypes
+	return out
+}
+func CustomConfig_ResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.CustomConfig_ResourceSelector) *pb.CustomConfig_ResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomConfig_ResourceSelector{}
+	out.ResourceTypes = in.ResourceTypes
+	return out
+}
 func SecurityCenterBigQueryExportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExport) *krm.SecurityCenterBigQueryExportObservedState {
 	if in == nil {
 		return nil
@@ -128,5 +204,99 @@ func SecurityCenterMuteConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Sec
 	out.Filter = direct.ValueOf(in.Filter)
 	out.Type = direct.Enum_ToProto[pb.MuteConfig_MuteConfigType](mapCtx, in.Type)
 	out.ExpiryTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpiryTime)
+	return out
+}
+func SecuritycenterEventThreatDetectionCustomModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventThreatDetectionCustomModule) *krm.SecuritycenterEventThreatDetectionCustomModuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterEventThreatDetectionCustomModuleObservedState{}
+	// MISSING: Name
+	out.AncestorModule = direct.LazyPtr(in.GetAncestorModule())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastEditor = direct.LazyPtr(in.GetLastEditor())
+	return out
+}
+func SecuritycenterEventThreatDetectionCustomModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterEventThreatDetectionCustomModuleObservedState) *pb.EventThreatDetectionCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventThreatDetectionCustomModule{}
+	// MISSING: Name
+	out.AncestorModule = direct.ValueOf(in.AncestorModule)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastEditor = direct.ValueOf(in.LastEditor)
+	return out
+}
+func SecuritycenterEventThreatDetectionCustomModuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.EventThreatDetectionCustomModule) *krm.SecuritycenterEventThreatDetectionCustomModuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterEventThreatDetectionCustomModuleSpec{}
+	// MISSING: Name
+	if v := direct.Struct_FromProto(mapCtx, in.GetConfig()); v != nil {
+		out.Config = *v
+	}
+	out.EnablementState = direct.Enum_FromProto(mapCtx, in.GetEnablementState())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func SecuritycenterEventThreatDetectionCustomModuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterEventThreatDetectionCustomModuleSpec) *pb.EventThreatDetectionCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventThreatDetectionCustomModule{}
+	// MISSING: Name
+	out.Config = direct.Struct_ToProto(mapCtx, &in.Config)
+	out.EnablementState = direct.Enum_ToProto[pb.EventThreatDetectionCustomModule_EnablementState](mapCtx, in.EnablementState)
+	out.Type = direct.ValueOf(in.Type)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecurityHealthAnalyticsCustomModule) *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastEditor = direct.LazyPtr(in.GetLastEditor())
+	out.AncestorModule = direct.LazyPtr(in.GetAncestorModule())
+	return out
+}
+func SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState) *pb.SecurityHealthAnalyticsCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityHealthAnalyticsCustomModule{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastEditor = direct.ValueOf(in.LastEditor)
+	out.AncestorModule = direct.ValueOf(in.AncestorModule)
+	return out
+}
+func SecuritycenterSecurityHealthAnalyticsCustomModuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecurityHealthAnalyticsCustomModule) *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterSecurityHealthAnalyticsCustomModuleSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.EnablementState = direct.Enum_FromProto(mapCtx, in.GetEnablementState())
+	out.CustomConfig = CustomConfig_FromProto(mapCtx, in.GetCustomConfig())
+	return out
+}
+func SecuritycenterSecurityHealthAnalyticsCustomModuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleSpec) *pb.SecurityHealthAnalyticsCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityHealthAnalyticsCustomModule{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.EnablementState = direct.Enum_ToProto[pb.SecurityHealthAnalyticsCustomModule_EnablementState](mapCtx, in.EnablementState)
+	out.CustomConfig = CustomConfig_ToProto(mapCtx, in.CustomConfig)
 	return out
 }

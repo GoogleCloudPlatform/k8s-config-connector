@@ -16,6 +16,7 @@ package storagecontrol
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -30,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -48,6 +50,13 @@ const (
 	anywhereCacheStatePaused   = "paused"
 	anywhereCacheStateDisabled = "disabled"
 	anywhereCacheStateInvalid  = "invalid" // For cases where the state is unexpected
+
+	// AnywhereCache Admission Policies.
+	admissionPolicyAdmitOnFirstMiss  = "admit-on-first-miss"
+	admissionPolicyAdmitOnSecondMiss = "admit-on-second-miss"
+
+	// pausedStateNotSupportedMessage is the condition message when desiredState is paused.
+	pausedStateNotSupportedMessage = "desiredState 'paused' is no longer supported by the Cloud Storage API. Set desiredState to 'running' or 'disabled'."
 )
 
 func init() {
@@ -189,6 +198,11 @@ func getReadyCondition(status v1.ConditionStatus, reason string, message string)
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	if a.GetDesiredState() == anywhereCacheStatePaused {
+		status := &krm.StorageAnywhereCacheStatus{}
+		return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.UpdateFailed, pausedStateNotSupportedMessage))
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -265,6 +279,11 @@ func (a *AnywhereCacheAdapter) UpdateCache(ctx context.Context, updateOp DirectB
 		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
 	}
 
+	if a.GetDesiredState() == anywhereCacheStatePaused {
+		log.V(2).Info("desiredState 'paused' is no longer supported", "name", a.id.String())
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.UpdateFailed, pausedStateNotSupportedMessage))
+	}
+
 	// Compute the metadata changes (Note: This doesn't include state changes, which are handled separately below).
 	desiredPb := StorageAnywhereCacheSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
@@ -272,8 +291,16 @@ func (a *AnywhereCacheAdapter) UpdateCache(ctx context.Context, updateOp DirectB
 	}
 	desiredPb.Name = a.id.String() // Ensure the name is set for comparison and request.
 
+	// Normalize admit-on-second-miss to admit-on-first-miss in a copy of desiredPb before comparing,
+	// because the Cloud Storage API treats admit-on-second-miss as admit-on-first-miss.
+	desiredDiffPb := proto.Clone(desiredPb).(*pb.AnywhereCache)
+	if desiredDiffPb.GetAdmissionPolicy() == admissionPolicyAdmitOnSecondMiss &&
+		a.actual.GetAdmissionPolicy() == admissionPolicyAdmitOnFirstMiss {
+		desiredDiffPb.AdmissionPolicy = admissionPolicyAdmitOnFirstMiss
+	}
+
 	paths := make(sets.Set[string])
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err = common.CompareProtoMessage(desiredDiffPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("error comparing desired and actual protobuf messages: %w", err)
 	}
@@ -449,17 +476,7 @@ func (a *AnywhereCacheAdapter) UpdateState(ctx context.Context) error {
 		// The GCP API allows resuming from both paused and disabled states to 'running'.
 		_, err = a.gcpClient.ResumeAnywhereCache(ctx, &pb.ResumeAnywhereCacheRequest{Name: a.id.String()})
 	case anywhereCacheStatePaused:
-		// Possible actual states - "running", "disabled"
-		// To transition to 'paused', if it's 'disabled', it must first be resumed (to 'running') then paused.
-		if currentState == anywhereCacheStateDisabled {
-			klog.FromContext(ctx).V(2).Info(fmt.Sprintf("Resuming AnywhereCache %s from '%s' state before pausing.", a.id.String(), currentState))
-			_, err = a.gcpClient.ResumeAnywhereCache(ctx, &pb.ResumeAnywhereCacheRequest{Name: a.id.String()})
-			if err != nil {
-				return fmt.Errorf("error resuming AnywhereCache from '%s' before pausing: %w", currentState, err)
-			}
-		}
-		// After resuming (or if already running), pause the cache.
-		_, err = a.gcpClient.PauseAnywhereCache(ctx, &pb.PauseAnywhereCacheRequest{Name: a.id.String()})
+		return errors.New(pausedStateNotSupportedMessage)
 	case anywhereCacheStateDisabled:
 		// Possible actual states - "running", "paused"
 		// Direct transition to 'disabled' from 'running' or 'paused'.

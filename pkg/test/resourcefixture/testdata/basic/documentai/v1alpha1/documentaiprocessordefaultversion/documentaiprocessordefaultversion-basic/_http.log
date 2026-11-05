@@ -1,0 +1,42 @@
+GET https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultProcessorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+  "displayName": "kcc-test-processor",
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}",
+  "processEndpoint": "https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process",
+  "processorVersionAliases": [
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
+    },
+    {
+      "alias": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable",
+      "processorVersion": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}"
+    }
+  ],
+  "satisfiesPzs": true,
+  "state": "ENABLED",
+  "type": "OCR_PROCESSOR"
+}

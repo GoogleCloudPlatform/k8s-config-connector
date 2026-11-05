@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmbigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -320,6 +320,7 @@ func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
 	// MISSING: Type
+	// MISSING: Edition
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: SatisfiesPzs
@@ -336,6 +337,7 @@ func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: State
 	// MISSING: Type
+	// MISSING: Edition
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: SatisfiesPzs
@@ -394,6 +396,7 @@ func BigtableSchemaBundleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	out := &krmbigtablev1alpha1.BigtableSchemaBundleSpec{}
 	// MISSING: Name
 	out.ProtoSchema = ProtoSchema_v1alpha1_FromProto(mapCtx, in.GetProtoSchema())
+	// MISSING: AvroSchema
 	// MISSING: Etag
 	return out
 }
@@ -406,6 +409,7 @@ func BigtableSchemaBundleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	if oneof := ProtoSchema_v1alpha1_ToProto(mapCtx, in.ProtoSchema); oneof != nil {
 		out.Type = &pb.SchemaBundle_ProtoSchema{ProtoSchema: oneof}
 	}
+	// MISSING: AvroSchema
 	// MISSING: Etag
 	return out
 }
@@ -465,7 +469,7 @@ func Cluster_EncryptionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krmbigtablev1alpha1.Cluster_EncryptionConfig{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

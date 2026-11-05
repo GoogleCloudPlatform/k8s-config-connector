@@ -179,6 +179,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.GceZone = obj.Settings.LocationPreference.Zone
 
+	if obj.DnsName == nil && obj.Settings.GetIpConfiguration().GetServerCaMode() != "" {
+		obj.DnsName = PtrTo(name.InstanceName + ".example." + obj.Region + ".sql.goog.")
+	}
+
 	obj.Settings.SettingsVersion = wrapperspb.Int64(1)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
@@ -186,6 +190,8 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	if err := validateDatabaseInstance(obj); err != nil {
 		return nil, err
 	}
+
+	obj.ReplicationCluster = nil
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -307,14 +313,14 @@ func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, n
 
 		shouldUpdate := false
 
+		replicaName := name.InstanceName
+		if name.Project.ID != masterName.Project.ID {
+			replicaName = name.Project.ID + ":" + name.InstanceName
+		}
+
 		// Add to replicaNames
 		{
 			found := false
-			replicaName := name.InstanceName
-			if name.Project.ID != masterName.Project.ID {
-				replicaName = name.Project.ID + ":" + name.InstanceName
-			}
-
 			for _, s := range master.ReplicaNames {
 				if s == replicaName {
 					found = true
@@ -866,12 +872,15 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		// 	}
 	}
 
+	if isSqlServer(obj) || settings.IpConfiguration.GetServerCaMode() != "" {
+		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		}
+	}
+
 	if isSqlServer(obj) {
 		if settings.BackupConfiguration.BackupTier == nil {
 			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
-		}
-		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
-			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
 		}
 		if settings.ReplicationLagMaxSeconds == nil {
 			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
@@ -916,7 +925,10 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 
 		if !obj.GetSettings().GetBackupConfiguration().GetEnabled().GetValue() {
 			if obj.GetSettings().GetBackupConfiguration().GetBinaryLogEnabled().GetValue() {
-				return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				isReplica := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || obj.MasterInstanceName != ""
+				if !isReplica || !isMysql(obj) {
+					return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				}
 			}
 		}
 	}
@@ -970,6 +982,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
 		}
+		if settings.IpConfiguration != nil {
+			if obj.Settings.IpConfiguration == nil {
+				obj.Settings.IpConfiguration = &pb.IpConfiguration{}
+			}
+			if settings.IpConfiguration.ServerCaMode != nil {
+				obj.Settings.IpConfiguration.ServerCaMode = settings.IpConfiguration.ServerCaMode
+			}
+			if settings.IpConfiguration.ServerCaPool != nil {
+				obj.Settings.IpConfiguration.ServerCaPool = settings.IpConfiguration.ServerCaPool
+			}
+			if settings.IpConfiguration.CustomSubjectAlternativeNames != nil {
+				obj.Settings.IpConfiguration.CustomSubjectAlternativeNames = settings.IpConfiguration.CustomSubjectAlternativeNames
+			}
+			if settings.IpConfiguration.Ipv4Enabled != nil {
+				obj.Settings.IpConfiguration.Ipv4Enabled = settings.IpConfiguration.Ipv4Enabled
+			}
+			if settings.IpConfiguration.RequireSsl != nil {
+				obj.Settings.IpConfiguration.RequireSsl = settings.IpConfiguration.RequireSsl
+			}
+			if settings.IpConfiguration.SslMode != pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
+				obj.Settings.IpConfiguration.SslMode = settings.IpConfiguration.SslMode
+			}
+			if settings.IpConfiguration.AllocatedIpRange != "" {
+				obj.Settings.IpConfiguration.AllocatedIpRange = settings.IpConfiguration.AllocatedIpRange
+			}
+			if settings.IpConfiguration.PrivateNetwork != "" {
+				obj.Settings.IpConfiguration.PrivateNetwork = settings.IpConfiguration.PrivateNetwork
+			}
+			if settings.IpConfiguration.AuthorizedNetworks != nil {
+				obj.Settings.IpConfiguration.AuthorizedNetworks = settings.IpConfiguration.AuthorizedNetworks
+			}
+			if settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices != nil {
+				obj.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices = settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
+			}
+		}
 	}
 	if body := req.GetBody(); body != nil {
 		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
@@ -989,11 +1036,18 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if specifiedMaintenanceVersion != "" {
 			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
+		if body.ReplicationCluster != nil {
+			obj.ReplicationCluster = proto.CloneOf(body.ReplicationCluster)
+		}
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
 
 	populateDefaults(obj)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -1013,6 +1067,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *sqlInstancesService) handleDRPairing(ctx context.Context, name InstanceName, obj *pb.DatabaseInstance) error {
+	if obj.ReplicationCluster != nil && obj.ReplicationCluster.FailoverDrReplicaName != nil && *obj.ReplicationCluster.FailoverDrReplicaName != "" {
+		replicaInstanceName := *obj.ReplicationCluster.FailoverDrReplicaName
+		tokens := strings.Split(replicaInstanceName, ":")
+		replicaName := name
+		if len(tokens) >= 2 {
+			replicaName.Project = &projects.ProjectData{ID: tokens[0]}
+			replicaName.InstanceName = tokens[1]
+		} else {
+			replicaName.InstanceName = tokens[0]
+		}
+		replicaFQN := replicaName.String()
+		replica := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, replicaFQN, replica); err == nil {
+			primaryIdentifier := name.InstanceName
+			primaryWithProject := name.Project.ID + ":" + name.InstanceName
+			if replica.MasterInstanceName == primaryIdentifier || replica.MasterInstanceName == primaryWithProject {
+				formattedDrReplicaName := replicaName.Project.ID + ":" + replicaName.InstanceName
+				obj.ReplicationCluster.FailoverDrReplicaName = &formattedDrReplicaName
+				if replica.ReplicationCluster == nil {
+					replica.ReplicationCluster = &pb.ReplicationCluster{}
+				}
+				replica.ReplicationCluster.DrReplica = proto.Bool(true)
+				replica.Etag = fields.ComputeWeakEtag(replica)
+				if err := s.storage.Update(ctx, replicaFQN, replica); err != nil {
+					return err
+				}
+			}
+		}
+	} else if obj.ReplicationCluster != nil && (obj.ReplicationCluster.DrReplica == nil || !*obj.ReplicationCluster.DrReplica) {
+		obj.ReplicationCluster = nil
+	}
+	return nil
 }
 
 func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUpdateRequest) (*pb.Operation, error) {
@@ -1053,6 +1142,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.CreateTime = existing.CreateTime
 	obj.DatabaseInstalledVersion = existing.DatabaseInstalledVersion
 	obj.DatabaseVersion = existing.DatabaseVersion
+	obj.DnsName = existing.DnsName
 	obj.GceZone = existing.GceZone
 	obj.IpAddresses = existing.IpAddresses
 	obj.ServerCaCert = existing.ServerCaCert
@@ -1065,6 +1155,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	populateDefaults(obj)
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(existing.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -1135,10 +1229,6 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		obj.MasterInstanceName = ""
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
-		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
-
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
 		if oldMasterName.Project.ID != name.Project.ID {
@@ -1146,6 +1236,32 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		}
 		obj.ReplicaNames = []string{replicaName}
 		oldMaster.ReplicaNames = nil
+
+		// Update ReplicationCluster
+		drReplicaTargetName := oldMasterName.Project.ID + ":" + oldMasterName.InstanceName
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &drReplicaTargetName,
+		}
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica: proto.Bool(true),
+		}
+
+		// Swap BackupConfiguration
+		if oldMaster.Settings != nil && obj.Settings != nil {
+			oldMasterBackup := oldMaster.Settings.BackupConfiguration
+			objBackup := obj.Settings.BackupConfiguration
+			if oldMasterBackup != nil {
+				obj.Settings.BackupConfiguration = proto.CloneOf(oldMasterBackup)
+			}
+			if objBackup != nil {
+				oldMaster.Settings.BackupConfiguration = proto.CloneOf(objBackup)
+			} else {
+				oldMaster.Settings.BackupConfiguration = &pb.BackupConfiguration{
+					Enabled:          wrapperspb.Bool(false),
+					BinaryLogEnabled: wrapperspb.Bool(true),
+				}
+			}
+		}
 
 		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
 

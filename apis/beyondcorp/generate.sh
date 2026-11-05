@@ -34,18 +34,64 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --resource BeyondCorpClientConnectorService:ClientConnectorService
 
 mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientconnectorservice_types.generated.go" || true
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.beyondcorp.appgateways.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BeyondCorpAppGateway:AppGateway
+
+mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appgateway_types.generated.go" || true
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.beyondcorp.appconnectors.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BeyondCorpAppConnector:AppConnector
+
+mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appconnector_types.generated.go" || true
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource BeyondCorpAppConnection:AppConnection
+
+mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/appconnection_types.generated.go" || true
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --resource BeyondCorpAppConnection:AppConnection
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.beyondcorp.appconnectors.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --resource BeyondCorpAppConnector:AppConnector
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.beyondcorp.appgateways.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --resource BeyondCorpAppGateway:AppGateway
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice"
 
 mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/" || true
 sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go"
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.beyondcorp.appconnections.v1 \
+  --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

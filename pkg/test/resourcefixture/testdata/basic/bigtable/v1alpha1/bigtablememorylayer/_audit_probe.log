@@ -1,0 +1,14 @@
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "etag": "abcdef0123A=",
+  "memoryConfig": {
+    "storageSizeGib": 24
+  },
+  "name": "projects/${projectId}/instances/mldep${uniqueId}/clusters/cluster1-${uniqueId}/memoryLayer",
+  "state": "READY"
+}

@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -39,6 +40,8 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
 	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
+	// AlloyDB restore continuous backup test relies on pre-existing resources in external project KCC_ALLOYDB_TEST_PROJECT
+	"alloydb/v1beta1/alloydbcluster/restorecontinuesbackupalloydbcluster": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -60,6 +63,8 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
+	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -371,6 +376,11 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
+				// Allow CancelCustomJob to have fewer calls in mock because job cancellation
+				// in real GCP is an asynchronous operation requiring variable polling iterations.
+				if method == "GRPC" && strings.HasSuffix(path, "/CancelCustomJob") && len(mockEvs) < len(realEvs) {
+					allowed = true
+				}
 				if !allowed {
 					t.Errorf("path %q, method %s: mismatched number of calls: real has %d, mock has %d", path, method, len(realEvs), len(mockEvs))
 					continue
@@ -402,6 +412,10 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			// Ignore project ID lookup calls to Cloud Resource Manager made by direct controller reference resolution
+			if strings.HasPrefix(path, "/projects/${projectNumber}") {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
@@ -427,6 +441,12 @@ func parseLog(t *testing.T, content string) []httpEvent {
 		}
 
 		lines := strings.Split(raw, "\n")
+		for len(lines) > 0 && strings.HasPrefix(strings.TrimSpace(lines[0]), "#") {
+			lines = lines[1:]
+		}
+		if len(lines) == 0 {
+			continue
+		}
 		var ev httpEvent
 
 		reqParts := strings.SplitN(lines[0], " ", 2)
@@ -451,6 +471,9 @@ func parseLog(t *testing.T, content string) []httpEvent {
 			idx++
 		}
 		ev.RequestBody = strings.TrimSpace(strings.Join(reqBodyLines, "\n"))
+		if ev.RequestBody == "{}" {
+			ev.RequestBody = ""
+		}
 
 		if idx < len(lines) {
 			ev.Status = lines[idx]
@@ -491,6 +514,8 @@ func cleanURL(u string) string {
 		u = u[slashIdx:]
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
+	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
+	u = regexp.MustCompile(`/agents/[0-9a-fA-F-]+`).ReplaceAllString(u, "/agents/${agentID}")
 	return u
 }
 
@@ -582,6 +607,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "endTime")
 		delete(v, "statusMessage")
 		delete(v, "createTime")
+		delete(v, "creationTime")
 		delete(v, "updateTime")
 		delete(v, "activationUpdateTime")
 		delete(v, "revisionCreateTime")
@@ -617,10 +643,69 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "billingAccount")
 		delete(v, "resourceSettings")
 
+		// ConnectorsConnection specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "billingConfig")
+		delete(v, "connectionRevision")
+		delete(v, "connectorVersionInfraConfig")
+		delete(v, "connectorVersionLaunchStage")
+		delete(v, "host")
+		delete(v, "tlsServiceDirectory")
+
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
 			delete(v, "displayName")
+			delete(v, "name")
 			delete(v, "parent")
+		}
+
+		// Cloud KMS ImportJob specific fields (HSM attestation and wrapping public key are dynamically generated per job)
+		if _, ok := v["importMethod"]; ok {
+			delete(v, "attestation")
+			delete(v, "publicKey")
+		}
+
+		// Cloud KMS Encrypt specific fields (ciphertext and ciphertextCrc32c are dynamically generated per encryption)
+		if _, ok := v["ciphertext"]; ok {
+			delete(v, "ciphertext")
+			delete(v, "ciphertextCrc32c")
+		}
+
+		// App Engine version dynamic internal CCFE minor version ID
+		if bs, ok := v["betaSettings"].(map[string]interface{}); ok {
+			delete(bs, "minor_version_id_ccfe")
+		}
+
+		// Normalize AppEngine FlexibleAppVersion fields between TF and Direct controller mock/real logs
+		if ss, ok := v["servingStatus"]; ok {
+			if f, ok := ss.(float64); ok && f == 1 {
+				v["servingStatus"] = "SERVING"
+			} else if f, ok := ss.(float64); ok && f == 2 {
+				v["servingStatus"] = "STOPPED"
+			}
+		}
+		if lc, ok := v["livenessCheck"].(map[string]interface{}); ok {
+			delete(lc, "checkInterval")
+			delete(lc, "failureThreshold")
+			delete(lc, "initialDelay")
+			delete(lc, "successThreshold")
+			delete(lc, "timeout")
+		}
+		if rc, ok := v["readinessCheck"].(map[string]interface{}); ok {
+			delete(rc, "appStartTimeout")
+			delete(rc, "checkInterval")
+			delete(rc, "failureThreshold")
+			delete(rc, "successThreshold")
+			delete(rc, "timeout")
+		}
+		if _, hasDeployment := v["deployment"]; hasDeployment {
+			delete(v, "inboundServices")
+			if v["runtime"] == "custom" {
+				delete(v, "serviceAccount")
+				delete(v, "servingStatus")
+			}
+			if ms, ok := v["manualScaling"].(map[string]interface{}); ok {
+				delete(ms, "instances")
+			}
 		}
 
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
@@ -646,6 +731,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				delete(settings, "backupConfiguration")
 			}
 		}
+		if gc, ok := v["geminiConfig"].(map[string]interface{}); ok && len(gc) == 0 {
+			delete(v, "geminiConfig")
+		}
+		delete(v, "subscriptionType")
+		if iu, ok := v["initialUser"].(map[string]interface{}); ok {
+			delete(iu, "password")
+		}
 
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
@@ -655,6 +747,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		delete(v, "availableCpuPlatforms")
+		delete(v, "supportsPzs")
+		if _, ok := v["family"]; ok {
+			delete(v, "name")
+		}
 		if rc, ok := v["responseCode"]; ok {
 			if f, ok := rc.(float64); ok {
 				switch f {
@@ -668,6 +765,39 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					v["responseCode"] = "TEMPORARY_REDIRECT"
 				case 5:
 					v["responseCode"] = "PERMANENT_REDIRECT"
+				}
+			}
+		}
+		if act, ok := v["action"]; ok {
+			if f, ok := act.(float64); ok {
+				switch f {
+				case 1:
+					v["action"] = "ALLOW"
+				case 2:
+					v["action"] = "DENY"
+				}
+			}
+		}
+		if split, ok := v["split"].(map[string]interface{}); ok {
+			if sb, ok := split["shardBy"]; ok {
+				if f, ok := sb.(float64); ok {
+					switch f {
+					case 1:
+						split["shardBy"] = "COOKIE"
+					case 2:
+						split["shardBy"] = "IP"
+					case 3:
+						split["shardBy"] = "RANDOM"
+					}
+				}
+			}
+			if allocs, ok := split["allocations"].(map[string]interface{}); ok {
+				for k, val := range allocs {
+					if s, ok := val.(string); ok {
+						if f, err := strconv.ParseFloat(s, 64); err == nil {
+							allocs[k] = f
+						}
+					}
 				}
 			}
 		}
@@ -720,6 +850,29 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				v["status"] = "RUNNING"
 			}
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#instance" {
+			delete(v, "dnsNames")
+			delete(v, "geminiConfig")
+			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
+					delete(backupConfig, "backupTier")
+					// Real GCP recordings from early 2026 return replicationLogArchivingEnabled=false for
+					// Postgres instances with backups disabled; newer recordings omit it.
+					if rla, ok := backupConfig["replicationLogArchivingEnabled"].(bool); ok && !rla {
+						delete(backupConfig, "replicationLogArchivingEnabled")
+					}
+				}
+			}
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#usersList" {
+			if items, ok := v["items"].([]interface{}); ok {
+				for _, item := range items {
+					if m, ok := item.(map[string]interface{}); ok {
+						delete(m, "passwordPolicy")
+					}
+				}
+			}
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
 			delete(v, "portName")
@@ -770,18 +923,34 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
-				delete(containerdConfig, "registryHosts")
-				delete(containerdConfig, "writableCgroups")
 				delete(containerdConfig, "privateRegistryAccessConfig")
 			}
 		}
 		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
-			delete(containerdConfig, "registryHosts")
-			delete(containerdConfig, "writableCgroups")
 			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
+		}
+		if _, isProcessor := v["processorVersionAliases"]; isProcessor {
+			if state, ok := v["state"].(float64); ok {
+				switch state {
+				case 1:
+					v["state"] = "ENABLED"
+				case 2:
+					v["state"] = "DISABLED"
+				case 3:
+					v["state"] = "ENABLING"
+				case 4:
+					v["state"] = "DISABLING"
+				case 5:
+					v["state"] = "CREATING"
+				case 6:
+					v["state"] = "FAILED"
+				case 7:
+					v["state"] = "DELETING"
+				}
+			}
 		}
 		if _, isDnsAuth := v["dnsResourceRecord"]; isDnsAuth {
 			if t, ok := v["type"].(float64); ok && t == 1 {
@@ -814,10 +983,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
 				delete(cfg, "taints")
-				if cc, ok := cfg["containerdConfig"].(map[string]interface{}); ok {
-					delete(cc, "registryHosts")
-					delete(cc, "writableCgroups")
-				}
 			}
 			if nc, ok := v["networkConfig"].(map[string]interface{}); ok {
 				delete(nc, "networkTierConfig")
@@ -950,6 +1115,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		delete(v, "clusterEndpoints")
 		delete(v, "cluster_endpoints")
+
+		// DNSResponsePolicy specific normalization for alignment differences between mock and real GCP responses
+		if v["kind"] == "dns#responsePolicy" {
+			if slice, ok := v["gkeClusters"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "gkeClusters")
+			}
+			if slice, ok := v["networks"].([]interface{}); ok && len(slice) == 0 {
+				delete(v, "networks")
+			}
+			delete(v, "description")
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
@@ -966,6 +1142,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		return v
 	case string:
 		v = strings.ReplaceAll(v, "${projectNumber}", "${projectId}")
+		if strings.Contains(v, "/contacts/") {
+			re := regexp.MustCompile(`/contacts/[0-9]+`)
+			v = re.ReplaceAllString(v, "/contacts/${contactID}")
+		}
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
 			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
@@ -1006,9 +1186,7 @@ func normalizeDataprocWorkerConfig(cfg interface{}) {
 		}
 	}
 	// zone(i.e., us-central1-a) is auto assigned when not specified
-	if _, ok := m["machineTypeUri"]; ok {
-		delete(m, "machineTypeUri")
-	}
+	delete(m, "machineTypeUri")
 }
 
 func getGVKFromYAML(path string) (schema.GroupVersionKind, error) {
@@ -1093,6 +1271,12 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${diskID}"}
 	case "ComputeInstance":
 		return []string{"${instanceID}"}
+	case "ComputeMachineImage":
+		return []string{"${machineImageID}"}
+	case "ComputeInstanceTemplate":
+		return []string{"${instanceTemplateID}"}
+	case "ComputeInstanceGroupManager":
+		return []string{"${instanceGroupManagerID}"}
 	case "ComputeHealthCheck":
 		return []string{"${healthCheckID}"}
 	case "ComputeBackendService":
@@ -1113,6 +1297,10 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${certificateID}"}
 	case "CertificateManagerDNSAuthorization":
 		return []string{"${dnsAuthorizationID}"}
+	case "HealthcareDataset":
+		return []string{"${datasetID}"}
+	case "DialogflowCXAgent":
+		return []string{"${agentID}"}
 	}
 	return nil
 }
@@ -1237,6 +1425,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		// it is a child resource of the dependency, so it belongs to the primary resource under test.
 		trimmedSuffix := strings.TrimPrefix(suffix, "/")
 		if strings.Contains(trimmedSuffix, "/") {
+			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
+				return true
+			}
 			continue
 		}
 

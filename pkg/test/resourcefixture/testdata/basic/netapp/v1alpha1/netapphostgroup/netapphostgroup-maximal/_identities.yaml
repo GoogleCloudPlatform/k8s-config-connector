@@ -1,0 +1,6 @@
+- caisURL: //netapp.googleapis.com/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}
+  group: netapp.cnrm.cloud.google.com
+  kind: NetAppHostGroup
+  name: netapphostgroup-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

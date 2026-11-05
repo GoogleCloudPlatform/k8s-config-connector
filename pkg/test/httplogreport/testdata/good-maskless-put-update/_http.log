@@ -1,0 +1,44 @@
+# Phase: CREATE
+POST https://example.googleapis.com/v1/projects/${projectId}/policies?policyId=policy-${uniqueId}
+Content-Type: application/json
+
+{
+  "displayName": "v1",
+  "priority": 100
+}
+
+200 OK
+
+{
+  "displayName": "v1",
+  "name": "projects/${projectId}/policies/policy-${uniqueId}",
+  "priority": 100
+}
+
+---
+
+# Phase: UPDATE
+PUT https://example.googleapis.com/v1/projects/${projectId}/policies/policy-${uniqueId}
+Content-Type: application/json
+
+{
+  "displayName": "v2",
+  "priority": 200
+}
+
+200 OK
+
+{
+  "displayName": "v2",
+  "name": "projects/${projectId}/policies/policy-${uniqueId}",
+  "priority": 200
+}
+
+---
+
+# Phase: DELETE
+DELETE https://example.googleapis.com/v1/projects/${projectId}/policies/policy-${uniqueId}
+
+200 OK
+
+{}

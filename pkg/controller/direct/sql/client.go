@@ -56,3 +56,7 @@ func (m *gcpClient) sqlInstancesClient() *api.InstancesService {
 func (m *gcpClient) sqlUsersClient() *api.UsersService {
 	return api.NewUsersService(m.service)
 }
+
+func (m *gcpClient) sqlSslCertsClient() *api.SslCertsService {
+	return api.NewSslCertsService(m.service)
+}

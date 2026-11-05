@@ -50,5 +50,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				}
 			}
 		}
+		if strings.Contains(value, "/conversationDatasets/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "conversationDatasets" {
+					datasetID := tokens[i+1]
+					replacements.ReplaceStringValue(datasetID, "${conversationDatasetID}")
+				}
+			}
+		}
 	})
 }

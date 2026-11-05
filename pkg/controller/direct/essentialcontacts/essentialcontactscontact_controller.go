@@ -22,12 +22,15 @@ package essentialcontacts
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/essentialcontacts/apiv1"
 	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -161,6 +164,10 @@ func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 	created, err := a.gcpClient.CreateContact(ctx, req)
 	if err != nil {
+		if direct.IsAlreadyExists(err) && a.id.ID() == "" {
+			log.V(0).Info("essential contact already exists, attempting to acquire", "parent", a.id.Parent().String(), "email", direct.ValueOf(desired.Spec.Email))
+			return a.acquireExistingContact(ctx, createOp)
+		}
 		return fmt.Errorf("creating essential contact %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created essential contact", "name", a.id)
@@ -172,6 +179,88 @@ func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 	status.ExternalRef = direct.LazyPtr(created.Name)
 	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+// acquireExistingContact looks up an existing Contact by parent and email after an ALREADY_EXISTS error,
+// updates any mutable fields if they differ from desired, and sets the externalRef and status to adopt the resource.
+func (a *contactAdapter) acquireExistingContact(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+
+	existing, err := a.findContactByEmail(ctx)
+	if err != nil {
+		return err
+	}
+	if existing == nil {
+		return fmt.Errorf("essential contact with email %q not found under %q despite ALREADY_EXISTS error", direct.ValueOf(a.desired.Spec.Email), a.id.Parent().String())
+	}
+	log.V(0).Info("acquired existing essential contact", "name", existing.GetName())
+
+	_, resourceID, err := krm.ParseContactExternal(existing.GetName())
+	if err != nil {
+		return err
+	}
+	a.id.SetID(resourceID)
+	a.actual = existing
+
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	resource := EssentialContactsContactSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Name = existing.GetName()
+
+	paths := []string{}
+	if !reflect.DeepEqual(resource.NotificationCategorySubscriptions, existing.NotificationCategorySubscriptions) {
+		paths = append(paths, "notification_category_subscriptions")
+	}
+	if !reflect.DeepEqual(resource.LanguageTag, existing.LanguageTag) {
+		paths = append(paths, "language_tag")
+	}
+
+	contact := existing
+	if len(paths) > 0 {
+		req := &pb.UpdateContactRequest{
+			Contact:    resource,
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		updated, err := a.gcpClient.UpdateContact(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating acquired essential contact %s: %w", a.id, err)
+		}
+		contact = updated
+		log.V(2).Info("successfully updated acquired essential contact", "name", a.id)
+	}
+
+	status := &krm.EssentialContactsContactStatus{}
+	status.ObservedState = EssentialContactsContactObservedState_FromProto(mapCtx, contact)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(contact.Name)
+	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+// findContactByEmail lists contacts under the parent and returns the one matching the desired email.
+func (a *contactAdapter) findContactByEmail(ctx context.Context) (*pb.Contact, error) {
+	desiredEmail := direct.ValueOf(a.desired.Spec.Email)
+	req := &pb.ListContactsRequest{
+		Parent: a.id.Parent().String(),
+	}
+	it := a.gcpClient.ListContacts(ctx, req)
+	for {
+		contact, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, fmt.Errorf("listing essential contacts under %q: %w", a.id.Parent().String(), err)
+		}
+		if strings.EqualFold(contact.GetEmail(), desiredEmail) {
+			return contact, nil
+		}
+	}
+	return nil, nil
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.

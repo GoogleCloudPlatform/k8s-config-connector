@@ -23,7 +23,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - Both direct and legacy controllers are now automatically tested dynamically if a direct controller is available in `static_config.go` (under `SupportedControllers`), so there is no longer any need to manually modify `tests/e2e/unified_test.go`.
 
 3.  **Controller Structure & Patterns**:
-    - **Proto Format Desired State**: Convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`. The adapter should avoid holding references to raw KRM objects for desired state to keep the interfaces clean, consistent with `actual` (which is also of proto type), and avoid redundant conversions. This ensures that `desired` is stored in the same proto format as `actual`.
+    - **Proto Format Desired State**: For greenfield controllers, convert the KRM Spec to its Proto representation once in `AdapterForObject` and store it as a proto struct pointer (e.g., `*pb.MyResource` or `desired`) in the adapter, rather than duplicating conversion logic in both `Create` and `Update`. The adapter should avoid holding references to raw KRM objects for desired state to keep the interfaces clean, consistent with `actual` (which is also of proto type), and avoid redundant conversions. This ensures that `desired` is stored in the same proto format as `actual`. (Note: for brownfield resources using `common.CompareBrownfieldSpec`, store the KRM object `desired *krm.<Kind>` instead, as specified in `kcc-direct-controller-logic-brownfield`).
     - **Handling Non-API / KRM-only Spec Fields**: If the KRM Spec has fields that are not represented in the GCP resource's proto message (such as client-side behavioral options or custom installation flags, e.g., `SkipInitialVersionCreation`), do NOT mix them into the proto. Instead, parse and store them as separate, explicitly-named fields on the adapter struct (e.g., `desiredSkipInitialVersionCreation bool`).
     - **NormalizeReferences**: Always call `common.NormalizeReferences` in `AdapterForObject` to resolve any resource references:
       ```go
@@ -53,7 +53,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
         2. **GAPIC gRPC Client (`NewFooClient`)**: Try with `m.config.GRPCClientOptions()` if the REST constructor is missing or fails during live GCP testing.
         3. **Raw Protobuf gRPC (`pb.NewFooClient(conn)`)**: Only fall back to dialing raw gRPC conns (`grpc.Dial`) if no GAPIC Go client library struct/constructor exists for the API.
       * **Try Different Client Variants on Issues During Testing**: When testing against real GCP (`./hack/record-gcp` or API checks) and encountering `403 Forbidden`, `404 Not Found`, or LRO polling errors, actively switch between the client variants (REST vs gRPC) to find the working transport.
-    - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`).
+    - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`). Use `mappers.OnlySpecFields` from `"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"`.
       ```go
       func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
           maskedActual, err := mappers.OnlySpecFields(actual, MyResourceSpec_FromProto, MyResourceSpec_ToProto)
@@ -126,7 +126,7 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 7.  **Validation & Last-Mile Tests**:
     Run the following tests to ensure CI compliance:
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
-    - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
+    - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-suite <service>`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
     - **API Field Coverage**: `go test ./tests/apichecks/...`. 
       - If `TestCRDFieldPresenceInTestsForAlpha` fails, you may need to regenerate the exceptions file by running it with `WRITE_GOLDEN_OUTPUT=1`.

@@ -1,0 +1,241 @@
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/CreateSpecialistPool
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "specialistPool": {
+    "displayName": "specialistpool-${uniqueId}",
+    "specialistManagerEmails": [
+      "manager1-${uniqueId}@example.com"
+    ],
+    "specialistWorkerEmails": [
+      "worker1-${uniqueId}@example.com"
+    ]
+  }
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateSpecialistPoolOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateSpecialistPoolOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.SpecialistPool",
+    "displayName": "specialistpool-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}",
+    "specialistManagerEmails": [
+      "manager1-${uniqueId}@example.com"
+    ],
+    "specialistManagersCount": 1,
+    "specialistWorkerEmails": [
+      "worker1-${uniqueId}@example.com"
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "displayName": "specialistpool-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+  "specialistManagerEmails": [
+    "manager1-${uniqueId}@example.com"
+  ],
+  "specialistManagersCount": 1,
+  "specialistWorkerEmails": [
+    "worker1-${uniqueId}@example.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "displayName": "specialistpool-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+  "specialistManagerEmails": [
+    "manager1-${uniqueId}@example.com"
+  ],
+  "specialistManagersCount": 1,
+  "specialistWorkerEmails": [
+    "worker1-${uniqueId}@example.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/UpdateSpecialistPool
+
+{
+  "specialistPool": {
+    "displayName": "specialistpool-${uniqueId}-upd",
+    "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+    "specialistManagerEmails": [
+      "manager2-${uniqueId}@example.com"
+    ],
+    "specialistWorkerEmails": [
+      "worker2-${uniqueId}@example.com"
+    ]
+  },
+  "updateMask": "displayName,specialistManagerEmails,specialistWorkerEmails"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UpdateSpecialistPoolOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "specialistPool": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.SpecialistPool",
+    "displayName": "specialistpool-${uniqueId}-upd",
+    "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}",
+    "specialistManagerEmails": [
+      "manager2-${uniqueId}@example.com"
+    ],
+    "specialistManagersCount": 1,
+    "specialistWorkerEmails": [
+      "worker2-${uniqueId}@example.com"
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "displayName": "specialistpool-${uniqueId}-upd",
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+  "specialistManagerEmails": [
+    "manager2-${uniqueId}@example.com"
+  ],
+  "specialistManagersCount": 1,
+  "specialistWorkerEmails": [
+    "worker2-${uniqueId}@example.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "displayName": "specialistpool-${uniqueId}-upd",
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+  "specialistManagerEmails": [
+    "manager2-${uniqueId}@example.com"
+  ],
+  "specialistManagersCount": 1,
+  "specialistWorkerEmails": [
+    "worker2-${uniqueId}@example.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "displayName": "specialistpool-${uniqueId}-upd",
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
+  "specialistManagerEmails": [
+    "manager2-${uniqueId}@example.com"
+  ],
+  "specialistManagersCount": 1,
+  "specialistWorkerEmails": [
+    "worker2-${uniqueId}@example.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/DeleteSpecialistPool
+
+{
+  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

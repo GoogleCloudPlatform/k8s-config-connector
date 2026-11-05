@@ -1,0 +1,453 @@
+240c240
+<       "endpoint": "gke-8c6c8f3669444e84802e5577634f2a72d566-${projectNumber}.us-central1-a.gke.goog"
+---
+>       "endpoint": "gke-f35fef8ae65943d6950e0154550dc4478154-${projectNumber}.us-central1-a.gke.goog"
+442c442
+<       "etag": "e99892ee-dde8-4b12-83db-24bb36d2ff1f",
+---
+>       "etag": "e43bbfe7-8f70-4364-a86f-50b59ccc6ab0",
+465c465
+<         "podIpv4CidrBlock": "10.44.0.0/14",
+---
+>         "podIpv4CidrBlock": "10.48.0.0/14",
+539c539
+<   "baseInstanceName": "gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "baseInstanceName": "gke-cluster-sample-bp7lw-default-pool-cbc19558",
+565c565
+<   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+613c613
+<       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+691c691
+<       "endpoint": "gke-8c6c8f3669444e84802e5577634f2a72d566-${projectNumber}.us-central1-a.gke.goog"
+---
+>       "endpoint": "gke-f35fef8ae65943d6950e0154550dc4478154-${projectNumber}.us-central1-a.gke.goog"
+893c893
+<       "etag": "e99892ee-dde8-4b12-83db-24bb36d2ff1f",
+---
+>       "etag": "e43bbfe7-8f70-4364-a86f-50b59ccc6ab0",
+916c916
+<         "podIpv4CidrBlock": "10.44.0.0/14",
+---
+>         "podIpv4CidrBlock": "10.48.0.0/14",
+990c990
+<   "baseInstanceName": "gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "baseInstanceName": "gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1016c1016
+<   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1064c1064
+<       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1075,1104c1075
+< GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?alt=json&prettyPrint=false
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
+< POST https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools?alt=json&prettyPrint=false
+---
+> GET https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1107,1153d1077
+< {
+<   "nodePool": {
+<     "config": {
+<       "imageType": "WINDOWS_LTSC_CONTAINERD",
+<       "loggingConfig": {
+<         "variantConfig": {
+<           "variant": "DEFAULT"
+<         }
+<       },
+<       "windowsNodeConfig": {
+<         "osVersion": "OS_2022"
+<       }
+<     },
+<     "initialNodeCount": 1,
+<     "name": "nodepool-sample-${uniqueId}",
+<     "networkConfig": {}
+<   }
+< }
+< 
+< 400 Bad Request
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 400,
+<     "errors": [
+<       {
+<         "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<         "reason": "invalid"
+<       }
+<     ],
+<     "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<     "status": "INVALID_ARGUMENT"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?alt=json&prettyPrint=false
+< 
+1167,1173d1090
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<         "reason": "notFound"
+<       }
+<     ],
+1181c1098
+< POST https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools?alt=json&prettyPrint=false
+---
+> POST https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools?%24alt=json%3Benum-encoding%3Dint
+1188,1192d1104
+<       "loggingConfig": {
+<         "variantConfig": {
+<           "variant": "DEFAULT"
+<         }
+<       },
+1194c1106
+<         "osVersion": "OS_2022"
+---
+>         "osVersion": 2
+1198,1224c1110,1112
+<     "name": "nodepool-sample-${uniqueId}",
+<     "networkConfig": {}
+<   }
+< }
+< 
+< 400 Bad Request
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 400,
+<     "errors": [
+<       {
+<         "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<         "reason": "invalid"
+<       }
+<     ],
+<     "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<     "status": "INVALID_ARGUMENT"
+<   }
+---
+>     "name": "nodepool-sample-${uniqueId}"
+>   },
+>   "parent": "projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}"
+1227,1231c1115
+< ---
+< 
+< GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?alt=json&prettyPrint=false
+< 
+< 404 Not Found
+---
+> 200 OK
+1242,1253c1126,1132
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<     "status": "NOT_FOUND"
+<   }
+---
+>   "name": "${operationID}",
+>   "operationType": 7,
+>   "selfLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": 1,
+>   "targetLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
+>   "zone": "us-central1-a"
+1258c1137
+< POST https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools?alt=json&prettyPrint=false
+---
+> GET https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1261,1280c1140
+< {
+<   "nodePool": {
+<     "config": {
+<       "imageType": "WINDOWS_LTSC_CONTAINERD",
+<       "loggingConfig": {
+<         "variantConfig": {
+<           "variant": "DEFAULT"
+<         }
+<       },
+<       "windowsNodeConfig": {
+<         "osVersion": "OS_2022"
+<       }
+<     },
+<     "initialNodeCount": 1,
+<     "name": "nodepool-sample-${uniqueId}",
+<     "networkConfig": {}
+<   }
+< }
+< 
+< 400 Bad Request
+---
+> 200 OK
+1291,1297c1151,1177
+<   "error": {
+<     "code": 400,
+<     "errors": [
+<       {
+<         "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<         "reason": "invalid"
+<       }
+---
+>   "config": {
+>     "bootDisk": {
+>       "diskType": "pd-balanced",
+>       "sizeGb": "100"
+>     },
+>     "diskSizeGb": 100,
+>     "diskType": "pd-balanced",
+>     "imageType": "WINDOWS_LTSC_CONTAINERD",
+>     "kubeletConfig": {
+>       "insecureKubeletReadonlyPortEnabled": false,
+>       "maxParallelImagePulls": 2
+>     },
+>     "machineType": "e2-medium",
+>     "metadata": {
+>       "disable-legacy-endpoints": "true"
+>     },
+>     "nodeImageConfig": {
+>       "image": "gke-1305-gke1014001-cos-113-17681-1153-62-c-pre",
+>       "imageProject": "gke-windows-node-images"
+>     },
+>     "oauthScopes": [
+>       "https://www.googleapis.com/auth/devstorage.read_only",
+>       "https://www.googleapis.com/auth/logging.write",
+>       "https://www.googleapis.com/auth/monitoring",
+>       "https://www.googleapis.com/auth/service.management.readonly",
+>       "https://www.googleapis.com/auth/servicecontrol",
+>       "https://www.googleapis.com/auth/trace.append"
+1299,1320c1179,1180
+<     "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<     "status": "INVALID_ARGUMENT"
+<   }
+< }
+< 
+< ---
+< 
+< POST https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "nodePool": {
+<     "config": {
+<       "imageType": "WINDOWS_LTSC_CONTAINERD",
+<       "loggingConfig": {
+<         "variantConfig": {
+<           "variant": "DEFAULT"
+<         }
+<       },
+<       "windowsNodeConfig": {
+<         "osVersion": "OS_2022"
+<       }
+---
+>     "resourceLabels": {
+>       "goog-gke-node-pool-provisioning-model": "on-demand"
+1322,1341c1182,1186
+<     "initialNodeCount": 1,
+<     "name": "nodepool-sample-${uniqueId}",
+<     "networkConfig": {}
+<   }
+< }
+< 
+< 400 Bad Request
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 400,
+<     "errors": [
+---
+>     "serviceAccount": "default",
+>     "shieldedInstanceConfig": {
+>       "enableIntegrityMonitoring": true
+>     },
+>     "taints": [
+1343,1344c1188,1190
+<         "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<         "reason": "invalid"
+---
+>         "effect": 1,
+>         "key": "node.kubernetes.io/os",
+>         "value": "windows"
+1347,1349c1193,1231
+<     "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<     "status": "INVALID_ARGUMENT"
+<   }
+---
+>     "windowsNodeConfig": {
+>       "osVersion": 2
+>     }
+>   },
+>   "etag": "abcdef0123A=",
+>   "initialNodeCount": 1,
+>   "instanceGroupUrls": [
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp"
+>   ],
+>   "kubeletCertInfo": {
+>     "tpmBootstrapCertExpireTime": "2024-04-01T12:34:56.123456Z"
+>   },
+>   "locations": [
+>     "us-central1-a"
+>   ],
+>   "management": {
+>     "autoRepair": true,
+>     "autoUpgrade": true
+>   },
+>   "maxPodsConstraint": {
+>     "maxPodsPerNode": "110"
+>   },
+>   "name": "nodepool-sample-${uniqueId}",
+>   "networkConfig": {
+>     "networkTierConfig": {
+>       "networkTier": 1
+>     },
+>     "podIpv4CidrBlock": "10.112.0.0/14",
+>     "podRange": "gke-cluster-sample-${uniqueId}-pods-7b2f8c84",
+>     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+>   },
+>   "podIpv4CidrSize": 24,
+>   "selfLink": "https://container.googleapis.com/v1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
+>   "status": 2,
+>   "upgradeSettings": {
+>     "maxSurge": 1,
+>     "strategy": 3
+>   },
+>   "version": "1.30.5-gke.1014001"
+1354c1236,1237
+< GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+1356c1239
+< 404 Not Found
+---
+> 200 OK
+1367,1378c1250,1256
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Not found: node pool \"nodepool-sample-${uniqueId}\" not found.",
+<     "status": "NOT_FOUND"
+<   }
+---
+>   "name": "${operationID}",
+>   "operationType": 8,
+>   "selfLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": 1,
+>   "targetLink": "https://container.googleapis.com/v1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
+>   "zone": "us-central1-a"
+1450c1328
+<       "endpoint": "gke-8c6c8f3669444e84802e5577634f2a72d566-${projectNumber}.us-central1-a.gke.goog"
+---
+>       "endpoint": "gke-f35fef8ae65943d6950e0154550dc4478154-${projectNumber}.us-central1-a.gke.goog"
+1464c1342
+<   "currentNodeCount": 1,
+---
+>   "currentNodeCount": 2,
+1652c1530
+<       "etag": "e99892ee-dde8-4b12-83db-24bb36d2ff1f",
+---
+>       "etag": "e43bbfe7-8f70-4364-a86f-50b59ccc6ab0",
+1675c1553
+<         "podIpv4CidrBlock": "10.44.0.0/14",
+---
+>         "podIpv4CidrBlock": "10.48.0.0/14",
+1749c1627
+<   "baseInstanceName": "gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "baseInstanceName": "gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1775c1653
+<   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>   "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1823c1701
+<       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-oknhb-default-pool-1f910839",
+---
+>       "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-bp7lw-default-pool-cbc19558",
+1901c1779
+<       "endpoint": "gke-8c6c8f3669444e84802e5577634f2a72d566-${projectNumber}.us-central1-a.gke.goog"
+---
+>       "endpoint": "gke-f35fef8ae65943d6950e0154550dc4478154-${projectNumber}.us-central1-a.gke.goog"
+1915c1793
+<   "currentNodeCount": 1,
+---
+>   "currentNodeCount": 2,
+2103c1981
+<       "etag": "e99892ee-dde8-4b12-83db-24bb36d2ff1f",
+---
+>       "etag": "e43bbfe7-8f70-4364-a86f-50b59ccc6ab0",
+2126c2004
+<         "podIpv4CidrBlock": "10.44.0.0/14",
+---
+>         "podIpv4CidrBlock": "10.48.0.0/14",

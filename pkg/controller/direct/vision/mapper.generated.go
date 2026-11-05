@@ -29,6 +29,42 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BoundingPoly_FromProto(mapCtx *direct.MapContext, in *pb.BoundingPoly) *krm.BoundingPoly {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BoundingPoly{}
+	out.Vertices = direct.Slice_FromProto(mapCtx, in.Vertices, Vertex_FromProto)
+	out.NormalizedVertices = direct.Slice_FromProto(mapCtx, in.NormalizedVertices, NormalizedVertex_FromProto)
+	return out
+}
+func BoundingPoly_ToProto(mapCtx *direct.MapContext, in *krm.BoundingPoly) *pb.BoundingPoly {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BoundingPoly{}
+	out.Vertices = direct.Slice_ToProto(mapCtx, in.Vertices, Vertex_ToProto)
+	out.NormalizedVertices = direct.Slice_ToProto(mapCtx, in.NormalizedVertices, NormalizedVertex_ToProto)
+	return out
+}
+func NormalizedVertex_FromProto(mapCtx *direct.MapContext, in *pb.NormalizedVertex) *krm.NormalizedVertex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NormalizedVertex{}
+	out.X = direct.LazyPtr(in.GetX())
+	out.Y = direct.LazyPtr(in.GetY())
+	return out
+}
+func NormalizedVertex_ToProto(mapCtx *direct.MapContext, in *krm.NormalizedVertex) *pb.NormalizedVertex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NormalizedVertex{}
+	out.X = direct.ValueOf(in.X)
+	out.Y = direct.ValueOf(in.Y)
+	return out
+}
 func ProductKeyValue_FromProto(mapCtx *direct.MapContext, in *pb.Product_KeyValue) *krm.ProductKeyValue {
 	if in == nil {
 		return nil
@@ -47,6 +83,24 @@ func ProductKeyValue_ToProto(mapCtx *direct.MapContext, in *krm.ProductKeyValue)
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
+func Vertex_FromProto(mapCtx *direct.MapContext, in *pb.Vertex) *krm.Vertex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Vertex{}
+	out.X = direct.LazyPtr(in.GetX())
+	out.Y = direct.LazyPtr(in.GetY())
+	return out
+}
+func Vertex_ToProto(mapCtx *direct.MapContext, in *krm.Vertex) *pb.Vertex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Vertex{}
+	out.X = direct.ValueOf(in.X)
+	out.Y = direct.ValueOf(in.Y)
+	return out
+}
 func VisionProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.VisionProductObservedState {
 	if in == nil {
 		return nil
@@ -61,6 +115,44 @@ func VisionProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Visio
 	}
 	out := &pb.Product{}
 	// MISSING: Name
+	return out
+}
+func VisionProductSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProductSet) *krm.VisionProductSetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VisionProductSetObservedState{}
+	// MISSING: Name
+	out.IndexTime = direct.StringTimestamp_FromProto(mapCtx, in.GetIndexTime())
+	out.IndexError = direct.Status_FromProto(mapCtx, in.GetIndexError())
+	return out
+}
+func VisionProductSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductSetObservedState) *pb.ProductSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProductSet{}
+	// MISSING: Name
+	out.IndexTime = direct.StringTimestamp_ToProto(mapCtx, in.IndexTime)
+	out.IndexError = direct.Status_ToProto(mapCtx, in.IndexError)
+	return out
+}
+func VisionProductSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.ProductSet) *krm.VisionProductSetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VisionProductSetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func VisionProductSetSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductSetSpec) *pb.ProductSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProductSet{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
 func VisionProductSpec_FromProto(mapCtx *direct.MapContext, in *pb.Product) *krm.VisionProductSpec {
@@ -85,5 +177,25 @@ func VisionProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionProductS
 	out.Description = direct.ValueOf(in.Description)
 	out.ProductCategory = direct.ValueOf(in.ProductCategory)
 	out.ProductLabels = direct.Slice_ToProto(mapCtx, in.ProductLabels, ProductKeyValue_ToProto)
+	return out
+}
+func VisionReferenceImageSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceImage) *krm.VisionReferenceImageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VisionReferenceImageSpec{}
+	// MISSING: Name
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.BoundingPolys = direct.Slice_FromProto(mapCtx, in.BoundingPolys, BoundingPoly_FromProto)
+	return out
+}
+func VisionReferenceImageSpec_ToProto(mapCtx *direct.MapContext, in *krm.VisionReferenceImageSpec) *pb.ReferenceImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReferenceImage{}
+	// MISSING: Name
+	out.Uri = direct.ValueOf(in.URI)
+	out.BoundingPolys = direct.Slice_ToProto(mapCtx, in.BoundingPolys, BoundingPoly_ToProto)
 	return out
 }

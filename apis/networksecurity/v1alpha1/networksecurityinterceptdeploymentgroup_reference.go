@@ -16,31 +16,31 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &NetworkSecurityInterceptDeploymentGroupRef{}
-var NetworkSecurityInterceptDeploymentGroupGVK = GroupVersion.WithKind("NetworkSecurityInterceptDeploymentGroup")
+var _ refs.Ref = &NetworkSecurityInterceptDeploymentGroupRef{}
 
-// NetworkSecurityInterceptDeploymentGroupRef is a reference to a NetworkSecurityInterceptDeploymentGroup.
-
+// NetworkSecurityInterceptDeploymentGroupRef is a reference to a GCP NetworkSecurityInterceptDeploymentGroup.
 type NetworkSecurityInterceptDeploymentGroupRef struct {
-	/* A reference to an externally managed NetworkSecurityInterceptDeploymentGroup resource.
-	Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}". */
+	// A reference to an externally managed NetworkSecurityInterceptDeploymentGroup resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{intercept_deployment_group}}".
 	External string `json:"external,omitempty"`
 
-	/* NOTYET
 	// The name of a NetworkSecurityInterceptDeploymentGroup resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of a NetworkSecurityInterceptDeploymentGroup resource.
 	Namespace string `json:"namespace,omitempty"`
-	*/
+}
+
+func init() {
+	refs.Register(&NetworkSecurityInterceptDeploymentGroupRef{}, &NetworkSecurityInterceptDeploymentGroup{})
 }
 
 func (r *NetworkSecurityInterceptDeploymentGroupRef) GetGVK() schema.GroupVersionKind {
@@ -48,7 +48,10 @@ func (r *NetworkSecurityInterceptDeploymentGroupRef) GetGVK() schema.GroupVersio
 }
 
 func (r *NetworkSecurityInterceptDeploymentGroupRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{}
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 func (r *NetworkSecurityInterceptDeploymentGroupRef) GetExternal() string {
@@ -57,6 +60,8 @@ func (r *NetworkSecurityInterceptDeploymentGroupRef) GetExternal() string {
 
 func (r *NetworkSecurityInterceptDeploymentGroupRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *NetworkSecurityInterceptDeploymentGroupRef) ValidateExternal(ref string) error {
@@ -67,9 +72,14 @@ func (r *NetworkSecurityInterceptDeploymentGroupRef) ValidateExternal(ref string
 	return nil
 }
 
-func (r *NetworkSecurityInterceptDeploymentGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External == "" {
-		return fmt.Errorf("external reference must be specified for %s", NetworkSecurityInterceptDeploymentGroupGVK.Kind)
+func (r *NetworkSecurityInterceptDeploymentGroupRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &NetworkSecurityInterceptDeploymentGroupIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return r.ValidateExternal(r.External)
+	return id, nil
+}
+
+func (r *NetworkSecurityInterceptDeploymentGroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }

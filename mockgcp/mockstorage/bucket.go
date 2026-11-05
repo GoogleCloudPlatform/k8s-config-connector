@@ -441,6 +441,7 @@ func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest)
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
+	_ = s.storage.Delete(ctx, fmt.Sprintf("projects/_/buckets/%s/iam", name.Bucket), &pb.Policy{})
 	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
 	return &empty.Empty{}, nil

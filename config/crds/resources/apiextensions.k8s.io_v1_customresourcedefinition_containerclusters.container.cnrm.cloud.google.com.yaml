@@ -264,14 +264,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            description: A reference to an externally managed KMSCryptoKey
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                             type: string
                           name:
-                            description: The `name` of a `KMSCryptoKey` resource.
+                            description: The name of a KMSCryptoKey resource.
                             type: string
                           namespace:
-                            description: The `namespace` of a `KMSCryptoKey` resource.
+                            description: The namespace of a KMSCryptoKey resource.
                             type: string
                         type: object
                       diskSize:
@@ -1110,6 +1110,7 @@ spec:
                         type: integer
                     type: object
                   bootDiskKMSCryptoKeyRef:
+                    description: KMSCryptoKeyRef is a reference to a KMSCryptoKey.
                     oneOf:
                     - not:
                         required:
@@ -1126,14 +1127,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                         type: string
                       name:
-                        description: The `name` of a `KMSCryptoKey` resource.
+                        description: The name of a KMSCryptoKey resource.
                         type: string
                       namespace:
-                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        description: The namespace of a KMSCryptoKey resource.
                         type: string
                     type: object
                   confidentialNodes:
@@ -1193,16 +1194,17 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: ' If provided must be in the
-                                            format `projects/*/secrets/*/versions/*`.'
+                                          description: A reference to an externally
+                                            managed SecretManagerSecretVersion resource.
+                                            Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                           type: string
                                         name:
-                                          description: The `name` field of a `SecretManagerSecretVersion`
+                                          description: The name of a SecretManagerSecretVersion
                                             resource.
                                           type: string
                                         namespace:
-                                          description: The `metadata.namespace` field
-                                            of a `SecretManagerSecretVersion` resource.
+                                          description: The namespace of a SecretManagerSecretVersion
+                                            resource.
                                           type: string
                                       type: object
                                   type: object
@@ -1245,16 +1247,17 @@ spec:
                                             - external
                                           properties:
                                             external:
-                                              description: ' If provided must be in
-                                                the format `projects/*/secrets/*/versions/*`.'
+                                              description: A reference to an externally
+                                                managed SecretManagerSecretVersion
+                                                resource. Should be in the format
+                                                "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                               type: string
                                             name:
-                                              description: The `name` field of a `SecretManagerSecretVersion`
+                                              description: The name of a SecretManagerSecretVersion
                                                 resource.
                                               type: string
                                             namespace:
-                                              description: The `metadata.namespace`
-                                                field of a `SecretManagerSecretVersion`
+                                              description: The namespace of a SecretManagerSecretVersion
                                                 resource.
                                               type: string
                                           type: object
@@ -1294,18 +1297,18 @@ spec:
                                                 - external
                                               properties:
                                                 external:
-                                                  description: ' If provided must
-                                                    be in the format `projects/*/secrets/*/versions/*`.'
+                                                  description: A reference to an externally
+                                                    managed SecretManagerSecretVersion
+                                                    resource. Should be in the format
+                                                    "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                                   type: string
                                                 name:
-                                                  description: The `name` field of
-                                                    a `SecretManagerSecretVersion`
+                                                  description: The name of a SecretManagerSecretVersion
                                                     resource.
                                                   type: string
                                                 namespace:
-                                                  description: The `metadata.namespace`
-                                                    field of a `SecretManagerSecretVersion`
-                                                    resource.
+                                                  description: The namespace of a
+                                                    SecretManagerSecretVersion resource.
                                                   type: string
                                               type: object
                                           type: object
@@ -1332,18 +1335,18 @@ spec:
                                                 - external
                                               properties:
                                                 external:
-                                                  description: ' If provided must
-                                                    be in the format `projects/*/secrets/*/versions/*`.'
+                                                  description: A reference to an externally
+                                                    managed SecretManagerSecretVersion
+                                                    resource. Should be in the format
+                                                    "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
                                                   type: string
                                                 name:
-                                                  description: The `name` field of
-                                                    a `SecretManagerSecretVersion`
+                                                  description: The name of a SecretManagerSecretVersion
                                                     resource.
                                                   type: string
                                                 namespace:
-                                                  description: The `metadata.namespace`
-                                                    field of a `SecretManagerSecretVersion`
-                                                    resource.
+                                                  description: The namespace of a
+                                                    SecretManagerSecretVersion resource.
                                                   type: string
                                               type: object
                                           type: object

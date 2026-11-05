@@ -124,7 +124,7 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 		},
 	}
 	mapCtx := &direct.MapContext{}
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 	}
@@ -198,7 +198,7 @@ func TestPopulateDesiredWithActualIfComputed_Generations(t *testing.T) {
 		},
 	}
 	mapCtx := &direct.MapContext{}
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 	}
@@ -372,7 +372,7 @@ func TestPopulateDefaults_EndToEnd_NoDiff(t *testing.T) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("unexpected error: %v", mapCtx.Err())
 	}
@@ -403,7 +403,7 @@ func TestPopulateDefaults_EndToEnd_PreservesExplicitModification(t *testing.T) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		t.Fatalf("unexpected error: %v", mapCtx.Err())
 	}
@@ -442,7 +442,7 @@ func TestNormalizeDisabledFeatureBlocks(t *testing.T) {
 		},
 	}
 	mapCtx := &direct.MapContext{}
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	actualPb := &composerpb.Environment{
 		Config: &composerpb.EnvironmentConfig{},
 	}

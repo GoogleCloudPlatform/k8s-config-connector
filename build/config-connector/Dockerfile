@@ -17,13 +17,14 @@ ARG BUILDER_IMG
 ARG GKE_DISTROLESS_IMG
 
 # Build the config-connector binary
-FROM ${BUILDER_IMG} AS builder
+FROM --platform=$BUILDPLATFORM ${BUILDER_IMG} AS builder
 
 # Prepare a directory containing the binary and other artifacts, and configure
 # any required permissions
 FROM alpine:latest AS packager
+ARG TARGETARCH=amd64
 WORKDIR /configconnector/
-COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/config-connector .
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_${TARGETARCH}/config-connector .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 

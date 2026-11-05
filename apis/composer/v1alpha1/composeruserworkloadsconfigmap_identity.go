@@ -1,0 +1,117 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &ComposerUserWorkloadsConfigMapIdentity{}
+	_ identity.Resource   = &ComposerUserWorkloadsConfigMap{}
+)
+
+var ComposerUserWorkloadsConfigMapIdentityFormat = gcpurls.Template[ComposerUserWorkloadsConfigMapIdentity]("composer.googleapis.com", "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsConfigMaps/{userWorkloadsConfigMap}")
+
+// ComposerUserWorkloadsConfigMapIdentity is the identity of a GCP ComposerUserWorkloadsConfigMap resource.
+// +k8s:deepcopy-gen=false
+type ComposerUserWorkloadsConfigMapIdentity struct {
+	Project                string
+	Location               string
+	Environment            string
+	UserWorkloadsConfigMap string
+}
+
+func (i *ComposerUserWorkloadsConfigMapIdentity) String() string {
+	return ComposerUserWorkloadsConfigMapIdentityFormat.ToString(*i)
+}
+
+func (i *ComposerUserWorkloadsConfigMapIdentity) FromExternal(ref string) error {
+	parsed, match, err := ComposerUserWorkloadsConfigMapIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ComposerUserWorkloadsConfigMap external=%q was not known (use %s): %w", ref, ComposerUserWorkloadsConfigMapIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of ComposerUserWorkloadsConfigMap external=%q was not known (use %s)", ref, ComposerUserWorkloadsConfigMapIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *ComposerUserWorkloadsConfigMapIdentity) Host() string {
+	return ComposerUserWorkloadsConfigMapIdentityFormat.Host()
+}
+
+func (i *ComposerUserWorkloadsConfigMapIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location + "/environments/" + i.Environment
+}
+
+func getIdentityFromComposerUserWorkloadsConfigMapSpec(ctx context.Context, reader client.Reader, obj *ComposerUserWorkloadsConfigMap) (*ComposerUserWorkloadsConfigMapIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("spec.resourceID or metadata.name is required")
+	}
+
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
+	}
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
+	}
+	parsed := &ComposerUserWorkloadsConfigMapIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/userWorkloadsConfigMaps" + "/_"); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
+	}
+	parsed.UserWorkloadsConfigMap = resourceID
+	return parsed, nil
+}
+
+func (obj *ComposerUserWorkloadsConfigMap) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComposerUserWorkloadsConfigMapSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &ComposerUserWorkloadsConfigMapIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if specIdentity.UserWorkloadsConfigMap == "" {
+			specIdentity.UserWorkloadsConfigMap = statusIdentity.UserWorkloadsConfigMap
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComposerUserWorkloadsConfigMap identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}

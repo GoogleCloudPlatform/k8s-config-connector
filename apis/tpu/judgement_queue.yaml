@@ -1,0 +1,75 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.reservationName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{zone}/reservations/{reservation}"
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.tpu.nodeSpec[].node.networkConfig.network
+    reason: possible-reference-by-name
+    detail: ComputeNetworkRef
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.tpu.nodeSpec[].node.networkConfigs[].network
+    reason: possible-reference-by-name
+    detail: ComputeNetworkRef
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.tpu.nodeSpec[].node.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.tpu.nodeSpec[].nodeID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: TPUQueuedResource
+    group: tpu.cnrm.cloud.google.com
+    field: .spec.tpu.nodeSpec[].parent
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to locations.googleapis.com/Location (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open

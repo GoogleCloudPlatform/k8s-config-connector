@@ -498,6 +498,12 @@ func parseLog(content string) []httpEvent {
 		}
 
 		lines := strings.Split(raw, "\n")
+		for len(lines) > 0 && strings.HasPrefix(strings.TrimSpace(lines[0]), "#") {
+			lines = lines[1:]
+		}
+		if len(lines) == 0 {
+			continue
+		}
 		var ev httpEvent
 
 		reqParts := strings.SplitN(lines[0], " ", 2)

@@ -1,0 +1,136 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "VertexAIFeaturestore/featurestore${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "VertexAIFeaturestoreEntityType/entitytype${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Test entity type"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "featurestore",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "entitytype${uniqueId}"
+      },
+      {
+        "id": "offline_storage_ttl_days",
+        "old": "",
+        "new": "4000"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "VertexAIFeaturestoreEntityTypeFeature/feature${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "A test feature"
+      },
+      {
+        "id": "entitytype",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/featurestores/featurestore${uniqueId}/entityTypes/entitytype${uniqueId}"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "feature${uniqueId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "value_type",
+        "old": "",
+        "new": "INT64"
+      }
+    ]
+  }
+]

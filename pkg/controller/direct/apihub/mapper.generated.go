@@ -236,6 +236,70 @@ func APIHubInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInstanc
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func APIHubPluginInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstance) *krm.APIHubPluginInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginInstanceObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, PluginInstanceActionObservedState_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func APIHubPluginInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginInstanceObservedState) *pb.PluginInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstance{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.PluginInstance_State](mapCtx, in.State)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, PluginInstanceActionObservedState_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func APIHubPluginInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstance) *krm.APIHubPluginInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubPluginInstanceSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.AuthConfig = AuthConfig_FromProto(mapCtx, in.GetAuthConfig())
+	if in.AdditionalConfig != nil {
+		out.AdditionalConfig = make(map[string]krm.ConfigVariable, len(in.AdditionalConfig))
+		for k, v := range in.AdditionalConfig {
+			if c := ConfigVariable_FromProto(mapCtx, v); c != nil {
+				out.AdditionalConfig[k] = *c
+			}
+		}
+	}
+	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, PluginInstanceAction_FromProto)
+	out.SourceProjectID = direct.LazyPtr(in.GetSourceProjectId())
+	return out
+}
+func APIHubPluginInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubPluginInstanceSpec) *pb.PluginInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstance{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.AuthConfig = AuthConfig_ToProto(mapCtx, in.AuthConfig)
+	if in.AdditionalConfig != nil {
+		out.AdditionalConfig = make(map[string]*pb.ConfigVariable, len(in.AdditionalConfig))
+		for k, v := range in.AdditionalConfig {
+			out.AdditionalConfig[k] = ConfigVariable_ToProto(mapCtx, &v)
+		}
+	}
+	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, PluginInstanceAction_ToProto)
+	out.SourceProjectId = direct.ValueOf(in.SourceProjectID)
+	return out
+}
 func APIHubPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Plugin) *krm.APIHubPluginObservedState {
 	if in == nil {
 		return nil
@@ -354,6 +418,112 @@ func APIHubRuntimeProjectAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	return out
 }
+func APIHubVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.APIHubVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubVersionObservedState{}
+	// MISSING: Name
+	out.Specs = in.Specs
+	out.APIOperations = in.ApiOperations
+	out.Definitions = in.Definitions
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Lifecycle = AttributeValuesObservedState_FromProto(mapCtx, in.GetLifecycle())
+	out.Compliance = AttributeValuesObservedState_FromProto(mapCtx, in.GetCompliance())
+	out.Accreditation = AttributeValuesObservedState_FromProto(mapCtx, in.GetAccreditation())
+	out.SourceMetadata = direct.Slice_FromProto(mapCtx, in.SourceMetadata, SourceMetadataObservedState_FromProto)
+	return out
+}
+func APIHubVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubVersionObservedState) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	out.Specs = in.Specs
+	out.ApiOperations = in.APIOperations
+	out.Definitions = in.Definitions
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Lifecycle = AttributeValuesObservedState_ToProto(mapCtx, in.Lifecycle)
+	out.Compliance = AttributeValuesObservedState_ToProto(mapCtx, in.Compliance)
+	out.Accreditation = AttributeValuesObservedState_ToProto(mapCtx, in.Accreditation)
+	out.SourceMetadata = direct.Slice_ToProto(mapCtx, in.SourceMetadata, SourceMetadataObservedState_ToProto)
+	return out
+}
+func APIHubVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Version) *krm.APIHubVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubVersionSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.Deployments = in.Deployments
+	out.Lifecycle = AttributeValuesWithRequired_FromProto(mapCtx, in.GetLifecycle())
+	out.Compliance = AttributeValuesWithRequired_FromProto(mapCtx, in.GetCompliance())
+	out.Accreditation = AttributeValuesWithRequired_FromProto(mapCtx, in.GetAccreditation())
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]krm.AttributeValuesWithRequired, len(in.Attributes))
+		for k, v := range in.Attributes {
+			if c := AttributeValuesWithRequired_FromProto(mapCtx, v); c != nil {
+				out.Attributes[k] = *c
+			}
+		}
+	}
+	out.SelectedDeployment = direct.LazyPtr(in.GetSelectedDeployment())
+	return out
+}
+func APIHubVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubVersionSpec) *pb.Version {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Version{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.Deployments = in.Deployments
+	out.Lifecycle = AttributeValuesWithRequired_ToProto(mapCtx, in.Lifecycle)
+	out.Compliance = AttributeValuesWithRequired_ToProto(mapCtx, in.Compliance)
+	out.Accreditation = AttributeValuesWithRequired_ToProto(mapCtx, in.Accreditation)
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]*pb.AttributeValues, len(in.Attributes))
+		for k, v := range in.Attributes {
+			out.Attributes[k] = AttributeValuesWithRequired_ToProto(mapCtx, &v)
+		}
+	}
+	out.SelectedDeployment = direct.ValueOf(in.SelectedDeployment)
+	return out
+}
+func ApihubSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Spec) *krm.ApihubSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApihubSpecObservedState{}
+	// MISSING: Name
+	out.SpecType = AttributeValuesObservedState_FromProto(mapCtx, in.GetSpecType())
+	out.Details = SpecDetailsObservedState_FromProto(mapCtx, in.GetDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: SourceMetadata
+	return out
+}
+func ApihubSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ApihubSpecObservedState) *pb.Spec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Spec{}
+	// MISSING: Name
+	out.SpecType = AttributeValuesObservedState_ToProto(mapCtx, in.SpecType)
+	out.Details = SpecDetailsObservedState_ToProto(mapCtx, in.Details)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: SourceMetadata
+	return out
+}
 func ApplicationIntegrationEndpointDetails_FromProto(mapCtx *direct.MapContext, in *pb.ApplicationIntegrationEndpointDetails) *krm.ApplicationIntegrationEndpointDetails {
 	if in == nil {
 		return nil
@@ -428,6 +598,38 @@ func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Att
 	out.Attribute = direct.ValueOf(in.Attribute)
 	return out
 }
+func AttributeValuesWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues) *krm.AttributeValuesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValuesWithRequired{}
+	out.EnumValues = AttributeValues_EnumAttributeValuesWithRequired_FromProto(mapCtx, in.GetEnumValues())
+	out.StringValues = AttributeValues_StringAttributeValuesWithRequired_FromProto(mapCtx, in.GetStringValues())
+	out.JsonValues = AttributeValues_StringAttributeValuesWithRequired_FromProto(mapCtx, in.GetJsonValues())
+	out.URIValues = AttributeValues_StringAttributeValuesWithRequired_FromProto(mapCtx, in.GetUriValues())
+	// MISSING: Attribute
+	return out
+}
+func AttributeValuesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValuesWithRequired) *pb.AttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues{}
+	if oneof := AttributeValues_EnumAttributeValuesWithRequired_ToProto(mapCtx, in.EnumValues); oneof != nil {
+		out.Value = &pb.AttributeValues_EnumValues{EnumValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValuesWithRequired_ToProto(mapCtx, in.StringValues); oneof != nil {
+		out.Value = &pb.AttributeValues_StringValues{StringValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValuesWithRequired_ToProto(mapCtx, in.JsonValues); oneof != nil {
+		out.Value = &pb.AttributeValues_JsonValues{JsonValues: oneof}
+	}
+	if oneof := AttributeValues_StringAttributeValuesWithRequired_ToProto(mapCtx, in.URIValues); oneof != nil {
+		out.Value = &pb.AttributeValues_UriValues{UriValues: oneof}
+	}
+	// MISSING: Attribute
+	return out
+}
 func AttributeValues_EnumAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValues {
 	if in == nil {
 		return nil
@@ -444,6 +646,22 @@ func AttributeValues_EnumAttributeValues_ToProto(mapCtx *direct.MapContext, in *
 	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValue_ToProto)
 	return out
 }
+func AttributeValues_EnumAttributeValuesWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_EnumAttributeValues) *krm.AttributeValues_EnumAttributeValuesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_EnumAttributeValuesWithRequired{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Attribute_AllowedValueWithRequired_FromProto)
+	return out
+}
+func AttributeValues_EnumAttributeValuesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_EnumAttributeValuesWithRequired) *pb.AttributeValues_EnumAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_EnumAttributeValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Attribute_AllowedValueWithRequired_ToProto)
+	return out
+}
 func AttributeValues_StringAttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValues {
 	if in == nil {
 		return nil
@@ -458,6 +676,132 @@ func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.AttributeValues_StringAttributeValues{}
 	out.Values = in.Values
+	return out
+}
+func AttributeValues_StringAttributeValuesWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues_StringAttributeValues) *krm.AttributeValues_StringAttributeValuesWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttributeValues_StringAttributeValuesWithRequired{}
+	out.Values = in.Values
+	return out
+}
+func AttributeValues_StringAttributeValuesWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues_StringAttributeValuesWithRequired) *pb.AttributeValues_StringAttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributeValues_StringAttributeValues{}
+	out.Values = in.Values
+	return out
+}
+func Attribute_AllowedValueWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Attribute_AllowedValue) *krm.Attribute_AllowedValueWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Attribute_AllowedValueWithRequired{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Immutable = direct.LazyPtr(in.GetImmutable())
+	return out
+}
+func Attribute_AllowedValueWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.Attribute_AllowedValueWithRequired) *pb.Attribute_AllowedValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute_AllowedValue{}
+	out.Id = direct.ValueOf(in.ID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Immutable = direct.ValueOf(in.Immutable)
+	return out
+}
+func AuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuthConfig) *krm.AuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthConfig{}
+	out.GoogleServiceAccountConfig = GoogleServiceAccountConfig_FromProto(mapCtx, in.GetGoogleServiceAccountConfig())
+	out.UserPasswordConfig = AuthConfig_UserPasswordConfig_FromProto(mapCtx, in.GetUserPasswordConfig())
+	out.APIKeyConfig = AuthConfig_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	out.OAUTH2ClientCredentialsConfig = AuthConfig_OAUTH2ClientCredentialsConfig_FromProto(mapCtx, in.GetOauth2ClientCredentialsConfig())
+	out.AuthType = direct.Enum_FromProto(mapCtx, in.GetAuthType())
+	return out
+}
+func AuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig) *pb.AuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthConfig{}
+	if oneof := GoogleServiceAccountConfig_ToProto(mapCtx, in.GoogleServiceAccountConfig); oneof != nil {
+		out.Config = &pb.AuthConfig_GoogleServiceAccountConfig{GoogleServiceAccountConfig: oneof}
+	}
+	if oneof := AuthConfig_UserPasswordConfig_ToProto(mapCtx, in.UserPasswordConfig); oneof != nil {
+		out.Config = &pb.AuthConfig_UserPasswordConfig_{UserPasswordConfig: oneof}
+	}
+	if oneof := AuthConfig_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.Config = &pb.AuthConfig_ApiKeyConfig_{ApiKeyConfig: oneof}
+	}
+	if oneof := AuthConfig_OAUTH2ClientCredentialsConfig_ToProto(mapCtx, in.OAUTH2ClientCredentialsConfig); oneof != nil {
+		out.Config = &pb.AuthConfig_Oauth2ClientCredentialsConfig_{Oauth2ClientCredentialsConfig: oneof}
+	}
+	out.AuthType = direct.Enum_ToProto[pb.AuthType](mapCtx, in.AuthType)
+	return out
+}
+func AuthConfig_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuthConfig_ApiKeyConfig) *krm.AuthConfig_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthConfig_APIKeyConfig{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.APIKey = Secret_FromProto(mapCtx, in.GetApiKey())
+	out.HTTPElementLocation = direct.Enum_FromProto(mapCtx, in.GetHttpElementLocation())
+	return out
+}
+func AuthConfig_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_APIKeyConfig) *pb.AuthConfig_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthConfig_ApiKeyConfig{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ApiKey = Secret_ToProto(mapCtx, in.APIKey)
+	out.HttpElementLocation = direct.Enum_ToProto[pb.AuthConfig_ApiKeyConfig_HttpElementLocation](mapCtx, in.HTTPElementLocation)
+	return out
+}
+func AuthConfig_OAUTH2ClientCredentialsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuthConfig_Oauth2ClientCredentialsConfig) *krm.AuthConfig_OAUTH2ClientCredentialsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthConfig_OAUTH2ClientCredentialsConfig{}
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = Secret_FromProto(mapCtx, in.GetClientSecret())
+	return out
+}
+func AuthConfig_OAUTH2ClientCredentialsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_OAUTH2ClientCredentialsConfig) *pb.AuthConfig_Oauth2ClientCredentialsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthConfig_Oauth2ClientCredentialsConfig{}
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = Secret_ToProto(mapCtx, in.ClientSecret)
+	return out
+}
+func AuthConfig_UserPasswordConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuthConfig_UserPasswordConfig) *krm.AuthConfig_UserPasswordConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AuthConfig_UserPasswordConfig{}
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = Secret_FromProto(mapCtx, in.GetPassword())
+	return out
+}
+func AuthConfig_UserPasswordConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_UserPasswordConfig) *pb.AuthConfig_UserPasswordConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthConfig_UserPasswordConfig{}
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = Secret_ToProto(mapCtx, in.Password)
 	return out
 }
 func ConfigValueOption_FromProto(mapCtx *direct.MapContext, in *pb.ConfigValueOption) *krm.ConfigValueOption {
@@ -479,6 +823,72 @@ func ConfigValueOption_ToProto(mapCtx *direct.MapContext, in *krm.ConfigValueOpt
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	return out
+}
+func ConfigVariable_FromProto(mapCtx *direct.MapContext, in *pb.ConfigVariable) *krm.ConfigVariable {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigVariable{}
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.IntValue = direct.LazyPtr(in.GetIntValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.SecretValue = Secret_FromProto(mapCtx, in.GetSecretValue())
+	out.EnumValue = ConfigValueOption_FromProto(mapCtx, in.GetEnumValue())
+	out.MultiSelectValues = ConfigVariable_MultiSelectValues_FromProto(mapCtx, in.GetMultiSelectValues())
+	out.MultiStringValues = ConfigVariable_MultiStringValues_FromProto(mapCtx, in.GetMultiStringValues())
+	out.MultiIntValues = ConfigVariable_MultiIntValues_FromProto(mapCtx, in.GetMultiIntValues())
+	// MISSING: Key
+	return out
+}
+func ConfigVariable_ToProto(mapCtx *direct.MapContext, in *krm.ConfigVariable) *pb.ConfigVariable {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConfigVariable{}
+	if oneof := ConfigVariable_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := ConfigVariable_IntValue_ToProto(mapCtx, in.IntValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := ConfigVariable_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := Secret_ToProto(mapCtx, in.SecretValue); oneof != nil {
+		out.Value = &pb.ConfigVariable_SecretValue{SecretValue: oneof}
+	}
+	if oneof := ConfigValueOption_ToProto(mapCtx, in.EnumValue); oneof != nil {
+		out.Value = &pb.ConfigVariable_EnumValue{EnumValue: oneof}
+	}
+	if oneof := ConfigVariable_MultiSelectValues_ToProto(mapCtx, in.MultiSelectValues); oneof != nil {
+		out.Value = &pb.ConfigVariable_MultiSelectValues_{MultiSelectValues: oneof}
+	}
+	if oneof := ConfigVariable_MultiStringValues_ToProto(mapCtx, in.MultiStringValues); oneof != nil {
+		out.Value = &pb.ConfigVariable_MultiStringValues_{MultiStringValues: oneof}
+	}
+	if oneof := ConfigVariable_MultiIntValues_ToProto(mapCtx, in.MultiIntValues); oneof != nil {
+		out.Value = &pb.ConfigVariable_MultiIntValues_{MultiIntValues: oneof}
+	}
+	// MISSING: Key
+	return out
+}
+func ConfigVariable_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.ConfigVariable_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ConfigVariable_StringValue{StringValue: *in}
+}
+func ConfigVariable_IntValue_ToProto(mapCtx *direct.MapContext, in *int64) *pb.ConfigVariable_IntValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ConfigVariable_IntValue{IntValue: *in}
+}
+func ConfigVariable_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.ConfigVariable_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.ConfigVariable_BoolValue{BoolValue: *in}
 }
 func ConfigVariableTemplate_FromProto(mapCtx *direct.MapContext, in *pb.ConfigVariableTemplate) *krm.ConfigVariableTemplate {
 	if in == nil {
@@ -506,6 +916,90 @@ func ConfigVariableTemplate_ToProto(mapCtx *direct.MapContext, in *krm.ConfigVar
 	out.Required = direct.ValueOf(in.Required)
 	out.EnumOptions = direct.Slice_ToProto(mapCtx, in.EnumOptions, ConfigValueOption_ToProto)
 	out.MultiSelectOptions = direct.Slice_ToProto(mapCtx, in.MultiSelectOptions, ConfigValueOption_ToProto)
+	return out
+}
+func ConfigVariable_MultiIntValues_FromProto(mapCtx *direct.MapContext, in *pb.ConfigVariable_MultiIntValues) *krm.ConfigVariable_MultiIntValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigVariable_MultiIntValues{}
+	out.Values = in.Values
+	return out
+}
+func ConfigVariable_MultiIntValues_ToProto(mapCtx *direct.MapContext, in *krm.ConfigVariable_MultiIntValues) *pb.ConfigVariable_MultiIntValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConfigVariable_MultiIntValues{}
+	out.Values = in.Values
+	return out
+}
+func ConfigVariable_MultiSelectValues_FromProto(mapCtx *direct.MapContext, in *pb.ConfigVariable_MultiSelectValues) *krm.ConfigVariable_MultiSelectValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigVariable_MultiSelectValues{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, ConfigValueOption_FromProto)
+	return out
+}
+func ConfigVariable_MultiSelectValues_ToProto(mapCtx *direct.MapContext, in *krm.ConfigVariable_MultiSelectValues) *pb.ConfigVariable_MultiSelectValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConfigVariable_MultiSelectValues{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, ConfigValueOption_ToProto)
+	return out
+}
+func ConfigVariable_MultiStringValues_FromProto(mapCtx *direct.MapContext, in *pb.ConfigVariable_MultiStringValues) *krm.ConfigVariable_MultiStringValues {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigVariable_MultiStringValues{}
+	out.Values = in.Values
+	return out
+}
+func ConfigVariable_MultiStringValues_ToProto(mapCtx *direct.MapContext, in *krm.ConfigVariable_MultiStringValues) *pb.ConfigVariable_MultiStringValues {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConfigVariable_MultiStringValues{}
+	out.Values = in.Values
+	return out
+}
+func CurationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CurationConfig) *krm.CurationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CurationConfig{}
+	out.CustomCuration = CurationConfig_CustomCuration_FromProto(mapCtx, in.GetCustomCuration())
+	out.CurationType = direct.Enum_FromProto(mapCtx, in.GetCurationType())
+	return out
+}
+func CurationConfig_ToProto(mapCtx *direct.MapContext, in *krm.CurationConfig) *pb.CurationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CurationConfig{}
+	if oneof := CurationConfig_CustomCuration_ToProto(mapCtx, in.CustomCuration); oneof != nil {
+		out.CurationConfig = &pb.CurationConfig_CustomCuration_{CustomCuration: oneof}
+	}
+	out.CurationType = direct.Enum_ToProto[pb.CurationType](mapCtx, in.CurationType)
+	return out
+}
+func CurationConfig_CustomCuration_FromProto(mapCtx *direct.MapContext, in *pb.CurationConfig_CustomCuration) *krm.CurationConfig_CustomCuration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CurationConfig_CustomCuration{}
+	out.Curation = direct.LazyPtr(in.GetCuration())
+	return out
+}
+func CurationConfig_CustomCuration_ToProto(mapCtx *direct.MapContext, in *krm.CurationConfig_CustomCuration) *pb.CurationConfig_CustomCuration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CurationConfig_CustomCuration{}
+	out.Curation = direct.ValueOf(in.Curation)
 	return out
 }
 func Curation_PluginInstanceActionID_FromProto(mapCtx *direct.MapContext, in *pb.Curation_PluginInstanceActionID) *krm.Curation_PluginInstanceActionID {
@@ -652,6 +1146,86 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	}
 	return out
 }
+func ExecutionStatus_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStatus) *krm.ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStatus{}
+	// MISSING: CurrentExecutionState
+	// MISSING: LastExecution
+	return out
+}
+func ExecutionStatus_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStatus) *pb.ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStatus{}
+	// MISSING: CurrentExecutionState
+	// MISSING: LastExecution
+	return out
+}
+func ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStatus) *krm.ExecutionStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStatusObservedState{}
+	out.CurrentExecutionState = direct.Enum_FromProto(mapCtx, in.GetCurrentExecutionState())
+	out.LastExecution = ExecutionStatus_LastExecutionObservedState_FromProto(mapCtx, in.GetLastExecution())
+	return out
+}
+func ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStatusObservedState) *pb.ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStatus{}
+	out.CurrentExecutionState = direct.Enum_ToProto[pb.ExecutionStatus_CurrentExecutionState](mapCtx, in.CurrentExecutionState)
+	out.LastExecution = ExecutionStatus_LastExecutionObservedState_ToProto(mapCtx, in.LastExecution)
+	return out
+}
+func ExecutionStatus_LastExecution_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStatus_LastExecution) *krm.ExecutionStatus_LastExecution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStatus_LastExecution{}
+	// MISSING: Result
+	// MISSING: ErrorMessage
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func ExecutionStatus_LastExecution_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStatus_LastExecution) *pb.ExecutionStatus_LastExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStatus_LastExecution{}
+	// MISSING: Result
+	// MISSING: ErrorMessage
+	// MISSING: StartTime
+	// MISSING: EndTime
+	return out
+}
+func ExecutionStatus_LastExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStatus_LastExecution) *krm.ExecutionStatus_LastExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStatus_LastExecutionObservedState{}
+	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func ExecutionStatus_LastExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStatus_LastExecutionObservedState) *pb.ExecutionStatus_LastExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStatus_LastExecution{}
+	out.Result = direct.Enum_ToProto[pb.ExecutionStatus_LastExecution_Result](mapCtx, in.Result)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
 func GoogleServiceAccountConfig_FromProto(mapCtx *direct.MapContext, in *pb.GoogleServiceAccountConfig) *krm.GoogleServiceAccountConfig {
 	if in == nil {
 		return nil
@@ -668,6 +1242,88 @@ func GoogleServiceAccountConfig_ToProto(mapCtx *direct.MapContext, in *krm.Googl
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	return out
 }
+func Issue_FromProto(mapCtx *direct.MapContext, in *pb.Issue) *krm.Issue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Issue{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Path = in.Path
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.Range = Range_FromProto(mapCtx, in.GetRange())
+	return out
+}
+func Issue_ToProto(mapCtx *direct.MapContext, in *krm.Issue) *pb.Issue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Issue{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Path = in.Path
+	out.Message = direct.ValueOf(in.Message)
+	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
+	out.Range = Range_ToProto(mapCtx, in.Range)
+	return out
+}
+func LintResponse_SummaryEntry_FromProto(mapCtx *direct.MapContext, in *pb.LintResponse_SummaryEntry) *krm.LintResponse_SummaryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LintResponse_SummaryEntry{}
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.Count = direct.LazyPtr(in.GetCount())
+	return out
+}
+func LintResponse_SummaryEntry_ToProto(mapCtx *direct.MapContext, in *krm.LintResponse_SummaryEntry) *pb.LintResponse_SummaryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LintResponse_SummaryEntry{}
+	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
+	out.Count = direct.ValueOf(in.Count)
+	return out
+}
+func OpenAPISpecDetails_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiSpecDetails) *krm.OpenAPISpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpenAPISpecDetails{}
+	// MISSING: Format
+	// MISSING: Version
+	// MISSING: Owner
+	return out
+}
+func OpenAPISpecDetails_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPISpecDetails) *pb.OpenApiSpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpenApiSpecDetails{}
+	// MISSING: Format
+	// MISSING: Version
+	// MISSING: Owner
+	return out
+}
+func OpenAPISpecDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OpenApiSpecDetails) *krm.OpenAPISpecDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpenAPISpecDetailsObservedState{}
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.Owner = OwnerObservedState_FromProto(mapCtx, in.GetOwner())
+	return out
+}
+func OpenAPISpecDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OpenAPISpecDetailsObservedState) *pb.OpenApiSpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpenApiSpecDetails{}
+	out.Format = direct.Enum_ToProto[pb.OpenApiSpecDetails_Format](mapCtx, in.Format)
+	out.Version = direct.ValueOf(in.Version)
+	out.Owner = OwnerObservedState_ToProto(mapCtx, in.Owner)
+	return out
+}
 func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
 	if in == nil {
 		return nil
@@ -678,6 +1334,24 @@ func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
 	return out
 }
 func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
+func OwnerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.OwnerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OwnerObservedState{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func OwnerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OwnerObservedState) *pb.Owner {
 	if in == nil {
 		return nil
 	}
@@ -706,6 +1380,104 @@ func PluginActionConfig_ToProto(mapCtx *direct.MapContext, in *krm.PluginActionC
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.TriggerMode = direct.Enum_ToProto[pb.PluginActionConfig_TriggerMode](mapCtx, in.TriggerMode)
+	return out
+}
+func PluginInstanceAction_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstanceAction) *krm.PluginInstanceAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PluginInstanceAction{}
+	// MISSING: HubInstanceAction
+	out.ActionID = direct.LazyPtr(in.GetActionId())
+	// MISSING: State
+	out.ScheduleCronExpression = direct.LazyPtr(in.GetScheduleCronExpression())
+	out.CurationConfig = CurationConfig_FromProto(mapCtx, in.GetCurationConfig())
+	out.ScheduleTimeZone = direct.LazyPtr(in.GetScheduleTimeZone())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	// MISSING: ResourceConfig
+	return out
+}
+func PluginInstanceAction_ToProto(mapCtx *direct.MapContext, in *krm.PluginInstanceAction) *pb.PluginInstanceAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstanceAction{}
+	// MISSING: HubInstanceAction
+	out.ActionId = direct.ValueOf(in.ActionID)
+	// MISSING: State
+	out.ScheduleCronExpression = direct.ValueOf(in.ScheduleCronExpression)
+	out.CurationConfig = CurationConfig_ToProto(mapCtx, in.CurationConfig)
+	out.ScheduleTimeZone = direct.ValueOf(in.ScheduleTimeZone)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	// MISSING: ResourceConfig
+	return out
+}
+func PluginInstanceActionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstanceAction) *krm.PluginInstanceActionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PluginInstanceActionObservedState{}
+	out.HubInstanceAction = ExecutionStatusObservedState_FromProto(mapCtx, in.GetHubInstanceAction())
+	// MISSING: ActionID
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ScheduleCronExpression
+	// MISSING: CurationConfig
+	// MISSING: ScheduleTimeZone
+	// MISSING: ServiceAccount
+	out.ResourceConfig = PluginInstanceAction_ResourceConfigObservedState_FromProto(mapCtx, in.GetResourceConfig())
+	return out
+}
+func PluginInstanceActionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PluginInstanceActionObservedState) *pb.PluginInstanceAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstanceAction{}
+	if oneof := ExecutionStatusObservedState_ToProto(mapCtx, in.HubInstanceAction); oneof != nil {
+		out.ActionStatus = &pb.PluginInstanceAction_HubInstanceAction{HubInstanceAction: oneof}
+	}
+	// MISSING: ActionID
+	out.State = direct.Enum_ToProto[pb.PluginInstanceAction_State](mapCtx, in.State)
+	// MISSING: ScheduleCronExpression
+	// MISSING: CurationConfig
+	// MISSING: ScheduleTimeZone
+	// MISSING: ServiceAccount
+	out.ResourceConfig = PluginInstanceAction_ResourceConfigObservedState_ToProto(mapCtx, in.ResourceConfig)
+	return out
+}
+func PluginInstanceAction_ResourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstanceAction_ResourceConfig) *krm.PluginInstanceAction_ResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PluginInstanceAction_ResourceConfig{}
+	// MISSING: ActionType
+	// MISSING: PubsubTopic
+	return out
+}
+func PluginInstanceAction_ResourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PluginInstanceAction_ResourceConfig) *pb.PluginInstanceAction_ResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstanceAction_ResourceConfig{}
+	// MISSING: ActionType
+	// MISSING: PubsubTopic
+	return out
+}
+func PluginInstanceAction_ResourceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PluginInstanceAction_ResourceConfig) *krm.PluginInstanceAction_ResourceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PluginInstanceAction_ResourceConfigObservedState{}
+	out.ActionType = direct.Enum_FromProto(mapCtx, in.GetActionType())
+	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
+	return out
+}
+func PluginInstanceAction_ResourceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PluginInstanceAction_ResourceConfigObservedState) *pb.PluginInstanceAction_ResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PluginInstanceAction_ResourceConfig{}
+	out.ActionType = direct.Enum_ToProto[pb.ActionType](mapCtx, in.ActionType)
+	out.PubsubTopic = direct.ValueOf(in.PubsubTopic)
 	return out
 }
 func Plugin_ConfigTemplate_FromProto(mapCtx *direct.MapContext, in *pb.Plugin_ConfigTemplate) *krm.Plugin_ConfigTemplate {
@@ -758,5 +1530,149 @@ func Plugin_HostingService_ToProto(mapCtx *direct.MapContext, in *krm.Plugin_Hos
 	}
 	out := &pb.Plugin_HostingService{}
 	out.ServiceUri = direct.ValueOf(in.ServiceURI)
+	return out
+}
+func Point_FromProto(mapCtx *direct.MapContext, in *pb.Point) *krm.Point {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Point{}
+	out.Line = direct.LazyPtr(in.GetLine())
+	out.Character = direct.LazyPtr(in.GetCharacter())
+	return out
+}
+func Point_ToProto(mapCtx *direct.MapContext, in *krm.Point) *pb.Point {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Point{}
+	out.Line = direct.ValueOf(in.Line)
+	out.Character = direct.ValueOf(in.Character)
+	return out
+}
+func Range_FromProto(mapCtx *direct.MapContext, in *pb.Range) *krm.Range {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Range{}
+	out.Start = Point_FromProto(mapCtx, in.GetStart())
+	out.End = Point_FromProto(mapCtx, in.GetEnd())
+	return out
+}
+func Range_ToProto(mapCtx *direct.MapContext, in *krm.Range) *pb.Range {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Range{}
+	out.Start = Point_ToProto(mapCtx, in.Start)
+	out.End = Point_ToProto(mapCtx, in.End)
+	return out
+}
+func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Secret{}
+	out.SecretVersion = direct.LazyPtr(in.GetSecretVersion())
+	return out
+}
+func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Secret{}
+	out.SecretVersion = direct.ValueOf(in.SecretVersion)
+	return out
+}
+func SourceMetadata_PluginInstanceActionSource_FromProto(mapCtx *direct.MapContext, in *pb.SourceMetadata_PluginInstanceActionSource) *krm.SourceMetadata_PluginInstanceActionSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceMetadata_PluginInstanceActionSource{}
+	// MISSING: PluginInstance
+	// MISSING: ActionID
+	return out
+}
+func SourceMetadata_PluginInstanceActionSource_ToProto(mapCtx *direct.MapContext, in *krm.SourceMetadata_PluginInstanceActionSource) *pb.SourceMetadata_PluginInstanceActionSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceMetadata_PluginInstanceActionSource{}
+	// MISSING: PluginInstance
+	// MISSING: ActionID
+	return out
+}
+func SourceMetadata_PluginInstanceActionSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SourceMetadata_PluginInstanceActionSource) *krm.SourceMetadata_PluginInstanceActionSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceMetadata_PluginInstanceActionSourceObservedState{}
+	out.PluginInstance = direct.LazyPtr(in.GetPluginInstance())
+	out.ActionID = direct.LazyPtr(in.GetActionId())
+	return out
+}
+func SourceMetadata_PluginInstanceActionSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SourceMetadata_PluginInstanceActionSourceObservedState) *pb.SourceMetadata_PluginInstanceActionSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceMetadata_PluginInstanceActionSource{}
+	out.PluginInstance = direct.ValueOf(in.PluginInstance)
+	out.ActionId = direct.ValueOf(in.ActionID)
+	return out
+}
+func SpecContents_FromProto(mapCtx *direct.MapContext, in *pb.SpecContents) *krm.SpecContents {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpecContents{}
+	out.Contents = in.GetContents()
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	return out
+}
+func SpecContents_ToProto(mapCtx *direct.MapContext, in *krm.SpecContents) *pb.SpecContents {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecContents{}
+	out.Contents = in.Contents
+	out.MimeType = direct.ValueOf(in.MimeType)
+	return out
+}
+func SpecDetails_FromProto(mapCtx *direct.MapContext, in *pb.SpecDetails) *krm.SpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpecDetails{}
+	// MISSING: OpenAPISpecDetails
+	// MISSING: Description
+	return out
+}
+func SpecDetails_ToProto(mapCtx *direct.MapContext, in *krm.SpecDetails) *pb.SpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecDetails{}
+	// MISSING: OpenAPISpecDetails
+	// MISSING: Description
+	return out
+}
+func SpecDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecDetails) *krm.SpecDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpecDetailsObservedState{}
+	out.OpenAPISpecDetails = OpenAPISpecDetailsObservedState_FromProto(mapCtx, in.GetOpenApiSpecDetails())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func SpecDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpecDetailsObservedState) *pb.SpecDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecDetails{}
+	if oneof := OpenAPISpecDetailsObservedState_ToProto(mapCtx, in.OpenAPISpecDetails); oneof != nil {
+		out.Details = &pb.SpecDetails_OpenApiSpecDetails{OpenApiSpecDetails: oneof}
+	}
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }

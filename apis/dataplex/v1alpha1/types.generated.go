@@ -27,8 +27,54 @@
 // resource: DataplexDataScan:DataScan
 // resource: DataplexMetadataJob:MetadataJob
 // resource: DataplexMetadataFeed:MetadataFeed
+// resource: DataplexAsset:Asset
+// resource: DataplexDataAsset:DataAsset
+// resource: DataplexDataAttribute:DataAttribute
+// resource: DataplexEncryptionConfig:EncryptionConfig
+// resource: DataplexEntity:Entity
+// resource: DataplexEntry:Entry
+// resource: DataplexEntryLink:EntryLink
+// resource: DataplexGlossaryCategory:GlossaryCategory
+// resource: DataplexGlossaryTerm:GlossaryTerm
+// resource: DataplexContent:Content
+// resource: DataplexEnvironment:Environment
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.dataplex.v1.Aspect
+type Aspect struct {
+
+	// Required. The content of the aspect, according to its aspect type schema.
+	//  The maximum size of the field is 120KB (encoded as UTF-8).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Aspect.data
+	// +required
+	Data apiextensionsv1.JSON `json:"data,omitempty"`
+
+	// Optional. Information related to the source system of the aspect.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Aspect.aspect_source
+	AspectSource *AspectSource `json:"aspectSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.AspectSource
+type AspectSource struct {
+	// The time the aspect was created in the source system.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AspectSource.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// The time the aspect was last updated in the source system.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AspectSource.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// The version of the data format used to produce this data. This field is
+	//  used to indicated when the underlying data format changes (e.g., schema
+	//  modifications, changes to the source URL format definition, etc).
+	// +kcc:proto:field=google.cloud.dataplex.v1.AspectSource.data_version
+	DataVersion *string `json:"dataVersion,omitempty"`
+}
 
 // +kcc:proto=google.cloud.dataplex.v1.AspectType.Authorization
 type AspectType_Authorization struct {
@@ -98,6 +144,183 @@ type AspectType_MetadataTemplate_EnumValue struct {
 	Deprecated *string `json:"deprecated,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataplex.v1.Asset.DiscoverySpec
+type Asset_DiscoverySpec struct {
+	// Optional. Whether discovery is enabled.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to include
+	//  during discovery if only a subset of the data should considered.  For
+	//  Cloud Storage bucket assets, these are interpreted as glob patterns used
+	//  to match object names. For BigQuery dataset assets, these are interpreted
+	//  as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.include_patterns
+	IncludePatterns []string `json:"includePatterns,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to exclude
+	//  during discovery.  For Cloud Storage bucket assets, these are interpreted
+	//  as glob patterns used to match object names. For BigQuery dataset assets,
+	//  these are interpreted as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.exclude_patterns
+	ExcludePatterns []string `json:"excludePatterns,omitempty"`
+
+	// Optional. Configuration for CSV data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.csv_options
+	CsvOptions *Asset_DiscoverySpec_CsvOptions `json:"csvOptions,omitempty"`
+
+	// Optional. Configuration for Json data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.json_options
+	JsonOptions *Asset_DiscoverySpec_JsonOptions `json:"jsonOptions,omitempty"`
+
+	// Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron) for
+	//  running discovery periodically. Successive discovery runs must be
+	//  scheduled at least 60 minutes apart. The default value is to run
+	//  discovery every 60 minutes.
+	//
+	//  To explicitly set a timezone to the cron tab, apply a prefix in the
+	//  cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+	//  The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+	//  database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
+	//  `TZ=America/New_York 1 * * * *`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.schedule
+	Schedule *string `json:"schedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.DiscoverySpec.CsvOptions
+type Asset_DiscoverySpec_CsvOptions struct {
+	// Optional. The number of rows to interpret as header rows that should be
+	//  skipped when reading data rows.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.CsvOptions.header_rows
+	HeaderRows *int32 `json:"headerRows,omitempty"`
+
+	// Optional. The delimiter being used to separate values. This defaults to
+	//  ','.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.CsvOptions.delimiter
+	Delimiter *string `json:"delimiter,omitempty"`
+
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.CsvOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for CSV data.
+	//  If true, all columns will be registered as strings.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.CsvOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.DiscoverySpec.JsonOptions
+type Asset_DiscoverySpec_JsonOptions struct {
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.JsonOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for Json data.
+	//  If true, all columns will be registered as their primitive types
+	//  (strings, number or boolean).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoverySpec.JsonOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.DiscoveryStatus
+type Asset_DiscoveryStatus struct {
+	// The current status of the discovery feature.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Additional information about the current state.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.message
+	Message *string `json:"message,omitempty"`
+
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// The start time of the last discovery run.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.last_run_time
+	LastRunTime *string `json:"lastRunTime,omitempty"`
+
+	// Data Stats of the asset reported by discovery.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.stats
+	Stats *Asset_DiscoveryStatus_Stats `json:"stats,omitempty"`
+
+	// The duration of the last discovery run.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.last_run_duration
+	LastRunDuration *string `json:"lastRunDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.DiscoveryStatus.Stats
+type Asset_DiscoveryStatus_Stats struct {
+	// The count of data items within the referenced resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.Stats.data_items
+	DataItems *int64 `json:"dataItems,omitempty"`
+
+	// The number of stored data bytes within the referenced resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.Stats.data_size
+	DataSize *int64 `json:"dataSize,omitempty"`
+
+	// The count of table entities within the referenced resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.Stats.tables
+	Tables *int64 `json:"tables,omitempty"`
+
+	// The count of fileset entities within the referenced resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.DiscoveryStatus.Stats.filesets
+	Filesets *int64 `json:"filesets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.ResourceSpec
+type Asset_ResourceSpec struct {
+	// Immutable. Relative name of the cloud resource that contains the data
+	//  that is being managed within a lake. For example:
+	//    `projects/{project_number}/buckets/{bucket_id}`
+	//    `projects/{project_number}/datasets/{dataset_id}`
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. Type of resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Determines how read permissions are handled for each asset and
+	//  their associated tables. Only available to storage buckets assets.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.read_access_mode
+	ReadAccessMode *string `json:"readAccessMode,omitempty"`
+}
+
+/* unreachable type Asset_ResourceStatus
+// +kcc:proto=google.cloud.dataplex.v1.Asset.ResourceStatus
+type Asset_ResourceStatus struct {
+	// The current state of the managed resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Additional information about the current state.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.message
+	Message *string `json:"message,omitempty"`
+
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dataplex.v1.Asset.SecurityStatus
+type Asset_SecurityStatus struct {
+	// The current state of the security policy applied to the attached
+	//  resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.SecurityStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Additional information about the current state.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.SecurityStatus.message
+	Message *string `json:"message,omitempty"`
+
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.SecurityStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dataplex.v1.AssetStatus
 type AssetStatus struct {
 	// Last update time of the status.
@@ -112,6 +335,42 @@ type AssetStatus struct {
 	//  attached resources.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
 	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.Notebook
+type Content_Notebook struct {
+	// Required. Kernel Type of the notebook.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.Notebook.kernel_type
+	// +required
+	KernelType *string `json:"kernelType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Content.SqlScript
+type Content_SQLScript struct {
+	// Required. Query Engine to be used for the Sql Query.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Content.SqlScript.engine
+	// +required
+	Engine *string `json:"engine,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataAccessSpec
+type DataAccessSpec struct {
+	// Optional. The format of strings follows the pattern followed by IAM in the
+	//  bindings. user:{email}, serviceAccount:{email} group:{email}.
+	//  The set of principals to be granted reader role on data
+	//  stored within resources.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataAccessSpec.readers
+	Readers []string `json:"readers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataAsset.AccessGroupConfig
+type DataAsset_AccessGroupConfig struct {
+	// Optional. IAM roles granted on the resource to this access group. Role
+	//  name follows https://cloud.google.com/iam/docs/reference/rest/v1/roles.
+	//
+	//  Example: `[ "roles/bigquery.dataViewer" ]`
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataAsset.AccessGroupConfig.iam_roles
+	IAMRoles []string `json:"iamRoles,omitempty"`
 }
 
 /* unreachable type DataDiscoveryResult
@@ -827,6 +1086,105 @@ type DataScan_ExecutionStatus struct {
 	LatestJobCreateTime *string `json:"latestJobCreateTime,omitempty"`
 }
 
+/* unreachable type EncryptionConfig_FailureDetails
+// +kcc:proto=google.cloud.dataplex.v1.EncryptionConfig.FailureDetails
+type EncryptionConfig_FailureDetails struct {
+}
+*/
+
+/* unreachable type Entity_CompatibilityStatus
+// +kcc:proto=google.cloud.dataplex.v1.Entity.CompatibilityStatus
+type Entity_CompatibilityStatus struct {
+}
+*/
+
+/* unreachable type Entity_CompatibilityStatus_Compatibility
+// +kcc:proto=google.cloud.dataplex.v1.Entity.CompatibilityStatus.Compatibility
+type Entity_CompatibilityStatus_Compatibility struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryLink.EntryReference
+type EntryLink_EntryReference struct {
+	// Required. Immutable. The relative resource name of the referenced Entry,
+	//  of the form:
+	//  `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryLink.EntryReference.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Immutable. The path in the Entry that is referenced in the Entry Link.
+	//  Empty path denotes that the Entry itself is referenced in the Entry
+	//  Link.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryLink.EntryReference.path
+	Path *string `json:"path,omitempty"`
+
+	// Required. Immutable. The reference type of the Entry.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryLink.EntryReference.type
+	// +required
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntrySource
+type EntrySource struct {
+	// The name of the resource in the source system.
+	//  Maximum length is 4,000 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.resource
+	Resource *string `json:"resource,omitempty"`
+
+	// The name of the source system.
+	//  Maximum length is 64 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.system
+	System *string `json:"system,omitempty"`
+
+	// The platform containing the source system.
+	//  Maximum length is 64 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.platform
+	Platform *string `json:"platform,omitempty"`
+
+	// A user-friendly display name.
+	//  Maximum length is 500 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A description of the data resource.
+	//  Maximum length is 2,000 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.description
+	Description *string `json:"description,omitempty"`
+
+	// User-defined labels.
+	//  The maximum size of keys and values is 128 characters each.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Immutable. The entries representing the ancestors of the data resource in
+	//  the source system.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.ancestors
+	Ancestors []EntrySource_Ancestor `json:"ancestors,omitempty"`
+
+	// The time when the resource was created in the source system.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// The time when the resource was last updated in the source system. If the
+	//  entry exists in the system and its `EntrySource` has `update_time`
+	//  populated, further updates to the `EntrySource` of the entry must provide
+	//  incremental updates to its `update_time`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntrySource.Ancestor
+type EntrySource_Ancestor struct {
+	// Optional. The name of the ancestor resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.Ancestor.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The type of the ancestor resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.Ancestor.type
+	Type *string `json:"type,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
@@ -835,6 +1193,91 @@ type EntryType_Authorization struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
+
+/* unreachable type Environment_Endpoints
+// +kcc:proto=google.cloud.dataplex.v1.Environment.Endpoints
+type Environment_Endpoints struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec
+type Environment_InfrastructureSpec struct {
+	// Optional. Compute resources needed for analyze interactive workloads.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.compute
+	Compute *Environment_InfrastructureSpec_ComputeResources `json:"compute,omitempty"`
+
+	// Required. Software Runtime Configuration for analyze interactive
+	//  workloads.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.os_image
+	// +required
+	OSImage *Environment_InfrastructureSpec_OSImageRuntime `json:"osImage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources
+type Environment_InfrastructureSpec_ComputeResources struct {
+	// Optional. Size in GB of the disk. Default is 100 GB.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Optional. Total number of nodes in the sessions created for this
+	//  environment.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Optional. Max configurable nodes.
+	//  If max_node_count > node_count, then auto-scaling is enabled.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.ComputeResources.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime
+type Environment_InfrastructureSpec_OSImageRuntime struct {
+	// Required. Dataplex Universal Catalog Image version.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.image_version
+	// +required
+	ImageVersion *string `json:"imageVersion,omitempty"`
+
+	// Optional. List of Java jars to be included in the runtime environment.
+	//  Valid input includes Cloud Storage URIs to Jar binaries.
+	//  For example, gs://bucket-name/my/path/to/file.jar
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.java_libraries
+	JavaLibraries []string `json:"javaLibraries,omitempty"`
+
+	// Optional. A list of python packages to be installed.
+	//  Valid formats include Cloud Storage URI to a PIP installable library.
+	//  For example, gs://bucket-name/my/path/to/lib.tar.gz
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.python_packages
+	PythonPackages []string `json:"pythonPackages,omitempty"`
+
+	// Optional. Spark properties to provide configuration for use in sessions
+	//  created for this environment. The properties to set on daemon config
+	//  files. Property keys are specified in `prefix:property` format. The
+	//  prefix must be "spark".
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.InfrastructureSpec.OsImageRuntime.properties
+	Properties map[string]string `json:"properties,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Environment.SessionSpec
+type Environment_SessionSpec struct {
+	// Optional. The idle time configuration of the session. The session will be
+	//  auto-terminated at the end of this period.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionSpec.max_idle_duration
+	MaxIdleDuration *string `json:"maxIdleDuration,omitempty"`
+
+	// Optional. If True, this causes sessions to be pre-created and available
+	//  for faster startup to enable interactive exploration use-cases. This
+	//  defaults to False to avoid additional billed charges. These can only be
+	//  set to True for the environment with name set to "default", and with
+	//  default configuration.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionSpec.enable_fast_startup
+	EnableFastStartup *bool `json:"enableFastStartup,omitempty"`
+}
+
+/* unreachable type Environment_SessionStatus
+// +kcc:proto=google.cloud.dataplex.v1.Environment.SessionStatus
+type Environment_SessionStatus struct {
+}
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
 type Lake_MetastoreStatus struct {
@@ -853,6 +1296,23 @@ type Lake_MetastoreStatus struct {
 	// The URI of the endpoint used to access the Metastore service.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.endpoint
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.ResourceAccessSpec
+type ResourceAccessSpec struct {
+	// Optional. The format of strings follows the pattern followed by IAM in the
+	//  bindings. user:{email}, serviceAccount:{email} group:{email}.
+	//  The set of principals to be granted reader role on the resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.ResourceAccessSpec.readers
+	Readers []string `json:"readers,omitempty"`
+
+	// Optional. The set of principals to be granted writer role on the resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.ResourceAccessSpec.writers
+	Writers []string `json:"writers,omitempty"`
+
+	// Optional. The set of principals to be granted owner role on the resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.ResourceAccessSpec.owners
+	Owners []string `json:"owners,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.ScannedData
@@ -876,6 +1336,145 @@ type ScannedData_IncrementalField struct {
 	// Value that marks the end of the range.
 	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.end
 	End *string `json:"end,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Schema
+type Schema struct {
+	// Required. Set to `true` if user-managed or `false` if managed by Dataplex
+	//  Universal Catalog. The default is `false` (managed by Dataplex Universal
+	//  Catalog).
+	//
+	//  - Set to `false`to enable Dataplex Universal Catalog discovery to update
+	//  the schema.
+	//    including new data discovery, schema inference, and schema evolution.
+	//    Users retain the ability to input and edit the schema. Dataplex Universal
+	//    Catalog treats schema input by the user as though produced by a previous
+	//    Dataplex Universal Catalog discovery operation, and it will evolve the
+	//    schema and take action based on that treatment.
+	//
+	//  - Set to `true` to fully manage the entity
+	//    schema. This setting guarantees that Dataplex Universal Catalog will not
+	//    change schema fields.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.user_managed
+	// +required
+	UserManaged *bool `json:"userManaged,omitempty"`
+
+	// Optional. The sequence of fields describing data in table entities.
+	//  **Note:** BigQuery SchemaFields are immutable.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.fields
+	Fields []Schema_SchemaField `json:"fields,omitempty"`
+
+	// Optional. The sequence of fields describing the partition structure in
+	//  entities. If this field is empty, there are no partitions within the data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.partition_fields
+	PartitionFields []Schema_PartitionField `json:"partitionFields,omitempty"`
+
+	// Optional. The structure of paths containing partition data within the
+	//  entity.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.partition_style
+	PartitionStyle *string `json:"partitionStyle,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Schema.PartitionField
+type Schema_PartitionField struct {
+	// Required. Partition field name must consist of letters, numbers, and
+	//  underscores only, with a maximum of length of 256 characters, and must
+	//  begin with a letter or underscore..
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.PartitionField.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The type of field.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Schema.PartitionField.type
+	// +required
+	Type *string `json:"type,omitempty"`
+}
+
+/* unreachable type StorageAccess
+// +kcc:proto=google.cloud.dataplex.v1.StorageAccess
+type StorageAccess struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dataplex.v1.StorageFormat
+type StorageFormat struct {
+
+	// Optional. The compression type associated with the stored data.
+	//  If unspecified, the data is uncompressed.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.compression_format
+	CompressionFormat *string `json:"compressionFormat,omitempty"`
+
+	// Required. The mime type descriptor for the data. Must match the pattern
+	//  {type}/{subtype}. Supported values:
+	//
+	//  - application/x-parquet
+	//  - application/x-avro
+	//  - application/x-orc
+	//  - application/x-tfrecord
+	//  - application/x-parquet+iceberg
+	//  - application/x-avro+iceberg
+	//  - application/x-orc+iceberg
+	//  - application/json
+	//  - application/{subtypes}
+	//  - text/csv
+	//  - text/<subtypes>
+	//  - image/{image subtype}
+	//  - video/{video subtype}
+	//  - audio/{audio subtype}
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.mime_type
+	// +required
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Optional. Additional information about CSV formatted data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.csv
+	Csv *StorageFormat_CsvOptions `json:"csv,omitempty"`
+
+	// Optional. Additional information about CSV formatted data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.json
+	Json *StorageFormat_JsonOptions `json:"json,omitempty"`
+
+	// Optional. Additional information about iceberg tables.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.iceberg
+	Iceberg *StorageFormat_IcebergOptions `json:"iceberg,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.StorageFormat.CsvOptions
+type StorageFormat_CsvOptions struct {
+	// Optional. The character encoding of the data. Accepts "US-ASCII",
+	//  "UTF-8", and "ISO-8859-1". Defaults to UTF-8 if unspecified.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.CsvOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. The number of rows to interpret as header rows that should be
+	//  skipped when reading data rows. Defaults to 0.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.CsvOptions.header_rows
+	HeaderRows *int32 `json:"headerRows,omitempty"`
+
+	// Optional. The delimiter used to separate values. Defaults to ','.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.CsvOptions.delimiter
+	Delimiter *string `json:"delimiter,omitempty"`
+
+	// Optional. The character used to quote column values. Accepts '"'
+	//  (double quotation mark) or ''' (single quotation mark). Defaults to
+	//  '"' (double quotation mark) if unspecified.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.CsvOptions.quote
+	Quote *string `json:"quote,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.StorageFormat.IcebergOptions
+type StorageFormat_IcebergOptions struct {
+	// Optional. The location of where the iceberg metadata is present, must be
+	//  within the table path
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.IcebergOptions.metadata_location
+	MetadataLocation *string `json:"metadataLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.StorageFormat.JsonOptions
+type StorageFormat_JsonOptions struct {
+	// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8"
+	//  and "ISO-8859-1". Defaults to UTF-8 if not specified.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.JsonOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec
@@ -1099,6 +1698,25 @@ type Zone_ResourceSpec struct {
 	LocationType *string `json:"locationType,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Asset.ResourceStatus
+type Asset_ResourceStatusObservedState struct {
+	// The current state of the managed resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Additional information about the current state.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.message
+	Message *string `json:"message,omitempty"`
+
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Service account associated with the BigQuery Connection.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceStatus.managed_access_identity
+	ManagedAccessIdentity *string `json:"managedAccessIdentity,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDiscoveryResult
 type DataDiscoveryResultObservedState struct {
 	// Output only. Configuration for metadata publishing.
@@ -1197,3 +1815,84 @@ type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState s
 	Message *string `json:"message,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EncryptionConfig.FailureDetails
+type EncryptionConfig_FailureDetailsObservedState struct {
+	// Output only. The error code for the failure.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EncryptionConfig.FailureDetails.error_code
+	ErrorCode *string `json:"errorCode,omitempty"`
+
+	// Output only. The error message will be shown to the user. Set only if the
+	//  error code is REQUIRE_USER_ACTION.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EncryptionConfig.FailureDetails.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Entity.CompatibilityStatus
+type Entity_CompatibilityStatusObservedState struct {
+	// Output only. Whether this entity is compatible with Hive Metastore.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.CompatibilityStatus.hive_metastore
+	HiveMetastore *Entity_CompatibilityStatus_CompatibilityObservedState `json:"hiveMetastore,omitempty"`
+
+	// Output only. Whether this entity is compatible with BigQuery.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.CompatibilityStatus.bigquery
+	Bigquery *Entity_CompatibilityStatus_CompatibilityObservedState `json:"bigquery,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Entity.CompatibilityStatus.Compatibility
+type Entity_CompatibilityStatus_CompatibilityObservedState struct {
+	// Output only. Whether the entity is compatible and can be represented in
+	//  the metadata store.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.CompatibilityStatus.Compatibility.compatible
+	Compatible *bool `json:"compatible,omitempty"`
+
+	// Output only. Provides additional detail if the entity is incompatible
+	//  with the metadata store.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Entity.CompatibilityStatus.Compatibility.reason
+	Reason *string `json:"reason,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EntrySource
+type EntrySourceObservedState struct {
+	// Output only. Location of the resource in the source system. You can search
+	//  the entry by this location. By default, this should match the location of
+	//  the entry group containing this entry. A different value allows capturing
+	//  the source location for data external to Google Cloud.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntrySource.location
+	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Environment.Endpoints
+type Environment_EndpointsObservedState struct {
+	// Output only. URI to serve notebook APIs
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.Endpoints.notebooks
+	Notebooks *string `json:"notebooks,omitempty"`
+
+	// Output only. URI to serve SQL APIs
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.Endpoints.sql
+	SQL *string `json:"sql,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Environment.SessionStatus
+type Environment_SessionStatusObservedState struct {
+	// Output only. Queries over sessions to mark whether the environment is
+	//  currently active or not
+	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionStatus.active
+	Active *bool `json:"active,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.StorageAccess
+type StorageAccessObservedState struct {
+	// Output only. Describes the read access mechanism of the data. Not user
+	//  settable.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageAccess.read
+	Read *string `json:"read,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.StorageFormat
+type StorageFormatObservedState struct {
+	// Output only. The data format associated with the stored data, which
+	//  represents content type values. The value is inferred from mime type.
+	// +kcc:proto:field=google.cloud.dataplex.v1.StorageFormat.format
+	Format *string `json:"format,omitempty"`
+}

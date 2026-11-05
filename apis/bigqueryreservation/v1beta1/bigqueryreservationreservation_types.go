@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -85,6 +86,16 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. This field is only set for reservations using the managed disaster recovery
 	//  feature. Users can set this to create a failover reservation.
 	FailOver *FailoverSpec `json:"failover,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries running under this reservation.
+	// +optional
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scheduling_policy
+	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
+
+	// Optional. The reservation group that this reservation belongs to.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.reservation_group
+	// +optional
+	ReservationGroupRef *bigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef `json:"reservationGroupRef,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
@@ -195,6 +206,19 @@ type AutoscaleObservedState struct {
 	//  max_slots for that brief period (less than one minute)
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.current_slots
 	CurrentSlots *int64 `json:"currentSlots,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.SchedulingPolicy
+type SchedulingPolicy struct {
+	// Limit concurrency of jobs for any particular project within the reservation.
+	// +optional
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.concurrency
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	// Limit slot consumption of queries for any particular project within the reservation.
+	// +optional
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 
 func init() {

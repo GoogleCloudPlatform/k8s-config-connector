@@ -1,0 +1,138 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSCryptoKey/kmscryptokeyversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "destroy_scheduled_duration",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "import_only",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "key_ring",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokeyversion-${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmscryptokeyversion-${uniqueId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "ENCRYPT_DECRYPT"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "version_template.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "version_template.0.algorithm",
+        "old": "",
+        "new": "GOOGLE_SYMMETRIC_ENCRYPTION"
+      },
+      {
+        "id": "version_template.0.protection_level",
+        "old": "",
+        "new": "SOFTWARE"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSCryptoKeyVersion/kmscryptokeyversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "algorithm",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "attestation.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "crypto_key",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-central1/keyRings/kmscryptokeyversion-${uniqueId}/cryptoKeys/kmscryptokeyversion-${uniqueId}"
+      },
+      {
+        "id": "generate_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "protection_level",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "state",
+        "old": "",
+        "new": "ENABLED"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRing/kmscryptokeyversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmscryptokeyversion-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

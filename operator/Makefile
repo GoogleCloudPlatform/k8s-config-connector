@@ -18,6 +18,16 @@ SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
 GKE_DISTROLESS_IMG ?= gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
+PLATFORM ?= linux/amd64
+
+comma := ,
+ifeq ($(findstring $(comma),$(PLATFORM)),)
+DEFAULT_OUTPUT_TYPE = type=docker
+else
+DEFAULT_OUTPUT_TYPE = type=image
+endif
+OUTPUT_TYPE ?= $(DEFAULT_OUTPUT_TYPE)
+
 KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 
 # enable multi-versions feature for CRDs
@@ -88,7 +98,7 @@ install: manifests
 uninstall: manifests
 	$(KUSTOMIZE) build config/crd | kubectl delete -f -
 
-DOCKER_BUILD := docker buildx build --load --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc $(DOCKER_BUILD_FLAGS)
+DOCKER_BUILD = docker buildx build --platform="$(PLATFORM)" --output=$(OUTPUT_TYPE) --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc $(DOCKER_BUILD_FLAGS)
 
 # Build the docker image
 .PHONY: docker-build
@@ -103,7 +113,11 @@ docker-build:
 # Push the docker image
 .PHONY: docker-push
 docker-push:
+ifeq ($(findstring docker,$(OUTPUT_TYPE)),docker)
 	docker push ${OPERATOR_IMG}
+else
+	docker buildx build .. -f Dockerfile --platform="$(PLATFORM)" --push --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} $(DOCKER_BUILD_FLAGS)
+endif
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 # Note: run docker-build first to generate config/manager/manager_image_patch.yaml

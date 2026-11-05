@@ -1,0 +1,41 @@
+# Phase: CREATE
+GET https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}
+User-Agent: kcc/${kccVersion}
+
+404 Not Found
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets?widgetId=widget-${uniqueId}
+Content-Type: application/json
+
+{
+  "description": "initial description"
+}
+
+400 Bad Request
+
+{
+  "error": {
+    "code": 400,
+    "message": "Invalid widget configuration",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+# Phase: DELETE
+DELETE https://example.googleapis.com/v1/projects/${projectId}/locations/us-central1/widgets/widget-${uniqueId}
+
+200 OK
+
+{}

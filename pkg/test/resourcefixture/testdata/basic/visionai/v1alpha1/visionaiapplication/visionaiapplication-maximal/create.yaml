@@ -1,0 +1,17 @@
+apiVersion: visionai.cnrm.cloud.google.com/v1alpha1
+kind: VisionAIApplication
+metadata:
+  name: visionaiapplication-maximal-${uniqueId}
+  labels:
+    label-one: value-one
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: App Maximal ${uniqueId}
+  description: Application Maximal Test
+  billingMode: PAYG
+  applicationConfigs:
+    eventDeliveryConfig:
+      channel: //pubsub.googleapis.com/projects/${projectId}/topics/visionai-topic-${uniqueId}
+      minimalDeliveryInterval: 10s

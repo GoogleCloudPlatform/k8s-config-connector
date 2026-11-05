@@ -29,6 +29,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func Aggregate_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.Aggregate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Aggregate{}
+	out.Group = direct.LazyPtr(in.GetGroup())
+	out.Count = direct.LazyPtr(in.GetCount())
+	return out
+}
+func Aggregate_ToProto(mapCtx *direct.MapContext, in *krm.Aggregate) *pb.Aggregate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aggregate{}
+	out.Group = direct.ValueOf(in.Group)
+	out.Count = direct.ValueOf(in.Count)
+	return out
+}
 func Blueprint_FromProto(mapCtx *direct.MapContext, in *pb.Blueprint) *krm.Blueprint {
 	if in == nil {
 		return nil
@@ -69,6 +87,72 @@ func BlueprintObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Blueprint
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+func Dependency_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Dependency{}
+	if in.GetUnitKind() != "" {
+		out.UnitKindRef = &krm.SaaSServiceMgmtUnitKindRef{External: in.GetUnitKind()}
+	}
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	return out
+}
+func Dependency_ToProto(mapCtx *direct.MapContext, in *krm.Dependency) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	if in.UnitKindRef != nil {
+		out.UnitKind = in.UnitKindRef.External
+	}
+	out.Alias = direct.ValueOf(in.Alias)
+	return out
+}
+
+/* found existing non-generated mapping function "ErrorBudget_FromProto", skipping
+func ErrorBudget_FromProto(mapCtx *direct.MapContext, in *pb.ErrorBudget) *krm.ErrorBudget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ErrorBudget{}
+	out.AllowedCount = direct.LazyPtr(in.GetAllowedCount())
+	out.AllowedPercentage = direct.LazyPtr(in.GetAllowedPercentage())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ErrorBudget_ToProto", skipping
+
+	func ErrorBudget_ToProto(mapCtx *direct.MapContext, in *krm.ErrorBudget) *pb.ErrorBudget {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ErrorBudget{}
+		out.AllowedCount = direct.ValueOf(in.AllowedCount)
+		out.AllowedPercentage = direct.ValueOf(in.AllowedPercentage)
+		return out
+	}
+*/
+func FromMapping_FromProto(mapCtx *direct.MapContext, in *pb.FromMapping) *krm.FromMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FromMapping{}
+	out.Dependency = direct.LazyPtr(in.GetDependency())
+	out.OutputVariable = direct.LazyPtr(in.GetOutputVariable())
+	return out
+}
+func FromMapping_ToProto(mapCtx *direct.MapContext, in *krm.FromMapping) *pb.FromMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FromMapping{}
+	out.Dependency = direct.ValueOf(in.Dependency)
+	out.OutputVariable = direct.ValueOf(in.OutputVariable)
+	return out
+}
 func Release_ReleaseRequirements_FromProto(mapCtx *direct.MapContext, in *pb.Release_ReleaseRequirements) *krm.Release_ReleaseRequirements {
 	if in == nil {
 		return nil
@@ -83,6 +167,404 @@ func Release_ReleaseRequirements_ToProto(mapCtx *direct.MapContext, in *krm.Rele
 	}
 	out := &pb.Release_ReleaseRequirements{}
 	out.UpgradeableFromReleases = in.UpgradeableFromReleases
+	return out
+}
+func RolloutControl_FromProto(mapCtx *direct.MapContext, in *pb.RolloutControl) *krm.RolloutControl {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutControl{}
+	out.RunParams = RolloutControl_RunRolloutActionParams_FromProto(mapCtx, in.GetRunParams())
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func RolloutControl_ToProto(mapCtx *direct.MapContext, in *krm.RolloutControl) *pb.RolloutControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutControl{}
+	if oneof := RolloutControl_RunRolloutActionParams_ToProto(mapCtx, in.RunParams); oneof != nil {
+		out.ActionParams = &pb.RolloutControl_RunParams{RunParams: oneof}
+	}
+	out.Action = direct.Enum_ToProto[pb.RolloutAction](mapCtx, in.Action)
+	return out
+}
+func RolloutControl_RunRolloutActionParams_FromProto(mapCtx *direct.MapContext, in *pb.RolloutControl_RunRolloutActionParams) *krm.RolloutControl_RunRolloutActionParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutControl_RunRolloutActionParams{}
+	out.RetryFailedOperations = direct.LazyPtr(in.GetRetryFailedOperations())
+	return out
+}
+func RolloutControl_RunRolloutActionParams_ToProto(mapCtx *direct.MapContext, in *krm.RolloutControl_RunRolloutActionParams) *pb.RolloutControl_RunRolloutActionParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutControl_RunRolloutActionParams{}
+	out.RetryFailedOperations = direct.ValueOf(in.RetryFailedOperations)
+	return out
+}
+func RolloutStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RolloutStats) *krm.RolloutStatsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutStatsObservedState{}
+	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, Aggregate_FromProto)
+	return out
+}
+func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RolloutStatsObservedState) *pb.RolloutStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutStats{}
+	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, Aggregate_ToProto)
+	return out
+}
+func SaaSServiceMgmtRolloutKindObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RolloutKind) *krm.SaaSServiceMgmtRolloutKindObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutKindObservedState{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtRolloutKindObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutKindObservedState) *pb.RolloutKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutKind{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtRolloutKindSpec_FromProto(mapCtx *direct.MapContext, in *pb.RolloutKind) *krm.SaaSServiceMgmtRolloutKindSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutKindSpec{}
+	// MISSING: Name
+	out.UnitKind = direct.LazyPtr(in.GetUnitKind())
+	out.RolloutOrchestrationStrategy = direct.LazyPtr(in.GetRolloutOrchestrationStrategy())
+	out.UnitFilter = direct.LazyPtr(in.GetUnitFilter())
+	out.UpdateUnitKindStrategy = direct.Enum_FromProto(mapCtx, in.GetUpdateUnitKindStrategy())
+	out.ErrorBudget = ErrorBudget_FromProto(mapCtx, in.GetErrorBudget())
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtRolloutKindSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutKindSpec) *pb.RolloutKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutKind{}
+	// MISSING: Name
+	out.UnitKind = direct.ValueOf(in.UnitKind)
+	out.RolloutOrchestrationStrategy = direct.ValueOf(in.RolloutOrchestrationStrategy)
+	out.UnitFilter = direct.ValueOf(in.UnitFilter)
+	out.UpdateUnitKindStrategy = direct.Enum_ToProto[pb.RolloutKind_UpdateUnitKindStrategy](mapCtx, in.UpdateUnitKindStrategy)
+	out.ErrorBudget = ErrorBudget_ToProto(mapCtx, in.ErrorBudget)
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtRolloutObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutObservedState{}
+	// MISSING: Name
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	out.StateTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTransitionTime())
+	out.RootRollout = direct.LazyPtr(in.GetRootRollout())
+	out.ParentRollout = direct.LazyPtr(in.GetParentRollout())
+	out.Stats = RolloutStatsObservedState_FromProto(mapCtx, in.GetStats())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtRolloutObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutObservedState) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Rollout_RolloutState](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateTransitionTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTransitionTime)
+	out.RootRollout = direct.ValueOf(in.RootRollout)
+	out.ParentRollout = direct.ValueOf(in.ParentRollout)
+	out.Stats = RolloutStatsObservedState_ToProto(mapCtx, in.Stats)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtRolloutSpec_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutSpec{}
+	// MISSING: Name
+	if in.GetRelease() != "" {
+		out.ReleaseRef = &krm.SaasServiceMgmtReleaseRef{External: in.GetRelease()}
+	}
+	out.RolloutOrchestrationStrategy = direct.LazyPtr(in.GetRolloutOrchestrationStrategy())
+	out.UnitFilter = direct.LazyPtr(in.GetUnitFilter())
+	if in.GetRolloutKind() != "" {
+		out.RolloutKindRef = &krm.SaaSServiceMgmtRolloutKindRef{External: in.GetRolloutKind()}
+	}
+	out.Control = RolloutControl_FromProto(mapCtx, in.GetControl())
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtRolloutSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutSpec) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	if in.ReleaseRef != nil {
+		out.Release = in.ReleaseRef.External
+	}
+	out.RolloutOrchestrationStrategy = direct.ValueOf(in.RolloutOrchestrationStrategy)
+	out.UnitFilter = direct.ValueOf(in.UnitFilter)
+	if in.RolloutKindRef != nil {
+		out.RolloutKind = in.RolloutKindRef.External
+	}
+	out.Control = RolloutControl_ToProto(mapCtx, in.Control)
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantObservedState{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtTenantObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantObservedState) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantSpec{}
+	// MISSING: Name
+	out.ConsumerResource = direct.LazyPtr(in.GetConsumerResource())
+	if in.GetSaas() != "" {
+		out.SaasRef = &krm.SaaSServiceMgmtSaaSRef{External: in.GetSaas()}
+	}
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantSpec) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.ConsumerResource = direct.ValueOf(in.ConsumerResource)
+	if in.SaasRef != nil {
+		out.Saas = in.SaasRef.External
+	}
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtUnitKindObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UnitKind) *krm.SaaSServiceMgmtUnitKindObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitKindObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtUnitKindObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitKindObservedState) *pb.UnitKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitKind{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtUnitKindSpec_FromProto(mapCtx *direct.MapContext, in *pb.UnitKind) *krm.SaaSServiceMgmtUnitKindSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitKindSpec{}
+	// MISSING: Name
+	if in.GetDefaultRelease() != "" {
+		out.DefaultReleaseRef = &krm.SaasServiceMgmtReleaseRef{External: in.GetDefaultRelease()}
+	}
+	out.Dependencies = direct.Slice_FromProto(mapCtx, in.Dependencies, Dependency_FromProto)
+	out.InputVariableMappings = direct.Slice_FromProto(mapCtx, in.InputVariableMappings, VariableMapping_FromProto)
+	out.OutputVariableMappings = direct.Slice_FromProto(mapCtx, in.OutputVariableMappings, VariableMapping_FromProto)
+	if in.GetSaas() != "" {
+		out.SaasRef = &krm.SaaSServiceMgmtSaaSRef{External: in.GetSaas()}
+	}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtUnitKindSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitKindSpec) *pb.UnitKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitKind{}
+	// MISSING: Name
+	if in.DefaultReleaseRef != nil {
+		out.DefaultRelease = in.DefaultReleaseRef.External
+	}
+	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, Dependency_ToProto)
+	out.InputVariableMappings = direct.Slice_ToProto(mapCtx, in.InputVariableMappings, VariableMapping_ToProto)
+	out.OutputVariableMappings = direct.Slice_ToProto(mapCtx, in.OutputVariableMappings, VariableMapping_ToProto)
+	if in.SaasRef != nil {
+		out.Saas = in.SaasRef.External
+	}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtUnitObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitObservedState{}
+	// MISSING: Name
+	out.Release = direct.LazyPtr(in.GetRelease())
+	out.OngoingOperations = in.OngoingOperations
+	out.PendingOperations = in.PendingOperations
+	out.ScheduledOperations = in.ScheduledOperations
+	out.Dependents = direct.Slice_FromProto(mapCtx, in.Dependents, UnitDependencyObservedState_FromProto)
+	out.Dependencies = direct.Slice_FromProto(mapCtx, in.Dependencies, UnitDependencyObservedState_FromProto)
+	out.InputVariables = direct.Slice_FromProto(mapCtx, in.InputVariables, UnitVariable_FromProto)
+	out.OutputVariables = direct.Slice_FromProto(mapCtx, in.OutputVariables, UnitVariable_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, UnitCondition_FromProto)
+	out.SystemManagedState = direct.Enum_FromProto(mapCtx, in.GetSystemManagedState())
+	out.SystemCleanupAt = direct.StringTimestamp_FromProto(mapCtx, in.GetSystemCleanupAt())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtUnitObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitObservedState) *pb.Unit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit{}
+	// MISSING: Name
+	out.Release = direct.ValueOf(in.Release)
+	out.OngoingOperations = in.OngoingOperations
+	out.PendingOperations = in.PendingOperations
+	out.ScheduledOperations = in.ScheduledOperations
+	out.Dependents = direct.Slice_ToProto(mapCtx, in.Dependents, UnitDependencyObservedState_ToProto)
+	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, UnitDependencyObservedState_ToProto)
+	out.InputVariables = direct.Slice_ToProto(mapCtx, in.InputVariables, UnitVariable_ToProto)
+	out.OutputVariables = direct.Slice_ToProto(mapCtx, in.OutputVariables, UnitVariable_ToProto)
+	out.State = direct.Enum_ToProto[pb.Unit_UnitState](mapCtx, in.State)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, UnitCondition_ToProto)
+	out.SystemManagedState = direct.Enum_ToProto[pb.Unit_SystemManagedState](mapCtx, in.SystemManagedState)
+	out.SystemCleanupAt = direct.StringTimestamp_ToProto(mapCtx, in.SystemCleanupAt)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtUnitSpec_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitSpec{}
+	// MISSING: Name
+	if in.GetUnitKind() != "" {
+		out.UnitKindRef = &krm.SaaSServiceMgmtUnitKindRef{External: in.GetUnitKind()}
+	}
+	if in.GetTenant() != "" {
+		out.TenantRef = &krm.SaaSServiceMgmtTenantRef{External: in.GetTenant()}
+	}
+	out.Maintenance = UnitMaintenanceSettings_FromProto(mapCtx, in.GetMaintenance())
+	out.ManagementMode = direct.Enum_FromProto(mapCtx, in.GetManagementMode())
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtUnitSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitSpec) *pb.Unit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit{}
+	// MISSING: Name
+	if in.UnitKindRef != nil {
+		out.UnitKind = in.UnitKindRef.External
+	}
+	if in.TenantRef != nil {
+		out.Tenant = in.TenantRef.External
+	}
+	out.Maintenance = UnitMaintenanceSettings_ToProto(mapCtx, in.Maintenance)
+	out.ManagementMode = direct.Enum_ToProto[pb.Unit_ManagementMode](mapCtx, in.ManagementMode)
+	// MISSING: Labels
+	// MISSING: Annotations
 	return out
 }
 func SaasServiceMgmtReleaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.SaasServiceMgmtReleaseObservedState {
@@ -147,6 +629,84 @@ func SaasServiceMgmtReleaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaasS
 	// MISSING: Annotations
 	return out
 }
+func ToMapping_FromProto(mapCtx *direct.MapContext, in *pb.ToMapping) *krm.ToMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToMapping{}
+	out.Dependency = direct.LazyPtr(in.GetDependency())
+	out.InputVariable = direct.LazyPtr(in.GetInputVariable())
+	out.IgnoreForLookup = direct.LazyPtr(in.GetIgnoreForLookup())
+	return out
+}
+func ToMapping_ToProto(mapCtx *direct.MapContext, in *krm.ToMapping) *pb.ToMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToMapping{}
+	out.Dependency = direct.ValueOf(in.Dependency)
+	out.InputVariable = direct.ValueOf(in.InputVariable)
+	out.IgnoreForLookup = direct.ValueOf(in.IgnoreForLookup)
+	return out
+}
+func UnitCondition_FromProto(mapCtx *direct.MapContext, in *pb.UnitCondition) *krm.UnitCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UnitCondition{}
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.LastTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastTransitionTime())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.Reason = direct.LazyPtr(in.GetReason())
+	return out
+}
+func UnitCondition_ToProto(mapCtx *direct.MapContext, in *krm.UnitCondition) *pb.UnitCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitCondition{}
+	out.Status = direct.Enum_ToProto[pb.UnitCondition_Status](mapCtx, in.Status)
+	out.Type = direct.Enum_ToProto[pb.UnitCondition_Type](mapCtx, in.Type)
+	out.LastTransitionTime = direct.StringTimestamp_ToProto(mapCtx, in.LastTransitionTime)
+	out.Message = direct.ValueOf(in.Message)
+	out.Reason = direct.ValueOf(in.Reason)
+	return out
+}
+func UnitDependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UnitDependency) *krm.UnitDependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UnitDependencyObservedState{}
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	out.Unit = direct.LazyPtr(in.GetUnit())
+	return out
+}
+func UnitDependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.UnitDependencyObservedState) *pb.UnitDependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitDependency{}
+	out.Alias = direct.ValueOf(in.Alias)
+	out.Unit = direct.ValueOf(in.Unit)
+	return out
+}
+func UnitMaintenanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.Unit_MaintenanceSettings) *krm.UnitMaintenanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UnitMaintenanceSettings{}
+	out.PinnedUntilTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPinnedUntilTime())
+	return out
+}
+func UnitMaintenanceSettings_ToProto(mapCtx *direct.MapContext, in *krm.UnitMaintenanceSettings) *pb.Unit_MaintenanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit_MaintenanceSettings{}
+	out.PinnedUntilTime = direct.StringTimestamp_ToProto(mapCtx, in.PinnedUntilTime)
+	return out
+}
 func UnitVariable_FromProto(mapCtx *direct.MapContext, in *pb.UnitVariable) *krm.UnitVariable {
 	if in == nil {
 		return nil
@@ -165,5 +725,29 @@ func UnitVariable_ToProto(mapCtx *direct.MapContext, in *krm.UnitVariable) *pb.U
 	out.Variable = direct.ValueOf(in.Variable)
 	out.Type = direct.Enum_ToProto[pb.UnitVariable_Type](mapCtx, in.Type)
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func VariableMapping_FromProto(mapCtx *direct.MapContext, in *pb.VariableMapping) *krm.VariableMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VariableMapping{}
+	out.From = FromMapping_FromProto(mapCtx, in.GetFrom())
+	out.To = ToMapping_FromProto(mapCtx, in.GetTo())
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	return out
+}
+func VariableMapping_ToProto(mapCtx *direct.MapContext, in *krm.VariableMapping) *pb.VariableMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VariableMapping{}
+	if oneof := FromMapping_ToProto(mapCtx, in.From); oneof != nil {
+		out.MappingType = &pb.VariableMapping_From{From: oneof}
+	}
+	if oneof := ToMapping_ToProto(mapCtx, in.To); oneof != nil {
+		out.MappingType = &pb.VariableMapping_To{To: oneof}
+	}
+	out.Variable = direct.ValueOf(in.Variable)
 	return out
 }

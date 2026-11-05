@@ -121,6 +121,13 @@ func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {
 	return 0
 }
 
+func EnumPtr_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) *U {
+	if in == nil {
+		return nil
+	}
+	return LazyPtr(Enum_ToProto[U](mapCtx, in))
+}
+
 func EnumSlice_ToProto[U ProtoEnum](mapCtx *MapContext, in []string) []U {
 	if in == nil {
 		return nil
@@ -293,6 +300,11 @@ func IsBadRequest(err error) bool {
 func IsAlreadyExists(err error) bool {
 	if err == nil {
 		return false
+	}
+
+	var googleAPIErr *googleapi.Error
+	if errors.As(err, &googleAPIErr) && googleAPIErr.Code == 409 {
+		return true
 	}
 
 	apiError := &apierror.APIError{}
@@ -599,7 +611,7 @@ func Struct_FromProto(mapCtx *MapContext, in *structpb.Struct) *apiextensionsv1.
 }
 
 func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Struct {
-	if in == nil {
+	if in == nil || len(in.Raw) == 0 || string(in.Raw) == "null" {
 		return nil
 	}
 	var m map[string]interface{}

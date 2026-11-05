@@ -1,0 +1,236 @@
+POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "timeZone": "America/New_York"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fwebhooks%2F4150c119-76bc-4592-b12d-8d65e0b22606
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CgenericWebService
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: webhook.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fwebhooks%2F4150c119-76bc-4592-b12d-8d65e0b22606
+
+{
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook/updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook/updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fwebhooks%2F4150c119-76bc-4592-b12d-8d65e0b22606
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "webhook-updated-${uniqueId}",
+  "genericWebService": {
+    "uri": "https://example.com/webhook/updated"
+  },
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/webhooks/4150c119-76bc-4592-b12d-8d65e0b22606?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fagents%2F9ff582e4-9e01-416e-b373-418b2e4f4e75%2Fwebhooks%2F4150c119-76bc-4592-b12d-8d65e0b22606
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+  "startFlow": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

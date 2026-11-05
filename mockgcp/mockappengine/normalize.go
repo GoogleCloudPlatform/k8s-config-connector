@@ -1,0 +1,54 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockappengine
+
+import (
+	"regexp"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+)
+
+var _ mockgcpregistry.SupportsNormalization = &MockService{}
+
+var reImageDigest = regexp.MustCompile(`@sha256:[a-f0-9]{64}`)
+
+func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "appengine.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".metadata.insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.metadata.insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".insertTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".betaSettings.minor_version_id_ccfe", "1234567890123456789")
+	replacements.ReplacePath(".response.betaSettings.minor_version_id_ccfe", "1234567890123456789")
+}
+
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "appengine.googleapis.com") {
+		return
+	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if reImageDigest.MatchString(value) {
+			normalized := reImageDigest.ReplaceAllString(value, "@sha256:649188051906c9df7f87fb2ef04a21acbdb009c0877fa67b3132b83230411f6e")
+			replacements.ReplaceStringValue(value, normalized)
+		}
+	})
+}

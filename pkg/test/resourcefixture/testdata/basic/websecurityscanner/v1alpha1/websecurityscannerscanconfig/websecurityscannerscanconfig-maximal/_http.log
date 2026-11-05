@@ -1,0 +1,215 @@
+POST https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout"
+  ],
+  "displayName": "websecurityscannerscanconfig-maximal-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 20,
+  "riskLevel": 1,
+  "schedule": {
+    "intervalDurationDays": 7,
+    "scheduleTime": "2026-11-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "userAgent": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout"
+  ],
+  "displayName": "websecurityscannerscanconfig-maximal-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 20,
+  "name": "projects/${projectId}/scanConfigs/7503298619334131644",
+  "riskLevel": 1,
+  "schedule": {
+    "intervalDurationDays": 7,
+    "scheduleTime": "2026-11-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+GET https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/7503298619334131644?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F7503298619334131644
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout"
+  ],
+  "displayName": "websecurityscannerscanconfig-maximal-${uniqueId}",
+  "exportToSecurityCommandCenter": 1,
+  "maxQps": 20,
+  "name": "projects/${projectId}/scanConfigs/7503298619334131644",
+  "riskLevel": 1,
+  "schedule": {
+    "intervalDurationDays": 7,
+    "scheduleTime": "2026-11-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 1
+}
+
+---
+
+PATCH https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/7503298619334131644?%24alt=json%3Benum-encoding%3Dint&updateMask=blacklistPatterns%2CdisplayName%2CexportToSecurityCommandCenter%2CignoreHttpStatusErrors%2CmaxQps%2CriskLevel%2Cschedule%2CuserAgent
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: scan_config.name=projects%2F${projectId}%2FscanConfigs%2F7503298619334131644
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout",
+    "https://${projectId}.appspot.com/admin"
+  ],
+  "displayName": "websecurityscannerscanconfig-max-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 2,
+  "ignoreHttpStatusErrors": true,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/7503298619334131644",
+  "riskLevel": 2,
+  "schedule": {
+    "intervalDurationDays": 14,
+    "scheduleTime": "2026-12-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "userAgent": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout",
+    "https://${projectId}.appspot.com/admin"
+  ],
+  "displayName": "websecurityscannerscanconfig-max-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 2,
+  "ignoreHttpStatusErrors": true,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/7503298619334131644",
+  "riskLevel": 2,
+  "schedule": {
+    "intervalDurationDays": 14,
+    "scheduleTime": "2026-12-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 2
+}
+
+---
+
+GET https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/7503298619334131644?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F7503298619334131644
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blacklistPatterns": [
+    "https://${projectId}.appspot.com/logout",
+    "https://${projectId}.appspot.com/admin"
+  ],
+  "displayName": "websecurityscannerscanconfig-max-upd-${uniqueId}",
+  "exportToSecurityCommandCenter": 2,
+  "ignoreHttpStatusErrors": true,
+  "maxQps": 15,
+  "name": "projects/${projectId}/scanConfigs/7503298619334131644",
+  "riskLevel": 2,
+  "schedule": {
+    "intervalDurationDays": 14,
+    "scheduleTime": "2026-12-01T00:00:00Z"
+  },
+  "startingUrls": [
+    "https://${projectId}.appspot.com"
+  ],
+  "targetPlatforms": [
+    1
+  ],
+  "userAgent": 2
+}
+
+---
+
+DELETE https://websecurityscanner.googleapis.com/v1/projects/${projectId}/scanConfigs/7503298619334131644?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FscanConfigs%2F7503298619334131644
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

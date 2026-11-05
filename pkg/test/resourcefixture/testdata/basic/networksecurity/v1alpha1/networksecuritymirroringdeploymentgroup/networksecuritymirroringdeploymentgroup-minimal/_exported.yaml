@@ -1,0 +1,11 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeploymentGroup
+metadata:
+  name: networksecuritymirroringdeploymentgroup-${uniqueId}
+spec:
+  location: global
+  networkRef:
+    external: projects/${projectId}/global/networks/${networkID}
+  projectRef:
+    external: ${projectId}
+  resourceID: networksecuritymirroringdeploymentgroup-${uniqueId}

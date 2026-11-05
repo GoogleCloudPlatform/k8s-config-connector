@@ -9,3 +9,26 @@
 - **Problem**: The GCP API definition for `MulticloudDataTransferConfig` has a map field `services` which maps service names to `StateTimeline` nested messages. This resulted in undefined `Services_FromProto` and `Services_ToProto` helper functions in `mapper.generated.go`.
 - **Solution**: Hand-wrote `Services_FromProto`, `Services_ToProto`, `StateMetadata_FromProto`, and `StateMetadata_ToProto` mapping helper functions at the end of `mapper.go`.
 - **Impact**: Map fields pointing to nested messages often require manually implemented mapper helpers in `mapper.go` to avoid compilation/vet errors due to undefined generated symbols.
+
+### [2026-09-25] NetworkConnectivityTransport mutable fields and defaulting
+- **Context**: Implementing `NetworkConnectivityTransport` direct controller and recording E2E fixtures against real GCP.
+- **Problem**:
+  1. GCP server returns `bandwidth can only be updated for ACTIVE transports` when attempting to patch `bandwidth` while the transport is in `PENDING_KEY` state.
+  2. GCP server defaults `stack_type` to `IPV4_ONLY` if unspecified in spec.
+  3. `generatedActivationKey` (provider key) and `peeringNetwork` (generated VPC peering URI) are volatile server-generated values.
+- **Solution**:
+  1. In E2E update tests, updated `description` and `labels` rather than `bandwidth`.
+  2. Populated default `StackType = "IPV4_ONLY"` in `populateDefaults` inside `compareTransport`.
+  3. Normalized `generatedActivationKey` and `peeringNetwork` in `mockgcp/mocknetworkconnectivity/normalize.go` and `tests/e2e/normalize.go`.
+- **Impact**: When testing or updating transports, only mutable fields valid in `PENDING_KEY` state (`description`, `labels`) can be modified prior to provider activation. Defaulted fields like `stackType` must be aligned in `compareTransport`.
+
+### [2026-11-03] NetworkConnectivityDestination parent hierarchy and etag
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for NetworkConnectivityDestination.
+- **Problem**: NetworkConnectivityDestination is a child resource of MulticloudDataTransferConfig (`projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}`). It had an untriaged queue entry with `parent-ref-not-modelled`, `etag-in-spec`, and `location-or-parent-ref`.
+- **Solution**:
+  1. Added `NetworkConnectivityMulticloudDataTransferConfig` to `generate-identity` in `generate.sh` to generate `NetworkConnectivityMulticloudDataTransferConfigRef`.
+  2. Modelled `spec.parentRef *NetworkConnectivityMulticloudDataTransferConfigRef` with CEL immutability (`self == oldSelf`), removing `projectRef` and `location` per the single-parent rule.
+  3. Moved concurrency-control field `etag` to `status.observedState`, and removed top-level `labels` from `spec`.
+- **Impact**: All child resources under `MulticloudDataTransferConfig` can reuse `NetworkConnectivityMulticloudDataTransferConfigRef` as `spec.parentRef`.
+
+

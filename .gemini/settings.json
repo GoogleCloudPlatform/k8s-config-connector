@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "replace_file_content|multi_replace_file_content|write_to_file|edit_file|Write|Edit|MultiEdit|run_command|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .gemini/hooks/block-golden-file-edits.py"
+          }
+        ]
+      }
+    ]
+  }
+}

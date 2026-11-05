@@ -40,22 +40,28 @@ type CanonicalResourceSettings struct {
 
 // CanonicalCCConfig is hashed to produce "cnrm.cloud.google.com/cc-config-hash".
 type CanonicalCCConfig struct {
-	ResourceSettings *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
 }
 
 // CanonicalCCCConfig is hashed to produce "cnrm.cloud.google.com/ccc-config-hash".
 type CanonicalCCCConfig struct {
-	ResourceSettings *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings                 *CanonicalResourceSettings `json:"resourceSettings,omitempty"`
+	MaxConcurrentReconcilesOverrides map[string]int             `json:"maxConcurrentReconcilesOverrides,omitempty"`
 }
 
 // ComputeCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
 // configuration of a ConfigConnector object. Returns "" if no hashed configuration is present.
 func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
-	if cc == nil || cc.Spec.Experiments == nil || cc.Spec.Experiments.ResourceSettings == nil {
+	if cc == nil || cc.Spec.Experiments == nil {
 		return ""
 	}
 	cfg := CanonicalCCConfig{
-		ResourceSettings: canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
+		ResourceSettings:                 canonicalizeResourceSettings(cc.Spec.Experiments.ResourceSettings),
+		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(cc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
+	}
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
+		return ""
 	}
 	data, err := json.Marshal(cfg)
 	if err != nil {
@@ -68,11 +74,15 @@ func ComputeCCConfigHash(cc *corev1beta1.ConfigConnector) string {
 // ComputeCCCConfigHash returns a deterministic SHA-256 hex digest for the restart-dependent
 // configuration of a ConfigConnectorContext object. Returns "" if no hashed configuration is present.
 func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
-	if ccc == nil || ccc.Spec.Experiments == nil || ccc.Spec.Experiments.ResourceSettings == nil {
+	if ccc == nil || ccc.Spec.Experiments == nil {
 		return ""
 	}
 	cfg := CanonicalCCCConfig{
-		ResourceSettings: canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
+		ResourceSettings:                 canonicalizeResourceSettings(ccc.Spec.Experiments.ResourceSettings),
+		MaxConcurrentReconcilesOverrides: canonicalizeMaxConcurrentReconcilesOverrides(ccc.Spec.Experiments.MaxConcurrentReconcilesOverrides),
+	}
+	if cfg.ResourceSettings == nil && len(cfg.MaxConcurrentReconcilesOverrides) == 0 {
+		return ""
 	}
 	data, err := json.Marshal(cfg)
 	if err != nil {
@@ -80,6 +90,22 @@ func ComputeCCCConfigHash(ccc *corev1beta1.ConfigConnectorContext) string {
 	}
 	sum := sha256.Sum256(data)
 	return hex.EncodeToString(sum[:])
+}
+
+func canonicalizeMaxConcurrentReconcilesOverrides(overrides map[string]int) map[string]int {
+	if len(overrides) == 0 {
+		return nil
+	}
+	out := make(map[string]int, len(overrides))
+	for k, v := range overrides {
+		if k != "" && v > 0 {
+			out[k] = v
+		}
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	return out
 }
 
 func canonicalizeResourceSettings(rs *corev1beta1.ResourceSettings) *CanonicalResourceSettings {

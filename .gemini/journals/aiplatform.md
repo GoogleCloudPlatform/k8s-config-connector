@@ -54,3 +54,37 @@
   3. Recorded and verified both minimal and maximal fixtures against real GCP.
 - **Impact**: Cleanly reconciles `AIPlatformReasoningEngine` with service-generated IDs, and enables reliable, reproducible E2E tests against real GCP.
 
+### 2026-10-03 Implementing AIPlatformSpecialistPool Greenfield Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `AIPlatformSpecialistPool` (Issue #13683).
+- **Implementation**:
+  1. Implemented direct controller `pkg/controller/direct/aiplatform/aiplatformspecialistpool_controller.go` adhering to the 4 rules for service-generated resource IDs.
+  2. Registered `AIPlatformSpecialistPool` with direct reconciler in `pkg/controller/resourceconfig/static_config.go`.
+  3. Configured KRM fuzzer with fluent syntax in `pkg/controller/direct/aiplatform/aiplatformspecialistpool_fuzzer.go`.
+  4. Scaffolded minimal and maximal E2E test fixtures under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformspecialistpool/`.
+- **Finding & Real GCP Observation**:
+  During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateSpecialistPool` API returned `rpc error: code = FailedPrecondition desc = Data labeling service is shutdown` (audited via Cloud Audit Logs `SpecialistPoolService.CreateSpecialistPool`). Google Cloud deprecated and shut down the Vertex AI Data Labeling Service (and its associated human labeling SpecialistPool backend) on July 1, 2024.
+- **Impact**: Controller implementation and CRD structures are complete, idiomatic, and verified with unit tests and fuzzer roundtripping.
+
+### [2026-10-29] Triaging Judgement Queue and Modelling Child Hierarchy for AIPlatformFeatureView
+- **Context**: Triaging judgement queue and finalizing types/identity for `AIPlatformFeatureView` (Issue #14600).
+- **Problem**: `AIPlatformFeatureView` was generated with separate `ProjectRef` and `Location` fields and open `identity-root-unknown` and `parent-ref-not-modelled` entries in `judgement_queue.yaml`. It is a child resource of `VertexAIFeatureOnlineStore` (`projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`). Additionally, `VertexAIFeatureOnlineStore` had no `VertexAIFeatureOnlineStoreRef` reference type defined in the package, and `etag` and top-level `labels` were placed in `AIPlatformFeatureViewSpec`.
+- **Solution**:
+  1. Implemented `VertexAIFeatureOnlineStoreRef` in `apis/aiplatform/v1alpha1/vertexaifeatureonlinestore_reference.go` referencing `FeatureOnlineStoreIdentity`.
+  2. Modelled `spec.parentRef` (`*VertexAIFeatureOnlineStoreRef`) with `+required` and immutable CEL rule `self == oldSelf` on `AIPlatformFeatureViewSpec`, and removed `projectRef` and `location`.
+  3. Removed `labels` from `AIPlatformFeatureViewSpec`, moved `etag` to `AIPlatformFeatureViewObservedState`, and updated the REST resource docs URL.
+  4. Added `generate-controller` and `generate-fuzzer` for `AIPlatformFeatureView` in `apis/aiplatform/generate.sh`, and updated the controller to resolve location via `id.Location`.
+  5. Resolved all 10 judgement queue entries for `AIPlatformFeatureView`.
+- **Impact**: Enables clean identity resolution from `spec.parentRef`, maintains KRM standards, and ensures mapper and fuzzer tests round-trip seamlessly.
+
+### [2026-11-02] Implementing AIPlatformFeatureView Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing Greenfield Step 2 direct controller, fuzzer, and real GCP E2E fixtures for `AIPlatformFeatureView` (Issue #14780).
+- **Problems & Solutions**:
+  1. **Regional Endpoint for VertexAIFeatureOnlineStore**: `VertexAIFeatureOnlineStore`'s controller previously omitted regional endpoint options, connecting to `aiplatform.googleapis.com:443` which only accepts location `global`. Calls to `us-central1` failed with `The provided location ID doesn't match the endpoint. The valid location ID is 'global'`. Fixed `vertexaifeatureonlinestore_controller.go` to configure `WithEndpoint(fmt.Sprintf("%s-aiplatform.googleapis.com:443", location))`.
+  2. **GCP Resource ID Constraints**: In GCP's `FeatureOnlineStoreAdminService`, resource IDs for `FeatureOnlineStore` and `FeatureView` must match `[a-z0-9_]` (hyphens `-` are rejected with `Invalid FeatureOnlineStore resource name`). The fixtures were updated to use hyphen-free identifiers (`featureonlinestore${uniqueId}` and `resourceID: featureview${uniqueId}`).
+  3. **Parent Reference Normalization Fallback**: During identity tests (`TestGoldenIdentitiesYamlFiles`), `spec.parentRef` (`VertexAIFeatureOnlineStore`) in `dependencies.yaml` lacks `status.externalRef`. Implemented a spec-identity fallback in `VertexAIFeatureOnlineStoreRef.Normalize` using `NormalizeWithFallback` and `getIdentityFromFeatureOnlineStoreSpec` to ensure dependent child resources can resolve the parent identity prior to full reconciliation.
+  4. **serviceAgentType Omission from GET Responses**: GCP's `GetFeatureView` does not return `service_agent_type` in its response (it returns `serviceAccountEmail`). Specifying `serviceAgentType` in KRM spec causes continuous drift during reconciliation.
+  - **Impact**: Both minimal and maximal E2E fixtures recorded and passed against real GCP with all checks (V1 through V7) passing. Mock GCP skips gracefully pending Step 3.
+
+
+
+

@@ -29,7 +29,6 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
@@ -37,7 +36,28 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version transcoder.cnrm.cloud.google.com/v1alpha1 \
   --resource TranscoderJob:Job
 
-# Note: We do not run generate-mapper here as this PR is for types/CRD/Identity only.
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.video.transcoder.v1 \
+  --api-version transcoder.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource TranscoderJobTemplate:JobTemplate
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.video.transcoder.v1 \
+  --api-version transcoder.cnrm.cloud.google.com/v1alpha1 \
+  --resource TranscoderJobTemplate:JobTemplate
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.video.transcoder.v1 \
+  --api-version transcoder.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/transcoder" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/transcoder/
+fi

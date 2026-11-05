@@ -1,0 +1,21 @@
+.gcloudignore
+.git
+.gitignore
+
+# Temporary & build files
+bin/
+operator/bin/
+tmp/
+.tmp/
+/log
+*.log
+testlogs/
+artifacts-*
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+
+# Workspaces
+go.work.sum

@@ -48,7 +48,9 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	obj := proto.CloneOf(req.GetDataStore())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.DefaultSchemaId = "default_schema"
+	if !req.GetSkipDefaultSchemaCreation() {
+		obj.DefaultSchemaId = "default_schema"
+	}
 	obj.NaturalLanguageQueryUnderstandingConfig = &pb.NaturalLanguageQueryUnderstandingConfig{
 		Mode: pb.NaturalLanguageQueryUnderstandingConfig_Mode(2),
 	}
@@ -56,6 +58,19 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+
+	if obj.DefaultSchemaId != "" {
+		defaultSchemaName := fmt.Sprintf("%s/schemas/%s", fqn, obj.DefaultSchemaId)
+		defaultSchema := &pb.Schema{
+			Name: defaultSchemaName,
+			Schema: &pb.Schema_JsonSchema{
+				JsonSchema: `{"type":"object","datetime_detection":true,"geolocation_detection":true,"$schema":"https://json-schema.org/draft/2020-12/schema"}`,
+			},
+		}
+		if err := s.storage.Create(ctx, defaultSchemaName, defaultSchema); err != nil {
+			return nil, err
+		}
 	}
 
 	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)

@@ -31,7 +31,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.cloudsecuritycompliance.v1 \
   --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
@@ -39,13 +38,29 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
   --resource CloudSecurityComplianceFramework:Framework
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.cloudsecuritycompliance.v1 \
+  --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.cloudsecuritycompliance.v1 \
+  --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
+  --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.cloudsecuritycompliance.v1 \
   --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/cloudsecuritycompliance" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/cloudsecuritycompliance/

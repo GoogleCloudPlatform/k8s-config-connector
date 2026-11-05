@@ -36,10 +36,27 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
   --resource SecurityCenterManagementEventThreatDetectionCustomModule:EventThreatDetectionCustomModule
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.securitycentermanagement.v1 --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.securitycentermanagement.v1 \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource SecurityCenterManagementSecurityHealthAnalyticsCustomModule:SecurityHealthAnalyticsCustomModule
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.securitycentermanagement.v1 \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecurityCenterManagementSecurityHealthAnalyticsCustomModule:SecurityHealthAnalyticsCustomModule
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.securitycentermanagement.v1,google.type \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/securitycentermanagement" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/securitycentermanagement/

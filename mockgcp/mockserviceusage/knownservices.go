@@ -17,11 +17,18 @@ package mockserviceusage
 // allServices contains all the services we know about.
 // services not on the list give an error.
 var allServices = []string{
+	"accesscontextmanager.googleapis.com",
 	"apigee.googleapis.com",
+	"appengine.googleapis.com",
+	"beyondcorp.googleapis.com",
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
+	"connectors.googleapis.com",
 	"dataflow.googleapis.com",
+	"firebase.googleapis.com",
+	"firebasehosting.googleapis.com",
+	"healthcare.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
@@ -43,7 +50,9 @@ var allServices = []string{
 	"cloudapis.googleapis.com",
 	"orgpolicy.googleapis.com",
 	"osconfig.googleapis.com",
+	"oslogin.googleapis.com",
 	"privateca.googleapis.com",
+	"cloudkms.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {

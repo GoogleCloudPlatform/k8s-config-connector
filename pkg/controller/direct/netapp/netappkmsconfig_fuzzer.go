@@ -1,0 +1,52 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +tool:fuzz-gen
+// proto.message: google.cloud.netapp.v1.KmsConfig
+// api.group: netapp.cnrm.cloud.google.com
+
+package netapp
+
+import (
+	pb "cloud.google.com/go/netapp/apiv1/netapppb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+)
+
+func init() {
+	fuzztesting.RegisterKRMFuzzer(netAppKMSConfigFuzzer())
+}
+
+func netAppKMSConfigFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.KmsConfig{},
+		NetAppKMSConfigSpec_FromProto, NetAppKMSConfigSpec_ToProto,
+		NetAppKMSConfigObservedState_FromProto, NetAppKMSConfigObservedState_ToProto,
+	)
+
+	// Spec fields
+	f.SpecField(".crypto_key_name")
+	f.SpecField(".description")
+
+	// Status fields
+	f.StatusField(".create_time")
+	f.StatusField(".instructions")
+	f.StatusField(".service_account")
+	f.StatusField(".state")
+	f.StatusField(".state_details")
+
+	// Identity / Special fields
+	f.IdentityField(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
+
+	return f
+}

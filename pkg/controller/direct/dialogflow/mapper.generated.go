@@ -26,9 +26,280 @@ package dialogflow
 import (
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AdvancedSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings) *krm.AdvancedSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedSettings{}
+	out.AudioExportGCSDestination = GCSDestination_FromProto(mapCtx, in.GetAudioExportGcsDestination())
+	out.SpeechSettings = AdvancedSettings_SpeechSettings_FromProto(mapCtx, in.GetSpeechSettings())
+	out.DtmfSettings = AdvancedSettings_DtmfSettings_FromProto(mapCtx, in.GetDtmfSettings())
+	out.LoggingSettings = AdvancedSettings_LoggingSettings_FromProto(mapCtx, in.GetLoggingSettings())
+	return out
+}
+func AdvancedSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings) *pb.AdvancedSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedSettings{}
+	out.AudioExportGcsDestination = GCSDestination_ToProto(mapCtx, in.AudioExportGCSDestination)
+	out.SpeechSettings = AdvancedSettings_SpeechSettings_ToProto(mapCtx, in.SpeechSettings)
+	out.DtmfSettings = AdvancedSettings_DtmfSettings_ToProto(mapCtx, in.DtmfSettings)
+	out.LoggingSettings = AdvancedSettings_LoggingSettings_ToProto(mapCtx, in.LoggingSettings)
+	return out
+}
+func AdvancedSettings_DtmfSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_DtmfSettings) *krm.AdvancedSettings_DtmfSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedSettings_DtmfSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.MaxDigits = direct.LazyPtr(in.GetMaxDigits())
+	out.FinishDigit = direct.LazyPtr(in.GetFinishDigit())
+	out.InterdigitTimeoutDuration = direct.StringDuration_FromProto(mapCtx, in.GetInterdigitTimeoutDuration())
+	out.EndpointingTimeoutDuration = direct.StringDuration_FromProto(mapCtx, in.GetEndpointingTimeoutDuration())
+	return out
+}
+func AdvancedSettings_DtmfSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_DtmfSettings) *pb.AdvancedSettings_DtmfSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedSettings_DtmfSettings{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.MaxDigits = direct.ValueOf(in.MaxDigits)
+	out.FinishDigit = direct.ValueOf(in.FinishDigit)
+	out.InterdigitTimeoutDuration = direct.StringDuration_ToProto(mapCtx, in.InterdigitTimeoutDuration)
+	out.EndpointingTimeoutDuration = direct.StringDuration_ToProto(mapCtx, in.EndpointingTimeoutDuration)
+	return out
+}
+func AdvancedSettings_LoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_LoggingSettings) *krm.AdvancedSettings_LoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedSettings_LoggingSettings{}
+	out.EnableStackdriverLogging = direct.LazyPtr(in.GetEnableStackdriverLogging())
+	out.EnableInteractionLogging = direct.LazyPtr(in.GetEnableInteractionLogging())
+	out.EnableConsentBasedRedaction = direct.LazyPtr(in.GetEnableConsentBasedRedaction())
+	return out
+}
+func AdvancedSettings_LoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_LoggingSettings) *pb.AdvancedSettings_LoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedSettings_LoggingSettings{}
+	out.EnableStackdriverLogging = direct.ValueOf(in.EnableStackdriverLogging)
+	out.EnableInteractionLogging = direct.ValueOf(in.EnableInteractionLogging)
+	out.EnableConsentBasedRedaction = direct.ValueOf(in.EnableConsentBasedRedaction)
+	return out
+}
+func AdvancedSettings_SpeechSettings_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedSettings_SpeechSettings) *krm.AdvancedSettings_SpeechSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AdvancedSettings_SpeechSettings{}
+	out.EndpointerSensitivity = direct.LazyPtr(in.GetEndpointerSensitivity())
+	out.NoSpeechTimeout = direct.StringDuration_FromProto(mapCtx, in.GetNoSpeechTimeout())
+	out.UseTimeoutBasedEndpointing = direct.LazyPtr(in.GetUseTimeoutBasedEndpointing())
+	out.Models = in.Models
+	return out
+}
+func AdvancedSettings_SpeechSettings_ToProto(mapCtx *direct.MapContext, in *krm.AdvancedSettings_SpeechSettings) *pb.AdvancedSettings_SpeechSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AdvancedSettings_SpeechSettings{}
+	out.EndpointerSensitivity = direct.ValueOf(in.EndpointerSensitivity)
+	out.NoSpeechTimeout = direct.StringDuration_ToProto(mapCtx, in.NoSpeechTimeout)
+	out.UseTimeoutBasedEndpointing = direct.ValueOf(in.UseTimeoutBasedEndpointing)
+	out.Models = in.Models
+	return out
+}
+func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreConnection) *krm.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_FromProto(mapCtx, in.GetDataStoreType())
+	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
+	return out
+}
+func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreConnection) *pb.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_ToProto[pb.DataStoreType](mapCtx, in.DataStoreType)
+	out.DataStore = direct.ValueOf(in.DataStore)
+	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
+	return out
+}
+func DialogflowEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowEnvironmentObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func DialogflowEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func DialogflowEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DialogflowEnvironmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowEnvironmentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.VersionConfigs = direct.Slice_FromProto(mapCtx, in.VersionConfigs, Environment_VersionConfig_FromProto)
+	out.TestCasesConfig = Environment_TestCasesConfig_FromProto(mapCtx, in.GetTestCasesConfig())
+	out.WebhookConfig = Environment_WebhookConfig_FromProto(mapCtx, in.GetWebhookConfig())
+	return out
+}
+func DialogflowEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEnvironmentSpec) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.VersionConfigs = direct.Slice_ToProto(mapCtx, in.VersionConfigs, Environment_VersionConfig_ToProto)
+	out.TestCasesConfig = Environment_TestCasesConfig_ToProto(mapCtx, in.TestCasesConfig)
+	out.WebhookConfig = Environment_WebhookConfig_ToProto(mapCtx, in.WebhookConfig)
+	return out
+}
+func DialogflowFlowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.DialogflowFlowObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowFlowObservedState{}
+	// MISSING: Name
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_FromProto)
+	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandlerObservedState_FromProto)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
+	return out
+}
+func DialogflowFlowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowObservedState) *pb.Flow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Flow{}
+	// MISSING: Name
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_ToProto)
+	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandlerObservedState_ToProto)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_ToProto(mapCtx, in.KnowledgeConnectorSettings)
+	return out
+}
+func DialogflowFlowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Flow) *krm.DialogflowFlowSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowFlowSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRoute_FromProto)
+	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandler_FromProto)
+	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.NluSettings = NluSettings_FromProto(mapCtx, in.GetNluSettings())
+	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
+	out.MultiLanguageSettings = Flow_MultiLanguageSettings_FromProto(mapCtx, in.GetMultiLanguageSettings())
+	out.Locked = direct.LazyPtr(in.GetLocked())
+	return out
+}
+func DialogflowFlowSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFlowSpec) *pb.Flow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Flow{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRoute_ToProto)
+	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandler_ToProto)
+	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.NluSettings = NluSettings_ToProto(mapCtx, in.NluSettings)
+	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
+	out.MultiLanguageSettings = Flow_MultiLanguageSettings_ToProto(mapCtx, in.MultiLanguageSettings)
+	out.Locked = direct.ValueOf(in.Locked)
+	return out
+}
+func DialogflowPageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowPageObservedState{}
+	// MISSING: Name
+	out.EntryFulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetEntryFulfillment())
+	out.Form = FormObservedState_FromProto(mapCtx, in.GetForm())
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_FromProto)
+	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandlerObservedState_FromProto)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
+	return out
+}
+func DialogflowPageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageObservedState) *pb.Page {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Page{}
+	// MISSING: Name
+	out.EntryFulfillment = FulfillmentObservedState_ToProto(mapCtx, in.EntryFulfillment)
+	out.Form = FormObservedState_ToProto(mapCtx, in.Form)
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_ToProto)
+	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandlerObservedState_ToProto)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettingsObservedState_ToProto(mapCtx, in.KnowledgeConnectorSettings)
+	return out
+}
+func DialogflowPageSpec_FromProto(mapCtx *direct.MapContext, in *pb.Page) *krm.DialogflowPageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowPageSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.EntryFulfillment = Fulfillment_FromProto(mapCtx, in.GetEntryFulfillment())
+	out.Form = Form_FromProto(mapCtx, in.GetForm())
+	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRoute_FromProto)
+	out.EventHandlers = direct.Slice_FromProto(mapCtx, in.EventHandlers, EventHandler_FromProto)
+	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_FromProto(mapCtx, in.GetKnowledgeConnectorSettings())
+	return out
+}
+func DialogflowPageSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowPageSpec) *pb.Page {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Page{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.EntryFulfillment = Fulfillment_ToProto(mapCtx, in.EntryFulfillment)
+	out.Form = Form_ToProto(mapCtx, in.Form)
+	out.TransitionRouteGroups = in.TransitionRouteGroups
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRoute_ToProto)
+	out.EventHandlers = direct.Slice_ToProto(mapCtx, in.EventHandlers, EventHandler_ToProto)
+	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
+	out.KnowledgeConnectorSettings = KnowledgeConnectorSettings_ToProto(mapCtx, in.KnowledgeConnectorSettings)
+	return out
+}
 func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsSpec {
 	if in == nil {
 		return nil
@@ -81,6 +352,1093 @@ func DialogflowSecuritySettingsSpec_RetentionStrategy_ToProto(mapCtx *direct.Map
 	}
 	return &pb.SecuritySettings_RetentionStrategy_{RetentionStrategy: direct.Enum_ToProto[pb.SecuritySettings_RetentionStrategy](mapCtx, in)}
 }
+func DialogflowTransitionRouteGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowTransitionRouteGroupObservedState{}
+	// MISSING: Name
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_FromProto)
+	return out
+}
+func DialogflowTransitionRouteGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupObservedState) *pb.TransitionRouteGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransitionRouteGroup{}
+	// MISSING: Name
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRouteObservedState_ToProto)
+	return out
+}
+func DialogflowTransitionRouteGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRouteGroup) *krm.DialogflowTransitionRouteGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowTransitionRouteGroupSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.TransitionRoutes = direct.Slice_FromProto(mapCtx, in.TransitionRoutes, TransitionRoute_FromProto)
+	return out
+}
+func DialogflowTransitionRouteGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowTransitionRouteGroupSpec) *pb.TransitionRouteGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransitionRouteGroup{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.TransitionRoutes = direct.Slice_ToProto(mapCtx, in.TransitionRoutes, TransitionRoute_ToProto)
+	return out
+}
+func DialogflowWebhookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.DialogflowWebhookSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowWebhookSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.GenericWebService = GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out.ServiceDirectory = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectory())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowWebhookSpec) *pb.Webhook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
+		out.Webhook = &pb.Webhook_GenericWebService_{GenericWebService: oneof}
+	}
+	if oneof := ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectory); oneof != nil {
+		out.Webhook = &pb.Webhook_ServiceDirectory{ServiceDirectory: oneof}
+	}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func Environment_TestCasesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_TestCasesConfig) *krm.Environment_TestCasesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_TestCasesConfig{}
+	out.TestCases = in.TestCases
+	out.EnableContinuousRun = direct.LazyPtr(in.GetEnableContinuousRun())
+	out.EnablePredeploymentRun = direct.LazyPtr(in.GetEnablePredeploymentRun())
+	return out
+}
+func Environment_TestCasesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_TestCasesConfig) *pb.Environment_TestCasesConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_TestCasesConfig{}
+	out.TestCases = in.TestCases
+	out.EnableContinuousRun = direct.ValueOf(in.EnableContinuousRun)
+	out.EnablePredeploymentRun = direct.ValueOf(in.EnablePredeploymentRun)
+	return out
+}
+func Environment_VersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_VersionConfig) *krm.Environment_VersionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_VersionConfig{}
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+func Environment_VersionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_VersionConfig) *pb.Environment_VersionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_VersionConfig{}
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+func Environment_WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.Environment_WebhookConfig) *krm.Environment_WebhookConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_WebhookConfig{}
+	out.WebhookOverrides = direct.Slice_FromProto(mapCtx, in.WebhookOverrides, Webhook_FromProto)
+	return out
+}
+func Environment_WebhookConfig_ToProto(mapCtx *direct.MapContext, in *krm.Environment_WebhookConfig) *pb.Environment_WebhookConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_WebhookConfig{}
+	out.WebhookOverrides = direct.Slice_ToProto(mapCtx, in.WebhookOverrides, Webhook_ToProto)
+	return out
+}
+func EventHandler_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventHandler{}
+	// MISSING: Name
+	out.Event = direct.LazyPtr(in.GetEvent())
+	out.TriggerFulfillment = Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	out.TargetPage = direct.LazyPtr(in.GetTargetPage())
+	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
+	return out
+}
+func EventHandler_ToProto(mapCtx *direct.MapContext, in *krm.EventHandler) *pb.EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventHandler{}
+	// MISSING: Name
+	out.Event = direct.ValueOf(in.Event)
+	out.TriggerFulfillment = Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+	if oneof := EventHandler_TargetPage_ToProto(mapCtx, in.TargetPage); oneof != nil {
+		out.Target = oneof
+	}
+	if oneof := EventHandler_TargetFlow_ToProto(mapCtx, in.TargetFlow); oneof != nil {
+		out.Target = oneof
+	}
+	return out
+}
+func EventHandler_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.EventHandler_TargetPage {
+	if in == nil {
+		return nil
+	}
+	return &pb.EventHandler_TargetPage{TargetPage: *in}
+}
+func EventHandler_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.EventHandler_TargetFlow {
+	if in == nil {
+		return nil
+	}
+	return &pb.EventHandler_TargetFlow{TargetFlow: *in}
+}
+func EventHandlerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventHandler) *krm.EventHandlerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventHandlerObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Event
+	out.TriggerFulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetTriggerFulfillment())
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	return out
+}
+func EventHandlerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventHandlerObservedState) *pb.EventHandler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventHandler{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Event
+	out.TriggerFulfillment = FulfillmentObservedState_ToProto(mapCtx, in.TriggerFulfillment)
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	return out
+}
+func Flow_MultiLanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.Flow_MultiLanguageSettings) *krm.Flow_MultiLanguageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Flow_MultiLanguageSettings{}
+	out.EnableMultiLanguageDetection = direct.LazyPtr(in.GetEnableMultiLanguageDetection())
+	out.SupportedResponseLanguageCodes = in.SupportedResponseLanguageCodes
+	return out
+}
+func Flow_MultiLanguageSettings_ToProto(mapCtx *direct.MapContext, in *krm.Flow_MultiLanguageSettings) *pb.Flow_MultiLanguageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Flow_MultiLanguageSettings{}
+	out.EnableMultiLanguageDetection = direct.ValueOf(in.EnableMultiLanguageDetection)
+	out.SupportedResponseLanguageCodes = in.SupportedResponseLanguageCodes
+	return out
+}
+func Form_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.Form {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Form{}
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Form_Parameter_FromProto)
+	return out
+}
+func Form_ToProto(mapCtx *direct.MapContext, in *krm.Form) *pb.Form {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form{}
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Form_Parameter_ToProto)
+	return out
+}
+func FormObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form) *krm.FormObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FormObservedState{}
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Form_ParameterObservedState_FromProto)
+	return out
+}
+func FormObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FormObservedState) *pb.Form {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form{}
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Form_ParameterObservedState_ToProto)
+	return out
+}
+func Form_Parameter_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter) *krm.Form_Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Form_Parameter{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Required = direct.LazyPtr(in.GetRequired())
+	out.EntityType = direct.LazyPtr(in.GetEntityType())
+	out.IsList = direct.LazyPtr(in.GetIsList())
+	out.FillBehavior = Form_Parameter_FillBehavior_FromProto(mapCtx, in.GetFillBehavior())
+	out.DefaultValue = Value_FromProto(mapCtx, in.GetDefaultValue())
+	out.Redact = direct.LazyPtr(in.GetRedact())
+	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
+	return out
+}
+func Form_Parameter_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter) *pb.Form_Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form_Parameter{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Required = direct.ValueOf(in.Required)
+	out.EntityType = direct.ValueOf(in.EntityType)
+	out.IsList = direct.ValueOf(in.IsList)
+	out.FillBehavior = Form_Parameter_FillBehavior_ToProto(mapCtx, in.FillBehavior)
+	out.DefaultValue = Value_ToProto(mapCtx, in.DefaultValue)
+	out.Redact = direct.ValueOf(in.Redact)
+	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
+	return out
+}
+func Form_ParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter) *krm.Form_ParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Form_ParameterObservedState{}
+	// MISSING: DisplayName
+	// MISSING: Required
+	// MISSING: EntityType
+	// MISSING: IsList
+	out.FillBehavior = Form_Parameter_FillBehaviorObservedState_FromProto(mapCtx, in.GetFillBehavior())
+	// MISSING: DefaultValue
+	// MISSING: Redact
+	// MISSING: AdvancedSettings
+	return out
+}
+func Form_ParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Form_ParameterObservedState) *pb.Form_Parameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form_Parameter{}
+	// MISSING: DisplayName
+	// MISSING: Required
+	// MISSING: EntityType
+	// MISSING: IsList
+	out.FillBehavior = Form_Parameter_FillBehaviorObservedState_ToProto(mapCtx, in.FillBehavior)
+	// MISSING: DefaultValue
+	// MISSING: Redact
+	// MISSING: AdvancedSettings
+	return out
+}
+func Form_Parameter_FillBehavior_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter_FillBehavior) *krm.Form_Parameter_FillBehavior {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Form_Parameter_FillBehavior{}
+	out.InitialPromptFulfillment = Fulfillment_FromProto(mapCtx, in.GetInitialPromptFulfillment())
+	out.RepromptEventHandlers = direct.Slice_FromProto(mapCtx, in.RepromptEventHandlers, EventHandler_FromProto)
+	return out
+}
+func Form_Parameter_FillBehavior_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter_FillBehavior) *pb.Form_Parameter_FillBehavior {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form_Parameter_FillBehavior{}
+	out.InitialPromptFulfillment = Fulfillment_ToProto(mapCtx, in.InitialPromptFulfillment)
+	out.RepromptEventHandlers = direct.Slice_ToProto(mapCtx, in.RepromptEventHandlers, EventHandler_ToProto)
+	return out
+}
+func Form_Parameter_FillBehaviorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Form_Parameter_FillBehavior) *krm.Form_Parameter_FillBehaviorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Form_Parameter_FillBehaviorObservedState{}
+	out.InitialPromptFulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetInitialPromptFulfillment())
+	out.RepromptEventHandlers = direct.Slice_FromProto(mapCtx, in.RepromptEventHandlers, EventHandlerObservedState_FromProto)
+	return out
+}
+func Form_Parameter_FillBehaviorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Form_Parameter_FillBehaviorObservedState) *pb.Form_Parameter_FillBehavior {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Form_Parameter_FillBehavior{}
+	out.InitialPromptFulfillment = FulfillmentObservedState_ToProto(mapCtx, in.InitialPromptFulfillment)
+	out.RepromptEventHandlers = direct.Slice_ToProto(mapCtx, in.RepromptEventHandlers, EventHandlerObservedState_ToProto)
+	return out
+}
+func Fulfillment_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment{}
+	out.Messages = direct.Slice_FromProto(mapCtx, in.Messages, ResponseMessage_FromProto)
+	out.Webhook = direct.LazyPtr(in.GetWebhook())
+	out.ReturnPartialResponses = direct.LazyPtr(in.GetReturnPartialResponses())
+	out.Tag = direct.LazyPtr(in.GetTag())
+	out.SetParameterActions = direct.Slice_FromProto(mapCtx, in.SetParameterActions, Fulfillment_SetParameterAction_FromProto)
+	out.ConditionalCases = direct.Slice_FromProto(mapCtx, in.ConditionalCases, Fulfillment_ConditionalCases_FromProto)
+	out.AdvancedSettings = AdvancedSettings_FromProto(mapCtx, in.GetAdvancedSettings())
+	out.EnableGenerativeFallback = direct.LazyPtr(in.GetEnableGenerativeFallback())
+	out.Generators = direct.Slice_FromProto(mapCtx, in.Generators, Fulfillment_GeneratorSettings_FromProto)
+	return out
+}
+func Fulfillment_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment) *pb.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment{}
+	out.Messages = direct.Slice_ToProto(mapCtx, in.Messages, ResponseMessage_ToProto)
+	out.Webhook = direct.ValueOf(in.Webhook)
+	out.ReturnPartialResponses = direct.ValueOf(in.ReturnPartialResponses)
+	out.Tag = direct.ValueOf(in.Tag)
+	out.SetParameterActions = direct.Slice_ToProto(mapCtx, in.SetParameterActions, Fulfillment_SetParameterAction_ToProto)
+	out.ConditionalCases = direct.Slice_ToProto(mapCtx, in.ConditionalCases, Fulfillment_ConditionalCases_ToProto)
+	out.AdvancedSettings = AdvancedSettings_ToProto(mapCtx, in.AdvancedSettings)
+	out.EnableGenerativeFallback = direct.ValueOf(in.EnableGenerativeFallback)
+	out.Generators = direct.Slice_ToProto(mapCtx, in.Generators, Fulfillment_GeneratorSettings_ToProto)
+	return out
+}
+func FulfillmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.FulfillmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FulfillmentObservedState{}
+	out.Messages = direct.Slice_FromProto(mapCtx, in.Messages, ResponseMessageObservedState_FromProto)
+	// MISSING: Webhook
+	// MISSING: ReturnPartialResponses
+	// MISSING: Tag
+	// MISSING: SetParameterActions
+	out.ConditionalCases = direct.Slice_FromProto(mapCtx, in.ConditionalCases, Fulfillment_ConditionalCasesObservedState_FromProto)
+	// MISSING: AdvancedSettings
+	// MISSING: EnableGenerativeFallback
+	// MISSING: Generators
+	return out
+}
+func FulfillmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FulfillmentObservedState) *pb.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment{}
+	out.Messages = direct.Slice_ToProto(mapCtx, in.Messages, ResponseMessageObservedState_ToProto)
+	// MISSING: Webhook
+	// MISSING: ReturnPartialResponses
+	// MISSING: Tag
+	// MISSING: SetParameterActions
+	out.ConditionalCases = direct.Slice_ToProto(mapCtx, in.ConditionalCases, Fulfillment_ConditionalCasesObservedState_ToProto)
+	// MISSING: AdvancedSettings
+	// MISSING: EnableGenerativeFallback
+	// MISSING: Generators
+	return out
+}
+func Fulfillment_ConditionalCases_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases) *krm.Fulfillment_ConditionalCases {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCases{}
+	out.Cases = direct.Slice_FromProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_Case_FromProto)
+	return out
+}
+func Fulfillment_ConditionalCases_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases) *pb.Fulfillment_ConditionalCases {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases{}
+	out.Cases = direct.Slice_ToProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_Case_ToProto)
+	return out
+}
+func Fulfillment_ConditionalCasesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases) *krm.Fulfillment_ConditionalCasesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCasesObservedState{}
+	out.Cases = direct.Slice_FromProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_CaseObservedState_FromProto)
+	return out
+}
+func Fulfillment_ConditionalCasesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCasesObservedState) *pb.Fulfillment_ConditionalCases {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases{}
+	out.Cases = direct.Slice_ToProto(mapCtx, in.Cases, Fulfillment_ConditionalCases_CaseObservedState_ToProto)
+	return out
+}
+func Fulfillment_ConditionalCases_Case_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case) *krm.Fulfillment_ConditionalCases_Case {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCases_Case{}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.CaseContent = direct.Slice_FromProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContent_FromProto)
+	return out
+}
+func Fulfillment_ConditionalCases_Case_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case) *pb.Fulfillment_ConditionalCases_Case {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case{}
+	out.Condition = direct.ValueOf(in.Condition)
+	out.CaseContent = direct.Slice_ToProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContent_ToProto)
+	return out
+}
+func Fulfillment_ConditionalCases_CaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case) *krm.Fulfillment_ConditionalCases_CaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCases_CaseObservedState{}
+	// MISSING: Condition
+	out.CaseContent = direct.Slice_FromProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContentObservedState_FromProto)
+	return out
+}
+func Fulfillment_ConditionalCases_CaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_CaseObservedState) *pb.Fulfillment_ConditionalCases_Case {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case{}
+	// MISSING: Condition
+	out.CaseContent = direct.Slice_ToProto(mapCtx, in.CaseContent, Fulfillment_ConditionalCases_Case_CaseContentObservedState_ToProto)
+	return out
+}
+func Fulfillment_ConditionalCases_Case_CaseContent_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case_CaseContent) *krm.Fulfillment_ConditionalCases_Case_CaseContent {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCases_Case_CaseContent{}
+	out.Message = ResponseMessage_FromProto(mapCtx, in.GetMessage())
+	out.AdditionalCases = Fulfillment_ConditionalCases_FromProto(mapCtx, in.GetAdditionalCases())
+	return out
+}
+func Fulfillment_ConditionalCases_Case_CaseContent_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case_CaseContent) *pb.Fulfillment_ConditionalCases_Case_CaseContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case_CaseContent{}
+	if oneof := ResponseMessage_ToProto(mapCtx, in.Message); oneof != nil {
+		out.CasesOrMessage = &pb.Fulfillment_ConditionalCases_Case_CaseContent_Message{Message: oneof}
+	}
+	if oneof := Fulfillment_ConditionalCases_ToProto(mapCtx, in.AdditionalCases); oneof != nil {
+		out.CasesOrMessage = &pb.Fulfillment_ConditionalCases_Case_CaseContent_AdditionalCases{AdditionalCases: oneof}
+	}
+	return out
+}
+func Fulfillment_ConditionalCases_Case_CaseContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_ConditionalCases_Case_CaseContent) *krm.Fulfillment_ConditionalCases_Case_CaseContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_ConditionalCases_Case_CaseContentObservedState{}
+	out.Message = ResponseMessageObservedState_FromProto(mapCtx, in.GetMessage())
+	// MISSING: AdditionalCases
+	return out
+}
+func Fulfillment_ConditionalCases_Case_CaseContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_ConditionalCases_Case_CaseContentObservedState) *pb.Fulfillment_ConditionalCases_Case_CaseContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_ConditionalCases_Case_CaseContent{}
+	if oneof := ResponseMessageObservedState_ToProto(mapCtx, in.Message); oneof != nil {
+		out.CasesOrMessage = &pb.Fulfillment_ConditionalCases_Case_CaseContent_Message{Message: oneof}
+	}
+	// MISSING: AdditionalCases
+	return out
+}
+func Fulfillment_GeneratorSettings_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_GeneratorSettings) *krm.Fulfillment_GeneratorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_GeneratorSettings{}
+	out.Generator = direct.LazyPtr(in.GetGenerator())
+	out.InputParameters = in.InputParameters
+	out.OutputParameter = direct.LazyPtr(in.GetOutputParameter())
+	return out
+}
+func Fulfillment_GeneratorSettings_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_GeneratorSettings) *pb.Fulfillment_GeneratorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_GeneratorSettings{}
+	out.Generator = direct.ValueOf(in.Generator)
+	out.InputParameters = in.InputParameters
+	out.OutputParameter = direct.ValueOf(in.OutputParameter)
+	return out
+}
+func Fulfillment_SetParameterAction_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_SetParameterAction) *krm.Fulfillment_SetParameterAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_SetParameterAction{}
+	out.Parameter = direct.LazyPtr(in.GetParameter())
+	out.Value = Value_FromProto(mapCtx, in.GetValue())
+	return out
+}
+func Fulfillment_SetParameterAction_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_SetParameterAction) *pb.Fulfillment_SetParameterAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_SetParameterAction{}
+	out.Parameter = direct.ValueOf(in.Parameter)
+	out.Value = Value_ToProto(mapCtx, in.Value)
+	return out
+}
+func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GCSDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSDestination{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func GCSDestination_ToProto(mapCtx *direct.MapContext, in *krm.GCSDestination) *pb.GcsDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsDestination{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+
+/*
+found existing non-generated mapping function "GenericWebService_FromProto", skipping
+
+	func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
+		if in == nil {
+			return nil
+		}
+		out := &krm.GenericWebService{}
+		out.URI = direct.LazyPtr(in.GetUri())
+		out.Username = direct.LazyPtr(in.GetUsername())
+		out.Password = direct.LazyPtr(in.GetPassword())
+		out.RequestHeaders = in.RequestHeaders
+		out.AllowedCACerts = in.AllowedCaCerts
+		out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+		out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+		out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
+		out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
+		out.RequestBody = direct.LazyPtr(in.GetRequestBody())
+		out.ParameterMapping = in.ParameterMapping
+		return out
+	}
+*/
+func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebService) *pb.Webhook_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = GenericWebService_Password_ToProto(mapCtx, in.Password)
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCaCerts = in.AllowedCACerts
+	out.OauthConfig = GenericWebServiceOAuthConfig_ToProto(mapCtx, in.OauthConfig)
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Webhook_GenericWebService_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	out.WebhookType = direct.Enum_ToProto[pb.Webhook_GenericWebService_WebhookType](mapCtx, in.WebhookType)
+	out.HttpMethod = direct.Enum_ToProto[pb.Webhook_GenericWebService_HttpMethod](mapCtx, in.HTTPMethod)
+	out.RequestBody = direct.ValueOf(in.RequestBody)
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
+func GenericWebServiceOAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.GenericWebServiceOAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenericWebServiceOAuthConfig{}
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+func GenericWebServiceOAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServiceOAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService_OAuthConfig{}
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+func KnowledgeConnectorSettings_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeConnectorSettings) *krm.KnowledgeConnectorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KnowledgeConnectorSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.TriggerFulfillment = Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	out.TargetPage = direct.LazyPtr(in.GetTargetPage())
+	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
+	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DataStoreConnection_FromProto)
+	return out
+}
+func KnowledgeConnectorSettings_ToProto(mapCtx *direct.MapContext, in *krm.KnowledgeConnectorSettings) *pb.KnowledgeConnectorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KnowledgeConnectorSettings{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.TriggerFulfillment = Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+	if oneof := KnowledgeConnectorSettings_TargetPage_ToProto(mapCtx, in.TargetPage); oneof != nil {
+		out.Target = oneof
+	}
+	if oneof := KnowledgeConnectorSettings_TargetFlow_ToProto(mapCtx, in.TargetFlow); oneof != nil {
+		out.Target = oneof
+	}
+	out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DataStoreConnection_ToProto)
+	return out
+}
+func KnowledgeConnectorSettings_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.KnowledgeConnectorSettings_TargetPage {
+	if in == nil {
+		return nil
+	}
+	return &pb.KnowledgeConnectorSettings_TargetPage{TargetPage: *in}
+}
+func KnowledgeConnectorSettings_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.KnowledgeConnectorSettings_TargetFlow {
+	if in == nil {
+		return nil
+	}
+	return &pb.KnowledgeConnectorSettings_TargetFlow{TargetFlow: *in}
+}
+func KnowledgeConnectorSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KnowledgeConnectorSettings) *krm.KnowledgeConnectorSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KnowledgeConnectorSettingsObservedState{}
+	// MISSING: Enabled
+	out.TriggerFulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetTriggerFulfillment())
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	// MISSING: DataStoreConnections
+	return out
+}
+func KnowledgeConnectorSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KnowledgeConnectorSettingsObservedState) *pb.KnowledgeConnectorSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KnowledgeConnectorSettings{}
+	// MISSING: Enabled
+	out.TriggerFulfillment = FulfillmentObservedState_ToProto(mapCtx, in.TriggerFulfillment)
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	// MISSING: DataStoreConnections
+	return out
+}
+func NluSettings_FromProto(mapCtx *direct.MapContext, in *pb.NluSettings) *krm.NluSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NluSettings{}
+	out.ModelType = direct.Enum_FromProto(mapCtx, in.GetModelType())
+	out.ClassificationThreshold = direct.LazyPtr(in.GetClassificationThreshold())
+	out.ModelTrainingMode = direct.Enum_FromProto(mapCtx, in.GetModelTrainingMode())
+	return out
+}
+func NluSettings_ToProto(mapCtx *direct.MapContext, in *krm.NluSettings) *pb.NluSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NluSettings{}
+	out.ModelType = direct.Enum_ToProto[pb.NluSettings_ModelType](mapCtx, in.ModelType)
+	out.ClassificationThreshold = direct.ValueOf(in.ClassificationThreshold)
+	out.ModelTrainingMode = direct.Enum_ToProto[pb.NluSettings_ModelTrainingMode](mapCtx, in.ModelTrainingMode)
+	return out
+}
+func ResponseMessage_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage{}
+	out.Text = ResponseMessage_Text_FromProto(mapCtx, in.GetText())
+	if v := direct.Struct_FromProto(mapCtx, in.GetPayload()); v != nil {
+		out.Payload = *v
+	}
+	out.ConversationSuccess = ResponseMessage_ConversationSuccess_FromProto(mapCtx, in.GetConversationSuccess())
+	out.OutputAudioText = ResponseMessage_OutputAudioText_FromProto(mapCtx, in.GetOutputAudioText())
+	out.LiveAgentHandoff = ResponseMessage_LiveAgentHandoff_FromProto(mapCtx, in.GetLiveAgentHandoff())
+	// MISSING: EndInteraction
+	out.PlayAudio = ResponseMessage_PlayAudio_FromProto(mapCtx, in.GetPlayAudio())
+	// MISSING: MixedAudio
+	out.TelephonyTransferCall = ResponseMessage_TelephonyTransferCall_FromProto(mapCtx, in.GetTelephonyTransferCall())
+	out.KnowledgeInfoCard = ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx, in.GetKnowledgeInfoCard())
+	out.ResponseType = direct.Enum_FromProto(mapCtx, in.GetResponseType())
+	out.Channel = direct.LazyPtr(in.GetChannel())
+	return out
+}
+
+/*
+found existing non-generated mapping function "ResponseMessage_ToProto", skipping
+
+	func ResponseMessage_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage) *pb.ResponseMessage {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ResponseMessage{}
+		if oneof := ResponseMessage_Text_ToProto(mapCtx, in.Text); oneof != nil {
+			out.Message = &pb.ResponseMessage_Text_{Text: oneof}
+		}
+		if oneof := direct.Struct_ToProto(mapCtx, in.Payload); oneof != nil {
+			out.Message = &pb.ResponseMessage_Payload{Payload: oneof}
+		}
+		if oneof := ResponseMessage_ConversationSuccess_ToProto(mapCtx, in.ConversationSuccess); oneof != nil {
+			out.Message = &pb.ResponseMessage_ConversationSuccess_{ConversationSuccess: oneof}
+		}
+		if oneof := ResponseMessage_OutputAudioText_ToProto(mapCtx, in.OutputAudioText); oneof != nil {
+			out.Message = &pb.ResponseMessage_OutputAudioText_{OutputAudioText: oneof}
+		}
+		if oneof := ResponseMessage_LiveAgentHandoff_ToProto(mapCtx, in.LiveAgentHandoff); oneof != nil {
+			out.Message = &pb.ResponseMessage_LiveAgentHandoff_{LiveAgentHandoff: oneof}
+		}
+		// MISSING: EndInteraction
+		if oneof := ResponseMessage_PlayAudio_ToProto(mapCtx, in.PlayAudio); oneof != nil {
+			out.Message = &pb.ResponseMessage_PlayAudio_{PlayAudio: oneof}
+		}
+		// MISSING: MixedAudio
+		if oneof := ResponseMessage_TelephonyTransferCall_ToProto(mapCtx, in.TelephonyTransferCall); oneof != nil {
+			out.Message = &pb.ResponseMessage_TelephonyTransferCall_{TelephonyTransferCall: oneof}
+		}
+		if oneof := ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx, in.KnowledgeInfoCard); oneof != nil {
+			out.Message = &pb.ResponseMessage_KnowledgeInfoCard_{KnowledgeInfoCard: oneof}
+		}
+		out.ResponseType = direct.Enum_ToProto[pb.ResponseMessage_ResponseType](mapCtx, in.ResponseType)
+		out.Channel = direct.ValueOf(in.Channel)
+		return out
+	}
+*/
+func ResponseMessageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage) *krm.ResponseMessageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessageObservedState{}
+	out.Text = ResponseMessage_TextObservedState_FromProto(mapCtx, in.GetText())
+	// MISSING: Payload
+	// MISSING: ConversationSuccess
+	out.OutputAudioText = ResponseMessage_OutputAudioTextObservedState_FromProto(mapCtx, in.GetOutputAudioText())
+	// MISSING: LiveAgentHandoff
+	out.EndInteraction = ResponseMessage_EndInteraction_FromProto(mapCtx, in.GetEndInteraction())
+	out.PlayAudio = ResponseMessage_PlayAudioObservedState_FromProto(mapCtx, in.GetPlayAudio())
+	out.MixedAudio = ResponseMessage_MixedAudioObservedState_FromProto(mapCtx, in.GetMixedAudio())
+	// MISSING: TelephonyTransferCall
+	// MISSING: KnowledgeInfoCard
+	// MISSING: ResponseType
+	// MISSING: Channel
+	return out
+}
+func ResponseMessageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessageObservedState) *pb.ResponseMessage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage{}
+	if oneof := ResponseMessage_TextObservedState_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Message = &pb.ResponseMessage_Text_{Text: oneof}
+	}
+	// MISSING: Payload
+	// MISSING: ConversationSuccess
+	if oneof := ResponseMessage_OutputAudioTextObservedState_ToProto(mapCtx, in.OutputAudioText); oneof != nil {
+		out.Message = &pb.ResponseMessage_OutputAudioText_{OutputAudioText: oneof}
+	}
+	// MISSING: LiveAgentHandoff
+	if oneof := ResponseMessage_EndInteraction_ToProto(mapCtx, in.EndInteraction); oneof != nil {
+		out.Message = &pb.ResponseMessage_EndInteraction_{EndInteraction: oneof}
+	}
+	if oneof := ResponseMessage_PlayAudioObservedState_ToProto(mapCtx, in.PlayAudio); oneof != nil {
+		out.Message = &pb.ResponseMessage_PlayAudio_{PlayAudio: oneof}
+	}
+	if oneof := ResponseMessage_MixedAudioObservedState_ToProto(mapCtx, in.MixedAudio); oneof != nil {
+		out.Message = &pb.ResponseMessage_MixedAudio_{MixedAudio: oneof}
+	}
+	// MISSING: TelephonyTransferCall
+	// MISSING: KnowledgeInfoCard
+	// MISSING: ResponseType
+	// MISSING: Channel
+	return out
+}
+func ResponseMessage_ConversationSuccess_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_ConversationSuccess) *krm.ResponseMessage_ConversationSuccess {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_ConversationSuccess{}
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	return out
+}
+func ResponseMessage_ConversationSuccess_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_ConversationSuccess) *pb.ResponseMessage_ConversationSuccess {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_ConversationSuccess{}
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	return out
+}
+func ResponseMessage_EndInteraction_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_EndInteraction) *krm.ResponseMessage_EndInteraction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_EndInteraction{}
+	return out
+}
+func ResponseMessage_EndInteraction_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_EndInteraction) *pb.ResponseMessage_EndInteraction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_EndInteraction{}
+	return out
+}
+func ResponseMessage_KnowledgeInfoCard_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_KnowledgeInfoCard) *krm.ResponseMessage_KnowledgeInfoCard {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_KnowledgeInfoCard{}
+	return out
+}
+func ResponseMessage_KnowledgeInfoCard_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_KnowledgeInfoCard) *pb.ResponseMessage_KnowledgeInfoCard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_KnowledgeInfoCard{}
+	return out
+}
+func ResponseMessage_LiveAgentHandoff_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_LiveAgentHandoff) *krm.ResponseMessage_LiveAgentHandoff {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_LiveAgentHandoff{}
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	return out
+}
+func ResponseMessage_LiveAgentHandoff_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_LiveAgentHandoff) *pb.ResponseMessage_LiveAgentHandoff {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_LiveAgentHandoff{}
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	return out
+}
+func ResponseMessage_MixedAudioObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_MixedAudio) *krm.ResponseMessage_MixedAudioObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_MixedAudioObservedState{}
+	out.Segments = direct.Slice_FromProto(mapCtx, in.Segments, ResponseMessage_MixedAudio_SegmentObservedState_FromProto)
+	return out
+}
+func ResponseMessage_MixedAudioObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_MixedAudioObservedState) *pb.ResponseMessage_MixedAudio {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_MixedAudio{}
+	out.Segments = direct.Slice_ToProto(mapCtx, in.Segments, ResponseMessage_MixedAudio_SegmentObservedState_ToProto)
+	return out
+}
+func ResponseMessage_MixedAudio_SegmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_MixedAudio_Segment) *krm.ResponseMessage_MixedAudio_SegmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_MixedAudio_SegmentObservedState{}
+	out.Audio = in.GetAudio()
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
+	return out
+}
+func ResponseMessage_MixedAudio_SegmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_MixedAudio_SegmentObservedState) *pb.ResponseMessage_MixedAudio_Segment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_MixedAudio_Segment{}
+	if oneof := ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto(mapCtx, in.Audio); oneof != nil {
+		out.Content = oneof
+	}
+	if oneof := ResponseMessage_MixedAudio_SegmentObservedState_Uri_ToProto(mapCtx, in.URI); oneof != nil {
+		out.Content = oneof
+	}
+	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
+
+/*
+found existing non-generated mapping function "ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto", skipping
+
+	func ResponseMessage_MixedAudio_SegmentObservedState_Audio_ToProto(mapCtx *direct.MapContext, in []byte) *pb.ResponseMessage_MixedAudio_Segment_Audio {
+		if in == nil {
+			return nil
+		}
+		return &pb.ResponseMessage_MixedAudio_Segment_Audio{Audio: *in}
+	}
+*/
+func ResponseMessage_MixedAudio_SegmentObservedState_Uri_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_MixedAudio_Segment_Uri {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResponseMessage_MixedAudio_Segment_Uri{Uri: *in}
+}
+func ResponseMessage_OutputAudioText_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_OutputAudioText) *krm.ResponseMessage_OutputAudioText {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_OutputAudioText{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.Ssml = direct.LazyPtr(in.GetSsml())
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_OutputAudioText_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_OutputAudioText) *pb.ResponseMessage_OutputAudioText {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_OutputAudioText{}
+	if oneof := ResponseMessage_OutputAudioText_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := ResponseMessage_OutputAudioText_Ssml_ToProto(mapCtx, in.Ssml); oneof != nil {
+		out.Source = oneof
+	}
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_OutputAudioText_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_OutputAudioText_Text {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResponseMessage_OutputAudioText_Text{Text: *in}
+}
+func ResponseMessage_OutputAudioText_Ssml_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_OutputAudioText_Ssml {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResponseMessage_OutputAudioText_Ssml{Ssml: *in}
+}
+func ResponseMessage_OutputAudioTextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_OutputAudioText) *krm.ResponseMessage_OutputAudioTextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_OutputAudioTextObservedState{}
+	// MISSING: Text
+	// MISSING: Ssml
+	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
+	return out
+}
+func ResponseMessage_OutputAudioTextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_OutputAudioTextObservedState) *pb.ResponseMessage_OutputAudioText {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_OutputAudioText{}
+	// MISSING: Text
+	// MISSING: Ssml
+	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
+func ResponseMessage_PlayAudio_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_PlayAudio) *krm.ResponseMessage_PlayAudio {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_PlayAudio{}
+	out.AudioURI = direct.LazyPtr(in.GetAudioUri())
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_PlayAudio_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_PlayAudio) *pb.ResponseMessage_PlayAudio {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_PlayAudio{}
+	out.AudioUri = direct.ValueOf(in.AudioURI)
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_PlayAudioObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_PlayAudio) *krm.ResponseMessage_PlayAudioObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_PlayAudioObservedState{}
+	// MISSING: AudioURI
+	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
+	return out
+}
+func ResponseMessage_PlayAudioObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_PlayAudioObservedState) *pb.ResponseMessage_PlayAudio {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_PlayAudio{}
+	// MISSING: AudioURI
+	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
+func ResponseMessage_TelephonyTransferCall_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_TelephonyTransferCall) *krm.ResponseMessage_TelephonyTransferCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_TelephonyTransferCall{}
+	out.PhoneNumber = direct.LazyPtr(in.GetPhoneNumber())
+	return out
+}
+func ResponseMessage_TelephonyTransferCall_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_TelephonyTransferCall) *pb.ResponseMessage_TelephonyTransferCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_TelephonyTransferCall{}
+	if oneof := ResponseMessage_TelephonyTransferCall_PhoneNumber_ToProto(mapCtx, in.PhoneNumber); oneof != nil {
+		out.Endpoint = oneof
+	}
+	return out
+}
+func ResponseMessage_TelephonyTransferCall_PhoneNumber_ToProto(mapCtx *direct.MapContext, in *string) *pb.ResponseMessage_TelephonyTransferCall_PhoneNumber {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResponseMessage_TelephonyTransferCall_PhoneNumber{PhoneNumber: *in}
+}
+func ResponseMessage_Text_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_Text) *krm.ResponseMessage_Text {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_Text{}
+	out.Text = in.Text
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_Text_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_Text) *pb.ResponseMessage_Text {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_Text{}
+	out.Text = in.Text
+	// MISSING: AllowPlaybackInterruption
+	return out
+}
+func ResponseMessage_TextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResponseMessage_Text) *krm.ResponseMessage_TextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResponseMessage_TextObservedState{}
+	// MISSING: Text
+	out.AllowPlaybackInterruption = direct.LazyPtr(in.GetAllowPlaybackInterruption())
+	return out
+}
+func ResponseMessage_TextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResponseMessage_TextObservedState) *pb.ResponseMessage_Text {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResponseMessage_Text{}
+	// MISSING: Text
+	out.AllowPlaybackInterruption = direct.ValueOf(in.AllowPlaybackInterruption)
+	return out
+}
 func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_AudioExportSettings) *krm.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -119,5 +1477,205 @@ func SecuritySettings_InsightsExportSettings_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.SecuritySettings_InsightsExportSettings{}
 	out.EnableInsightsExport = direct.ValueOf(in.EnableInsightsExport)
+	return out
+}
+func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryConfig{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
+	out.GenericWebService = GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	return out
+}
+func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_ServiceDirectoryConfig{}
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	out.GenericWebService = GenericWebService_ToProto(mapCtx, in.GenericWebService)
+	return out
+}
+func TransitionRoute_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRoute {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransitionRoute{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Intent = direct.LazyPtr(in.GetIntent())
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.TriggerFulfillment = Fulfillment_FromProto(mapCtx, in.GetTriggerFulfillment())
+	out.TargetPage = direct.LazyPtr(in.GetTargetPage())
+	out.TargetFlow = direct.LazyPtr(in.GetTargetFlow())
+	return out
+}
+func TransitionRoute_ToProto(mapCtx *direct.MapContext, in *krm.TransitionRoute) *pb.TransitionRoute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransitionRoute{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Intent = direct.ValueOf(in.Intent)
+	out.Condition = direct.ValueOf(in.Condition)
+	out.TriggerFulfillment = Fulfillment_ToProto(mapCtx, in.TriggerFulfillment)
+	if oneof := TransitionRoute_TargetPage_ToProto(mapCtx, in.TargetPage); oneof != nil {
+		out.Target = oneof
+	}
+	if oneof := TransitionRoute_TargetFlow_ToProto(mapCtx, in.TargetFlow); oneof != nil {
+		out.Target = oneof
+	}
+	return out
+}
+func TransitionRoute_TargetPage_ToProto(mapCtx *direct.MapContext, in *string) *pb.TransitionRoute_TargetPage {
+	if in == nil {
+		return nil
+	}
+	return &pb.TransitionRoute_TargetPage{TargetPage: *in}
+}
+func TransitionRoute_TargetFlow_ToProto(mapCtx *direct.MapContext, in *string) *pb.TransitionRoute_TargetFlow {
+	if in == nil {
+		return nil
+	}
+	return &pb.TransitionRoute_TargetFlow{TargetFlow: *in}
+}
+func TransitionRouteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TransitionRoute) *krm.TransitionRouteObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransitionRouteObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Description
+	// MISSING: Intent
+	// MISSING: Condition
+	out.TriggerFulfillment = FulfillmentObservedState_FromProto(mapCtx, in.GetTriggerFulfillment())
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	return out
+}
+func TransitionRouteObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TransitionRouteObservedState) *pb.TransitionRoute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransitionRoute{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Description
+	// MISSING: Intent
+	// MISSING: Condition
+	out.TriggerFulfillment = FulfillmentObservedState_ToProto(mapCtx, in.TriggerFulfillment)
+	// MISSING: TargetPage
+	// MISSING: TargetFlow
+	return out
+}
+func Webhook_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.Webhook {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.GenericWebService = Webhook_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out.ServiceDirectory = Webhook_ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectory())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func Webhook_ToProto(mapCtx *direct.MapContext, in *krm.Webhook) *pb.Webhook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := Webhook_GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
+		out.Webhook = &pb.Webhook_GenericWebService_{GenericWebService: oneof}
+	}
+	if oneof := Webhook_ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectory); oneof != nil {
+		out.Webhook = &pb.Webhook_ServiceDirectory{ServiceDirectory: oneof}
+	}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func Webhook_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.Webhook_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook_GenericWebService{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCACerts = in.AllowedCaCerts
+	out.OauthConfig = Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
+	out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
+	out.RequestBody = direct.LazyPtr(in.GetRequestBody())
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
+func Webhook_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService) *pb.Webhook_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCaCerts = in.AllowedCACerts
+	out.OauthConfig = Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx, in.OauthConfig)
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Webhook_GenericWebService_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	out.WebhookType = direct.Enum_ToProto[pb.Webhook_GenericWebService_WebhookType](mapCtx, in.WebhookType)
+	out.HttpMethod = direct.Enum_ToProto[pb.Webhook_GenericWebService_HttpMethod](mapCtx, in.HTTPMethod)
+	out.RequestBody = direct.ValueOf(in.RequestBody)
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
+func Webhook_GenericWebService_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.Webhook_GenericWebService_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook_GenericWebService_OAuthConfig{}
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+func Webhook_GenericWebService_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_GenericWebService_OAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService_OAuthConfig{}
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+func Webhook_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.Webhook_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Webhook_ServiceDirectoryConfig{}
+	out.Service = direct.LazyPtr(in.GetService())
+	out.GenericWebService = Webhook_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	return out
+}
+func Webhook_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Webhook_ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_ServiceDirectoryConfig{}
+	out.Service = direct.ValueOf(in.Service)
+	out.GenericWebService = Webhook_GenericWebService_ToProto(mapCtx, in.GenericWebService)
 	return out
 }

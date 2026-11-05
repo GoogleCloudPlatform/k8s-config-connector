@@ -104,6 +104,7 @@ func (m *mirroringDeploymentGroupModel) AdapterForObject(ctx context.Context, op
 func (m *mirroringDeploymentGroupModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	id := &krm.NetworkSecurityMirroringDeploymentGroupIdentity{}
 	if err := id.FromExternal(url); err != nil {
+		// Not recognized
 		return nil, nil
 	}
 
@@ -283,6 +284,7 @@ func (a *mirroringDeploymentGroupAdapter) Delete(ctx context.Context, deleteOp *
 	return true, nil
 }
 
+// compareMirroringDeploymentGroup compares the actual and desired MirroringDeploymentGroup state, returning the diff and update field mask.
 func compareMirroringDeploymentGroup(ctx context.Context, actual, desired *pb.MirroringDeploymentGroup) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_FromProto, NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_ToProto)
 	if err != nil {

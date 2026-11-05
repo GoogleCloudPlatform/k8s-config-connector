@@ -29,7 +29,9 @@ Please respect the following review criteria and invariants when reviewing.
 
 ## 5. Schema Compatibility (No Breaking Changes)
 *   **Strict Rule:** No changes to the schema (fields added, removed, or type changes) are allowed compared to the existing CRD in the `master` branch.
-    * **Exception:** Removing the following top level `status` block located at the end of the CRD yaml file is fine and should not be flagged in the review:
+    * **Exceptions:**
+      1. Adding `status.externalRef` (as `ExternalRef *string `json:"externalRef,omitempty"``) under the Status struct is allowed and expected.
+      2. Removing the following top level `status` block located at the end of the CRD yaml file is fine and should not be flagged in the review:
       ```yaml
       status:
         acceptedNames:
@@ -38,8 +40,8 @@ Please respect the following review criteria and invariants when reviewing.
         conditions: []
         storedVersions: []
       ```  
-*   The generated CRD must match the existing one exactly, except for minor differences like descriptions.
-*   **Action:** Run `./dev/tasks/diff-crds --base master` from the repository root. If the output shows any added or removed fields under `spec` or `status` (excluding comments or description text updates), fail the review.
+*   The generated CRD must match the existing one exactly, except for minor differences like descriptions and the allowed addition of `status.externalRef`.
+*   **Action:** Run `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition` from the repository root. If the output shows any added or removed fields under `spec` or `status` (excluding comments, description text updates, or allowed `status.externalRef`), fail the review.
 
 ## 6. Completeness & Heuristics (Proto-to-CRD mapping)
 *   **Parity over Completeness:** Unlike Greenfield resources (where we aim for 100% coverage of the proto), Brownfield migration PRs must maintain strict schema parity with the existing CRD. Do **NOT** add fields from the proto if they were not already present in the master branch CRD. The mapping heuristics below apply only to the fields already present in the existing CRD.

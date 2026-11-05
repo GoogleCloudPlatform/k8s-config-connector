@@ -60,6 +60,27 @@ spec:
             version: v1beta1
             group: kms.cnrm.cloud.google.com
           targetField: self_link
+    - name: google_bigquery_dataset_access
+      kind: BigQueryDatasetAccess
+      skipImport: true
+      idTemplate: "projects/{{project}}/datasets/{{dataset_id}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      containers:
+        - type: project
+          tfField: project
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - key: projectRef
+          tfField: project
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
     - name: google_bigquery_job
       kind: BigQueryJob
       idTemplate: "projects/{{project}}/jobs/{{job_id}}"

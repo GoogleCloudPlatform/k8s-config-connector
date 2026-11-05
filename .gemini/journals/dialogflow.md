@@ -40,17 +40,33 @@
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
 
-### [2026-09-30] DialogflowKnowledgeBase MockGCP and Alignment (Phase 3)
-- **Context**: Greenfield implementation of Phase 3 (MockGCP and Alignment) for `DialogflowKnowledgeBase` under `apis/dialogflow/v1alpha1` (Issues #13519, #13536).
+### [2026-10-01] DialogflowConversationDataset Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowConversationDataset` (Issue #13603).
 - **Problem**:
-  - `DialogflowKnowledgeBase` requires mock CRUD operations (Get, Create, Update, Delete, List) against the simulated Dialogflow service.
-  - Knowledge Base IDs are server-generated base64 strings upon creation (`projects/{project}/locations/{location}/knowledgeBases/{id}`).
-  - Dynamic IDs in HTTP logs and CAIS identities required normalization to ensure deterministic golden file comparison across mock and real GCP.
+  1. Dialogflow ConversationDataset is completely immutable in GCP (no update RPC exists in Dialogflow v2 API).
+  2. Dataset IDs are service-generated (format `projects/{project}/locations/{location}/conversationDatasets/{conversationDataset}`).
+  3. `DeleteConversationDatasetOperation.Wait(ctx)` in GAPIC REST client returns `unsupported result type <nil>: <nil>` on successful completion due to empty LRO response body handling.
+  4. Golden HTTP logs and object outputs require dataset ID normalization (`${conversationDatasetID}`).
 - **Solution**:
-  - Implemented `knowledgeBasesServer` in `mockgcp/mockdialogflow/knowledgebase.go` supporting global, regional, and agent knowledge base paths, generating standard numeric base64-encoded IDs.
-  - Registered `pb.RegisterKnowledgeBasesServer` and `grpcpb.RegisterKnowledgeBasesHandler` in `mockgcp/mockdialogflow/service.go`.
-  - Configured `Previsit` in `mockgcp/mockdialogflow/normalize.go` to replace server-generated knowledge base IDs with `${knowledgeBaseID}`.
-  - Added `DialogflowKnowledgeBase` to `config/tests/samples/create/harness.go` and dynamic ID normalization in `pkg/cais/caistesting/testing.go`.
-  - Generated and matched mock HTTP logs (`_http_mock.log`) and golden objects for both `dialogflowknowledgebase-minimal` and `dialogflowknowledgebase-maximal`.
-- **Impact**: Enables hermetic E2E testing and continuous integration verification of `DialogflowKnowledgeBase` against MockGCP with 0-diff alignment.
+  1. Implemented direct controller adapter with immutable update logic (rejecting updates with descriptive field diffs), service-generated ID semantics (following 4 rules in `kcc-direct-service-generated-id`), and handled empty LRO result error in `Delete`.
+  2. Added `${conversationDatasetID}` normalization in `mockgcp/mockdialogflow/normalize.go`.
+  3. Generated mappers and fuzzer under `pkg/controller/direct/dialogflow/conversationdataset/`.
+  4. Recorded `dialogflowconversationdataset-minimal` and `dialogflowconversationdataset-maximal` fixtures against real GCP.
+- **Impact**: Fully enables management and reconciliation of `DialogflowConversationDataset` resources via direct controller.
+
+### [2026-10-19] DialogflowWebhook Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowWebhook` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #14087).
+- **Problem**:
+  1. Dialogflow Webhook IDs in Dialogflow CX are exclusively server-generated (format `projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}`). Initial identity scaffolding used `refs.GetResourceID(obj)` which erroneously fell back to `metadata.name`.
+  2. DialogflowCXAgent parent references only supported `external` references (`Name` and `Namespace` were commented out). In dependencies, `DialogflowCXAgent` uses a server-assigned UUID, so referencing it by `name` was necessary.
+  3. `common.VisitFields` threw `visiting slice of type slice is not supported` when traversing `DialogflowWebhookSpec` due to `AllowedCACerts [][]byte` (slice of slice of byte).
+- **Solution**:
+  1. Updated `DialogflowWebhookIdentity` to implement `identity.ServerGeneratedIdentity`, adhering to the 4 service-generated ID rules (leaving `Name` empty in GCP create payload, pre-check in `Find`, and mapping `status.externalRef` on reconciliation).
+  2. Enabled `Name` and `Namespace` on `DialogflowCXAgentRef` and implemented `NormalizeWithFallback` retrieving agent ID from `status.startFlow` or `status.name`.
+  3. Added `case reflect.Slice:` support in `common.VisitFields` for slices of slices.
+  4. Implemented direct controller adapter using GAPIC REST client (`cx.NewWebhooksRESTClient`) and registered model and fuzzer.
+  5. Created minimal and maximal fixtures and recorded golden outputs against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+- **Impact**: Fully enables management and reconciliation of `DialogflowWebhook` resources via direct controller.
+
+
 

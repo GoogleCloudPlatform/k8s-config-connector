@@ -55,8 +55,9 @@ type Document struct {
 
 // Resource describes a REST resource.
 type Resource struct {
-	Methods   map[string]*Method   `json:"methods"`
-	Resources map[string]*Resource `json:"resources"`
+	Deprecated bool                 `json:"deprecated"`
+	Methods    map[string]*Method   `json:"methods"`
+	Resources  map[string]*Resource `json:"resources"`
 }
 
 // Method is a REST endpoint; a specific method against a resource.

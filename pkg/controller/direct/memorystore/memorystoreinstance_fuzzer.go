@@ -44,15 +44,13 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".endpoints[].connections[].psc_auto_connection.port")
 	// The `state_info` struct in KRM is empty, meaning its subfields are not propagated.
 	f.UnimplementedFields.Insert(".state_info.update_info")
-	f.UnimplementedFields.Insert(".gcs_source")
-
 	f.UnimplementedFields.Insert(".backup_collection")
 
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
-	f.UnimplementedFields.Insert(".gcs_source")
 
+	f.SpecField(".gcs_source")
 	f.SpecField(".cross_instance_replication_config")
 	f.SpecFields.Insert(".automated_backup_config")
 	f.StatusField(".cross_instance_replication_config.primary_instance.uid")

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -106,6 +107,14 @@ type BigQueryDatasetSpec struct {
 
 	// Optional. Updates storage_billing_model for the dataset.
 	StorageBillingModel *string `json:"storageBillingModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.v2.EncryptionConfiguration
+type EncryptionConfiguration struct {
+	// Optional. Describes the Cloud KMS encryption key that will be used to
+	//  protect destination BigQuery table. The BigQuery Service Account associated
+	//  with your project requires access to this encryption key.
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // BigQueryDatasetStatus defines the config connector machine state of BigQueryDataset

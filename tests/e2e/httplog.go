@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -56,7 +57,7 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 			if r.Method == "GRPC" {
 				url := r.URL
 				switch url {
-				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
+				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
 					return true
 				}
 			}
@@ -479,13 +480,19 @@ func ReplaceString(from, to string) func(string) string {
 
 // IgnoreComments is a normalization function that strips comments.
 func IgnoreComments(s string) string {
+	preservePhase := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 	lines := strings.Split(s, "\n")
-	for i, line := range lines {
+	kept := make([]string, 0, len(lines))
+	for _, line := range lines {
 		if strings.HasPrefix(line, "#") {
-			lines[i] = ""
+			if preservePhase && strings.HasPrefix(line, "# Phase:") {
+				kept = append(kept, line)
+			}
+			continue
 		}
+		kept = append(kept, line)
 	}
-	s = strings.Join(lines, "\n")
+	s = strings.Join(kept, "\n")
 	return strings.TrimSpace(s)
 }
 

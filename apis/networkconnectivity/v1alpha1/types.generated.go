@@ -17,13 +17,84 @@
 // krm.group: networkconnectivity.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: mockgcp.cloud.networkconnectivity.v1
+// proto.service: google.cloud.networkconnectivity.v1
 // resource: NetworkConnectivityInternalRange:InternalRange
 // resource: NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 // resource: NetworkConnectivityRegionalEndpoint:RegionalEndpoint
 // resource: NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
 // resource: NetworkConnectivityTransport:Transport
+// resource: NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
+// resource: NetworkConnectivityDestination:Destination
+// resource: NetworkConnectivityPolicyBasedRoute:PolicyBasedRoute
+// resource: NetworkConnectivityServiceConnectionToken:ServiceConnectionToken
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint
+type Destination_DestinationEndpoint struct {
+	// Required. The ASN of the remote IP prefix.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.asn
+	// +required
+	Asn *int64 `json:"asn,omitempty"`
+
+	// Required. The CSP of the remote IP prefix.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.csp
+	// +required
+	Csp *string `json:"csp,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter
+type PolicyBasedRoute_Filter struct {
+	// Optional. The IP protocol that this policy-based route applies to. Valid
+	//  values are 'TCP', 'UDP', and 'ALL'. Default is 'ALL'.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.ip_protocol
+	IPProtocol *string `json:"ipProtocol,omitempty"`
+
+	// Optional. The source IP range of outgoing packets that this policy-based
+	//  route applies to. Default is "0.0.0.0/0" if protocol version is IPv4.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.src_range
+	SrcRange *string `json:"srcRange,omitempty"`
+
+	// Optional. The destination IP range of outgoing packets that this
+	//  policy-based route applies to. Default is "0.0.0.0/0" if protocol version
+	//  is IPv4.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.dest_range
+	DestRange *string `json:"destRange,omitempty"`
+
+	// Required. Internet protocol versions this policy-based route applies to.
+	//  For this version, only IPV4 is supported. IPV6 is supported in preview.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Filter.protocol_version
+	// +required
+	ProtocolVersion *string `json:"protocolVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.InterconnectAttachment
+type PolicyBasedRoute_InterconnectAttachment struct {
+	// Optional. Cloud region to install this policy-based route on interconnect
+	//  attachment. Use `all` to install it on all interconnect attachments.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.InterconnectAttachment.region
+	Region *string `json:"region,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.VirtualMachine
+type PolicyBasedRoute_VirtualMachine struct {
+	// Optional. A list of VM instance tags that this policy-based route applies
+	//  to. VM instances that have ANY of tags specified here installs this PBR.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.VirtualMachine.tags
+	Tags []string `json:"tags,omitempty"`
+}
+
+/* unreachable type PolicyBasedRoute_Warnings
+// +kcc:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings
+type PolicyBasedRoute_Warnings struct {
+}
+*/
+
+/* unreachable type StateTimeline_StateMetadata
+// +kcc:proto=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata
+type StateTimeline_StateMetadata struct {
+}
+*/
 
 /* unreachable type Any
 // +kcc:proto=google.protobuf.Any
@@ -102,6 +173,145 @@ type AutoCreatedSubnetworkInfo struct {
 	SubnetworkRef *string `json:"subnetworkRef,omitempty"`
 }
 */
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AutomatedDnsCreationSpec
+type AutomatedDNSCreationSpec struct {
+	// Required. The DNS suffix to use for the DNS record. Must end with a dot. This should be a valid DNS domain name as per RFC 1035. Each label (between dots) can contain letters, digits, and hyphens, and must not start or end with a hyphen. Example: "my-service.example.com.", "internal."
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutomatedDnsCreationSpec.dns_suffix
+	DNSSuffix *string `json:"dnsSuffix,omitempty"`
+
+	// Required. The hostname (the first label of the FQDN) to use for the DNS record. This should be a valid DNS label as per RFC 1035. Generally, this means the hostname can contain letters, digits, and hyphens, and must not start or end with a hyphen. Example: "my-instance", "db-1"
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutomatedDnsCreationSpec.hostname
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Optional. The Time To Live for the DNS record, in seconds. If not provided, a default of 30 seconds will be used.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutomatedDnsCreationSpec.ttl
+	TTL *string `json:"ttl,omitempty"`
+}
+
+/* found existing non-generated go type "ConsumerPSCConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig
+type ConsumerPSCConfig struct {
+	// Required. The project ID or project number of the consumer project. This project is the one that the consumer uses to interact with the producer instance. From the perspective of a consumer who's created a producer instance, this is the project of the producer instance. Format: 'projects/' Eg. 'projects/consumer-project' or 'projects/1234'
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.consumer_instance_project
+	ConsumerInstanceProject *string `json:"consumerInstanceProject,omitempty"`
+
+	// This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.disable_global_access
+	DisableGlobalAccess *bool `json:"disableGlobalAccess,omitempty"`
+
+	// The requested IP version for the PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+
+	// The resource path of the consumer network where PSC connections are allowed to be created in. Note, this network does not need be in the ConsumerPscConfig.project in the case of SharedVPC. Example: projects/{projectNumOrId}/global/networks/{networkId}.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.network
+	Network *string `json:"network,omitempty"`
+
+	// Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.producer_instance_id
+	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
+
+	// Immutable. An immutable map for the producer instance metadata.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.producer_instance_metadata
+	ProducerInstanceMetadata map[string]string `json:"producerInstanceMetadata,omitempty"`
+
+	// The consumer project where PSC connections are allowed to be created in.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.project
+	Project *string `json:"project,omitempty"`
+
+	// Optional. A map to store mapping between customer vip and target service attachment. This field can be used to specify a static IP address for a PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.service_attachment_ip_address_map
+	ServiceAttachmentIPAddressMap map[string]string `json:"serviceAttachmentIPAddressMap,omitempty"`
+
+	// Output only. Overall state of PSC Connections management for this consumer psc config.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConfig.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection
+type ConsumerPSCConnection struct {
+	// Output only. The status of DNS automation for this PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.dns_automation_status
+	DNSAutomationStatus *DNSAutomationStatus `json:"dnsAutomationStatus,omitempty"`
+
+	// The most recent error during operating this connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.error
+	Error *GoogleRpcStatus `json:"error,omitempty"`
+
+	// Output only. The error info for the latest error during operating this connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.error_info
+	ErrorInfo *GoogleRpcErrorInfo `json:"errorInfo,omitempty"`
+
+	// The error type indicates whether the error is consumer facing, producer facing or system internal.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.error_type
+	ErrorType *string `json:"errorType,omitempty"`
+
+	// The URI of the consumer forwarding rule created. Example: projects/{projectNumOrId}/regions/us-east1/networks/{resourceId}.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// The last Compute Engine operation to setup PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.gce_operation
+	GCEOperation *string `json:"gceOperation,omitempty"`
+
+	// The IP literal allocated on the consumer network for the PSC forwarding rule that is created to connect to the producer service attachment in this service connection map.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.ip
+	IP *string `json:"ip,omitempty"`
+
+	// The requested IP version for the PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+
+	// The consumer network whose PSC forwarding rule is connected to the service attachments in this service connection map. Note that the network could be on a different project (shared VPC).
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.network
+	Network *string `json:"network,omitempty"`
+
+	// Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.producer_instance_id
+	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
+
+	// Immutable. An immutable map for the producer instance metadata.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.producer_instance_metadata
+	ProducerInstanceMetadata map[string]string `json:"producerInstanceMetadata,omitempty"`
+
+	// The consumer project whose PSC forwarding rule is connected to the service attachments in this service connection map.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.project
+	Project *string `json:"project,omitempty"`
+
+	// The PSC connection id of the PSC forwarding rule connected to the service attachments in this service connection map.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The URI of the selected subnetwork selected to allocate IP address for this connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.selected_subnetwork
+	SelectedSubnetwork *string `json:"selectedSubnetwork,omitempty"`
+
+	// The URI of a service attachment which is the target of the PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.service_attachment_uri
+	ServiceAttachmentURI *string `json:"serviceAttachmentURI,omitempty"`
+
+	// The state of the PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ConsumerPscConnection.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.DnsAutomationStatus
+type DNSAutomationStatus struct {
+	// Output only. The error details if the state is CREATE_FAILED or DELETE_FAILED.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.DnsAutomationStatus.error
+	Error *GoogleRpcStatus `json:"error,omitempty"`
+
+	// Output only. The fully qualified domain name of the DNS record.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.DnsAutomationStatus.fqdn
+	FQDN *string `json:"fqdn,omitempty"`
+
+	// Output only. The current state of DNS automation.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.DnsAutomationStatus.state
+	State *string `json:"state,omitempty"`
+}
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo
 type GoogleRpcErrorInfo struct {
@@ -266,6 +476,20 @@ type MulticloudDataTransferConfig struct {
 }
 */
 
+/* found existing non-generated go type "ProducerPSCConfig", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ProducerPscConfig
+type ProducerPSCConfig struct {
+	// Optional. The specification for automatically creating a DNS record for this PSC connection.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ProducerPscConfig.automated_dns_creation_spec
+	AutomatedDNSCreationSpec *AutomatedDNSCreationSpec `json:"automatedDNSCreationSpec,omitempty"`
+
+	// The resource path of a service attachment. Example: projects/{projectNumOrId}/regions/{region}/serviceAttachments/{resourceId}.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ProducerPscConfig.service_attachment_uri
+	ServiceAttachmentURI *string `json:"serviceAttachmentURI,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "PSCConfig", skipping
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConfig
@@ -400,6 +624,64 @@ type RegionalEndpoint struct {
 
 	// Output only. Time when the RegionalEndpoint was updated.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap
+type ServiceConnectionMap struct {
+	// The PSC configurations on consumer side.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.consumer_psc_configs
+	ConsumerPSCConfigs []ConsumerPSCConfig `json:"consumerPSCConfigs,omitempty"`
+
+	// Output only. PSC connection details on consumer side.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.consumer_psc_connections
+	ConsumerPSCConnections []ConsumerPSCConnection `json:"consumerPSCConnections,omitempty"`
+
+	// Output only. Time when the ServiceConnectionMap was created.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// A description of this resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The infrastructure used for connections between consumers/producers.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.infrastructure
+	Infrastructure *string `json:"infrastructure,omitempty"`
+
+	// User-defined labels.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Immutable. The name of a ServiceConnectionMap. Format: projects/{project}/locations/{location}/serviceConnectionMaps/{service_connection_map} See: https://google.aip.dev/122#fields-representing-resource-names
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.name
+	Name *string `json:"name,omitempty"`
+
+	// The PSC configurations on producer side.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.producer_psc_configs
+	ProducerPSCConfigs []ProducerPSCConfig `json:"producerPSCConfigs,omitempty"`
+
+	// The service class identifier this ServiceConnectionMap is for. The user of ServiceConnectionMap create API needs to have networkconnectivity.serviceClasses.use IAM permission for the service class.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.service_class
+	ServiceClass *string `json:"serviceClass,omitempty"`
+
+	// Output only. The service class uri this ServiceConnectionMap is for.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.service_class_uri
+	ServiceClassURI *string `json:"serviceClassURI,omitempty"`
+
+	// The token provided by the consumer. This token authenticates that the consumer can create a connection within the specified project and network.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.token
+	Token *string `json:"token,omitempty"`
+
+	// Output only. Time when the ServiceConnectionMap was updated.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionMap.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
@@ -551,3 +833,56 @@ type Transport struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint
+type Destination_DestinationEndpointObservedState struct {
+	// Output only. The state of the `DestinationEndpoint` resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Time when the `DestinationEndpoint` resource was updated.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings
+type PolicyBasedRoute_WarningsObservedState struct {
+	// Output only. A warning code, if applicable.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.code
+	Code *string `json:"code,omitempty"`
+
+	// Output only. Metadata about this warning in key: value format. The key
+	//  should provides more detail on the warning being returned. For example,
+	//  for warnings where there are no results in a list request for a
+	//  particular zone, this key might be scope and the key value might be the
+	//  zone name. Other examples might be a key indicating a deprecated resource
+	//  and a suggested replacement.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.data
+	Data map[string]string `json:"data,omitempty"`
+
+	// Output only. A human-readable description of the warning code.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.PolicyBasedRoute.Warnings.warning_message
+	WarningMessage *string `json:"warningMessage,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.StateTimeline
+type StateTimelineObservedState struct {
+	// Output only. The state and activation time details of the resource state.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.states
+	States []StateTimeline_StateMetadataObservedState `json:"states,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata
+type StateTimeline_StateMetadataObservedState struct {
+	// Output only. The state of the resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Accompanies only the transient states, which include
+	//  `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which
+	//  the transient state of the resource will be effective. For instance, if
+	//  the state is `ADDING`, this field shows the time when the resource state
+	//  transitions to `ACTIVE`.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.effective_time
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
+}
