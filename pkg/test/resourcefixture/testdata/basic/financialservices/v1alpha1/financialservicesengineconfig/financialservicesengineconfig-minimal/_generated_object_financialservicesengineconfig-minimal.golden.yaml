@@ -1,0 +1,28 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesEngineConfig
+metadata:
+  name: financialservicesengineconfig-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  engineVersion: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineVersions/aml-retail-v001
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  performanceTarget:
+    partyInvestigationsPerPeriodHint: 100
+  tuning:
+    endTime: "2024-01-01T00:00:00Z"
+    primaryDatasetRef:
+      external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/datasets/dataset-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "2024-04-01T12:34:56.123456Z"
+    state: ACTIVE
+    updateTime: "2024-04-01T12:34:56.123456Z"

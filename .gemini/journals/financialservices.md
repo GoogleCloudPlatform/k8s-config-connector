@@ -1,3 +1,13 @@
+### [2026-11-05] FinancialServicesEngineConfig Direct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesEngineConfig` (#14967).
+- **Action**:
+  1. Verified existing direct controller `financialservicesengineconfig_controller.go` and fuzzer `financialservicesengineconfig_fuzzer.generated.go`.
+  2. Updated `financialservicesengineconfig_controller.go` to ensure `common.NormalizeGreenfieldReferences` is called prior to `GetIdentity` in `AdapterForObject`.
+  3. Created minimal and maximal E2E fixtures under `pkg/test/resourcefixture/testdata/basic/financialservices/v1alpha1/financialservicesengineconfig/` covering all `FinancialServicesEngineConfigSpec` fields (`parentRef`, `resourceID`, `engineVersion`, `tuning`, `performanceTarget`, `hyperparameterSourceType`, `hyperparameterSource`).
+  4. Verified fuzzer tests (`FOCUS=FinancialServicesEngineConfig go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`), apichecks tests (`TestCRDFieldPresenceInTestsForAlpha`), and updated `alpha-missingfields.txt`.
+- **Observation**:
+  - `financialservices.googleapis.com` remains an Early Access / allowlist-restricted Google Cloud service requiring `servicemanagement.services.bind` permissions on real GCP projects. Fixtures and golden files were modeled according to GAPIC client protocol and REST endpoints.
+
 ### [2026-11-05] FinancialServicesDataset Greenfield Types and Identity Finalization
 - **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesDataset` (#14961)
 - **Action**:
