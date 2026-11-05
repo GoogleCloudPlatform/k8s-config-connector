@@ -4534,14 +4534,12 @@
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone.id" is not set in unstructured objects
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone.version" is not set in unstructured objects
 [missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineVersion" is not set in unstructured objects
-[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.hyperparameterSource.sourceEngineConfig" is not set in unstructured objects
+[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.hyperparameterSource.sourceEngineConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.hyperparameterSourceType" is not set in unstructured objects
-[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.performanceTarget.partyInvestigationsPerPeriodHint" is not set in unstructured objects
-[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.tuning.endTime" is not set in unstructured objects
-[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.tuning.primaryDataset" is not set in unstructured objects
+[missing_field] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.tuning.primaryDatasetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=financialservicesmodels.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.endTime" is not set in unstructured objects
 [missing_field] crd=financialservicesmodels.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineConfig" is not set in unstructured objects
 [missing_field] crd=financialservicesmodels.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects

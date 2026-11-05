@@ -14,3 +14,4 @@
 #
 [refs] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.llmBasedMetricSpec.judgeAutoraterConfig.autoraterModel" reason=no endpoint or publisher model ref type available
 [refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.conversationProfile" reason=target DialogflowConversationProfile has no KCC resource or Ref type yet
+[refs] crd=financialservicesengineconfigs.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineVersion" reason=target EngineVersion is a read-only system resource with no KCC resource or Ref type
