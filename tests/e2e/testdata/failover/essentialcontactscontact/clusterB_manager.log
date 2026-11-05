@@ -1,0 +1,21 @@
+{"severity":"info","timestamp":"2026-03-05T20:36:06.895Z","logger":"setup","msg":"Creating the manager"}
+I0305 20:36:06.896205       1 kccmanager.go:139] checking for ConfigConnector object
+I0305 20:36:06.904705       1 kccmanager.go:145] found ConfigConnector object
+I0305 20:36:06.904723       1 kccmanager.go:147] multi-cluster leader election is configured
+{"severity":"info","timestamp":"2026-03-05T20:36:07.104Z","logger":"setup","msg":"Registering controller OpenCensus views."}
+{"severity":"info","timestamp":"2026-03-05T20:36:07.104Z","logger":"setup","msg":"Registering the Prometheus exporter"}
+{"severity":"info","timestamp":"2026-03-05T20:36:07.104Z","logger":"setup","msg":"Setting container as ready..."}
+{"severity":"info","timestamp":"2026-03-05T20:36:07.104Z","logger":"setup","msg":"Container is ready."}
+{"severity":"info","timestamp":"2026-03-05T20:36:07.105Z","logger":"setup","msg":"Starting the Cmd."}
+I0305 20:36:07.105042       1 leaderelection.go:257] attempting to acquire leader lease multiclusterlease/cnrm-system/kcc-leader-lease...
+I0305 20:36:08.117958       1 leaderelection.go:271] successfully acquired lease multiclusterlease/cnrm-system/kcc-leader-lease
+I0305 20:36:08.118112       1 kccmanager.go:206] started leading; identity: kcc-cluster-b
+{"severity":"info","timestamp":"2026-03-05T20:36:08.124Z","logger":"controller-runtime.metrics","msg":"Starting metrics server"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.124Z","logger":"controller-runtime.metrics","msg":"Serving metrics server","bindAddress":":8080","secure":false}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.125Z","msg":"Starting EventSource","controller":"registration-controller","source":"kind source: *v1.CustomResourceDefinition"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.226Z","msg":"Starting Controller","controller":"registration-controller"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.226Z","msg":"Starting workers","controller":"registration-controller","worker count":20}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.226Z","msg":"Starting EventSource","controller":"essentialcontactscontact-parent-controller","controllerGroup":"essentialcontacts.cnrm.cloud.google.com","controllerKind":"EssentialContactsContact","source":"channel source: 0xc0042f2700"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.226Z","msg":"Starting EventSource","controller":"essentialcontactscontact-parent-controller","controllerGroup":"essentialcontacts.cnrm.cloud.google.com","controllerKind":"EssentialContactsContact","source":"kind source: *v1.PartialObjectMetadata"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.327Z","msg":"Starting Controller","controller":"essentialcontactscontact-parent-controller","controllerGroup":"essentialcontacts.cnrm.cloud.google.com","controllerKind":"EssentialContactsContact"}
+{"severity":"info","timestamp":"2026-03-05T20:36:08.327Z","msg":"Starting workers","controller":"essentialcontactscontact-parent-controller","controllerGroup":"essentialcontacts.cnrm.cloud.google.com","controllerKind":"EssentialContactsContact","worker count":20}
