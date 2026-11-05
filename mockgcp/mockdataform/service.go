@@ -22,6 +22,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	gw_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataform/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataform/v1beta1"
@@ -41,6 +42,12 @@ type MockService struct {
 	operations *operations.Operations
 
 	v1beta1 *RepositoryV1Beta1
+	v1      *DataformV1
+}
+
+type DataformV1 struct {
+	*MockService
+	gw_v1.UnimplementedDataformServer
 }
 
 // New creates a MockService.
@@ -51,6 +58,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1beta1 = &RepositoryV1Beta1{MockService: s}
+	s.v1 = &DataformV1{MockService: s}
 	return s
 }
 
@@ -60,19 +68,23 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataformServer(grpcServer, s.v1beta1)
-	gw_v1.RegisterDataformServer(grpcServer, &TeamFolderV1{MockService: s})
+	gw_v1.RegisterDataformServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterDataformHandler(ctx, mux, conn); err != nil {
+	v1beta1Mux := runtime.NewServeMux()
+	if err := pb.RegisterDataformHandler(ctx, v1beta1Mux, conn); err != nil {
 		return nil, err
 	}
 
-	if err := gw_v1.RegisterDataformHandler(ctx, mux, conn); err != nil {
+	v1Mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, gw_v1.RegisterDataformHandler)
+	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	mainMux := http.NewServeMux()
+	mainMux.Handle("/v1beta1/", v1beta1Mux)
+	mainMux.Handle("/v1/", v1Mux)
+
+	return mainMux, nil
 }
