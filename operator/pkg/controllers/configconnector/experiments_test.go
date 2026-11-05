@@ -16,6 +16,7 @@ package configconnector
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -66,9 +67,9 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Experiments: &corev1beta1.CCExperiments{
 						MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
-							LeaseName:                "foo",
-							Namespace:                "bar",
-							ClusterCandidateIdentity: "baz",
+							LeaseName:  "foo",
+							Namespace:  "bar",
+							GKECluster: &corev1beta1.GKECluster{Project: "my-project", Location: "us-central1", Name: "baz"},
 						},
 					},
 				},
@@ -143,8 +144,9 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-namespace"]; !ok || val != "bar" {
 							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-namespace to be 'bar', got '%s'", val)
 						}
-						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-identity"]; !ok || val != "baz" {
-							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-identity to be 'baz', got '%s'", val)
+						wantIdentity := "projects/my-project/locations/us-central1/clusters/baz"
+						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-identity"]; !ok || val != wantIdentity {
+							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-identity to be %q, got %q", wantIdentity, val)
 						}
 					} else {
 						if _, ok := templateAnnotations["cnrm.cloud.google.com/lease-name"]; ok {
@@ -161,6 +163,28 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				t.Fatalf("StatefulSet not found in manifest")
 			}
 		})
+	}
+}
+
+// A ConfigConnector stored before gkeCluster existed still carries clusterCandidateIdentity and
+// no gkeCluster. The operator reports it instead of deploying a manager with a bad identity.
+func TestApplyExperimentsRejectsLegacyMultiClusterLease(t *testing.T) {
+	ctx := context.Background()
+	r := &Reconciler{}
+	cc := &corev1beta1.ConfigConnector{
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Experiments: &corev1beta1.CCExperiments{
+				MultiClusterLease: &corev1beta1.MultiClusterLeaseSpec{
+					LeaseName:                "foo",
+					Namespace:                "bar",
+					ClusterCandidateIdentity: "baz",
+				},
+			},
+		},
+	}
+	err := r.applyExperiments(ctx, cc, testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents))
+	if want := "clusterCandidateIdentity is no longer supported"; err == nil || !strings.Contains(err.Error(), want) {
+		t.Errorf("applyExperiments() error = %v, want an error containing %q", err, want)
 	}
 }
 

@@ -140,7 +140,7 @@ require (
 	github.com/gammazero/deque v0.0.0-20190521012701-46e4ffb7a622 // indirect
 	github.com/gammazero/workerpool v0.0.0-20190608213748-0ed5e40ec55e // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gke-labs/kube-etl/syncer v0.0.0-20260318164412-11816ec1e858 // indirect
+	github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84 // indirect
 	github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
@@ -234,15 +234,15 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/crypto v0.55.0 // indirect
-	golang.org/x/mod v0.38.0 // indirect
-	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/term v0.45.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/crypto v0.57.0 // indirect
+	golang.org/x/mod v0.41.0 // indirect
+	golang.org/x/net v0.60.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/term v0.46.0 // indirect
+	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.48.0 // indirect
+	golang.org/x/tools v0.49.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0 // indirect

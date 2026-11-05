@@ -299,6 +299,10 @@ func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1
 	}
 
 	if lease := cc.Spec.Experiments.MultiClusterLease; lease != nil {
+		identity, err := lease.CandidateIdentity()
+		if err != nil {
+			return fmt.Errorf("invalid multi-cluster lease configuration: %w", err)
+		}
 		if err := setFlagForManagerContainer(u, "--leader-election-type", "multicluster"); err != nil {
 			return fmt.Errorf("failed to set --leader-election-type: %w", err)
 		}
@@ -316,7 +320,7 @@ func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1
 		}
 		annotations["cnrm.cloud.google.com/lease-name"] = lease.LeaseName
 		annotations["cnrm.cloud.google.com/lease-namespace"] = lease.Namespace
-		annotations["cnrm.cloud.google.com/lease-identity"] = lease.ClusterCandidateIdentity
+		annotations["cnrm.cloud.google.com/lease-identity"] = identity
 
 		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
 			return fmt.Errorf("failed to set pod template annotations: %w", err)
