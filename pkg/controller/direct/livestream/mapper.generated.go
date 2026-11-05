@@ -618,6 +618,7 @@ func LiveStreamDVRSessionObservedState_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
 	out.DvrManifests = direct.Slice_FromProto(mapCtx, in.DvrManifests, DvrSession_DvrManifestObservedState_FromProto)
@@ -631,6 +632,7 @@ func LiveStreamDVRSessionObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.DvrSession_State](mapCtx, in.State)
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	out.DvrManifests = direct.Slice_ToProto(mapCtx, in.DvrManifests, DvrSession_DvrManifestObservedState_ToProto)
@@ -642,7 +644,7 @@ func LiveStreamDVRSessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DvrSes
 	}
 	out := &krm.LiveStreamDVRSessionSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.DvrManifests = direct.Slice_FromProto(mapCtx, in.DvrManifests, DvrSession_DvrManifest_FromProto)
 	out.DvrWindows = direct.Slice_FromProto(mapCtx, in.DvrWindows, DvrSession_DvrWindow_FromProto)
 	return out
@@ -653,7 +655,7 @@ func LiveStreamDVRSessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStr
 	}
 	out := &pb.DvrSession{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.DvrManifests = direct.Slice_ToProto(mapCtx, in.DvrManifests, DvrSession_DvrManifest_ToProto)
 	out.DvrWindows = direct.Slice_ToProto(mapCtx, in.DvrWindows, DvrSession_DvrWindow_ToProto)
 	return out

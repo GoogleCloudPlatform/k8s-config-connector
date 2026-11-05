@@ -25,31 +25,43 @@ entries:
     group: livestream.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged judgement queue and finalized direct KRM types and identity for LiveStreamDVRSession
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}" contains ancestor segment(s) channels/{channel} with no matching reference or field on LiveStreamDVRSessionSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent reference as spec.parentRef (*LiveStreamChannelRef); removed ProjectRef and Location
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: found no docs root for this API; find the REST reference page by hand
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs to https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels.dvrSessions
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated service-docs to https://cloud.google.com/livestream/docs/reference/rest
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     field: .spec.channelRef
     reason: parent-ref-guessed
     detail: emitted as a reference to LiveStreamChannelRef, read from the channels segment of projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent reference as spec.parentRef (*LiveStreamChannelRef)
   - kind: LiveStreamDVRSession
     group: livestream.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/channels/{channel}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed Location field in favor of spec.parentRef

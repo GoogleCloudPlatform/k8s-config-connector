@@ -145,7 +145,6 @@ type DvrSession_DvrManifest struct {
 	//  channel. This key is the same as `channel.manifests.key` for the selected
 	//  manifest.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrManifest.manifest_key
-	// +required
 	ManifestKey *string `json:"manifestKey,omitempty"`
 }
 
