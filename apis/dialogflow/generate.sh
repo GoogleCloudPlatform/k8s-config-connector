@@ -95,7 +95,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowPlaybook:Playbook \
   --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
   --resource DialogflowFlow:Flow \
-  --resource DialogflowPage:Page
+  --resource DialogflowPage:Page \
+  --resource DialogflowTool:Tool
 
 ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
@@ -105,7 +106,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DialogflowPlaybook:Playbook \
   --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
   --resource DialogflowFlow:Flow \
-  --resource DialogflowPage:Page
+  --resource DialogflowPage:Page \
+  --resource DialogflowTool:Tool
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
