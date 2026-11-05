@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &AIPlatformOnlineEvaluatorIdentity{}
-	_ identity.Resource   = &AIPlatformOnlineEvaluator{}
+	_ identity.ServerGeneratedIdentity = &AIPlatformOnlineEvaluatorIdentity{}
+	_ identity.Resource                = &AIPlatformOnlineEvaluator{}
 )
 
 var AIPlatformOnlineEvaluatorIdentityFormat = gcpurls.Template[AIPlatformOnlineEvaluatorIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/onlineEvaluators/{onlineEvaluator}")
@@ -38,6 +38,10 @@ type AIPlatformOnlineEvaluatorIdentity struct {
 	Project         string
 	Location        string
 	OnlineEvaluator string
+}
+
+func (i *AIPlatformOnlineEvaluatorIdentity) HasIdentitySpecified() bool {
+	return i.OnlineEvaluator != ""
 }
 
 func (i *AIPlatformOnlineEvaluatorIdentity) String() string {
@@ -66,10 +70,8 @@ func (i *AIPlatformOnlineEvaluatorIdentity) Host() string {
 }
 
 func getIdentityFromAIPlatformOnlineEvaluatorSpec(ctx context.Context, reader client.Reader, obj *AIPlatformOnlineEvaluator) (*AIPlatformOnlineEvaluatorIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// AIPlatformOnlineEvaluator only supports service-generated IDs (GCP assigns a numeric ID upon creation).
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -102,6 +104,13 @@ func (obj *AIPlatformOnlineEvaluator) GetIdentity(ctx context.Context, reader cl
 		statusIdentity := &AIPlatformOnlineEvaluatorIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if !specIdentity.HasIdentitySpecified() {
+			if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change AIPlatformOnlineEvaluator parent (old parent=%s/%s, new parent=%s/%s)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+			}
+			return statusIdentity, nil
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
