@@ -177,6 +177,9 @@ spec:
     # Step 4.
     - id: mockgcp-alignment
       after: [mockgcp]
+      # Grouped: the controller + mockgcp + alignment PR merges before the
+      # release step ships the Kind in a PR of its own.
+      group-gate: true
       # MockGCP already matches RealGCP: the fix makes no commit and says so,
       # which closes this step's issue and moves on (in a group, the PR
       # carries on without a commit for this step).
@@ -197,19 +200,20 @@ spec:
         NONE
         ```
 
-  # Created once every other step is done: ships the Kind.
-  finally:
-    title: 'Greenfield: Release {{ .Params.kind }} (remove it from BLOCKED_KINDS)'
-    labels: [step/release]
-    review: |
-      Use .gemini/skills/reviewgen-greenfield-release/SKILL.md to conduct the review.
-    body: |
-      Every other step for {{ .Params.kind }} is done. Release it:
+    # Step 5. Ships the Kind, once the steps before it are done.
+    - id: release
+      after: [mockgcp-alignment]
+      title: 'Greenfield: Release {{ .Params.kind }} (remove it from BLOCKED_KINDS)'
+      labels: [step/release]
+      review: |
+        Use .gemini/skills/reviewgen-greenfield-release/SKILL.md to conduct the review.
+      body: |
+        Every other step for {{ .Params.kind }} is done. Release it:
 
-      1. Check that every fixture of {{ .Params.kind }} under `pkg/test/resourcefixture/testdata/basic/` has a real-GCP `_http.log`, an `_audit_probe.log` and an `_http_mock.log`. If any is missing, don't change anything: make no commit, and list what's missing.
-      2. Remove `"{{ .Params.kind }}"` from the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. Change nothing else.
+        1. Check that every fixture of {{ .Params.kind }} under `pkg/test/resourcefixture/testdata/basic/` has a real-GCP `_http.log`, an `_audit_probe.log` and an `_http_mock.log`. If any is missing, don't change anything: make no commit, and list what's missing.
+        2. Remove `"{{ .Params.kind }}"` from the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. Change nothing else.
 
-      When creating the PR, include this release note block:
-      ```release-note
-      New Alpha Resources (Direct Reconciler): `{{ .Params.kind }}`
-      ```
+        When creating the PR, include this release note block:
+        ```release-note
+        New Alpha Resources (Direct Reconciler): `{{ .Params.kind }}`
+        ```
