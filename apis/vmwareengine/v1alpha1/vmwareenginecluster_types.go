@@ -15,13 +15,11 @@
 // API sources for VMwareEngineCluster, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/vmwareengine/v1/vmwareengine_resources.proto
 // +kcc:source:service-docs=https://cloud.google.com/solutions/vmware-as-a-service
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/solutions/vmware-as-a-service/docs/reference/rest/v1/projects.locations.privateClouds.clusters
+// +kcc:source:resource-docs=https://cloud.google.com/vmware-engine/docs/reference/rest/v1/projects.locations.privateClouds.clusters
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,15 +30,10 @@ var VMwareEngineClusterGVK = GroupVersion.WithKind("VMwareEngineCluster")
 // +kcc:spec:proto=google.cloud.vmwareengine.v1.Cluster
 // +kcc:required-from-proto
 type VMwareEngineClusterSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/privateClouds/{private_cloud} this resource belongs to.
-	// +kcc:guess
-	// PrivateCloudRef *PrivateCloudRef `json:"privateCloudRef,omitempty"`
+	// The VMwareEnginePrivateCloud this VMwareEngineCluster is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *PrivateCloudRef `json:"parentRef"`
 
 	// The VMwareEngineCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
