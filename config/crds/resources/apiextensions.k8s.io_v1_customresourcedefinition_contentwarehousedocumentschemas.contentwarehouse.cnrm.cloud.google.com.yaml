@@ -176,16 +176,6 @@ spec:
                         Names must be non-blank, start with a letter, and can contain
                         alphanumeric characters and: /, :, -, _, and .'
                       type: string
-                    propertyTypeOptions:
-                      description: Nested structured data property.
-                      properties:
-                        propertyDefinitions:
-                          description: Required. List of property definitions.
-                          items:
-                            type: object
-                            x-kubernetes-preserve-unknown-fields: true
-                          type: array
-                      type: object
                     retrievalImportance:
                       description: The retrieval importance of the property during
                         search.

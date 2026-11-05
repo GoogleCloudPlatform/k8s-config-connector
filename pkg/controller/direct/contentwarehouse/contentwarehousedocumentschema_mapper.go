@@ -55,7 +55,6 @@ func PropertyDefinition_FromProto(mapCtx *direct.MapContext, in *pb.PropertyDefi
 	out.IntegerTypeOptions = IntegerTypeOptions_FromProto(mapCtx, in.GetIntegerTypeOptions())
 	out.FloatTypeOptions = FloatTypeOptions_FromProto(mapCtx, in.GetFloatTypeOptions())
 	out.TextTypeOptions = TextTypeOptions_FromProto(mapCtx, in.GetTextTypeOptions())
-	out.PropertyTypeOptions = PropertyTypeOptions_FromProto(mapCtx, in.GetPropertyTypeOptions())
 	out.EnumTypeOptions = EnumTypeOptions_FromProto(mapCtx, in.GetEnumTypeOptions())
 	out.DateTimeTypeOptions = DateTimeTypeOptions_FromProto(mapCtx, in.GetDateTimeTypeOptions())
 	out.MapTypeOptions = MapTypeOptions_FromProto(mapCtx, in.GetMapTypeOptions())
@@ -85,9 +84,6 @@ func PropertyDefinition_ToProto(mapCtx *direct.MapContext, in *krm.PropertyDefin
 	}
 	if oneof := TextTypeOptions_ToProto(mapCtx, in.TextTypeOptions); oneof != nil {
 		out.ValueTypeOptions = &pb.PropertyDefinition_TextTypeOptions{TextTypeOptions: oneof}
-	}
-	if oneof := PropertyTypeOptions_ToProto(mapCtx, in.PropertyTypeOptions); oneof != nil {
-		out.ValueTypeOptions = &pb.PropertyDefinition_PropertyTypeOptions{PropertyTypeOptions: oneof}
 	}
 	if oneof := EnumTypeOptions_ToProto(mapCtx, in.EnumTypeOptions); oneof != nil {
 		out.ValueTypeOptions = &pb.PropertyDefinition_EnumTypeOptions{EnumTypeOptions: oneof}

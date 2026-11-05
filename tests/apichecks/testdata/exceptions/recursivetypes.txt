@@ -1,7 +1,6 @@
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValue -> Parameter -> ParamValue
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValueObservedState -> ParameterObservedState -> ParamValueObservedState
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParameterSpecObservedState -> ParameterSpecObservedState
-[recursive_type] package=apis/contentwarehouse/v1alpha1: PropertyDefinition -> PropertyTypeOptions -> PropertyDefinition
 [recursive_type] package=apis/datacatalog/v1alpha1: ColumnSchema -> ColumnSchema
 [recursive_type] package=apis/dataplex/v1alpha1: AspectType_MetadataTemplate -> AspectType_MetadataTemplate
 [recursive_type] package=apis/dataplex/v1alpha1: Schema_SchemaField -> Schema_SchemaField

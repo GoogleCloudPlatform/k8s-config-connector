@@ -1119,11 +1119,6 @@ func (in *PropertyDefinition) DeepCopyInto(out *PropertyDefinition) {
 		*out = new(TextTypeOptions)
 		**out = **in
 	}
-	if in.PropertyTypeOptions != nil {
-		in, out := &in.PropertyTypeOptions, &out.PropertyTypeOptions
-		*out = new(PropertyTypeOptions)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.EnumTypeOptions != nil {
 		in, out := &in.EnumTypeOptions, &out.EnumTypeOptions
 		*out = new(EnumTypeOptions)

@@ -399,6 +399,8 @@ type PropertyArray struct {
 }
 */
 
+/* found existing non-generated go type "PropertyDefinition", skipping
+
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
 type PropertyDefinition struct {
 	// Required. The name of the metadata property.
@@ -480,6 +482,7 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource
 type PropertyDefinition_SchemaSource struct {
@@ -496,8 +499,6 @@ type PropertyDefinition_SchemaSource struct {
 type PropertyTypeOptions struct {
 	// Required. List of property definitions.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyTypeOptions.property_definitions
-	// +kubebuilder:validation:items:XPreserveUnknownFields
-	// +kubebuilder:validation:items:Type=object
 	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
 }
 

@@ -119,3 +119,84 @@ type ContentWarehouseDocumentSchemaList struct {
 func init() {
 	SchemeBuilder.Register(&ContentWarehouseDocumentSchema{}, &ContentWarehouseDocumentSchemaList{})
 }
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
+type PropertyDefinition struct {
+	// Required. The name of the metadata property.
+	//  Must be unique within a document schema and is case insensitive.
+	//  Names must be non-blank, start with a letter, and can contain alphanumeric
+	//  characters and: /, :, -, _, and .
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.name
+	Name *string `json:"name,omitempty"`
+
+	// The display-name for the property, used for front-end.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Whether the property can have multiple values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_repeatable
+	IsRepeatable *bool `json:"isRepeatable,omitempty"`
+
+	// Whether the property can be filtered. If this is a sub-property, all the
+	//  parent properties must be marked filterable.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable
+	IsFilterable *bool `json:"isFilterable,omitempty"`
+
+	// Indicates that the property should be included in a global search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_searchable
+	IsSearchable *bool `json:"isSearchable,omitempty"`
+
+	// Whether the property is user supplied metadata.
+	//  This out-of-the box placeholder setting can be used to tag derived
+	//  properties. Its value and interpretation logic should be implemented by API
+	//  user.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_metadata
+	IsMetadata *bool `json:"isMetadata,omitempty"`
+
+	// Whether the property is mandatory.
+	//  Default is 'false', i.e. populating property value can be skipped.
+	//  If 'true' then user must populate the value for this property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// The retrieval importance of the property during search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.retrieval_importance
+	RetrievalImportance *string `json:"retrievalImportance,omitempty"`
+
+	// Integer property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.integer_type_options
+	IntegerTypeOptions *IntegerTypeOptions `json:"integerTypeOptions,omitempty"`
+
+	// Float property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.float_type_options
+	FloatTypeOptions *FloatTypeOptions `json:"floatTypeOptions,omitempty"`
+
+	// Text/string property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.text_type_options
+	TextTypeOptions *TextTypeOptions `json:"textTypeOptions,omitempty"`
+
+	// Note: PropertyTypeOptions is omitted because its recursive definition
+	// (PropertyDefinition -> PropertyTypeOptions -> PropertyDefinition) is unsupported.
+
+	// Enum/categorical property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.enum_type_options
+	EnumTypeOptions *EnumTypeOptions `json:"enumTypeOptions,omitempty"`
+
+	// Date time property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.date_time_type_options
+	DateTimeTypeOptions *DateTimeTypeOptions `json:"dateTimeTypeOptions,omitempty"`
+
+	// Map property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.map_type_options
+	MapTypeOptions *MapTypeOptions `json:"mapTypeOptions,omitempty"`
+
+	// Timestamp property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.timestamp_type_options
+	TimestampTypeOptions *TimestampTypeOptions `json:"timestampTypeOptions,omitempty"`
+
+	// The mapping information between this property to another schema source.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
+	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
+}
