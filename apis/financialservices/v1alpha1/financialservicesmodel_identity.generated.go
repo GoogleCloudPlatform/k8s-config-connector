@@ -24,6 +24,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -79,28 +80,19 @@ func getIdentityFromFinancialServicesModelSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
 	}
-
-	location, err := refs.GetLocation(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	parentRef := *obj.Spec.ParentRef
+	if err := parentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	// +kcc:guess reason=identity-root-unknown
-	instance := ""
-	if instance == "" {
-		return nil, fmt.Errorf("cannot resolve instance for FinancialServicesModel")
+	parsed := &FinancialServicesModelIdentity{}
+	if err := parsed.FromExternal(strings.TrimSuffix(parentRef.GetExternal(), "/") + "/models" + "/" + resourceID); err != nil {
+		return nil, fmt.Errorf("parsing spec.parentRef external=%q: %w", parentRef.GetExternal(), err)
 	}
-
-	return &FinancialServicesModelIdentity{
-		ProjectNum: projectID,
-		Location:   location,
-		Instance:   instance,
-		Model:      resourceID,
-	}, nil
+	parsed.Model = resourceID
+	return parsed, nil
 }
 
 func (obj *FinancialServicesModel) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
