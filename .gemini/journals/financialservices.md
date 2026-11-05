@@ -7,6 +7,17 @@
   4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha` to update alpha missing fields exceptions.
   5. Verified 200-seed fuzzer round-trip (`TestFocusedMappers/FinancialServicesModel`), CRD schema tests, and direct controller compilation.
 
+### [2026-11-05] FinancialServicesPredictionResult MockGCP and Alignment
+- **Context**: Implementing Greenfield MockGCP and Alignment for `FinancialServicesPredictionResult` (#15017).
+- **Action**:
+  1. Implemented MockGCP CRUD handlers (`GetPredictionResult`, `CreatePredictionResult`, `UpdatePredictionResult`, `DeletePredictionResult`) for `pb.PredictionResult` with LRO operations in `mockgcp/mockfinancialservices/financialservicespredictionresult.go`.
+  2. Implemented `predictionResultName` and `parsePredictionResultName` in `mockgcp/mockfinancialservices/names.go`.
+  3. Registered `FinancialServicesPredictionResult` in `config/tests/samples/create/harness.go` under MockGCP supported GroupKinds.
+  4. Executed `WRITE_GOLDEN_OUTPUT=1 hack/compare-mock` across `financialservicespredictionresult-minimal` and `financialservicespredictionresult-maximal` to generate `_http_mock.log` and align object goldens.
+  5. Verified `./dev/ci/presubmits/tests-e2e-fixtures-suite financialservices` passed for all 4 tests with 0 errors.
+- **Observation**:
+  - `financialservices.googleapis.com` is an allowlist-restricted service requiring `servicemanagement.services.bind` on GCP projects, so testing is conducted hermetically against MockGCP.
+
 ### [2026-11-05] FinancialServicesEngineConfig Direct Controller, Fixtures, and Fuzzer
 - **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesEngineConfig` (#14967).
 - **Action**:

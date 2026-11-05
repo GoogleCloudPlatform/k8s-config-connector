@@ -4,7 +4,7 @@
 - **Resource Name:** `financialservicespredictionresult-${uniqueId}`
 - **Source Log:** `_http.log` (6 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:cf429b09c29441b0`
+- **Integrity Hash:** `sha256:6c8ad27f7af52a4c`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
