@@ -31,6 +31,7 @@
 [kind-name-violation] kind=DialogflowPage api=dialogflow message=Page: expected kind name is DialogflowCXPage
 [kind-name-violation] kind=DialogflowPlaybook api=dialogflow message=Playbook: expected kind name is DialogflowCXPlaybook
 [kind-name-violation] kind=DialogflowSecuritySettings api=dialogflow message=SecuritySettings: expected kind name is DialogflowCXSecuritySettings
+[kind-name-violation] kind=DialogflowTool api=dialogflow message=Tool: expected kind name is DialogflowCXTool
 [kind-name-violation] kind=DialogflowTransitionRouteGroup api=dialogflow message=TransitionRouteGroup: expected kind name is DialogflowCXTransitionRouteGroup
 [kind-name-violation] kind=DiscoveryEngineDataStoreTargetSite api=discoveryengine message=TargetSite: expected kind name is DiscoveryEngineTargetSite
 [kind-name-violation] kind=EdgenetworkRouter api=edgenetwork message=Router: expected kind name is EdgeNetworkRouter
