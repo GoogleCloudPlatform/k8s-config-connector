@@ -321,7 +321,6 @@ BLOCKED_KINDS=(
     "VectorsearchIndex"
     "VertexAICachedContent"
     "VertexAIDataset"
-    "VertexAIDeploymentResourcePool"
     "VertexAIEndpoint"
     "VertexAIExampleStore"
     "VertexAIFeatureGroup"

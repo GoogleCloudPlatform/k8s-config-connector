@@ -1,6 +1,6 @@
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}
 
 404 Not Found
@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "deploymentResourcePool \"projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}\" not found",
+    "message": "DeploymentResourcePool projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -61,15 +61,15 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -90,21 +90,10 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeploymentResourcePool",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "dedicatedResources": {
-      "machineSpec": {
-        "machineType": "n1-standard-2"
-      },
-      "maxReplicaCount": 2,
-      "minReplicaCount": 1
-    },
-    "disableContainerLogging": true,
-    "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-    "satisfiesPzi": true,
-    "satisfiesPzs": true
+    "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
   }
 }
 
@@ -112,7 +101,7 @@ X-Xss-Protection: 0
 
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}
 
 200 OK
@@ -135,16 +124,14 @@ X-Xss-Protection: 0
     "minReplicaCount": 1
   },
   "disableContainerLogging": true,
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-  "satisfiesPzi": true,
-  "satisfiesPzs": true
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
 }
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dedicatedResources%2CdisableContainerLogging
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dedicatedResources.maxReplicaCount%2CdedicatedResources.minReplicaCount
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: deployment_resource_pool.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}
 
 {
@@ -155,6 +142,7 @@ X-Goog-Request-Params: deployment_resource_pool.name=projects%2F${projectId}%2Fl
     "maxReplicaCount": 3,
     "minReplicaCount": 2
   },
+  "disableContainerLogging": true,
   "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
 }
 
@@ -176,15 +164,15 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -205,20 +193,10 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeploymentResourcePool",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "dedicatedResources": {
-      "machineSpec": {
-        "machineType": "n1-standard-2"
-      },
-      "maxReplicaCount": 3,
-      "minReplicaCount": 2
-    },
-    "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-    "satisfiesPzi": true,
-    "satisfiesPzs": true
+    "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
   }
 }
 
@@ -226,7 +204,7 @@ X-Xss-Protection: 0
 
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}
 
 200 OK
@@ -248,16 +226,15 @@ X-Xss-Protection: 0
     "maxReplicaCount": 3,
     "minReplicaCount": 2
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-  "satisfiesPzi": true,
-  "satisfiesPzs": true
+  "disableContainerLogging": true,
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
 }
 
 ---
 
 DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}
 
 200 OK
@@ -279,7 +256,7 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

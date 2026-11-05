@@ -6,7 +6,9 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  disableContainerLogging: false
+  # Not changed here: real GCP ignores disableContainerLogging in the update mask
+  # (true -> false is rejected as "identical to the original").
+  disableContainerLogging: true
   dedicatedResources:
     machineSpec:
       machineType: n1-standard-2
