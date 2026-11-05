@@ -28,6 +28,7 @@ Use this workflow for **Greenfield Step 1** when `apis/<service>/<version>/<kind
 1. Ensure `.build/third_party/googleapis` is populated (run `./dev/tools/controllerbuilder/generate-proto.sh` if missing).
 2. Locate the target proto message in `.build/third_party/googleapis/google/...` and confirm it belongs to a **GA** proto package (e.g., `v1`, `v2`, `v4` — not `v1alpha*` or `v1beta*`).
    - Do **not** pass `--allow-non-ga-proto` unless explicitly instructed.
+3. Check `hack/tools/greenfield/cp_resources_list.json` and `hack/tools/greenfield/services_acronyms.json` for the exact resource Kind name and acronym casing (e.g. `VectorSearchIndex` matching `cp_resources_list.json` and `services_acronyms.json`, rather than `VectorsearchIndex`).
 
 ### Phase 2: Configure `apis/<service_short>/generate.sh`
 Locate `apis/<service_short>/generate.sh` (or create it if the service is brand new) and configure all three `controllerbuilder` commands (`generate-types`, `generate-identity`, and `generate-mapper`) with `--prepopulate-resource`:
