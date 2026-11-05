@@ -40,9 +40,9 @@
 # one pull request (and one sandbox) instead of one each, every step
 # starting once the one before has pushed to it and it is green and
 # reviewed. `group-gate: true` below marks where the shared PR ends and must
-# merge before anything after it starts: grouped, the steps are three PRs -
+# merge before anything after it starts: grouped, the steps are two PRs -
 # prepopulate + types-judgement, then controller + mockgcp +
-# mockgcp-alignment, then release - instead of five. A parent can name its
+# mockgcp-alignment + release - instead of six. A parent can name its
 # own gates instead (`gates: [...]` in its block). See "Grouped steps" in
 # issue-graph.md.
 #
@@ -81,6 +81,9 @@ spec:
     # Step 1a. Only for Kinds not yet prepopulated on master; the others use
     # kcc-greenfield-prepopulated.
     - id: prepopulate
+      # Already prepopulated on master (bulk prepopulation): the fix makes no
+      # commit and says so, which closes this step's issue and moves on.
+      no-change: ok
       title: 'Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {{ .Params.kind }}'
       labels: [step/gen-types]
       review: |
@@ -88,7 +91,7 @@ spec:
       body: |
         Prepopulate the initial direct KRM types, identity, and `judgement_queue.yaml` for {{ .Params.kind }}.
 
-        **First, check that {{ .Params.kind }} isn't already prepopulated**: your checkout is already the latest `master`, so search it: `grep -n "kind: {{ .Params.kind }}$" apis/*/judgement_queue.yaml`. If that finds it, don't change anything: make no commit, and say that {{ .Params.kind }} is already prepopulated (naming the file). A maintainer will close this issue.
+        **First, check that {{ .Params.kind }} isn't already prepopulated**: your checkout is already the latest `master`, so search it: `grep -n "kind: {{ .Params.kind }}$" apis/*/judgement_queue.yaml`. If that finds it, don't change anything: make no commit, and say that {{ .Params.kind }} is already prepopulated (naming the file); that closes this issue, and the graph moves on.
 
         Otherwise:
 
@@ -110,6 +113,9 @@ spec:
       # Grouped (grouped: true): the types and judgement queue are reviewed
       # and merged on their own before the controller builds on them.
       group-gate: true
+      # Already finalized by a legacy Step 1 PR: the fix makes no commit and
+      # says so, which closes this step's issue and moves on.
+      no-change: ok
       title: 'Greenfield: Triage judgement queue and finalize direct KRM types and identity for {{ .Params.kind }}'
       labels: [step/types-judgement]
       review: |
@@ -117,7 +123,7 @@ spec:
       body: |
         {{ .Params.kind }} is prepopulated on `master` (by bulk prepopulation, or by the previous step). Triage `apis/<service>/judgement_queue.yaml` and finalize the KRM types, identity files, and reference files (plus the generated controller and fuzzer if already present on `master`) for {{ .Params.kind }}.
 
-        **First, check that this step applies**: if `apis/<service>/v1alpha1/<kind_lowercase>_types.go` exists in your checkout but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for {{ .Params.kind }}, it was finalized by a legacy Step 1 PR. Then don't change anything: make no commit, and say so (naming the types file). A maintainer will close this issue.
+        **First, check that this step applies**: if `apis/<service>/v1alpha1/<kind_lowercase>_types.go` exists in your checkout but `apis/<service>/judgement_queue.yaml` has no `open` `untriaged-bulk-generation` entry for {{ .Params.kind }}, it was finalized by a legacy Step 1 PR. Then don't change anything: make no commit, and say so (naming the types file); that closes this issue, and the graph moves on.
 
         Otherwise:
 
@@ -171,6 +177,10 @@ spec:
     # Step 4.
     - id: mockgcp-alignment
       after: [mockgcp]
+      # MockGCP already matches RealGCP: the fix makes no commit and says so,
+      # which closes this step's issue and moves on (in a group, the PR
+      # carries on without a commit for this step).
+      no-change: ok
       title: 'Greenfield: Align MockGCP logs with RealGCP for {{ .Params.kind }}'
       labels: [step/mockgcp-alignment]
       review: |
@@ -180,24 +190,27 @@ spec:
 
         MockGCP for {{ .Params.kind }} was implemented in #{{ (step "mockgcp").Issue }}.
 
+        If the MockGCP logs already match the RealGCP output, don't change anything: make no commit, and say so (naming the fixtures you compared); that closes this issue, and the graph moves on.
+
         When creating the PR, include the release note block set to NONE:
         ```release-note
         NONE
         ```
 
-  # Created once every other step is done: ships the Kind.
-  finally:
-    title: 'Greenfield: Release {{ .Params.kind }} (remove it from BLOCKED_KINDS)'
-    labels: [step/release]
-    review: |
-      Use .gemini/skills/reviewgen-greenfield-release/SKILL.md to conduct the review.
-    body: |
-      Every other step for {{ .Params.kind }} is done. Release it:
+    # Step 5. Ships the Kind, once the steps before it are done.
+    - id: release
+      after: [mockgcp-alignment]
+      title: 'Greenfield: Release {{ .Params.kind }} (remove it from BLOCKED_KINDS)'
+      labels: [step/release]
+      review: |
+        Use .gemini/skills/reviewgen-greenfield-release/SKILL.md to conduct the review.
+      body: |
+        Every other step for {{ .Params.kind }} is done. Release it:
 
-      1. Check that every fixture of {{ .Params.kind }} under `pkg/test/resourcefixture/testdata/basic/` has a real-GCP `_http.log`, an `_audit_probe.log` and an `_http_mock.log`. If any is missing, don't change anything: make no commit, and list what's missing.
-      2. Remove `"{{ .Params.kind }}"` from the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. Change nothing else.
+        1. Check that every fixture of {{ .Params.kind }} under `pkg/test/resourcefixture/testdata/basic/` has a real-GCP `_http.log`, an `_audit_probe.log` and an `_http_mock.log`. If any is missing, don't change anything: make no commit, and list what's missing.
+        2. Remove `"{{ .Params.kind }}"` from the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. Change nothing else.
 
-      When creating the PR, include this release note block:
-      ```release-note
-      New Alpha Resources (Direct Reconciler): `{{ .Params.kind }}`
-      ```
+        When creating the PR, include this release note block:
+        ```release-note
+        New Alpha Resources (Direct Reconciler): `{{ .Params.kind }}`
+        ```
