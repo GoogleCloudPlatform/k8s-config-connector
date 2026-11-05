@@ -59,6 +59,8 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
+  --allow-non-declarative \
+  --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate
@@ -73,6 +75,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
@@ -85,7 +88,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource AIPlatformModelMonitor:ModelMonitor
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
+  --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1,google.type \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource

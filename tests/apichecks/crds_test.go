@@ -1136,6 +1136,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"tpuqueuedresources.tpu.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.spot)
 		"transcoderjobtemplates.transcoder.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.config.elementaryStreams[].videoStream.h264.sdr)
 		"vmmigrationmigratingvms.vmmigration.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (status.observedState.currentSyncInfo.steps[].initializingReplication)
+		"aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (spec.tools[].googleMaps)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
