@@ -175,6 +175,84 @@ func (s *backendBuckets) Patch(ctx context.Context, req *pb.PatchBackendBucketRe
 	})
 }
 
+func (s *backendBuckets) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedUrlKeyBackendBucketRequest) (*pb.Operation, error) {
+	reqName := fmt.Sprintf("projects/%s/global/backendBuckets/%s", req.GetProject(), req.GetBackendBucket())
+	name, err := s.parseBackendBucketName(reqName)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.BackendBucket{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	keyName := req.GetSignedUrlKeyResource().GetKeyName()
+	if obj.CdnPolicy == nil {
+		obj.CdnPolicy = &pb.BackendBucketCdnPolicy{}
+	}
+	for _, existing := range obj.CdnPolicy.SignedUrlKeyNames {
+		if existing == keyName {
+			return nil, status.Errorf(codes.AlreadyExists, "The resource 'projects/%s/global/backendBuckets/%s' already has a signing key with the name '%s'", req.GetProject(), req.GetBackendBucket(), keyName)
+		}
+	}
+	obj.CdnPolicy.SignedUrlKeyNames = append(obj.CdnPolicy.SignedUrlKeyNames, keyName)
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		OperationType: PtrTo("addSignedUrlKey"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *backendBuckets) DeleteSignedUrlKey(ctx context.Context, req *pb.DeleteSignedUrlKeyBackendBucketRequest) (*pb.Operation, error) {
+	reqName := fmt.Sprintf("projects/%s/global/backendBuckets/%s", req.GetProject(), req.GetBackendBucket())
+	name, err := s.parseBackendBucketName(reqName)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.BackendBucket{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	keyName := req.GetKeyName()
+	if obj.CdnPolicy != nil {
+		filtered := obj.CdnPolicy.SignedUrlKeyNames[:0]
+		for _, k := range obj.CdnPolicy.SignedUrlKeyNames {
+			if k != keyName {
+				filtered = append(filtered, k)
+			}
+		}
+		obj.CdnPolicy.SignedUrlKeyNames = filtered
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		OperationType: PtrTo("deleteSignedUrlKey"),
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		User:          PtrTo("user@example.com"),
+	}
+	return s.computeOperations.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 type backendBucketName struct {
 	Project *projects.ProjectData
 	Name    string
