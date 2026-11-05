@@ -182,7 +182,6 @@ BLOCKED_KINDS=(
     "DataplexAspectType"
     "DataplexAsset"
     "DataplexContent"
-    "DataplexDataAsset"
     "DataplexDataAttribute"
     "DataplexDataAttributeBinding"
     "DataplexDataScan"
