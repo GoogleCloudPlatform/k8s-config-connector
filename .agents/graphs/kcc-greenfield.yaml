@@ -98,7 +98,7 @@ spec:
         Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` (Step 1a: `prepopulate/SKILL.md`, using `--prepopulate-resource`) for prepopulating types and `judgement_queue.yaml` for {{ .Params.kind }}.
         Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {{ .Params.kind }}.
 
-        Validate your changes locally by running `scripts/validate-prereqs.sh`. If it fails, its output contains hints for fixing the errors.
+        Validate your changes locally with `scripts/validate-prereqs.sh`, once, at the end: it fails on any uncommitted change, and a full run takes over half an hour. So first commit everything, including the journal entry described below, then run it once on that final commit. If it fails, its output contains hints for fixing the errors: fix them, commit, and run it again. Don't run it on a tree with uncommitted changes, and don't re-run it after a commit that only touches `.gemini/journals/`.
 
         Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 
@@ -131,7 +131,7 @@ spec:
         Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying and finalizing identity and reference types for {{ .Params.kind }}.
         If {{ .Params.kind }} is a child resource, model its parent as one required, immutable `spec.parentRef`, reusing the parent's existing `<ParentKind>Ref` from wherever it is under `apis/` (`judgement/references/PARENT_AND_IDENTITY.md`, Case B).
 
-        Validate your changes locally by running `scripts/validate-prereqs.sh`. If it fails, its output contains hints for fixing the errors.
+        Validate your changes locally with `scripts/validate-prereqs.sh`, once, at the end: it fails on any uncommitted change, and a full run takes over half an hour. So first commit everything, including the journal entry described below, then run it once on that final commit. If it fails, its output contains hints for fixing the errors: fix them, commit, and run it again. Don't run it on a tree with uncommitted changes, and don't re-run it after a commit that only touches `.gemini/journals/`.
 
         Don't edit any `SKILL.md` in this PR. Put general learnings in a "Workflow feedback" section of the PR description, and service-specific notes in `.gemini/journals/<service_name>.md` (Tier 2 of `.gemini/skills/kcc-agentic-journaler/SKILL.md`).
 
