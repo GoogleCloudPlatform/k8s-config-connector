@@ -8,6 +8,15 @@
   5. Removed top-level `spec.labels` as labels are managed via `metadata.labels`.
   6. Regenerated types, identity, mappers, CRDs, direct controller, and fuzzer. Verified with tests.
 
+### [2026-11-05] FinancialServicesBacktestResult Direct Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesBacktestResult` (#14968).
+- **Action**:
+  1. Verified `FinancialServicesBacktestResult` direct controller (`pkg/controller/direct/financialservices/financialservicesbacktestresult_controller.go`) and round-trip fuzzer (`pkg/controller/direct/financialservices/financialservicesbacktestresult_fuzzer.generated.go`).
+  2. Generated `pkg/controller/resourceconfig/static_config.go` with `generate_static_config.py`.
+  3. Created minimal and maximal E2E fixtures under `pkg/test/resourcefixture/testdata/basic/financialservices/v1alpha1/financialservicesbacktestresult/` referencing `parentRef`, `datasetRef` (external), `modelRef` (external), `endTime`, `backtestPeriods`, and `performanceTarget`.
+  4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha` to update alpha missing fields exceptions.
+  5. Verified 200-seed fuzzer round-trip (`TestFocusedMappers/FinancialServicesBacktestResult`), CRD schema tests, and direct controller compilation.
+
 ### [2026-11-04] FinancialServicesBacktestResult Types Triage
 - **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesBacktestResult` (#14921).
 - **Action**:
