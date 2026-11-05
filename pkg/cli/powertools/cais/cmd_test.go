@@ -342,6 +342,26 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for FinancialServicesInstance to simulate a reconciled instance in static unit tests.
+			if u.GetKind() == "FinancialServicesInstance" && u.GroupVersionKind().Group == "financialservices.cnrm.cloud.google.com" {
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				instanceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if instanceID == "" {
+					instanceID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/instances/%s", projectID, location, instanceID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for FinancialServicesInstance %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
