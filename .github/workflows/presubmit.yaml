@@ -28,7 +28,7 @@ on:
       - '**'
       - '!experiments/**'
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - '**'
       - '!experiments/**'
