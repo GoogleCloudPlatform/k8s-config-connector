@@ -1,0 +1,67 @@
+GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "advancedSettings": {
+    "loggingSettings": {}
+  },
+  "defaultLanguageCode": "en",
+  "displayName": "agent-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd",
+  "startFlow": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/flows/00000000-0000-0000-0000-000000000000",
+  "timeZone": "America/New_York"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "Updated Maximal Playbook ${uniqueId}",
+  "goal": "Updated goal for maximal playbook test",
+  "inputParameterDefinitions": [
+    {
+      "description": "ID of the customer account",
+      "name": "account_id",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "instruction": {
+    "guidelines": "Always be polite and professional to the customer.",
+    "steps": [
+      {
+        "text": "Ask customer for account number."
+      },
+      {
+        "text": "Ask customer for account number."
+      },
+      {
+        "text": "Ask customer for account number."
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4",
+  "outputParameterDefinitions": [
+    {
+      "description": "Summary of resolution",
+      "name": "resolution_summary",
+      "typeSchema": {
+        "inlineSchema": {
+          "type": 1
+        }
+      }
+    }
+  ],
+  "tokenCount": "42"
+}

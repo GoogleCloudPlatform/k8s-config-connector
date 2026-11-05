@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: dialogflowcx.cnrm.cloud.google.com
+  kind: DialogflowCXAgent
+  name: dialogflowcxagent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowPlaybook
+  name: dialogflowplaybook-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
