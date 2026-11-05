@@ -20,6 +20,7 @@
 // resource: DialogflowCXFlow:Flow
 // resource: DialogflowCXEntityType:EntityType
 // resource: DialogflowCXWebhook:Webhook
+// resource: DialogflowCXPage:Page
 
 package v1alpha1
 
@@ -250,7 +251,7 @@ type EntityType_ExcludedPhrase struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.EventHandler", skipping
+/* found existing non-generated go type "EventHandler", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.EventHandler
 type EventHandler struct {
@@ -396,7 +397,117 @@ type Flow_MultiLanguageSettings struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment", skipping
+/* found existing non-generated go type "Form", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form
+type Form struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_Parameter `json:"parameters,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Form_Parameter", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_Parameter struct {
+	// Required. The human-readable name of the parameter, unique within the
+	//  form.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates whether the parameter is required. Optional parameters will not
+	//  trigger prompts; however, they are filled if the user specifies them.
+	//  Required parameters must be filled before form filling concludes.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.required
+	Required *bool `json:"required,omitempty"`
+
+	// Required. The entity type of the parameter.
+	//  Format:
+	//  `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+	//  system entity types (for example,
+	//  `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+	//  for developer entity types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.entity_type
+	EntityType *string `json:"entityType,omitempty"`
+
+	// Indicates whether the parameter represents a list of values.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.is_list
+	IsList *bool `json:"isList,omitempty"`
+
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	FillBehavior *Form_Parameter_FillBehavior `json:"fillBehavior,omitempty"`
+
+	// The default value of an optional parameter. If the parameter is required,
+	//  the default value will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Indicates whether the parameter content should be redacted in log.  If
+	//  redaction is enabled, the parameter content will be replaced by parameter
+	//  name during logging.
+	//  Note: the parameter content is subject to redaction if either parameter
+	//  level redaction or [entity type level
+	//  redaction][google.cloud.dialogflow.cx.v3.EntityType.redact] is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.redact
+	Redact *bool `json:"redact,omitempty"`
+
+	// Hierarchical advanced settings for this parameter. The settings exposed
+	//  at the lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Form_Parameter_FillBehavior", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehavior struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	InitialPromptFulfillment *Fulfillment `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandler `json:"repromptEventHandlers,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Fulfillment", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment
 type Fulfillment struct {
@@ -459,7 +570,7 @@ type Fulfillment struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases", skipping
+/* found existing non-generated go type "Fulfillment_ConditionalCases", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases
 type Fulfillment_ConditionalCases struct {
@@ -529,7 +640,7 @@ type Fulfillment_GeneratorSettings struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction", skipping
+/* found existing non-generated go type "Fulfillment_SetParameterAction", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction
 type Fulfillment_SetParameterAction struct {
@@ -613,7 +724,100 @@ type NluSettings struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage", skipping
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Page", skipping
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Page
+type Page struct {
+	// The unique identifier of the page.
+	//  Required for the
+	//  [Pages.UpdatePage][google.cloud.dialogflow.cx.v3.Pages.UpdatePage] method.
+	//  [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage]
+	//  populates the name automatically.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The human-readable name of the page, unique within the flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The description of the page. The maximum length is 500 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.description
+	Description *string `json:"description,omitempty"`
+
+	// The fulfillment to call when the session is entering the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.entry_fulfillment
+	EntryFulfillment *Fulfillment `json:"entryFulfillment,omitempty"`
+
+	// The form associated with the page, used for collecting parameters
+	//  relevant to the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.form
+	Form *Form `json:"form,omitempty"`
+
+	// Ordered list of
+	//  [`TransitionRouteGroups`][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+	//  added to the page. Transition route groups must be unique within a page. If
+	//  the page links both flow-level transition route groups and agent-level
+	//  transition route groups, the flow-level ones will have higher priority and
+	//  will be put before the agent-level ones.
+	//
+	//  *   If multiple transition routes within a page scope refer to the same
+	//      intent, then the precedence order is: page's transition route -> page's
+	//      transition route group -> flow's transition routes.
+	//
+	//  *   If multiple transition route groups within a page contain the same
+	//      intent, then the first group in the ordered list takes precedence.
+	//
+	//  Format:`projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+	//  or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
+	//  for agent-level groups.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_route_groups
+	TransitionRouteGroups []string `json:"transitionRouteGroups,omitempty"`
+
+	// A list of transitions for the transition rules of this page.
+	//  They route the conversation to another page in the same flow, or another
+	//  flow.
+	//
+	//  When we are in a certain page, the TransitionRoutes are evaluated in the
+	//  following order:
+	//
+	//  *   TransitionRoutes defined in the page with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in flow with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Flow.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in the page with only condition specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with only condition specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_routes
+	TransitionRoutes []TransitionRoute `json:"transitionRoutes,omitempty"`
+
+	// Handlers associated with the page to handle events such as webhook errors,
+	//  no match or no input.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.event_handlers
+	EventHandlers []EventHandler `json:"eventHandlers,omitempty"`
+
+	// Hierarchical advanced settings for this page. The settings exposed at the
+	//  lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+
+	// Optional. Knowledge connector configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.knowledge_connector_settings
+	KnowledgeConnectorSettings *KnowledgeConnectorSettings `json:"knowledgeConnectorSettings,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ResponseMessage", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage
 type ResponseMessage struct {
@@ -669,7 +873,7 @@ type ResponseMessage struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.ConversationSuccess", skipping
+/* found existing non-generated go type "ResponseMessage_ConversationSuccess", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.ConversationSuccess
 type ResponseMessage_ConversationSuccess struct {
@@ -691,7 +895,7 @@ type ResponseMessage_KnowledgeInfoCard struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.LiveAgentHandoff", skipping
+/* found existing non-generated go type "ResponseMessage_LiveAgentHandoff", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.LiveAgentHandoff
 type ResponseMessage_LiveAgentHandoff struct {
@@ -726,7 +930,7 @@ type ResponseMessage_MixedAudio_Segment struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText", skipping
+/* found existing non-generated go type "ResponseMessage_OutputAudioText", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText
 type ResponseMessage_OutputAudioText struct {
@@ -741,7 +945,7 @@ type ResponseMessage_OutputAudioText struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio", skipping
+/* found existing non-generated go type "ResponseMessage_PlayAudio", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio
 type ResponseMessage_PlayAudio struct {
@@ -752,7 +956,7 @@ type ResponseMessage_PlayAudio struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.TelephonyTransferCall", skipping
+/* found existing non-generated go type "ResponseMessage_TelephonyTransferCall", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.TelephonyTransferCall
 type ResponseMessage_TelephonyTransferCall struct {
@@ -763,7 +967,7 @@ type ResponseMessage_TelephonyTransferCall struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.ResponseMessage.Text", skipping
+/* found existing non-generated go type "ResponseMessage_Text", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.Text
 type ResponseMessage_Text struct {
@@ -774,7 +978,7 @@ type ResponseMessage_Text struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.TransitionRoute", skipping
+/* found existing non-generated go type "TransitionRoute", skipping
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
 type TransitionRoute struct {
@@ -1079,6 +1283,72 @@ type FlowObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form", skipping
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form
+type FormObservedState struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_ParameterObservedState `json:"parameters,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form.Parameter", skipping
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_ParameterObservedState struct {
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	FillBehavior *Form_Parameter_FillBehaviorObservedState `json:"fillBehavior,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior", skipping
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehaviorObservedState struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	InitialPromptFulfillment *FulfillmentObservedState `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandlerObservedState `json:"repromptEventHandlers,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Fulfillment", skipping
 
 // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment
@@ -1133,6 +1403,55 @@ type KnowledgeConnectorSettingsObservedState struct {
 	//  construct the fulfillment.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
 	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.Page", skipping
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Page
+type PageObservedState struct {
+	// The fulfillment to call when the session is entering the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.entry_fulfillment
+	EntryFulfillment *FulfillmentObservedState `json:"entryFulfillment,omitempty"`
+
+	// The form associated with the page, used for collecting parameters
+	//  relevant to the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.form
+	Form *FormObservedState `json:"form,omitempty"`
+
+	// A list of transitions for the transition rules of this page.
+	//  They route the conversation to another page in the same flow, or another
+	//  flow.
+	//
+	//  When we are in a certain page, the TransitionRoutes are evaluated in the
+	//  following order:
+	//
+	//  *   TransitionRoutes defined in the page with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in flow with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Flow.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in the page with only condition specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with only condition specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_routes
+	TransitionRoutes []TransitionRouteObservedState `json:"transitionRoutes,omitempty"`
+
+	// Handlers associated with the page to handle events such as webhook errors,
+	//  no match or no input.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.event_handlers
+	EventHandlers []EventHandlerObservedState `json:"eventHandlers,omitempty"`
+
+	// Optional. Knowledge connector configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.knowledge_connector_settings
+	KnowledgeConnectorSettings *KnowledgeConnectorSettingsObservedState `json:"knowledgeConnectorSettings,omitempty"`
 }
 */
 

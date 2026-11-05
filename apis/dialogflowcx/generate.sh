@@ -37,7 +37,8 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource DialogflowCXFlow:Flow \
   --resource DialogflowCXEntityType:EntityType \
-  --resource DialogflowCXWebhook:Webhook
+  --resource DialogflowCXWebhook:Webhook \
+  --resource DialogflowCXPage:Page
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.cx.v3 \
