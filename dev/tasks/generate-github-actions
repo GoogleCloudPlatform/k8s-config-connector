@@ -55,7 +55,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - '**'
       - '!experiments/**'
@@ -768,7 +768,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - 'config/crds/resources/**'
   merge_group:
@@ -833,7 +833,7 @@ on:
     paths:
       - 'experiments/**'
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - 'experiments/**'
   merge_group:

@@ -30,7 +30,7 @@ on:
       - '!.gemini/**'
       - '!.agents/**'
   push:
-    branches: ["master", "release-*"]
+    branches: ["release-*"]
     paths:
       - '**'
       - '!experiments/**'
