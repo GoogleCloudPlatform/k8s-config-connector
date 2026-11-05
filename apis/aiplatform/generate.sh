@@ -35,7 +35,6 @@ ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
   --service google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-  --allow-non-ga-proto \
   --prepopulate-resource \
   --resource AIPlatformModelMonitor:ModelMonitor
 
@@ -45,6 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource AIPlatformPersistentResource:PersistentResource \
   --resource AIPlatformSpecialistPool:SpecialistPool \
   --resource AIPlatformModel:Model \
+  --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
   --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
   --resource VertexAIPipelineJob:PipelineJob \
   --resource VertexAITuningJob:TuningJob \
@@ -59,7 +59,6 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
-  --allow-non-declarative \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate

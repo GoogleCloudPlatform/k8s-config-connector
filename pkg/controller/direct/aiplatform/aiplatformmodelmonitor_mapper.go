@@ -277,3 +277,27 @@ func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPla
 	}
 	return out
 }
+
+func FeatureAlertConditions_FromProto(mapCtx *direct.MapContext, in map[string]*aiplatformpb.ModelMonitoringAlertCondition) map[string]krm.ModelMonitoringAlertCondition {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.ModelMonitoringAlertCondition, len(in))
+	for k, v := range in {
+		if val := ModelMonitoringAlertCondition_FromProto(mapCtx, v); val != nil {
+			out[k] = *val
+		}
+	}
+	return out
+}
+
+func FeatureAlertConditions_ToProto(mapCtx *direct.MapContext, in map[string]krm.ModelMonitoringAlertCondition) map[string]*aiplatformpb.ModelMonitoringAlertCondition {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*aiplatformpb.ModelMonitoringAlertCondition, len(in))
+	for k, v := range in {
+		out[k] = ModelMonitoringAlertCondition_ToProto(mapCtx, &v)
+	}
+	return out
+}
