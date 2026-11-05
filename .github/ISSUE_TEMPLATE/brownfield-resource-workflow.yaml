@@ -1,0 +1,42 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: 'Brownfield Resource Workflow'
+description: 'Track the migration of an existing Terraform/DCL-based resource to a direct controller (kcc-brownfield issue graph)'
+title: 'Migrate <Kind> to Direct controller'
+labels: ['direct-migration', 'overseer', 'overseer/graph']
+body:
+- type: 'markdown'
+  attributes:
+    value: |
+      This issue is the parent of the [kcc-brownfield](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.agents/graphs/kcc-brownfield.yaml) issue graph.
+      The graph reconciler opens one sub-issue per step, in order, as the previous one closes, and closes this issue after the last step.
+
+      Replace `<Kind>` in the title and in the `factory-graph` block below with the CamelCase KCC Kind (for example `ComputeURLMap`).
+
+      To pause the graph, add the `overseer/stop` label to this issue.
+- id: 'workflow-desc'
+  type: 'textarea'
+  attributes:
+    label: 'Description'
+    value: |
+      This issue is to track the migration of <Kind> from its Terraform/DCL-based controller to a direct controller.
+
+      ```factory-graph
+      graph: kcc-brownfield
+      params:
+        kind: <Kind>
+      ```
+  validations:
+    required: true
