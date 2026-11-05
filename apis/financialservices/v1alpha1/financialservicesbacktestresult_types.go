@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,35 +30,23 @@ var FinancialServicesBacktestResultGVK = GroupVersion.WithKind("FinancialService
 // +kcc:spec:proto=google.cloud.financialservices.v1.BacktestResult
 // +kcc:required-from-proto
 type FinancialServicesBacktestResultSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project_num}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *FinancialServicesInstanceRef `json:"instanceRef,omitempty"`
+	// The FinancialServicesInstance this FinancialServicesBacktestResult is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FinancialServicesInstanceRef `json:"parentRef"`
 
 	// The FinancialServicesBacktestResult name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Labels
-	// +kcc:proto:field=google.cloud.financialservices.v1.BacktestResult.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
-	// Required. The resource name of the Dataset to backtest on
-	//  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
+	// Required. The Dataset to backtest on.
 	// +kcc:proto:field=google.cloud.financialservices.v1.BacktestResult.dataset
 	// +required
-	Dataset *string `json:"dataset,omitempty"`
+	DatasetRef *FinancialServicesDatasetRef `json:"datasetRef,omitempty"`
 
-	// Required. The resource name of the Model to use or to backtest.
-	//  Format:
-	//  `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`
+	// Required. The Model to use or to backtest.
 	// +kcc:proto:field=google.cloud.financialservices.v1.BacktestResult.model
 	// +required
-	Model *string `json:"model,omitempty"`
+	ModelRef *FinancialServicesModelRef `json:"modelRef,omitempty"`
 
 	// Required. End_time specifies the latest time from which labels are used and
 	//  from which data is used to generate features for backtesting.  End_time
