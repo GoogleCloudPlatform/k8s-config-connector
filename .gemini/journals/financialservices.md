@@ -58,6 +58,17 @@
   4. Resolved all open entries for `FinancialServicesModel` in `apis/financialservices/judgement_queue.yaml`.
   5. Regenerated code via `./apis/financialservices/generate.sh` and updated controller/fuzzer via `controllerbuilder`.
 
+### [2026-11-05] FinancialServicesPredictionResult Direct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesPredictionResult` (#15012).
+- **Action**:
+  1. Verified direct controller in `pkg/controller/direct/financialservices/financialservicespredictionresult_controller.go` adheres to canonical greenfield invariants (REST AMLClient, reference normalization, CompareGreenfieldSpec, ReportDiff, LRO polling, status updates).
+  2. Verified round-trip KRM fuzzer tests in `pkg/controller/direct/financialservices/financialservicespredictionresult_fuzzer.generated.go` pass via `FOCUS=FinancialServicesPredictionResult go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+  3. Created minimal and maximal E2E test fixtures under `pkg/test/resourcefixture/testdata/basic/financialservices/v1alpha1/financialservicespredictionresult/` covering all `FinancialServicesPredictionResultSpec` fields (`parentRef`, `resourceID`, `datasetRef`, `modelRef`, `endTime`, `predictionPeriods`, `outputs.predictionDestination`, `outputs.explainabilityDestination`).
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to remove all missing field entries for `FinancialServicesPredictionResult`.
+  5. Verified `financialservices.cnrm.cloud.google.com/FinancialServicesPredictionResult` is registered as Direct in `static_config.go` and remains in `BLOCKED_KINDS`.
+- **Observation**:
+  - `financialservices.googleapis.com` (Financial Services / Anti-Money Laundering API) is an Early Access / allowlist-restricted Google Cloud service requiring `servicemanagement.services.bind` permissions for enablement.
+
 ### [2026-11-05] FinancialServicesPredictionResult Types Triage
 - **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesPredictionResult` (#14960).
 - **Action**:
