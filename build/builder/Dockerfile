@@ -61,6 +61,19 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
+# Build the MultiClusterLease controller and the KRM syncer, used for multi-cluster
+# leader election, at the versions pinned in go.mod (see its tool block). This is a
+# separate step with explicit output names: the MultiClusterLease main package is
+# cmd/manager, so "-o linux_<arch>/" would overwrite KCC's manager binary.
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    for arch in amd64 arm64; do \
+      CGO_ENABLED=0 GOOS=linux GOARCH=${arch} go build -trimpath -ldflags "-s -w -buildid=" \
+        -o linux_${arch}/mcl-manager github.com/gke-labs/multicluster-leader-election/cmd/manager && \
+      CGO_ENABLED=0 GOOS=linux GOARCH=${arch} go build -trimpath -ldflags "-s -w -buildid=" \
+        -o linux_${arch}/krmsyncer github.com/gke-labs/kube-etl/syncer || exit 1; \
+    done
+
 RUN --mount=type=cache,target=/go/pkg/mod \
     go run scripts/generate-third-party-licenses/main.go
 
