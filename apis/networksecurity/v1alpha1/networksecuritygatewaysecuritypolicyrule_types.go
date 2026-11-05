@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,15 +30,10 @@ var NetworkSecurityGatewaySecurityPolicyRuleGVK = GroupVersion.WithKind("Network
 // +kcc:spec:proto=google.cloud.networksecurity.v1.GatewaySecurityPolicyRule
 // +kcc:required-from-proto
 type NetworkSecurityGatewaySecurityPolicyRuleSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy} this resource belongs to.
-	// +kcc:guess
-	// GatewaySecurityPolicyRef *NetworkSecurityGatewaySecurityPolicyRef `json:"gatewaySecurityPolicyRef,omitempty"`
+	// The NetworkSecurityGatewaySecurityPolicy this NetworkSecurityGatewaySecurityPolicyRule is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *NetworkSecurityGatewaySecurityPolicyRef `json:"parentRef"`
 
 	// The NetworkSecurityGatewaySecurityPolicyRule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

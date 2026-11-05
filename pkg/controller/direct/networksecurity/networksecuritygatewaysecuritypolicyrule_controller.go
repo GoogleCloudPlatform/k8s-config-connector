@@ -68,6 +68,10 @@ func (m *modelGatewaySecurityPolicyRule) AdapterForObject(ctx context.Context, o
 	}
 	id := i.(*krm.NetworkSecurityGatewaySecurityPolicyRuleIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get networksecurity GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
