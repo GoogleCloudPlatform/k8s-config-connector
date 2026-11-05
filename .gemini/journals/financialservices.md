@@ -1,3 +1,13 @@
+### [2026-11-05] FinancialServicesPredictionResult Types Triage
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesPredictionResult` (#14960).
+- **Action**:
+  1. Resolved `judgement_queue.yaml` entries for `FinancialServicesPredictionResult`.
+  2. Modeled `FinancialServicesPredictionResult` as a child resource of `FinancialServicesInstance` using immutable `spec.parentRef` (`*FinancialServicesInstanceRef`), removing `ProjectRef`, `Location`, and guessed `InstanceRef`.
+  3. Converted `spec.dataset` to `DatasetRef` (`*FinancialServicesDatasetRef`) and `spec.model` to `ModelRef` (`*FinancialServicesModelRef`).
+  4. Retained `tableURI` as a string in `PredictionResult_Outputs` BigQueryDestination since `bq://` URIs are not KCC resource references.
+  5. Removed top-level `spec.labels` as labels are managed via `metadata.labels`.
+  6. Regenerated types, identity, mappers, CRDs, direct controller, and fuzzer. Verified with tests.
+
 ### [2026-11-04] FinancialServicesBacktestResult Types Triage
 - **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesBacktestResult` (#14921).
 - **Action**:
