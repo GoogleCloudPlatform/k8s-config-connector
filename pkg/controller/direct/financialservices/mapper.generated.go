@@ -215,6 +215,7 @@ func FinancialServicesDatasetObservedState_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
@@ -226,6 +227,7 @@ func FinancialServicesDatasetObservedState_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.Dataset_State](mapCtx, in.State)
 	return out
 }
@@ -235,7 +237,7 @@ func FinancialServicesDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Da
 	}
 	out := &krm.FinancialServicesDatasetSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.TableSpecs = in.TableSpecs
 	out.DateRange = Interval_FromProto(mapCtx, in.GetDateRange())
 	out.TimeZone = TimeZone_FromProto(mapCtx, in.GetTimeZone())
@@ -247,7 +249,7 @@ func FinancialServicesDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.Fin
 	}
 	out := &pb.Dataset{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.TableSpecs = in.TableSpecs
 	out.DateRange = Interval_ToProto(mapCtx, in.DateRange)
 	out.TimeZone = TimeZone_ToProto(mapCtx, in.TimeZone)

@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,21 +30,13 @@ var FinancialServicesDatasetGVK = GroupVersion.WithKind("FinancialServicesDatase
 // +kcc:spec:proto=google.cloud.financialservices.v1.Dataset
 // +kcc:required-from-proto
 type FinancialServicesDatasetSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// A reference to the projects/{project_num}/locations/{location}/instances/{instance} this resource belongs to.
-	// +kcc:guess
-	// InstanceRef *FinancialServicesInstanceRef `json:"instanceRef,omitempty"`
+	// The FinancialServicesInstance that this FinancialServicesDataset belongs to.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *FinancialServicesInstanceRef `json:"parentRef"`
 
 	// The FinancialServicesDataset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Labels
-	// +kcc:proto:field=google.cloud.financialservices.v1.Dataset.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The set of BigQuery tables in the dataset.  The key should be the
 	//  table type and the value should be the BigQuery tables in the format
