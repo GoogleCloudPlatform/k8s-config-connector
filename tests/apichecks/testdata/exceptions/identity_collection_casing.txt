@@ -13,7 +13,6 @@
 # This file is a ratchet, so entries may be removed but never added. Fixing one
 # changes a published status.externalRef value, which is why they are recorded here
 # rather than fixed in place.
-[identity-casing] collection "backupvaults" is never used in recorded traffic (traffic uses backupVaults): netapp/v1alpha1/netappbackupvault_identity.go
 [identity-casing] collection "datastores" is never used in recorded traffic (traffic uses dataStores): discoveryengine/v1alpha1/discoveryenginedatastore_identity.go
 [identity-casing] collection "managedfolders" is never used in recorded traffic (traffic uses managedFolders): storagecontrol/v1alpha1/storagemanagedfolder_identity.go
 [identity-casing] collection "nodegroups" is never used in recorded traffic (traffic uses nodeGroups): dataproc/v1alpha1/dataprocnodegroup_identity.go
