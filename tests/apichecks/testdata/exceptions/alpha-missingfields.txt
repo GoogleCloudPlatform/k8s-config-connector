@@ -603,18 +603,10 @@
 [missing_field] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.softwareConfig.postStartupScriptConfig.postStartupScript" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.softwareConfig.postStartupScriptConfig.postStartupScriptBehavior" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.softwareConfig.postStartupScriptConfig.postStartupScriptURL" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.logView" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.openTelemetry.semconvVersion" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.traceScope.filter[].duration.comparisonOperator" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.traceScope.filter[].duration.value" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.traceScope.filter[].totalTokenUsage.comparisonOperator" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.traceScope.filter[].totalTokenUsage.value" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudObservability.traceView" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.maxEvaluatedSamplesPerRun" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.randomSampling.percentage" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.aggregationMetrics[]" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.bleuSpec.useEffectiveOrder" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.computationBasedMetricSpec.parameters" is not set in unstructured objects
@@ -710,13 +702,11 @@
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.pointwiseMetricSpec.customOutputFormatConfig.returnRawOutput" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.pointwiseMetricSpec.metricPromptTemplate" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.pointwiseMetricSpec.systemInstruction" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.predefinedMetricSpec.metricSpecName" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.predefinedMetricSpec.metricSpecParameters" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.rougeSpec.rougeType" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.rougeSpec.splitSummaries" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.rougeSpec.useStemmer" is not set in unstructured objects
 [missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metricResourceName" is not set in unstructured objects
-[missing_field] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects

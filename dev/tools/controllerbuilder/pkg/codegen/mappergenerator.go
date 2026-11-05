@@ -1540,6 +1540,10 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 		protoGoPackage = protoGoPackage[:ix]
 	}
 
+	if strings.Contains(parentFile.Path(), "v1beta1/online_evaluator") || strings.Contains(parentFile.Path(), "v1beta1/evaluation_") {
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/pb"
+	}
+
 	// Some exceptions in our proto mapping
 	// TODO: Move to flag?  How many of these are there?
 	switch protoGoPackage {
@@ -1573,6 +1577,9 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 }
 
 func (o *MapperGenerator) defaultProtoImportAlias(protoGoPackage string) string {
+	if protoGoPackage == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/pb" {
+		return "aiplatformdirectpb"
+	}
 	leaf := lastComponent(protoGoPackage)
 	importAlias := strings.TrimSuffix(leaf, "pb") + "pb"
 	if o.isAliasUsedByOtherPackage(importAlias, protoGoPackage) {
