@@ -156,7 +156,6 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
     "ComposerUserWorkloadsConfigMap"
-    "ComposerUserWorkloadsSecret"
     "ConfigDeliveryFleetPackage"
     "ConfigdeliveryVariant"
     "ConnectorsConnection"
