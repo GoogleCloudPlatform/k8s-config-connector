@@ -21,6 +21,7 @@
 // resource: DialogflowKnowledgeBase:KnowledgeBase
 // resource: DialogflowGenerator:Generator
 // resource: DialogflowConversationDataset:ConversationDataset
+// resource: DialogflowEntityType:EntityType
 // resource: DialogflowConversationModel:ConversationModel
 // resource: DialogflowEnvironment:Environment
 // resource: DialogflowPlaybook:Playbook

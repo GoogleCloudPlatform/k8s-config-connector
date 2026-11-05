@@ -48,6 +48,16 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: DialogflowEntityType
+    group: dialogflow.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.dialogflow.v2.EntityType declares 2 resource name patterns (projects/{project}/agent/entityTypes/{entity_type}, projects/{project}/locations/{location}/agent/entityTypes/{entity_type}); generated identity uses "projects/{project}/agent/entityTypes/{entity_type}" (pass --pattern DialogflowEntityType=<pattern> to override)
+    status: open
+  - kind: DialogflowEntityType
+    group: dialogflow.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated DialogflowEntityTypeIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
   - kind: DialogflowEnvironment
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
