@@ -93,3 +93,10 @@
   3. Handled the `unsupported result type <nil>: <nil>` error gracefully in `Delete()` during `op.Wait(ctx)`.
 - **Impact**: Enables reliable creation, modification, re-reconciliation, and deletion of `DiscoveryEngineSchema` resources against real GCP.
 
+### [2026-11-06] DiscoveryEngineAssistant Greenfield Prepopulation
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for DiscoveryEngineAssistant (Issue #15182).
+- **Problem**: DiscoveryEngineAssistant resource pattern is `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}`. In CAI metadata, it is formatted as `//discoveryengine.googleapis.com/projects/{{PROJECT_NUMBER}}/locations/{{LOCATION}}/collections/{{COLLECTION}}/engines/{{ENGINE}}/assistants/{{ASSISTANT}}`.
+- **Solution**: Added `DiscoveryEngineAssistant:Assistant` to `generate-types` with `--prepopulate-resource` and `generate-identity` in `apis/discoveryengine/generate.sh`. Scaffolds identity, reference, conformance tests, and open entries in `judgement_queue.yaml` for Step 1b triage. Added `DiscoveryEngineAssistant` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Impact**: Sets up clean initial mechanical types and identity conforming to Greenfield Step 1a standards for DiscoveryEngineAssistant.
+
+
