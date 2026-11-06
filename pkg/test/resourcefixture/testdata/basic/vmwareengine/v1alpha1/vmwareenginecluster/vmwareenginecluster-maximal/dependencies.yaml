@@ -17,7 +17,7 @@ kind: VMwareEngineNetwork
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: vmwareenginenetwork-minimal-${uniqueId}
+  name: vmwareenginenetwork-maximal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -30,7 +30,7 @@ kind: VMwareEnginePrivateCloud
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: vmwareengineprivatecloud-minimal-${uniqueId}
+  name: vmwareengineprivatecloud-maximal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -38,7 +38,7 @@ spec:
   description: "test dependent VMwareEngine private cloud"
   networkConfig:
     vmwareEngineNetworkRef:
-      name: vmwareenginenetwork-minimal-${uniqueId}
+      name: vmwareenginenetwork-maximal-${uniqueId}
     managementCIDR: "192.168.50.0/24"
   managementCluster:
     clusterID: "cluster-1"

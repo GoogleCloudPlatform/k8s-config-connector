@@ -35,7 +35,7 @@ spec:
       nodeCount: 3
       nodeTypeID: standard-72
   parentRef:
-    name: vmwareengineprivatecloud-minimal-${uniqueId}
+    name: vmwareengineprivatecloud-maximal-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -43,7 +43,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"

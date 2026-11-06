@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
@@ -172,7 +173,7 @@ func (s *VMwareEngineV1) DeleteCluster(ctx context.Context, req *pb.DeleteCluste
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(now)
-		return &pb.OperationMetadata{}, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 

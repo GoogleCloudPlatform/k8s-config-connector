@@ -18,7 +18,7 @@ metadata:
   name: vmwareenginecluster-maximal-${uniqueId}
 spec:
   parentRef:
-    name: vmwareengineprivatecloud-minimal-${uniqueId}
+    name: vmwareengineprivatecloud-maximal-${uniqueId}
   nodeTypeConfigs:
     standard-72:
       nodeTypeID: "standard-72"

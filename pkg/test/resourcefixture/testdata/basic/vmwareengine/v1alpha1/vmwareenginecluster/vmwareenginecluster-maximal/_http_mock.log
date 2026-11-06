@@ -1,8 +1,8 @@
 # Phase: CREATE
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-maximal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -17,14 +17,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks?%24alt=json%3Benum-encoding%3Dint&vmwareEngineNetworkId=vmwareenginenetwork-minimal-${uniqueId}
+POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks?%24alt=json%3Benum-encoding%3Dint&vmwareEngineNetworkId=vmwareenginenetwork-maximal-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
@@ -49,7 +49,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -79,7 +79,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
@@ -88,7 +88,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "test dependent VMwareEngine network",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
     "state": "ACTIVE",
     "type": "STANDARD",
     "uid": "111111111111111111111",
@@ -112,10 +112,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -130,14 +130,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds?%24alt=json%3Benum-encoding%3Dint&privateCloudId=vmwareengineprivatecloud-minimal-${uniqueId}
+POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds?%24alt=json%3Benum-encoding%3Dint&privateCloudId=vmwareengineprivatecloud-maximal-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
@@ -154,7 +154,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-
   },
   "networkConfig": {
     "managementCidr": "192.168.50.0/24",
-    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}"
   }
 }
 
@@ -173,7 +173,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -203,7 +203,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -217,13 +217,13 @@ X-Xss-Protection: 0
       "state": "ACTIVE",
       "version": "4.10.3.24447633"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.50.0/24",
       "managementIpAddressLayoutVersion": 2,
-      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
-      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
@@ -245,10 +245,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -263,17 +263,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=vmwareenginecluster-maximal-${uniqueId}
+POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=vmwareenginecluster-maximal-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}
 
 {
   "autoscalingSettings": {
@@ -325,7 +325,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -355,7 +355,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -389,7 +389,7 @@ X-Xss-Protection: 0
       "minClusterNodeCount": 3
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "nodeTypeConfigs": {
       "standard-72": {
         "nodeCount": 3
@@ -404,10 +404,10 @@ X-Xss-Protection: 0
 ---
 
 # Phase: UPDATE
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -448,7 +448,7 @@ X-Xss-Protection: 0
     "minClusterNodeCount": 3
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
   "nodeTypeConfigs": {
     "standard-72": {
       "nodeCount": 3
@@ -461,10 +461,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=autoscalingSettings
+PATCH https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=autoscalingSettings
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
 
 {
   "autoscalingSettings": {
@@ -494,7 +494,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "maxClusterNodeCount": 10,
     "minClusterNodeCount": 3
   },
-  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
   "nodeTypeConfigs": {
     "standard-72": {
       "nodeCount": 3
@@ -517,7 +517,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -547,7 +547,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -581,7 +581,7 @@ X-Xss-Protection: 0
       "minClusterNodeCount": 3
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "nodeTypeConfigs": {
       "standard-72": {
         "nodeCount": 3
@@ -596,10 +596,10 @@ X-Xss-Protection: 0
 ---
 
 # Phase: DELETE
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -640,7 +640,7 @@ X-Xss-Protection: 0
     "minClusterNodeCount": 3
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
   "nodeTypeConfigs": {
     "standard-72": {
       "nodeCount": 3
@@ -653,10 +653,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}%2Fclusters%2Fvmwareenginecluster-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -673,7 +673,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -703,7 +703,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -714,10 +714,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -738,13 +738,13 @@ X-Xss-Protection: 0
     "state": 1,
     "version": "4.10.3.24447633"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
   "networkConfig": {
     "dnsServerIp": "192.168.30.234",
     "managementCidr": "192.168.50.0/24",
     "managementIpAddressLayoutVersion": 2,
-    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
-    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}"
   },
   "nsx": {
     "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
@@ -765,10 +765,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FprivateClouds%2Fvmwareengineprivatecloud-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -785,7 +785,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -815,7 +815,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -831,13 +831,13 @@ X-Xss-Protection: 0
       "state": "ACTIVE",
       "version": "4.10.3.24447633"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}",
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.50.0/24",
       "managementIpAddressLayoutVersion": 2,
-      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
-      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
@@ -859,10 +859,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -878,7 +878,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test dependent VMwareEngine network",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
   "state": 2,
   "type": 2,
   "uid": "111111111111111111111",
@@ -901,10 +901,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-maximal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -921,7 +921,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -951,7 +951,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",

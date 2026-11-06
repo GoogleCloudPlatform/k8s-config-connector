@@ -1,16 +1,16 @@
 - caisURL: unknown
   group: vmwareengine.cnrm.cloud.google.com
   kind: VMwareEngineNetwork
-  name: vmwareenginenetwork-minimal-${uniqueId}
+  name: vmwareenginenetwork-maximal-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
 - caisURL: unknown
   group: vmwareengine.cnrm.cloud.google.com
   kind: VMwareEnginePrivateCloud
-  name: vmwareengineprivatecloud-minimal-${uniqueId}
+  name: vmwareengineprivatecloud-maximal-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //vmwareengine.googleapis.com/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}
+- caisURL: //vmwareengine.googleapis.com/projects/${projectId}/locations/us-central1-a/privateClouds/vmwareengineprivatecloud-maximal-${uniqueId}/clusters/vmwareenginecluster-maximal-${uniqueId}
   group: vmwareengine.cnrm.cloud.google.com
   kind: VMwareEngineCluster
   name: vmwareenginecluster-maximal-${uniqueId}
