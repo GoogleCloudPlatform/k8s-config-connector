@@ -1,15 +1,16 @@
 # workspace-cleanup: makes room on a factory sandbox's workspace disk for
-# k8s-config-connector. Factory runs it before a task when the workspace
-# (/workspaces) has less than 10 GB free, asking for INPUT_TARGET_BYTES free; a
-# task that still has less than 5 GB does not start ("disk full"). See
-# factory's pkg/diskcare.
+# k8s-config-connector. A recipe on sandboxes (on: [sandbox]): the
+# overseer's watch rule runs it on an idle sandbox whose workspace is low
+# on space, and the board offers it on sandbox cards.
 #
-# A recipe like any other, run by factory's recipe runner in the checkout:
-# its inputs are INPUT_WORKSPACE, INPUT_FREE_BYTES and INPUT_TARGET_BYTES,
-# beside the sandbox's environment (TMPDIR, GOCACHE). Each step goes on
-# after a failure (continue-on-error), so one that fails does not keep the
-# others from making room.
+# Run by factory's recipe runner in the checkout: its inputs are
+# INPUT_WORKSPACE, INPUT_FREE_BYTES and INPUT_TARGET_BYTES, beside the
+# sandbox's environment (TMPDIR, GOCACHE). Each step goes on after a
+# failure (continue-on-error), so one that fails does not keep the others
+# from making room.
 name: workspace-cleanup
+label: Clean disk
+on: [sandbox]
 inputs:
   workspace:
     description: the workspace's mount (/workspaces)
