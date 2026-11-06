@@ -33,17 +33,44 @@ type SchemaReferenceUpdater interface {
 	UpdateSchema(crd *apiextensions.CustomResourceDefinition) error
 }
 
-// UpdateSchema is a helper function to update the input schema reference using the input crd.
-func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) error {
+// NewSchemaReference creates a new SchemaReference for the given crd.
+func NewSchemaReference(crd *apiextensions.CustomResourceDefinition) *SchemaReference {
+	return &SchemaReference{
+		CRD:        crd,
+		JSONSchema: GetOpenAPIV3SchemaFromCRD(crd),
+		GVK: schema.GroupVersionKind{
+			Group:   crd.Spec.Group,
+			Version: GetVersionFromCRD(crd),
+			Kind:    crd.Spec.Names.Kind,
+		},
+	}
+}
+
+// NewUpdatedSchemaReference creates a new updated SchemaReference for the given crd,
+// ensuring the GVK matches oldRef. This supports lock-free copy-on-write atomic schema updates.
+func NewUpdatedSchemaReference(oldRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) (*SchemaReference, error) {
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
 		Version: GetVersionFromCRD(crd),
 		Kind:    crd.Spec.Names.Kind,
 	}
-	if schemaRef.GVK.String() != gvk.String() {
-		return fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", schemaRef.GVK.String(), gvk.String())
+	if oldRef != nil && oldRef.GVK.String() != gvk.String() {
+		return nil, fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", oldRef.GVK.String(), gvk.String())
 	}
-	schemaRef.CRD = crd
-	schemaRef.JSONSchema = GetOpenAPIV3SchemaFromCRD(crd)
+	return &SchemaReference{
+		CRD:        crd,
+		JSONSchema: GetOpenAPIV3SchemaFromCRD(crd),
+		GVK:        gvk,
+	}, nil
+}
+
+// UpdateSchema is a helper function to update the input schema reference using the input crd.
+func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) error {
+	newRef, err := NewUpdatedSchemaReference(schemaRef, crd)
+	if err != nil {
+		return err
+	}
+	schemaRef.CRD = newRef.CRD
+	schemaRef.JSONSchema = newRef.JSONSchema
 	return nil
 }
