@@ -32,8 +32,8 @@
 
 ### 2026-11-06 Greenfield Direct Controller Implementation for APIHubPluginInstance
 - **Context**: Implemented direct controller, fuzzer, and E2E fixtures for `APIHubPluginInstance`.
-- **Problem**: GCP API Hub returns 500 when calling `GetPlugin` on non-existent custom plugin IDs, and requires `pluginCategory` and `actionsConfig` when creating custom user-owned `APIHubPlugin` resources. Furthermore, `UpdatePluginInstance` rejects `actions` in `update_mask`.
-- **Solution**: Handled 500 in `APIHubPlugin` controller `Find` as not-found, defaulted required fields (`PluginCategory` and `ActionsConfig`) on `APIHubPlugin` creation, and filtered out `actions` from `updateMask` in `APIHubPluginInstance` `Update`.
+- **Problem**: `UpdatePluginInstance` rejects `actions` in `update_mask` since actions are immutable on GCP. Additionally, reference normalization must run before identity extraction in `AdapterForObject`.
+- **Solution**: Placed `common.NormalizeGreenfieldReferences` before `obj.GetIdentity` in `AdapterForObject`. Enforced immutability on `spec.actions` via CEL validation rule `self == oldSelf` on the KRM type and checked for changes in `Update` to return an error rather than sending an invalid `update_mask`. Reverted any unrelated changes to `APIHubPlugin` controller.
 - **Impact**: All E2E lifecycle stages (create, update, re-reconcile, delete) pass cleanly against real GCP for both minimal and maximal fixtures.
 
 
