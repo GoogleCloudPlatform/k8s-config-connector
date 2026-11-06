@@ -2,7 +2,7 @@
 name: Support new field(s)
 about: Request field(s) that exist in the GCP API but is missing from an existing
   KCC resource.
-title: 'ai:feat: Add field <field_name> to <resource_kind_name>'
+title: 'ai:feat: Add field <field_path> to <resource_kind_name>'
 labels: enhancement, overseer
 assignees: ''
 type: Feature
@@ -70,4 +70,17 @@ Implement the field(s) listed in this issue on the given Kind.
 
 Select the skill based on "Controller type":
 - **Direct**: follow `.gemini/skills/add-missing-field/SKILL.md`.
-- **Terraform**: follow `.gemini/skills/update-terraform-fields/SKILL.md`, then `.gemini/skills/test-terraform-fields/SKILL.md` for test coverage and golden files.
+- **Terraform**: follow `.gemini/skills/update-terraform-fields/SKILL.md`, then `.gemini/skills/test-terraform-fields/SKILL.md` for test coverage and golden files. Use .gemini/skills/reviewgen-legacy-feature/SKILL.md to conduct the review.
+
+Please update the skill where you find it can be improved (and put observations that aren't necessarily as general in the journal.md file in the same folder)
+
+When creating the PR, include the release note block:
+```release-note
+<resource_kind_name>: Added support for <field_path>.
+```
+For example:
+```release-note
+BigtableTable: Added support for spec.columnFamily[].type.
+```
+
+
