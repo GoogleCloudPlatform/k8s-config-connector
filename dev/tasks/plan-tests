@@ -1,0 +1,684 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Plans which ci-presubmit tests need to run for a change.
+
+The plan has one of three scopes:
+
+  none    - every changed file is under a path the suite does not test
+            (experiments/, .gemini/, .agents/). Nothing runs.
+  scoped  - every changed file is attributable to one or more services
+            (apis/<svc>, pkg/controller/direct/<svc>, fixture testdata, mocks,
+            CRDs, ...). Only the tests for the affected services run: their
+            e2e fixtures and samples, their fuzzers, the affected Go packages'
+            unit tests and the changed mocks. Suites that exercise the whole
+            controller (smoketest, pause, scenarios, ...) are skipped.
+  full    - anything else. Everything runs, as before.
+
+Rules that keep this safe:
+  * Service-local paths are an explicit allowlist; any other path is "full".
+  * Go changes are followed through the reverse import graph, so services
+    importing a changed package are tested too. The walk stops at aggregator
+    packages (e.g. pkg/controller/direct/register) that import every service.
+    If it reaches any other shared (non-service) package, the plan is "full".
+  * merge_group and push events, the "ci/full" label, too many affected
+    services, or any error all produce "full".
+
+Outputs are written to $GITHUB_OUTPUT (and printed). Run with --help for the
+inputs, or locally: dev/tasks/plan-tests --base origin/master --head HEAD
+"""
+
+import argparse
+import collections
+import json
+import os
+import re
+import subprocess
+import sys
+
+MODULE = "github.com/GoogleCloudPlatform/k8s-config-connector/"
+
+# Paths the presubmit suite does not exercise at all.
+NOOP_PATH_RE = re.compile(r"^(experiments/|\.gemini/|\.agents/)")
+
+# Paths that only need the lint/validate jobs (docs, generators in separate Go
+# modules that no test imports, top-level markdown).
+LINT_ONLY_PATH_RE = re.compile(
+    r"^(docs/|scripts/generate-google3-docs/|dev/tools/controllerbuilder/|dev/tools/crd-mcp-server/|[^/]+\.md$)")
+
+# Controller selection table: a change here only affects the Kinds on the
+# changed lines, so it is scoped by the API groups named in the diff.
+STATIC_CONFIG = "pkg/controller/resourceconfig/static_config.go"
+
+# Imports every direct controller; a change that only adds/removes service
+# imports is scoped to those services.
+REGISTER_PKG = "pkg/controller/direct/register"
+_REGISTER_IMPORT_RE = re.compile(r'^\s*_?\s*"' + re.escape("github.com/GoogleCloudPlatform/k8s-config-connector/")
+                                 + r'(pkg/controller/direct/[a-z0-9]+(?:/[a-z0-9/]+)?)"\s*$')
+
+# PR label that forces the full suite.
+FULL_LABEL = "ci/full"
+
+# If more services than this are affected, just run everything.
+MAX_SCOPED_SERVICES = 25
+
+# merge_group runs the full suite so nothing reaches master untested.
+MERGE_GROUP_FULL = True
+
+# Directories under apis/ and pkg/controller/direct/ that are shared code, not
+# a service. Changes to these escalate to "full" via the import graph (or
+# directly, for non-Go files).
+SHARED_APIS = {"refs", "common", "kccscheme"}
+SHARED_DIRECT = {"common", "directbase", "registry", "register", "mappings", "debug"}
+
+# Packages that import (nearly) every service. The reverse import walk records
+# but does not expand past them when it *reaches* them; otherwise every change
+# would be "full". Changing one of them directly is "full" (except REGISTER,
+# which is scoped by the services whose imports changed).
+AGGREGATOR_PKGS = {
+    "pkg/controller/direct/register",
+    # The e2e harness; the fixture/sample jobs compile it.
+    "tests/e2e",
+    "pkg/clients/generated/client/clientset/versioned/scheme",
+    "pkg/clients/generated/client/clientset/versioned/fake",
+}
+
+# Test-only / tooling package trees that product code does not import;
+# changing them (or their testdata) only needs their own unit tests.
+LEAF_TEST_PKGS = {"tests/apichecks", "hack"}
+
+# Unit test packages that read data from paths rather than importing it.
+APICHECKS_UNIT = "./tests/apichecks/..."
+FIXTURE_DATA_UNIT = [
+    "./pkg/test/resourcefixture/...",
+    "./pkg/controller/kccmanager/...",
+    "./hack/find-test-targets/...",
+    APICHECKS_UNIT,
+]
+
+# Fixture services whose e2e fixtures are split into shards.
+FIXTURE_SHARDS = {"compute": 4, "sql": 2, "container": 2, "bigquery": 2}
+
+# Fixture "services" that are not API groups.
+EXTRA_FIXTURE_SERVICES = ["reconcileintervalannotations", "stateabsentinspec"]
+SKIPPED_FIXTURE_SERVICES = {"videostitcher"}
+
+# Services supported by the e2e samples suite.
+SAMPLE_SERVICES = [
+    "alloydb", "apigateway", "apigee", "bigquery", "bigqueryconnection",
+    "bigquerydatapolicy", "bigquerydatatransfer", "cloudbuild", "cloudidentity",
+    "compute", "dataflow", "dataproc", "gkehub", "iam", "kms", "orgpolicy",
+    "redis", "secretmanager", "spanner", "sql", "storage", "unclassified",
+    "workstations",
+]
+SCENARIO_SUITES = ["acquisition", "gkehubfeaturemembership", "powertool", "unclassified"]
+FULL_UNIT_SHARDS = ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
+FULL_FUZZ_SHARDS = ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
+
+GO_SCAN_ROOTS = ["apis", "pkg", "cmd", "tests", "hack", "scripts", "dev", "config", "tools"]
+
+_IMPORT_BLOCK_RE = re.compile(r"^import\s*\((.*?)^\)", re.S | re.M)
+_IMPORT_ONE_RE = re.compile(r'^import\s+(?:[\w.]+\s+)?"([^"]+)"', re.M)
+_QUOTED_RE = re.compile(r'"([^"]+)"')
+_FIXTURE_DATA_RE = re.compile(r"^pkg/test/resourcefixture/testdata/([a-z0-9_-]+)/")
+_SERVICEMAPPING_RE = re.compile(r"^config/servicemappings/([a-z0-9]+)\.yaml$")
+_API_VERSION_GROUP_RE = re.compile(r"^apiVersion:\s*([a-z0-9]+)\.cnrm\.cloud\.google\.com/", re.M)
+_ANY_GROUP_RE = re.compile(r"([a-z0-9]+)\.cnrm\.cloud\.google\.com")
+_GROUP_NAME_RE = re.compile(r"\+groupName=([a-z0-9]+)\.cnrm\.cloud\.google\.com")
+_CRD_FILE_RE = re.compile(r"^config/crds/resources/[^/]*\.([a-z0-9]+)\.cnrm\.cloud\.google\.com\.yaml$")
+_CRD_GROUP_RE = re.compile(r"^\s*group:\s*([a-z0-9]+)\.cnrm\.cloud\.google\.com\s*$", re.M)
+
+
+class Escalate(Exception):
+    """Raised when the change cannot be scoped; the plan becomes "full"."""
+
+
+# ---------------------------------------------------------------------------
+# Repository model
+# ---------------------------------------------------------------------------
+
+class Repo:
+    """Lazily computed facts about the checked-out tree."""
+
+    def __init__(self, root, diff_lines=None):
+        self.root = root
+        self._deps = None
+        self._rdeps = None
+        # diff_lines(path) -> list of added/removed lines, or None if unknown.
+        self.diff_lines = diff_lines or (lambda path: None)
+
+    def path(self, rel):
+        return os.path.join(self.root, rel)
+
+    def _scan_go(self):
+        deps = collections.defaultdict(set)
+        for top in GO_SCAN_ROOTS:
+            for dirpath, dirnames, filenames in os.walk(self.path(top)):
+                dirnames[:] = [d for d in dirnames if d not in ("testdata", "vendor", "node_modules")]
+                rel = os.path.relpath(dirpath, self.root)
+                for f in filenames:
+                    if not f.endswith(".go"):
+                        continue
+                    with open(os.path.join(dirpath, f), errors="ignore") as fh:
+                        text = fh.read()
+                    imports = [m for block in _IMPORT_BLOCK_RE.findall(text) for m in _QUOTED_RE.findall(block)]
+                    imports += _IMPORT_ONE_RE.findall(text)
+                    for imp in imports:
+                        if imp.startswith(MODULE):
+                            deps[rel].add(imp[len(MODULE):])
+        rdeps = collections.defaultdict(set)
+        for pkg, ds in deps.items():
+            for d in ds:
+                rdeps[d].add(pkg)
+        self._deps, self._rdeps = deps, rdeps
+
+    @property
+    def deps(self):
+        if self._deps is None:
+            self._scan_go()
+        return self._deps
+
+    @property
+    def rdeps(self):
+        if self._rdeps is None:
+            self._scan_go()
+        return self._rdeps
+
+    def groups_of_apis_dir(self, name):
+        groups = set()
+        top = self.path(os.path.join("apis", name))
+        for dirpath, _, filenames in os.walk(top):
+            for f in filenames:
+                if f.endswith(".go"):
+                    with open(os.path.join(dirpath, f), errors="ignore") as fh:
+                        groups.update(_GROUP_NAME_RE.findall(fh.read()))
+        return groups
+
+    def direct_dir_imports_apis(self, name):
+        """apis/<x> service dirs imported by pkg/controller/direct/<name>."""
+        prefix = "pkg/controller/direct/" + name
+        out = set()
+        for pkg, ds in self.deps.items():
+            if pkg == prefix or pkg.startswith(prefix + "/"):
+                for d in ds:
+                    m = re.match(r"^apis/([a-z0-9]+)(/|$)", d)
+                    if m and m.group(1) not in SHARED_APIS:
+                        out.add(m.group(1))
+        return out
+
+    def direct_dir_has_fuzzers(self, name):
+        top = self.path("pkg/controller/direct/" + name)
+        for dirpath, _, filenames in os.walk(top):
+            for f in filenames:
+                if f.endswith(".go"):
+                    with open(os.path.join(dirpath, f), errors="ignore") as fh:
+                        if "fuzztesting.Register" in fh.read():
+                            return True
+        return False
+
+    def fixture_group(self, path):
+        """API group of the fixture containing path (via its create.yaml)."""
+        d = os.path.dirname(path)
+        while d.startswith("pkg/test/resourcefixture/testdata/"):
+            create = self.path(os.path.join(d, "create.yaml"))
+            if os.path.exists(create):
+                with open(create, errors="ignore") as fh:
+                    m = _API_VERSION_GROUP_RE.search(fh.read())
+                return m.group(1) if m else None
+            d = os.path.dirname(d)
+        return None
+
+    def fixture_services(self):
+        groups = set()
+        crds = self.path("config/crds")
+        for dirpath, _, filenames in os.walk(crds):
+            for f in filenames:
+                if f.endswith(".yaml"):
+                    with open(os.path.join(dirpath, f), errors="ignore") as fh:
+                        groups.update(_CRD_GROUP_RE.findall(fh.read()))
+        groups -= SKIPPED_FIXTURE_SERVICES
+        return sorted(groups) + EXTRA_FIXTURE_SERVICES
+
+
+# ---------------------------------------------------------------------------
+# Classification
+# ---------------------------------------------------------------------------
+
+class Impact:
+    def __init__(self):
+        self.go_pkgs = set()          # changed Go package dirs (root module)
+        self.apis_dirs = set()        # apis/<x> service names
+        self.direct_dirs = set()      # pkg/controller/direct/<x> service names
+        self.client_dirs = set()      # pkg/clients/generated/apis/<x> names
+        self.groups = set()           # fixture/API group short names
+        self.unit = set()             # extra unit test patterns
+        self.mocks = set()            # mockgcp package patterns (relative to mockgcp/)
+        self.reasons = []
+
+
+def service_of_pkg(pkg):
+    """Returns (kind, name) for a service package dir, else None."""
+    m = re.match(r"^apis/([a-z0-9]+)(/|$)", pkg)
+    if m and m.group(1) not in SHARED_APIS:
+        return ("apis", m.group(1))
+    m = re.match(r"^pkg/controller/direct/([a-z0-9]+)(/|$)", pkg)
+    if m and m.group(1) not in SHARED_DIRECT:
+        return ("direct", m.group(1))
+    m = re.match(r"^pkg/clients/generated/apis/([a-z0-9]+)(/|$)", pkg)
+    if m:
+        return ("client", m.group(1))
+    m = re.match(r"^pkg/clients/generated/client/clientset/versioned/typed/([a-z0-9]+)(/|$)", pkg)
+    if m:
+        return ("client", m.group(1))
+    return None
+
+
+def add_service(impact, kind, name):
+    {"apis": impact.apis_dirs, "direct": impact.direct_dirs, "client": impact.client_dirs}[kind].add(name)
+
+
+def classify_file(repo, path, impact, fixture_services):
+    """Records the impact of one changed (non-noop) file, or raises Escalate."""
+    if LINT_ONLY_PATH_RE.match(path):
+        return
+
+    if path == STATIC_CONFIG:
+        lines = repo.diff_lines(path)
+        if lines is None:
+            raise Escalate(f"cannot read the diff of {path}")
+        groups = {g for l in lines for g in _ANY_GROUP_RE.findall(l)}
+        if not groups:
+            raise Escalate(f"{path} changed lines name no API group")
+        impact.groups.update(groups)
+        impact.unit.add("./pkg/controller/resourceconfig/...")
+        return
+
+    m = _SERVICEMAPPING_RE.match(path)
+    if m:
+        impact.groups.add(m.group(1))
+        impact.unit.update(["./config/tests/servicemapping/...", "./pkg/servicemapping/..."])
+        return
+    if path.startswith("mockgcp/"):
+        m = re.match(r"^mockgcp/(mock([a-z0-9]+))/", path)
+        if not m:
+            raise Escalate(f"shared mockgcp file {path}")
+        mock_pkg, name = m.group(1), m.group(2)
+        impact.mocks.add(f"./{mock_pkg}/...")
+        if name not in fixture_services:
+            raise Escalate(f"mock {mock_pkg} does not map to a fixture service")
+        impact.groups.add(name)
+        return
+
+    m = _FIXTURE_DATA_RE.match(path)
+    if m:
+        category = m.group(1)
+        if category in EXTRA_FIXTURE_SERVICES:
+            group = category
+        else:
+            mb = re.match(r"^pkg/test/resourcefixture/testdata/basic/([a-z0-9]+)/", path)
+            group = mb.group(1) if mb else repo.fixture_group(path)
+        if not group:
+            raise Escalate(f"cannot attribute fixture file {path} to an API group")
+        impact.groups.add(group)
+        impact.unit.update(FIXTURE_DATA_UNIT)
+        return
+
+    m = _CRD_FILE_RE.match(path)
+    if m:
+        impact.groups.add(m.group(1))
+        impact.unit.add(APICHECKS_UNIT)
+        return
+
+    for leaf in LEAF_TEST_PKGS:
+        if path.startswith(leaf + "/"):
+            impact.unit.add(f"./{leaf}/...")
+            return
+
+    if path.endswith(".go") and os.path.dirname(path) in AGGREGATOR_PKGS:
+        pkg = os.path.dirname(path)
+        if pkg != REGISTER_PKG:
+            raise Escalate(f"{path} is in aggregator package {pkg}")
+        lines = repo.diff_lines(path)
+        if lines is None:
+            raise Escalate(f"cannot read the diff of {path}")
+        changed_pkgs = set()
+        for line in lines:
+            if not line.strip() or line.strip() in ("import (", ")"):
+                continue
+            m = _REGISTER_IMPORT_RE.match(line)
+            if not m:
+                raise Escalate(f"{path} has changes other than service imports")
+            changed_pkgs.add(m.group(1))
+        if not changed_pkgs:
+            raise Escalate(f"{path} changed lines name no service")
+        # Test the (un)registered packages as if they had changed.
+        impact.go_pkgs.update(changed_pkgs)
+        return
+
+    if path.endswith(".go"):
+        pkg = os.path.dirname(path)
+        if not any(pkg == r or pkg.startswith(r + "/") for r in GO_SCAN_ROOTS):
+            raise Escalate(f"Go file outside scanned roots {path}")
+        impact.go_pkgs.add(pkg)
+        if pkg.startswith("apis/"):
+            impact.unit.add(APICHECKS_UNIT)
+        return
+
+    # Non-Go files inside a service package (generate.sh, judgement_queue.yaml,
+    # testdata, ...): test the containing package.
+    svc = service_of_pkg(os.path.dirname(path))
+    if svc:
+        add_service(impact, *svc)
+        pkg_dir = os.path.dirname(path)
+        impact.unit.add(f"./{pkg_dir}/...")
+        if svc[0] == "apis":
+            impact.unit.add(APICHECKS_UNIT)
+        return
+
+    raise Escalate(f"{path} is not attributable to a service")
+
+
+def expand_go_impact(repo, impact):
+    """Walks reverse imports of changed Go packages, attributing services."""
+    seen = set()
+    queue = collections.deque(impact.go_pkgs)
+    affected_pkgs = set()
+    while queue:
+        pkg = queue.popleft()
+        if pkg in seen:
+            continue
+        seen.add(pkg)
+        if pkg in AGGREGATOR_PKGS:
+            continue
+        svc = service_of_pkg(pkg)
+        if svc:
+            add_service(impact, *svc)
+            affected_pkgs.add(pkg)
+        elif pkg in LEAF_TEST_PKGS or any(pkg.startswith(l + "/") for l in LEAF_TEST_PKGS):
+            affected_pkgs.add(pkg)
+        else:
+            raise Escalate(f"shared package {pkg} is affected")
+        queue.extend(repo.rdeps.get(pkg, ()))
+    for pkg in affected_pkgs:
+        impact.unit.add(f"./{pkg}")
+
+
+def derive_groups(repo, impact):
+    for name in impact.apis_dirs:
+        groups = repo.groups_of_apis_dir(name)
+        if not groups:
+            raise Escalate(f"apis/{name} declares no API group")
+        impact.groups.update(groups)
+    for name in impact.direct_dirs:
+        for apis_name in repo.direct_dir_imports_apis(name):
+            impact.groups.update(repo.groups_of_apis_dir(apis_name))
+    impact.groups.update(impact.client_dirs)
+
+
+# ---------------------------------------------------------------------------
+# Plan
+# ---------------------------------------------------------------------------
+
+def shard_targets(service):
+    n = FIXTURE_SHARDS.get(service)
+    if not n:
+        return [service]
+    return [f"{service}-{i}-of-{n}" for i in range(1, n + 1)]
+
+
+def empty_plan(scope, reason):
+    return {
+        "scope": scope,
+        "reason": reason,
+        "run_ci": scope != "none",
+        "run_global": False,
+        "priority_fixtures": [],
+        "remaining_fixtures": [],
+        "samples": [],
+        "scenarios": [],
+        "run_direct_iam": False,
+        "fuzz_services": [],
+        "fuzz_shards": [],
+        "unit_packages": [],
+        "unit_shards": [],
+        "mock_packages": [],
+        "run_mock": False,
+    }
+
+
+def full_plan(repo, reason, changed_groups=()):
+    plan = empty_plan("full", reason)
+    services = repo.fixture_services()
+    priority = [s for s in services if s in set(changed_groups)]
+    plan.update({
+        "run_global": True,
+        "priority_fixtures": [t for s in priority for t in shard_targets(s)],
+        "remaining_fixtures": [t for s in services if s not in priority for t in shard_targets(s)],
+        "samples": list(SAMPLE_SERVICES),
+        "scenarios": list(SCENARIO_SUITES),
+        "run_direct_iam": True,
+        "fuzz_shards": list(FULL_FUZZ_SHARDS),
+        "unit_shards": list(FULL_UNIT_SHARDS),
+        "run_mock": True,
+    })
+    return plan
+
+
+def best_effort_groups(changed):
+    groups = set()
+    for path in changed:
+        for pat in (r"^apis/([a-z0-9]+)/", r"^pkg/controller/direct/([a-z0-9]+)/",
+                    r"^pkg/test/resourcefixture/testdata/basic/([a-z0-9]+)/",
+                    r"^pkg/clients/generated/apis/([a-z0-9]+)/"):
+            m = re.match(pat, path)
+            if m:
+                groups.add(m.group(1))
+    return groups
+
+
+def make_plan(repo, changed, event, labels=()):
+    if event == "pull_request":
+        pass
+    elif event == "merge_group" and not MERGE_GROUP_FULL:
+        pass
+    else:
+        return full_plan(repo, f"event '{event}' runs the full suite", best_effort_groups(changed))
+
+    if changed is None:
+        return full_plan(repo, "changed files unknown")
+    if FULL_LABEL in labels:
+        return full_plan(repo, f"label {FULL_LABEL}", best_effort_groups(changed))
+
+    relevant = [p for p in changed if not NOOP_PATH_RE.match(p)]
+    if not changed:
+        return full_plan(repo, "no changed files detected")
+    if not relevant:
+        return empty_plan("none", "all changes are under no-op paths")
+
+    fixture_services = set(repo.fixture_services())
+    impact = Impact()
+    try:
+        for path in relevant:
+            classify_file(repo, path, impact, fixture_services)
+        expand_go_impact(repo, impact)
+        derive_groups(repo, impact)
+        n = len(impact.apis_dirs | impact.direct_dirs | impact.client_dirs | impact.groups)
+        if n > MAX_SCOPED_SERVICES:
+            raise Escalate(f"{n} services affected (max {MAX_SCOPED_SERVICES})")
+    except Escalate as e:
+        return full_plan(repo, str(e), best_effort_groups(relevant))
+
+    if impact.groups:
+        reason = "changes are attributable to: " + ", ".join(sorted(impact.groups))
+    elif impact.unit or impact.mocks:
+        reason = "changes only affect unit/mock tests"
+    else:
+        reason = "changes only need lint/validate checks"
+    plan = empty_plan("scoped", reason)
+    fixtures = sorted(g for g in impact.groups if g in fixture_services)
+    fuzz = sorted(d for d in impact.direct_dirs if repo.direct_dir_has_fuzzers(d))
+    plan.update({
+        "priority_fixtures": [t for s in fixtures for t in shard_targets(s)],
+        "samples": sorted(g for g in impact.groups if g in SAMPLE_SERVICES),
+        "run_direct_iam": "iam" in impact.groups,
+        "fuzz_services": fuzz,
+        "fuzz_shards": ["1-of-1"] if fuzz else [],
+        "unit_packages": sorted(impact.unit),
+        "unit_shards": ["1-of-1"] if impact.unit else [],
+        "mock_packages": sorted(impact.mocks),
+        "run_mock": bool(impact.mocks),
+    })
+    return plan
+
+
+def plan_outputs(plan):
+    """Flattens a plan into GitHub Actions step outputs."""
+    def js(items):
+        # fromJSON() on an empty matrix errors even when the job is skipped.
+        return json.dumps(items if items else ["none"])
+
+    fixtures = bool(plan["priority_fixtures"] or plan["remaining_fixtures"])
+    return {
+        "scope": plan["scope"],
+        "reason": plan["reason"],
+        "run_ci": str(plan["run_ci"]).lower(),
+        "run_global": str(plan["run_global"]).lower(),
+        "has_fixtures": str(fixtures).lower(),
+        "has_priority_tests": str(bool(plan["priority_fixtures"])).lower(),
+        "priority_fixtures_json": js(plan["priority_fixtures"]),
+        "has_remaining_tests": str(bool(plan["remaining_fixtures"])).lower(),
+        "remaining_fixtures_json": js(plan["remaining_fixtures"]),
+        "has_samples": str(bool(plan["samples"])).lower(),
+        "samples_json": js(plan["samples"]),
+        "has_scenarios": str(bool(plan["scenarios"])).lower(),
+        "scenarios_json": js(plan["scenarios"]),
+        "needs_prebuild": str(fixtures or bool(plan["samples"]) or bool(plan["scenarios"])).lower(),
+        "run_direct_iam": str(plan["run_direct_iam"]).lower(),
+        "has_fuzz": str(bool(plan["fuzz_shards"])).lower(),
+        "fuzz_services": ",".join(plan["fuzz_services"]),
+        "fuzz_roundtrippers_json": js(plan["fuzz_shards"]),
+        "has_unit": str(bool(plan["unit_shards"])).lower(),
+        "unit_packages": " ".join(plan["unit_packages"]),
+        "unit_tests_json": js(plan["unit_shards"]),
+        "run_mock": str(plan["run_mock"]).lower(),
+        "mock_packages": " ".join(plan["mock_packages"]),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Inputs
+# ---------------------------------------------------------------------------
+
+def changed_files(root, base, head, three_dot):
+    if not base or not head:
+        return None
+    sep = "..." if three_dot else ".."
+    try:
+        out = subprocess.run(["git", "diff", "--name-only", "--no-renames", f"{base}{sep}{head}"],
+                             cwd=root, check=True, capture_output=True, text=True).stdout
+    except subprocess.CalledProcessError as e:
+        print(f"git diff failed: {e.stderr.strip()}", file=sys.stderr)
+        return None
+    return [l for l in out.splitlines() if l]
+
+
+def diff_lines(root, base, head, three_dot, path):
+    """Added/removed lines of path between base and head, or None."""
+    if not base or not head:
+        return None
+    sep = "..." if three_dot else ".."
+    try:
+        out = subprocess.run(["git", "diff", "--unified=0", "--no-renames", f"{base}{sep}{head}", "--", path],
+                             cwd=root, check=True, capture_output=True, text=True).stdout
+    except subprocess.CalledProcessError:
+        return None
+    return [l[1:] for l in out.splitlines()
+            if l[:1] in "+-" and not l.startswith("+++") and not l.startswith("---")]
+
+
+def pr_labels(repo_slug, pr_number):
+    """Fetches current PR labels (so a re-run after labeling sees them)."""
+    if not repo_slug or not pr_number:
+        return []
+    try:
+        out = subprocess.run(["gh", "api", f"repos/{repo_slug}/issues/{pr_number}/labels", "--jq", ".[].name"],
+                             check=True, capture_output=True, text=True, timeout=60).stdout
+        return out.split("\n")
+    except (subprocess.SubprocessError, OSError) as e:
+        print(f"could not fetch PR labels ({e}); ignoring", file=sys.stderr)
+        return []
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--event", default=os.environ.get("EVENT_NAME", "pull_request"))
+    p.add_argument("--base", default=None, help="base commit (default from PR_BASE_SHA/MG_BASE_SHA)")
+    p.add_argument("--head", default=None, help="head commit (default from PR_HEAD_SHA/MG_HEAD_SHA)")
+    p.add_argument("--files", nargs="*", default=None, help="use these changed files instead of git diff")
+    p.add_argument("--json", action="store_true", help="print the plan as JSON")
+    args = p.parse_args(argv)
+
+    root = subprocess.run(["git", "rev-parse", "--show-toplevel"], check=True,
+                          capture_output=True, text=True).stdout.strip()
+
+    if args.event == "merge_group":
+        base = args.base or os.environ.get("MG_BASE_SHA")
+        head = args.head or os.environ.get("MG_HEAD_SHA")
+        three_dot = False
+    else:
+        base = args.base or os.environ.get("PR_BASE_SHA")
+        head = args.head or os.environ.get("PR_HEAD_SHA")
+        three_dot = True
+
+    repo = Repo(root, diff_lines=lambda path: diff_lines(root, base, head, three_dot, path))
+    if args.files is not None:
+        changed = args.files
+    else:
+        changed = changed_files(root, base, head, three_dot)
+
+    labels = []
+    if args.event == "pull_request":
+        labels = pr_labels(os.environ.get("GITHUB_REPOSITORY"), os.environ.get("PR_NUMBER"))
+
+    try:
+        plan = make_plan(repo, changed, args.event, labels)
+    except Exception as e:  # never block CI on a planner bug: run everything
+        print(f"planner error: {e!r}", file=sys.stderr)
+        plan = full_plan(repo, f"planner error: {e!r}")
+
+    if changed is not None:
+        print(f"Changed files ({len(changed)}):")
+        for f in changed[:200]:
+            print(f"  {f}")
+    print(f"Plan: scope={plan['scope']} ({plan['reason']})")
+    if args.json:
+        print(json.dumps(plan, indent=2))
+    outputs = plan_outputs(plan)
+    for k, v in outputs.items():
+        print(f"{k}={v}")
+    gh_out = os.environ.get("GITHUB_OUTPUT")
+    if gh_out:
+        with open(gh_out, "a") as fh:
+            for k, v in outputs.items():
+                fh.write(f"{k}={v}\n")
+    gh_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if gh_summary:
+        with open(gh_summary, "a") as fh:
+            fh.write(f"### Test plan: `{plan['scope']}`\n\n{plan['reason']}\n\n```json\n{json.dumps(plan, indent=2)}\n```\n")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
