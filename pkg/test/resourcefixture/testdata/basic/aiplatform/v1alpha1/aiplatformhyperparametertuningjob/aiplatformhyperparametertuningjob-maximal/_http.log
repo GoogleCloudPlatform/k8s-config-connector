@@ -1,4 +1,122 @@
 # Phase: CREATE
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "hptjob-sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "HPT Job Service Account ${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "HPT Job Service Account ${uniqueId}",
+  "email": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "HPT Job Service Account ${uniqueId}",
+  "email": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 GRPC /google.cloud.aiplatform.v1.JobService/CreateHyperparameterTuningJob
 
 {
@@ -51,6 +169,7 @@ GRPC /google.cloud.aiplatform.v1.JobService/CreateHyperparameterTuningJob
       ]
     },
     "trialJobSpec": {
+      "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
       "workerPoolSpecs": [
         {
           "containerSpec": {
@@ -83,7 +202,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "state": "JOB_STATE_PENDING",
   "studySpec": {
@@ -126,6 +245,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -156,7 +276,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -170,7 +290,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_PENDING",
@@ -214,6 +334,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -243,7 +364,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -257,7 +378,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_PENDING",
@@ -301,6 +422,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -330,7 +452,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -344,7 +466,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_PENDING",
@@ -388,192 +510,7 @@ OK
     ]
   },
   "trialJobSpec": {
-    "workerPoolSpecs": [
-      {
-        "containerSpec": {
-          "command": [
-            "sh",
-            "-c",
-            "echo maximal test"
-          ],
-          "imageUri": "alpine:latest"
-        },
-        "diskSpec": {
-          "bootDiskSizeGb": 100,
-          "bootDiskType": "pd-ssd"
-        },
-        "machineSpec": {
-          "machineType": "n1-standard-4"
-        },
-        "replicaCount": "1"
-      }
-    ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
-}
-
-OK
-
-{}
-
----
-
-GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "maximal-hptjob-${uniqueId}",
-  "labels": {
-    "env": "test",
-    "team": "aiplatform"
-  },
-  "maxFailedTrialCount": 1,
-  "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
-  "parallelTrialCount": 1,
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "JOB_STATE_PENDING",
-  "studySpec": {
-    "algorithm": "RANDOM_SEARCH",
-    "medianAutomatedStoppingSpec": {
-      "useElapsedDuration": true
-    },
-    "metrics": [
-      {
-        "goal": "MAXIMIZE",
-        "metricId": "accuracy"
-      }
-    ],
-    "parameters": [
-      {
-        "doubleValueSpec": {
-          "maxValue": 0.01,
-          "minValue": 0.0001
-        },
-        "parameterId": "learning_rate",
-        "scaleType": "UNIT_LOG_SCALE"
-      },
-      {
-        "integerValueSpec": {
-          "maxValue": "5",
-          "minValue": "1"
-        },
-        "parameterId": "num_layers",
-        "scaleType": "UNIT_LINEAR_SCALE"
-      },
-      {
-        "categoricalValueSpec": {
-          "values": [
-            "adam",
-            "sgd"
-          ]
-        },
-        "parameterId": "optimizer"
-      }
-    ]
-  },
-  "trialJobSpec": {
-    "workerPoolSpecs": [
-      {
-        "containerSpec": {
-          "command": [
-            "sh",
-            "-c",
-            "echo maximal test"
-          ],
-          "imageUri": "alpine:latest"
-        },
-        "diskSpec": {
-          "bootDiskSizeGb": 100,
-          "bootDiskType": "pd-ssd"
-        },
-        "machineSpec": {
-          "machineType": "n1-standard-4"
-        },
-        "replicaCount": "1"
-      }
-    ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "maximal-hptjob-${uniqueId}",
-  "labels": {
-    "env": "test",
-    "team": "aiplatform"
-  },
-  "maxFailedTrialCount": 1,
-  "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
-  "parallelTrialCount": 1,
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "JOB_STATE_PENDING",
-  "studySpec": {
-    "algorithm": "RANDOM_SEARCH",
-    "medianAutomatedStoppingSpec": {
-      "useElapsedDuration": true
-    },
-    "metrics": [
-      {
-        "goal": "MAXIMIZE",
-        "metricId": "accuracy"
-      }
-    ],
-    "parameters": [
-      {
-        "doubleValueSpec": {
-          "maxValue": 0.01,
-          "minValue": 0.0001
-        },
-        "parameterId": "learning_rate",
-        "scaleType": "UNIT_LOG_SCALE"
-      },
-      {
-        "integerValueSpec": {
-          "maxValue": "5",
-          "minValue": "1"
-        },
-        "parameterId": "num_layers",
-        "scaleType": "UNIT_LINEAR_SCALE"
-      },
-      {
-        "categoricalValueSpec": {
-          "values": [
-            "adam",
-            "sgd"
-          ]
-        },
-        "parameterId": "optimizer"
-      }
-    ]
-  },
-  "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -603,7 +540,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -615,7 +552,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -629,7 +566,95 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_RUNNING",
@@ -673,93 +698,7 @@ OK
     ]
   },
   "trialJobSpec": {
-    "workerPoolSpecs": [
-      {
-        "containerSpec": {
-          "command": [
-            "sh",
-            "-c",
-            "echo maximal test"
-          ],
-          "imageUri": "alpine:latest"
-        },
-        "diskSpec": {
-          "bootDiskSizeGb": 100,
-          "bootDiskType": "pd-ssd"
-        },
-        "machineSpec": {
-          "machineType": "n1-standard-4"
-        },
-        "replicaCount": "1"
-      }
-    ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "maximal-hptjob-${uniqueId}",
-  "labels": {
-    "env": "test",
-    "team": "aiplatform"
-  },
-  "maxFailedTrialCount": 1,
-  "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
-  "parallelTrialCount": 1,
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "JOB_STATE_RUNNING",
-  "studySpec": {
-    "algorithm": "RANDOM_SEARCH",
-    "medianAutomatedStoppingSpec": {
-      "useElapsedDuration": true
-    },
-    "metrics": [
-      {
-        "goal": "MAXIMIZE",
-        "metricId": "accuracy"
-      }
-    ],
-    "parameters": [
-      {
-        "doubleValueSpec": {
-          "maxValue": 0.01,
-          "minValue": 0.0001
-        },
-        "parameterId": "learning_rate",
-        "scaleType": "UNIT_LOG_SCALE"
-      },
-      {
-        "integerValueSpec": {
-          "maxValue": "5",
-          "minValue": "1"
-        },
-        "parameterId": "num_layers",
-        "scaleType": "UNIT_LINEAR_SCALE"
-      },
-      {
-        "categoricalValueSpec": {
-          "values": [
-            "adam",
-            "sgd"
-          ]
-        },
-        "parameterId": "optimizer"
-      }
-    ]
-  },
-  "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -789,7 +728,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -801,7 +740,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -815,7 +754,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_RUNNING",
@@ -859,6 +798,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -888,7 +828,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -902,7 +842,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_RUNNING",
@@ -946,6 +886,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -975,7 +916,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -987,7 +928,195 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
+}
+
+error: rpc error: code = FailedPrecondition desc = The HyperparameterTuningJob "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784" is in state JOB_STATE_CANCELLED and cannot be canceled.
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -1006,7 +1135,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_CANCELLED",
@@ -1050,6 +1179,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -1079,7 +1209,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -1098,7 +1228,7 @@ OK
   },
   "maxFailedTrialCount": 1,
   "maxTrialCount": 2,
-  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784",
   "parallelTrialCount": 1,
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "JOB_STATE_CANCELLED",
@@ -1142,6 +1272,7 @@ OK
     ]
   },
   "trialJobSpec": {
+    "serviceAccount": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "workerPoolSpecs": [
       {
         "containerSpec": {
@@ -1171,7 +1302,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.JobService/DeleteHyperparameterTuningJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784"
 }
 
 OK
@@ -1190,3 +1321,45 @@ OK
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "HPT Job Service Account ${uniqueId}",
+  "email": "hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/hptjob-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

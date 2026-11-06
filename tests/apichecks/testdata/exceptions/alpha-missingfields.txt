@@ -294,7 +294,6 @@
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.restartJobOnWorkerRestart" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.strategy" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.scheduling.timeout" is not set in unstructured objects
-[missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.tensorboardRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.args[]" is not set in unstructured objects
 [missing_field] crd=aiplatformhyperparametertuningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trialJobSpec.workerPoolSpecs[].containerSpec.env[].name" is not set in unstructured objects
