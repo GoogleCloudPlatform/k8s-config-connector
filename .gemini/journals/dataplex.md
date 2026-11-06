@@ -124,4 +124,14 @@
   5. Resolved all 6 judgement queue entries for `DataplexGlossaryTerm`.
 - **Impact**: Conforms to Greenfield single-parent and reference conventions, cleanly passing all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexGlossaryTerm`).
 
+### [2026-11-06] Finalize Direct KRM Types and Identity for DataplexGlossaryCategory
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexGlossaryCategory` under `v1alpha1` (#15154).
+- **Problem**: `DataplexGlossaryCategory` is a child resource of `DataplexGlossary` (`projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}`). It was prepopulated with `projectRef`, `location`, `labels`, and a proto `parent` string field in `spec`. In addition, `DataplexGlossary` lacked a `DataplexGlossaryRef` definition and `DataplexGlossaryIdentity` alias, producing `parent-ref-not-modelled` and `identity-root-unknown`.
+- **Solution**:
+  1. Implemented `DataplexGlossaryRef` in `apis/dataplex/v1alpha1/dataplexglossary_reference.go`, registered it with `refs.Register`, and aliased `type DataplexGlossaryIdentity = GlossaryIdentity` in `dataplexglossary_identity.go`.
+  2. Replaced `projectRef`, `location`, `labels`, and `parent` on `DataplexGlossaryCategorySpec` with a required, immutable `parentRef *DataplexGlossaryRef` (`+kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"`).
+  3. Re-ran `generate.sh` and one-shot `generate-controller` and `generate-fuzzer` to regenerate identity, mappers, CRD, and controller/fuzzer against the pinned Dataplex protobuf descriptor.
+  4. Resolved all 6 judgement queue entries for `DataplexGlossaryCategory` in `apis/dataplex/judgement_queue.yaml`.
+  5. Updated CAIS golden files and alpha-missingfields exception entries.
+- **Impact**: Conforms to Greenfield single-parent conventions, passes all apichecks, unit tests, and round-trip fuzz tests (`FOCUS=DataplexGlossaryCategory`).
 

@@ -39,6 +39,8 @@ type GlossaryIdentity struct {
 	Glossary string
 }
 
+type DataplexGlossaryIdentity = GlossaryIdentity
+
 func (i *GlossaryIdentity) String() string {
 	return GlossaryIdentityFormat.ToString(*i)
 }
