@@ -167,10 +167,6 @@ services:
     title: KMS Inventory API
     servicePrefix: KMSInventory
     reason: new API with no KCC Kinds yet
-  - api: lustre
-    title: Google Cloud Managed Lustre API
-    servicePrefix: Lustre
-    reason: single-word API name; new API with no KCC Kinds yet
   - api: managedidentities
     title: Managed Service for Microsoft Active Directory API
     servicePrefix: Managedidentities
