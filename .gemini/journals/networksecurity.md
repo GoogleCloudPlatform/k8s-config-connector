@@ -89,5 +89,15 @@
   5. Resolved all entries in `apis/networksecurity/judgement_queue.yaml` with status `resolved`.
 - **Impact**: Establishes correct parent-child relationship for `NetworkSecurityGatewaySecurityPolicyRule` referencing `NetworkSecurityGatewaySecurityPolicy`, with clean round-trip fuzzing and passing API checks.
 
+### [2026-11-06] Greenfield Step 2: Direct controller, E2E fixtures, and fuzzer for NetworkSecurityGatewaySecurityPolicyRule
+- **Context**: Greenfield Step 2 implementation for `NetworkSecurityGatewaySecurityPolicyRule` (Issue #15074).
+- **Details**:
+  1. Ran `controllerbuilder generate-controller` and `generate-fuzzer` to refresh direct controller and round-trip fuzzer for `NetworkSecurityGatewaySecurityPolicyRule`.
+  2. Created minimal (`gatewaysecuritypolicyrule-minimal`) and maximal (`gatewaysecuritypolicyrule-maximal`) E2E test fixtures under `pkg/test/resourcefixture/testdata/basic/networksecurity/v1alpha1/networksecuritygatewaysecuritypolicyrule/`.
+  3. Successfully recorded golden files against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Passed 7/7 validation checks for both minimal and maximal fixtures.
+  4. Tested focused round-trip fuzzer (`TestFocusedMappers`) and API checks (`TestGenerateScripts`, `TestDirectResourceFileNaming`).
+- **Impact**: Enables direct reconciliation and golden-file tested lifecycle for `NetworkSecurityGatewaySecurityPolicyRule`.
+
+
 
 
