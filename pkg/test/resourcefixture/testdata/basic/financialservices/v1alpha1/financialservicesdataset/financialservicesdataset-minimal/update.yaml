@@ -1,0 +1,12 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesDataset
+metadata:
+  name: financialservicesdataset-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  dateRange:
+    startTime: "2023-01-01T00:00:00Z"
+    endTime: "2024-01-01T00:00:00Z"
+  tableSpecs:
+    party: "bq://${projectId}.aml_dataset_${uniqueId}.party"
