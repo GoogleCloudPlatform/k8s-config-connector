@@ -68,6 +68,10 @@ func (m *modelPluginInstance) AdapterForObject(ctx context.Context, op *directba
 	}
 	id := i.(*krm.APIHubPluginInstanceIdentity)
 
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get apihub GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -194,8 +198,17 @@ func (a *PluginInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return err
 	}
+
+	var filteredPaths []string
+	for _, path := range updateMask.Paths {
+		if path != "actions" && !strings.HasPrefix(path, "actions.") {
+			filteredPaths = append(filteredPaths, path)
+		}
+	}
+	updateMask.Paths = filteredPaths
+
 	updated := a.actual
-	if !report.HasDiff() {
+	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		report.Object = updateOp.GetUnstructured()
