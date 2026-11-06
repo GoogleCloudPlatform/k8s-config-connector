@@ -65,6 +65,13 @@ spec:
       labels: [step/types]
       review: |
         Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+
+        Pay attention to race conditions, edge cases, input/output correctness, and code style:
+        - Strict scope boundaries (no mappers or controller logic in Step 1).
+        - 1 File = 1 Concept/Struct with single responsibility.
+        - No feature envy: Keep value and reference structs strictly focused on data and validation.
+        - Stepdown rule and colocation of constants.
+        - No (nil, nil) returns from parsers or helper functions.
       body: |
         **First, check whether {{ .Params.kind }} already has direct KRM types**: a `_types.go` for {{ .Params.kind }} under `apis/<service>/<version>/`, and a `generate.sh` in the resource's service directory configured for it. If it does, do not open a PR: comment that {{ .Params.kind }} already has direct types (naming the files), and close this issue as **not planned**. The next step will pick it up from there.
 
@@ -72,11 +79,22 @@ spec:
 
         Please follow the skill .gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md for {{ .Params.kind }}.
 
-        Make sure to configure/update `generate.sh` in the resource's service directory (e.g., `apis/<service>/<version>/generate.sh`), ensuring that the direct KRM type is strictly schema-compatible with the existing CRD.
+        **CRITICAL STEP 1 SCOPE RULES**:
+        - **In Scope**: Implement KRM Go types in `apis/<service>/<version>/<kind>_types.go`, configure `generate-types` in `apis/<service>/generate.sh`, and regenerate CRD via `dev/tasks/generate-crds`.
+        - Ensure strict schema compatibility with the baseline CRD via `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition`.
+        - **STRICTLY FORBIDDEN IN STEP 1**:
+          - DO NOT run `generate-mapper` or create mapper files (`pkg/controller/direct/<service>/mapper.generated.go`, `mappers.go`). Mappers belong in Step 3 (Fuzzer) / Step 5 (Controller).
+          - DO NOT run `generate-identity` or create identity/reference files (`_identity.go`, `_reference.go`). Identity belongs in Step 2.
+          - DO NOT commit internal journal files or anything under `.gemini/skills/` to git branches.
 
         For reference on setting up `generate.sh`, renaming files/fields to match acronyms, handling pointers, and ensuring proper directory structure, please also refer to the skill .gemini/skills/generate-sh-checker/SKILL.md.
 
-        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/crd-mapper-fuzzer-existing-type/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
 
     # Step 2. Kinds that already follow the identity and refs pattern need no
     # PR here: the issue is closed as not planned (Skipped).
@@ -86,6 +104,13 @@ spec:
       labels: [step/identity]
       review: |
         Use .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+
+        Pay attention to race conditions, edge cases, input/output correctness, and code style:
+        - Strict scope boundaries (identity and refs only, no mappers or controller logic).
+        - 1 File = 1 Concept/Struct with single responsibility.
+        - No feature envy: Value structs only contain identity/reference data and validation.
+        - Stepdown rule and colocation of constants.
+        - No (nil, nil) returns from parsers or lookup functions.
       body: |
         **First, check whether {{ .Params.kind }} already follows the identity and refs pattern**: it has `_identity.go` and `_reference.go` implementing `identity.IdentityV2` and `refs.Ref` using `gcpurls.Template`. If it does, do not open a PR: comment that {{ .Params.kind }} already follows the pattern (naming the files), and close this issue as **not planned**. The next step will pick it up from there.
 
@@ -93,7 +118,17 @@ spec:
 
         Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for {{ .Params.kind }}.
 
-        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+        **CRITICAL STEP 2 SCOPE RULES**:
+        - **In Scope**: Implement `_identity.go` and `_reference.go` (or configure `generate-identity` in `apis/<service>/generate.sh`), and update CAIS golden identities (`WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...`).
+        - DO NOT create mappers or controller logic.
+        - DO NOT commit internal journal files or anything under `.gemini/skills/` to git branches.
+
+        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
 
     # Step 3. No automated review, as in the workflow.
     - id: fuzzer
@@ -103,9 +138,16 @@ spec:
       body: |
         Please follow the skill .gemini/skills/create-fuzzer/SKILL.md to implement a round-trip KRM fuzzer for {{ .Params.kind }}.
 
-        The expected path for the fuzzer is `pkg/controller/direct/<service>/<kind_lowercase>_fuzzer.go`. Ensure the direct controller package is imported/registered in `pkg/controller/direct/register/register.go` so the fuzzer executes under the central fuzz test suite.
+        **CRITICAL STEP 3 SCOPE RULES**:
+        - **In Scope**: Add `generate-mapper` to `apis/<service>/generate.sh`, implement any hand-coded mappers in `pkg/controller/direct/<service>/mappers.go`, and implement the round-trip fuzzer in `pkg/controller/direct/<service>/<kind_lowercase>_fuzzer.go`.
+        - Ensure the direct controller package is imported/registered in `pkg/controller/direct/register/register.go` so the fuzzer executes under the central fuzz test suite.
+        - DO NOT implement controller reconciliation logic (Adapter) yet; that belongs to Step 5.
+        - DO NOT commit internal journal files or anything under `.gemini/skills/` to git branches.
 
-        If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/create-fuzzer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
 
     # Step 4. No automated review, as in the workflow.
     - id: mockgcp
@@ -133,11 +175,28 @@ spec:
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/add-new-mockgcp-resource/journal/, named after the kind or a similarly unique name.
 
-    # Step 5. No automated review, as in the workflow.
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
+
+    # Step 5.
     - id: controller
       after: [mockgcp]
       title: 'Implement direct controller and test fixtures for {{ .Params.kind }}'
       labels: [step/controller]
+      review: |
+        Use .gemini/skills/reviewgen-brownfield-controller/SKILL.md to conduct the review.
+
+        Pay attention to race conditions, edge cases, and input/output correctness. Once correctness is verified, ensure code follows these style and design practices:
+        - 1 File = 1 Class/Struct (Single Responsibility): 1 primary struct + methods per file; matching `<file>_test.go` with tests structured in 3 visually separated blocks (Arrange, Act, Assert) separated by blank lines.
+        - Encapsulation by Default: Treat files as private boundaries; interact only via constructors and methods. Do not reach into unexported fields of another file or call free helpers across files.
+        - No Feature Envy on Data Structs: Value structs contain only data and validation; keep downstream domain logic in the file performing that domain work.
+        - Own Collaborators via Constructor: Wire collaborators in `newX(...)` rather than threading through method parameters. Initialize optional collaborators in constructor.
+        - Depth-First Call-Tree Ordering (Stepdown Rule): Place private helpers immediately below their caller in call order (struct -> constructor -> helpers -> primary method -> helpers in call order -> trivial getters).
+        - Colocate Constants: Declare constants immediately above the first function/method that uses them.
+        - Orchestrator vs. Leaf Method Granularity: Orchestrators coordinate at a high abstraction level without inline loops/tables; leaf methods remain cohesive without unnecessary shredding.
+        - No (nil, nil) Returns: Return valid value or descriptive error (or `(T, bool)` for lookups).
       body: |
         Please follow the skills:
         - .gemini/skills/kcc-direct-controller-implementer/SKILL.md
@@ -147,6 +206,11 @@ spec:
         MockGCP for {{ .Params.kind }} was aligned with real GCP in #{{ (step "mockgcp").Issue }}.
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under their respective journal/ folders, named after the kind or a similarly unique name.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
 
     # Step 6. No automated review, as in the workflow.
     - id: validate-promotion
@@ -166,3 +230,8 @@ spec:
         In the created PR description, you MUST explicitly document whether `./hack/record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used.
 
         If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/solve-migration-diff-issues/journal/, named after the kind or a similarly unique name.
+
+        When creating the PR, include the release note block set to NONE:
+        ```release-note
+        NONE
+        ```
