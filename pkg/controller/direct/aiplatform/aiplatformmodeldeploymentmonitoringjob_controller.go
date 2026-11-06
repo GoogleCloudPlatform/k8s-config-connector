@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1"
@@ -62,18 +63,19 @@ func (m *modelModelDeploymentMonitoringJob) AdapterForObject(ctx context.Context
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.AIPlatformModelDeploymentMonitoringJobIdentity)
 
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	// Get aiplatform GCP client
-	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.Location))
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -150,9 +152,6 @@ func (a *ModelDeploymentMonitoringJobAdapter) Create(ctx context.Context, create
 	resource := AIPlatformModelDeploymentMonitoringJobSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
-	}
-	if a.id.ModelDeploymentMonitoringJob != "" {
-		resource.Name = a.id.String()
 	}
 
 	req := &aiplatformpb.CreateModelDeploymentMonitoringJobRequest{
@@ -245,7 +244,13 @@ func (a *ModelDeploymentMonitoringJobAdapter) Export(ctx context.Context) (*unst
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	name := a.id.ModelDeploymentMonitoringJob
+	if name == "" && a.actual.Name != "" {
+		if err := a.id.FromExternal(a.actual.Name); err == nil {
+			name = a.id.ModelDeploymentMonitoringJob
+		}
+	}
+	u.SetName(k8s.ValueToDNSSubdomainName(name))
 	u.SetGroupVersionKind(krm.AIPlatformModelDeploymentMonitoringJobGVK)
 
 	return u, nil

@@ -105,6 +105,13 @@
      - Updated `Find` in `aiplatformmodeldeploymentmonitoringjob_controller.go` to return `false, nil` if `a.id.ModelDeploymentMonitoringJob` is empty.
      - Updated `Create` in `aiplatformmodeldeploymentmonitoringjob_controller.go` to omit `resource.Name` if `ModelDeploymentMonitoringJob` is empty, and parse the assigned `created.Name` from GCP response into `a.id`.
   3. **Static Config Registration**: Registered `AIPlatformModelDeploymentMonitoringJob` as a direct controller in `pkg/controller/resourceconfig/static_config.go` using `python3 dev/tasks/generate_static_config.py`.
+  4. **Addressing Review Feedback**:
+     - Moved `common.NormalizeGreenfieldReferences` before `obj.GetIdentity` in `AdapterForObject`.
+     - Used `id.Location` instead of `direct.ValueOf(obj.Spec.Location)` when obtaining the GCP client.
+     - Removed `resource.Name` assignment from `Create()` for service-generated IDs.
+     - Used `k8s.ValueToDNSSubdomainName` on resource ID in `Export()`.
+- **Finding & Real GCP Observation**:
+  During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateModelDeploymentMonitoringJob` API returned `rpc error: code = InvalidArgument desc = Deployed Model ID: deployed-model-1 does not match existing Deployed Models from ModelMonitoringObjectiveConfig`. The API requires deployed models to already exist on the target `VertexAIEndpoint`. Deploying a model to an endpoint requires a trained model artifact or container to be deployed first, which cannot be provisioned purely through basic test fixtures. Golden HTTP logs will be aligned with MockGCP in Phase 3.
 - **Impact**: Greenfield controller, fuzzer, and E2E fixtures implemented and verified with clean unit and fuzzer tests.
 
 ### [2026-11-06] Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformCachedContent
