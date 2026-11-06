@@ -33,7 +33,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%
   "hyperparameterSource": {
     "sourceEngineConfig": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/source-engineconfig-${uniqueId}"
   },
-  "hyperparameterSourceType": 2
+  "hyperparameterSourceType": 1
 }
 
 200 OK
@@ -92,7 +92,7 @@ X-Xss-Protection: 0
     "hyperparameterSource": {
       "sourceEngineConfig": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/source-engineconfig-${uniqueId}"
     },
-    "hyperparameterSourceType": 2,
+    "hyperparameterSourceType": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}",
     "state": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -122,7 +122,7 @@ X-Xss-Protection: 0
   "hyperparameterSource": {
     "sourceEngineConfig": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/source-engineconfig-${uniqueId}"
   },
-  "hyperparameterSourceType": 2,
+  "hyperparameterSourceType": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
