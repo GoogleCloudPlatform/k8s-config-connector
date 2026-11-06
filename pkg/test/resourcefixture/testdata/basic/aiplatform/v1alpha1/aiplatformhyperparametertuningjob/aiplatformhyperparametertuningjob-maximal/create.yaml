@@ -1,0 +1,46 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformHyperparameterTuningJob
+metadata:
+  name: hptjob-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: maximal-hptjob-${uniqueId}
+  maxTrialCount: 2
+  parallelTrialCount: 1
+  maxFailedTrialCount: 1
+  labels:
+    env: test
+    team: aiplatform
+  studySpec:
+    algorithm: RANDOM_SEARCH
+    metrics:
+    - metricID: accuracy
+      goal: MAXIMIZE
+    parameters:
+    - parameterID: learning_rate
+      doubleValueSpec:
+        minValue: 0.0001
+        maxValue: 0.01
+      scaleType: UNIT_LOG_SCALE
+    - parameterID: num_layers
+      integerValueSpec:
+        minValue: 1
+        maxValue: 5
+      scaleType: UNIT_LINEAR_SCALE
+    - parameterID: optimizer
+      categoricalValueSpec:
+        values:
+        - adam
+        - sgd
+    medianAutomatedStoppingSpec:
+      useElapsedDuration: true
+  trialJobSpec:
+    workerPoolSpecs:
+    - machineSpec:
+        machineType: n1-standard-4
+      replicaCount: 1
+      containerSpec:
+        imageURI: alpine:latest
+        command: ["sh", "-c", "echo maximal test"]

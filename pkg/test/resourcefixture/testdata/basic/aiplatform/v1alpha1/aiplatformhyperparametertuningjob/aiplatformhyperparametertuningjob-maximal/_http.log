@@ -1,0 +1,1192 @@
+# Phase: CREATE
+GRPC /google.cloud.aiplatform.v1.JobService/CreateHyperparameterTuningJob
+
+{
+  "hyperparameterTuningJob": {
+    "displayName": "maximal-hptjob-${uniqueId}",
+    "labels": {
+      "env": "test",
+      "team": "aiplatform"
+    },
+    "maxFailedTrialCount": 1,
+    "maxTrialCount": 2,
+    "parallelTrialCount": 1,
+    "studySpec": {
+      "algorithm": "RANDOM_SEARCH",
+      "medianAutomatedStoppingSpec": {
+        "useElapsedDuration": true
+      },
+      "metrics": [
+        {
+          "goal": "MAXIMIZE",
+          "metricId": "accuracy"
+        }
+      ],
+      "parameters": [
+        {
+          "doubleValueSpec": {
+            "maxValue": 0.01,
+            "minValue": 0.0001
+          },
+          "parameterId": "learning_rate",
+          "scaleType": "UNIT_LOG_SCALE"
+        },
+        {
+          "integerValueSpec": {
+            "maxValue": "5",
+            "minValue": "1"
+          },
+          "parameterId": "num_layers",
+          "scaleType": "UNIT_LINEAR_SCALE"
+        },
+        {
+          "categoricalValueSpec": {
+            "values": [
+              "adam",
+              "sgd"
+            ]
+          },
+          "parameterId": "optimizer"
+        }
+      ]
+    },
+    "trialJobSpec": {
+      "workerPoolSpecs": [
+        {
+          "containerSpec": {
+            "command": [
+              "sh",
+              "-c",
+              "echo maximal test"
+            ],
+            "imageUri": "alpine:latest"
+          },
+          "machineSpec": {
+            "machineType": "n1-standard-4"
+          },
+          "replicaCount": "1"
+        }
+      ]
+    }
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_PENDING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_RUNNING",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CancelHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "code": 1,
+    "message": "CANCELED"
+  },
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_CANCELLED",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal-hptjob-${uniqueId}",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "code": 1,
+    "message": "CANCELED"
+  },
+  "labels": {
+    "env": "test",
+    "team": "aiplatform"
+  },
+  "maxFailedTrialCount": 1,
+  "maxTrialCount": 2,
+  "name": "projects/${projectNumber}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888",
+  "parallelTrialCount": 1,
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "JOB_STATE_CANCELLED",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "medianAutomatedStoppingSpec": {
+      "useElapsedDuration": true
+    },
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.01,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LOG_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "5",
+          "minValue": "1"
+        },
+        "parameterId": "num_layers",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      }
+    ]
+  },
+  "trialJobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo maximal test"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/DeleteHyperparameterTuningJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
