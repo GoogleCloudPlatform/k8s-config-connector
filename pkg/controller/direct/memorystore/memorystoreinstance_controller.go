@@ -473,6 +473,10 @@ func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) 
 	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
 		return false
 	}
+	if desiredPsc.GetIpVersion() != memorystorepb.IpVersion_IP_VERSION_UNSPECIFIED &&
+		desiredPsc.GetIpVersion() != actualPsc.GetIpVersion() {
+		return false
+	}
 
 	return true
 }

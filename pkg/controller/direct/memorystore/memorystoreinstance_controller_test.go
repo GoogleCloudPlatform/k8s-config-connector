@@ -226,6 +226,84 @@ func TestIsConnectionSubset(t *testing.T) {
 			},
 			wantSubset: true,
 		},
+		{
+			name: "desired connection with matching ip_version matches actual",
+			desired: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IPV6,
+						},
+					},
+				},
+			},
+			actual: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IPV6,
+						},
+					},
+				},
+			},
+			wantSubset: true,
+		},
+		{
+			name: "desired connection with unspecified ip_version matches actual with IPV6 (no false drift)",
+			desired: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IP_VERSION_UNSPECIFIED,
+						},
+					},
+				},
+			},
+			actual: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IPV6,
+						},
+					},
+				},
+			},
+			wantSubset: true,
+		},
+		{
+			name: "desired connection with different ip_version does not match actual",
+			desired: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IPV6,
+						},
+					},
+				},
+			},
+			actual: []*memorystorepb.Instance_ConnectionDetail{
+				{
+					Connection: &memorystorepb.Instance_ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: &memorystorepb.PscAutoConnection{
+							ProjectId: "proj-1",
+							Network:   "net-1",
+							IpVersion: memorystorepb.IpVersion_IPV4,
+						},
+					},
+				},
+			},
+			wantSubset: false,
+		},
 	}
 
 	for _, tc := range tests {

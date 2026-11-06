@@ -1185,6 +1185,14 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "clusterEndpoints")
 		delete(v, "cluster_endpoints")
 
+		// Memorystore PscAutoConnection.ipVersion was introduced in later API versions and defaults to IPV4 (1) in MockGCP
+		// while older recorded real GCP golden logs omit it.
+		if ipVersion, ok := v["ipVersion"]; ok {
+			if ipVersion == float64(1) || ipVersion == "IPV4" {
+				delete(v, "ipVersion")
+			}
+		}
+
 		// DNSResponsePolicy specific normalization for alignment differences between mock and real GCP responses
 		if v["kind"] == "dns#responsePolicy" {
 			if slice, ok := v["gkeClusters"].([]interface{}); ok && len(slice) == 0 {

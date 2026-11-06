@@ -43,6 +43,7 @@ spec:
             external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
           projectRef:
             external: ${projectId}
+          ipVersion: IPV4
   mode: CLUSTER
   labels:
     key1: val1
