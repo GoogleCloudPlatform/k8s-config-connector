@@ -1,0 +1,112 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "Config Deployment SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "${projectId}-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "annotations": {
+    "note": "updated"
+  },
+  "artifactsGcsBucket": "gs://${projectId}-bucket-${uniqueId}/artifacts",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "errorCode": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "latestRevision": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1",
+  "lockState": 2,
+  "name": "projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}",
+  "providerConfig": {},
+  "serviceAccount": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "state": 5,
+  "stateDetail": "Revision failed: Failed to import values from an external source: Invalid resource state for \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\": the provided deployment doesn't exist",
+  "terraformBlueprint": {
+    "externalValues": {
+      "ext_var": {
+        "deploymentSource": {
+          "deployment": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+          "outputName": "updated_output"
+        }
+      }
+    },
+    "gitSource": {
+      "directory": "scripts",
+      "ref": "v1.0.0",
+      "repo": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+    },
+    "inputValues": {
+      "foo": {
+        "inputValue": "updated"
+      }
+    }
+  },
+  "tfVersion": "1.3.10",
+  "tfVersionConstraint": "=1.3.10",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "workerPool": "projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}"
+}
