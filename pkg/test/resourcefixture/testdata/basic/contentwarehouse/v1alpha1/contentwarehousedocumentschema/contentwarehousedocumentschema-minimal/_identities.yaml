@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: contentwarehouse.cnrm.cloud.google.com
+  kind: ContentWarehouseDocumentSchema
+  name: ${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

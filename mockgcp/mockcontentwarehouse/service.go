@@ -15,6 +15,7 @@
 // +tool:mockgcp-service
 // http.host: contentwarehouse.googleapis.com
 // proto.service: mockgcp.cloud.contentwarehouse.v1.SynonymSetService
+// proto.service: mockgcp.cloud.contentwarehouse.v1.DocumentSchemaService
 
 package mockcontentwarehouse
 
@@ -41,12 +42,18 @@ type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
-	v1 *SynonymSetV1
+	v1                *SynonymSetV1
+	documentSchemasV1 *DocumentSchemasV1
 }
 
 type SynonymSetV1 struct {
 	*MockService
 	pb.UnimplementedSynonymSetServiceServer
+}
+
+type DocumentSchemasV1 struct {
+	*MockService
+	pb.UnimplementedDocumentSchemaServiceServer
 }
 
 // New creates a MockService.
@@ -56,6 +63,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 	}
 	s.v1 = &SynonymSetV1{MockService: s}
+	s.documentSchemasV1 = &DocumentSchemasV1{MockService: s}
 	return s
 }
 
@@ -65,11 +73,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSynonymSetServiceServer(grpcServer, s.v1)
+	pb.RegisterDocumentSchemaServiceServer(grpcServer, s.documentSchemasV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterSynonymSetServiceHandler)
+		pb.RegisterSynonymSetServiceHandler,
+		pb.RegisterDocumentSchemaServiceHandler)
 
 	if err != nil {
 		return nil, err
