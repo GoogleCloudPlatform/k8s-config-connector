@@ -4,7 +4,7 @@
 - **Resource Name:** `dialogflowplaybook-${uniqueId}`
 - **Source Log:** `_http.log` (9 total HTTP entries, 4 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:f92c110d3861c502`
+- **Integrity Hash:** `sha256:c86e2e90a02a2e81`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

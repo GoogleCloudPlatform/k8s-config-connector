@@ -37,7 +37,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/agents/f0d571ee-0884-4fb5-a84d-c3e0d4494ccd/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4
+  externalRef: projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75/playbooks/d580659b-61e7-44d6-b518-90f2a32a8fb4
   observedGeneration: 2
   observedState:
     tokenCount: 34
