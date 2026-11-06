@@ -653,6 +653,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "host")
 		delete(v, "tlsServiceDirectory")
 
+		// ManagedKafkaConnector state field normalization due to async state transitions in real GCP
+		if _, ok := v["taskRestartPolicy"]; ok {
+			delete(v, "state")
+		}
+
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
 			delete(v, "displayName")
