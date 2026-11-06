@@ -1,0 +1,65 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package dialogflow
+
+import (
+	pb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func DialogflowEntityTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntityType) *krm.DialogflowEntityTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowEntityTypeSpec{}
+	out.DisplayName = in.DisplayName
+	out.EnableFuzzyExtraction = direct.LazyPtr(in.EnableFuzzyExtraction)
+	out.Entities = direct.Slice_FromProto(mapCtx, in.Entities, EntityType_Entity_FromProto)
+	out.Kind = direct.ValueOf(direct.Enum_FromProto(mapCtx, in.Kind))
+	return out
+}
+
+func DialogflowEntityTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowEntityTypeSpec) *pb.EntityType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType{}
+	out.DisplayName = in.DisplayName
+	out.EnableFuzzyExtraction = direct.ValueOf(in.EnableFuzzyExtraction)
+	out.Entities = direct.Slice_ToProto(mapCtx, in.Entities, EntityType_Entity_ToProto)
+	out.Kind = direct.Enum_ToProto[pb.EntityType_Kind](mapCtx, direct.LazyPtr(in.Kind))
+	return out
+}
+
+func EntityType_Entity_FromProto(mapCtx *direct.MapContext, in *pb.EntityType_Entity) *krm.EntityType_Entity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntityType_Entity{}
+	out.Value = in.Value
+	out.Synonyms = in.Synonyms
+	return out
+}
+
+func EntityType_Entity_ToProto(mapCtx *direct.MapContext, in *krm.EntityType_Entity) *pb.EntityType_Entity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityType_Entity{}
+	out.Value = in.Value
+	out.Synonyms = in.Synonyms
+	return out
+}
