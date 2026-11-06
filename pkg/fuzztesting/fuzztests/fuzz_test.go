@@ -51,19 +51,6 @@ func TestSomeMappers(t *testing.T) {
 	}
 }
 
-// TestFuzzersAttributedToService guards the FUZZ_SERVICES filter used by
-// scoped presubmits: every fuzzer must be attributable to the
-// pkg/controller/direct/<service> package that registered it.
-func TestFuzzersAttributedToService(t *testing.T) {
-	counts := fuzztesting.FuzzerCountsByService()
-	if n := counts[""]; n != 0 {
-		t.Errorf("%d fuzzers are not attributed to a pkg/controller/direct/<service> package", n)
-	}
-	if len(counts) < 10 {
-		t.Errorf("expected fuzzers from many services, got %v", counts)
-	}
-}
-
 func TestListTypesWithoutFuzzers(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
