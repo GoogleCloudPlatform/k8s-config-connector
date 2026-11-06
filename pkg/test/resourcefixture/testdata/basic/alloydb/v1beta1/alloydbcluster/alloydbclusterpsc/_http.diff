@@ -1,0 +1,223 @@
+2c2
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+25c25
+< POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
+---
+> POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster${uniqueId}
+29c29
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+36a37,39
+>   },
+>   "pscConfig": {
+>     "pscEnabled": true
+65c68
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+152,154c155,157
+<     "network": "projects/${projectNumber}/global/networks/default",
+<     "networkConfig": {
+<       "network": "projects/${projectNumber}/global/networks/default"
+---
+>     "pscConfig": {
+>       "pscEnabled": true,
+>       "serviceOwnedProjectNumber": "123456789"
+167c170,171
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> # Phase: UPDATE
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+190,196c194,200
+<         "MONDAY",
+<         "TUESDAY",
+<         "WEDNESDAY",
+<         "THURSDAY",
+<         "FRIDAY",
+<         "SATURDAY",
+<         "SUNDAY"
+---
+>         1,
+>         2,
+>         3,
+>         4,
+>         5,
+>         6,
+>         7
+205c209
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+213c217
+<       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>       "encryptionType": 1
+216,222c220,226
+<       "MONDAY",
+<       "TUESDAY",
+<       "WEDNESDAY",
+<       "THURSDAY",
+<       "FRIDAY",
+<       "SATURDAY",
+<       "SUNDAY"
+---
+>       1,
+>       2,
+>       3,
+>       4,
+>       5,
+>       6,
+>       7
+226c230
+<   "databaseVersion": "POSTGRES_18",
+---
+>   "databaseVersion": 6,
+231c235
+<     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>     "encryptionType": 1
+241,243c245,247
+<   "network": "projects/${projectNumber}/global/networks/default",
+<   "networkConfig": {
+<     "network": "projects/${projectNumber}/global/networks/default"
+---
+>   "pscConfig": {
+>     "pscEnabled": true,
+>     "serviceOwnedProjectNumber": "123456789"
+247,248c251,252
+<   "state": "READY",
+<   "subscriptionType": "STANDARD",
+---
+>   "state": 1,
+>   "subscriptionType": 1,
+255,256c259
+< # Phase: UPDATE
+< PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=displayName
+---
+> PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+261a265
+>     "enabled": false,
+268,274c272,278
+<         "MONDAY",
+<         "TUESDAY",
+<         "WEDNESDAY",
+<         "THURSDAY",
+<         "FRIDAY",
+<         "SATURDAY",
+<         "SUNDAY"
+---
+>         1,
+>         2,
+>         3,
+>         4,
+>         5,
+>         6,
+>         7
+283c287
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+287a292
+>   "databaseVersion": 6,
+297,300c302,306
+<   "network": "projects/${projectNumber}/global/networks/default",
+<   "networkConfig": {
+<     "network": "projects/${projectNumber}/global/networks/default"
+<   }
+---
+>   "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+>   "pscConfig": {
+>     "pscEnabled": true
+>   },
+>   "reconciling": false
+328c334
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+415,417c421,423
+<     "network": "projects/${projectNumber}/global/networks/default",
+<     "networkConfig": {
+<       "network": "projects/${projectNumber}/global/networks/default"
+---
+>     "pscConfig": {
+>       "pscEnabled": true,
+>       "serviceOwnedProjectNumber": "123456789"
+430c436,437
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> # Phase: DELETE
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+453,459c460,466
+<         "MONDAY",
+<         "TUESDAY",
+<         "WEDNESDAY",
+<         "THURSDAY",
+<         "FRIDAY",
+<         "SATURDAY",
+<         "SUNDAY"
+---
+>         1,
+>         2,
+>         3,
+>         4,
+>         5,
+>         6,
+>         7
+468c475
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+476c483
+<       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>       "encryptionType": 1
+479,485c486,492
+<       "MONDAY",
+<       "TUESDAY",
+<       "WEDNESDAY",
+<       "THURSDAY",
+<       "FRIDAY",
+<       "SATURDAY",
+<       "SUNDAY"
+---
+>       1,
+>       2,
+>       3,
+>       4,
+>       5,
+>       6,
+>       7
+489c496
+<   "databaseVersion": "POSTGRES_18",
+---
+>   "databaseVersion": 6,
+494c501
+<     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>     "encryptionType": 1
+504,506c511,513
+<   "network": "projects/${projectNumber}/global/networks/default",
+<   "networkConfig": {
+<     "network": "projects/${projectNumber}/global/networks/default"
+---
+>   "pscConfig": {
+>     "pscEnabled": true,
+>     "serviceOwnedProjectNumber": "123456789"
+510,511c517,518
+<   "state": "READY",
+<   "subscriptionType": "STANDARD",
+---
+>   "state": 1,
+>   "subscriptionType": 1,
+518,519c525
+< # Phase: DELETE
+< DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+547c553
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}

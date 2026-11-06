@@ -180,6 +180,9 @@ func (a *ClusterAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig == nil {
+		if obj.Spec.PSCConfig != nil && direct.ValueOf(obj.Spec.PSCConfig.PSCEnabled) {
+			return nil
+		}
 		return fmt.Errorf("at least one of 'spec.networkRef' " +
 			"and 'spec.networkConfig' should be configured: neither is configured")
 	}

@@ -527,6 +527,41 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		}
 	}
 
+	if desired.PSCInstanceConfig != nil {
+		actualPSC := actual.PSCInstanceConfig
+		if actualPSC == nil {
+			actualPSC = &krm.Instance_PSCInstanceConfig{}
+		}
+		desiredPSC := desired.PSCInstanceConfig
+
+		if desiredPSC.AllowedConsumerProjects != nil && !reflect.DeepEqual(actualPSC.AllowedConsumerProjects, desiredPSC.AllowedConsumerProjects) {
+			log.V(2).Info("'spec.pscInstanceConfig.allowedConsumerProjects' field is updated (-old +new)", cmp.Diff(actualPSC.AllowedConsumerProjects, desiredPSC.AllowedConsumerProjects))
+			updatePaths = append(updatePaths, "psc_instance_config.allowed_consumer_projects")
+		}
+		if desiredPSC.PSCInterfaceConfigs != nil && !reflect.DeepEqual(actualPSC.PSCInterfaceConfigs, desiredPSC.PSCInterfaceConfigs) {
+			log.V(2).Info("'spec.pscInstanceConfig.pscInterfaceConfigs' field is updated (-old +new)", cmp.Diff(actualPSC.PSCInterfaceConfigs, desiredPSC.PSCInterfaceConfigs))
+			updatePaths = append(updatePaths, "psc_instance_config.psc_interface_configs")
+		}
+		if desiredPSC.PSCAutoConnections != nil && !reflect.DeepEqual(actualPSC.PSCAutoConnections, desiredPSC.PSCAutoConnections) {
+			log.V(2).Info("'spec.pscInstanceConfig.pscAutoConnections' field is updated (-old +new)", cmp.Diff(actualPSC.PSCAutoConnections, desiredPSC.PSCAutoConnections))
+			updatePaths = append(updatePaths, "psc_instance_config.psc_auto_connections")
+		}
+		desiredDNSState := desiredPSC.PSCAutoDNSState
+		if direct.ValueOf(desiredDNSState) == "PSC_AUTO_DNS_STATE_UNSPECIFIED" && actualPSC.PSCAutoDNSState == nil {
+			desiredDNSState = nil
+		}
+		if path, changed := stringPtrChanged(actualPSC.PSCAutoDNSState, desiredDNSState, "psc_instance_config.psc_auto_dns_state", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		desiredPolicyState := desiredPSC.PSCAutoConnectionPolicyState
+		if direct.ValueOf(desiredPolicyState) == "PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED" && actualPSC.PSCAutoConnectionPolicyState == nil {
+			desiredPolicyState = nil
+		}
+		if path, changed := stringPtrChanged(actualPSC.PSCAutoConnectionPolicyState, desiredPolicyState, "psc_instance_config.psc_auto_connection_policy_state", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+	}
+
 	return updatePaths, nil
 }
 

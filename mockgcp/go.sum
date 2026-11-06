@@ -12,8 +12,8 @@ cloud.google.com/go/agentregistry v0.2.0 h1:TojVrdZWDwezkyYgYYUaCcXtrNHiJXancjMj
 cloud.google.com/go/agentregistry v0.2.0/go.mod h1:YK8O9KmUZH5CbRHUQ9oXv95g4m2YvtmsNxH+sdCv+5A=
 cloud.google.com/go/aiplatform v1.125.0 h1:QUGv+XaHN9wcWdb0/J0NFIcaP/veQSvDcqg4GH6QiP4=
 cloud.google.com/go/aiplatform v1.125.0/go.mod h1:yWTZiCunYDnyxeWWD14tDo6+BMlvAUCC5VxuxhvbrVI=
-cloud.google.com/go/alloydb v1.26.0 h1:UTzyumJ8tEo0CqwzLkV4WMGnCxvvhw3BDy1nXfCt9KE=
-cloud.google.com/go/alloydb v1.26.0/go.mod h1:oqHGc/Xb5fWtH+wIDpu2wcPJX9oML/fGJuH/sp8ysyo=
+cloud.google.com/go/alloydb v1.30.0 h1:HRmDbwI+LuqFqzflIH4M4PC7cgoCoQoa/pnVyZEVNc4=
+cloud.google.com/go/alloydb v1.30.0/go.mod h1:EC2XA/9Y4fIcecu/HQyNkodt8TYN4XTkQzcv+a0eJfU=
 cloud.google.com/go/analytics v0.35.0 h1:GuwmzJHIaQRvtko6g4wW1ngQ7rpDvDLZ8M3iP3kiflU=
 cloud.google.com/go/analytics v0.35.0/go.mod h1:V9Qef2N0y8GDqQ9FTlmM2XpDEMYonZJRPSUNGZlPCcc=
 cloud.google.com/go/apigateway v1.12.0 h1:fpSMzMpRFOS3OAQBdiX3LIKNEGYe0ley2EI+lGaCK2s=

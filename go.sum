@@ -98,8 +98,8 @@ cloud.google.com/go/aiplatform v1.58.2/go.mod h1:c3kCiVmb6UC1dHAjZjcpDj6ZS0bHQ2s
 cloud.google.com/go/aiplatform v1.60.0/go.mod h1:eTlGuHOahHprZw3Hio5VKmtThIOak5/qy6pzdsqcQnM=
 cloud.google.com/go/aiplatform v1.125.0 h1:QUGv+XaHN9wcWdb0/J0NFIcaP/veQSvDcqg4GH6QiP4=
 cloud.google.com/go/aiplatform v1.125.0/go.mod h1:yWTZiCunYDnyxeWWD14tDo6+BMlvAUCC5VxuxhvbrVI=
-cloud.google.com/go/alloydb v1.26.0 h1:UTzyumJ8tEo0CqwzLkV4WMGnCxvvhw3BDy1nXfCt9KE=
-cloud.google.com/go/alloydb v1.26.0/go.mod h1:oqHGc/Xb5fWtH+wIDpu2wcPJX9oML/fGJuH/sp8ysyo=
+cloud.google.com/go/alloydb v1.30.0 h1:HRmDbwI+LuqFqzflIH4M4PC7cgoCoQoa/pnVyZEVNc4=
+cloud.google.com/go/alloydb v1.30.0/go.mod h1:EC2XA/9Y4fIcecu/HQyNkodt8TYN4XTkQzcv+a0eJfU=
 cloud.google.com/go/analytics v0.11.0/go.mod h1:DjEWCu41bVbYcKyvlws9Er60YE4a//bK6mnhWvQeFNI=
 cloud.google.com/go/analytics v0.12.0/go.mod h1:gkfj9h6XRf9+TS4bmuhPEShsh3hH8PAZzm/41OOhQd4=
 cloud.google.com/go/analytics v0.17.0/go.mod h1:WXFa3WSym4IZ+JiKmavYdJwGG/CvpqiqczmL59bTD9M=

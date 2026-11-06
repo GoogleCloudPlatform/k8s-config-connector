@@ -40,7 +40,6 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".ssl_config")
 	f.UnimplementedFields.Insert(".cloudsql_backup_run_source")
 	f.UnimplementedFields.Insert(".delete_time")
-	f.UnimplementedFields.Insert(".psc_config")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
 	f.UnimplementedFields.Insert(".create_time")
 	f.UnimplementedFields.Insert(".primary_config")
@@ -67,6 +66,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".restore_continuous_backup_source")
 	f.SpecFields.Insert(".secondary_config")
 	f.SpecFields.Insert(".continuous_backup_config")
+	f.SpecFields.Insert(".psc_config")
 
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".database_version")
@@ -81,6 +81,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".service_account_email")
 	f.Unimplemented_NotYetTriaged(".maintenance_update_policy.deny_maintenance_periods")
 	f.Unimplemented_NotYetTriaged(".dataplex_config")
+	f.Unimplemented_NotYetTriaged(".psc_config.service_owned_project_number")
 
 	return f
 }
