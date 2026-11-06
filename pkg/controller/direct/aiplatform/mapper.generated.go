@@ -72,7 +72,9 @@ func AIPlatformCachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cac
 	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
 	out.SystemInstruction = Content_FromProto(mapCtx, in.GetSystemInstruction())
 	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_FromProto)
 	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_FromProto)
@@ -94,7 +96,9 @@ func AIPlatformCachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPl
 	}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.SystemInstruction = Content_ToProto(mapCtx, in.SystemInstruction)
 	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_ToProto)
 	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_ToProto)

@@ -169,9 +169,9 @@ func (in *AIPlatformCachedContentSpec) DeepCopyInto(out *AIPlatformCachedContent
 		*out = new(string)
 		**out = **in
 	}
-	if in.Model != nil {
-		in, out := &in.Model, &out.Model
-		*out = new(string)
+	if in.ModelRef != nil {
+		in, out := &in.ModelRef, &out.ModelRef
+		*out = new(AIPlatformModelRef)
 		**out = **in
 	}
 	if in.SystemInstruction != nil {

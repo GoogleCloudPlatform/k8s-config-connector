@@ -56,7 +56,7 @@ type AIPlatformCachedContentSpec struct {
 	//  only the published Gemini base models are supported, in form of
 	//  projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.model
-	Model *string `json:"model,omitempty"`
+	ModelRef *AIPlatformModelRef `json:"modelRef,omitempty"`
 
 	// Optional. Input only. Immutable. Developer set system instruction.
 	//  Currently, text only

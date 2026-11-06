@@ -152,16 +152,16 @@ entries:
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}"
     status: resolved
-    resolution: deferred
-    note: model refers to published Gemini base models (publishers/google/models/MODEL); deferred to refs_deferred.txt as no publisher model ref type is available.
+    resolution: edited
+    note: converted to modelRef (*AIPlatformModelRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.model
     reason: possible-reference-by-sibling
     detail: the name matches AIPlatformModel, a resource this service declares; confirm whether it should be a reference
     status: resolved
-    resolution: deferred
-    note: model refers to published Gemini base models (publishers/google/models/MODEL); deferred to refs_deferred.txt as no publisher model ref type is available.
+    resolution: edited
+    note: converted to modelRef (*AIPlatformModelRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts
@@ -328,8 +328,8 @@ entries:
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
     status: resolved
-    resolution: accepted
-    note: kept deprecated field on generated struct for compatibility.
+    resolution: edited
+    note: removed deprecated field.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore
@@ -376,16 +376,16 @@ entries:
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
     status: resolved
-    resolution: accepted
-    note: kept deprecated field on generated struct for compatibility.
+    resolution: edited
+    note: removed deprecated field.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexRagStore.vectorDistanceThreshold
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
     status: resolved
-    resolution: accepted
-    note: kept deprecated field on generated struct for compatibility.
+    resolution: edited
+    note: removed deprecated field.
   - kind: AIPlatformFeatureView
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
