@@ -15,7 +15,7 @@ spec:
   documentIsFolder: false
   location: us
   projectRef:
-    external: ${projectId}
+    name: project-${uniqueId}
   propertyDefinitions:
   - displayName: Property 1 Updated
     isFilterable: true

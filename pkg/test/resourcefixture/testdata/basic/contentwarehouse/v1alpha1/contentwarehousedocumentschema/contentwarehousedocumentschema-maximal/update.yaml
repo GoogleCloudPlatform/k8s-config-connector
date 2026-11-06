@@ -4,7 +4,7 @@ metadata:
   name: ${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    name: project-${uniqueId}
   location: us
   displayName: "Updated Maximal Schema ${uniqueId}"
   description: "Updated Maximal Document Schema description ${uniqueId}"
