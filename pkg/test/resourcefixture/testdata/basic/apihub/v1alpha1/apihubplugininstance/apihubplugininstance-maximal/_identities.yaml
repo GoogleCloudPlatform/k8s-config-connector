@@ -1,0 +1,12 @@
+- caisURL: //apihub.googleapis.com/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}
+  group: apihub.cnrm.cloud.google.com
+  kind: APIHubPlugin
+  name: apihubplugin-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //apihub.googleapis.com/projects/${projectId}/locations/us-central1/plugins/apihubplugin-${uniqueId}/instances/apihubplugininstance-maximal-${uniqueId}
+  group: apihub.cnrm.cloud.google.com
+  kind: APIHubPluginInstance
+  name: apihubplugininstance-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

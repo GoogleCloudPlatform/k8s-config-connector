@@ -991,8 +991,6 @@
 [missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apihubinstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].actionID" is not set in unstructured objects
-[missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].curationConfig.curationType" is not set in unstructured objects
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].curationConfig.customCuration.curation" is not set in unstructured objects
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].scheduleCronExpression" is not set in unstructured objects
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].scheduleTimeZone" is not set in unstructured objects
@@ -1007,9 +1005,6 @@
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion" is not set in unstructured objects
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.userPasswordConfig.password.secretVersion" is not set in unstructured objects
 [missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.userPasswordConfig.username" is not set in unstructured objects
-[missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=apihubplugininstances.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceProjectID" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].description" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].displayName" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].immutable" is not set in unstructured objects

@@ -1,0 +1,13 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubPluginInstance
+metadata:
+  name: apihubplugininstance-maximal-${uniqueId}
+spec:
+  parentRef:
+    name: apihubplugin-${uniqueId}
+  displayName: "Updated Maximal Plugin Instance ${uniqueId}"
+  sourceProjectID: ${projectId}
+  actions:
+    - actionID: "action-1"
+      curationConfig:
+        curationType: "DEFAULT_CURATION_FOR_API_METADATA"
