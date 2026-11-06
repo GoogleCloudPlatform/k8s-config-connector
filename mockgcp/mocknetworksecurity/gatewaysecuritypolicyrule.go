@@ -32,6 +32,11 @@ import (
 )
 
 func (s *NetworkSecurityV1Server) CreateGatewaySecurityPolicyRule(ctx context.Context, req *pb.CreateGatewaySecurityPolicyRuleRequest) (*longrunning.Operation, error) {
+	policyName, err := s.parseGatewaySecurityPolicyName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
 	name := req.Parent + "/rules/" + req.GatewaySecurityPolicyRuleId
 
 	fqn := name
@@ -53,7 +58,8 @@ func (s *NetworkSecurityV1Server) CreateGatewaySecurityPolicyRule(ctx context.Co
 		Verb:                  "create",
 		ApiVersion:            "v1",
 	}
-	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", policyName.Project.ID, policyName.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.Clone(obj)
 		return result, nil
