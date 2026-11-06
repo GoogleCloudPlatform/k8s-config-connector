@@ -38,7 +38,7 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected NotFound for non-existent model, got: %v", err)
 	}
 
-	// 2. Create model
+	// 2. Create model before parent instance exists -> 404 NotFound
 	createReq := &pb.CreateModelRequest{
 		Parent:  parent,
 		ModelId: modelID,
@@ -47,6 +47,22 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 			PrimaryDataset: "projects/test-project/locations/us-central1/instances/test-instance/datasets/test-ds",
 		},
 	}
+	_, err = server.CreateModel(ctx, createReq)
+	if status.Code(err) != codes.NotFound {
+		t.Fatalf("expected NotFound when creating model with non-existent parent instance, got: %v", err)
+	}
+
+	// Create parent instance first
+	_, err = server.CreateInstance(ctx, &pb.CreateInstanceRequest{
+		Parent:     "projects/test-project/locations/us-central1",
+		InstanceId: "test-instance",
+		Instance:   &pb.Instance{},
+	})
+	if err != nil {
+		t.Fatalf("CreateInstance failed: %v", err)
+	}
+
+	// 3. Create model after parent instance exists -> Success
 	op, err := server.CreateModel(ctx, createReq)
 	if err != nil {
 		t.Fatalf("CreateModel failed: %v", err)
@@ -55,7 +71,7 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected non-nil Operation from CreateModel")
 	}
 
-	// 3. Get after creation -> Active
+	// 4. Get after creation -> Active
 	model, err := server.GetModel(ctx, &pb.GetModelRequest{Name: name})
 	if err != nil {
 		t.Fatalf("GetModel failed: %v", err)
@@ -67,7 +83,19 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Errorf("expected state ACTIVE, got %v", model.GetState())
 	}
 
-	// 4. Update model
+	// 5. Update non-existent model -> 404 NotFound
+	nonExistentUpdateReq := &pb.UpdateModelRequest{
+		Model: &pb.Model{
+			Name: parent + "/models/non-existent-model",
+		},
+		UpdateMask: &field_mask.FieldMask{Paths: []string{"labels"}},
+	}
+	_, err = server.UpdateModel(ctx, nonExistentUpdateReq)
+	if status.Code(err) != codes.NotFound {
+		t.Fatalf("expected NotFound when updating non-existent model, got: %v", err)
+	}
+
+	// 6. Update model
 	updateReq := &pb.UpdateModelRequest{
 		Model: &pb.Model{
 			Name:    name,
@@ -83,7 +111,13 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected non-nil Operation from UpdateModel")
 	}
 
-	// 5. List models
+	// 7. List models with invalid parent -> InvalidArgument
+	_, err = server.ListModels(ctx, &pb.ListModelsRequest{Parent: "invalid-parent"})
+	if status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("expected InvalidArgument for invalid parent, got: %v", err)
+	}
+
+	// 8. List models
 	listResp, err := server.ListModels(ctx, &pb.ListModelsRequest{Parent: parent})
 	if err != nil {
 		t.Fatalf("ListModels failed: %v", err)
@@ -92,7 +126,7 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected 1 model, got %d", len(listResp.GetModels()))
 	}
 
-	// 6. Delete model
+	// 9. Delete model
 	op, err = server.DeleteModel(ctx, &pb.DeleteModelRequest{Name: name})
 	if err != nil {
 		t.Fatalf("DeleteModel failed: %v", err)
@@ -101,7 +135,7 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected non-nil Operation from DeleteModel")
 	}
 
-	// 7. Get after delete -> 404 NotFound
+	// 10. Get after delete -> 404 NotFound
 	_, err = server.GetModel(ctx, &pb.GetModelRequest{Name: name})
 	if status.Code(err) != codes.NotFound {
 		t.Fatalf("expected NotFound after deletion, got: %v", err)
@@ -125,6 +159,7 @@ func TestParseModelName(t *testing.T) {
 		"projects/test-project",
 		"projects/test-project/locations/us-central1/instances/test-instance",
 		"projects/test-project/locations/us-central1/instances/test-instance/models",
+		"projects/test-project/locations/us-central1/instances/test-instance/models/",
 		"invalid/test-project/locations/us-central1/instances/test-instance/models/test-model",
 	}
 	for _, name := range invalidNames {
