@@ -1220,6 +1220,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dataform.cnrm.cloud.google.com", Kind: "DataformReleaseConfig"}:
 			case schema.GroupKind{Group: "dataform.cnrm.cloud.google.com", Kind: "DataformRepository"}:
 			case schema.GroupKind{Group: "dataform.cnrm.cloud.google.com", Kind: "DataformTeamFolder"}:
+			case schema.GroupKind{Group: "dataform.cnrm.cloud.google.com", Kind: "DataformWorkflowConfig"}:
 
 			case schema.GroupKind{Group: "datamigration.cnrm.cloud.google.com", Kind: "DatabaseMigrationConversionWorkspace"}:
 			case schema.GroupKind{Group: "datamigration.cnrm.cloud.google.com", Kind: "DatabaseMigrationMigrationJob"}:
