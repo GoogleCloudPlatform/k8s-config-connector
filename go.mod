@@ -75,6 +75,7 @@ require (
 	cloud.google.com/go/kms v1.31.0
 	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
+	cloud.google.com/go/lustre v0.7.0
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/maps v1.43.0
 	cloud.google.com/go/memorystore v0.9.0
