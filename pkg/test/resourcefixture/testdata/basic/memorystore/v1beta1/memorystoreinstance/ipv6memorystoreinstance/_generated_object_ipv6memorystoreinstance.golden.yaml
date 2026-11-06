@@ -1,0 +1,71 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstance-ipv6-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+        ipVersion: IPV6
+        networkRef:
+          external: projects/${projectId}/global/networks/${networkID}
+        projectRef:
+          external: ${projectId}
+  location: us-central1
+  mode: CLUSTER
+  nodeType: SHARED_CORE_NANO
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  shardCount: 1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-ipv6-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    availableMaintenanceVersions:
+    - MEMORYSTORE_20260313_01_02
+    - MEMORYSTORE_20260313_01_03
+    createTime: "1970-01-01T00:00:00Z"
+    effectiveMaintenanceVersion: MEMORYSTORE_20260313_01_02
+    encryptionInfo:
+      encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+    endpoints:
+    - connections:
+      - pscAutoConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+          ipAddress: ${ipAddress}
+          ipVersion: IPV6
+          port: 6379
+          pscConnectionID: ${pscConnectionId}
+          serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+      - pscAutoConnection:
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+          ipAddress: ${ipAddress}
+          ipVersion: IPV6
+          pscConnectionID: ${pscConnectionId}
+          serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    nodeConfig:
+      sizeGB: 1.4
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+    - serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

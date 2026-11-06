@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	gcp "cloud.google.com/go/memorystore/apiv1"
+	gcp "cloud.google.com/go/memorystore/apiv1beta"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -29,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	memorystorepb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -471,6 +471,10 @@ func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) 
 	}
 
 	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
+		return false
+	}
+	if desiredPsc.GetIpVersion() != memorystorepb.IpVersion_IP_VERSION_UNSPECIFIED &&
+		desiredPsc.GetIpVersion() != actualPsc.GetIpVersion() {
 		return false
 	}
 

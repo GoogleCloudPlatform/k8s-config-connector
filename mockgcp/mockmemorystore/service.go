@@ -21,7 +21,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	v1pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -56,7 +57,9 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterMemorystoreServer(grpcServer, &instanceServer{MockService: s})
+	beta := &instanceServer{MockService: s}
+	pb.RegisterMemorystoreServer(grpcServer, beta)
+	v1pb.RegisterMemorystoreServer(grpcServer, &instanceServerV1{beta: beta})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -65,9 +68,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
+	grpcMux.AddService(v1pb.NewMemorystoreClient(conn))
 	grpcMux.AddService(pb.NewMemorystoreClient(conn))
 
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	grpcMux.AddOperationsPath("/v1beta/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
 }

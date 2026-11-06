@@ -288,7 +288,11 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.CascadableReplica")
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.MysqlReplicaConfiguration.Kind")
 	f.Unimplemented_NotYetTriaged(".ReplicaConfiguration.MysqlReplicaConfiguration.Password")
+	f.Unimplemented_NotYetTriaged(".DeploymentInfo")
+	f.Unimplemented_NotYetTriaged(".DatabaseCenterIntegrationEnabled")
 	f.Unimplemented_NotYetTriaged(".DiskEncryptionConfiguration.Kind")
+	f.Unimplemented_NotYetTriaged(".DiskEncryptionConfiguration.CmekSourceLogEncryptionEnforced")
+	f.Unimplemented_NotYetTriaged(".DiskEncryptionConfiguration.ConfidentialMode")
 
 	// Global ignores for ForceSendFields and NullFields which are internal to the api library
 	f.Unimplemented_NotYetTriaged(".ForceSendFields")

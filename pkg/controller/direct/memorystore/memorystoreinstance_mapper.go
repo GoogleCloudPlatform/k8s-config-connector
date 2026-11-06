@@ -15,12 +15,12 @@
 // +generated:mapper
 // krm.group: memorystore.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.cloud.memorystore.v1
+// proto.service: google.cloud.memorystore.v1beta
 
 package memorystore
 
 import (
-	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
@@ -339,6 +339,7 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	if in.GetProjectId() != "" {
 		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
 	}
+	out.IPVersion = direct.Enum_FromProto(mapCtx, in.GetIpVersion())
 	return out
 }
 func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnection) *pb.PscAutoConnection {
@@ -356,6 +357,7 @@ func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAuto
 		}
 		out.ProjectId = project.ProjectID
 	}
+	out.IpVersion = direct.Enum_ToProto[pb.IpVersion](mapCtx, in.IPVersion)
 	return out
 }
 func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnectionObservedState {
@@ -370,6 +372,7 @@ func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
 	out.PscConnectionStatus = direct.Enum_FromProto(mapCtx, in.GetPscConnectionStatus())
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	out.IPVersion = direct.Enum_FromProto(mapCtx, in.GetIpVersion())
 	return out
 }
 func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAutoConnectionObservedState) *pb.PscAutoConnection {
@@ -386,6 +389,7 @@ func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	out.PscConnectionStatus = direct.Enum_ToProto[pb.PscConnectionStatus](mapCtx, in.PscConnectionStatus)
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	out.IpVersion = direct.Enum_ToProto[pb.IpVersion](mapCtx, in.IPVersion)
 	return out
 }
 
