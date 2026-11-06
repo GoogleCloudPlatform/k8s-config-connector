@@ -264,7 +264,6 @@ type ContainerSpec struct {
 	Env []EnvVar `json:"env,omitempty"`
 }
 
-/* unreachable type ContainerSpecWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.ContainerSpec
 type ContainerSpecWithRequired struct {
 	// Required. The URI of a container image in the Container Registry that is to
@@ -287,7 +286,6 @@ type ContainerSpecWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ContainerSpec.env
 	Env []EnvVarWithRequired `json:"env,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Content
 type Content struct {
@@ -1377,7 +1375,6 @@ type LustreMount struct {
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
 
-/* unreachable type LustreMountWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.LustreMount
 type LustreMountWithRequired struct {
 	// Required. IP address of the Lustre instance.
@@ -1401,7 +1398,6 @@ type LustreMountWithRequired struct {
 	// +required
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
 type MachineSpec struct {
@@ -1459,7 +1455,6 @@ type MachineSpec struct {
 	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
 }
 
-/* unreachable type MachineSpecWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
 type MachineSpecWithRequired struct {
 	// Immutable. The type of the machine.
@@ -1515,7 +1510,6 @@ type MachineSpecWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
 	ReservationAffinity *ReservationAffinityWithRequired `json:"reservationAffinity,omitempty"`
 }
-*/
 
 /* unreachable type Measurement
 // +kcc:proto=google.cloud.aiplatform.v1.Measurement
@@ -2038,7 +2032,6 @@ type NfsMount struct {
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
 
-/* unreachable type NfsMountWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.NfsMount
 type NfsMountWithRequired struct {
 	// Required. IP address of the NFS server.
@@ -2059,7 +2052,6 @@ type NfsMountWithRequired struct {
 	// +required
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookEucConfig
 type NotebookEUCConfig struct {
@@ -2703,7 +2695,6 @@ type ReservationAffinity struct {
 	Values []string `json:"values,omitempty"`
 }
 
-/* unreachable type ReservationAffinityWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
 type ReservationAffinityWithRequired struct {
 	// Required. Specifies the reservation affinity type.
@@ -2723,7 +2714,6 @@ type ReservationAffinityWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.ResourcePool
 type ResourcePool struct {
@@ -3287,7 +3277,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition 
 	Values []string `json:"values,omitempty"`
 }
 
-/* unreachable type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition
 type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionWithRequired struct {
 	// Required. Matches values of the parent parameter of 'CATEGORICAL'
@@ -3297,7 +3286,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueConditionW
 	// +required
 	Values []string `json:"values,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition
 type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition struct {
@@ -3309,7 +3297,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition str
 	Values []float64 `json:"values,omitempty"`
 }
 
-/* unreachable type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition
 type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWithRequired struct {
 	// Required. Matches values of the parent parameter of 'DISCRETE' type.
@@ -3320,7 +3307,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueConditionWith
 	// +required
 	Values []float64 `json:"values,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition
 type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition struct {
@@ -3330,7 +3316,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition struct {
 	Values []int64 `json:"values,omitempty"`
 }
 
-/* unreachable type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition
 type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequired struct {
 	// Required. Matches values of the parent parameter of 'INTEGER' type.
@@ -3339,7 +3324,6 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueConditionWithRequi
 	// +required
 	Values []int64 `json:"values,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec
 type StudySpec_ParameterSpec_DiscreteValueSpec struct {
@@ -3982,7 +3966,6 @@ type WorkerPoolSpec struct {
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
 
-/* unreachable type WorkerPoolSpecWithRequired
 // +kcc:proto=google.cloud.aiplatform.v1.WorkerPoolSpec
 type WorkerPoolSpecWithRequired struct {
 	// The custom container task.
@@ -4013,7 +3996,6 @@ type WorkerPoolSpecWithRequired struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.WorkerPoolSpec.disk_spec
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.XraiAttribution
 type XraiAttribution struct {
