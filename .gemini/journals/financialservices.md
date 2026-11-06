@@ -1,3 +1,13 @@
+### [2026-11-05] FinancialServicesDataset Greenfield Types and Identity Finalization
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for `FinancialServicesDataset` (#14961)
+- **Action**:
+  1. Updated `FinancialServicesDatasetSpec` to model `ParentRef *FinancialServicesInstanceRef` as required and immutable, replacing `ProjectRef` and `Location`.
+  2. Removed top-level `Labels` from `FinancialServicesDatasetSpec` (reconciled via `metadata.labels`).
+  3. Ran `apis/financialservices/generate.sh` to update types, `FinancialServicesDatasetIdentity`, mappers, and CRDs.
+  4. Resolved all `FinancialServicesDataset` entries in `apis/financialservices/judgement_queue.yaml` (`untriaged-bulk-generation`, `identity-root-unknown`, `identity-server-generated-id`, `.spec.instanceRef`, `.spec.location`, `.spec.tableSpecs`).
+  5. Regenerated controller and fuzzer with one-shot `controllerbuilder` commands.
+  6. Verified fuzzer round-trip (`TestFocusedMappers/FinancialServicesDataset`), `apichecks` tests, `gcpurls`, and package unit tests.
+
 ### [2026-11-05] FinancialServicesModel Greenfield Types Judgement and Identity Finalization
 - **Context**: Triaging judgement queue and finalizing direct KRM types and identity for `FinancialServicesModel` (#14928)
 - **Action**:
