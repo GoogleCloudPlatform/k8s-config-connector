@@ -62,15 +62,15 @@ func (m *modelPluginInstance) AdapterForObject(ctx context.Context, op *directba
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.APIHubPluginInstanceIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get apihub GCP client
 	gcpClient, err := m.client(ctx)
@@ -199,13 +199,11 @@ func (a *PluginInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 		return err
 	}
 
-	var filteredPaths []string
 	for _, path := range updateMask.Paths {
-		if path != "actions" && !strings.HasPrefix(path, "actions.") {
-			filteredPaths = append(filteredPaths, path)
+		if path == "actions" || strings.HasPrefix(path, "actions.") {
+			return fmt.Errorf("field %q is immutable and cannot be updated", path)
 		}
 	}
-	updateMask.Paths = filteredPaths
 
 	updated := a.actual
 	if len(updateMask.Paths) == 0 {
