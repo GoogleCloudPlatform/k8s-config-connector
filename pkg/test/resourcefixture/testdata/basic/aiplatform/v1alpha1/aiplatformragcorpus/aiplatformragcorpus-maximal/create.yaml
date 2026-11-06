@@ -1,0 +1,10 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformRAGCorpus
+metadata:
+  name: ragcorpus-max-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  displayName: ragcorpus-max-${uniqueId}
+  description: Maximal test for AIPlatformRAGCorpus
