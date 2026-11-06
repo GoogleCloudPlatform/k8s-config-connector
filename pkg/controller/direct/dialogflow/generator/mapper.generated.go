@@ -61,6 +61,44 @@ func ConversationInfo_ToProto(mapCtx *direct.MapContext, in *krm.ConversationInf
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
+func DialogflowAgentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Agent) *krm.DialogflowAgentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowAgentSpec{}
+	// MISSING: Parent
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DefaultLanguageCode = direct.LazyPtr(in.GetDefaultLanguageCode())
+	out.SupportedLanguageCodes = in.SupportedLanguageCodes
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.AvatarURI = direct.LazyPtr(in.GetAvatarUri())
+	out.EnableLogging = direct.LazyPtr(in.GetEnableLogging())
+	out.MatchMode = direct.Enum_FromProto(mapCtx, in.GetMatchMode())
+	out.ClassificationThreshold = direct.LazyPtr(in.GetClassificationThreshold())
+	out.APIVersion = direct.Enum_FromProto(mapCtx, in.GetApiVersion())
+	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
+	return out
+}
+func DialogflowAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowAgentSpec) *pb.Agent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Agent{}
+	// MISSING: Parent
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DefaultLanguageCode = direct.ValueOf(in.DefaultLanguageCode)
+	out.SupportedLanguageCodes = in.SupportedLanguageCodes
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.Description = direct.ValueOf(in.Description)
+	out.AvatarUri = direct.ValueOf(in.AvatarURI)
+	out.EnableLogging = direct.ValueOf(in.EnableLogging)
+	out.MatchMode = direct.Enum_ToProto[pb.Agent_MatchMode](mapCtx, in.MatchMode)
+	out.ClassificationThreshold = direct.ValueOf(in.ClassificationThreshold)
+	out.ApiVersion = direct.Enum_ToProto[pb.Agent_ApiVersion](mapCtx, in.APIVersion)
+	out.Tier = direct.Enum_ToProto[pb.Agent_Tier](mapCtx, in.Tier)
+	return out
+}
 func DialogflowConversationDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataset) *krm.DialogflowConversationDatasetObservedState {
 	if in == nil {
 		return nil

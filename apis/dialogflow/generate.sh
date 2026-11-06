@@ -34,9 +34,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
@@ -54,9 +56,11 @@ mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/di
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
