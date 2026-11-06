@@ -70,7 +70,7 @@ require (
 	cloud.google.com/go/netapp v1.12.0
 	cloud.google.com/go/networkmanagement v1.28.0
 	cloud.google.com/go/networksecurity v0.17.0
-	cloud.google.com/go/networkservices v0.6.0
+	cloud.google.com/go/networkservices v1.4.0
 	cloud.google.com/go/notebooks v1.17.0
 	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/osconfig v1.21.0
@@ -95,6 +95,7 @@ require (
 	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
+	cloud.google.com/go/websecurityscanner v1.12.0
 	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workloadmanager v1.1.0
 	cloud.google.com/go/workstations v1.1.6

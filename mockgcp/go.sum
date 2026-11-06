@@ -170,8 +170,8 @@ cloud.google.com/go/networkmanagement v1.28.0 h1:x4U4osf+1qmq7/FRIfjM781mJSeXhmj
 cloud.google.com/go/networkmanagement v1.28.0/go.mod h1:2YogSU3sD7LvtmWntUAuGARbFQmy3A0En3LrJr69jkU=
 cloud.google.com/go/networksecurity v0.17.0 h1:6rH2+St9F9n6r49bZ0u7X0Bp7tmWkE0ZguYCWU69xKc=
 cloud.google.com/go/networksecurity v0.17.0/go.mod h1:NlMistWENBCFt1v748gUn4v9Rk5AVCTDTFs1VSE3JUg=
-cloud.google.com/go/networkservices v0.6.0 h1:aCKiXdS8I4AWg8OoX7paBo5uqHmVEPwJvBZUDePpklE=
-cloud.google.com/go/networkservices v0.6.0/go.mod h1:XsqKTDTiNou1raaZmqmi1I3s/lKarmqWClq6bq23Q5Q=
+cloud.google.com/go/networkservices v1.4.0 h1:mKB4B+5WjQjftUSzeq7OylfWArz4xTyNxchrNCPiJ60=
+cloud.google.com/go/networkservices v1.4.0/go.mod h1:iTD7Ngw2qL0oLF4+fytSHho9XMBnzqHaPNpbIyvhh14=
 cloud.google.com/go/notebooks v1.17.0 h1:fiezRHPH/H4HatBxbzEQljlmDV8MBv2ffWs1Z6TyHhw=
 cloud.google.com/go/notebooks v1.17.0/go.mod h1:NScGIhfQCqLRIlVaUVbm595F6dhqiTl5XS1KaKgitKM=
 cloud.google.com/go/oracledatabase v1.5.0 h1:18v7ELW3Wmq5BlWTns6IBQ3oDi/OmA58kKKb4/5B/e4=
