@@ -402,17 +402,40 @@ func PrettyPrintJSON[T any](t *testing.T, k T) string {
 	return string(encoded)
 }
 
+func isDuplicateRead(prev, ev httpEvent) bool {
+	if prev.Status != ev.Status {
+		return false
+	}
+	pURL := strings.Split(cleanURL(prev.URL), "?")[0]
+	eURL := strings.Split(cleanURL(ev.URL), "?")[0]
+	if pURL != eURL {
+		return false
+	}
+	if prev.Method == "GET" && ev.Method == "GET" {
+		return true
+	}
+	if prev.Method == "GRPC" && ev.Method == "GRPC" {
+		method := eURL
+		if idx := strings.LastIndex(eURL, "/"); idx != -1 {
+			method = eURL[idx+1:]
+		}
+		if strings.HasPrefix(method, "Get") {
+			if prev.RequestBody == ev.RequestBody {
+				return true
+			}
+			return compareJSONStrings(prev.RequestBody, ev.RequestBody) == nil
+		}
+	}
+	return false
+}
+
 func collapseDuplicateGETs(events []httpEvent) []httpEvent {
 	var collapsed []httpEvent
 	for _, ev := range events {
-		if ev.Method == "GET" && len(collapsed) > 0 {
+		if len(collapsed) > 0 {
 			prev := collapsed[len(collapsed)-1]
-			if prev.Method == "GET" && prev.Status == ev.Status {
-				pURL := strings.Split(cleanURL(prev.URL), "?")[0]
-				eURL := strings.Split(cleanURL(ev.URL), "?")[0]
-				if pURL == eURL {
-					continue
-				}
+			if isDuplicateRead(prev, ev) {
+				continue
 			}
 		}
 		collapsed = append(collapsed, ev)

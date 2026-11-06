@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"cloud.google.com/go/iam/apiv1/iampb"
-
 	"github.com/go-logr/logr"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -32,7 +30,6 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
@@ -114,7 +111,7 @@ func (m *modelIAMPartialPolicy) AdapterForURL(ctx context.Context, url string) (
 type IAMPartialPolicyAdapter struct {
 	iamClient                      *kcciamclient.IAMClient
 	desired                        *krm.IAMPartialPolicy
-	actualReferencedResourcePolicy *iampb.Policy
+	actualReferencedResourcePolicy *krm.IAMPolicy
 }
 
 var _ directbase.Adapter = &IAMPartialPolicyAdapter{}
@@ -126,7 +123,6 @@ func getLogger(ctx context.Context) logr.Logger {
 func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	log := getLogger(ctx)
 	log.V(2).Info("getting IAM policy for resource", "kind", a.desired.Spec.ResourceReference.Kind, "name", a.desired.Spec.ResourceReference.Name, "namespace", a.desired.Spec.ResourceReference.Namespace, "external", a.desired.Spec.ResourceReference.External)
-	mapCtx := &direct.MapContext{}
 
 	iamPolicySkeleton := ToIAMPolicySkeleton(a.desired)
 	oldKRMPolicy, err := a.iamClient.GetPolicy(ctx, iamPolicySkeleton)
@@ -138,7 +134,7 @@ func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting IAM policy for %v: %w", k8s.GetNamespacedName(a.desired), err)
 	}
 
-	a.actualReferencedResourcePolicy = IAMPolicySpec_ToProto(mapCtx, &oldKRMPolicy.Spec)
+	a.actualReferencedResourcePolicy = oldKRMPolicy
 	return true, nil
 }
 
@@ -197,7 +193,7 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 	if a.actualReferencedResourcePolicy == nil {
 		livePolicyForMerge = &krm.IAMPolicy{}
 	} else {
-		livePolicyForMerge = ToIAMPolicySkeleton(a.desired)
+		livePolicyForMerge = a.actualReferencedResourcePolicy.DeepCopy()
 	}
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
@@ -231,14 +227,12 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := getLogger(ctx)
 	log.V(2).Info("updating/applying IAMPartialPolicy", "name", k8s.GetNamespacedName(a.desired))
-	mapCtx := &direct.MapContext{}
 
 	if a.actualReferencedResourcePolicy == nil {
 		return fmt.Errorf("no IAM policy found for referenced resource %s during update for IAMPartialPolicy %v; requeueing for Find", a.desired.Spec.ResourceReference.GetNamespacedName(), k8s.GetNamespacedName(a.desired))
 	}
 
-	livePolicyForMerge := &krm.IAMPolicy{}
-	livePolicyForMerge.Spec = *IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy)
+	livePolicyForMerge := a.actualReferencedResourcePolicy.DeepCopy()
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
 
@@ -281,15 +275,13 @@ func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directba
 func (a *IAMPartialPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := getLogger(ctx)
 	log.V(2).Info("deleting/finalizing IAMPartialPolicy", "name", k8s.GetNamespacedName(a.desired))
-	mapCtx := &direct.MapContext{}
 
 	if a.actualReferencedResourcePolicy == nil {
 		// If the policy or resource is already gone, there's nothing to prune from GCP.
 		log.V(2).Info("actual policy not found during delete, assuming already gone or no-op needed for GCP", "name", k8s.GetNamespacedName(a.desired))
 		return true, nil
 	}
-	livePolicyForPruning := &krm.IAMPolicy{}
-	livePolicyForPruning.Spec = direct.ValueOf(IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy))
+	livePolicyForPruning := a.actualReferencedResourcePolicy.DeepCopy()
 
 	desiredPartialPolicyWithRemainingStatus := ComputePartialPolicyWithRemainingBindings(a.desired, livePolicyForPruning)
 	finalPolicyToSet := toDesiredPolicy(desiredPartialPolicyWithRemainingStatus, livePolicyForPruning)

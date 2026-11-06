@@ -42,6 +42,10 @@ func IAMPolicySpec_ToProto(_ *direct.MapContext, in *krm.IAMPolicySpec) *iampb.P
 		Version: 3,
 	}
 
+	if in.Etag != "" {
+		protoPolicy.Etag = []byte(in.Etag)
+	}
+
 	// Map Bindings
 	if len(in.Bindings) > 0 {
 		protoPolicy.Bindings = make([]*iampb.Binding, 0, len(in.Bindings))
@@ -102,6 +106,10 @@ func IAMPolicySpec_FromProto(_ *direct.MapContext, in *iampb.Policy) *krm.IAMPol
 	}
 
 	out := &krm.IAMPolicySpec{}
+
+	if len(in.Etag) > 0 {
+		out.Etag = string(in.Etag)
+	}
 
 	// Map Bindings from Proto to KRM
 	if len(in.Bindings) > 0 {

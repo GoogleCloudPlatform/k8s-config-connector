@@ -22,6 +22,7 @@ import (
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -35,6 +36,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -1412,5 +1414,127 @@ func TestSetMBUR(t *testing.T) {
 				t.Errorf("annotation value = %q, want %q", val, tc.wantAnnotation)
 			}
 		})
+	}
+}
+
+type countingStatusClient struct {
+	client.Client
+	updateCount int
+}
+
+type countingStatusWriter struct {
+	client.SubResourceWriter
+	parent *countingStatusClient
+}
+
+func (c *countingStatusClient) Status() client.SubResourceWriter {
+	return &countingStatusWriter{
+		SubResourceWriter: c.Client.Status(),
+		parent:            c,
+	}
+}
+
+func (w *countingStatusWriter) Update(ctx context.Context, obj client.Object, opts ...client.SubResourceUpdateOption) error {
+	w.parent.updateCount++
+	return w.SubResourceWriter.Update(ctx, obj, opts...)
+}
+
+func TestUpdateStatus_NoOpGuard(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	if err := corev1.AddToScheme(scheme); err != nil {
+		t.Fatalf("error adding corev1 to scheme: %v", err)
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-status")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.Object["status"] = map[string]any{
+		"observedGeneration": int64(1),
+		"conditions": []any{
+			map[string]any{
+				"type":               "Ready",
+				"status":             "True",
+				"reason":             "UpToDate",
+				"message":            "The resource is up to date",
+				"lastTransitionTime": "2026-01-01T00:00:00Z",
+			},
+		},
+		"someField": "value1",
+	}
+
+	fakeClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	countingClient := &countingStatusClient{
+		Client: fakeClient,
+	}
+
+	op := &operationBase{
+		client: countingClient,
+		object: u.DeepCopy(),
+	}
+
+	readyCondition := v1alpha1.Condition{
+		Type:               "Ready",
+		Status:             corev1.ConditionTrue,
+		Reason:             "UpToDate",
+		Message:            "The resource is up to date",
+		LastTransitionTime: "2026-02-02T12:00:00Z", // Different transition time, should be ignored
+	}
+
+	type testStatus struct {
+		SomeField string `json:"someField"`
+	}
+
+	// 1. Unchanged status: should be a no-op write
+	statusCandidate := &testStatus{SomeField: "value1"}
+	if err := op.UpdateStatus(ctx, statusCandidate, &readyCondition); err != nil {
+		t.Fatalf("UpdateStatus failed: %v", err)
+	}
+	if countingClient.updateCount != 0 {
+		t.Fatalf("expected 0 status updates for unchanged status, got %d", countingClient.updateCount)
+	}
+
+	// 2. Changed status field: should trigger update
+	statusCandidate.SomeField = "value2"
+	if err := op.UpdateStatus(ctx, statusCandidate, &readyCondition); err != nil {
+		t.Fatalf("UpdateStatus failed: %v", err)
+	}
+	if countingClient.updateCount != 1 {
+		t.Fatalf("expected 1 status update for changed field, got %d", countingClient.updateCount)
+	}
+
+	// 3. Changed condition status: should trigger update
+	op.object = u.DeepCopy() // refresh object status
+	op.object.Object["status"].(map[string]any)["someField"] = "value2"
+	countingClient.updateCount = 0
+
+	failedCondition := readyCondition
+	failedCondition.Status = corev1.ConditionFalse
+	failedCondition.Reason = "UpdateFailed"
+	failedCondition.Message = "error updating"
+	if err := op.UpdateStatus(ctx, statusCandidate, &failedCondition); err != nil {
+		t.Fatalf("UpdateStatus failed: %v", err)
+	}
+	if countingClient.updateCount != 1 {
+		t.Fatalf("expected 1 status update for changed condition, got %d", countingClient.updateCount)
+	}
+
+	// 4. Changed generation (observedGeneration mismatch): should trigger update
+	op.object = u.DeepCopy()
+	op.object.SetGeneration(2) // Generation bumped, but existing status has observedGeneration 1
+	countingClient.updateCount = 0
+	statusCandidate.SomeField = "value1"
+	if err := op.UpdateStatus(ctx, statusCandidate, &readyCondition); err != nil {
+		t.Fatalf("UpdateStatus failed: %v", err)
+	}
+	if countingClient.updateCount != 1 {
+		t.Fatalf("expected 1 status update for bumped generation, got %d", countingClient.updateCount)
 	}
 }
