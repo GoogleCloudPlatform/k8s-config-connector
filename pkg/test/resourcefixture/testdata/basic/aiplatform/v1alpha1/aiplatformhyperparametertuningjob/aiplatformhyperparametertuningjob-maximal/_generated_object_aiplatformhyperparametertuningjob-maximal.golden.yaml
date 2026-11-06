@@ -44,6 +44,8 @@ spec:
         - sgd
       parameterID: optimizer
   trialJobSpec:
+    serviceAccountRef:
+      name: hptjob-sa-${uniqueId}
     workerPoolSpecs:
     - containerSpec:
         command:
@@ -61,7 +63,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3956040165268389888
+  externalRef: projects/${projectId}/locations/us-central1/hyperparameterTuningJobs/3529700133551734784
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"

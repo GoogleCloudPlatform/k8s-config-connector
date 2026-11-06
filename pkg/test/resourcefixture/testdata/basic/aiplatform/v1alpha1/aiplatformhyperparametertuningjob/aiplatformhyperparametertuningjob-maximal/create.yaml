@@ -37,6 +37,8 @@ spec:
     medianAutomatedStoppingSpec:
       useElapsedDuration: true
   trialJobSpec:
+    serviceAccountRef:
+      name: hptjob-sa-${uniqueId}
     workerPoolSpecs:
     - machineSpec:
         machineType: n1-standard-4
