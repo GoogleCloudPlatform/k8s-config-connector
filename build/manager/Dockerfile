@@ -25,6 +25,9 @@ FROM alpine:latest AS packager
 ARG TARGETARCH=amd64
 WORKDIR /configconnector/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_${TARGETARCH}/manager .
+# The MultiClusterLease controller and the KRM syncer, for multi-cluster leader election
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_${TARGETARCH}/mcl-manager .
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_${TARGETARCH}/krmsyncer .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 

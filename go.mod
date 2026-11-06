@@ -402,3 +402,10 @@ replace (
 	k8s.io/kubectl => k8s.io/kubectl v0.32.1
 	sigs.k8s.io/yaml => sigs.k8s.io/yaml v1.4.0
 )
+
+// The controller image includes these binaries for multi-cluster leader election
+// (see build/builder/Dockerfile). They're built at the versions required above.
+tool (
+	github.com/gke-labs/kube-etl/syncer
+	github.com/gke-labs/multicluster-leader-election/cmd/manager
+)
