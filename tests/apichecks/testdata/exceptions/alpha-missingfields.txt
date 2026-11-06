@@ -170,13 +170,13 @@
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].parallelAiSearch.customConfigs" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].parallelAiSearch.enableZeroDataRetention" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.disableAttribution" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore" is not set in unstructured objects
+[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].filter" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.datastore" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.engine" is not set in unstructured objects
+[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.datastoreRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.engineRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.filter" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.maxResults" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus" is not set in unstructured objects
+[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpusRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIDs[]" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.filter.metadataFilter" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.filter.vectorDistanceThreshold" is not set in unstructured objects

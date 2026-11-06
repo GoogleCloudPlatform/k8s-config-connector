@@ -3835,53 +3835,6 @@ type TuningDataStats struct {
 type URLContext struct {
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch
-type VertexAiSearch struct {
-	// Optional. Fully-qualified Vertex AI Search data store resource ID.
-	//  Format:
-	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.datastore
-	Datastore *string `json:"datastore,omitempty"`
-
-	// Optional. Fully-qualified Vertex AI Search engine resource ID.
-	//  Format:
-	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.engine
-	Engine *string `json:"engine,omitempty"`
-
-	// Optional. Number of search results to return per query.
-	//  The default value is 10.
-	//  The maximumm allowed value is 10.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.max_results
-	MaxResults *int32 `json:"maxResults,omitempty"`
-
-	// Optional. Filter strings to be passed to the search API.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.filter
-	Filter *string `json:"filter,omitempty"`
-
-	// Specifications that define the specific DataStores to be searched, along
-	//  with configurations for those data stores. This is only considered for
-	//  Engines with multiple data stores.
-	//  It should only be set if engine is used.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.data_store_specs
-	DataStoreSpecs []VertexAiSearch_DataStoreSpec `json:"dataStoreSpecs,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec
-type VertexAiSearch_DataStoreSpec struct {
-	// Full resource name of DataStore, such as
-	//  Format:
-	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.data_store
-	DataStore *string `json:"dataStore,omitempty"`
-
-	// Optional. Filter specification to filter documents in the data store
-	//  specified by data_store field. For more information on filtering, see
-	//  [Filtering](https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata)
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.filter
-	Filter *string `json:"filter,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
 type VertexRagStore struct {
 	// Optional. The representation of the rag source. It can be used to specify
@@ -3903,20 +3856,6 @@ type VertexRagStore struct {
 	// Optional. The retrieval config for the Rag query.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_retrieval_config
 	RagRetrievalConfig *RagRetrievalConfig `json:"ragRetrievalConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore.RagResource
-type VertexRagStore_RagResource struct {
-	// Optional. RagCorpora resource name.
-	//  Format:
-	//  `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_corpus
-	RagCorpus *string `json:"ragCorpus,omitempty"`
-
-	// Optional. rag_file_id. The files should be in the same rag_corpus set in
-	//  rag_corpus field.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_file_ids
-	RagFileIDs []string `json:"ragFileIDs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata

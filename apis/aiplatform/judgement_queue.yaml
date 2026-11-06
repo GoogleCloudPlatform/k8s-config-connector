@@ -25,167 +25,223 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parentRef to inlined *parent.ProjectAndLocationRef, fixed docs link, and verified identity/references.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: generated AIPlatformCachedContentIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateCachedContentRequest has no cached_content_id parameter; server generates the ID.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.cachedContents: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.cachedContents'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com URL and removed +kcc:guess tag.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].codeExecutionResult.outcome
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].executableCode.code
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].executableCode.language
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].fileData.fileURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].fileData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].functionResponse.name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].functionResponse.response
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].inlineData.data
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.contents[].parts[].inlineData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.Contents in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: accepted
+    note: already modeled as KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef on EncryptionSpec.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAIPipelineJob, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformCachedContent only, give AIPlatformCachedContent its own copy of EncryptionSpec. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with inlined *parent.ProjectAndLocationRef.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.model
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}"
-    status: open
+    status: resolved
+    resolution: deferred
+    note: model refers to published Gemini base models (publishers/google/models/MODEL); deferred to refs_deferred.txt as no publisher model ref type is available.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.model
     reason: possible-reference-by-sibling
     detail: the name matches AIPlatformModel, a resource this service declares; confirm whether it should be a reference
-    status: open
+    status: resolved
+    resolution: deferred
+    note: model refers to published Gemini base models (publishers/google/models/MODEL); deferred to refs_deferred.txt as no publisher model ref type is available.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].codeExecutionResult.outcome
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].executableCode.code
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].executableCode.language
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].fileData.fileURI
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].fileData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].functionResponse.name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].functionResponse.response
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].inlineData.data
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.systemInstruction.parts[].inlineData.mimeType
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change AIPlatformCachedContentSpec.SystemInstruction in aiplatformcachedcontent_types.go from Content to ContentWithRequired and run generate.sh again. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept optional in KRM.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.additionalProperties
@@ -203,7 +259,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].parameters.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.example
@@ -215,7 +273,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].parameters.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parametersJsonSchema
@@ -239,7 +299,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].response.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].response.example
@@ -251,7 +313,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].response.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.aiplatform.v1.Schema; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: derived map[string]Schema compiles cleanly.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].responseJsonSchema
@@ -263,49 +327,65 @@ entries:
     field: .spec.tools[].retrieval.disableAttribution
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept deprecated field on generated struct for compatibility.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to dataStoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexAiSearch.datastore
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to datastoreRef (*discoveryenginev1alpha1.DiscoveryEngineDataStoreRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexAiSearch.engine
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to engineRef (*discoveryenginev1alpha1.DiscoveryEngineEngineRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to ragCorpusRef (*AIPlatformRAGCorpusRef).
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIDs
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: accepted
+    note: ragFileIDs is a string slice of file IDs; kept as-is.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexRagStore.similarityTopK
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept deprecated field on generated struct for compatibility.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.vertexRagStore.vectorDistanceThreshold
     reason: deprecated-field
     detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept deprecated field on generated struct for compatibility.
   - kind: AIPlatformFeatureView
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

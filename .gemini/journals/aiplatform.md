@@ -85,6 +85,17 @@
   4. **serviceAgentType Omission from GET Responses**: GCP's `GetFeatureView` does not return `service_agent_type` in its response (it returns `serviceAccountEmail`). Specifying `serviceAgentType` in KRM spec causes continuous drift during reconciliation.
   - **Impact**: Both minimal and maximal E2E fixtures recorded and passed against real GCP with all checks (V1 through V7) passing. Mock GCP skips gracefully pending Step 3.
 
+### [2026-11-06] Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformCachedContent
+- **Context**: Triaging judgement queue and finalizing types/identity for `AIPlatformCachedContent` (Issue #15070).
+- **Problem**: `AIPlatformCachedContent` was generated with separate `ProjectRef` and `Location` fields and open findings in `judgement_queue.yaml`.
+- **Solution**:
+  1. Replaced separate `ProjectRef` and `Location` fields on `AIPlatformCachedContentSpec` with inlined `*parent.ProjectAndLocationRef`.
+  2. Fixed the `+kcc:source:resource-docs` link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents` and removed `+kcc:guess` tags.
+  3. Verified that `AIPlatformCachedContentIdentity` correctly implements `identity.ServerGeneratedIdentity` because `CreateCachedContentRequest` in proto has no `cached_content_id` parameter and GCP server assigns the ID.
+  4. Handled references: moved `VertexAiSearch`, `VertexAiSearch_DataStoreSpec`, and `VertexRagStore_RagResource` into `aiplatformcachedcontent_types.go` and converted `ragCorpus` to `RagCorpusRef *AIPlatformRAGCorpusRef`, `datastore`/`dataStore` to `DatastoreRef`/`DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef`, and `engine` to `EngineRef *discoveryenginev1alpha1.DiscoveryEngineEngineRef`. Added `spec.model` to `refs_deferred.txt` as it refers to published Gemini base models (`publishers/google/models/{MODEL}`) with no publisher model ref type available.
+  5. Ran `apis/aiplatform/generate.sh`, updated `judgement_queue.yaml` marking all findings for `AIPlatformCachedContent` as resolved, and verified all tests with `scripts/validate-prereqs.sh`.
+- **Impact**: Cleanly finalizes KRM types, identity, and reference definitions for `AIPlatformCachedContent` according to KCC standards.
+
 
 
 
