@@ -1,3 +1,14 @@
+### [2026-11-06] FinancialServicesBacktestResult MockGCP and Alignment
+- **Context**: Implementing Greenfield MockGCP and Alignment for `FinancialServicesBacktestResult` (#15092).
+- **Action**:
+  1. Implemented MockGCP CRUD operations and LRO handling for `BacktestResult` in `mockgcp/mockfinancialservices/financialservicesbacktestresult.go`.
+  2. Added resource name parsing for `backtestResultName` and updated instance name parsing in `mockgcp/mockfinancialservices/names.go`.
+  3. Scoped `Previsit` normalization in `mockgcp/mockfinancialservices/normalize.go` to `financialservices.googleapis.com`.
+  4. Registered `FinancialServicesBacktestResult` in `config/tests/samples/create/harness.go`.
+  5. Implemented unit tests in `mockgcp/mockfinancialservices/financialservicesbacktestresult_test.go` covering full lifecycle and parent validation.
+  6. Generated mock HTTP logs and golden object files for minimal and maximal fixtures via `hack/compare-mock`.
+  7. Verified fixtures using `./dev/ci/presubmits/tests-e2e-fixtures-suite financialservices`.
+
 ### [2026-11-06] FinancialServicesModel Direct Controller, Fixtures, and Fuzzer
 - **Context**: Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesModel` (#15055).
 - **Action**:
