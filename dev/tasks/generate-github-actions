@@ -45,75 +45,26 @@ name: ci-presubmit
 permissions:
   contents: read
 
-# pull_request and merge_group intentionally have no path filters: the
-# required presubmit-gatekeeper check must always be reported by this single
-# workflow. Which jobs run is decided by the plan-tests job (see
-# dev/tasks/plan-tests): nothing for no-op paths, only the affected services'
-# tests for service-local changes, everything otherwise. Skipped jobs are
-# treated as success by presubmit-gatekeeper.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - '**'
+      - '!experiments/**'
   push:
     branches: ["release-*"]
     paths:
       - '**'
       - '!experiments/**'
-      - '!.gemini/**'
-      - '!.agents/**'
   merge_group:
     types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
 
 
 jobs:
-
-  plan-tests:
-    runs-on: ubuntu-latest
-    if: \${{ github.event.action != 'destroyed' }}
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      scope: \${{ steps.plan.outputs.scope }}
-      run_ci: \${{ steps.plan.outputs.run_ci }}
-      run_global: \${{ steps.plan.outputs.run_global }}
-      needs_prebuild: \${{ steps.plan.outputs.needs_prebuild }}
-      has_fixtures: \${{ steps.plan.outputs.has_fixtures }}
-      has_priority_tests: \${{ steps.plan.outputs.has_priority_tests }}
-      priority_fixtures_json: \${{ steps.plan.outputs.priority_fixtures_json }}
-      has_remaining_tests: \${{ steps.plan.outputs.has_remaining_tests }}
-      remaining_fixtures_json: \${{ steps.plan.outputs.remaining_fixtures_json }}
-      has_samples: \${{ steps.plan.outputs.has_samples }}
-      samples_json: \${{ steps.plan.outputs.samples_json }}
-      has_scenarios: \${{ steps.plan.outputs.has_scenarios }}
-      scenarios_json: \${{ steps.plan.outputs.scenarios_json }}
-      run_direct_iam: \${{ steps.plan.outputs.run_direct_iam }}
-      has_fuzz: \${{ steps.plan.outputs.has_fuzz }}
-      fuzz_services: \${{ steps.plan.outputs.fuzz_services }}
-      fuzz_roundtrippers_json: \${{ steps.plan.outputs.fuzz_roundtrippers_json }}
-      has_unit: \${{ steps.plan.outputs.has_unit }}
-      unit_packages: \${{ steps.plan.outputs.unit_packages }}
-      unit_tests_json: \${{ steps.plan.outputs.unit_tests_json }}
-      run_mock: \${{ steps.plan.outputs.run_mock }}
-      mock_packages: \${{ steps.plan.outputs.mock_packages }}
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 0
-          filter: blob:none
-      - name: Plan which tests to run
-        id: plan
-        run: ./dev/tasks/plan-tests
-        env:
-          EVENT_NAME: \${{ github.event_name }}
-          PR_NUMBER: \${{ github.event.pull_request.number }}
-          PR_BASE_SHA: \${{ github.event.pull_request.base.sha }}
-          PR_HEAD_SHA: \${{ github.event.pull_request.head.sha }}
-          MG_BASE_SHA: \${{ github.event.merge_group.base_sha }}
-          MG_HEAD_SHA: \${{ github.event.merge_group.head_sha }}
-          GH_TOKEN: \${{ github.token }}
 EOF
 
 jobs_array=()
@@ -121,41 +72,19 @@ emitted_fixtures=false
 emitted_samples=false
 emitted_scenarios=false
 
-# Every job below (except presubmit-gatekeeper) lists plan-tests in its needs
-# and gates its if on a plan-tests output. Generic jobs get their condition
-# from job_condition. Keep that pattern for any new job.
-#
-# job_condition prints the plan-tests output that gates a generic job:
-#   run_ci     - runs whenever anything runs (lint/validate, unknown new jobs)
-#   run_global - only for changes that are not scoped to services
-job_condition() {
-    case "$1" in
-        capture-pprof|smoketest-with-kind|test-pause|tests-gcptracker|tests-preview|unit-tests-operator)
-            echo "needs.plan-tests.outputs.run_global == 'true'" ;;
-        test-mockgcp)
-            echo "needs.plan-tests.outputs.run_mock == 'true'" ;;
-        test-fuzz-random-mappers)
-            echo "needs.plan-tests.outputs.has_fuzz == 'true'" ;;
-        *)
-            echo "needs.plan-tests.outputs.run_ci == 'true'" ;;
-    esac
-}
-
-# job_env prints extra step env lines for generic jobs that accept a scope.
-job_env() {
-    case "$1" in
-        test-mockgcp)
-            echo "          MOCKGCP_PACKAGES: \${{ needs.plan-tests.outputs.mock_packages }}" ;;
-        test-fuzz-random-mappers)
-            echo "          FUZZ_SERVICES: \${{ needs.plan-tests.outputs.fuzz_services }}" ;;
-    esac
-}
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   prepare-test-matrix:
     runs-on: ubuntu-latest
-    needs: plan-tests
-    if: \${{ github.event.action != 'destroyed' && needs.plan-tests.outputs.needs_prebuild == 'true' }}
+    if: \${{ github.event.action != 'destroyed' }}
+    outputs:
+      has_priority_tests: \${{ steps.split.outputs.has_priority_tests }}
+      priority_fixtures_json: \${{ steps.split.outputs.priority_fixtures_json }}
+      remaining_fixtures_json: \${{ steps.split.outputs.remaining_fixtures_json }}
+      samples_json: \${{ steps.split.outputs.samples_json }}
+      scenarios_json: \${{ steps.split.outputs.scenarios_json }}
+      unit_tests_json: \${{ steps.split.outputs.unit_tests_json }}
+      fuzz_roundtrippers_json: \${{ steps.split.outputs.fuzz_roundtrippers_json }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -175,6 +104,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
           retention-days: 1
+      - name: Split test matrix between priority and non-priority
+        id: split
+        run: ./dev/tasks/split-test-matrix
 EOF
 
 for f in $(find dev/ci/presubmits -type f | sort ); do
@@ -195,13 +127,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   priority-e2e-fixtures:
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix]
-    if: \${{ github.event.action != 'destroyed' && needs.plan-tests.outputs.has_priority_tests == 'true' }}
+    needs: prepare-test-matrix
+    if: \${{ github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.has_priority_tests == 'true' }}
     timeout-minutes: 60
     strategy:
       fail-fast: true
       matrix:
-        service: \${{ fromJSON(needs.plan-tests.outputs.priority_fixtures_json) }}
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
@@ -240,13 +172,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-fixtures-matrix:
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.has_remaining_tests == 'true' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        service: \${{ fromJSON(needs.plan-tests.outputs.remaining_fixtures_json) }}
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
@@ -292,8 +224,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-fixtures-${sharded_svc}:
     name: "tests-e2e-fixtures-${sharded_svc}"
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.has_fixtures == 'true' }}
+    needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify ${sharded_svc} shards completion"
         run: |
@@ -330,13 +262,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-\${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.has_samples == 'true' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        service: \${{ fromJSON(needs.plan-tests.outputs.samples_json) }}
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
@@ -377,13 +309,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-scenarios-matrix:
     name: "tests-scenarios-\${{ matrix.suite }}"
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.has_scenarios == 'true' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        suite: \${{ fromJSON(needs.plan-tests.outputs.scenarios_json) }}
+        suite: \${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
@@ -420,8 +352,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
-    needs: [plan-tests, prepare-test-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.run_direct_iam == 'true' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -458,13 +390,12 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   unit-tests-matrix:
     name: "unit-tests-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
-    needs: plan-tests
-    if: \${{ github.event.action != 'destroyed' && needs.plan-tests.outputs.has_unit == 'true' }}
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        shard: \${{ fromJSON(needs.plan-tests.outputs.unit_tests_json) }}
+        shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
@@ -473,11 +404,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
-          ./dev/ci/presubmits/unit-tests "\${SHARD_SPEC}"
+          ./dev/ci/presubmits/unit-tests "\${{ matrix.shard }}"
         env:
-          SHARD_SPEC: \${{ matrix.shard }}
           ARTIFACTS: /tmp/artifacts
-          UNIT_TEST_PATTERNS: \${{ needs.plan-tests.outputs.unit_packages }}
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
@@ -489,8 +418,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   unit-tests:
     name: "unit-tests"
     runs-on: ubuntu-latest
-    needs: [plan-tests, unit-tests-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.run_ci == 'true' }}
+    needs: unit-tests-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify unit-tests completion"
         run: |
@@ -512,13 +441,12 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
-    needs: plan-tests
-    if: \${{ github.event.action != 'destroyed' && needs.plan-tests.outputs.has_fuzz == 'true' }}
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        shard: \${{ fromJSON(needs.plan-tests.outputs.fuzz_roundtrippers_json) }}
+        shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
@@ -527,11 +455,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
-          ./dev/ci/presubmits/fuzz-roundtrippers "\${SHARD_SPEC}"
+          ./dev/ci/presubmits/fuzz-roundtrippers "\${{ matrix.shard }}"
         env:
-          SHARD_SPEC: \${{ matrix.shard }}
           ARTIFACTS: /tmp/artifacts
-          FUZZ_SERVICES: \${{ needs.plan-tests.outputs.fuzz_services }}
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
@@ -543,8 +469,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   fuzz-roundtrippers:
     name: "fuzz-roundtrippers"
     runs-on: ubuntu-latest
-    needs: [plan-tests, fuzz-roundtrippers-matrix]
-    if: \${{ !cancelled() && github.event.action != 'destroyed' && needs.plan-tests.outputs.run_ci == 'true' }}
+    needs: fuzz-roundtrippers-matrix
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     steps:
       - name: "Verify fuzz-roundtrippers completion"
         run: |
@@ -566,8 +492,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
     runs-on: ubuntu-latest
-    needs: plan-tests
-    if: \${{ github.event.action != 'destroyed' && $(job_condition "${name}") }}
+    if: \${{ github.event.action != 'destroyed' }}
 EOF
 
     if [[ "${name}" == "golangci-lint" ]]; then
@@ -680,10 +605,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
 EOF
-        extra_env="$(job_env "${name}")"
-        if [[ -n "${extra_env}" ]]; then
-            echo "${extra_env}" >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml
-        fi
     fi
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
@@ -703,7 +624,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   presubmit-gatekeeper:
     name: presubmit-gatekeeper
     needs:
-      - plan-tests
       - prepare-test-matrix
 EOF
 
@@ -863,7 +783,48 @@ concurrency:
   cancel-in-progress: true
 EOF
 
-# ci-presubmit-bypass.yaml used to report a second presubmit-gatekeeper check
-# for experiments-only changes. ci-presubmit.yaml now always runs and skips its
-# expensive jobs via plan-tests, so remove the stale bypass workflow.
-rm -f ${REPO_ROOT}/.github/workflows/ci-presubmit-bypass.yaml
+cat > ${REPO_ROOT}/.github/workflows/ci-presubmit-bypass.yaml <<EOF
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Generated by dev/tasks/generate-github-actions. DO NOT EDIT.
+
+name: ci-presubmit
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/**'
+  merge_group:
+    types: [checks_requested, destroyed]
+    branches: ["master", "release-*"]
+    paths:
+      - 'experiments/**'
+
+jobs:
+  presubmit-gatekeeper:
+    runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
+    steps:
+      - name: Bypass check
+        run: echo "Bypassing presubmit checks for experiment-only changes."
+
+concurrency:
+  group: \${{ github.workflow }}-bypass-\${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+EOF

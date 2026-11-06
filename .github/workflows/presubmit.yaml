@@ -27,23 +27,17 @@ on:
     paths:
       - '**'
       - '!experiments/**'
-      - '!.gemini/**'
-      - '!.agents/**'
   push:
     branches: ["release-*"]
     paths:
       - '**'
       - '!experiments/**'
-      - '!.gemini/**'
-      - '!.agents/**'
   merge_group:
     types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
       - '!experiments/**'
-      - '!.gemini/**'
-      - '!.agents/**'
 
 
 jobs:
