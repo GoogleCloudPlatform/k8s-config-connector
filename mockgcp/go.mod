@@ -95,13 +95,14 @@ require (
 	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
+	cloud.google.com/go/websecurityscanner v1.12.0
 	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workloadmanager v1.1.0
 	cloud.google.com/go/workstations v1.1.6
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	golang.org/x/crypto v0.57.0
 	golang.org/x/oauth2 v0.36.0
 	google.golang.org/api v0.287.1
@@ -152,7 +153,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84 // indirect
 	github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e // indirect
-	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.6 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-logr/zapr v1.3.0 // indirect
@@ -223,7 +224,7 @@ require (
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/spf13/cobra v1.8.1 // indirect
+	github.com/spf13/cobra v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.7.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
