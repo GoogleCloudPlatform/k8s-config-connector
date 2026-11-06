@@ -1,0 +1,13 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesModel
+metadata:
+  name: financialservicesmodel-${uniqueId}
+spec:
+  parentRef:
+    name: financialservicesinstance-${uniqueId}
+  resourceID: financialservicesmodel-${uniqueId}
+  engineConfigRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}
+  primaryDatasetRef:
+    external: projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/datasets/financialservicesdataset-${uniqueId}
+  endTime: "2025-01-01T00:00:00Z"
