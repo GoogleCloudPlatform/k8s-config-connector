@@ -206,7 +206,6 @@ BLOCKED_KINDS=(
     "DialogflowFlow"
     "DialogflowGenerator"
     "DialogflowPage"
-    "DialogflowPlaybook"
     "DialogflowSecuritySettings"
     "DialogflowSipTrunk"
     "DialogflowTool"

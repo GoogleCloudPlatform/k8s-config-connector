@@ -4250,8 +4250,6 @@
 [missing_field] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowpages.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].triggerFulfillment.webhook" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.codeBlock.code" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.goal" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.condition" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.event" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].eventHandler.fulfillment.advancedSettings.audioExportGCSDestination.uri" is not set in unstructured objects
@@ -4372,26 +4370,17 @@
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.fulfillment.webhook" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.handlers[].lifecycleHandler.lifecycleStage" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].description" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].name" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.guidelines" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.steps[].steps[]" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.instruction.steps[].text" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.model" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.llmModelSettings.promptText" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].description" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].name" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.items" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.inlineSchema.type" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.schema" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputParameterDefinitions[].typeSchema.schemaReference.tool" is not set in unstructured objects
-[missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.playbookType" is not set in unstructured objects
 [missing_field] crd=dialogflowplaybooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.referencedTools[]" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.audioExportSettings.audioExportPattern" is not set in unstructured objects

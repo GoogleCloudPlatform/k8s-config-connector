@@ -314,7 +314,9 @@ func Playbook_Instruction_FromProto(mapCtx *direct.MapContext, in *pb.Playbook_I
 	}
 	out := &krm.Playbook_Instruction{}
 	out.Guidelines = direct.LazyPtr(in.GetGuidelines())
-	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	if len(in.Steps) > 0 {
+		out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	}
 	return out
 }
 
@@ -334,7 +336,9 @@ func Playbook_Step_FromProto(mapCtx *direct.MapContext, in *pb.Playbook_Step) *k
 	}
 	out := &krm.Playbook_Step{}
 	out.Text = direct.LazyPtr(in.GetText())
-	out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	if len(in.Steps) > 0 {
+		out.Steps = direct.Slice_FromProto(mapCtx, in.Steps, Playbook_Step_FromProto)
+	}
 	return out
 }
 

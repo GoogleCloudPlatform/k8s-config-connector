@@ -81,3 +81,14 @@
   3. Isolated DialogflowPlaybook mappers into `pkg/controller/direct/dialogflow/dialogflowplaybook_mapper.go` satisfying `TestDirectResourceFileNaming`.
   4. Deferred unmodeled references in `judgement_queue.yaml` and recorded them in `tests/apichecks/testdata/exceptions/refs_deferred.txt`.
 - **Impact**: Cleanly establishes identity, types, and controller/fuzzer conformance for `DialogflowPlaybook` without breaking backward compatibility of shared structs or modifying other kinds' CRDs.
+
+### [2026-11-05] DialogflowPlaybook Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowPlaybook` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #15056).
+- **Problem**:
+  1. `ParameterDefinition.type` is deprecated in the Dialogflow CX v3 API; Playbook parameter definitions require `typeSchema.inlineSchema.type: STRING` rather than the deprecated enum `type`. Sending `type` resulted in 400 Bad Request (`Playbook input parameter definition must set a type schema or parameter type`).
+  2. In Dialogflow CX Playbooks, array fields like `instruction.steps` and `inputParameterDefinitions` cannot be modified via `PATCH` in-place (updates either append steps or are ignored). The primary mutable fields accepted on `PATCH` are `displayName`, `goal`, and `instruction.guidelines`.
+- **Solution**:
+  1. Configured `dialogflowplaybook-maximal` to use `typeSchema.inlineSchema.type: STRING` in `inputParameterDefinitions` and `outputParameterDefinitions`.
+  2. Tested in-place updates on supported mutable fields (`displayName`, `goal`, `instruction.guidelines`) across minimal and maximal fixtures.
+  3. Recorded authentic golden HTTP logs, reports, and object representations against real GCP, passing all 7/7 validation checks.
+- **Impact**: Fully validates the direct controller lifecycle, golden HTTP logs, and identity resolution for `DialogflowPlaybook`.

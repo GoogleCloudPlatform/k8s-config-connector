@@ -637,6 +637,15 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 		}
 
+		// DialogflowCX Playbook specific fields: tokenCount is dynamically calculated by the LLM tokenizer,
+		// and instruction.steps are appended across updates on real GCP.
+		if _, ok := v["goal"]; ok {
+			delete(v, "tokenCount")
+			if inst, ok := v["instruction"].(map[string]interface{}); ok {
+				delete(inst, "steps")
+			}
+		}
+
 		// AssuredWorkloads specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "complianceStatus")
 		delete(v, "partnerPermissions")
