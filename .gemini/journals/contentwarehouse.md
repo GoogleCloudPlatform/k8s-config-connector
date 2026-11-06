@@ -15,3 +15,9 @@
 - **Problem**: The proto generator initially skipped compilation of `SynonymSet_Synonym` and marked it as "unreachable", leaving the generated `ContentWarehouseSynonymSetSpec` empty of synonyms.
 - **Solution**: Defined `SynonymSetSynonym` and mapped it to the `SynonymSet_Synonym` proto path inside `contentwarehousesynonymset_types.go`. Incorporated `Synonyms []SynonymSetSynonym` field in the spec, and compiled cleanly. Created `contentwarehousesynonymset_identity.go` with `gcpurls.Template` and `projects/{project}/locations/{location}/synonymSets/{context}` pattern, and implemented `ContentWarehouseSynonymSetRef` references.
 - **Impact**: Guarantees full schema coverage for SynonymSet synonyms while preserving clean separation of types and identity logic.
+
+### [2026-11-06] ContentWarehouseDocumentSchema Direct Controller Implementation
+- **Context**: Implementing ContentWarehouseDocumentSchema direct controller, fuzzer, and E2E fixtures under `v1alpha1`.
+- **Problem**: `controllerbuilder generate-controller` generated import for `cloud.google.com/go/cloud/contentwarehouse/apiv1`, which does not exist as a GAPIC client library. Instead, ContentWarehouse uses `google.golang.org/api/contentwarehouse/v1` (`api`) REST client.
+- **Solution**: Handled REST conversion using `DocumentSchemaRESTToProto` and `DocumentSchemaProtoToREST` with `protojson.MarshalOptions{UseProtoNames: false}` so camelCase JSON tags match `googleapi` REST struct field tags (`displayName`). Implemented `MockService` for `DocumentSchemaServiceServer` in `mockgcp/mockcontentwarehouse/documentschemas.go` and registered `ContentWarehouseDocumentSchema` in `config/tests/samples/create/harness.go`.
+- **Impact**: Enables direct controller reconciliation for ContentWarehouseDocumentSchema with hermetic mock testing.
