@@ -55,3 +55,34 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
 }
+
+// modelName is a parsed model name
+type modelName struct {
+	Instance *instanceName
+	Model    string
+}
+
+func (n *modelName) String() string {
+	return n.Instance.String() + "/models/" + n.Model
+}
+
+// parseModelName parses a string into a modelName.
+// The expected form is projects/<projectID>/locations/<region>/instances/<instanceID>/models/<modelID>
+func (s *MockService) parseModelName(name string) (*modelName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" && tokens[6] == "models" {
+		instanceName, err := s.parseInstanceName(strings.Join(tokens[:6], "/"))
+		if err != nil {
+			return nil, err
+		}
+
+		name := &modelName{
+			Instance: instanceName,
+			Model:    tokens[7],
+		}
+
+		return name, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
+}
