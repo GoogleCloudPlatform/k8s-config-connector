@@ -422,11 +422,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "model \"projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/financialservicesmodel-${uniqueId}\" not found",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/financialservicesmodel-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "model \"projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/financialservicesmodel-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/models/financialservicesmodel-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }

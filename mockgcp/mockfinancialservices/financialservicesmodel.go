@@ -25,7 +25,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "cloud.google.com/go/financialservices/apiv1/financialservicespb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
@@ -41,7 +40,7 @@ func (s *amlServer) GetModel(ctx context.Context, req *pb.GetModelRequest) (*pb.
 	fqn := name.String()
 	obj := &pb.Model{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
@@ -57,9 +56,13 @@ func (s *amlServer) CreateModel(ctx context.Context, req *pb.CreateModelRequest)
 		return nil, err
 	}
 
+	if req.GetModel() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "model is required")
+	}
+
 	instanceObj := &pb.Instance{}
 	if err := s.storage.Get(ctx, name.Instance.String(), instanceObj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name.Instance.String())
 		}
 		return nil, err
@@ -93,7 +96,11 @@ func (s *amlServer) CreateModel(ctx context.Context, req *pb.CreateModelRequest)
 }
 
 func (s *amlServer) UpdateModel(ctx context.Context, req *pb.UpdateModelRequest) (*longrunning.Operation, error) {
-	name, err := s.parseModelName(req.Model.Name)
+	if req.GetModel() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "model is required")
+	}
+
+	name, err := s.parseModelName(req.GetModel().GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +110,7 @@ func (s *amlServer) UpdateModel(ctx context.Context, req *pb.UpdateModelRequest)
 
 	obj := &pb.Model{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
@@ -111,7 +118,13 @@ func (s *amlServer) UpdateModel(ctx context.Context, req *pb.UpdateModelRequest)
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
+		nameVal := obj.Name
+		createTimeVal := obj.CreateTime
+		stateVal := obj.State
 		obj = proto.Clone(req.Model).(*pb.Model)
+		obj.Name = nameVal
+		obj.CreateTime = createTimeVal
+		obj.State = stateVal
 	} else {
 		if err := fields.UpdateByFieldMask(obj, req.Model, paths); err != nil {
 			return nil, err
@@ -148,7 +161,7 @@ func (s *amlServer) DeleteModel(ctx context.Context, req *pb.DeleteModelRequest)
 
 	oldObj := &pb.Model{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
