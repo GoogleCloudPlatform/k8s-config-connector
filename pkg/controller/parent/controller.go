@@ -16,6 +16,7 @@ package parent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -35,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -58,6 +60,24 @@ type Reconcilers struct {
 	DCL    *dclcontroller.Reconciler
 	Direct *directbase.DirectReconciler
 	Custom *CustomReconciler
+}
+
+var _ k8s.SchemaReferenceUpdater = &Reconcilers{}
+
+// UpdateSchema updates the schema reference on any underlying reconciler that supports dynamic schema updates.
+func (r *Reconcilers) UpdateSchema(crd *apiextensions.CustomResourceDefinition) error {
+	var errs []error
+	if r.TF != nil {
+		if err := r.TF.UpdateSchema(crd); err != nil {
+			errs = append(errs, fmt.Errorf("error updating Terraform schema: %w", err))
+		}
+	}
+	if r.DCL != nil {
+		if err := r.DCL.UpdateSchema(crd); err != nil {
+			errs = append(errs, fmt.Errorf("error updating DCL schema: %w", err))
+		}
+	}
+	return errors.Join(errs...)
 }
 
 type CustomReconciler struct {

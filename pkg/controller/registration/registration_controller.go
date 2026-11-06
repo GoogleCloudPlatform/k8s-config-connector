@@ -197,6 +197,21 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 // add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
 func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opts RegistrationControllerOptions) error {
+	r := newReconcileRegistration(mgr, rd, regFunc)
+	c, err := crcontroller.New(opts.ControllerName, mgr,
+		crcontroller.Options{
+			Reconciler:              r,
+			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			SkipNameValidation:      ptr.To(r.SkipNameValidation),
+		})
+	if err != nil {
+		return err
+	}
+	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
+		&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate[*apiextensions.CustomResourceDefinition]{}))
+}
+
+func newReconcileRegistration(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) *ReconcileRegistration {
 	if rd.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
 		if rd.DCLConverter != nil {
@@ -205,7 +220,7 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		rd.JitterGen = jitter.NewDefaultGenerator(rd.TFLoader, dclML)
 	}
 
-	r := &ReconcileRegistration{
+	return &ReconcileRegistration{
 		Client:                     mgr.GetClient(),
 		provider:                   rd.TFProvider,
 		smLoader:                   rd.TFLoader,
@@ -222,19 +237,6 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		resourceWatcherRoutines:    semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines),
 		SkipNameValidation:         rd.SkipNameValidation,
 	}
-	c, err := crcontroller.New(opts.ControllerName, mgr,
-		crcontroller.Options{
-			Reconciler:              r,
-			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
-			SkipNameValidation:      ptr.To(r.SkipNameValidation),
-		})
-	if err != nil {
-		return err
-	}
-	// return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
-	// 	&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate{}))
-	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
-		&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate[*apiextensions.CustomResourceDefinition]{}))
 }
 
 var _ reconcile.Reconciler = &ReconcileRegistration{}
@@ -290,10 +292,6 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 	start := time.Now()
 	r.mu.Lock()
 	logger.V(2).Info("Obtained lock", "kind", crd.Spec.Names.Kind, "elapsed (μs)", time.Since(start).Microseconds())
-	defer func() {
-		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
-		r.mu.Unlock()
-	}()
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
 		Version: k8s.GetVersionFromCRD(crd),
@@ -302,10 +300,15 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 	if kindMapForGroup, exists := r.controllers[gvk.Group]; exists {
 		if kindMapForGroup[gvk.Kind].registered {
 			logger.Info("controller already registered for kind in API group", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			if kindMapForGroup[gvk.Kind].schemaUpdater != nil {
+			schemaUpdater := kindMapForGroup[gvk.Kind].schemaUpdater
+			logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
+			r.mu.Unlock()
+
+			if schemaUpdater != nil {
 				logger.Info("updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-				if err := kindMapForGroup[gvk.Kind].schemaUpdater.UpdateSchema(crd); err != nil {
-					logger.Info("error updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+				if err := schemaUpdater.UpdateSchema(crd); err != nil {
+					logger.Error(err, "error updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+					return reconcile.Result{}, fmt.Errorf("error updating schema for controller: %w", err)
 				}
 			}
 			return reconcile.Result{}, nil
@@ -314,6 +317,11 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 		r.controllers[gvk.Group] = make(map[string]controllerContext)
 	}
 
+	defer func() {
+		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
+		r.mu.Unlock()
+	}()
+
 	schemaUpdater, err := r.registrationFunc(r, crd, gvk)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error registering controller: %w", err)
@@ -321,6 +329,17 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 
 	r.controllers[gvk.Group][gvk.Kind] = controllerContext{registered: true, schemaUpdater: schemaUpdater}
 	return reconcile.Result{}, nil
+}
+
+func (r *ReconcileRegistration) controllerContextFor(gvk schema.GroupVersionKind) (registered bool, hasSchemaUpdater bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if groupMap, exists := r.controllers[gvk.Group]; exists {
+		if controllerCtx, exists := groupMap[gvk.Kind]; exists {
+			return controllerCtx.registered, controllerCtx.schemaUpdater != nil
+		}
+	}
+	return false, false
 }
 
 func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
@@ -364,8 +383,6 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 	if v == "USE_DEPENDENCY_TRACKER" {
 		cds.DependencyTracker = r.dependencyTracker
 	}
-
-	var schemaUpdater k8s.SchemaReferenceUpdater
 
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
@@ -454,9 +471,12 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, cr
 			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
+			if reconcilers.TF != nil || reconcilers.DCL != nil {
+				return reconcilers, nil
+			}
 		}
 	}
-	return schemaUpdater, nil
+	return nil, nil
 }
 
 func mergeMaxConcurrentReconcilesOverrides(ctx context.Context, ccOverrides, cccOverrides map[string]int) map[schema.GroupKind]int {
