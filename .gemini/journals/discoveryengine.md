@@ -103,4 +103,10 @@
   2. Preserved the stable `PROTO_SHA` for the existing `v1` and `v1beta` resources and mapper generation.
 - **Impact**: Allows clean mechanical prepopulation and CRD generation for `DiscoveryEngineWidgetConfig` without destabilizing existing DiscoveryEngine CRDs or controller mappers.
 
+### [2026-11-06] DiscoveryEngineAssistant Greenfield Prepopulation
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for DiscoveryEngineAssistant (Issue #15182).
+- **Problem**: DiscoveryEngineAssistant resource pattern is `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}`. In CAI metadata, it is formatted as `//discoveryengine.googleapis.com/projects/{{PROJECT_NUMBER}}/locations/{{LOCATION}}/collections/{{COLLECTION}}/engines/{{ENGINE}}/assistants/{{ASSISTANT}}`.
+- **Solution**: Added `DiscoveryEngineAssistant:Assistant` to `generate-types` with `--prepopulate-resource` and `generate-identity` in `apis/discoveryengine/generate.sh`. Scaffolds identity, reference, conformance tests, and open entries in `judgement_queue.yaml` for Step 1b triage. Added `DiscoveryEngineAssistant` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Impact**: Sets up clean initial mechanical types and identity conforming to Greenfield Step 1a standards for DiscoveryEngineAssistant.
+
 

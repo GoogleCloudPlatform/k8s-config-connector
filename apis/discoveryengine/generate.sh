@@ -56,8 +56,16 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineConversation:Conversation \
   --resource DiscoveryEngineSession:Session \
   --resource DiscoveryEngineSitemap:Sitemap \
-  --resource DiscoveryEngineSchema:Schema
+  --resource DiscoveryEngineSchema:Schema \
+  --resource DiscoveryEngineAssistant:Assistant \
+  --prepopulate-resource
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineAssistant:Assistant
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
