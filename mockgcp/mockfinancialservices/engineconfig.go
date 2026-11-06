@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
@@ -51,6 +52,14 @@ func (s *amlServer) CreateEngineConfig(ctx context.Context, req *pb.CreateEngine
 	reqName := req.Parent + "/engineConfigs/" + req.EngineConfigId
 	name, err := s.parseEngineConfigName(reqName)
 	if err != nil {
+		return nil, err
+	}
+
+	parentInstance := &pb.Instance{}
+	if err := s.storage.Get(ctx, name.Instance.String(), parentInstance); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name.Instance.String())
+		}
 		return nil, err
 	}
 
@@ -146,6 +155,6 @@ func (s *amlServer) DeleteEngineConfig(ctx context.Context, req *pb.DeleteEngine
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Instance.Project.ID, name.Instance.Location)
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		return nil, nil
+		return &emptypb.Empty{}, nil
 	})
 }

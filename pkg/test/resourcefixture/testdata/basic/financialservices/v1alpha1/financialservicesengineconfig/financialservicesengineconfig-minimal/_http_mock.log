@@ -594,38 +594,9 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GET https://financialservices.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Ffinancialservicesinstance-${uniqueId}%2FengineConfigs%2Ffinancialservicesengineconfig-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "engineConfig \"projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "engineConfig \"projects/${projectId}/locations/us-central1/instances/financialservicesinstance-${uniqueId}/engineConfigs/financialservicesengineconfig-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
 
