@@ -110,3 +110,18 @@
   4. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexdataasset`), unit tests pass, and focused fuzzer passes.
 - **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexDataAsset.
 
+### [2026-11-06] Triage Judgement Queue and Finalize Direct KRM Types for DataplexGlossaryTerm
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexGlossaryTerm` under `v1alpha1` (#15153).
+- **Problem**:
+  1. `DataplexGlossaryTerm` is a child resource under `DataplexGlossary` (`projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}`).
+  2. While `DataplexGlossary` existed, it lacked a `DataplexGlossaryRef` reference definition, causing `parent-ref-not-modelled` and `identity-root-unknown`.
+  3. Prepopulation generated `projectRef`, `location`, proto-level `parent`, and top-level `labels` on `DataplexGlossaryTermSpec`.
+- **Solution**:
+  1. Created `DataplexGlossaryRef` in `apis/dataplex/v1alpha1/dataplexglossary_reference.go` matching `DataplexGlossaryGVK` and `GlossaryIdentity`.
+  2. Replaced `projectRef`, `location`, and proto `parent` with `parentRef *DataplexGlossaryRef` (`+required`, immutable via `self == oldSelf` CEL rule) on `DataplexGlossaryTermSpec`.
+  3. Removed `labels` from `DataplexGlossaryTermSpec` as labels are reconciled via `metadata.labels`.
+  4. Regenerated CRDs and identity via `apis/dataplex/generate.sh`, and updated pre-existing controller and fuzzer via one-shot `generate-controller` and `generate-fuzzer` with pinned `PROTO_SHA`.
+  5. Resolved all 6 judgement queue entries for `DataplexGlossaryTerm`.
+- **Impact**: Conforms to Greenfield single-parent and reference conventions, cleanly passing all conformance, apichecks, and focused fuzzer tests (`FOCUS=DataplexGlossaryTerm`).
+
+

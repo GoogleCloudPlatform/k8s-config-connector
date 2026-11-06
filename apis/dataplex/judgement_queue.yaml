@@ -426,31 +426,43 @@ entries:
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled parent as spec.parentRef (*DataplexGlossaryRef); removed spec.parent, spec.projectRef, spec.location, and spec.labels
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}" contains ancestor segment(s) glossaries/{glossary} with no matching reference or field on DataplexGlossaryTermSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexGlossaryRef); removed ProjectRef and Location
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: 'client-specified ID: CreateGlossaryTermRequest requires term_id'
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/glossaries/{glossary}, and no GlossaryRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexGlossaryRef); removed ProjectRef and Location
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/glossaries/{glossary}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexGlossaryRef); removed ProjectRef and Location
   - kind: DataplexGlossaryTerm
     group: dataplex.cnrm.cloud.google.com
     field: .spec.parent
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to dataplex.googleapis.com/Glossary (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*DataplexGlossaryRef); removed spec.parent, spec.projectRef, and spec.location
