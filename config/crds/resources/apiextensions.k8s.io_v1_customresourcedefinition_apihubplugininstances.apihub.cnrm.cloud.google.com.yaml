@@ -114,6 +114,9 @@ spec:
                   - actionID
                   type: object
                 type: array
+                x-kubernetes-validations:
+                - message: actions is immutable
+                  rule: self == oldSelf
               additionalConfig:
                 additionalProperties:
                   properties:

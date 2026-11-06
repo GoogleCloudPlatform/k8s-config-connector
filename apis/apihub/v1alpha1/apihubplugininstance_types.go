@@ -58,6 +58,7 @@ type APIHubPluginInstanceSpec struct {
 	// Required. The action status for the plugin instance.
 	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstance.actions
 	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="actions is immutable"
 	Actions []PluginInstanceAction `json:"actions,omitempty"`
 
 	// Optional. The source project id of the plugin instance. This will be the id
