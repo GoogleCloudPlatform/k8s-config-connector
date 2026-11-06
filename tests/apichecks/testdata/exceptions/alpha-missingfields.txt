@@ -6240,7 +6240,6 @@
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetResource" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].description" is not set in unstructured objects
@@ -6258,10 +6257,10 @@
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraint.policyRules[].values.deniedValues[]" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.actionType" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.condition" is not set in unstructured objects
+[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.customConstraintRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.description" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.displayName" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.methodTypes[]" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.name" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.resourceTypes[]" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.policyRules[].allowAll" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.policyRules[].condition.description" is not set in unstructured objects
