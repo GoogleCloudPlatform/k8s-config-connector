@@ -19,6 +19,8 @@ import (
 	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/type/interval"
 	"google.golang.org/protobuf/proto"
@@ -229,6 +231,132 @@ func ModelMonitoringOutputSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelM
 		out.GcsBaseDirectory = &aiplatformpb.GcsDestination{
 			OutputUriPrefix: direct.ValueOf(in.GCSBaseDirectory.OutputURIPrefix),
 		}
+	}
+	return out
+}
+
+func ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
+	out.ModelVersionID = direct.LazyPtr(in.GetModelVersionId())
+	return out
+}
+
+func ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
+	out.ModelVersionId = direct.ValueOf(in.ModelVersionID)
+	return out
+}
+
+func ModelMonitoringNotificationSpec_NotificationChannelConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig) *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
+	if in.GetNotificationChannel() != "" {
+		out.NotificationChannelRef = &monitoringv1beta1.MonitoringNotificationChannelRef{External: in.GetNotificationChannel()}
+	}
+	return out
+}
+
+func ModelMonitoringNotificationSpec_NotificationChannelConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig) *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
+	if in.NotificationChannelRef != nil {
+		out.NotificationChannel = in.NotificationChannelRef.External
+	}
+	return out
+}
+
+func ModelMonitoringInput_ModelMonitoringDataset_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset) *krm.ModelMonitoringInput_ModelMonitoringDataset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_ModelMonitoringDataset{}
+	if in.GetVertexDataset() != "" {
+		out.VertexDatasetRef = &vertexaiv1beta1.VertexAIDatasetRef{External: in.GetVertexDataset()}
+	}
+	out.GCSSource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_FromProto(mapCtx, in.GetGcsSource())
+	out.BigquerySource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_FromProto(mapCtx, in.GetBigquerySource())
+	out.TimestampField = direct.LazyPtr(in.GetTimestampField())
+	return out
+}
+
+func ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_ModelMonitoringDataset) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset{}
+	if in.VertexDatasetRef != nil {
+		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_VertexDataset{VertexDataset: in.VertexDatasetRef.External}
+	}
+	if in.GCSSource != nil {
+		if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+			out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_GcsSource{GcsSource: oneof}
+		}
+	}
+	if in.BigquerySource != nil {
+		if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_ToProto(mapCtx, in.BigquerySource); oneof != nil {
+			out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_BigquerySource{BigquerySource: oneof}
+		}
+	}
+	out.TimestampField = direct.ValueOf(in.TimestampField)
+	return out
+}
+
+func ModelMonitoringInput_VertexEndpointLogs_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs) *krm.ModelMonitoringInput_VertexEndpointLogs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_VertexEndpointLogs{}
+	for _, e := range in.GetEndpoints() {
+		out.EndpointRefs = append(out.EndpointRefs, vertexaiv1beta1.VertexAIEndpointRef{External: e})
+	}
+	return out
+}
+
+func ModelMonitoringInput_VertexEndpointLogs_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_VertexEndpointLogs) *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_VertexEndpointLogs{}
+	for _, ref := range in.EndpointRefs {
+		out.Endpoints = append(out.Endpoints, ref.External)
+	}
+	return out
+}
+
+func ModelMonitoringInput_BatchPredictionOutput_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput) *krm.ModelMonitoringInput_BatchPredictionOutput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_BatchPredictionOutput{}
+	if in.GetBatchPredictionJob() != "" {
+		out.BatchPredictionJobRef = &krm.AIPlatformBatchPredictionJobRef{External: in.GetBatchPredictionJob()}
+	}
+	return out
+}
+
+func ModelMonitoringInput_BatchPredictionOutput_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_BatchPredictionOutput) *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_BatchPredictionOutput{}
+	if in.BatchPredictionJobRef != nil {
+		out.BatchPredictionJob = in.BatchPredictionJobRef.External
 	}
 	return out
 }

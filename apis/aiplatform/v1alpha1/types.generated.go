@@ -4262,25 +4262,6 @@ type MetricSource struct {
 	MetricResourceName *string `json:"metricResourceName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget
-type ModelMonitor_ModelMonitoringTarget struct {
-	// Model in Vertex AI Model Registry.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.vertex_model
-	VertexModel *ModelMonitor_ModelMonitoringTarget_VertexModelSource `json:"vertexModel,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource
-type ModelMonitor_ModelMonitoringTarget_VertexModelSource struct {
-	// Model resource name. Format:
-	//  projects/{project}/locations/{location}/models/{model}.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model
-	Model *string `json:"model,omitempty"`
-
-	// Model version id.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.VertexModelSource.model_version_id
-	ModelVersionID *string `json:"modelVersionID,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition
 type ModelMonitoringAlertCondition struct {
 	// A condition that compares a stats value against a threshold. Alert will
@@ -4311,33 +4292,6 @@ type ModelMonitoringInput struct {
 	// The time offset setting for which results should be returned.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.time_offset
 	TimeOffset *ModelMonitoringInput_TimeOffset `json:"timeOffset,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput
-type ModelMonitoringInput_BatchPredictionOutput struct {
-	// Vertex AI Batch prediction job resource name. The job must match the
-	//  model version specified in [ModelMonitor].[model_monitoring_target].
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput.batch_prediction_job
-	BatchPredictionJob *string `json:"batchPredictionJob,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset
-type ModelMonitoringInput_ModelMonitoringDataset struct {
-	// Resource name of the Vertex AI managed dataset.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.vertex_dataset
-	VertexDataset *string `json:"vertexDataset,omitempty"`
-
-	// Google Cloud Storage data source.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.gcs_source
-	GCSSource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource `json:"gcsSource,omitempty"`
-
-	// BigQuery data source.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.bigquery_source
-	BigquerySource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource `json:"bigquerySource,omitempty"`
-
-	// The timestamp field. Usually for serving data.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.timestamp_field
-	TimestampField *string `json:"timestampField,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource
@@ -4386,51 +4340,6 @@ type ModelMonitoringInput_TimeOffset struct {
 	//  E.g. '1h' stands for 1 hour, '2d' stands for 2 days.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset.window
 	Window *string `json:"window,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs
-type ModelMonitoringInput_VertexEndpointLogs struct {
-	// List of endpoint resource names. The endpoints must enable the logging
-	//  with the [Endpoint].[request_response_logging_config], and must contain
-	//  the deployed model corresponding to the model version specified in
-	//  [ModelMonitor].[model_monitoring_target].
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs.endpoints
-	Endpoints []string `json:"endpoints,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec
-type ModelMonitoringNotificationSpec struct {
-	// Email alert config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.email_config
-	EmailConfig *ModelMonitoringNotificationSpec_EmailConfig `json:"emailConfig,omitempty"`
-
-	// Dump the anomalies to Cloud Logging. The anomalies will be put to json
-	//  payload encoded from proto
-	//  [google.cloud.aiplatform.logging.ModelMonitoringAnomaliesLogEntry][].
-	//  This can be further sinked to Pub/Sub or any other services supported
-	//  by Cloud Logging.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.enable_cloud_logging
-	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
-
-	// Notification channel config.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.notification_channel_configs
-	NotificationChannelConfigs []ModelMonitoringNotificationSpec_NotificationChannelConfig `json:"notificationChannelConfigs,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig
-type ModelMonitoringNotificationSpec_EmailConfig struct {
-	// The email addresses to send the alerts.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig.user_emails
-	UserEmails []string `json:"userEmails,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig
-type ModelMonitoringNotificationSpec_NotificationChannelConfig struct {
-	// Resource names of the NotificationChannels.
-	//  Must be of the format
-	//  `projects/<project_id_or_number>/notificationChannels/<channel_id>`
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig.notification_channel
-	NotificationChannel *string `json:"notificationChannel,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec

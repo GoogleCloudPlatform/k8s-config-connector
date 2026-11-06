@@ -3072,25 +3072,33 @@ func ModelMonitor_ModelMonitoringTarget_ToProto(mapCtx *direct.MapContext, in *k
 	return out
 }
 
+/* found existing non-generated mapping function "ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto", skipping
 func ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
 	out.ModelVersionID = direct.LazyPtr(in.GetModelVersionId())
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto", skipping
 func ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
 	if in == nil {
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.ModelVersionId = direct.ValueOf(in.ModelVersionID)
 	return out
 }
+*/
 
 func ModelMonitoringAlertCondition_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringAlertCondition) *krm.ModelMonitoringAlertCondition {
 	if in == nil {
@@ -3213,43 +3221,56 @@ func ModelMonitoringInput_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonito
 	return out
 }
 
+/* found existing non-generated mapping function "ModelMonitoringInput_BatchPredictionOutput_FromProto", skipping
 func ModelMonitoringInput_BatchPredictionOutput_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput) *krm.ModelMonitoringInput_BatchPredictionOutput {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ModelMonitoringInput_BatchPredictionOutput{}
-	out.BatchPredictionJob = direct.LazyPtr(in.GetBatchPredictionJob())
+	if in.GetBatchPredictionJob() != "" {
+		out.BatchPredictionJobRef = &krm.AIPlatformBatchPredictionJobRef{External: in.GetBatchPredictionJob()}
+	}
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitoringInput_BatchPredictionOutput_ToProto", skipping
 func ModelMonitoringInput_BatchPredictionOutput_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_BatchPredictionOutput) *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput {
 	if in == nil {
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitoringInput_BatchPredictionOutput{}
-	out.BatchPredictionJob = direct.ValueOf(in.BatchPredictionJob)
+	if in.BatchPredictionJobRef != nil {
+		out.BatchPredictionJob = in.BatchPredictionJobRef.External
+	}
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitoringInput_ModelMonitoringDataset_FromProto", skipping
 func ModelMonitoringInput_ModelMonitoringDataset_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset) *krm.ModelMonitoringInput_ModelMonitoringDataset {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ModelMonitoringInput_ModelMonitoringDataset{}
-	out.VertexDataset = direct.LazyPtr(in.GetVertexDataset())
+	if in.GetVertexDataset() != "" {
+		out.VertexDatasetRef = &krmvertexaiv1beta1.VertexAIDatasetRef{External: in.GetVertexDataset()}
+	}
 	out.GCSSource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_FromProto(mapCtx, in.GetGcsSource())
 	out.BigquerySource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_FromProto(mapCtx, in.GetBigquerySource())
 	out.TimestampField = direct.LazyPtr(in.GetTimestampField())
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitoringInput_ModelMonitoringDataset_ToProto", skipping
 func ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_ModelMonitoringDataset) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset {
 	if in == nil {
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset{}
-	if oneof := ModelMonitoringInput_ModelMonitoringDataset_VertexDataset_ToProto(mapCtx, in.VertexDataset); oneof != nil {
-		out.DataLocation = oneof
+	if in.VertexDatasetRef != nil {
+		out.VertexDataset = in.VertexDatasetRef.External
 	}
 	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_GcsSource{GcsSource: oneof}
@@ -3260,6 +3281,7 @@ func ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx *direct.MapConte
 	out.TimestampField = direct.ValueOf(in.TimestampField)
 	return out
 }
+*/
 
 func ModelMonitoringInput_ModelMonitoringDataset_VertexDataset_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_VertexDataset {
 	if in == nil {
@@ -3346,23 +3368,39 @@ func ModelMonitoringInput_TimeOffset_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+/* found existing non-generated mapping function "ModelMonitoringInput_VertexEndpointLogs_FromProto", skipping
 func ModelMonitoringInput_VertexEndpointLogs_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs) *krm.ModelMonitoringInput_VertexEndpointLogs {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ModelMonitoringInput_VertexEndpointLogs{}
-	out.Endpoints = in.Endpoints
+
+						if v := in.GetEndpoints(); len(v) != 0 {
+							for i := range v {
+								out.EndpointRefs = append(out.EndpointRefs, krmvertexaiv1beta1.VertexAIEndpointRef{External: v[i]})
+							}
+						}
+
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitoringInput_VertexEndpointLogs_ToProto", skipping
 func ModelMonitoringInput_VertexEndpointLogs_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_VertexEndpointLogs) *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs {
 	if in == nil {
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitoringInput_VertexEndpointLogs{}
-	out.Endpoints = in.Endpoints
+
+						if v := in.EndpointRefs; len(v) != 0 {
+							for i := range v {
+								out.Endpoints = append(out.Endpoints, v[i].External)
+							}
+						}
+
 	return out
 }
+*/
 
 func ModelMonitoringNotificationSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec) *krm.ModelMonitoringNotificationSpec {
 	if in == nil {
@@ -3404,23 +3442,31 @@ func ModelMonitoringNotificationSpec_EmailConfig_ToProto(mapCtx *direct.MapConte
 	return out
 }
 
+/* found existing non-generated mapping function "ModelMonitoringNotificationSpec_NotificationChannelConfig_FromProto", skipping
 func ModelMonitoringNotificationSpec_NotificationChannelConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig) *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
-	out.NotificationChannel = direct.LazyPtr(in.GetNotificationChannel())
+	if in.GetNotificationChannel() != "" {
+		out.NotificationChannelRef = &krmmonitoringv1beta1.MonitoringNotificationChannelRef{External: in.GetNotificationChannel()}
+	}
 	return out
 }
+*/
 
+/* found existing non-generated mapping function "ModelMonitoringNotificationSpec_NotificationChannelConfig_ToProto", skipping
 func ModelMonitoringNotificationSpec_NotificationChannelConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig) *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig {
 	if in == nil {
 		return nil
 	}
 	out := &aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
-	out.NotificationChannel = direct.ValueOf(in.NotificationChannel)
+	if in.NotificationChannelRef != nil {
+		out.NotificationChannel = in.NotificationChannelRef.External
+	}
 	return out
 }
+*/
 
 func ModelMonitoringObjectiveConfig_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitoringObjectiveConfig) *krm.ModelMonitoringObjectiveConfig {
 	if in == nil {

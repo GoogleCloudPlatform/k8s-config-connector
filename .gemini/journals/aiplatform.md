@@ -85,6 +85,17 @@
   4. **serviceAgentType Omission from GET Responses**: GCP's `GetFeatureView` does not return `service_agent_type` in its response (it returns `serviceAccountEmail`). Specifying `serviceAgentType` in KRM spec causes continuous drift during reconciliation.
   - **Impact**: Both minimal and maximal E2E fixtures recorded and passed against real GCP with all checks (V1 through V7) passing. Mock GCP skips gracefully pending Step 3.
 
+### [2026-11-04] Triaging Judgement Queue and Finalizing Direct Types and Identity for AIPlatformModelMonitor
+- **Context**: Triaging judgement queue and finalizing direct KRM types, identity, references, and parent for `AIPlatformModelMonitor` under `apis/aiplatform/v1alpha1/` (Issue #14866).
+- **Problem**: `AIPlatformModelMonitor` was prepopulated with separate `ProjectRef` and `Location` fields, open `location-or-parent-ref` and reference judgement queue entries (`authoritative-proto-reference`, `possible-reference-by-description`, etc.).
+- **Solution**:
+  1. Updated `AIPlatformModelMonitorSpec` to inline `*parent.ProjectAndLocationRef`, replacing separate `ProjectRef` and `Location`.
+  2. Converted string reference fields to typed KCC reference types: `modelRef` (`*AIPlatformModelRef`), `notificationChannelRef` (`*monitoringv1beta1.MonitoringNotificationChannelRef`), `vertexDatasetRef` (`*vertexaiv1beta1.VertexAIDatasetRef`), and `kmsKeyRef` (`*kmsv1beta1.KMSCryptoKeyRef`).
+  3. Corrected service docs link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1beta1/projects.locations.modelMonitors`.
+  4. Updated `pkg/controller/direct/aiplatform/aiplatformmodelmonitor_mapper.go` with conversion methods for the updated reference fields.
+  5. Resolved all open queue entries for `AIPlatformModelMonitor` in `apis/aiplatform/judgement_queue.yaml`.
+- **Impact**: AIPlatformModelMonitor KRM types, references, identity, and CRD manifests are fully triaged, aligned with base KRM standards, and verified with unit tests.
+
 ### [2026-11-06] Triaging Judgement Queue and Finalizing Direct KRM Types and Identity for AIPlatformCachedContent
 - **Context**: Triaging judgement queue and finalizing types/identity for `AIPlatformCachedContent` (Issue #15070).
 - **Problem**: `AIPlatformCachedContent` was generated with separate `ProjectRef` and `Location` fields and open findings in `judgement_queue.yaml`.
@@ -95,7 +106,3 @@
   4. Handled references: moved `VertexAiSearch`, `VertexAiSearch_DataStoreSpec`, and `VertexRagStore_RagResource` into `aiplatformcachedcontent_types.go` and converted `ragCorpus` to `RagCorpusRef *AIPlatformRAGCorpusRef`, `datastore`/`dataStore` to `DatastoreRef`/`DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef`, and `engine` to `EngineRef *discoveryenginev1alpha1.DiscoveryEngineEngineRef`. Added `spec.model` to `refs_deferred.txt` as it refers to published Gemini base models (`publishers/google/models/{MODEL}`) with no publisher model ref type available.
   5. Ran `apis/aiplatform/generate.sh`, updated `judgement_queue.yaml` marking all findings for `AIPlatformCachedContent` as resolved, and verified all tests with `scripts/validate-prereqs.sh`.
 - **Impact**: Cleanly finalizes KRM types, identity, and reference definitions for `AIPlatformCachedContent` according to KCC standards.
-
-
-
-
