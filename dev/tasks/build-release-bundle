@@ -161,7 +161,6 @@ BLOCKED_KINDS=(
     "CloudTasksQueue"
     "ConfigDeliveryFleetPackage"
     "ConfigdeliveryVariant"
-    "ConfigDeployment"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
