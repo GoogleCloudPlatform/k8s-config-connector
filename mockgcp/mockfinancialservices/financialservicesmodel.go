@@ -57,6 +57,14 @@ func (s *amlServer) CreateModel(ctx context.Context, req *pb.CreateModelRequest)
 		return nil, err
 	}
 
+	instanceObj := &pb.Instance{}
+	if err := s.storage.Get(ctx, name.Instance.String(), instanceObj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name.Instance.String())
+		}
+		return nil, err
+	}
+
 	fqn := name.String()
 	now := time.Now()
 
@@ -95,6 +103,9 @@ func (s *amlServer) UpdateModel(ctx context.Context, req *pb.UpdateModelRequest)
 
 	obj := &pb.Model{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -158,8 +169,13 @@ func (s *amlServer) DeleteModel(ctx context.Context, req *pb.DeleteModelRequest)
 }
 
 func (s *amlServer) ListModels(ctx context.Context, req *pb.ListModelsRequest) (*pb.ListModelsResponse, error) {
+	parent, err := s.parseInstanceName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
 	response := &pb.ListModelsResponse{}
-	findPrefix := req.Parent + "/models/"
+	findPrefix := parent.String() + "/models/"
 	modelKind := (&pb.Model{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, modelKind, storage.ListOptions{
 		Prefix: findPrefix,

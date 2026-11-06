@@ -71,7 +71,7 @@ func (n *modelName) String() string {
 func (s *MockService) parseModelName(name string) (*modelName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" && tokens[6] == "models" {
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" && tokens[6] == "models" && tokens[7] != "" {
 		instanceName, err := s.parseInstanceName(strings.Join(tokens[:6], "/"))
 		if err != nil {
 			return nil, err
