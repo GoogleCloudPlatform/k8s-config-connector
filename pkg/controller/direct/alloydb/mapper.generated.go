@@ -178,13 +178,13 @@ func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clu
 	// MISSING: ContinuousBackupInfo
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
 	// MISSING: SubscriptionType
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterObservedState) *pb.Cluster {
@@ -212,13 +212,13 @@ func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Allo
 	// MISSING: ContinuousBackupInfo
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
 	// MISSING: SubscriptionType
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.AlloyDBClusterSpec {
@@ -256,7 +256,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	out.SecondaryConfig = Cluster_SecondaryConfig_FromProto(mapCtx, in.GetSecondaryConfig())
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
+	out.PSCConfig = Cluster_PSCConfig_FromProto(mapCtx, in.GetPscConfig())
 	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_FromProto(mapCtx, in.GetMaintenanceUpdatePolicy())
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
@@ -264,6 +264,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterSpec) *pb.Cluster {
@@ -301,7 +302,7 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBCluste
 	out.SecondaryConfig = Cluster_SecondaryConfig_ToProto(mapCtx, in.SecondaryConfig)
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
+	out.PscConfig = Cluster_PSCConfig_ToProto(mapCtx, in.PSCConfig)
 	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_ToProto(mapCtx, in.MaintenanceUpdatePolicy)
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
@@ -309,6 +310,7 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBCluste
 	// MISSING: TrialMetadata
 	// MISSING: Tags
 	// MISSING: ServiceAccountEmail
+	// MISSING: DataplexConfig
 	return out
 }
 func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.AlloyDBInstanceObservedState {
@@ -334,7 +336,8 @@ func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: UpdatePolicy
 	// MISSING: ClientConnectionConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCInstanceConfig
+	out.PSCInstanceConfig = Instance_PSCInstanceConfigObservedState_FromProto(mapCtx, in.GetPscInstanceConfig())
+	out.PSCInstanceInfo = Instance_PSCInstanceInfoObservedState_FromProto(mapCtx, in.GetPscInstanceInfo())
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
@@ -365,7 +368,8 @@ func AlloyDBInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.All
 	// MISSING: UpdatePolicy
 	// MISSING: ClientConnectionConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCInstanceConfig
+	out.PscInstanceConfig = Instance_PSCInstanceConfigObservedState_ToProto(mapCtx, in.PSCInstanceConfig)
+	out.PscInstanceInfo = Instance_PSCInstanceInfoObservedState_ToProto(mapCtx, in.PSCInstanceInfo)
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
@@ -545,6 +549,24 @@ func Cluster_NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_Ne
 	out.AllocatedIpRange = direct.ValueOf(in.AllocatedIPRange)
 	return out
 }
+func Cluster_PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_PscConfig) *krm.Cluster_PSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_PSCConfig{}
+	out.PSCEnabled = direct.LazyPtr(in.GetPscEnabled())
+	// MISSING: ServiceOwnedProjectNumber
+	return out
+}
+func Cluster_PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_PSCConfig) *pb.Cluster_PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_PscConfig{}
+	out.PscEnabled = direct.ValueOf(in.PSCEnabled)
+	// MISSING: ServiceOwnedProjectNumber
+	return out
+}
 func ContinuousBackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousBackupConfig) *krm.ContinuousBackupConfig {
 	if in == nil {
 		return nil
@@ -610,6 +632,7 @@ func Instance_ConnectionPoolConfig_FromProto(mapCtx *direct.MapContext, in *pb.I
 	out := &krm.Instance_ConnectionPoolConfig{}
 	out.Enabled = direct.LazyPtr(in.GetEnabled())
 	out.Flags = in.Flags
+	// MISSING: PoolerCount
 	return out
 }
 func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionPoolConfig) *pb.Instance_ConnectionPoolConfig {
@@ -619,6 +642,7 @@ func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.In
 	out := &pb.Instance_ConnectionPoolConfig{}
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.Flags = in.Flags
+	// MISSING: PoolerCount
 	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krm.Instance_InstanceNetworkConfig {
@@ -711,6 +735,148 @@ func Instance_ObservabilityInstanceConfig_ToProto(mapCtx *direct.MapContext, in 
 	out.TrackActiveQueries = in.TrackActiveQueries
 	out.TrackClientAddress = in.TrackClientAddress
 	out.AssistiveExperiencesEnabled = in.AssistiveExperiencesEnabled
+	return out
+}
+func Instance_PSCAutoConnectionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscAutoConnectionConfig) *krm.Instance_PSCAutoConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCAutoConnectionConfig{}
+	out.ConsumerProject = direct.LazyPtr(in.GetConsumerProject())
+	out.ConsumerNetwork = direct.LazyPtr(in.GetConsumerNetwork())
+	// MISSING: IPAddress
+	// MISSING: Status
+	// MISSING: ConsumerNetworkStatus
+	return out
+}
+func Instance_PSCAutoConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCAutoConnectionConfig) *pb.Instance_PscAutoConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscAutoConnectionConfig{}
+	out.ConsumerProject = direct.ValueOf(in.ConsumerProject)
+	out.ConsumerNetwork = direct.ValueOf(in.ConsumerNetwork)
+	// MISSING: IPAddress
+	// MISSING: Status
+	// MISSING: ConsumerNetworkStatus
+	return out
+}
+func Instance_PSCAutoConnectionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscAutoConnectionConfig) *krm.Instance_PSCAutoConnectionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCAutoConnectionConfigObservedState{}
+	// MISSING: ConsumerProject
+	// MISSING: ConsumerNetwork
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	out.Status = direct.LazyPtr(in.GetStatus())
+	out.ConsumerNetworkStatus = direct.LazyPtr(in.GetConsumerNetworkStatus())
+	return out
+}
+func Instance_PSCAutoConnectionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCAutoConnectionConfigObservedState) *pb.Instance_PscAutoConnectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscAutoConnectionConfig{}
+	// MISSING: ConsumerProject
+	// MISSING: ConsumerNetwork
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.Status = direct.ValueOf(in.Status)
+	out.ConsumerNetworkStatus = direct.ValueOf(in.ConsumerNetworkStatus)
+	return out
+}
+func Instance_PSCInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscInstanceConfig) *krm.Instance_PSCInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCInstanceConfig{}
+	// MISSING: ServiceAttachmentLink
+	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	// MISSING: PSCDNSName
+	out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PscInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
+	out.PSCAutoDNSState = direct.Enum_FromProto(mapCtx, in.GetPscAutoDnsState())
+	out.PSCAutoConnectionPolicyState = direct.Enum_FromProto(mapCtx, in.GetPscAutoConnectionPolicyState())
+	return out
+}
+func Instance_PSCInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCInstanceConfig) *pb.Instance_PscInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscInstanceConfig{}
+	// MISSING: ServiceAttachmentLink
+	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	// MISSING: PSCDNSName
+	out.PscInterfaceConfigs = direct.Slice_ToProto(mapCtx, in.PSCInterfaceConfigs, Instance_PSCInterfaceConfig_ToProto)
+	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfig_ToProto)
+	out.PscAutoDnsState = direct.Enum_ToProto[pb.Instance_PscAutoDnsState](mapCtx, in.PSCAutoDNSState)
+	out.PscAutoConnectionPolicyState = direct.Enum_ToProto[pb.Instance_PscInstanceConfig_PscAutoConnectionPolicyState](mapCtx, in.PSCAutoConnectionPolicyState)
+	return out
+}
+func Instance_PSCInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscInstanceConfig) *krm.Instance_PSCInstanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCInstanceConfigObservedState{}
+	out.ServiceAttachmentLink = direct.LazyPtr(in.GetServiceAttachmentLink())
+	// MISSING: AllowedConsumerProjects
+	out.PSCDNSName = direct.LazyPtr(in.GetPscDnsName())
+	// MISSING: PSCInterfaceConfigs
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, Instance_PSCAutoConnectionConfigObservedState_FromProto)
+	// MISSING: PSCAutoDNSState
+	// MISSING: PSCAutoConnectionPolicyState
+	return out
+}
+func Instance_PSCInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCInstanceConfigObservedState) *pb.Instance_PscInstanceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscInstanceConfig{}
+	out.ServiceAttachmentLink = direct.ValueOf(in.ServiceAttachmentLink)
+	// MISSING: AllowedConsumerProjects
+	out.PscDnsName = direct.ValueOf(in.PSCDNSName)
+	// MISSING: PSCInterfaceConfigs
+	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfigObservedState_ToProto)
+	// MISSING: PSCAutoDNSState
+	// MISSING: PSCAutoConnectionPolicyState
+	return out
+}
+func Instance_PSCInstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscInstanceInfo) *krm.Instance_PSCInstanceInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCInstanceInfoObservedState{}
+	out.EffectivePSCAutoDNSEnabled = direct.LazyPtr(in.GetEffectivePscAutoDnsEnabled())
+	out.PSCAutoDNSNames = in.PscAutoDnsNames
+	out.EffectivePSCAutoConnectionPolicy = direct.LazyPtr(in.GetEffectivePscAutoConnectionPolicy())
+	out.ServiceConnectionPolicy = direct.LazyPtr(in.GetServiceConnectionPolicy())
+	return out
+}
+func Instance_PSCInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCInstanceInfoObservedState) *pb.Instance_PscInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscInstanceInfo{}
+	out.EffectivePscAutoDnsEnabled = direct.ValueOf(in.EffectivePSCAutoDNSEnabled)
+	out.PscAutoDnsNames = in.PSCAutoDNSNames
+	out.EffectivePscAutoConnectionPolicy = direct.ValueOf(in.EffectivePSCAutoConnectionPolicy)
+	out.ServiceConnectionPolicy = direct.ValueOf(in.ServiceConnectionPolicy)
+	return out
+}
+func Instance_PSCInterfaceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PscInterfaceConfig) *krm.Instance_PSCInterfaceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PSCInterfaceConfig{}
+	out.NetworkAttachmentResource = direct.LazyPtr(in.GetNetworkAttachmentResource())
+	return out
+}
+func Instance_PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PSCInterfaceConfig) *pb.Instance_PscInterfaceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PscInterfaceConfig{}
+	out.NetworkAttachmentResource = direct.ValueOf(in.NetworkAttachmentResource)
 	return out
 }
 func Instance_QueryInsightsInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_QueryInsightsInstanceConfig) *krm.Instance_QueryInsightsInstanceConfig {

@@ -115,7 +115,11 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
-	obj.IpAddress = "10.1.2.3"
+	if obj.PscInstanceConfig == nil {
+		obj.IpAddress = "10.1.2.3"
+	} else {
+		obj.IpAddress = ""
+	}
 	obj.State = pb.Instance_READY
 	obj.Uid = "12345678"
 	if obj.InstanceType != pb.Instance_READ_POOL {
@@ -138,6 +142,21 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	}
 	if obj.NetworkConfig != nil && obj.NetworkConfig.EnablePublicIp {
 		obj.PublicIpAddress = "34.88.151.45"
+	}
+	if obj.PscInstanceConfig != nil {
+		obj.PscInstanceConfig.ServiceAttachmentLink = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/tenant-project/regions/%s/serviceAttachments/alloydb-psc-sa", name.Location)
+		obj.PscInstanceConfig.PscDnsName = fmt.Sprintf("00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.%s.alloydb-psc.goog.", name.Location)
+		for _, ac := range obj.PscInstanceConfig.PscAutoConnections {
+			if ac.ConsumerNetworkStatus == "" {
+				ac.ConsumerNetworkStatus = "CONNECTION_POLICY_MISSING"
+			}
+		}
+		dnsEnabled := obj.PscInstanceConfig.PscAutoDnsState != pb.Instance_PSC_AUTO_DNS_STATE_DISABLED
+		policyEnabled := obj.PscInstanceConfig.PscAutoConnectionPolicyState != pb.Instance_PscInstanceConfig_DISABLED
+		obj.PscInstanceInfo = &pb.Instance_PscInstanceInfo{
+			EffectivePscAutoDnsEnabled:       dnsEnabled,
+			EffectivePscAutoConnectionPolicy: policyEnabled,
+		}
 	}
 }
 
@@ -235,7 +254,23 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "machineConfig":
 			obj.MachineConfig = req.Instance.GetMachineConfig()
 		case "pscInstanceConfig":
-			obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
+			if obj.PscInstanceConfig == nil {
+				obj.PscInstanceConfig = &pb.Instance_PscInstanceConfig{}
+			}
+			switch path {
+			case "pscInstanceConfig.allowedConsumerProjects":
+				obj.PscInstanceConfig.AllowedConsumerProjects = req.Instance.GetPscInstanceConfig().GetAllowedConsumerProjects()
+			case "pscInstanceConfig.pscInterfaceConfigs":
+				obj.PscInstanceConfig.PscInterfaceConfigs = req.Instance.GetPscInstanceConfig().GetPscInterfaceConfigs()
+			case "pscInstanceConfig.pscAutoConnections":
+				obj.PscInstanceConfig.PscAutoConnections = req.Instance.GetPscInstanceConfig().GetPscAutoConnections()
+			case "pscInstanceConfig.pscAutoDnsState":
+				obj.PscInstanceConfig.PscAutoDnsState = req.Instance.GetPscInstanceConfig().GetPscAutoDnsState()
+			case "pscInstanceConfig.pscAutoConnectionPolicyState":
+				obj.PscInstanceConfig.PscAutoConnectionPolicyState = req.Instance.GetPscInstanceConfig().GetPscAutoConnectionPolicyState()
+			default:
+				obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
+			}
 		case "networkConfig":
 			obj.NetworkConfig = req.Instance.GetNetworkConfig()
 		case "observabilityConfig":

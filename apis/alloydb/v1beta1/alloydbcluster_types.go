@@ -135,12 +135,10 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.secondary_config
 	SecondaryConfig *Cluster_SecondaryConfig `json:"secondaryConfig,omitempty"`
 
-	/* NOTYET
 	// Optional. The configuration for Private Service Connect (PSC) for the
 	//  cluster.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.psc_config
 	PSCConfig *Cluster_PSCConfig `json:"pscConfig,omitempty"`
-	*/
 
 	// Optional. The maintenance update policy determines when to allow or deny
 	//  updates.

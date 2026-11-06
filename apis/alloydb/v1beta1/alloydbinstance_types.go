@@ -101,6 +101,10 @@ type AlloyDBInstanceSpec struct {
 	QueryInsightsInstanceConfig *Instance_QueryInsightsInstanceConfig `json:"queryInsightsConfig,omitempty"`
 
 	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfig `json:"observabilityConfig,omitempty"`
+
+	// Optional. The configuration for Private Service Connect (PSC) for the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.psc_instance_config
+	PSCInstanceConfig *Instance_PSCInstanceConfig `json:"pscInstanceConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
@@ -196,6 +200,14 @@ type AlloyDBInstanceObservedState struct {
 
 	// Output for Managed Connection Pool (MCP).
 	ConnectionPoolConfig *Instance_ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
+
+	// Output only. The configuration for Private Service Connect (PSC) for the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.psc_instance_config
+	PSCInstanceConfig *Instance_PSCInstanceConfigObservedState `json:"pscInstanceConfig,omitempty"`
+
+	// Output only. The Private Service Connect (PSC) information of the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.psc_instance_info
+	PSCInstanceInfo *Instance_PSCInstanceInfoObservedState `json:"pscInstanceInfo,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig

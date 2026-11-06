@@ -14,8 +14,8 @@ cloud.google.com/go/agentregistry v0.2.0 h1:TojVrdZWDwezkyYgYYUaCcXtrNHiJXancjMj
 cloud.google.com/go/agentregistry v0.2.0/go.mod h1:YK8O9KmUZH5CbRHUQ9oXv95g4m2YvtmsNxH+sdCv+5A=
 cloud.google.com/go/aiplatform v1.127.0 h1:3Uqc0p/Kalpm8KeFEzNd06wXFvgGonZUFbVZ+6mhyVY=
 cloud.google.com/go/aiplatform v1.127.0/go.mod h1:kfb8xcl3pMoS5vkH8cX1XT3x818YuIHK29wLpa28B6Y=
-cloud.google.com/go/alloydb v1.26.0 h1:UTzyumJ8tEo0CqwzLkV4WMGnCxvvhw3BDy1nXfCt9KE=
-cloud.google.com/go/alloydb v1.26.0/go.mod h1:oqHGc/Xb5fWtH+wIDpu2wcPJX9oML/fGJuH/sp8ysyo=
+cloud.google.com/go/alloydb v1.30.0 h1:HRmDbwI+LuqFqzflIH4M4PC7cgoCoQoa/pnVyZEVNc4=
+cloud.google.com/go/alloydb v1.30.0/go.mod h1:EC2XA/9Y4fIcecu/HQyNkodt8TYN4XTkQzcv+a0eJfU=
 cloud.google.com/go/analytics v0.35.0 h1:GuwmzJHIaQRvtko6g4wW1ngQ7rpDvDLZ8M3iP3kiflU=
 cloud.google.com/go/analytics v0.35.0/go.mod h1:V9Qef2N0y8GDqQ9FTlmM2XpDEMYonZJRPSUNGZlPCcc=
 cloud.google.com/go/apigateway v1.12.0 h1:fpSMzMpRFOS3OAQBdiX3LIKNEGYe0ley2EI+lGaCK2s=
@@ -46,6 +46,8 @@ cloud.google.com/go/batch v1.19.0 h1:i4xCFKCvzfkSldUPYWL+DgBpKVTC3N8DSK6E9rFSbqQ
 cloud.google.com/go/batch v1.19.0/go.mod h1:dpWfhLmLQZqsTBAFYjZA3pS04fCY5ttTenZcWmSeILw=
 cloud.google.com/go/beyondcorp v1.7.0 h1:SHAZlC51z6ZO/OZZABnrI/Yk/z3GkhBREQC7qtgTo2I=
 cloud.google.com/go/beyondcorp v1.7.0/go.mod h1:vujdO0wfsBV2y1egrJxGtwKZr5P5V6bIHKWp1phWHBY=
+cloud.google.com/go/biglake v1.6.1 h1:kSbVNs0zdRw8Yh/jjQaK7tgYejBsp5e4FAXhQJvrKhk=
+cloud.google.com/go/biglake v1.6.1/go.mod h1:XEpcZc6Pwpqa+DgPK15FZQB6vdHciVxInWZNB71Ua0o=
 cloud.google.com/go/bigquery v1.86.0 h1:WeHJtrSOCd6FRzp5TgQWBmUuJvudHsD4o01S0ApzlyU=
 cloud.google.com/go/bigquery v1.86.0/go.mod h1:RKsmEiMVxmRTMkkWmf4y9w8djJmBqxR+0S53Xggkmqk=
 cloud.google.com/go/bigtable v1.58.0 h1:fkf7bI0DBkKN85uRrfEEpkbufSc48b4PVIZCRud3xRk=
@@ -100,6 +102,8 @@ cloud.google.com/go/datastream v1.20.0 h1:/Xv8hdolIN5SpMgxiiuDc8AncfEuXU9TWRhvQk
 cloud.google.com/go/datastream v1.20.0/go.mod h1:uoWTtfP20W8MXuV2DPcl5zqnVsxQ9QEmmBHX858oYTQ=
 cloud.google.com/go/deploy v1.32.0 h1:vA9yH8EEXOsq1caJpvkJl9wJYA9VU8xuU45V7iC9XHk=
 cloud.google.com/go/deploy v1.32.0/go.mod h1:lUG7maG/NkoTXmQ8G1mtcVymnbizfDJh6ER7vljVa/U=
+cloud.google.com/go/designcenter v0.1.0 h1:4N/M0gtGpvj9G+BXgc7fousfwlDG8EX5hjmigp8XyuM=
+cloud.google.com/go/designcenter v0.1.0/go.mod h1:EpulLwHUyix7gRW2k+ul2iisY/9Iaa5fmXsfD4KI8Yw=
 cloud.google.com/go/developerconnect v1.1.0 h1:R+IbcxBslrVx1aka0r7fQ8UhO7oZ3JvYwg3Mk6tFnXU=
 cloud.google.com/go/developerconnect v1.1.0/go.mod h1:SkX3Bac/5LUJ4BT7WYSqk7ju9YoU2iHpWm3I0JqmMcQ=
 cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDVIQLmTTx1I=
