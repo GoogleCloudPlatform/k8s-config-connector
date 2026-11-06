@@ -268,7 +268,6 @@ BLOCKED_KINDS=(
     "NetworkSecurityAddressGroup"
     "NetworkSecurityBackendAuthenticationConfig"
     "NetworkSecurityGatewaySecurityPolicy"
-    "NetworkSecurityGatewaySecurityPolicyRule"
     "NetworkSecurityInterceptDeployment"
     "NetworkSecurityInterceptDeploymentGroup"
     "NetworkSecurityInterceptEndpointGroupAssociation"

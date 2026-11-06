@@ -1,0 +1,13 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityGatewaySecurityPolicyRule
+metadata:
+  name: gsprule-max-${uniqueId}
+spec:
+  parentRef:
+    name: gsp-${uniqueId}
+  basicProfile: ALLOW
+  enabled: true
+  priority: 201
+  sessionMatcher: host() == 'test.com'
+  applicationMatcher: request.headers['user-agent'].contains('Firefox')
+  description: Updated description

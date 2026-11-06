@@ -1019,6 +1019,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if desc, ok := v["description"].(string); ok && desc == "" {
 			delete(v, "description")
 		}
+		if am, ok := v["applicationMatcher"].(string); ok && am == "" {
+			delete(v, "applicationMatcher")
+		}
+		if tie, ok := v["tlsInspectionEnabled"].(bool); ok && !tie {
+			delete(v, "tlsInspectionEnabled")
+		}
 		if preview, ok := v["preview"].(bool); ok && !preview {
 			delete(v, "preview")
 		}
