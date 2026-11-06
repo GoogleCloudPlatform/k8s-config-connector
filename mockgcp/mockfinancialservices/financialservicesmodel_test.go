@@ -38,7 +38,18 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected NotFound for non-existent model, got: %v", err)
 	}
 
-	// 2. Create model before parent instance exists -> 404 NotFound
+	// 2. Create model with nil Model -> InvalidArgument
+	nilModelCreateReq := &pb.CreateModelRequest{
+		Parent:  parent,
+		ModelId: modelID,
+		Model:   nil,
+	}
+	_, err = server.CreateModel(ctx, nilModelCreateReq)
+	if status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("expected InvalidArgument when creating model with nil Model, got: %v", err)
+	}
+
+	// Create model before parent instance exists -> 404 NotFound
 	createReq := &pb.CreateModelRequest{
 		Parent:  parent,
 		ModelId: modelID,
@@ -83,7 +94,13 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Errorf("expected state ACTIVE, got %v", model.GetState())
 	}
 
-	// 5. Update non-existent model -> 404 NotFound
+	// 5. Update with nil Model -> InvalidArgument
+	_, err = server.UpdateModel(ctx, &pb.UpdateModelRequest{Model: nil})
+	if status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("expected InvalidArgument when updating model with nil Model, got: %v", err)
+	}
+
+	// Update non-existent model -> 404 NotFound
 	nonExistentUpdateReq := &pb.UpdateModelRequest{
 		Model: &pb.Model{
 			Name: parent + "/models/non-existent-model",
@@ -95,11 +112,13 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 		t.Fatalf("expected NotFound when updating non-existent model, got: %v", err)
 	}
 
-	// 6. Update model
+	// 6. Update model (field mask update)
 	updateReq := &pb.UpdateModelRequest{
 		Model: &pb.Model{
-			Name:    name,
-			EndTime: nil,
+			Name: name,
+			Labels: map[string]string{
+				"env": "test",
+			},
 		},
 		UpdateMask: &field_mask.FieldMask{Paths: []string{"labels"}},
 	}
@@ -109,6 +128,48 @@ func TestFinancialServicesModelLifecycle(t *testing.T) {
 	}
 	if op == nil {
 		t.Fatalf("expected non-nil Operation from UpdateModel")
+	}
+
+	// Verify update persisted
+	updatedModel, err := server.GetModel(ctx, &pb.GetModelRequest{Name: name})
+	if err != nil {
+		t.Fatalf("GetModel after update failed: %v", err)
+	}
+	if updatedModel.GetLabels()["env"] != "test" {
+		t.Errorf("expected label env=test, got %v", updatedModel.GetLabels())
+	}
+	if updatedModel.GetState() != pb.Model_ACTIVE {
+		t.Errorf("expected state ACTIVE preserved, got %v", updatedModel.GetState())
+	}
+
+	// Update model without field mask (verifying system fields preserved)
+	fullUpdateReq := &pb.UpdateModelRequest{
+		Model: &pb.Model{
+			Name: name,
+			Labels: map[string]string{
+				"env": "prod",
+			},
+		},
+	}
+	op, err = server.UpdateModel(ctx, fullUpdateReq)
+	if err != nil {
+		t.Fatalf("UpdateModel without field mask failed: %v", err)
+	}
+	if op == nil {
+		t.Fatalf("expected non-nil Operation from UpdateModel")
+	}
+	fullUpdatedModel, err := server.GetModel(ctx, &pb.GetModelRequest{Name: name})
+	if err != nil {
+		t.Fatalf("GetModel after full update failed: %v", err)
+	}
+	if fullUpdatedModel.GetLabels()["env"] != "prod" {
+		t.Errorf("expected label env=prod, got %v", fullUpdatedModel.GetLabels())
+	}
+	if fullUpdatedModel.GetState() != pb.Model_ACTIVE {
+		t.Errorf("expected state ACTIVE preserved after full update, got %v", fullUpdatedModel.GetState())
+	}
+	if fullUpdatedModel.GetName() != name {
+		t.Errorf("expected name %q preserved, got %q", name, fullUpdatedModel.GetName())
 	}
 
 	// 7. List models with invalid parent -> InvalidArgument
