@@ -15,13 +15,13 @@
 // API sources for AIPlatformCachedContent, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/aiplatform/v1/cached_content.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,13 +32,9 @@ var AIPlatformCachedContentGVK = GroupVersion.WithKind("AIPlatformCachedContent"
 // +kcc:spec:proto=google.cloud.aiplatform.v1.CachedContent
 // +kcc:required-from-proto
 type AIPlatformCachedContentSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
-
-	// The AIPlatformCachedContent name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Timestamp of when this resource is considered expired.
 	//  This is *always* provided on output, regardless of what was sent
@@ -59,9 +55,8 @@ type AIPlatformCachedContentSpec struct {
 	// Immutable. The name of the `Model` to use for cached content. Currently,
 	//  only the published Gemini base models are supported, in form of
 	//  projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
-	// +kcc:guess=possible-reference target=AIPlatformModel
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CachedContent.model
-	Model *string `json:"model,omitempty"`
+	ModelRef *AIPlatformModelRef `json:"modelRef,omitempty"`
 
 	// Optional. Input only. Immutable. Developer set system instruction.
 	//  Currently, text only
@@ -153,4 +148,65 @@ type AIPlatformCachedContentList struct {
 
 func init() {
 	SchemeBuilder.Register(&AIPlatformCachedContent{}, &AIPlatformCachedContentList{})
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch
+type VertexAiSearch struct {
+	// Optional. Fully-qualified Vertex AI Search data store resource ID.
+	// Format:
+	// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.datastore
+	DatastoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef `json:"datastoreRef,omitempty"`
+
+	// Optional. Fully-qualified Vertex AI Search engine resource ID.
+	// Format:
+	// `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.engine
+	EngineRef *discoveryenginev1alpha1.DiscoveryEngineEngineRef `json:"engineRef,omitempty"`
+
+	// Optional. Number of search results to return per query.
+	// The default value is 10.
+	// The maximumm allowed value is 10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.max_results
+	MaxResults *int32 `json:"maxResults,omitempty"`
+
+	// Optional. Filter strings to be passed to the search API.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Specifications that define the specific DataStores to be searched, along
+	// with configurations for those data stores. This is only considered for
+	// Engines with multiple data stores.
+	// It should only be set if engine is used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.data_store_specs
+	DataStoreSpecs []VertexAiSearch_DataStoreSpec `json:"dataStoreSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec
+type VertexAiSearch_DataStoreSpec struct {
+	// Full resource name of DataStore, such as
+	// Format:
+	// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.data_store
+	DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+
+	// Optional. Filter specification to filter documents in the data store
+	// specified by data_store field. For more information on filtering, see
+	// [Filtering](https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.filter
+	Filter *string `json:"filter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore.RagResource
+type VertexRagStore_RagResource struct {
+	// Optional. RagCorpora resource name.
+	// Format:
+	// `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_corpus
+	RagCorpusRef *AIPlatformRAGCorpusRef `json:"ragCorpusRef,omitempty"`
+
+	// Optional. rag_file_id. The files should be in the same rag_corpus set in
+	// rag_corpus field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_file_ids
+	RagFileIDs []string `json:"ragFileIDs,omitempty"`
 }

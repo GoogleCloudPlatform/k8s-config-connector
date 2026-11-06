@@ -72,7 +72,9 @@ func AIPlatformCachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cac
 	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Model = direct.LazyPtr(in.GetModel())
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
 	out.SystemInstruction = Content_FromProto(mapCtx, in.GetSystemInstruction())
 	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_FromProto)
 	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_FromProto)
@@ -94,7 +96,9 @@ func AIPlatformCachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPl
 	}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Model = direct.ValueOf(in.Model)
+	if in.ModelRef != nil {
+		out.Model = in.ModelRef.External
+	}
 	out.SystemInstruction = Content_ToProto(mapCtx, in.SystemInstruction)
 	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_ToProto)
 	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_ToProto)
@@ -7512,8 +7516,12 @@ func VertexAiSearch_FromProto(mapCtx *direct.MapContext, in *pb.VertexAISearch) 
 		return nil
 	}
 	out := &krm.VertexAiSearch{}
-	out.Datastore = direct.LazyPtr(in.GetDatastore())
-	out.Engine = direct.LazyPtr(in.GetEngine())
+	if in.GetDatastore() != "" {
+		out.DatastoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetDatastore()}
+	}
+	if in.GetEngine() != "" {
+		out.EngineRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineEngineRef{External: in.GetEngine()}
+	}
 	out.MaxResults = direct.LazyPtr(in.GetMaxResults())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	out.DataStoreSpecs = direct.Slice_FromProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_FromProto)
@@ -7525,8 +7533,12 @@ func VertexAiSearch_ToProto(mapCtx *direct.MapContext, in *krm.VertexAiSearch) *
 		return nil
 	}
 	out := &pb.VertexAISearch{}
-	out.Datastore = direct.ValueOf(in.Datastore)
-	out.Engine = direct.ValueOf(in.Engine)
+	if in.DatastoreRef != nil {
+		out.Datastore = in.DatastoreRef.External
+	}
+	if in.EngineRef != nil {
+		out.Engine = in.EngineRef.External
+	}
 	out.MaxResults = direct.ValueOf(in.MaxResults)
 	out.Filter = direct.ValueOf(in.Filter)
 	out.DataStoreSpecs = direct.Slice_ToProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_ToProto)
@@ -7560,7 +7572,9 @@ func VertexAiSearch_DataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ve
 		return nil
 	}
 	out := &krm.VertexAiSearch_DataStoreSpec{}
-	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	if in.GetDataStore() != "" {
+		out.DataStoreRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreRef{External: in.GetDataStore()}
+	}
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
 }
@@ -7570,7 +7584,9 @@ func VertexAiSearch_DataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ver
 		return nil
 	}
 	out := &pb.VertexAISearch_DataStoreSpec{}
-	out.DataStore = direct.ValueOf(in.DataStore)
+	if in.DataStoreRef != nil {
+		out.DataStore = in.DataStoreRef.External
+	}
 	out.Filter = direct.ValueOf(in.Filter)
 	return out
 }
@@ -7604,7 +7620,9 @@ func VertexRagStore_RagResource_FromProto(mapCtx *direct.MapContext, in *pb.Vert
 		return nil
 	}
 	out := &krm.VertexRagStore_RagResource{}
-	out.RagCorpus = direct.LazyPtr(in.GetRagCorpus())
+	if in.GetRagCorpus() != "" {
+		out.RagCorpusRef = &krm.AIPlatformRAGCorpusRef{External: in.GetRagCorpus()}
+	}
 	out.RagFileIDs = in.RagFileIds
 	return out
 }
@@ -7614,7 +7632,9 @@ func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.Verte
 		return nil
 	}
 	out := &pb.VertexRagStore_RagResource{}
-	out.RagCorpus = direct.ValueOf(in.RagCorpus)
+	if in.RagCorpusRef != nil {
+		out.RagCorpus = in.RagCorpusRef.External
+	}
 	out.RagFileIds = in.RagFileIDs
 	return out
 }
