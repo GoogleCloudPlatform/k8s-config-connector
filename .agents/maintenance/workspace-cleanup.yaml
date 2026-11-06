@@ -1,0 +1,43 @@
+# workspace-cleanup: makes room on a factory sandbox's workspace disk for
+# k8s-config-connector. Factory runs it before a task when the workspace
+# (/workspaces) has less than 10 GB free, asking for TARGET_BYTES free; a
+# task that still has less than 5 GB does not start ("disk full"). See
+# factory's pkg/diskcare.
+#
+# Each step runs with bash in the checkout, with WORKSPACE, FREE_BYTES,
+# TARGET_BYTES, LOG_DIR and the sandbox's environment (TMPDIR, GOCACHE).
+# A step that fails is reported and the next one runs.
+name: workspace-cleanup
+start:
+  steps:
+    # Leftovers of earlier tasks: go build's work directories, envtest's,
+    # the agent shell's scratch, mktemp's. Older than 2 hours only: a
+    # person's terminal, or a build running now, may use newer ones.
+    - run: |
+        tmp="${TMPDIR:-/workspaces/.tmp}"
+        before=$(df -P "$WORKSPACE" | awk 'NR==2 {print $4}')
+        find "$tmp" -mindepth 1 -maxdepth 1 \( -name 'go-build*' -o -name 'k8s_test_framework_*' -o -name 'gemini-shell-*' -o -name 'tmp.*' \) -mmin +120 -exec rm -rf {} + 2>/dev/null || true
+        after=$(df -P "$WORKSPACE" | awk 'NR==2 {print $4}')
+        echo "Removed temporary leftovers older than 2h from $tmp: $(( (after - before) / 1048576 )) GB"
+    # Still short: trim the Go build cache, least recently used first (go
+    # refreshes an entry's mtime when it uses it), until TARGET_BYTES is
+    # free. The cache stays valid: a removed entry is built again when
+    # needed, and most of the warm cache survives (unlike go clean -cache).
+    - run: |
+        free=$(( $(df -P "$WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        if [ "$free" -ge "$TARGET_BYTES" ]; then exit 0; fi
+        cache="${GOCACHE:-/workspaces/.cache/go-build}"
+        need=$(( TARGET_BYTES - free ))
+        find "$cache" -mindepth 2 -type f -printf '%T@ %s %p\n' 2>/dev/null \
+          | sort -n \
+          | awk -v need="$need" '{ if (got >= need) exit; print $3; got += $2 }' \
+          | xargs -r rm -f
+        now=$(( $(df -P "$WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        echo "Trimmed the Go build cache, least recently used first: $(( (now - free) / 1073741824 )) GB"
+    # Still short: temporary leftovers older than 10 minutes too.
+    - run: |
+        free=$(( $(df -P "$WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        if [ "$free" -ge "$TARGET_BYTES" ]; then exit 0; fi
+        tmp="${TMPDIR:-/workspaces/.tmp}"
+        find "$tmp" -mindepth 1 -maxdepth 1 \( -name 'go-build*' -o -name 'k8s_test_framework_*' -o -name 'gemini-shell-*' -o -name 'tmp.*' \) -mmin +10 -exec rm -rf {} + 2>/dev/null || true
+        df -h "$WORKSPACE" | awk 'NR==2 {print "Workspace now: " $3 " used of " $2 ", " $4 " free"}'
