@@ -30,4 +30,11 @@
 - **Solution**: Generated `APIHubPluginRef` and added `APIHubPlugin:Plugin` to `apis/apihub/generate.sh`. Modeled parent as required immutable `spec.parentRef` (`*APIHubPluginRef`). Triaged all `judgement_queue.yaml` entries.
 - **Impact**: Clean identity resolution conforming to `IdentityV2` and `refs.Ref`, passing all apichecks and unit tests.
 
+### 2026-11-06 Greenfield Direct Controller Implementation for APIHubPluginInstance
+- **Context**: Implemented direct controller, fuzzer, and E2E fixtures for `APIHubPluginInstance`.
+- **Problem**: GCP API Hub returns 500 when calling `GetPlugin` on non-existent custom plugin IDs, and requires `pluginCategory` and `actionsConfig` when creating custom user-owned `APIHubPlugin` resources. Furthermore, `UpdatePluginInstance` rejects `actions` in `update_mask`.
+- **Solution**: Handled 500 in `APIHubPlugin` controller `Find` as not-found, defaulted required fields (`PluginCategory` and `ActionsConfig`) on `APIHubPlugin` creation, and filtered out `actions` from `updateMask` in `APIHubPluginInstance` `Update`.
+- **Impact**: All E2E lifecycle stages (create, update, re-reconcile, delete) pass cleanly against real GCP for both minimal and maximal fixtures.
+
+
 
