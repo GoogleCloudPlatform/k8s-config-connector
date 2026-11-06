@@ -80,6 +80,7 @@ ${CONTROLLERBUILDER} generate-types \
   --prepopulate-resource \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
   --resource DiscoveryEngineACLConfig:AclConfig \
+  --resource DiscoveryEngineAssistant:Assistant \
   --resource DiscoveryEngineCMEKConfig:CmekConfig
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -88,6 +89,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig \
   --resource DiscoveryEngineACLConfig:AclConfig \
+  --resource DiscoveryEngineAssistant:Assistant \
   --resource DiscoveryEngineCMEKConfig:CmekConfig \
   --pattern DiscoveryEngineWidgetConfig="projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/widgetConfigs/{widgetConfig}"
 
