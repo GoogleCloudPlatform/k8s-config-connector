@@ -1492,13 +1492,16 @@ func TestUpdateStatus_NoOpGuard(t *testing.T) {
 		SomeField string `json:"someField"`
 	}
 
-	// 1. Unchanged status: should be a no-op write
+	// 1. Unchanged status: should be a no-op write, but in-memory status should still be updated
 	statusCandidate := &testStatus{SomeField: "value1"}
 	if err := op.UpdateStatus(ctx, statusCandidate, &readyCondition); err != nil {
 		t.Fatalf("UpdateStatus failed: %v", err)
 	}
 	if countingClient.updateCount != 0 {
 		t.Fatalf("expected 0 status updates for unchanged status, got %d", countingClient.updateCount)
+	}
+	if gotStatus, ok := op.object.Object["status"].(map[string]any); !ok || gotStatus["someField"] != "value1" {
+		t.Fatalf("expected in-memory status someField to be 'value1', got: %v", op.object.Object["status"])
 	}
 
 	// 2. Changed status field: should trigger update

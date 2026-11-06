@@ -208,12 +208,11 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 	}
 
 	u := o.object
+	u.Object["status"] = status
 
 	if !isStatusUpdateRequired(old, status) {
 		return nil
 	}
-
-	u.Object["status"] = status
 
 	if err := o.client.Status().Update(ctx, u); err != nil {
 		return fmt.Errorf("updating object status: %w", err)

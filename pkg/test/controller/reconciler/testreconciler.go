@@ -200,6 +200,8 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured, c client.Client) (k8s
 	switch objectGVK.Kind {
 	case "IAMPolicy":
 		return k8s.ReconcilerTypeIAMPolicy, nil
+	case "IAMPartialPolicy":
+		return k8s.ReconcilerTypeIAMPartialPolicy, nil
 	case "IAMPolicyMember":
 		return k8s.ReconcilerTypeIAMPolicyMember, nil
 	case "IAMAuditConfig":
