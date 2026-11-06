@@ -364,7 +364,6 @@ BLOCKED_KINDS=(
     "VMwareEngineLoggingServer"
     "VMwareEngineManagementDNSZoneBinding"
     "VMwareEnginePrivateConnection"
-    "WebSecurityScannerScanConfig"
 )
 
 declare -A BLOCKED_MAP
