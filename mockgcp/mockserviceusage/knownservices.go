@@ -48,6 +48,7 @@ var allServices = []string{
 	"container.googleapis.com",
 	"workflows.googleapis.com",
 	"cloudapis.googleapis.com",
+	"oracledatabase.googleapis.com",
 	"orgpolicy.googleapis.com",
 	"osconfig.googleapis.com",
 	"oslogin.googleapis.com",

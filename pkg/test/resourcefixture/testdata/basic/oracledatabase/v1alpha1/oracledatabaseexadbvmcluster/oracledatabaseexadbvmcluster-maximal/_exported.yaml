@@ -1,0 +1,44 @@
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseExadbVMCluster
+metadata:
+  labels:
+    env: staging
+    team: dba
+  name: exadbvm-${uniqueId}
+spec:
+  backupOdbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}
+  displayName: Exadb VM Cluster Maximal
+  labels:
+    env: staging
+    team: dba
+  location: us-east4
+  odbNetworkRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}
+  odbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  properties:
+    additionalEcpuCountPerNode: 2
+    clusterName: exacluster
+    dataCollectionOptions:
+      isDiagnosticsEventsEnabled: true
+      isHealthMonitoringEnabled: true
+      isIncidentLogsEnabled: true
+    enabledEcpuCountPerNode: 4
+    exascaleDbStorageVaultRef:
+      external: projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}
+    gridImageID: gi-image-id-val
+    hostnamePrefix: host-pref
+    licenseModel: LICENSE_INCLUDED
+    nodeCount: 3
+    scanListenerPortTCP: 1521
+    shapeAttribute: SMART_STORAGE
+    sshPublicKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v...
+    timeZone:
+      id: UTC
+      version: 2024a
+    vmFileSystemStorage:
+      sizeInGBsPerNode: 120
