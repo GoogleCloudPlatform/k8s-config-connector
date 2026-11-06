@@ -22,3 +22,9 @@
   1. In `Update`, explicitly set `resource.Etag = a.actual.Etag` before calling `UpdateAcl`.
   2. Configured test fixtures using canonical valid ACL IDs: `resourceID: cluster` for minimal fixture and `resourceID: allTopics` for maximal fixture.
 - **Impact**: Greenfield direct controller reconciliation, roundtrip fuzzer, and real-GCP recorded fixtures verified for `ManagedKafkaACL`.
+
+### [2026-11-05] ManagedKafkaConnector ParentRef and ConnectClusterRef
+- **Context**: Triaging judgement queue and finalizing types for `ManagedKafkaConnector`.
+- **Problem**: `ManagedKafkaConnector` is a child resource under `ManagedKafkaConnectCluster` (`projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}`). Initially, `judgement_queue.yaml` flagged `parent-ref-not-modelled`, `identity-root-unknown`, and `location-or-parent-ref` because `ConnectClusterRef` was not yet generated/registered for `ManagedKafkaConnectCluster`.
+- **Solution**: Added `ManagedKafkaConnectCluster:ConnectCluster` to `generate-identity` in `apis/managedkafka/generate.sh`, generating `managedkafkaconnectcluster_reference.generated.go` (`ManagedKafkaConnectClusterRef`). Modelled `spec.parentRef *ManagedKafkaConnectClusterRef` in `ManagedKafkaConnectorSpec` and resolved all judgement queue entries for `ManagedKafkaConnector` as edited. Regenerated types, identity, CRD, and deepcopy.
+- **Impact**: Child resources under `ManagedKafkaConnectCluster` reference `spec.parentRef *ManagedKafkaConnectClusterRef`, deriving project, location, and connect cluster identity from `parentRef`.

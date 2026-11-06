@@ -58,6 +58,7 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --resource ManagedKafkaConnectCluster:ConnectCluster \
   --resource ManagedKafkaACL:Acl \
   --resource ManagedKafkaConnector:Connector
 
