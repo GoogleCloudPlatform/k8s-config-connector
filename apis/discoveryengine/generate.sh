@@ -56,8 +56,16 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineConversation:Conversation \
   --resource DiscoveryEngineSession:Session \
   --resource DiscoveryEngineSitemap:Sitemap \
-  --resource DiscoveryEngineSchema:Schema
+  --resource DiscoveryEngineSchema:Schema \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig \
+  --prepopulate-resource
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
@@ -73,7 +81,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
