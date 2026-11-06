@@ -19,6 +19,10 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+if "${REPO_ROOT}/dev/tasks/should-skip-presubmit"; then
+  exit 0
+fi
 MISSING_FIELDS_FILE="${REPO_ROOT}/tests/apichecks/testdata/exceptions/missingfields.txt"
 # Checks for a partial string to determine if the missing field is a reference field
 MISSING_REFERENCE_STRING="neither 'external' nor 'name' are set"

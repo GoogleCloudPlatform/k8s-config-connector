@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Exits 0 if presubmit checks should be skipped (i.e. all changed files are *.md),
+# or exits 1 if presubmit checks should run.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${SKIP_PRESUBMIT:-}" == "true" ]]; then
+  echo "SKIP_PRESUBMIT=true is set. Skipping presubmit."
+  exit 0
+elif [[ "${SKIP_PRESUBMIT:-}" == "false" ]]; then
+  exit 1
+fi
+
+# Only auto-skip in GitHub Actions or when explicitly requested (e.g. from pre-push hook / tests)
+# so standalone local developer/agent test runs on dirty working trees are never unexpectedly skipped.
+if [[ "${GITHUB_ACTIONS:-}" != "true" && "${FORCE_CHECK_SKIP_PRESUBMIT:-}" != "true" ]]; then
+  exit 1
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+CHANGED_FILES=""
+
+if [[ -n "${GITHUB_BASE_REF:-}" ]]; then
+  if ! git rev-parse --verify "origin/${GITHUB_BASE_REF}" >/dev/null 2>&1; then
+    git fetch --no-tags --depth=50 origin "${GITHUB_BASE_REF}:refs/remotes/origin/${GITHUB_BASE_REF}" >/dev/null 2>&1 || true
+  fi
+  if git rev-parse --verify "origin/${GITHUB_BASE_REF}" >/dev/null 2>&1; then
+    CHANGED_FILES=$(git diff --name-only "origin/${GITHUB_BASE_REF}...HEAD" 2>/dev/null || true)
+  fi
+fi
+
+if [[ -z "${CHANGED_FILES}" ]] && git rev-parse --verify upstream/master >/dev/null 2>&1; then
+  CHANGED_FILES=$(git diff --name-only upstream/master...HEAD 2>/dev/null || true)
+fi
+
+if [[ -z "${CHANGED_FILES}" ]] && git rev-parse --verify origin/master >/dev/null 2>&1; then
+  CHANGED_FILES=$(git diff --name-only origin/master...HEAD 2>/dev/null || true)
+fi
+
+if [[ -z "${CHANGED_FILES}" ]]; then
+  if ! git rev-parse --verify HEAD~1 >/dev/null 2>&1 && [[ -n "${GITHUB_REF:-}" ]]; then
+    git fetch --no-tags --depth=2 origin "${GITHUB_REF}" >/dev/null 2>&1 || true
+  fi
+  if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+    CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)
+  fi
+fi
+
+if [[ -z "${CHANGED_FILES}" ]]; then
+  exit 1
+fi
+
+for file in ${CHANGED_FILES}; do
+  if [[ "${file}" != *.md ]]; then
+    exit 1
+  fi
+done
+
+echo "All changed files are Markdown (*.md):"
+echo "${CHANGED_FILES}"
+echo "Skipping presubmit."
+exit 0
