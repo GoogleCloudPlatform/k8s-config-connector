@@ -1,0 +1,209 @@
+# Phase: CREATE
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+POST https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "Maximal Document Schema description ${uniqueId}",
+  "displayName": "Maximal Schema ${uniqueId}",
+  "propertyDefinitions": [
+    {
+      "displayName": "Property 1",
+      "isFilterable": true,
+      "isMetadata": true,
+      "isSearchable": true,
+      "name": "prop1",
+      "textTypeOptions": {}
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal Document Schema description ${uniqueId}",
+  "displayName": "Maximal Schema ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/schema-10001",
+  "propertyDefinitions": [
+    {
+      "displayName": "Property 1",
+      "isFilterable": true,
+      "isMetadata": true,
+      "isSearchable": true,
+      "name": "prop1",
+      "textTypeOptions": {}
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/schema-10001?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal Document Schema description ${uniqueId}",
+  "displayName": "Maximal Schema ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/schema-10001",
+  "propertyDefinitions": [
+    {
+      "displayName": "Property 1",
+      "isFilterable": true,
+      "isMetadata": true,
+      "isSearchable": true,
+      "name": "prop1",
+      "textTypeOptions": {}
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/schema-10001?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "documentSchema": {
+    "description": "Updated Maximal Document Schema description ${uniqueId}",
+    "displayName": "Updated Maximal Schema ${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us/documentSchemas/schema-10001",
+    "propertyDefinitions": [
+      {
+        "displayName": "Property 1 Updated",
+        "isFilterable": true,
+        "isMetadata": true,
+        "isSearchable": true,
+        "name": "prop1",
+        "textTypeOptions": {}
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Document Schema description ${uniqueId}",
+  "displayName": "Updated Maximal Schema ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/schema-10001",
+  "propertyDefinitions": [
+    {
+      "displayName": "Property 1 Updated",
+      "isFilterable": true,
+      "isMetadata": true,
+      "isSearchable": true,
+      "name": "prop1",
+      "textTypeOptions": {}
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/schema-10001?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Document Schema description ${uniqueId}",
+  "displayName": "Updated Maximal Schema ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/schema-10001",
+  "propertyDefinitions": [
+    {
+      "displayName": "Property 1 Updated",
+      "isFilterable": true,
+      "isMetadata": true,
+      "isSearchable": true,
+      "name": "prop1",
+      "textTypeOptions": {}
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/schema-10001?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

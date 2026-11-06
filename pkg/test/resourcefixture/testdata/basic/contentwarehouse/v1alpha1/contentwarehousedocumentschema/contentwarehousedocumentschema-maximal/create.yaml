@@ -1,0 +1,20 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseDocumentSchema
+metadata:
+  name: ${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: "Maximal Schema ${uniqueId}"
+  description: "Maximal Document Schema description ${uniqueId}"
+  documentIsFolder: false
+  propertyDefinitions:
+    - name: "prop1"
+      displayName: "Property 1"
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      textTypeOptions: {}
