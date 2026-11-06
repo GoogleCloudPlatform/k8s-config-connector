@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &AIPlatformModelDeploymentMonitoringJobIdentity{}
-	_ identity.Resource   = &AIPlatformModelDeploymentMonitoringJob{}
+	_ identity.ServerGeneratedIdentity = &AIPlatformModelDeploymentMonitoringJobIdentity{}
+	_ identity.Resource                = &AIPlatformModelDeploymentMonitoringJob{}
 )
 
 var AIPlatformModelDeploymentMonitoringJobIdentityFormat = gcpurls.Template[AIPlatformModelDeploymentMonitoringJobIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{modelDeploymentMonitoringJob}")
@@ -63,6 +63,10 @@ func (i *AIPlatformModelDeploymentMonitoringJobIdentity) FromExternal(ref string
 
 func (i *AIPlatformModelDeploymentMonitoringJobIdentity) Host() string {
 	return AIPlatformModelDeploymentMonitoringJobIdentityFormat.Host()
+}
+
+func (i *AIPlatformModelDeploymentMonitoringJobIdentity) HasIdentitySpecified() bool {
+	return i.ModelDeploymentMonitoringJob != ""
 }
 
 func getIdentityFromAIPlatformModelDeploymentMonitoringJobSpec(ctx context.Context, reader client.Reader, obj *AIPlatformModelDeploymentMonitoringJob) (*AIPlatformModelDeploymentMonitoringJobIdentity, error) {

@@ -17,8 +17,24 @@ package v1alpha1
 import (
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestAIPlatformModelDeploymentMonitoringJobIdentity_Conformance(t *testing.T) {
+	identity.AssertConformance(t, identity.ConformanceCase[AIPlatformModelDeploymentMonitoringJobIdentity]{
+		SampleExternal:        "projects/my-project/locations/us-central1/modelDeploymentMonitoringJobs/my-job",
+		WantHost:              "aiplatform.googleapis.com",
+		WantParent:            "projects/my-project/locations/us-central1",
+		ExpectServerGenerated: true,
+		WantIdentity: &AIPlatformModelDeploymentMonitoringJobIdentity{
+			Project:                      "my-project",
+			Location:                     "us-central1",
+			ModelDeploymentMonitoringJob: "my-job",
+		},
+		Ref: &AIPlatformModelDeploymentMonitoringJobRef{},
+	})
+}
 
 func TestAIPlatformModelDeploymentMonitoringJobIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
