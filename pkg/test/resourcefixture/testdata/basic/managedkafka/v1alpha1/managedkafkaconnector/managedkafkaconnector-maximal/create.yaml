@@ -1,0 +1,17 @@
+apiVersion: managedkafka.cnrm.cloud.google.com/v1alpha1
+kind: ManagedKafkaConnector
+metadata:
+  name: managedkafkaconnector-${uniqueId}
+spec:
+  resourceID: managedkafkaconnector-${uniqueId}
+  parentRef:
+    name: connectcluster-${uniqueId}
+  configs:
+    connector.class: org.apache.kafka.connect.mirror.MirrorHeartbeatConnector
+    source.cluster.alias: source
+    target.cluster.alias: target
+    source.cluster.bootstrap.servers: localhost:9092
+    target.cluster.bootstrap.servers: localhost:9092
+  taskRestartPolicy:
+    minimumBackoff: 60s
+    maximumBackoff: 1800s
