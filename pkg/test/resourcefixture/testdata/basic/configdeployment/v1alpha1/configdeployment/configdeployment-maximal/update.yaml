@@ -16,26 +16,34 @@ apiVersion: configdeployment.cnrm.cloud.google.com/v1alpha1
 kind: ConfigDeployment
 metadata:
   name: configdeployment-${uniqueId}
+  labels:
+    env: staging
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
   serviceAccountRef:
     external: projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  workerPoolRef:
+    external: projects/${projectId}/locations/us-central1/workerPools/workerpool-${uniqueId}
   terraformBlueprint:
-    gcsSource:
-      bucketRef:
-        external: ${projectId}-bucket
-      object: blueprint.zip
+    gitSource:
+      repo: https://github.com/GoogleCloudPlatform/k8s-config-connector.git
+      directory: scripts
+      ref: v1.0.0
     inputValues:
       foo:
         inputValue:
           stringValue: updated
-  labels:
-    env: staging
+    externalValues:
+      ext_var:
+        deploymentSource:
+          deploymentRef:
+            external: projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}
+          outputName: updated_output
   artifactsLocation:
     bucketRef:
-      external: ${projectId}-bucket
+      external: projects/${projectId}/buckets/${projectId}-bucket-${uniqueId}
     folder: artifacts
   importExistingResources: false
   tfVersionConstraint: "=1.3.10"

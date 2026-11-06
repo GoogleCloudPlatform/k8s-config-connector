@@ -1,0 +1,44 @@
+apiVersion: configdeployment.cnrm.cloud.google.com/v1alpha1
+kind: ConfigDeployment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: configdeployment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  serviceAccountRef:
+    external: projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  terraformBlueprint:
+    gcsSource:
+      bucketRef:
+        external: projects/${projectId}/buckets/${projectId}-bucket-${uniqueId}
+      object: blueprint-v2.zip
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    errorCode: REVISION_FAILED
+    latestRevision: projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1
+    lockState: UNLOCKED
+    state: FAILED
+    stateDetail: 'Revision failed: The revision failed due to an internal error: unable
+      to create actuation build for revision projects/${projectId}/locations/us-central1/deployments/configdeployment-${uniqueId}/revisions/r-1.
+      invalid bucket "${projectNumber}-us-central1-blueprint-config"; service account
+      sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not have access to
+      the bucket'
+    tfVersion: 1.5.7
+    updateTime: "1970-01-01T00:00:00Z"

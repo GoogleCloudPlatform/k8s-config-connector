@@ -30,6 +30,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/config/apiv1"
@@ -62,15 +64,16 @@ func (m *modelDeployment) AdapterForObject(ctx context.Context, op *directbase.A
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
+
+	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := i.(*krm.ConfigDeploymentIdentity)
-
-	if err := common.NormalizeGreenfieldReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
 
 	// Get configdeployment GCP client
 	gcpClient, err := m.client(ctx)
@@ -157,6 +160,7 @@ func (a *DeploymentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Labels = label.GCPLabels(a.desired)
 
 	req := &configpb.CreateDeploymentRequest{
 		Parent:       a.id.ParentString(),
@@ -173,6 +177,10 @@ func (a *DeploymentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 	log.V(2).Info("successfully created Deployment", "name", a.id)
 
+	if fetched, err := a.gcpClient.GetDeployment(ctx, &configpb.GetDeploymentRequest{Name: a.id.String()}); err == nil {
+		created = fetched
+	}
+
 	status := &krm.ConfigDeploymentStatus{}
 	status.ObservedState = ConfigDeploymentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -187,10 +195,12 @@ func (a *DeploymentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Deployment", "name", a.id)
 
-	resource, report, updateMask, err := common.CompareGreenfieldSpec(
+	resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(
 		ctx,
+		updateOp.GetUnstructured(),
 		&a.desired.Spec,
 		a.actual,
+		"labels",
 		ConfigDeploymentSpec_FromProto,
 		ConfigDeploymentSpec_ToProto,
 		nil,
@@ -218,6 +228,10 @@ func (a *DeploymentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 			return fmt.Errorf("Deployment %s waiting update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated Deployment", "name", a.id)
+
+		if fetched, err := a.gcpClient.GetDeployment(ctx, &configpb.GetDeploymentRequest{Name: a.id.String()}); err == nil {
+			updated = fetched
+		}
 	}
 
 	status := &krm.ConfigDeploymentStatus{}
@@ -251,6 +265,7 @@ func (a *DeploymentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	u.Object = uObj
 	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.ConfigDeploymentGVK)
+	export.SetLabels(u, a.actual.Labels)
 
 	return u, nil
 }
@@ -261,7 +276,8 @@ func (a *DeploymentAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	log.V(2).Info("deleting Deployment", "name", a.id)
 
 	req := &configpb.DeleteDeploymentRequest{
-		Name: a.id.String(),
+		Name:  a.id.String(),
+		Force: true,
 	}
 	op, err := a.gcpClient.DeleteDeployment(ctx, req)
 	if err != nil {

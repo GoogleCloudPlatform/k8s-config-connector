@@ -32,7 +32,6 @@ func ConfigDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Deployment
 	}
 	out := &krm.ConfigDeploymentSpec{}
 	out.TerraformBlueprint = TerraformBlueprint_FromProto(mapCtx, in.GetTerraformBlueprint())
-	out.Labels = in.Labels
 	if in.GetArtifactsGcsBucket() != "" {
 		out.ArtifactsLocation = ArtifactsLocation_FromProto(mapCtx, in.GetArtifactsGcsBucket())
 	}
@@ -58,7 +57,6 @@ func ConfigDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeplo
 	if oneof := TerraformBlueprint_ToProto(mapCtx, in.TerraformBlueprint); oneof != nil {
 		out.Blueprint = &pb.Deployment_TerraformBlueprint{TerraformBlueprint: oneof}
 	}
-	out.Labels = in.Labels
 	if in.ArtifactsLocation != nil {
 		out.ArtifactsGcsBucket = ArtifactsLocation_ToProto(mapCtx, in.ArtifactsLocation)
 	}
@@ -101,7 +99,11 @@ func ArtifactsLocation_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactsLocat
 	if in.BucketRef == nil || in.BucketRef.External == "" {
 		return nil
 	}
-	uri := "gs://" + in.BucketRef.External
+	bucket := in.BucketRef.External
+	if id, err := storagev1beta1.ParseStorageBucketExternal(bucket); err == nil && id.Bucket != "" {
+		bucket = id.Bucket
+	}
+	uri := "gs://" + bucket
 	if in.Folder != nil && *in.Folder != "" {
 		uri += "/" + *in.Folder
 	}
@@ -132,7 +134,11 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) string {
 	}
 	var uri string
 	if in.BucketRef != nil && in.BucketRef.External != "" {
-		uri = "gs://" + in.BucketRef.External
+		bucket := in.BucketRef.External
+		if id, err := storagev1beta1.ParseStorageBucketExternal(bucket); err == nil && id.Bucket != "" {
+			bucket = id.Bucket
+		}
+		uri = "gs://" + bucket
 		if in.Object != nil && *in.Object != "" {
 			uri += "/" + *in.Object
 		}

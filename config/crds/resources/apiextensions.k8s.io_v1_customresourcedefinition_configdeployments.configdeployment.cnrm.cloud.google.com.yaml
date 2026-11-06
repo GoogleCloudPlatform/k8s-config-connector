@@ -122,11 +122,6 @@ spec:
 
                    Not all resource types are supported, refer to documentation.
                 type: boolean
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined metadata for the deployment.
-                type: object
               location:
                 description: The location of this resource.
                 type: string

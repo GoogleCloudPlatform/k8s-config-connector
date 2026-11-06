@@ -42,7 +42,6 @@ func configDeploymentFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".annotations")
 	f.SpecField(".import_existing_resources")
-	f.SpecField(".labels")
 	f.SpecField(".provider_config")
 	f.SpecField(".quota_validation")
 	f.SpecField(".service_account")
@@ -67,6 +66,7 @@ func configDeploymentFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".artifacts_gcs_bucket")

@@ -473,13 +473,6 @@ func (in *ConfigDeploymentSpec) DeepCopyInto(out *ConfigDeploymentSpec) {
 		*out = new(TerraformBlueprint)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.ArtifactsLocation != nil {
 		in, out := &in.ArtifactsLocation, &out.ArtifactsLocation
 		*out = new(ArtifactsLocation)

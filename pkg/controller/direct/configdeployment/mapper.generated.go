@@ -69,6 +69,7 @@ func ConfigDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.LatestRevision = direct.LazyPtr(in.GetLatestRevision())
 	out.StateDetail = direct.LazyPtr(in.GetStateDetail())
@@ -91,6 +92,7 @@ func ConfigDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.Deployment_State](mapCtx, in.State)
 	out.LatestRevision = direct.ValueOf(in.LatestRevision)
 	out.StateDetail = direct.ValueOf(in.StateDetail)

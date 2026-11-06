@@ -25,5 +25,5 @@ spec:
   terraformBlueprint:
     gcsSource:
       bucketRef:
-        external: ${projectId}-bucket
+        external: projects/${projectId}/buckets/${projectId}-bucket-${uniqueId}
       object: blueprint-v2.zip

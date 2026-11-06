@@ -46,10 +46,6 @@ type ConfigDeploymentSpec struct {
 	// +kcc:proto:field=google.cloud.config.v1.Deployment.terraform_blueprint
 	TerraformBlueprint *TerraformBlueprint `json:"terraformBlueprint,omitempty"`
 
-	// Optional. User-defined metadata for the deployment.
-	// +kcc:proto:field=google.cloud.config.v1.Deployment.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Optional. User-defined location of Cloud Build logs and artifacts in Google
 	//  Cloud Storage.
 	//
