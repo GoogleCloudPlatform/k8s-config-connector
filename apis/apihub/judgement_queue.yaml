@@ -25,145 +25,195 @@ entries:
     group: apihub.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: modeled spec.parentRef (*APIHubPluginRef), generated APIHubPlugin reference/identity, and triaged all fields
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}" contains ancestor segment(s) plugins/{plugin} with no matching reference or field on APIHubPluginInstanceSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: resolved by modeling spec.parentRef (*APIHubPluginRef)
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, and no PluginRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: generated APIHubPluginRef and modeled spec.parentRef
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.actions[].actionID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string ID defined within the parent plugin's actions_config, not a distinct KCC resource reference
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.actions[].curationConfig.customCuration.curation
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/locations/{location}/curations/{curation}"
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string resource name for custom curation in shared CurationConfig, kept as string
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.actions[].curationConfig.customCuration.curation
     reason: possible-reference-by-sibling
     detail: the name matches APIHubCuration, a resource this service declares; confirm whether it should be a reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string resource name in shared nested struct CurationConfig
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.actions[].serviceAccount
     reason: possible-reference-by-description
     detail: the field name ends in serviceAccount
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: string email or identifier only accepted for non-GCP plugins like OPDK
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig
     reason: message-map-derived
     detail: derived as map[string]ConfigVariable from proto google.cloud.apihub.v1.ConfigVariable; verify Go type and mapping
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified map[string]ConfigVariable Go type and mapping
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.enumValue.displayName
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change APIHubPluginInstanceSpec.AdditionalConfig in apihubplugininstance_types.go from ConfigVariable to ConfigVariableWithRequired and run generate.sh again. APIHubPluginInstance is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: ConfigVariable is a oneof container; fields inside individual variant options should remain optional
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.enumValue.id
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change APIHubPluginInstanceSpec.AdditionalConfig in apihubplugininstance_types.go from ConfigVariable to ConfigVariableWithRequired and run generate.sh again. APIHubPluginInstance is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: ConfigVariable is a oneof container; fields inside individual variant options should remain optional
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.multiSelectValues.values[].displayName
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change APIHubPluginInstanceSpec.AdditionalConfig in apihubplugininstance_types.go from ConfigVariable to ConfigVariableWithRequired and run generate.sh again. APIHubPluginInstance is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: ConfigVariable is a oneof container; fields inside individual variant options should remain optional
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.multiSelectValues.values[].id
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change APIHubPluginInstanceSpec.AdditionalConfig in apihubplugininstance_types.go from ConfigVariable to ConfigVariableWithRequired and run generate.sh again. APIHubPluginInstance is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: ConfigVariable is a oneof container; fields inside individual variant options should remain optional
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.secretValue
     reason: possible-reference-by-name
     detail: SecretManagerSecretVersionRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.additionalConfig.KEY.secretValue.secretVersion
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.apiKeyConfig.apiKey
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/secrets/{secrete}/versions/{version}"
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to iam.googleapis.com/ServiceAccount (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: GoogleServiceAccountConfig is shared with Plugin.ConfigTemplate.AuthConfigTemplate; kept as string in shared struct
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change APIHubPluginInstanceSpec.AuthConfig in apihubplugininstance_types.go from AuthConfig to AuthConfigWithRequired and run generate.sh again. APIHubPluginInstance is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: AuthConfig is shared and googleServiceAccountConfig is an optional variant in AuthConfig
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.oauth2ClientCredentialsConfig.clientID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: OAuth2 client ID is an external string identifier, not a GCP resource reference
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret
     reason: possible-reference-by-name
     detail: SecretManagerSecretVersionRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.userPasswordConfig.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred pending team conventions on secret references in shared nested configs
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.authConfig.userPasswordConfig.password.secretVersion
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: Secret is a shared nested struct representing Secret Manager version string resource name
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced location and projectRef with required immutable spec.parentRef
   - kind: APIHubPluginInstance
     group: apihub.cnrm.cloud.google.com
     field: .spec.sourceProjectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: field holds runtime GCP project ID or non-GCP organization ID; string format per API documentation
   - kind: APIHubVersion
     group: apihub.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
