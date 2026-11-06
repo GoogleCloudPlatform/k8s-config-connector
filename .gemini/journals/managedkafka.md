@@ -28,3 +28,16 @@
 - **Problem**: `ManagedKafkaConnector` is a child resource under `ManagedKafkaConnectCluster` (`projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}`). Initially, `judgement_queue.yaml` flagged `parent-ref-not-modelled`, `identity-root-unknown`, and `location-or-parent-ref` because `ConnectClusterRef` was not yet generated/registered for `ManagedKafkaConnectCluster`.
 - **Solution**: Added `ManagedKafkaConnectCluster:ConnectCluster` to `generate-identity` in `apis/managedkafka/generate.sh`, generating `managedkafkaconnectcluster_reference.generated.go` (`ManagedKafkaConnectClusterRef`). Modelled `spec.parentRef *ManagedKafkaConnectClusterRef` in `ManagedKafkaConnectorSpec` and resolved all judgement queue entries for `ManagedKafkaConnector` as edited. Regenerated types, identity, CRD, and deepcopy.
 - **Impact**: Child resources under `ManagedKafkaConnectCluster` reference `spec.parentRef *ManagedKafkaConnectClusterRef`, deriving project, location, and connect cluster identity from `parentRef`.
+
+### [2026-11-06] ManagedKafkaConnector Direct Controller, Re-reconciliation, and Kafka Connect Config Normalization
+- **Context**: Implementing Greenfield direct controller, fuzzer, and recording E2E fixtures for `ManagedKafkaConnector`.
+- **Problem**:
+  1. The Apache Kafka Connect framework automatically injects `"name": "<connector-name>"` into the connector's configuration key-value map (`configs`).
+  2. In `Update`, `common.CompareGreenfieldSpec` compared the desired spec configs (which omitted `"name"`) against actual configs returned by GCP (which contained `"name": "<connector-name>"`), triggering a false diff and sending an unnecessary `PATCH` update on every reconciliation cycle.
+  3. Re-reconciliation failed due to this recurring diff.
+- **Solution**:
+  1. Implemented a `normalize` function in `Update` passed to `common.CompareGreenfieldSpec` that deletes `"name"` from proto configs if not explicitly specified in `desired.Spec.Configs`.
+  2. In `AdapterForObject`, ensured `common.NormalizeGreenfieldReferences` is called prior to `GetIdentity`.
+  3. In `Export`, explicitly populated `obj.Spec.ParentRef` and `obj.Spec.ResourceID` from the resource identity.
+- **Impact**: Clean re-reconciliation with zero false diffs, and real-GCP golden logs recorded and verified for both minimal and maximal fixtures.
+

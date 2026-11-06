@@ -5294,10 +5294,6 @@
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].namespace" is not set in unstructured objects
-[missing_field] crd=managedkafkaconnectors.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.configs" is not set in unstructured objects
-[missing_field] crd=managedkafkaconnectors.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=managedkafkaconnectors.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskRestartPolicy.maximumBackoff" is not set in unstructured objects
-[missing_field] crd=managedkafkaconnectors.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskRestartPolicy.minimumBackoff" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
