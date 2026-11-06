@@ -7381,12 +7381,6 @@
 [missing_field] crd=vmmigrationtargetprojects.vmmigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vmmigrationtargetprojects.vmmigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
 [missing_field] crd=vmmigrationtargetprojects.vmmigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingSettings.autoscalingPolicies" is not set in unstructured objects
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingSettings.coolDownPeriod" is not set in unstructured objects
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingSettings.maxClusterNodeCount" is not set in unstructured objects
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoscalingSettings.minClusterNodeCount" is not set in unstructured objects
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeTypeConfigs" is not set in unstructured objects
-[missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.stretchedClusterConfig.preferredLocation" is not set in unstructured objects
 [missing_field] crd=vmwareengineclusters.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.stretchedClusterConfig.secondaryLocation" is not set in unstructured objects
 [missing_field] crd=vmwareengineexternalaccessrules.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationIPRanges[].ipAddress" is not set in unstructured objects

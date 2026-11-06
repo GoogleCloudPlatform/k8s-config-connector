@@ -19,9 +19,8 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -72,12 +71,18 @@ func (r *PrivateCloudRef) ValidateExternal(ref string) error {
 }
 
 func (r *PrivateCloudRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	external, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
-	if err != nil {
-		return err
+	fallback := func(u *unstructured.Unstructured) string {
+		obj := &VMwareEnginePrivateCloud{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+			return ""
+		}
+		id, err := NewPrivateCloudIdentity(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return id.String()
 	}
-	r.SetExternal(external)
-	return nil
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on VMwareEnginePrivateCloud.
@@ -87,35 +92,8 @@ func (r *PrivateCloudRef) NormalizedExternal(ctx context.Context, reader client.
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", VMwareEnginePrivateCloudGVK.Kind)
 	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParsePrivateCloudExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(VMwareEnginePrivateCloudGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", VMwareEnginePrivateCloudGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
