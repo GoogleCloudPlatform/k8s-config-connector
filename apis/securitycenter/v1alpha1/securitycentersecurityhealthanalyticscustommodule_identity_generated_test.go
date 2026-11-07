@@ -29,12 +29,12 @@ import (
 
 func TestSecuritycenterSecurityHealthAnalyticsCustomModuleIdentity_Conformance(t *testing.T) {
 	identity.AssertConformance(t, identity.ConformanceCase[SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity]{
-		SampleExternal:        "organizations/123456789/securityHealthAnalyticsSettings/customModules/my-custom-module",
+		SampleExternal:        "projects/my-project/securityHealthAnalyticsSettings/customModules/my-custom-module",
 		WantHost:              "securitycenter.googleapis.com",
-		WantParent:            "organizations/123456789/securityHealthAnalyticsSettings",
+		WantParent:            "projects/my-project/securityHealthAnalyticsSettings",
 		ExpectServerGenerated: true,
 		WantIdentity: &SecuritycenterSecurityHealthAnalyticsCustomModuleIdentity{
-			Organization: "123456789",
+			Project:      "my-project",
 			CustomModule: "my-custom-module",
 		},
 		Ref: &SecuritycenterSecurityHealthAnalyticsCustomModuleRef{},
