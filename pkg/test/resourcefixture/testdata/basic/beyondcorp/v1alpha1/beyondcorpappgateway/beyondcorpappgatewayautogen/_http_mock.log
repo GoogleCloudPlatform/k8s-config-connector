@@ -1,50 +1,32 @@
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/GetAppGateway
 
 {
-  "error": {
-    "code": 404,
-    "message": "appGateway \"projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
 }
+
+error: rpc error: code = NotFound desc = appGateway "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}" not found
+
+{}
 
 ---
 
-POST https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways?alt=json&app_gateway_id=beyondcorpappgateway${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/CreateAppGateway
 
 {
-  "displayName": "Sample Gateway",
-  "hostType": "GCP_REGIONAL_MIG",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+  "appGateway": {
+    "displayName": "Sample Gateway",
+    "hostType": "GCP_REGIONAL_MIG",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "type": "TCP_PROXY"
   },
-  "type": "TCP_PROXY"
+  "appGatewayId": "beyondcorpappgateway${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "metadata": {
@@ -59,19 +41,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -104,19 +80,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/GetAppGateway
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -136,19 +106,65 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/GetAppGateway
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Sample Gateway",
+  "hostType": "GCP_REGIONAL_MIG",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+  "state": "CREATED",
+  "type": "TCP_PROXY",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "//beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+---
+
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/GetAppGateway
+
+{
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Sample Gateway",
+  "hostType": "GCP_REGIONAL_MIG",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}",
+  "state": "CREATED",
+  "type": "TCP_PROXY",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "//beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+---
+
+GRPC /google.cloud.beyondcorp.appgateways.v1.AppGatewaysService/DeleteAppGateway
+
+{
+  "name": "projects/${projectId}/locations/us-central1/appGateways/beyondcorpappgateway${uniqueId}"
+}
+
+OK
 
 {
   "metadata": {
@@ -163,19 +179,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://beyondcorp.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
