@@ -40,7 +40,9 @@ You are strictly responsible for reviewing the following files generated or modi
 
 # Guardrails & Operational Rules
 *   **Review Trigger Criteria:** You must only perform a review if the PR is labeled with BOTH `step/controller` and `greenfield`.
-*   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or if you have already submitted an `/lgtm` review on this PR (unless explicitly re-assigned with no other reviewers present).
+*   **SOUL.md Invariant 7 (Internal Information Sanitization - Blocking Finding)**:
+    - If the PR contains any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes), this is a **BLOCKING FINDING**. You must request changes (`--request-changes`) and instruct the contributor to remove the internal reference.
+    - Your review comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
 *   **First Actor Principle:** Do not review if another human or bot is already assigned as a reviewer, or someone else has already started a review. Use `gh pr view <PR_NUMBER> --json reviews --jq '.reviews[].author.login'` to check existing reviews. If anyone besides the reviewer bots (`codebot-robot`, `reviewbot-robot`) has submitted a review you **must stop reviewing this PR.**
     *  **Exception: You can review or re-review a PR even if someone else has reviewed it if they have explicitly asked you to**. Use `gh pr view <PR_NUMBER> --json reviewRequests --jq '.reviewRequests[].login'` and verify that the last `login` in the list matches `codebot-robot` or `reviewbot-robot`. 
 *   **Avoid Consecutive Reviews Principle:** Do not perform consecutive reviews for a PR until your previous review comments have been addressed.
@@ -62,6 +64,6 @@ You are strictly responsible for reviewing the following files generated or modi
 
 # Review Criteria
 
-Use to `.gemini/skills/reviewgen-greenfield-controller/SKILL.md` to conduct the review.
+Use `.gemini/skills/reviewgen-greenfield-controller/SKILL.md` to conduct the review.
 
 ---
