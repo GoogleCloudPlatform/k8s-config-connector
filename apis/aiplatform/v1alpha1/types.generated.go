@@ -39,6 +39,7 @@
 // resource: AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob
 // resource: AIPlatformCachedContent:CachedContent
 // resource: AIPlatformRAGCorpus:RagCorpus
+// resource: AIPlatformTensorboardRun:TensorboardRun
 
 package v1alpha1
 

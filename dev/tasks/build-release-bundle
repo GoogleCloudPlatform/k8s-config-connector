@@ -91,6 +91,7 @@ BLOCKED_KINDS=(
     "AIPlatformNotebookRuntimeTemplate"
     "AIPlatformOnlineEvaluator"
     "AIPlatformRAGCorpus"
+    "AIPlatformTensorboardRun"
     "ApigeeApiProduct"
     "ApigeeRegistryAPI"
     "ApigeeregistryAPIDeployment"

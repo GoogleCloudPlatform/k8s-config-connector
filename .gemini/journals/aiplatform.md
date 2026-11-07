@@ -106,3 +106,14 @@
   4. Handled references: moved `VertexAiSearch`, `VertexAiSearch_DataStoreSpec`, and `VertexRagStore_RagResource` into `aiplatformcachedcontent_types.go` and converted `ragCorpus` to `RagCorpusRef *AIPlatformRAGCorpusRef`, `datastore`/`dataStore` to `DatastoreRef`/`DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef`, and `engine` to `EngineRef *discoveryenginev1alpha1.DiscoveryEngineEngineRef`. Added `spec.model` to `refs_deferred.txt` as it refers to published Gemini base models (`publishers/google/models/{MODEL}`) with no publisher model ref type available.
   5. Ran `apis/aiplatform/generate.sh`, updated `judgement_queue.yaml` marking all findings for `AIPlatformCachedContent` as resolved, and verified all tests with `scripts/validate-prereqs.sh`.
 - **Impact**: Cleanly finalizes KRM types, identity, and reference definitions for `AIPlatformCachedContent` according to KCC standards.
+
+### 2026-11-06 Prepopulating AIPlatformTensorboardRun Greenfield Direct Types
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `AIPlatformTensorboardRun` under `apis/aiplatform/v1alpha1/` (Issue #15177).
+- **Implementation**:
+  1. Configured `apis/aiplatform/generate.sh` to include `AIPlatformTensorboardRun:TensorboardRun` for `generate-types` (backed by GA proto `google.cloud.aiplatform.v1`) and `generate-identity`.
+  2. Generated `aiplatformtensorboardrun_types.go`, `aiplatformtensorboardrun_identity.generated.go`, `aiplatformtensorboardrun_reference.generated.go`, and test file `aiplatformtensorboardrun_identity_generated_test.go`.
+  3. Added `AIPlatformTensorboardRun` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `apis/aiplatform/judgement_queue.yaml` with open triage findings for Step 1b.
+  5. Recorded golden test exceptions in `alpha-missingfields.txt` and `spec_dislike_etag.txt`.
+- **Impact**: Step 1a prepopulation complete, deterministic, and verified with all apichecks and conformance unit tests passing.
+
