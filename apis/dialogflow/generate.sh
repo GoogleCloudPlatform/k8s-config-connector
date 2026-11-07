@@ -94,7 +94,14 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --prepopulate-resource
+  --prepopulate-resource \
+  --api-dir "${REPO_ROOT}/apis/dialogflow"
+
+
+
+
+
+
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2beta1 \
