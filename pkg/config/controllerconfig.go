@@ -22,6 +22,7 @@ import (
 
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
@@ -200,6 +201,9 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 	if c.HTTPClient != nil {
 		c, _, err := ghttptransport.NewClient(ctx, opts...)
 		return c, err
+	}
+	if c.GCPTokenSource == nil {
+		opts = append(opts, option.WithScopes(gcp.ClientScopes...))
 	}
 
 	baseTransport := http.DefaultTransport
