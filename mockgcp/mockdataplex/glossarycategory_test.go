@@ -77,6 +77,27 @@ func TestListGlossaryCategories_PrefixIsolation(t *testing.T) {
 	mockSvc := New(env, st)
 	glossarySvc := mockSvc.businessGlossaryService
 
+	// Create parent glossaries first
+	if _, err := glossarySvc.CreateGlossary(ctx, &pb.CreateGlossaryRequest{
+		Parent:     "projects/test-project/locations/us-central1",
+		GlossaryId: "myglossary",
+		Glossary: &pb.Glossary{
+			DisplayName: "My Glossary",
+		},
+	}); err != nil {
+		t.Fatalf("failed to create parent glossary myglossary: %v", err)
+	}
+
+	if _, err := glossarySvc.CreateGlossary(ctx, &pb.CreateGlossaryRequest{
+		Parent:     "projects/test-project/locations/us-central1",
+		GlossaryId: "myglossary-sibling",
+		Glossary: &pb.Glossary{
+			DisplayName: "My Glossary Sibling",
+		},
+	}); err != nil {
+		t.Fatalf("failed to create parent glossary myglossary-sibling: %v", err)
+	}
+
 	// Create category in "myglossary"
 	cat1, err := glossarySvc.CreateGlossaryCategory(ctx, &pb.CreateGlossaryCategoryRequest{
 		Parent:     "projects/test-project/locations/us-central1/glossaries/myglossary",
@@ -121,5 +142,37 @@ func TestListGlossaryCategories_PrefixIsolation(t *testing.T) {
 	}
 	if len(res2.Categories) != 1 || res2.Categories[0].Name != cat2.Name {
 		t.Errorf("ListGlossaryCategories(myglossary-sibling) = %v; want [%s]", res2.Categories, cat2.Name)
+	}
+}
+
+func TestCreateGlossaryCategory_ParentNotFound(t *testing.T) {
+	ctx := context.Background()
+	store := &mockProjectStore{
+		projectsByID: map[string]*projects.ProjectData{
+			"test-project": {
+				Number: 1234567890,
+				ID:     "test-project",
+			},
+		},
+	}
+	env := &common.MockEnvironment{
+		Projects: store,
+	}
+	st := storage.NewInMemoryStorage()
+	mockSvc := New(env, st)
+	glossarySvc := mockSvc.businessGlossaryService
+
+	_, err := glossarySvc.CreateGlossaryCategory(ctx, &pb.CreateGlossaryCategoryRequest{
+		Parent:     "projects/test-project/locations/us-central1/glossaries/nonexistent-glossary",
+		CategoryId: "cat-1",
+		Category: &pb.GlossaryCategory{
+			DisplayName: "Category in non-existent glossary",
+		},
+	})
+	if err == nil {
+		t.Fatalf("expected error creating category under nonexistent glossary, got nil")
+	}
+	if status.Code(err) != codes.NotFound {
+		t.Errorf("expected NotFound error code, got %v (%v)", status.Code(err), err)
 	}
 }
