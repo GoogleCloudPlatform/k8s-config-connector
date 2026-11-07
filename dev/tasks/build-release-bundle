@@ -193,7 +193,6 @@ BLOCKED_KINDS=(
     "DataplexEnvironment"
     "DataplexGlossary"
     "DataplexGlossaryCategory"
-    "DataplexGlossaryTerm"
     "DataplexMetadataFeed"
     "DevConnectAccountConnector"
     "DevConnectConnection"
