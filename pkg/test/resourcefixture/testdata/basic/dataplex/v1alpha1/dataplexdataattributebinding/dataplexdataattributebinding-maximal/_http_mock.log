@@ -1,0 +1,366 @@
+# Phase: CREATE
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding
+
+{
+  "dataAttributeBinding": {
+    "attributes": [
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+    ],
+    "description": "Maximal data attribute binding description",
+    "displayName": "Data Attribute Binding Maximal ${uniqueId}",
+    "labels": {
+      "env": "test",
+      "label-key": "label-val"
+    },
+    "paths": [
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+        ],
+        "name": "column1"
+      }
+    ],
+    "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1"
+  },
+  "dataAttributeBindingId": "dataplexdataattributebinding-maximal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.DataAttributeBinding",
+    "attributes": [
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal data attribute binding description",
+    "displayName": "Data Attribute Binding Maximal ${uniqueId}",
+    "labels": {
+      "env": "test",
+      "label-key": "label-val"
+    },
+    "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "paths": [
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+        ],
+        "name": "column1"
+      }
+    ],
+    "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attributes": [
+    "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal data attribute binding description",
+  "displayName": "Data Attribute Binding Maximal ${uniqueId}",
+  "labels": {
+    "env": "test",
+    "label-key": "label-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+  "paths": [
+    {
+      "attributes": [
+        "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+      ],
+      "name": "column1"
+    }
+  ],
+  "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding
+
+{
+  "dataAttributeBinding": {
+    "attributes": [
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1",
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+    ],
+    "description": "Updated maximal data attribute binding description",
+    "displayName": "Updated Data Attribute Binding Maximal ${uniqueId}",
+    "labels": {
+      "env": "test-updated",
+      "label-key": "label-val-updated"
+    },
+    "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "paths": [
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+        ],
+        "name": "column1"
+      },
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+        ],
+        "name": "column2"
+      }
+    ],
+    "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1"
+  },
+  "updateMask": "attributes,description,displayName,labels,paths"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.DataAttributeBinding",
+    "attributes": [
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1",
+      "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated maximal data attribute binding description",
+    "displayName": "Updated Data Attribute Binding Maximal ${uniqueId}",
+    "labels": {
+      "env": "test-updated",
+      "label-key": "label-val-updated"
+    },
+    "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "paths": [
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+        ],
+        "name": "column1"
+      },
+      {
+        "attributes": [
+          "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+        ],
+        "name": "column2"
+      }
+    ],
+    "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attributes": [
+    "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1",
+    "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal data attribute binding description",
+  "displayName": "Updated Data Attribute Binding Maximal ${uniqueId}",
+  "labels": {
+    "env": "test-updated",
+    "label-key": "label-val-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+  "paths": [
+    {
+      "attributes": [
+        "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+      ],
+      "name": "column1"
+    },
+    {
+      "attributes": [
+        "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+      ],
+      "name": "column2"
+    }
+  ],
+  "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attributes": [
+    "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1",
+    "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal data attribute binding description",
+  "displayName": "Updated Data Attribute Binding Maximal ${uniqueId}",
+  "labels": {
+    "env": "test-updated",
+    "label-key": "label-val-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+  "paths": [
+    {
+      "attributes": [
+        "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute1"
+      ],
+      "name": "column1"
+    },
+    {
+      "attributes": [
+        "projects/${projectId}/locations/us-central1/dataTaxonomies/taxonomy1/attributes/attribute2"
+      ],
+      "name": "column2"
+    }
+  ],
+  "resource": "projects/${projectId}/locations/us-central1/lakes/lake1/zones/zone1/entities/entity1",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding
+
+{
+  "name": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/dataAttributeBindings/dataplexdataattributebinding-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
