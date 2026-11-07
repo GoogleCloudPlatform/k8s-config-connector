@@ -1903,6 +1903,13 @@ protopath: google.cloud.bigquery.reservation.v1.BiReservation
 validated: null
 ---
 service: bigquery
+package: google.cloud.bigquery.reservation.v1
+proto: ReservationGroup
+kind: BigqueryReservationGroup
+protopath: google.cloud.bigquery.reservation.v1.ReservationGroup
+validated: null
+---
+service: bigquery
 package: google.cloud.bigquery.storage.v1
 proto: ReadSession
 kind: BigqueryReadSession
