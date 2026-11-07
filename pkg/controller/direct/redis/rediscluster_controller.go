@@ -168,10 +168,6 @@ func (m *redisClusterModel) AdapterForURL(ctx context.Context, url string) (dire
 
 // Find implements the Adapter interface.
 func (a *redisClusterAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.Cluster == "" {
-		return false, nil
-	}
-
 	req := &pb.GetClusterRequest{
 		Name: a.id.String(),
 	}

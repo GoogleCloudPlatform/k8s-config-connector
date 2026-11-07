@@ -29,7 +29,8 @@ var DocumentAIProcessorVersionGVK = GroupVersion.WithKind("DocumentAIProcessorVe
 type DocumentAIProcessorVersionSpec struct {
 	Parent `json:",inline"`
 
-	// The DocumentAIProcessorVersion name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// If set, information about the eventual deprecation of this version.

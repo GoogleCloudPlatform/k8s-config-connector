@@ -6107,8 +6107,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
               rowLayout:
                 description: The content is divided into equally spaced rows and the
