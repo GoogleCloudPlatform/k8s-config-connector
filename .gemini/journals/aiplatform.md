@@ -148,6 +148,16 @@
   3. **Real GCP E2E Fixtures**: Minimal and maximal test fixtures (`aiplatformragcorpus-minimal` and `aiplatformragcorpus-maximal`) were created under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformragcorpus/`. Golden logs were recorded against real GCP, passing all E2E validation checks (V1-V7).
 - **Impact**: Greenfield direct controller and round-trip fuzzer for `AIPlatformRAGCorpus` are fully implemented, tested, and verified against real GCP.
 
+### 2026-11-06 Prepopulating AIPlatformTensorboardRun Greenfield Direct Types
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `AIPlatformTensorboardRun` under `apis/aiplatform/v1alpha1/` (Issue #15177).
+- **Implementation**:
+  1. Configured `apis/aiplatform/generate.sh` to include `AIPlatformTensorboardRun:TensorboardRun` for `generate-types` (backed by GA proto `google.cloud.aiplatform.v1`) and `generate-identity`.
+  2. Generated `aiplatformtensorboardrun_types.go`, `aiplatformtensorboardrun_identity.generated.go`, `aiplatformtensorboardrun_reference.generated.go`, and test file `aiplatformtensorboardrun_identity_generated_test.go`.
+  3. Added `AIPlatformTensorboardRun` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Updated `apis/aiplatform/judgement_queue.yaml` with open triage findings for Step 1b.
+  5. Recorded golden test exceptions in `alpha-missingfields.txt` and `spec_dislike_etag.txt`.
+- **Impact**: Step 1a prepopulation complete, deterministic, and verified with all apichecks and conformance unit tests passing.
+
 ### [2026-11-12] Greenfield Step 1a: Prepopulating Direct KRM Types, Identity, and Judgement Queue for AIPlatformArtifact
 - **Context**: Prepopulating direct KRM types, identity, reference, and open judgement queue for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15495).
 - **Implementation & Learnings**:
