@@ -1,0 +1,476 @@
+# Phase: CREATE
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = The Model does not exist.
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/UploadModel
+
+{
+  "model": {
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "displayName": "Test Model"
+  },
+  "modelId": "model-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/models/model-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/models/model-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/models/model-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelResponse",
+    "model": "projects/${projectNumber}/locations/us-central1/models/model-${uniqueId}",
+    "modelVersionId": "1"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}"
+}
+
+OK
+
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Model Monitor `projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}` is not found or active.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors?%24alt=json%3Benum-encoding%3Dint&modelMonitorId=aiplatformmodelmonitor-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "modelmonitor-${uniqueId}",
+  "modelMonitoringSchema": {
+    "featureFields": [
+      {
+        "dataType": "float",
+        "name": "feat1"
+      }
+    ],
+    "predictionFields": [
+      {
+        "dataType": "float",
+        "name": "pred1"
+      }
+    ]
+  },
+  "modelMonitoringTarget": {
+    "vertexModel": {
+      "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+      "modelVersionId": "1"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateModelMonitorOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateModelMonitorOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ModelMonitor",
+    "displayName": "modelmonitor-${uniqueId}",
+    "modelMonitoringSchema": {
+      "featureFields": [
+        {
+          "dataType": "float",
+          "name": "feat1"
+        }
+      ],
+      "predictionFields": [
+        {
+          "dataType": "float",
+          "name": "pred1"
+        }
+      ]
+    },
+    "modelMonitoringTarget": {
+      "vertexModel": {
+        "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+        "modelVersionId": "1"
+      }
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}"
+  }
+}
+
+---
+
+# Phase: UPDATE
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "modelmonitor-${uniqueId}",
+  "modelMonitoringSchema": {
+    "featureFields": [
+      {
+        "dataType": "float",
+        "name": "feat1"
+      }
+    ],
+    "predictionFields": [
+      {
+        "dataType": "float",
+        "name": "pred1"
+      }
+    ]
+  },
+  "modelMonitoringTarget": {
+    "vertexModel": {
+      "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+      "modelVersionId": "1"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CnotificationSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: model_monitor.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}
+
+{
+  "displayName": "modelmonitor-upd-${uniqueId}",
+  "modelMonitoringSchema": {
+    "featureFields": [
+      {
+        "dataType": "float",
+        "name": "feat1"
+      }
+    ],
+    "predictionFields": [
+      {
+        "dataType": "float",
+        "name": "pred1"
+      }
+    ]
+  },
+  "modelMonitoringTarget": {
+    "vertexModel": {
+      "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+      "modelVersionId": "1"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}",
+  "notificationSpec": {
+    "emailConfig": {
+      "userEmails": [
+        "alert-${uniqueId}@example.com"
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateModelMonitorOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ModelMonitor",
+    "displayName": "modelmonitor-upd-${uniqueId}",
+    "modelMonitoringSchema": {
+      "featureFields": [
+        {
+          "dataType": "float",
+          "name": "feat1"
+        }
+      ],
+      "predictionFields": [
+        {
+          "dataType": "float",
+          "name": "pred1"
+        }
+      ]
+    },
+    "modelMonitoringTarget": {
+      "vertexModel": {
+        "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+        "modelVersionId": "1"
+      }
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}",
+    "notificationSpec": {
+      "emailConfig": {
+        "userEmails": [
+          "alert-${uniqueId}@example.com"
+        ]
+      }
+    }
+  }
+}
+
+---
+
+# Phase: DELETE
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "modelmonitor-upd-${uniqueId}",
+  "modelMonitoringSchema": {
+    "featureFields": [
+      {
+        "dataType": "float",
+        "name": "feat1"
+      }
+    ],
+    "predictionFields": [
+      {
+        "dataType": "float",
+        "name": "pred1"
+      }
+    ]
+  },
+  "modelMonitoringTarget": {
+    "vertexModel": {
+      "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+      "modelVersionId": "1"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}",
+  "notificationSpec": {
+    "emailConfig": {
+      "userEmails": [
+        "alert-${uniqueId}@example.com"
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmodelMonitors%2Faiplatformmodelmonitor-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}"
+}
+
+OK
+
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}"
+}
+
+OK
+
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ModelService/DeleteModel
+
+{
+  "name": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/models/model-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
