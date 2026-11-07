@@ -50,10 +50,30 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource AgentRegistryBinding:Binding
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource AgentRegistryService:Service \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource AgentRegistryService:Service
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.agentregistry.v1 \
-  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/agentregistry" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/agentregistry/
+fi
