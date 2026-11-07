@@ -56,8 +56,8 @@ entries:
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_number}/buckets/{bucket_id}"
     status: resolved
-    resolution: not-applicable
-    note: kept as string; polymorphic relative resource name pointing to either Cloud Storage bucket or BigQuery dataset, cannot be represented as a single typed reference
+    resolution: edited
+    note: represented as typed references in Asset_ResourceSpec with either storageBucketRef (*storagev1beta1.StorageBucketRef) or bigQueryDatasetRef (*bigqueryv1beta1.DatasetRef)
   - kind: DataplexContent
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

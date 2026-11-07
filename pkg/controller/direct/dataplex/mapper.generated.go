@@ -363,28 +363,6 @@ func Asset_DiscoveryStatus_Stats_ToProto(mapCtx *direct.MapContext, in *krm.Asse
 	return out
 }
 
-func Asset_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceSpec) *krm.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Asset_ResourceSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.ReadAccessMode = direct.Enum_FromProto(mapCtx, in.GetReadAccessMode())
-	return out
-}
-
-func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceSpec) *pb.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Asset_ResourceSpec{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
-	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
-	return out
-}
-
 func Asset_ResourceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceStatus) *krm.Asset_ResourceStatusObservedState {
 	if in == nil {
 		return nil
