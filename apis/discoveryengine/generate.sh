@@ -69,6 +69,28 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
+# DiscoveryEngineDataConnector requires a newer proto commit containing data_connector.proto
+DATA_CONNECTOR_PROTO_SHA="4d40dcbbad29b0ad0927d748796c6bb207a277de"
+DATA_CONNECTOR_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${DATA_CONNECTOR_PROTO_SHA}.pb"
+./generate-proto.sh ${DATA_CONNECTOR_PROTO_SHA} ${DATA_CONNECTOR_PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${DATA_CONNECTOR_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineDataConnector:DataConnector \
+  --prepopulate-resource
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/dataconnector_types.generated.go
+
+# HealthcareFhirConfig is provided by dataconnector_types.generated.go with the newer proto schema; keep it unreachable in v1_types.generated.go to avoid duplicate declaration
+perl -0777 -i -pe 's|// \+kcc:proto=google\.cloud\.discoveryengine\.v1\.HealthcareFhirConfig\ntype HealthcareFhirConfig struct \{.*?\n\}|/* unreachable type HealthcareFhirConfig\n$&\n*/|s' "${REPO_ROOT}/apis/discoveryengine/v1alpha1/v1_types.generated.go"
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${DATA_CONNECTOR_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineDataConnector:DataConnector
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
