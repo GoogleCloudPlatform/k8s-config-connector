@@ -1,0 +1,406 @@
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters?%24alt=json%3Benum-encoding%3Dint&exadbVmClusterId=exadbvm-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east4
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "displayName": "Exadb VM Cluster Minimal",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "gridImageId": "gi-image-id-val",
+    "hostnamePrefix": "host-pref",
+    "nodeCount": 2,
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}"
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.ExadbVmCluster",
+    "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Exadb VM Cluster Minimal",
+    "entitlementId": "12345678",
+    "gcpOracleZone": "us-east4-a-r1",
+    "identityConnector": {
+      "connectionState": "CONNECTED",
+      "serviceAgentEmail": "p${projectNumber}-sa@gcp-sa-oci.iam.gserviceaccount.com"
+    },
+    "name": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+    "properties": {
+      "enabledEcpuCountPerNode": 4,
+      "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+      "giVersion": "19.0.0.0",
+      "gridImageId": "gi-image-id-val",
+      "hostname": "host-pref-abcd",
+      "hostnamePrefix": "host-pref",
+      "lifecycleState": "AVAILABLE",
+      "memorySizeGb": 11,
+      "nodeCount": 2,
+      "ociUri": "https://cloud.oracle.com/db/vmclusters/exadbvm-${uniqueId}",
+      "shapeAttribute": "SMART_STORAGE",
+      "sshPublicKeys": [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+      ],
+      "vmFileSystemStorage": {
+        "sizeInGbsPerNode": 120
+      }
+    }
+  }
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Exadb VM Cluster Minimal",
+  "entitlementId": "12345678",
+  "gcpOracleZone": "us-east4-a-r1",
+  "identityConnector": {
+    "connectionState": 1,
+    "serviceAgentEmail": "p${projectNumber}-sa@gcp-sa-oci.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "giVersion": "19.0.0.0",
+    "gridImageId": "gi-image-id-val",
+    "hostname": "host-pref-abcd",
+    "hostnamePrefix": "host-pref",
+    "lifecycleState": 2,
+    "memorySizeGb": 11,
+    "nodeCount": 2,
+    "ociUri": "https://cloud.oracle.com/db/vmclusters/exadbvm-${uniqueId}",
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+---
+
+PATCH https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=properties
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: exadb_vm_cluster.name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "displayName": "Exadb VM Cluster Minimal",
+  "name": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "gridImageId": "gi-image-id-val",
+    "hostnamePrefix": "host-pref",
+    "nodeCount": 3,
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}"
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.ExadbVmCluster",
+    "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Exadb VM Cluster Minimal",
+    "entitlementId": "12345678",
+    "gcpOracleZone": "us-east4-a-r1",
+    "identityConnector": {
+      "connectionState": "CONNECTED",
+      "serviceAgentEmail": "p${projectNumber}-sa@gcp-sa-oci.iam.gserviceaccount.com"
+    },
+    "name": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+    "properties": {
+      "enabledEcpuCountPerNode": 4,
+      "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+      "giVersion": "19.0.0.0",
+      "gridImageId": "gi-image-id-val",
+      "hostname": "host-pref-abcd",
+      "hostnamePrefix": "host-pref",
+      "lifecycleState": "AVAILABLE",
+      "memorySizeGb": 11,
+      "nodeCount": 3,
+      "ociUri": "https://cloud.oracle.com/db/vmclusters/exadbvm-${uniqueId}",
+      "shapeAttribute": "SMART_STORAGE",
+      "sshPublicKeys": [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+      ],
+      "vmFileSystemStorage": {
+        "sizeInGbsPerNode": 120
+      }
+    }
+  }
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupOdbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Exadb VM Cluster Minimal",
+  "entitlementId": "12345678",
+  "gcpOracleZone": "us-east4-a-r1",
+  "identityConnector": {
+    "connectionState": 1,
+    "serviceAgentEmail": "p${projectNumber}-sa@gcp-sa-oci.iam.gserviceaccount.com"
+  },
+  "name": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+  "odbSubnet": "projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}",
+  "properties": {
+    "enabledEcpuCountPerNode": 4,
+    "exascaleDbStorageVault": "projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}",
+    "giVersion": "19.0.0.0",
+    "gridImageId": "gi-image-id-val",
+    "hostname": "host-pref-abcd",
+    "hostnamePrefix": "host-pref",
+    "lifecycleState": 2,
+    "memorySizeGb": 11,
+    "nodeCount": 3,
+    "ociUri": "https://cloud.oracle.com/db/vmclusters/exadbvm-${uniqueId}",
+    "shapeAttribute": 1,
+    "sshPublicKeys": [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    ],
+    "vmFileSystemStorage": {
+      "sizeInGbsPerNode": 120
+    }
+  }
+}
+
+---
+
+DELETE https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2FexadbVmClusters%2Fexadbvm-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}"
+}
+
+---
+
+GET https://oracledatabase.googleapis.com/v1/projects/${projectId}/locations/us-east4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.oracledatabase.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-east4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

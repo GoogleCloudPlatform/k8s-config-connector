@@ -1,0 +1,54 @@
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseExadbVMCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: exadbvm-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupOdbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}
+  displayName: Exadb VM Cluster Minimal
+  location: us-east4
+  odbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  properties:
+    enabledEcpuCountPerNode: 4
+    exascaleDbStorageVaultRef:
+      external: projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}
+    gridImageID: gi-image-id-val
+    hostnamePrefix: host-pref
+    nodeCount: 3
+    shapeAttribute: SMART_STORAGE
+    sshPublicKeys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v...
+    vmFileSystemStorage:
+      sizeInGBsPerNode: 120
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-east4/exadbVmClusters/exadbvm-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    entitlementID: "12345678"
+    gcpOracleZone: us-east4-a-r1
+    identityConnector:
+      connectionState: CONNECTED
+      serviceAgentEmail: p${projectNumber}-sa@gcp-sa-oci.iam.gserviceaccount.com
+    properties:
+      giVersion: 19.0.0.0
+      hostname: host-pref-abcd
+      lifecycleState: AVAILABLE
+      memorySizeGB: 11
+      ociURI: https://cloud.oracle.com/db/vmclusters/exadbvm-${uniqueId}

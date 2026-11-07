@@ -65,6 +65,9 @@ var realGCPSkipFixtures = map[string]bool{
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
 	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect":                                     true,
 	"compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct":                              true,
+	// OracleDatabase ExadbVMCluster requires a marketplace order on the billing account.
+	"oracledatabase/v1alpha1/oracledatabaseexadbvmcluster/oracledatabaseexadbvmcluster-maximal": true,
+	"oracledatabase/v1alpha1/oracledatabaseexadbvmcluster/oracledatabaseexadbvmcluster-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
