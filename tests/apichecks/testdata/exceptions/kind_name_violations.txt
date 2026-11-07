@@ -7,6 +7,7 @@
 [kind-name-violation] kind=CESApp api=ces message=App: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CesAgent api=ces message=Agent: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudBatchResourceAllowance api=batch message=ResourceAllowance: expected kind name is BatchResourceAllowance
+[kind-name-violation] kind=CloudDMSConnectionProfile api=datamigration message=ConnectionProfile: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudDMSConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudDMSMigrationJob api=datamigration message=MigrationJob: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudDMSPrivateConnection api=datamigration message=PrivateConnection: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
