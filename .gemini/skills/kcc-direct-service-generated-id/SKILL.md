@@ -13,9 +13,17 @@ For such resources, the Kubernetes configuration uses `spec.resourceID` to speci
 
 ---
 
-## The 4 Rules for Service-Generated Resource IDs
+## The 5 Rules for Service-Generated Resource IDs
 
-When implementing or migrating direct controllers for resources that use service-assigned or service-generated identifiers, you must strictly follow these four architectural rules:
+When implementing or migrating direct controllers for resources that use service-assigned or service-generated identifiers, you must strictly follow these five architectural rules:
+
+### Rule 0: Standard Godoc Description for `resourceID` in KRM Types
+For resources with service-generated IDs, the `ResourceID` field in `<Kind>Spec` MUST use the canonical description:
+```go
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+	ResourceID *string `json:"resourceID,omitempty"`
+```
+*(If the service identifier field in the API has a specialized name such as `sha1Fingerprint` or `fingerprint`, adjust the comment to `The service-generated <field> of the resource...`). Do not invent custom, ad-hoc phrasing.*
 
 ### Rule 1: Identity Construction (`getIdentityFromSpec`)
 - Retrieve the resource ID using `GetServiceGeneratedResourceID(obj)` (or `common.ValueOf(obj.Spec.ResourceID)`).

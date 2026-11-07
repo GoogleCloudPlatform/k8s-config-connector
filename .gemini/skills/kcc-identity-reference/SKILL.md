@@ -81,16 +81,26 @@ Create or update the file to match the canonical example. Key requirements:
   - **Organization References:** `refs.ResolveOrganization` strictly expects the external reference string to follow `organizations/{organizationID}`. If a resource allows a plain numeric organization ID (e.g. `123456789`), or if `spec.organizationRef` is defined locally to match a legacy CRD schema, normalize it in `getIdentityFrom<Kind>Spec` by prefixing `"organizations/"` if `!strings.Contains(external, "/")`. Also handle fallback to `cnrm.cloud.google.com/organization-id` annotation (trimming any `"organizations/"` prefix to store just the ID).
 - Implement Boilerplate and GetIdentity(ctx, reader) on the Resource struct:
   - **CRITICAL / MANDATORY STATUS CROSS-CHECK IN GETIDENTITY:** In `GetIdentity`, you MUST always cross-check the parsed identity from spec against `status.externalRef` or whatever other status field holds the identity for created objects (e.g. `status.name`). This prevents drift and guarantees that the identity resolved is authoritative for created objects. If the resource is created, its identity MUST come from status; we cross-check spec against status to detect drift.
-  - **CRITICAL / MANDATORY:** Do NOT change the schema (e.g., do not add `status.externalRef` or `status.name` fields to the `_types.go` file if they are not already there) in this phase. If the resource's `Status` struct does not already contain an `ExternalRef` or `Name` field, do NOT perform any cross-check against the status in `GetIdentity`. Simply return the parsed `specIdentity` without checking status. **We should never change the schema to introduce an identity or reference.**
-  - **Verification:** Always run `dev/tasks/diff-crds` to check and guarantee that we have not changed the schema in any way.
+  - **Adding `status.externalRef` in Brownfield / Direct Migration:** For resources undergoing direct controller migration, always ensure `ExternalRef *string` is added to `<Kind>Status` in `<kind>_types.go` if not already present:
+    ```go
+    	// A unique specifier for the <Kind> resource in GCP.
+    	ExternalRef *string `json:"externalRef,omitempty"`
+    ```
+    Adding `status.externalRef` is expected and explicitly allowed by `./dev/tasks/diff-crds --base master --allow-status-external-ref-addition`. Do NOT add any other new status or spec fields (e.g., do NOT add `observedState`).
+    Once `ExternalRef *string` is added to `<Kind>Status`, re-run `apis/<service>/generate.sh` and regenerate CRDs with `dev/tasks/generate-crds`. `controllerbuilder generate-identity` will then automatically generate both the `status.externalRef` drift cross-check in `GetIdentity()` and the standard `refs.Normalize` implementation in `<kind>_reference.generated.go`. If `<kind>_reference.generated.go` is generated, delete any obsolete handwritten `<kind>_reference.go`.
+  - **Legacy Resources Without `status.externalRef`:** If working strictly on an unmigrated legacy (Terraform/DCL) resource where schema additions are not yet permitted, do not add `status.externalRef` or `status.name` fields; return the parsed `specIdentity` without checking status, and use `refs.NormalizeWithFallback` in a handwritten `<kind>_reference.go`.
+  - **Verification:** Always run `dev/tasks/diff-crds --base master --allow-status-external-ref-addition` to verify that no unexpected schema modifications were introduced beyond the allowed `status.externalRef`.
 
   - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to check for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).  The compiler is your friend: remove the functions, then run `go vet ./...` or `go build ./...` to look for references to functions that no longer exist.
 
 ### Step 4: Implement the Reference (`<kind>_reference.go`)
 
+> [!NOTE]
+> If `status.externalRef` is present on `<Kind>Status` and `apis/<service>/generate.sh` generates `<kind>_reference.generated.go`, that generated file already implements `refs.Ref` with canonical `refs.Normalize`. You do NOT need to write a handwritten `<kind>_reference.go`. Only implement a handwritten `<kind>_reference.go` if the reference cannot be auto-generated.
+
 Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go` to refresh your understanding.
 
-**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a reference type (e.g., `<Kind>Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
+**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a handwritten reference type (e.g., `<Kind>Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
 
 Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
