@@ -3,12 +3,12 @@
 We'd love to accept your patches and contributions to this project. We use this
 GitHub project as our primary source of truth and the main development
 repository for Config Connector. The source code in this project is also
-mirrored to internal Google repository for the purposes of releases.
+mirrored to an internal Google repository for the purposes of releases.
 
 ## Contributor License Agreement
 
 Contributions to this project must be accompanied by a Contributor License
-Agreement. You (or your employer) retain the copyright to your contribution;
+Agreement (CLA). You (or your employer) retain the copyright to your contribution;
 this simply gives us permission to use and redistribute your contributions as
 part of the project. Head over to <https://cla.developers.google.com/> to see
 your current agreements on file or to sign a new one.
@@ -17,7 +17,7 @@ You generally only need to submit a CLA once, so if you've already submitted one
 (even if it was for a different project), you probably don't need to do it
 again.
 
-## Code reviews
+## Code Reviews
 
 All submissions, including submissions by project members, require review. We
 use GitHub pull requests for this purpose. Consult
@@ -29,379 +29,226 @@ information on using pull requests.
 This project follows
 [Google's Open Source Community Guidelines](https://opensource.google.com/conduct/).
 
-## Set up your DEV environment
+## Developer Documentation
 
-You need to set up your own DEV environment before contributing to this project.
+For in-depth guidance on developing resources and controllers:
+- [Direct Resource Development Guide](docs/develop-resources/): Architecture overview and scenarios for Direct resources and controllers.
+- [Adding a New Resource](docs/develop-resources/scenarios/new-resource.md): Step-by-step guidance for adding new Config Connector resources.
 
-We follow the typical contribution flow similar to most OSS projects on GitHub.
+---
 
-### Configure Variables
+## Quickstart: Hermetic Local Development
 
-Export the `GITHUB_USERNAME` environment variable which will be used in subsequent
-steps.
+You do **not** need a Google Cloud Platform (GCP) account, cloud credentials, or a live Kubernetes cluster to develop and test Config Connector. The vast majority of development workflows—including type generation, controller reconciliation, mapper fuzzing, and integration testing—run hermetically on your local machine using MockGCP.
 
-```
-export GITHUB_USERNAME=YOUR_USERNAME
-```
+### Prerequisites
 
-### Fork and pull
+All you need locally are:
+- **Go** (matching the version in `go.mod`, currently 1.26)
+- **Make**
+- **Git**
+- **Envtest binaries** (`kube-apiserver` and `etcd`): Source the setup script to download and configure `KUBEBUILDER_ASSETS`:
+  ```shell
+  source dev/tasks/setup-envtest
+  ```
 
-We follow the
-[Fork and pull model](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model)
-in GitHub.
+### Fork and Clone
 
-You need to first fork this repository, and you can later on open a pull request
-to propose changes from your own fork to the **master** branch in this source
-repository.
-
-GitHub provides detailed instructions in
-[Fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo). In
-summary, you perform the follow steps to get your fork ready:
-
-1.  Set up Git and authentication with GitHub.com.
-
-    https://docs.github.com/en/get-started/quickstart/set-up-git
-
-2.  Fork the `k8s-config-connector` repo. Instructions below assumes you also
-    name your fork as `k8s-config-connector`. If you use a different name for
-    the fork, you should replace the commands with the right name.
-
-    https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository
-
-3.  Clone your forked repo to your dev machine.
-
-    https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository
-
-    We recommend you to create the local clone under the path
-    `~/go/src/github.com/$GITHUB_USERNAME`. This will help to avoid a few known
-    build frictions related to generated code.
-
-    ```shell
-    mkdir -p ~/go/src/github.com/$GITHUB_USERNAME
-    cd ~/go/src/github.com/$GITHUB_USERNAME
-    git clone https://github.com/$GITHUB_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:$GITHUB_USERNAME/k8s-config-connector.git
-    ```
-
-### Set up your environment
-
-> Note: Some of the environment setup scripts will try to write to the bash `~/.profile` and source it. You may need to modify those lines to suit your shell environment.
-
-Once you have cloned your forked repo, you can use some helper scripts in the
-repo to quickly set up a local dev environment.
-
-1.  Make sure you have [gcloud](https://cloud.google.com/sdk/docs/install)
-    installed and configured with a default GCP project. Confirm that you
-    have the role of either an editor or owner in this project.
-
-1.  Make sure you have at least 30 GB of free disk size.
-
-1.  Update apt and install build-essential.
-
-    ```shell
-    sudo apt-get update
-    sudo apt install build-essential
-    ```
-
-1.  Change to environment-setup directory.
-
-    ```shell
-    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
-    ```
-
-1.  Set up sudoless Docker.
-
-    ```shell
-    ./docker-setup.sh
-    ```
-
-1.  Exit your current session, then SSH back into the VM. Then run the
-    following to ensure you have set up sudoless docker correctly:
-
-    ```shell
-    docker run hello-world
-    ```
-
-1.  Install Golang.
-
-    ```shell
-    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
-    ./golang-setup.sh
-    source ~/.profile
-    ```
-
-1.  Install other build dependencies.
-
-    ```shell
-    ./repo-setup.sh
-    source ~/.profile
-    ```
-
-1.  Set up a GKE cluster for testing purposes. This script takes **a long time**
-    to run, it assumes there is a GKE cluster named "cnrm-dev" in your default
-    GCP project configured through gcloud, and creates one if it doesn't exist.
-
-    If you prefer to use an existing GKE cluster, you can modify `CLUSTER_NAME`
-    in the script and use the existing cluster name instead, which will reduce
-    the time it takes. Make sure the existing GKE cluster has
-    [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#enable)
-    enabled.
-
-    ```shell
-    ./gcp-setup.sh
-    ```
-1.  _(Optional)_ Verify that worload identity federation is [setup correctly](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#verify_the_setup).
-
-1.  Now that you have everything set up, you can build your own images and then
-    deploy the Config Connector CRDs and workloads (including controller
-    manager, webhooks, etc...) into your test GKE cluster.
-
-    1.  Note deploying 300+ CRDs into your test cluster can take **a long time**
-        to complete. If you are only testing/fixing issues for a few CRDs. You
-        can instead just apply the CRDs you are going to work on. As an example,
-        we want to deploy CRD `ArtifactRegistryRepositories` because we want to
-        validate creation of this resource in the next step. So we can do:
-
-        ```shell
-        cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector
-        make manifests
-        kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
-        ```
-
-    1.  We need to install the following two CRDs as they are hard dependencies
-        to reconcile all the other supported CRDs:
-        ```shell
-        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
-        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
-        ```
-
-    1.  Then we build/push the locally built images and deploy the workloads
-        using the command below:
-
-        ```shell
-        make deploy-controller
-        ```
-
-    1. If you want to install config connector on a brand new GKE cluster, the following command will install all CRDs, locally build, push and deploy all workloads to a standard GKE cluster.
-
-        ```shell
-        make deploy-kcc-standard
-        make install
-        ```
-    
-        For autopilot clusters, please use the following command.
-
-        ```shell
-        make deploy-kcc-autopilot
-        make install
-        ```
-
-### Validate your environment
-
-The script `gcp-setup.sh` annotates your `default` namespace in the GKE cluster
-with a
-[project-id](https://cloud.google.com/config-connector/docs/how-to/organizing-resources/project-scoped-resources#annotate_namespace_configuration)
-annotation equal to your default GCP project id in gcloud. This enables Config
-Connector to create GCP resources in that default GCP project. We can validate
-by creating an Artifact Registry resource through Config Connector.
-
-1.  Enable Artifact Registry for your project.
-
-    ```shell
-    gcloud services enable artifactregistry.googleapis.com
-    ```
-
-2.  Create a GCP ArtifactRegistryRepository resource. You can check if the
-    workloads are ready by: `kubectl get pods -n cnrm-system`
-
-    Then you can create a new ArtifactRegistryRepository resource:
-
-    ```shell
-    kubectl apply -f config/samples/resources/artifactregistryrepository/artifactregistry_v1beta1_artifactregistryrepository.yaml
-    ```
-
-3.  Wait a few minutes and then make sure your repository exists in GCP.
-
-    ```shell
-    gcloud artifacts repositories list
-    ```
-
-    If you see a repository named `artifactregistryrepository-sample`, then your
-    cluster is properly functioning and actuating K8s resources onto GCP.
-
-### Setup Troubleshooting
-
-#### Command kubebuilder/kustomize/etcd/go not found
-
-If, after running the setup scripts, you get a "command not found" error for `kubebuilder`, `kustomize`, or other tools,
-it is likely because your interactive terminal does not source the `~/.profile` file where the setup scripts add the new
-paths. This is a common issue, as many terminal configurations use `~/.bashrc` or `~/.bash_profile` for interactive sessions.
-
-**To fix this:**
-1.  Identify the lines added by the scripts to your `~/.profile` file. They will look similar to this:
-    ```shell
-    export PATH="/usr/local/kubebuilder/bin:$PATH"
-    export PATH="/usr/local/kustomize/bin:$PATH"
-    export TEST_ASSET_KUBE_APISERVER="${HOME}/kube/bin/kube-apiserver"
-    ```
-1.  Move these lines from `~/.profile` to the correct startup file for your shell (e.g., `~/.bashrc` or `~/.bash_profile`).
-1.  Apply the changes by either running `source ~/.bashrc` (or your chosen file) or by opening a new terminal window.
-1.  You can verify whether the issue is solved by checking the version of the tool you need, e.g. `kubebuilder version`.
-
-#### Looking for error logs
-
-You can look for error logs by checking the controller logs following the [troubleshooting](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).
-
-#### Pods fail to pull image
-When the cluster is created without providing a service account, a Compute Engine service account is created for the cluster. Users must grant the service account permission to pull images from the project registry.
-
-1.  Find the Compute Engine service account.
-
-    ```shell
-    gcloud iam service-accounts list | grep "Compute Engine default service account"
-    ```
-
-2.  Grant service account read permission.
-
-    ```shell
-    gcloud projects add-iam-policy-binding [PROJECT_ID] \
-        --member="[SERVICE_ACCOUNT]"
-        --role="roles/storage.objectViewer"
-    ```
-
-#### Sample Artifact Registry is not created
-Make sure that the `cnrm.cloud.google.com/project-id` annotation is replaced with your PROJECT_ID in the sample "artifactregistry_v1beta1_artifactregistryrepository.yaml". More detail can be found in [documentation](https://cloud.google.com/config-connector/docs/how-to/organizing-resources/project-scoped-resources).
-
-#### Error getting ConfigConnectorContext object
-
-```
-kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
-kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
-make deploy-controller && kubectl delete pods --namespace cnrm-system --all
-```
-
-### Make a Code Change
-
-At this point, your cluster is running a CNRM Controller Manager image built on
-your system. Let's make a code change to verify that you are ready to start
-development.
-
-Edit cmd/manager/main.go in your local repository. Insert the `log.Printf(...)`
-statement below on the first line of the `main()` function.
+We follow the standard [Fork and Pull model](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model):
 
 ```shell
-package manager
+# Clone your fork
+git clone https://github.com/<YOUR_GITHUB_USERNAME>/k8s-config-connector.git
+cd k8s-config-connector
 
-func main() {
-    log.Printf("I have finished the getting started guide.")
-    ...
-}
+# Add upstream remote
+git remote add upstream https://github.com/GoogleCloudPlatform/k8s-config-connector.git
+git fetch upstream
 ```
 
-To apply the change, you can either deploy the container image into the GKE
-Cluster, or run the Controller Manager directly as a local executable.
+---
 
-#### Build and Deploy the Controller Manager into the GKE Cluster
+## Controller Archetype Triage
 
-Build and deploy your change, force a pull of the container image.
+Config Connector contains resources managed by three co-existing controller engines:
+1. **Direct Controllers** (`pkg/controller/direct/`, `apis/`): Modern Go SDK-native controllers backed by hermetic in-memory tests via MockGCP. This is the **default and required approach for all new features and greenfield resources**.
+2. **Terraform-Based Controllers** (`third_party/.../terraform-provider-google-beta/`, `config/servicemappings/`): Legacy brownfield reconcilers.
+3. **DCL-Based Controllers** (`pkg/dcl/`, `declarative-resource-client-library`): Legacy brownfield reconcilers.
 
-```
-make deploy-controller && kubectl delete pods --namespace cnrm-system --all
-```
+Before making changes to an existing resource, check which controller engine manages it:
 
-Verify your new log statement is on the first line of the logs for the CNRM
-Controller Manager pod.
+1. Check `pkg/controller/resourceconfig/static_config.go`:
+   Look up `{Group: "<service>.cnrm.cloud.google.com", Kind: "<Kind>"}`:
+   - If `DefaultController: k8s.ReconcilerTypeDirect`, follow **Track A**.
+   - If `DefaultController: k8s.ReconcilerTypeTerraform`, follow **Track B (Terraform)**.
+   - If `DefaultController: k8s.ReconcilerTypeDCL`, follow **Track B (DCL)**.
+   - If both `Direct` and `Terraform` / `DCL` are listed in `SupportedControllers`, it is a dual-controller resource undergoing migration (see **Track C**).
+2. Check the CRD YAML in `config/crds/resources/`:
+   - Contains label `cnrm.cloud.google.com/tf2crd: "true"`: Terraform-managed resource.
+   - Contains label `cnrm.cloud.google.com/dcl2crd: "true"`: DCL-managed resource.
+   - Neither label present (or contains `apis/<service>/` direct types): Direct resource.
 
-```
-kubectl --namespace cnrm-system logs cnrm-controller-manager-0
-```
+---
 
-#### Build and Run the Controller Manager locally
+## Development Tracks
 
-If you don't want to deploy the controller manager into your dev cluster, you
-can run it locally on your dev machine with the steps below.
+Choose the track matching your task:
 
-1.  Get credentials for the cnrm-controller-manager service account.
+### Track A: Modern Direct Controllers (Default for New Features & Greenfield)
 
-    First, you need to create a long-lived API token.
+Direct Controllers interact directly with Google Cloud client libraries using Go structs and Protobufs, completely avoiding Terraform and DCL dependencies.
 
-    ```shell
-    kubectl -n cnrm-system apply -f - <<EOF
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: cnrm-controller-manager-secret
-      annotations:
-        kubernetes.io/service-account.name: cnrm-controller-manager
-    type: kubernetes.io/service-account-token
-    EOF
-    ```
+If you are adding a brand-new resource, see [Adding a New Resource](docs/develop-resources/scenarios/new-resource.md) for detailed step-by-step guidance.
 
-    Then, create a kubeconfig using the API token.
+Follow this standard workflow:
 
-    ```shell
-    set -o errexit
+1. **Define Types**:
+   Define or update the KRM Go structs in `apis/<service>/<version>/<resource>_types.go`.
+2. **Generate Code and Manifests**:
+   Run the service generation script and regenerate CRDs:
+   ```shell
+   apis/<service>/generate.sh
+   make manifests
+   ```
+3. **Implement Controller and Mappers**:
+   Implement or update the reconciler adapter, mappers, and UpdateMask in `pkg/controller/direct/<service>/`.
+   Ensure mappers translate between KRM types and GCP SDK proto/client types without defaulting logic.
+4. **Register Controller**:
+   Ensure the controller is registered in `pkg/controller/direct/register/register.go` with an anonymous import:
+   ```go
+   import (
+       _ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/<service>"
+   )
+   ```
+5. **Verify Mappers via Fuzzing**:
+   Run the round-trip mapper fuzzer to ensure zero data loss and catch panics:
+   ```shell
+   FOCUS=<ResourceName> go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers
+   ```
+6. **Run Hermetic MockGCP Integration Tests**:
+   Execute the end-to-end fixture test backed by MockGCP (no GCP credentials required):
+   ```shell
+   RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock go test -v ./tests/e2e -run 'TestAllInSeries/fixtures/<fixture-name>'
+   ```
+   Alternatively, use the convenience scripts:
+   - `./hack/compare-mock <fixture-name>` to run the test against MockGCP and compare against golden outputs.
+   - `./hack/record-gcp <fixture-name>` to run against real GCP and record the golden `_http.log`.
+7. **Verify PR Readiness**:
+   Run linters and manifest validations before submitting:
+   ```shell
+   make ready-pr
+   ```
 
-    kubectx=$(kubectl config current-context)
-    server=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"${kubectx}\")].cluster.server}")
-    clusterName='cnrm-dev'
-    namespace='cnrm-system'
-    serviceAccount='cnrm-controller-manager'
-    secretName='cnrm-controller-manager-secret'
-    ca=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.ca\.crt}')
-    token=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.token}' | base64 --decode)
+---
 
-    cat << EOF >> ~/.kube/cnrm-dev-controller-manager
-    ---
-    apiVersion: v1
-    kind: Config
-    clusters:
-      - name: ${clusterName}
-        cluster:
-          certificate-authority-data: ${ca}
-          server: ${server}
-    contexts:
-      - name: ${serviceAccount}@${clusterName}
-        context:
-          cluster: ${clusterName}
-          namespace: ${namespace}
-          user: ${serviceAccount}
-    users:
-      - name: ${serviceAccount}
-        user:
-          token: ${token}
-    current-context: ${serviceAccount}@${clusterName}
-    EOF
-    ```
+### Track B: Maintaining Legacy Terraform & DCL Resources
 
-2.  `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale
-    down the replica to 0.
+When fixing bugs or adding fields to legacy resources that have not yet been migrated to Direct:
 
-3.  Run `KUBECONFIG=~/.kube/cnrm-dev-controller-manager make run` and inspect the output logs.
+1. **Triage the Resource**:
+   Locate the resource in `pkg/controller/resourceconfig/static_config.go` and inspect its CRD in `config/crds/resources/`.
 
-#### Test your changes
+2. **For Terraform-Based Resources (`tf2crd`)**:
+   - Patch the vendored Terraform Google Beta provider code under `third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/<service>/`.
+   - Update `config/servicemappings/<service>.yaml` (un-ignore fields in `ignoredFields`, configure `resourceReferences`, or define `observedFields`).
+   - Regenerate CRDs and documentation:
+     ```shell
+     make manifests
+     make resource-docs
+     ```
+   - Run integration tests:
+     ```shell
+     RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock go test -v ./tests/e2e -run 'TestAllInSeries/fixtures/<fixture-name>'
+     ```
+     Or use `./hack/compare-mock <fixture-name>`.
+   - Verify PR readiness:
+     ```shell
+     make ready-pr
+     ```
 
-If you are adding a new resource, you need to follow the steps in [new-resource.md](docs/develop-resources/scenarios/new-resource.md)
-to make code changes, add test data, and run the tests for your resource.
+3. **For DCL-Based Resources (`dcl2crd`)**:
+   - Update the upstream DCL dependency:
+     ```shell
+     make upgrade-dcl
+     ```
+   - Regenerate CRDs and ensure clean dependencies:
+     ```shell
+     make ready-pr
+     ```
+   - Inspect generated CRD diffs:
+     ```shell
+     git diff config/crds/resources/
+     ```
 
-If you are working on a existing resource, test yaml should exist under
-./pkg/test/resourcefixture/testdata/basic, you can run the test command directly
-to make sure the test can still pass. Example command:
+---
 
-```bash
-# Export the environment variables needed in the dynamic tests if you haven't done it.
-TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
-```
-Replace `cloudschedulerjob` with your test target.
+### Track C: Migrating Legacy Resources to Direct
 
-### Submit a Pull Request
+We are progressively migrating legacy Terraform and DCL resources to Direct Controllers. Migrations follow a phased protocol to preserve backward compatibility:
 
-At this point you already knows how to make changes and verify it in your local
-dev environment. When you have tested your change and are ready to submit a PR,
-you can first validate the change locally:
+1. **Stage 1: Generate Direct Types with 100% Field Parity**:
+   - Create direct types under `apis/<service>/<version>/`.
+   - Ensure complete schema compatibility and 100% field parity with the existing CRD (which carries `cnrm.cloud.google.com/tf2crd: "true"` or `cnrm.cloud.google.com/dcl2crd: "true"`).
+   - Run `apis/<service>/generate.sh` and `make manifests`. Verify with `git diff config/crds/resources/` that no breaking changes or inadvertent schema diffs are introduced.
 
-```
-make ready-pr
-```
+2. **Stage 2: Create MockGCP Tests Matching Legacy Behavior**:
+   - Add or align MockGCP test fixtures in `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/`.
+   - Verify that MockGCP correctly simulates the GCP service behavior observed with the legacy controller.
 
-You can then commit your change and make a pull request. See [GitHub's contributing
-to projects: making and pushing changes](https://docs.github.com/en/get-started/quickstart/contributing-to-projects#making-and-pushing-changes).
+3. **Stage 3: Implement Direct Controller and Cut Over**:
+   - Implement the reconciler adapter and mappers in `pkg/controller/direct/<service>/`.
+   - Register the package in `pkg/controller/direct/register/register.go`.
+   - Update `pkg/controller/resourceconfig/static_config.go` (or run `dev/tasks/generate_static_config.py`) to set `DefaultController: k8s.ReconcilerTypeDirect` and list both Direct and legacy in `SupportedControllers` during transition.
+   - Run integration tests (`RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock go test -v ./tests/e2e -run 'TestAllInSeries/fixtures/<fixture-name>'` or `./hack/compare-mock <fixture-name>`) and `make ready-pr`.
+
+---
+
+## Submitting a Pull Request
+
+Before opening a PR:
+1. Ensure your branch is rebased on latest `upstream/master`.
+2. Run validation locally:
+   ```shell
+   make ready-pr
+   ```
+3. Commit your changes following clean git practices.
+   - For multi-PR efforts, reference tracking issues with `Part of #<issue_id>` on intermediate PRs and include `release-note: NONE`. Use `Fixes #<issue_id>` only on the final concluding PR.
+   - **Internal Hygiene**: Never include internal Buganizer IDs (e.g. `b/123...`), Buganizer links, or customer names in issue descriptions, PR titles, PR bodies, commit messages, code comments, or fixtures. Public GitHub issues should be referenced instead.
+4. Push to your fork and submit a Pull Request against `master`.
+
+---
+
+## Optional: Live Cluster E2E Verification
+
+Hermetic tests with MockGCP cover the vast majority of testing needs. If you need to test against a live GKE cluster and real GCP APIs, follow this optional workflow:
+
+1. **Prerequisites**:
+   - A GKE cluster with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) enabled.
+   - `gcloud` authenticated with a GCP project where you have Editor or Owner permissions.
+   - Docker installed and configured to push container images to your registry (e.g., Artifact Registry or GCR).
+
+2. **Install Core CRDs**:
+   ```shell
+   make manifests
+   kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+   kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+   ```
+
+3. **Install the Target Resource CRD**:
+   Deploy only the CRD you are testing (avoids applying all 300+ CRDs):
+   ```shell
+   kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<service>.cnrm.cloud.google.com.yaml
+   ```
+
+4. **Build and Deploy Controller**:
+   Build and push container images to your registry, then deploy the controller:
+   ```shell
+   make deploy-controller
+   ```
+
+5. **Test Resource Actuation**:
+   Apply your sample resource and verify its status conditions:
+   ```shell
+   kubectl apply -f config/samples/resources/<service>/<sample>.yaml
+   kubectl get <kind> <sample-name> -o yaml
+   ```
