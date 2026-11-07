@@ -97,9 +97,33 @@ According to the above principles, you can decide how to process the following.
 
 * Add other CR validations according to the [CustomResource field validations guide](../api-conventions/validations.md)
 
-* (Only for Terraform/DCL Beta) Existing `spec` and `status` fields should still be there, except the [output-only spec](https://paste.googleplex.com/4694303066030080) should be removed from `spec` and add to `status.observedState`.
+* (Only for Terraform/DCL Beta) Existing `spec` and `status` fields should still be there, except output-only fields should be removed from `spec` and placed in `status.observedState`. For example:
+
+```go
+type <Kind>Status struct {
+	/* Conditions represent the latest available observations of the
+	   <Kind>'s current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector. */
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	ObservedState *<Kind>ObservedState `json:"observedState,omitempty"`
+}
+
+// <Kind>ObservedState is the state of the <Kind> resource as most recently observed in GCP.
+// +kcc:observedstate:proto=<proto.message>
+type <Kind>ObservedState struct {
+	// Output only. The time at which the resource was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The current state of the resource.
+	State *string `json:"state,omitempty"`
+}
+```
 
 ### Exit Criteria
 
-* The API PRs shall pass the MockGCP tests. This requires a dirct controller or a Terraform/DCL based controller. If the API was modified (during migration of a Terraform/DCL-based Alpha to direct Alpha), MockGCP will not pass until the direct controller is implemented.
+* The API PRs shall pass the MockGCP tests. This requires a direct controller or a Terraform/DCL based controller. If the API was modified (during migration of a Terraform/DCL-based Alpha to direct Alpha), MockGCP will not pass until the direct controller is implemented.
 * For Beta resource, all fields shall be covered and properly handled (no `/*NOTYET*/` comments).
