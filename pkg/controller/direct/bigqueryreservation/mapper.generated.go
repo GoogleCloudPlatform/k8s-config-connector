@@ -60,7 +60,6 @@ func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
-	// MISSING: SchedulingPolicy
 	return out
 }
 func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -71,7 +70,6 @@ func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.M
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
-	// MISSING: SchedulingPolicy
 	return out
 }
 
@@ -85,7 +83,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out.Assignee = direct.LazyPtr(in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	// MISSING: EnableGeminiInBigquery
-	// MISSING: SchedulingPolicy
+	out.SchedulingPolicy = SchedulingPolicy_v1beta1_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
 }
 */
@@ -102,7 +100,7 @@ found existing non-generated mapping function "BigQueryReservationAssignmentSpec
 		out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in.Assignee)
 		out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
 		// MISSING: EnableGeminiInBigquery
-		// MISSING: SchedulingPolicy
+		out.SchedulingPolicy = SchedulingPolicy_v1beta1_ToProto(mapCtx, in.SchedulingPolicy)
 		return out
 	}
 */
