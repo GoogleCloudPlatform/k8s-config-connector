@@ -103,4 +103,12 @@
   2. Preserved the stable `PROTO_SHA` for the existing `v1` and `v1beta` resources and mapper generation.
 - **Impact**: Allows clean mechanical prepopulation and CRD generation for `DiscoveryEngineWidgetConfig` without destabilizing existing DiscoveryEngine CRDs or controller mappers.
 
+### [2026-11-06] DiscoveryEngineACLConfig Prepopulation
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `DiscoveryEngineACLConfig` (Issue #15185).
+- **Details**:
+  1. `google.cloud.discoveryengine.v1.AclConfig` was introduced in proto commit `4d40dcbbad29b0ad0927d748796c6bb207a277de` and Go client SDK `v1.37.0`.
+  2. In `apis/discoveryengine/generate.sh`, previous resources were pinned to `665784f816da130b27edb566694b2441d0cfddf2`. To avoid type conflicts (such as duplicated `Date` struct between `v1` and `v1beta`), a new proto SHA `4d40dcbbad29b0ad0927d748796c6bb207a277de` was added specifically for scaffolding `DiscoveryEngineACLConfig` with `--prepopulate-resource`.
+  3. Upgraded `cloud.google.com/go/discoveryengine` to `v1.37.0` to provide `apiv1/discoveryenginepb.AclConfig` for mapper generation, pinning `genproto` with a replace directive to prevent genproto package split conflicts.
+
+
 
