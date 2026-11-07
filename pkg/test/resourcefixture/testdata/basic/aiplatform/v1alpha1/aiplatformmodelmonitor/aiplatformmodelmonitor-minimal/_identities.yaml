@@ -1,0 +1,12 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/models/model-${uniqueId}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformModel
+  name: model-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformModelMonitor
+  name: aiplatformmodelmonitor-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

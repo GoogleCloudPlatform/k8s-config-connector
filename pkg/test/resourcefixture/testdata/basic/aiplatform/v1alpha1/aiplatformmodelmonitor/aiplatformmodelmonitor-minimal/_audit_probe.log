@@ -1,0 +1,39 @@
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "modelmonitor-upd-${uniqueId}",
+  "modelMonitoringSchema": {
+    "featureFields": [
+      {
+        "dataType": "float",
+        "name": "feat1"
+      }
+    ],
+    "predictionFields": [
+      {
+        "dataType": "float",
+        "name": "pred1"
+      }
+    ]
+  },
+  "modelMonitoringTarget": {
+    "vertexModel": {
+      "model": "projects/${projectId}/locations/us-central1/models/model-${uniqueId}",
+      "modelVersionId": "1"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}",
+  "notificationSpec": {
+    "emailConfig": {
+      "userEmails": [
+        "alert-${uniqueId}@example.com"
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
