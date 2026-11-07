@@ -342,6 +342,23 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for DataplexGlossary to simulate a reconciled glossary in static unit tests.
+			if u.GetKind() == "DataplexGlossary" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				glossaryID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if glossaryID == "" {
+					glossaryID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/glossaries/%s", projectID, location, glossaryID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for DataplexGlossary %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
