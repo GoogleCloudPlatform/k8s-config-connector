@@ -1,0 +1,96 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "TagsTagKey/tagstagkey-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "For keyname resources."
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "namespaced_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent",
+        "old": "",
+        "new": "projects/${projectId}"
+      },
+      {
+        "id": "short_name",
+        "old": "",
+        "new": "keyname${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "TagsTagValue/tagstagvalue-${uniqueId}"
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "TagsTagValue/tagstagvalue-${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "TagsTagValue/tagstagvalue-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "For valuename resources."
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "namespaced_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent",
+        "old": "",
+        "new": "tagKeys/281476993033997"
+      },
+      {
+        "id": "short_name",
+        "old": "",
+        "new": "valuename${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
