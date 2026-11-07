@@ -2,6 +2,8 @@ This is the Config Connector project, also known as KCC.
 
 KCC is a set of kubernetes controllers for managing Google Cloud Platform (GCP) resources.  It is OSS under the Apache 2 license.
 
+For autonomous coding agent guidelines, controller archetype triage, and CLI fast paths, see [AGENTS.md](AGENTS.md).
+
 Each GCP resource maps to a different CRD and controller.
 
 For example, GCP Storage Buckets is managed by the StorageBucket CRD.  The group for StorageBucket is storage.cnrm.cloud.google.com.
