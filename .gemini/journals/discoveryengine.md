@@ -98,6 +98,6 @@
 - **Details**:
   1. `google.cloud.discoveryengine.v1.AclConfig` was introduced in proto commit `4d40dcbbad29b0ad0927d748796c6bb207a277de` and Go client SDK `v1.37.0`.
   2. In `apis/discoveryengine/generate.sh`, previous resources were pinned to `665784f816da130b27edb566694b2441d0cfddf2`. To avoid type conflicts (such as duplicated `Date` struct between `v1` and `v1beta`), a new proto SHA `4d40dcbbad29b0ad0927d748796c6bb207a277de` was added specifically for scaffolding `DiscoveryEngineACLConfig` with `--prepopulate-resource`.
-  3. Upgraded `cloud.google.com/go/discoveryengine` to `v1.37.0` to provide `apiv1/discoveryenginepb.AclConfig` for mapper generation, pinning `genproto` with a replace directive to prevent genproto package split conflicts.
+  3. Kept `cloud.google.com/go/discoveryengine` at `v1.32.0` in `go.mod` and ran `generate-mapper` against `${PROTO_OUT}` so Step 1a scaffolding does not introduce premature SDK upgrades.
 
 
