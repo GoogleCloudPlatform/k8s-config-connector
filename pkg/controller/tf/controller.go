@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -51,7 +51,6 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -74,8 +73,7 @@ type Reconciler struct {
 	resourceLeaser  *leaser.ResourceLeaser
 	defaulters      []k8s.Defaulter
 	mgr             manager.Manager
-	schemaRef       *k8s.SchemaReference
-	schemaRefMu     sync.RWMutex
+	schemaRef       atomic.Pointer[k8s.SchemaReference]
 	provider        *tfschema.Provider
 	smLoader        *servicemappingloader.ServiceMappingLoader
 	logger          logr.Logger
@@ -136,7 +134,7 @@ func NewReconciler(mgr manager.Manager,
 	}
 
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
-	return &Reconciler{
+	r := &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
@@ -144,15 +142,6 @@ func NewReconciler(mgr manager.Manager,
 		resourceLeaser: leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
 		defaulters:     defaulters,
 		mgr:            mgr,
-		schemaRef: &k8s.SchemaReference{
-			CRD:        crd,
-			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
-			GVK: schema.GroupVersionKind{
-				Group:   crd.Spec.Group,
-				Version: k8s.GetVersionFromCRD(crd),
-				Kind:    crd.Spec.Names.Kind,
-			},
-		},
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
@@ -163,7 +152,9 @@ func NewReconciler(mgr manager.Manager,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		jitterGenerator:            jitterGenerator,
 		controllerName:             controllerName,
-	}, nil
+	}
+	r.schemaRef.Store(k8s.NewSchemaReference(crd))
+	return r, nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
@@ -171,17 +162,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reco
 }
 
 func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
-
-	r.schemaRefMu.RLock()
-	defer r.schemaRefMu.RUnlock()
+	schemaRef := r.schemaRef.Load()
 	r.logger.V(1).Info("starting reconcile", "resource", req.NamespacedName)
 	startTime := time.Now()
-	r.RecordReconcileWorkers(ctx, r.schemaRef.GVK)
+	r.RecordReconcileWorkers(ctx, schemaRef.GVK)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, r.schemaRef.GVK, req.Namespace, req.Name, startTime, &err)
+	defer r.RecordReconcileMetrics(ctx, schemaRef.GVK, req.Namespace, req.Name, startTime, &err)
 
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.schemaRef.GVK)
+	u.SetGroupVersionKind(schemaRef.GVK)
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
@@ -236,7 +225,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	case v1beta1.Reconciling:
 		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
 	case v1beta1.Paused:
-		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
+		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(schemaRef.GVK, u)
 		if err != nil {
 			return reconcile.Result{}, err
 		}
@@ -272,7 +261,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
+	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(schemaRef.GVK, u)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -364,7 +353,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true,
+		krmResource, r, r.smLoader, liveState, r.schemaRef.Load().JSONSchema, true,
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -634,9 +623,12 @@ func (r *Reconciler) hasServerGeneratedIDAndHadBeenCreatedOnceAlready(resource *
 var _ k8s.SchemaReferenceUpdater = &Reconciler{}
 
 func (r *Reconciler) UpdateSchema(crd *apiextensions.CustomResourceDefinition) error {
-	r.schemaRefMu.Lock()
-	defer r.schemaRefMu.Unlock()
-	return k8s.UpdateSchema(r.schemaRef, crd)
+	newRef, err := k8s.NewUpdatedSchemaReference(r.schemaRef.Load(), crd)
+	if err != nil {
+		return err
+	}
+	r.schemaRef.Store(newRef)
+	return nil
 }
 
 func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) error {
