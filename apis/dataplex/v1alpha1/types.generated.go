@@ -269,26 +269,6 @@ type Asset_DiscoveryStatus_Stats struct {
 	Filesets *int64 `json:"filesets,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataplex.v1.Asset.ResourceSpec
-type Asset_ResourceSpec struct {
-	// Immutable. Relative name of the cloud resource that contains the data
-	//  that is being managed within a lake. For example:
-	//    `projects/{project_number}/buckets/{bucket_id}`
-	//    `projects/{project_number}/datasets/{dataset_id}`
-	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Immutable. Type of resource.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.type
-	// +required
-	Type *string `json:"type,omitempty"`
-
-	// Optional. Determines how read permissions are handled for each asset and
-	//  their associated tables. Only available to storage buckets assets.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.ResourceSpec.read_access_mode
-	ReadAccessMode *string `json:"readAccessMode,omitempty"`
-}
-
 /* unreachable type Asset_ResourceStatus
 // +kcc:proto=google.cloud.dataplex.v1.Asset.ResourceStatus
 type Asset_ResourceStatus struct {

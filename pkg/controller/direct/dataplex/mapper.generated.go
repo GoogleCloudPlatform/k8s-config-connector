@@ -363,28 +363,6 @@ func Asset_DiscoveryStatus_Stats_ToProto(mapCtx *direct.MapContext, in *krm.Asse
 	return out
 }
 
-func Asset_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceSpec) *krm.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Asset_ResourceSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.ReadAccessMode = direct.Enum_FromProto(mapCtx, in.GetReadAccessMode())
-	return out
-}
-
-func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceSpec) *pb.Asset_ResourceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Asset_ResourceSpec{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
-	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
-	return out
-}
-
 func Asset_ResourceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceStatus) *krm.Asset_ResourceStatusObservedState {
 	if in == nil {
 		return nil
@@ -2055,6 +2033,7 @@ func DataplexAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asse
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ResourceStatus = Asset_ResourceStatusObservedState_FromProto(mapCtx, in.GetResourceStatus())
 	out.SecurityStatus = Asset_SecurityStatus_FromProto(mapCtx, in.GetSecurityStatus())
@@ -2071,6 +2050,7 @@ func DataplexAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	out.ResourceStatus = Asset_ResourceStatusObservedState_ToProto(mapCtx, in.ResourceStatus)
 	out.SecurityStatus = Asset_SecurityStatus_ToProto(mapCtx, in.SecurityStatus)
@@ -2085,7 +2065,7 @@ func DataplexAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.D
 	out := &krm.DataplexAssetSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ResourceSpec = Asset_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
 	out.DiscoverySpec = Asset_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
@@ -2099,7 +2079,7 @@ func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetS
 	out := &pb.Asset{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.ResourceSpec = Asset_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
 	out.DiscoverySpec = Asset_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)

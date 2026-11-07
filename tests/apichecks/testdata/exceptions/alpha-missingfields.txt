@@ -2712,11 +2712,10 @@
 [missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.discoverySpec.jsonOptions.encoding" is not set in unstructured objects
 [missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.discoverySpec.schedule" is not set in unstructured objects
 [missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.name" is not set in unstructured objects
+[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.bigQueryDatasetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.readAccessMode" is not set in unstructured objects
+[missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.storageBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.type" is not set in unstructured objects
 [missing_field] crd=dataplexcontents.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataText" is not set in unstructured objects
 [missing_field] crd=dataplexcontents.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
