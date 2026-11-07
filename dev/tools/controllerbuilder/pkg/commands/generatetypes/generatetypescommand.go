@@ -772,4 +772,3 @@ func isNonGAProto(fullName string) bool {
 	}
 	return false
 }
-
