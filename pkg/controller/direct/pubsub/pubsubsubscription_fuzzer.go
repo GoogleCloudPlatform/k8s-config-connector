@@ -58,7 +58,6 @@ func pubSubSubscriptionFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".bigquery_config.service_account_email")
 	f.Unimplemented_NotYetTriaged(".bigquery_config.state")
-	f.Unimplemented_NotYetTriaged(".bigquery_config.use_table_schema")
 
 	f.Unimplemented_NotYetTriaged(".cloud_storage_config.filename_datetime_format")
 	f.Unimplemented_NotYetTriaged(".cloud_storage_config.text_config")

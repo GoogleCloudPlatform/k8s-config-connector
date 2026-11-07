@@ -5,6 +5,7 @@ bigqueryConfig:
     external: string
     name: string
     namespace: string
+  useTableSchema: boolean
   useTopicSchema: boolean
   writeMetadata: boolean
 cloudStorageConfig:
