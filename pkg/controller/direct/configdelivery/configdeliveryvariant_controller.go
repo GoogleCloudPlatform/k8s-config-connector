@@ -21,7 +21,11 @@ package configdelivery
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"slices"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/configdelivery/v1alpha1"
@@ -30,11 +34,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/configdelivery/apiv1"
 	configdeliverypb "cloud.google.com/go/configdelivery/apiv1/configdeliverypb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -157,6 +163,8 @@ func (a *VariantAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetLabels())
 
 	req := &configdeliverypb.CreateVariantRequest{
 		Parent:    a.id.ParentString(),
@@ -173,6 +181,10 @@ func (a *VariantAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 	log.V(2).Info("successfully created Variant", "name", a.id)
 
+	if err := createOp.SetMBUR(ctx, a.computeMBUR); err != nil {
+		return fmt.Errorf("setting MBUR: %w", err)
+	}
+
 	status := &krm.ConfigdeliveryVariantStatus{}
 	status.ObservedState = ConfigdeliveryVariantObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -182,15 +194,29 @@ func (a *VariantAdapter) Create(ctx context.Context, createOp *directbase.Create
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
+func (a *VariantAdapter) computeMBUR() (string, error) {
+	if len(a.desired.Spec.Resources) == 0 {
+		return "", nil
+	}
+	bytes, err := json.Marshal(a.desired.Spec.Resources)
+	if err != nil {
+		return "", fmt.Errorf("marshalling resources: %w", err)
+	}
+	h := sha256.Sum256(bytes)
+	return hex.EncodeToString(h[:]), nil
+}
+
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *VariantAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Variant", "name", a.id)
 
-	resource, report, updateMask, err := common.CompareGreenfieldSpec(
+	resource, report, updateMask, err := common.CompareGreenfieldSpecAndLabels(
 		ctx,
+		updateOp.GetUnstructured(),
 		&a.desired.Spec,
 		a.actual,
+		"labels",
 		ConfigdeliveryVariantSpec_FromProto,
 		ConfigdeliveryVariantSpec_ToProto,
 		nil,
@@ -198,6 +224,22 @@ func (a *VariantAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if err != nil {
 		return err
 	}
+
+	mburMatch, err := updateOp.CompareMBUR(a.computeMBUR)
+	if err != nil {
+		return fmt.Errorf("comparing MBUR: %w", err)
+	}
+	if !mburMatch {
+		if updateMask == nil {
+			updateMask = &fieldmaskpb.FieldMask{}
+		}
+		if !slices.Contains(updateMask.Paths, "resources") {
+			updateMask.Paths = append(updateMask.Paths, "resources")
+			slices.Sort(updateMask.Paths)
+		}
+		report.AddField("resources", nil, a.desired.Spec.Resources)
+	}
+
 	updated := a.actual
 	if !report.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -218,6 +260,10 @@ func (a *VariantAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			return fmt.Errorf("Variant %s waiting update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated Variant", "name", a.id)
+
+		if err := updateOp.SetMBUR(ctx, a.computeMBUR); err != nil {
+			return fmt.Errorf("setting MBUR: %w", err)
+		}
 	}
 
 	status := &krm.ConfigdeliveryVariantStatus{}
