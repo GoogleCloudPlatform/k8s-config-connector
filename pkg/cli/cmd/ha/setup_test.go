@@ -17,6 +17,7 @@ package ha
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"slices"
 	"strings"
 	"testing"
@@ -274,11 +275,17 @@ func TestExecuteSetupPreflightErrors(t *testing.T) {
 }
 
 type recordingCommandRunner struct {
-	commands []string
+	commands     []string
+	failDescribe bool
 }
 
 func (r *recordingCommandRunner) run(_ context.Context, name string, args ...string) error {
-	r.commands = append(r.commands, name+" "+strings.Join(args, " "))
+	full := name + " " + strings.Join(args, " ")
+	r.commands = append(r.commands, full)
+	if r.failDescribe && slices.Contains(args, "describe") {
+		return fmt.Errorf("resource not found")
+	}
+
 	return nil
 }
 
