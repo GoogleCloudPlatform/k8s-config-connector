@@ -192,7 +192,6 @@ BLOCKED_KINDS=(
     "DataplexEntryLink"
     "DataplexEnvironment"
     "DataplexGlossary"
-    "DataplexGlossaryCategory"
     "DataplexMetadataFeed"
     "DevConnectAccountConnector"
     "DevConnectConnection"

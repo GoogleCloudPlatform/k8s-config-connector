@@ -344,7 +344,10 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 
 			// Inject status.externalRef for DataplexGlossary to simulate a reconciled glossary in static unit tests.
 			if u.GetKind() == "DataplexGlossary" && u.GroupVersionKind().Group == "dataplex.cnrm.cloud.google.com" {
-				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
 				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
 				if location == "" {
 					location = "us-central1"
