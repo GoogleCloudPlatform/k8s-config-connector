@@ -29,5 +29,15 @@
   3. Verified that `hack/compare-mock`, `TestGoldenLogAlignment`, and `./dev/ci/presubmits/tests-e2e-fixtures-suite configdelivery` pass cleanly with zero discrepancies.
 - **Impact**: Full behavioral alignment and hermetic testing support for `ConfigDeliveryRelease`.
 
+### [2026-11-07] Triage Judgement Queue and Finalize Types for ConfigdeliveryVariant
+- **Context**: Triaging judgement queue and finalizing direct KRM types and identity for `ConfigdeliveryVariant` ([Issue 15210](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15210)).
+- **Observations**:
+  1. `Variant` is a child resource under `Release` (`projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}`). Modelled parent as required immutable `spec.parentRef` (`*ConfigDeliveryReleaseRef`) with CEL rule `self == oldSelf` per `go/kcc-oneparent` Case B.
+  2. Removed `spec.projectRef` and `spec.location`, as ancestor project, location, and resourceBundle are resolved via the parent `ConfigDeliveryReleaseRef`.
+  3. Removed top-level `spec.labels` as labels are reconciled via `metadata.labels`.
+  4. Regenerated CRD, deepcopy code, identity, and mappers via `apis/configdelivery/generate.sh`, and updated pre-generated controller and fuzzer in lockstep.
+- **Impact**: Clean direct KRM types, identity, controller, and fuzzer for `ConfigdeliveryVariant`.
+
+
 
 
