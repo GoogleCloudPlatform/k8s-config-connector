@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockbeyondcorp
-
 // +tool:mockgcp-service
 // http.host: beyondcorp.googleapis.com
 // proto.service: google.cloud.beyondcorp.appgateways.v1.AppGatewaysService
 // proto.service: google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService
+
+package mockbeyondcorp
 
 import (
 	"context"
@@ -26,8 +26,10 @@ import (
 
 	"google.golang.org/grpc"
 
-	pbAppConnectors "cloud.google.com/go/beyondcorp/appconnectors/apiv1/appconnectorspb"
-	pbAppGateways "cloud.google.com/go/beyondcorp/appgateways/apiv1/appgatewayspb"
+	appconnectionspb "cloud.google.com/go/beyondcorp/appconnections/apiv1/appconnectionspb"
+	appconnectorspb "cloud.google.com/go/beyondcorp/appconnectors/apiv1/appconnectorspb"
+	appgatewayspb "cloud.google.com/go/beyondcorp/appgateways/apiv1/appgatewayspb"
+	clientconnectorservicespb "cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1/clientconnectorservicespb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -39,15 +41,17 @@ func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked BeyondCorp service.
+// MockService represents a mocked beyondcorp service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
 
-	v1            *AppGatewaysV1
-	appConnectors *appConnectorServer
+	v1                      *AppGatewaysV1
+	appConnections          *appConnectionsServer
+	appConnectors           *appConnectorServer
+	clientConnectorServices *clientConnectorServicesServer
 }
 
 // New creates a MockService.
@@ -58,7 +62,9 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &AppGatewaysV1{MockService: s}
+	s.appConnections = &appConnectionsServer{MockService: s}
 	s.appConnectors = &appConnectorServer{MockService: s}
+	s.clientConnectorServices = &clientConnectorServicesServer{MockService: s}
 	return s
 }
 
@@ -67,19 +73,24 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pbAppGateways.RegisterAppGatewaysServiceServer(grpcServer, s.v1)
-	pbAppConnectors.RegisterAppConnectorsServiceServer(grpcServer, s.appConnectors)
+	appgatewayspb.RegisterAppGatewaysServiceServer(grpcServer, s.v1)
+	appconnectorspb.RegisterAppConnectorsServiceServer(grpcServer, s.appConnectors)
+	appconnectionspb.RegisterAppConnectionsServiceServer(grpcServer, s.appConnections)
+	clientconnectorservicespb.RegisterClientConnectorServicesServiceServer(grpcServer, s.clientConnectorServices)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httptogrpc.NewGRPCMux(conn)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	mux.AddService(pbAppGateways.NewAppGatewaysServiceClient(conn))
-	mux.AddService(pbAppConnectors.NewAppConnectorsServiceClient(conn))
-	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	grpcMux.AddService(appgatewayspb.NewAppGatewaysServiceClient(conn))
+	grpcMux.AddService(appconnectorspb.NewAppConnectorsServiceClient(conn))
+	grpcMux.AddService(appconnectionspb.NewAppConnectionsServiceClient(conn))
+	grpcMux.AddService(clientconnectorservicespb.NewClientConnectorServicesServiceClient(conn))
 
-	return mux, nil
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	return grpcMux, nil
 }
