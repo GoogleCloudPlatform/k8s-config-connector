@@ -23,7 +23,6 @@ import (
 	"cloud.google.com/go/iam/apiv1/iampb"
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"google.golang.org/api/option"
 	"k8s.io/klog/v2"
 )
 
@@ -35,7 +34,7 @@ var _ Fetcher = &IAMFetcher{}
 
 // todo acpana: house in direct?
 func NewIAMFetcher(ctx context.Context, config *config.ControllerConfig) (*IAMFetcher, error) {
-	opts, err := options(config)
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
@@ -46,27 +45,6 @@ func NewIAMFetcher(ctx context.Context, config *config.ControllerConfig) (*IAMFe
 	return &IAMFetcher{
 		crmClient: crmClient,
 	}, nil
-}
-
-func options(config *config.ControllerConfig) ([]option.ClientOption, error) {
-	var opts []option.ClientOption
-	if config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(config.UserAgent))
-	}
-	if config.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-		opts = append(opts, option.WithHTTPClient(config.HTTPClient))
-	}
-	if config.UserProjectOverride && config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(config.BillingProject))
-	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
-
-	return opts, nil
 }
 
 func (f *IAMFetcher) IsSupported(kind string, external string) bool {
