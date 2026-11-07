@@ -69,6 +69,37 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
+# DiscoveryEngineDataConnector requires a newer proto commit containing data_connector.proto
+DATA_CONNECTOR_PROTO_SHA="4d40dcbbad29b0ad0927d748796c6bb207a277de"
+DATA_CONNECTOR_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${DATA_CONNECTOR_PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${DATA_CONNECTOR_PROTO_SHA} ${DATA_CONNECTOR_PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${DATA_CONNECTOR_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineDataConnector:DataConnector \
+  --prepopulate-resource
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/dataconnector_types.generated.go
+
+# HealthcareFhirConfig is provided by dataconnector_types.generated.go with the newer proto schema; keep it unreachable in v1_types.generated.go to avoid duplicate declaration
+perl -0777 -i -pe 's|// \+kcc:proto=google\.cloud\.discoveryengine\.v1\.HealthcareFhirConfig\ntype HealthcareFhirConfig struct \{.*?\n\}|/* unreachable type HealthcareFhirConfig\n$&\n*/|s' "${REPO_ROOT}/apis/discoveryengine/v1alpha1/v1_types.generated.go"
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${DATA_CONNECTOR_PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineDataConnector:DataConnector
+
 WIDGET_PROTO_SHA="6a1db32dc52fd9421c1743dc8f5faa7a15e518d1"
 WIDGET_PROTO_OUT="${REPO_ROOT}/.build/googleapis-${WIDGET_PROTO_SHA}.pb"
 
@@ -94,6 +125,9 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.discoveryengine.v1 \
   --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineWidgetConfig:WidgetConfig
+
+# DataConnector_ConnectorMetadata is provided by dataconnector_types.generated.go; keep it unreachable in types.generated.go to avoid duplicate declaration
+perl -0777 -i -pe 's|// \+kcc:proto=google\.cloud\.discoveryengine\.v1\.DataConnector\.ConnectorMetadata\ntype DataConnector_ConnectorMetadata struct \{.*?\n\}|/* unreachable type DataConnector_ConnectorMetadata\n$&\n*/|s' "${REPO_ROOT}/apis/discoveryengine/v1alpha1/types.generated.go"
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \

@@ -25,6 +25,7 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
+/* unreachable type DataConnector_ConnectorMetadata
 // +kcc:proto=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata
 type DataConnector_ConnectorMetadata struct {
 	// Optional. Display title of the connector.
@@ -51,6 +52,7 @@ type DataConnector_ConnectorMetadata struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.DataConnector.ConnectorMetadata.note
 	Note *string `json:"note,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.WidgetConfig.AccessSettings
 type WidgetConfig_AccessSettings struct {
