@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
@@ -118,6 +119,10 @@ func main() {
 	log.SetOutput(ioutil.Discard)
 
 	logging.SetupLogger()
+
+	if universeDomain := gcp.ResolveUniverseDomain(""); gcp.IsCustomUniverse(universeDomain) {
+		http.DefaultTransport = gcp.NewUniverseDomainRoundTripper(http.DefaultTransport, universeDomain)
+	}
 
 	// Start pprof server if enabled
 	if enablePprof {

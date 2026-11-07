@@ -55,6 +55,9 @@ func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Cl
 	if opt.EnableMetricsTransport {
 		opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
 	}
+	if universeDomain := gcp.ResolveUniverseDomain(opt.UniverseDomain); gcp.IsCustomUniverse(universeDomain) {
+		opt.HTTPClient.Transport = gcp.NewUniverseDomainRoundTripper(opt.HTTPClient.Transport, universeDomain)
+	}
 
 	configOptions := []dcl.ConfigOption{
 		dcl.WithHTTPClient(opt.HTTPClient),
