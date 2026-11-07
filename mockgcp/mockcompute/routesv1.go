@@ -105,6 +105,18 @@ func (s *RoutesV1) Insert(ctx context.Context, req *pb.InsertRouteRequest) (*pb.
 	}
 	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 
+	if obj.NextHopGateway != nil {
+		gateway := obj.GetNextHopGateway()
+		gateway = strings.TrimPrefix(gateway, "https://www.googleapis.com/compute/v1/")
+		gateway = strings.TrimPrefix(gateway, "https://www.googleapis.com/compute/beta/")
+		if !strings.Contains(gateway, "/") {
+			gateway = fmt.Sprintf("projects/%s/global/gateways/%s", name.Project.ID, gateway)
+		} else if strings.HasPrefix(gateway, "global/gateways/") {
+			gateway = fmt.Sprintf("projects/%s/%s", name.Project.ID, gateway)
+		}
+		obj.NextHopGateway = PtrTo(BuildComputeSelfLink(ctx, gateway))
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
