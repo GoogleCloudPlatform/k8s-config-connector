@@ -60,6 +60,19 @@ func (s *BusinessGlossaryService) CreateGlossaryTerm(ctx context.Context, req *p
 		return nil, err
 	}
 
+	parentGlossaryName, err := s.parseGlossaryName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+	parentFQN := parentGlossaryName.String()
+	parentObj := &pb.Glossary{}
+	if err := s.storage.Get(ctx, parentFQN, parentObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", parentGlossaryName)
+		}
+		return nil, err
+	}
+
 	if req.Term == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "term is required")
 	}
