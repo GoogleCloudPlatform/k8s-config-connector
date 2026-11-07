@@ -29,6 +29,7 @@ import (
 
 	gcp "cloud.google.com/go/dataform/apiv1beta1"
 	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -246,7 +247,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			return fmt.Errorf("converting GitRemoteSettings to api: %w", mapCtx.Err())
 		}
 
-		if !reflect.DeepEqual(protoDesired, a.actual.GitRemoteSettings) {
+		if !gitRemoteSettingsEqual(protoDesired, a.actual.GetGitRemoteSettings()) {
 			report.AddField("git_remote_settings", a.actual.GitRemoteSettings, protoDesired)
 			updateMask.Paths = append(updateMask.Paths, "git_remote_settings")
 		}
@@ -259,7 +260,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			return fmt.Errorf("converting WorkspaceCompilationOverrides to api: %w", mapCtx.Err())
 		}
 
-		if !reflect.DeepEqual(protoDesired, a.actual.WorkspaceCompilationOverrides) {
+		if !proto.Equal(protoDesired, a.actual.GetWorkspaceCompilationOverrides()) {
 			report.AddField("workspace_compilation_overrides", a.actual.WorkspaceCompilationOverrides, protoDesired)
 			updateMask.Paths = append(updateMask.Paths, "workspace_compilation_overrides")
 		}
@@ -367,4 +368,18 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	u.Object["status"] = status
 
 	return nil
+}
+
+// gitRemoteSettingsEqual compares desired and actual Repository_GitRemoteSettings protos
+// while ignoring the output-only token_status field populated on actual.
+func gitRemoteSettingsEqual(desired, actual *dataformpb.Repository_GitRemoteSettings) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if desired == nil || actual == nil {
+		return false
+	}
+	actualCopy := proto.Clone(actual).(*dataformpb.Repository_GitRemoteSettings)
+	actualCopy.TokenStatus = dataformpb.Repository_GitRemoteSettings_TOKEN_STATUS_UNSPECIFIED
+	return proto.Equal(desired, actualCopy)
 }
