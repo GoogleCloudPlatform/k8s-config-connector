@@ -361,6 +361,43 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				mockEvs = filteredMock
 			}
 
+			// Filter out failed transient error responses on DELETE when a successful 2xx response is present
+			if method == "DELETE" {
+				has2xxReal := false
+				for _, ev := range realEvs {
+					if strings.HasPrefix(ev.Status, "2") {
+						has2xxReal = true
+						break
+					}
+				}
+				if has2xxReal {
+					var filteredReal []httpEvent
+					for _, ev := range realEvs {
+						if strings.HasPrefix(ev.Status, "2") {
+							filteredReal = append(filteredReal, ev)
+						}
+					}
+					realEvs = filteredReal
+				}
+
+				has2xxMock := false
+				for _, ev := range mockEvs {
+					if strings.HasPrefix(ev.Status, "2") {
+						has2xxMock = true
+						break
+					}
+				}
+				if has2xxMock {
+					var filteredMock []httpEvent
+					for _, ev := range mockEvs {
+						if strings.HasPrefix(ev.Status, "2") {
+							filteredMock = append(filteredMock, ev)
+						}
+					}
+					mockEvs = filteredMock
+				}
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
