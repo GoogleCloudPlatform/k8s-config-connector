@@ -30,4 +30,11 @@
 - **Solution**: Generated `APIHubPluginRef` and added `APIHubPlugin:Plugin` to `apis/apihub/generate.sh`. Modeled parent as required immutable `spec.parentRef` (`*APIHubPluginRef`). Triaged all `judgement_queue.yaml` entries.
 - **Impact**: Clean identity resolution conforming to `IdentityV2` and `refs.Ref`, passing all apichecks and unit tests.
 
+### 2026-11-06 Greenfield Direct Controller Implementation for APIHubPluginInstance
+- **Context**: Implemented direct controller, fuzzer, and E2E fixtures for `APIHubPluginInstance`.
+- **Problem**: In GCP API Hub, calling `GetPlugin` on non-existent custom plugin IDs returns `500 Internal Server Error` with `status: INTERNAL` ("An internal error has occurred") instead of standard 404. Furthermore, custom user-owned plugins require `pluginCategory` and `actionsConfig` when creating them, and `UpdatePluginInstance` rejects `actions` in `update_mask`.
+- **Solution**: Placed `common.NormalizeGreenfieldReferences` before `obj.GetIdentity` in `AdapterForObject`. Enforced immutability on `spec.actions` via CEL validation rule `self == oldSelf` on the KRM type and checked for changes in `Update` to return an error rather than sending an invalid `update_mask`. In `APIHubPlugin` controller, treated the upstream HTTP 500 "An internal error has occurred" error in `Find` as not-found, and defaulted required `PluginCategory` and `ActionsConfig` upon `Create` to allow user-owned parent plugins in dependencies to reconcile cleanly across real GCP and MockGCP.
+- **Impact**: All E2E lifecycle stages (create, update, re-reconcile, delete) pass cleanly against real GCP for both minimal and maximal fixtures.
+
+
 

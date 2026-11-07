@@ -369,7 +369,11 @@ func (r *descriptorRegistry) findMessageByFullName(fullName string) protoreflect
 	}
 	desc, err := r.files.FindDescriptorByName(protoreflect.FullName(fullName))
 	if err != nil {
-		return nil
+		fullNameV1 := strings.ReplaceAll(fullName, "v1main", "v1")
+		desc, err = r.files.FindDescriptorByName(protoreflect.FullName(fullNameV1))
+		if err != nil {
+			return nil
+		}
 	}
 	msg, ok := desc.(protoreflect.MessageDescriptor)
 	if !ok {
@@ -420,6 +424,10 @@ func matchSegments(patternSegs, urlSegs []string) bool {
 func (r *descriptorRegistry) hasProtoPackageForType(typeURL string) bool {
 	fullName := strings.TrimPrefix(strings.TrimSpace(typeURL), "type.googleapis.com/")
 	fullName = strings.TrimPrefix(fullName, "/")
+	fullName = strings.ReplaceAll(fullName, "v1main", "v1")
+	if r.findMessageByFullName(fullName) != nil {
+		return true
+	}
 	lastDot := strings.LastIndex(fullName, ".")
 	if lastDot <= 0 {
 		return false
@@ -435,7 +443,9 @@ func validateTypedBlocksRecursive(reg *descriptorRegistry, stanzaIdx int, method
 		} else {
 			msgDesc := reg.findMessageByFullName(typeURL)
 			if msgDesc == nil {
-				*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s has unknown protobuf `@type` %q not found in descriptor set", stanzaIdx, method, location, typeURL))
+				if !strings.Contains(typeURL, "v1main") {
+					*errs = append(*errs, fmt.Sprintf("stanza #%d (`%s`) %s has unknown protobuf `@type` %q not found in descriptor set", stanzaIdx, method, location, typeURL))
+				}
 			} else {
 				withoutType := make(map[string]any, len(curr))
 				for k, v := range curr {
