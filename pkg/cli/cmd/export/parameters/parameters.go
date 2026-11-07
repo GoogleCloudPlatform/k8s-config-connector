@@ -29,6 +29,7 @@ import (
 type Parameters struct {
 	IAMFormat               string
 	FilterDeletedIAMMembers bool
+	FilterSensitiveFields   bool
 
 	// GCPAccessToken is the (optional) static authentication token to use for GCP authentication.
 	GCPAccessToken string
