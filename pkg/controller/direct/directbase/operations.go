@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -174,11 +175,11 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 
 	old, _, _ := unstructured.NestedMap(o.object.Object, "status")
 	if old != nil {
-		if status["conditions"] == nil {
+		if status["conditions"] == nil && old["conditions"] != nil {
 			status["conditions"] = old["conditions"]
 		}
 		// status["observedGeneration"] = old["observedGeneration"]
-		if status["externalRef"] == nil {
+		if status["externalRef"] == nil && old["externalRef"] != nil {
 			status["externalRef"] = old["externalRef"]
 		}
 	}
@@ -209,11 +210,102 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 	u := o.object
 	u.Object["status"] = status
 
+	if !isStatusUpdateRequired(old, status) {
+		return nil
+	}
+
 	if err := o.client.Status().Update(ctx, u); err != nil {
 		return fmt.Errorf("updating object status: %w", err)
 	}
 
 	return nil
+}
+
+func isStatusUpdateRequired(oldStatus, newStatus map[string]any) bool {
+	if oldStatus == nil {
+		return newStatus != nil
+	}
+	if newStatus == nil {
+		return true
+	}
+
+	// Compare conditions ignoring LastTransitionTime
+	oldCondRaw, oldHasCond := oldStatus["conditions"]
+	newCondRaw, newHasCond := newStatus["conditions"]
+	if oldHasCond != newHasCond {
+		return true
+	}
+	if oldHasCond {
+		var oldConditions []v1alpha1.Condition
+		var newConditions []v1alpha1.Condition
+
+		// Unmarshal old conditions
+		if oldSlice, ok := oldCondRaw.([]any); ok {
+			var err error
+			oldConditions, err = k8s.MarshalAsConditionsSlice(oldSlice)
+			if err != nil {
+				return true
+			}
+		} else if oldTypedSlice, ok := oldCondRaw.([]v1alpha1.Condition); ok {
+			oldConditions = oldTypedSlice
+		} else {
+			return true
+		}
+
+		// Unmarshal new conditions
+		if newSlice, ok := newCondRaw.([]any); ok {
+			var err error
+			newConditions, err = k8s.MarshalAsConditionsSlice(newSlice)
+			if err != nil {
+				return true
+			}
+		} else if newTypedSlice, ok := newCondRaw.([]v1alpha1.Condition); ok {
+			newConditions = newTypedSlice
+		} else {
+			return true
+		}
+
+		if !k8s.ConditionSlicesEqual(oldConditions, newConditions) {
+			return true
+		}
+	}
+
+	// Compare remaining status fields excluding "conditions"
+	oldCopy := make(map[string]any, len(oldStatus))
+	for k, v := range oldStatus {
+		if k == "conditions" {
+			continue
+		}
+		oldCopy[k] = v
+	}
+
+	newCopy := make(map[string]any, len(newStatus))
+	for k, v := range newStatus {
+		if k == "conditions" {
+			continue
+		}
+		newCopy[k] = v
+	}
+
+	// Convert ints / int64s through JSON or deep equal to avoid numeric type mismatch from JSON vs Unstructured
+	oldJSON, err := json.Marshal(oldCopy)
+	if err != nil {
+		return true
+	}
+	newJSON, err := json.Marshal(newCopy)
+	if err != nil {
+		return true
+	}
+
+	var oldNormalized, newNormalized any
+	if err := json.Unmarshal(oldJSON, &oldNormalized); err != nil {
+		return true
+	}
+	if err := json.Unmarshal(newJSON, &newNormalized); err != nil {
+		return true
+	}
+
+	return !reflect.DeepEqual(oldNormalized, newNormalized)
 }
 
 // RequestRequeue requests a requeue of the operation, by returning Requeue = true from the reconcile loop.
