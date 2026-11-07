@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,17 +30,13 @@ var ConfigdeliveryVariantGVK = GroupVersion.WithKind("ConfigdeliveryVariant")
 // +kcc:spec:proto=google.cloud.configdelivery.v1.Variant
 // +kcc:required-from-proto
 type ConfigdeliveryVariantSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The ConfigDeliveryRelease this ConfigdeliveryVariant is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *ConfigDeliveryReleaseRef `json:"parentRef"`
 
 	// The ConfigdeliveryVariant name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. labels to represent any metadata associated with the variant.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.Variant.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Input only. Unordered list. resources contain the kubernetes
 	//  manifests (YAMLs) for this variant.

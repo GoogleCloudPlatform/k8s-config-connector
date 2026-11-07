@@ -195,6 +195,7 @@ func ConfigdeliveryVariantObservedState_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.ConfigdeliveryVariantObservedState{}
+	// MISSING: Labels
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -205,6 +206,7 @@ func ConfigdeliveryVariantObservedState_ToProto(mapCtx *direct.MapContext, in *k
 		return nil
 	}
 	out := &pb.Variant{}
+	// MISSING: Labels
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -215,7 +217,7 @@ func ConfigdeliveryVariantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Varia
 		return nil
 	}
 	out := &krm.ConfigdeliveryVariantSpec{}
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Resources = in.Resources
 	// MISSING: Name
 	return out
@@ -225,7 +227,7 @@ func ConfigdeliveryVariantSpec_ToProto(mapCtx *direct.MapContext, in *krm.Config
 		return nil
 	}
 	out := &pb.Variant{}
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Resources = in.Resources
 	// MISSING: Name
 	return out

@@ -40,7 +40,6 @@ func configdeliveryVariantFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	// Spec fields
-	f.SpecField(".labels")
 	f.SpecField(".resources")
 
 	// Status fields
@@ -49,6 +48,7 @@ func configdeliveryVariantFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }
