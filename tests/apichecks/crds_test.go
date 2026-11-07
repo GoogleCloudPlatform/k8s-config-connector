@@ -1131,6 +1131,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"datamigrationmappingrules.datamigration.cnrm.cloud.google.com":                 true, // GCP known pattern: Empty oneof option (spec.conditionalColumnSetValue.valueTransformation.applyHash.uuidFromBytes)
 		"dialogflowflows.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
 		"dialogflowpages.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
+		"dialogflowtools.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.dataStoreSpec.fallbackPrompt)
 		"gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com":                    true, // GCP known pattern: Empty oneof option (spec.addOns.gmail.contextualTriggers[].unconditional)
 		"retailcontrols.retail.cnrm.cloud.google.com":                                   true, // GCP known pattern: Empty oneof option (spec.rule.pinAction)
 		"tpuqueuedresources.tpu.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.spot)
