@@ -197,6 +197,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 				}
 			}
 		}
+		if m["kind"] == "compute#securityPolicyRule" {
+			delete(m, "ruleNumber")
+		}
 		if m["kind"] == "compute#router" {
 			if nats, ok := m["nats"].([]any); ok {
 				for _, natAny := range nats {

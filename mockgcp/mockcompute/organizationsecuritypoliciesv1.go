@@ -17,6 +17,7 @@ package mockcompute
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -369,4 +370,199 @@ func (s *OrganizationSecurityPoliciesV1) ListAssociations(ctx context.Context, r
 	}
 
 	return response, nil
+}
+
+func (s *OrganizationSecurityPoliciesV1) AddRule(ctx context.Context, req *pb.AddRuleOrganizationSecurityPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	rule := proto.Clone(req.GetSecurityPolicyRuleResource()).(*pb.SecurityPolicyRule)
+	if rule.Kind == nil {
+		rule.Kind = PtrTo("compute#securityPolicyRule")
+	}
+	if rule.Preview == nil {
+		rule.Preview = PtrTo(false)
+	}
+
+	obj.Rules = append(obj.Rules, rule)
+
+	sort.Slice(obj.Rules, func(i, j int) bool {
+		return obj.Rules[i].GetPriority() < obj.Rules[j].GetPriority()
+	})
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	ruleFQN := fmt.Sprintf("%s/priority/%d", fqn, rule.GetPriority())
+	if err := s.storage.Create(ctx, ruleFQN, rule); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addOrganizationSecurityPolicyRule"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return rule, nil
+	})
+}
+
+func (s *OrganizationSecurityPoliciesV1) GetRule(ctx context.Context, req *pb.GetRuleOrganizationSecurityPolicyRequest) (*pb.SecurityPolicyRule, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	priority := req.GetPriority()
+	for _, rule := range obj.Rules {
+		if rule.GetPriority() == priority {
+			return rule, nil
+		}
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'priority': '%d'. The security policy does not contain a rule at priority %d.", priority, priority)
+}
+
+func (s *OrganizationSecurityPoliciesV1) PatchRule(ctx context.Context, req *pb.PatchRuleOrganizationSecurityPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	priority := req.GetPriority()
+	var patchedRule *pb.SecurityPolicyRule
+	for idx, rule := range obj.Rules {
+		if rule.GetPriority() == priority {
+			newRule := req.GetSecurityPolicyRuleResource()
+			if newRule.Action != nil {
+				rule.Action = newRule.Action
+			}
+			if newRule.Description != nil {
+				rule.Description = newRule.Description
+			}
+			if newRule.Preview != nil {
+				rule.Preview = newRule.Preview
+			}
+			if newRule.Match != nil {
+				rule.Match = proto.Clone(newRule.Match).(*pb.SecurityPolicyRuleMatcher)
+			}
+			if newRule.NetworkMatch != nil {
+				rule.NetworkMatch = proto.Clone(newRule.NetworkMatch).(*pb.SecurityPolicyRuleNetworkMatcher)
+			}
+			if newRule.RateLimitOptions != nil {
+				rule.RateLimitOptions = proto.Clone(newRule.RateLimitOptions).(*pb.SecurityPolicyRuleRateLimitOptions)
+			}
+			if newRule.RedirectOptions != nil {
+				rule.RedirectOptions = proto.Clone(newRule.RedirectOptions).(*pb.SecurityPolicyRuleRedirectOptions)
+			}
+			if newRule.HeaderAction != nil {
+				rule.HeaderAction = proto.Clone(newRule.HeaderAction).(*pb.SecurityPolicyRuleHttpHeaderAction)
+			}
+			obj.Rules[idx] = rule
+			patchedRule = rule
+			break
+		}
+	}
+
+	if patchedRule == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'priority': '%d'. The security policy does not contain a rule at priority %d.", priority, priority)
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	ruleFQN := fmt.Sprintf("%s/priority/%d", fqn, priority)
+	_ = s.storage.Update(ctx, ruleFQN, patchedRule)
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patchOrganizationSecurityPolicyRule"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return patchedRule, nil
+	})
+}
+
+func (s *OrganizationSecurityPoliciesV1) RemoveRule(ctx context.Context, req *pb.RemoveRuleOrganizationSecurityPolicyRequest) (*pb.Operation, error) {
+	reqName := "locations/global/securityPolicies/" + req.GetSecurityPolicy()
+	name, err := s.parseOrganizationSecurityPolicyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.SecurityPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	priority := req.GetPriority()
+	found := false
+	var newRules []*pb.SecurityPolicyRule
+	var removedRule *pb.SecurityPolicyRule
+	for _, rule := range obj.Rules {
+		if rule.GetPriority() == priority {
+			found = true
+			removedRule = rule
+		} else {
+			newRules = append(newRules, rule)
+		}
+	}
+
+	if !found {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'priority': '%d'. The security policy does not contain a rule at priority %d.", priority, priority)
+	}
+
+	obj.Rules = newRules
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	ruleFQN := fmt.Sprintf("%s/priority/%d", fqn, priority)
+	deleted := &pb.SecurityPolicyRule{}
+	_ = s.storage.Delete(ctx, ruleFQN, deleted)
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("removeOrganizationSecurityPolicyRule"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
+		return removedRule, nil
+	})
 }

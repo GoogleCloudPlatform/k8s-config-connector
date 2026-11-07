@@ -2208,18 +2208,13 @@
 [missing_field] crd=computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkpeeringroutesconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeorganizationsecuritypolicyassociations.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyId" is not set in unstructured objects
-[missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.action" is not set in unstructured objects
-[missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.direction" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableLogging" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.config.destIpRanges[]" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.config.layer4Config[].ipProtocol" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.config.layer4Config[].ports[]" is not set in unstructured objects
-[missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.config.srcIpRanges[]" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.description" is not set in unstructured objects
-[missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.versionedExpr" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyId" is not set in unstructured objects
-[missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.preview" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetResources[]" is not set in unstructured objects
 [missing_field] crd=computeorganizationsecuritypolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetServiceAccounts[]" is not set in unstructured objects
 [missing_field] crd=computeperinstanceconfigs.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceGroupManagerRef" is not set; neither 'external' nor 'name' are set

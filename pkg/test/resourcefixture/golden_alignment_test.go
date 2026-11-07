@@ -602,6 +602,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
 		delete(v, "policyProfile")
+		delete(v, "ruleNumber")
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -1299,6 +1300,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${instanceTemplateID}"}
 	case "ComputeInstanceGroupManager":
 		return []string{"${instanceGroupManagerID}"}
+	case "ComputeOrganizationSecurityPolicy":
+		return []string{"${securityPolicyID}"}
 	case "ComputeHealthCheck":
 		return []string{"${healthCheckID}"}
 	case "ComputeBackendService":

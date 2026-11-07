@@ -47,8 +47,8 @@ type OrganizationSecurityPolicyRuleMatchConfig struct {
 	DestIPRanges []string `json:"destIpRanges,omitempty"`
 
 	/* Pairs of IP protocols and ports that the rule should match. */
-	// +required
-	Layer4Config []OrganizationSecurityPolicyRuleMatchConfigLayer4Config `json:"layer4Config"`
+	// +optional
+	Layer4Config []OrganizationSecurityPolicyRuleMatchConfigLayer4Config `json:"layer4Config,omitempty"`
 
 	/* Source IP address range in CIDR format. Required for
 	INGRESS rules. */
@@ -66,7 +66,7 @@ type OrganizationSecurityPolicyRuleMatch struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Preconfigured versioned expression. For organization security policy rules,
-	the only supported type is "FIREWALL". Default value: "FIREWALL" Possible values: ["FIREWALL"]. */
+	supported types are "FIREWALL" and "SRC_IPS_V1". Default value: "FIREWALL" Possible values: ["FIREWALL", "SRC_IPS_V1"]. */
 	// +optional
 	VersionedExpr *string `json:"versionedExpr,omitempty"`
 }
@@ -99,8 +99,13 @@ type ComputeOrganizationSecurityPolicyRuleSpec struct {
 	Match *OrganizationSecurityPolicyRuleMatch `json:"match"`
 
 	/* Immutable. The ID of the OrganizationSecurityPolicy this
-	rule applies to. */
-	PolicyID string `json:"policyId"`
+	rule applies to. Exactly one of policyId or securityPolicyRef must be specified. */
+	// +optional
+	PolicyID *string `json:"policyId,omitempty"`
+
+	/* Immutable. The security policy that this rule belongs to. Exactly one of policyId or securityPolicyRef must be specified. */
+	// +optional
+	SecurityPolicyRef *ComputeOrganizationSecurityPolicyRef `json:"securityPolicyRef,omitempty"`
 
 	/* If set to true, the specified action is not enforced. */
 	// +optional
