@@ -180,6 +180,7 @@ func (s *ServicesV2) UpdateService(ctx context.Context, req *pb.UpdateServiceReq
 	if updatedService.Scaling != nil {
 		obj.Scaling = updatedService.Scaling
 	}
+	obj.InvokerIamDisabled = updatedService.InvokerIamDisabled
 
 	obj.UpdateTime = timestamppb.Now()
 
