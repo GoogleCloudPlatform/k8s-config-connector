@@ -101,7 +101,7 @@ This is a meta-skill describing the steps to migrate a KCC resource kind to a pr
 
 Instead of doing the coding yourself under this skill, you will coordinate and orchestrate:
 1. Planning the migration steps.
-2. Opening GitHub issues for each step, labeling them with `overseer`, and leaving them unassigned (or assigning them to the current bot user).
+2. Opening GitHub issues for each step, adding them as sub-issues of the parent workflow issue (`${SESSION_ID#issue-}`), labeling them with `overseer`, and leaving them unassigned (or assigning them to the current bot user).
 3. Monitoring progress of the Pull Requests.
 4. Opening subsequent issues once the prior steps are successfully completed.
 
@@ -112,10 +112,15 @@ Instead of doing the coding yourself under this skill, you will coordinate and o
 > - **Do NOT assign to PRs directly**: You must **never** directly assign PRs to bots or humans. The watch daemon will automatically handle bot and task assignment.
 > - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
 > - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
-> - **Idempotent Issue Creation & Journal Recording**:
+> - **Idempotent Issue Creation, Sub-Issue Linking & Journal Recording**:
 >   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
 >     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state`
 >   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse the existing issue number in your progress table and journal file!
+>   - **Link every child issue as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`)**: Whenever you create a new child issue (or reuse an existing one), you MUST add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`). Note that GitHub's sub-issues API requires the child issue's numeric database `id` (not the issue `number`):
+>     ```bash
+>     sub_issue_id=$(gh api repos/GoogleCloudPlatform/k8s-config-connector/issues/<child-issue-number> --jq '.id')
+>     gh api --method POST repos/GoogleCloudPlatform/k8s-config-connector/issues/${SESSION_ID#issue-}/sub_issues -F sub_issue_id="${sub_issue_id}" -F replace_parent=true
+>     ```
 >   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
 
 ## Journaling and Progress Tracking
@@ -176,7 +181,7 @@ Only declare the PR as fully passed/verified if no failures are returned across 
 The resource must have a direct KRM type (`_types.go`) scaffolded and updated via `generate.sh` using the controllerbuilder tool, ensuring strict schema compatibility with the existing CRD, while including `ExternalRef` under Status.
 
 1. Check if the resource already has direct types under `apis/` and a `generate.sh` script configured for the resource's service.
-2. Existing Terraform/DCL Resource**: Open a GitHub issue referencing `.gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md`.
+2. **Existing Terraform/DCL Resource**: Open a GitHub issue referencing `.gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md`, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
    
 **GitHub Issue Details for Existing Terraform/DCL Resource:**
 *   **Title:** `Implement direct KRM types and generate.sh for {kind}`
@@ -210,7 +215,7 @@ The resource must have a direct KRM type (`_types.go`) scaffolded and updated vi
 The resource kind must have an identity and reference type that follow our canonical patterns.
 
 1. Check if the resource has `_identity.go` and `_reference.go` implementing `identity.IdentityV2` and `refs.Ref` using `gcpurls.Template`.
-2. If not, open a GitHub issue (unassigned or assigned to the current bot) to implement/move the kind to the identity and reference pattern.
+2. If not, open a GitHub issue (unassigned or assigned to the current bot) to implement/move the kind to the identity and reference pattern, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
 
 **GitHub Issue Details:**
 *   **Title:** `Move {kind} to identity and refs pattern`
@@ -232,7 +237,7 @@ The resource kind must have an identity and reference type that follow our canon
 
 For existing resources transitioning to a direct controller, a round-trip KRM fuzzer must be created to verify that all field mapping conversions between KRM and GCP proto representations are lossless and fully correct.
 
-1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the round-trip KRM fuzzer at the expected path `pkg/controller/direct/{service}/{kind}_fuzzer.go`.
+1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the round-trip KRM fuzzer at the expected path `pkg/controller/direct/{service}/{kind}_fuzzer.go`, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
 
 **GitHub Issue Details:**
 *   **Title:** `Implement round-trip KRM fuzzer for {kind}`
@@ -252,7 +257,7 @@ For existing resources transitioning to a direct controller, a round-trip KRM fu
 ### Step 4: Ensure MockGCP matches real gcp behavior
 We need to ensure that we have a mockgcp that aligns with realgcp.
 
-1. Open a GitHub issue assigned to `factorybot-robot` to implement or improve the MockGCP for the resource.
+1. Open a GitHub issue assigned to `factorybot-robot` to implement or improve the MockGCP for the resource, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
 
 **GitHub Issue Details:**
 *   **Title:** `Match real gcp behavior in MockGCP for {kind}`
@@ -287,7 +292,7 @@ We need to ensure that we have a mockgcp that aligns with realgcp.
 
 The direct controller must be implemented to manage reconciliation logic (Adapter: Find, Create, Update, Delete) and E2E fixtures must be created and recorded against mockgcp/real GCP to verify functionality.
 
-1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the direct controller and E2E fixtures.
+1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the direct controller and E2E fixtures, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
 
 **GitHub Issue Details:**
 *   **Title:** `Implement direct controller and test fixtures for {kind}`
@@ -307,7 +312,7 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
 
 ### Step 6: Validate Direct Promotion
 
-1. Open a GitHub issue to validate the direct promotion for this resource.
+1. Open a GitHub issue to validate the direct promotion for this resource, and add it as a sub-issue of the parent workflow issue (`${SESSION_ID#issue-}`).
 
 **GitHub Issue Details:**
 *   **Title:** `Validate direct promotion for {kind}`
