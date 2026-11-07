@@ -393,3 +393,31 @@ func mustBuildOptionalEnumWidgetDescriptor(t *testing.T) protoreflect.MessageDes
 	}
 	return fd.Messages().ByName("Widget")
 }
+
+func TestFindKRMStructsForProto_GroupPrefixDelimiter(t *testing.T) {
+	msg := mustBuildOptionalEnumWidgetDescriptor(t)
+	mg := NewMapperGenerator(nil, t.TempDir(), &annotations.FileAnnotation{
+		Key: "+generated:mapper",
+		Attributes: map[string][]string{
+			"krm.group":     {"dialogflow.cnrm.cloud.google.com"},
+			"krm.version":   {"v1alpha1"},
+			"proto.service": {"google.cloud.test.v1"},
+		},
+	}, false)
+
+	dialogflowStruct := &gocode.GoStruct{
+		Name:      "DialogflowWidget",
+		GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1",
+	}
+	dialogflowcxStruct := &gocode.GoStruct{
+		Name:      "DialogflowCXWidget",
+		GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflowcx/v1alpha1",
+	}
+	mg.precomputedMappings[msg.FullName()] = []*gocode.GoStruct{dialogflowStruct, dialogflowcxStruct}
+
+	matches := mg.findKRMStructsForProto(msg)
+	if len(matches) != 1 || matches[0].Name != "DialogflowWidget" {
+		t.Fatalf("findKRMStructsForProto() = %v, want only DialogflowWidget", matches)
+	}
+}
+
