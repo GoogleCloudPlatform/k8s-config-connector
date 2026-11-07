@@ -1,0 +1,33 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: firewallpolicy-${uniqueId}
+  namespace: ${projectId}
+spec:
+  description: A basic organization firewall policy
+  organizationRef:
+    external: organizations/${organizationID}
+  resourceID: firewallPolicies/${firewallPolicyID}
+  shortName: test-acquire-policy
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  fingerprint: abcdef0123A=
+  id: 1111111111111111
+  observedGeneration: 1
+  ruleTupleCount: 8
+  selfLink: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}
+  selfLinkWithId: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}
