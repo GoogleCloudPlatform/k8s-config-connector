@@ -34,9 +34,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
@@ -54,9 +56,11 @@ mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/di
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --allow-non-declarative \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowAgent:Agent
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
@@ -107,6 +111,7 @@ sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/di
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Agent \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
@@ -115,6 +120,7 @@ sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/d
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Agent \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
