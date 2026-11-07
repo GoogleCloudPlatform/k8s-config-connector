@@ -320,6 +320,9 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		if patch.IpFilter != nil {
 			obj.IpFilter = patch.IpFilter
 		}
+		if patch.Encryption != nil {
+			obj.Encryption = patch.Encryption
+		}
 
 		if patch.SoftDeletePolicy != nil {
 			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {
