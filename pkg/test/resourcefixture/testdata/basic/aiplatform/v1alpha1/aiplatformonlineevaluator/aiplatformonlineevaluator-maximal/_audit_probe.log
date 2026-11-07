@@ -1,0 +1,20 @@
+GET https://aiplatform.googleapis.com/v1/projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "contextSpec": {
+    "memoryBankConfig": {
+      "generationConfig": {}
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "reasoningengine-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "spec": {
+    "effectiveIdentity": "service-${projectNumber}@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

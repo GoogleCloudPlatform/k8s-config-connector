@@ -1,0 +1,574 @@
+# Phase: CREATE
+GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/CreateReasoningEngine
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "reasoningEngine": {
+    "displayName": "reasoningengine-max-${uniqueId}"
+  }
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateReasoningEngineOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/reasoningEngines/${reasoningEngineID}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/reasoningEngines/${reasoningEngineID}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreateReasoningEngineOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/reasoningEngines/${reasoningEngineID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.ReasoningEngine",
+    "displayName": "reasoningengine-max-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+    "spec": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "reasoningengine-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/CreateOnlineEvaluator
+
+{
+  "onlineEvaluator": {
+    "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+    "cloudObservability": {
+      "openTelemetry": {
+        "semconvVersion": "1.39.0"
+      },
+      "traceScope": {
+        "filter": [
+          {
+            "duration": {
+              "comparisonOperator": "GREATER",
+              "value": 1
+            }
+          }
+        ]
+      }
+    },
+    "config": {
+      "maxEvaluatedSamplesPerRun": "100",
+      "randomSampling": {
+        "percentage": 50
+      }
+    },
+    "displayName": "onlineevaluator-max-${uniqueId}",
+    "metricSources": [
+      {
+        "metric": {
+          "predefinedMetricSpec": {
+            "metricSpecName": "safety_v1"
+          }
+        }
+      },
+      {
+        "metric": {
+          "predefinedMetricSpec": {
+            "metricSpecName": "final_response_quality_v1"
+          }
+        }
+      }
+    ]
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/operations/8643408012871991296"
+}
+
+OK
+
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/GetOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+{
+  "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "cloudObservability": {
+    "openTelemetry": {},
+    "traceScope": {
+      "filter": [
+        {
+          "duration": {
+            "comparisonOperator": "GREATER",
+            "value": 1
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "maxEvaluatedSamplesPerRun": "100",
+    "randomSampling": {
+      "percentage": 50
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "onlineevaluator-max-${uniqueId}",
+  "metricSources": [
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "safety_v1"
+        }
+      }
+    },
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "final_response_quality_v1"
+        }
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392",
+  "state": "FAILED",
+  "stateDetails": [
+    {
+      "message": "Trace view not found: projects/${projectId}/locations/us/buckets/_Trace/datasets/Spans/views/_AllSpans does not exist; Failed to execute Logging Analytics query: online_evaluator=projects/${projectNumber}/locations/us-central1/onlineEvaluators/1920398212980539392"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/GetOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+{
+  "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "cloudObservability": {
+    "openTelemetry": {},
+    "traceScope": {
+      "filter": [
+        {
+          "duration": {
+            "comparisonOperator": "GREATER",
+            "value": 1
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "maxEvaluatedSamplesPerRun": "100",
+    "randomSampling": {
+      "percentage": 50
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "onlineevaluator-max-${uniqueId}",
+  "metricSources": [
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "safety_v1"
+        }
+      }
+    },
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "final_response_quality_v1"
+        }
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392",
+  "state": "FAILED",
+  "stateDetails": [
+    {
+      "message": "Trace view not found: projects/${projectId}/locations/us/buckets/_Trace/datasets/Spans/views/_AllSpans does not exist; Failed to execute Logging Analytics query: online_evaluator=projects/${projectNumber}/locations/us-central1/onlineEvaluators/1920398212980539392"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/UpdateOnlineEvaluator
+
+{
+  "onlineEvaluator": {
+    "cloudObservability": {
+      "openTelemetry": {
+        "semconvVersion": "1.39.0"
+      },
+      "traceScope": {
+        "filter": [
+          {
+            "duration": {
+              "comparisonOperator": "GREATER",
+              "value": 1
+            }
+          }
+        ]
+      }
+    },
+    "config": {
+      "maxEvaluatedSamplesPerRun": "200",
+      "randomSampling": {
+        "percentage": 80
+      }
+    },
+    "displayName": "onlineevaluator-max-updated-${uniqueId}",
+    "metricSources": [
+      {
+        "metric": {
+          "predefinedMetricSpec": {
+            "metricSpecName": "safety_v1"
+          }
+        }
+      },
+      {
+        "metric": {
+          "predefinedMetricSpec": {
+            "metricSpecName": "final_response_quality_v1"
+          }
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+  },
+  "updateMask": "config,displayName"
+}
+
+OK
+
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/operations/1683189759087738880"
+}
+
+OK
+
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/GetOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+{
+  "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "cloudObservability": {
+    "openTelemetry": {},
+    "traceScope": {
+      "filter": [
+        {
+          "duration": {
+            "comparisonOperator": "GREATER",
+            "value": 1
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "maxEvaluatedSamplesPerRun": "200",
+    "randomSampling": {
+      "percentage": 80
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "onlineevaluator-max-updated-${uniqueId}",
+  "metricSources": [
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "safety_v1"
+        }
+      }
+    },
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "final_response_quality_v1"
+        }
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392",
+  "state": "FAILED",
+  "stateDetails": [
+    {
+      "message": "Trace view not found: projects/${projectId}/locations/us/buckets/_Trace/datasets/Spans/views/_AllSpans does not exist; Failed to execute Logging Analytics query: online_evaluator=projects/${projectNumber}/locations/us-central1/onlineEvaluators/1920398212980539392"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/GetOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+{
+  "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "cloudObservability": {
+    "openTelemetry": {},
+    "traceScope": {
+      "filter": [
+        {
+          "duration": {
+            "comparisonOperator": "GREATER",
+            "value": 1
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "maxEvaluatedSamplesPerRun": "200",
+    "randomSampling": {
+      "percentage": 80
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "onlineevaluator-max-updated-${uniqueId}",
+  "metricSources": [
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "safety_v1"
+        }
+      }
+    },
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "final_response_quality_v1"
+        }
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392",
+  "state": "FAILED",
+  "stateDetails": [
+    {
+      "message": "Trace view not found: projects/${projectId}/locations/us/buckets/_Trace/datasets/Spans/views/_AllSpans does not exist; Failed to execute Logging Analytics query: online_evaluator=projects/${projectNumber}/locations/us-central1/onlineEvaluators/1920398212980539392"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/GetOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+{
+  "agentResource": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "cloudObservability": {
+    "openTelemetry": {},
+    "traceScope": {
+      "filter": [
+        {
+          "duration": {
+            "comparisonOperator": "GREATER",
+            "value": 1
+          }
+        }
+      ]
+    }
+  },
+  "config": {
+    "maxEvaluatedSamplesPerRun": "200",
+    "randomSampling": {
+      "percentage": 80
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "onlineevaluator-max-updated-${uniqueId}",
+  "metricSources": [
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "safety_v1"
+        }
+      }
+    },
+    {
+      "metric": {
+        "predefinedMetricSpec": {
+          "metricSpecName": "final_response_quality_v1"
+        }
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392",
+  "state": "FAILED",
+  "stateDetails": [
+    {
+      "message": "Trace view not found: projects/${projectId}/locations/us/buckets/_Trace/datasets/Spans/views/_AllSpans does not exist; Failed to execute Logging Analytics query: online_evaluator=projects/${projectNumber}/locations/us-central1/onlineEvaluators/1920398212980539392"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.OnlineEvaluatorService/DeleteOnlineEvaluator
+
+{
+  "name": "projects/${projectId}/locations/us-central1/onlineEvaluators/1920398212980539392"
+}
+
+OK
+
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/operations/6294875777515126784"
+}
+
+OK
+
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "reasoningengine-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "reasoningengine-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/DeleteReasoningEngine
+
+{
+  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
