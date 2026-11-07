@@ -1,0 +1,34 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModelMonitor
+metadata:
+  name: aiplatformmodelmonitor-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: modelmonitor-upd-${uniqueId}
+  modelMonitoringTarget:
+    vertexModel:
+      modelRef:
+        name: model-${uniqueId}
+      modelVersionID: "1"
+  modelMonitoringSchema:
+    featureFields:
+    - name: feat1
+      dataType: float
+    - name: feat2
+      dataType: categorical
+    predictionFields:
+    - name: pred1
+      dataType: float
+  tabularObjective:
+    featureDriftSpec:
+      features:
+      - feat1
+      defaultNumericAlertCondition:
+        threshold: 0.5
+  notificationSpec:
+    emailConfig:
+      userEmails:
+      - updated-${uniqueId}@example.com
+    enableCloudLogging: true

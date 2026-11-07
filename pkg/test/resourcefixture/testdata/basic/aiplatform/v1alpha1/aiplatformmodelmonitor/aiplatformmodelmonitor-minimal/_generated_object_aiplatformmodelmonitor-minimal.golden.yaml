@@ -1,0 +1,42 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModelMonitor
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: aiplatformmodelmonitor-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: modelmonitor-upd-${uniqueId}
+  location: us-central1
+  modelMonitoringSchema:
+    featureFields:
+    - dataType: float
+      name: feat1
+    predictionFields:
+    - dataType: float
+      name: pred1
+  modelMonitoringTarget:
+    vertexModel:
+      modelRef:
+        name: model-${uniqueId}
+      modelVersionID: "1"
+  notificationSpec:
+    emailConfig:
+      userEmails:
+      - alert-${uniqueId}@example.com
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/modelMonitors/aiplatformmodelmonitor-${uniqueId}
+  observedGeneration: 2
+  observedState: {}
