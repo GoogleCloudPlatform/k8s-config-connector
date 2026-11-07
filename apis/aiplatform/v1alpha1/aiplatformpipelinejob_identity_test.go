@@ -20,17 +20,17 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestVertexAIPipelineJobIdentity_FromExternal(t *testing.T) {
+func TestAIPlatformPipelineJobIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VertexAIPipelineJobIdentity
+		want    *AIPlatformPipelineJobIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/pipelineJobs/my-pipeline-job",
-			want: &VertexAIPipelineJobIdentity{
+			want: &AIPlatformPipelineJobIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				PipelineJob: "my-pipeline-job",
@@ -44,7 +44,7 @@ func TestVertexAIPipelineJobIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://aiplatform.googleapis.com/projects/my-project/locations/us-central1/pipelineJobs/my-pipeline-job",
-			want: &VertexAIPipelineJobIdentity{
+			want: &AIPlatformPipelineJobIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				PipelineJob: "my-pipeline-job",
@@ -54,7 +54,7 @@ func TestVertexAIPipelineJobIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &VertexAIPipelineJobIdentity{}
+			i := &AIPlatformPipelineJobIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)

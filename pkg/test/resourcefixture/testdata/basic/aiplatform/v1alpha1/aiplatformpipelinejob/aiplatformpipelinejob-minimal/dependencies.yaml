@@ -15,7 +15,7 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
-  name: vertexai-pipelinejob-bucket-${uniqueId}
+  name: bucket-${uniqueId}
 spec:
   location: us-central1
   softDeletePolicy:

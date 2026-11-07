@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.VertexAIPipelineJobGVK, NewPipelineJobModel)
+	registry.RegisterModel(krm.AIPlatformPipelineJobGVK, NewPipelineJobModel)
 }
 
 func NewPipelineJobModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -67,7 +67,7 @@ func (m *pipelineJobModel) client(ctx context.Context, location string) (*gcp.Pi
 }
 
 func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-	obj := &krm.VertexAIPipelineJob{}
+	obj := &krm.AIPlatformPipelineJob{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(reader.Object.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -82,9 +82,9 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	typedID, ok := id.(*krm.VertexAIPipelineJobIdentity)
+	typedID, ok := id.(*krm.AIPlatformPipelineJobIdentity)
 	if !ok {
-		return nil, fmt.Errorf("expected VertexAIPipelineJobIdentity, got %T", id)
+		return nil, fmt.Errorf("expected AIPlatformPipelineJobIdentity, got %T", id)
 	}
 
 	// Get PipelineClient client
@@ -94,7 +94,7 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredpb := VertexAIPipelineJobSpec_ToProto(mapCtx, &obj.Spec)
+	desiredpb := AIPlatformPipelineJobSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, fmt.Errorf("mapping spec to proto: %w", mapCtx.Err())
 	}
@@ -113,10 +113,10 @@ func (m *pipelineJobModel) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type PipelineJobAdapter struct {
-	id        *krm.VertexAIPipelineJobIdentity
+	id        *krm.AIPlatformPipelineJobIdentity
 	gcpClient *gcp.PipelineClient
 	desiredpb *pb.PipelineJob
-	desired   *krm.VertexAIPipelineJob
+	desired   *krm.AIPlatformPipelineJob
 	actual    *pb.PipelineJob
 }
 
@@ -124,7 +124,7 @@ var _ directbase.Adapter = &PipelineJobAdapter{}
 
 func (a *PipelineJobAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting VertexAIPipelineJob", "name", a.id.String())
+	log.V(2).Info("getting AIPlatformPipelineJob", "name", a.id.String())
 
 	req := &pb.GetPipelineJobRequest{
 		Name: a.id.String(),
@@ -135,13 +135,13 @@ func (a *PipelineJobAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting VertexAIPipelineJob %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting AIPlatformPipelineJob %q: %w", a.id.String(), err)
 	}
 
 	a.actual = pipelineJobpb
 
 	mapCtx := &direct.MapContext{}
-	observedState := VertexAIPipelineJobObservedState_FromProto(mapCtx, pipelineJobpb)
+	observedState := AIPlatformPipelineJobObservedState_FromProto(mapCtx, pipelineJobpb)
 	if mapCtx.Err() != nil {
 		return false, fmt.Errorf("mapping from proto to observed state: %w", mapCtx.Err())
 	}
@@ -152,7 +152,7 @@ func (a *PipelineJobAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *PipelineJobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating VertexAIPipelineJob", "name", a.id.String())
+	log.V(2).Info("creating AIPlatformPipelineJob", "name", a.id.String())
 
 	req := &pb.CreatePipelineJobRequest{
 		Parent:        a.id.ParentString(),
@@ -162,17 +162,17 @@ func (a *PipelineJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	created, err := a.gcpClient.CreatePipelineJob(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating VertexAIPipelineJob %q: %w", a.id.String(), err)
+		return fmt.Errorf("creating AIPlatformPipelineJob %q: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully created VertexAIPipelineJob", "name", a.id.String())
+	log.V(2).Info("successfully created AIPlatformPipelineJob", "name", a.id.String())
 
 	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *PipelineJobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating VertexAIPipelineJob", "name", a.id.String())
+	log.V(2).Info("updating AIPlatformPipelineJob", "name", a.id.String())
 
 	a.desiredpb.Name = a.id.String()
 
@@ -189,7 +189,7 @@ func (a *PipelineJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
-	return fmt.Errorf("VertexAIPipelineJob is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
+	return fmt.Errorf("AIPlatformPipelineJob is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 }
 
 func (a *PipelineJobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -198,9 +198,9 @@ func (a *PipelineJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.VertexAIPipelineJob{}
+	obj := &krm.AIPlatformPipelineJob{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAIPipelineJobSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AIPlatformPipelineJobSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -216,14 +216,14 @@ func (a *PipelineJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	u.Object = uObj
 	u.SetName(a.id.PipelineJob)
-	u.SetGroupVersionKind(krm.VertexAIPipelineJobGVK)
+	u.SetGroupVersionKind(krm.AIPlatformPipelineJobGVK)
 	return u, nil
 }
 
 func (a *PipelineJobAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.PipelineJob) error {
 	mapCtx := &direct.MapContext{}
-	status := &krm.VertexAIPipelineJobStatus{}
-	status.ObservedState = VertexAIPipelineJobObservedState_FromProto(mapCtx, latest)
+	status := &krm.AIPlatformPipelineJobStatus{}
+	status.ObservedState = AIPlatformPipelineJobObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping status: %w", mapCtx.Err())
 	}
@@ -233,7 +233,7 @@ func (a *PipelineJobAdapter) updateStatus(ctx context.Context, op directbase.Ope
 
 func (a *PipelineJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting VertexAIPipelineJob", "name", a.id.String())
+	log.V(2).Info("deleting AIPlatformPipelineJob", "name", a.id.String())
 
 	// 1. Get the current state of the PipelineJob first
 	getReq := &pb.GetPipelineJobRequest{
@@ -256,16 +256,16 @@ func (a *PipelineJobAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 
 	if !isTerminal(actual.State) {
 		if actual.State != pb.PipelineState_PIPELINE_STATE_CANCELLING {
-			log.V(2).Info("cancelling VertexAIPipelineJob before deletion", "name", a.id.String(), "currentState", actual.State)
+			log.V(2).Info("cancelling AIPlatformPipelineJob before deletion", "name", a.id.String(), "currentState", actual.State)
 			cancelReq := &pb.CancelPipelineJobRequest{
 				Name: a.id.String(),
 			}
 			if err := a.gcpClient.CancelPipelineJob(ctx, cancelReq); err != nil {
-				log.Error(err, "error cancelling VertexAIPipelineJob", "name", a.id.String())
-				return false, fmt.Errorf("cancelling VertexAIPipelineJob %q: %w", a.id.String(), err)
+				log.Error(err, "error cancelling AIPlatformPipelineJob", "name", a.id.String())
+				return false, fmt.Errorf("cancelling AIPlatformPipelineJob %q: %w", a.id.String(), err)
 			}
 		}
-		return false, fmt.Errorf("VertexAIPipelineJob %q is in state %s; waiting for terminal state before deletion", a.id.String(), actual.State)
+		return false, fmt.Errorf("AIPlatformPipelineJob %q is in state %s; waiting for terminal state before deletion", a.id.String(), actual.State)
 	}
 
 	// 3. Delete the PipelineJob
@@ -278,19 +278,19 @@ func (a *PipelineJobAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		if direct.IsNotFound(err) {
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting VertexAIPipelineJob %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting AIPlatformPipelineJob %q: %w", a.id.String(), err)
 	}
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting for deletion of VertexAIPipelineJob %q: %w", a.id.String(), err)
+		return false, fmt.Errorf("waiting for deletion of AIPlatformPipelineJob %q: %w", a.id.String(), err)
 	}
 
 	return true, nil
 }
 
 func comparePipelineJob(ctx context.Context, actual, desired *pb.PipelineJob) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, VertexAIPipelineJobSpec_FromProto, VertexAIPipelineJobSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, AIPlatformPipelineJobSpec_FromProto, AIPlatformPipelineJobSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}

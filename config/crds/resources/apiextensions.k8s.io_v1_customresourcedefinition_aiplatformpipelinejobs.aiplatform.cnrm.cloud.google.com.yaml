@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com
+  name: aiplatformpipelinejobs.aiplatform.cnrm.cloud.google.com
 spec:
   group: aiplatform.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: VertexAIPipelineJob
-    listKind: VertexAIPipelineJobList
-    plural: vertexaipipelinejobs
+    kind: AIPlatformPipelineJob
+    listKind: AIPlatformPipelineJobList
+    plural: aiplatformpipelinejobs
     shortNames:
-    - gcpvertexaipipelinejob
-    - gcpvertexaipipelinejobs
-    singular: vertexaipipelinejob
+    - gcpaiplatformpipelinejob
+    - gcpaiplatformpipelinejobs
+    singular: aiplatformpipelinejob
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAIPipelineJob is the Schema for the VertexAIPipelineJob
+        description: AIPlatformPipelineJob is the Schema for the AIPlatformPipelineJob
           API
         properties:
           apiVersion:
@@ -61,7 +61,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAIPipelineJobSpec defines the desired state of VertexAIPipelineJob
+            description: AIPlatformPipelineJobSpec defines the desired state of AIPlatformPipelineJob
             properties:
               displayName:
                 description: The display name of the Pipeline. The name can be up
@@ -294,7 +294,7 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: The VertexAIPipelineJob name. If not given, the metadata.name
+                description: The AIPlatformPipelineJob name. If not given, the metadata.name
                   will be used.
                 type: string
               runtimeConfig:
@@ -304,9 +304,37 @@ spec:
                     description: Represents the failure policy of a pipeline.
                     type: string
                   gcsOutputDirectory:
-                    description: Required. A path in a Cloud Storage bucket, which
-                      will be treated as the root output directory of the pipeline.
+                    description: 'Deprecated: Use gcsOutputDirectoryRef instead.'
                     type: string
+                  gcsOutputDirectoryRef:
+                    description: A path in a Cloud Storage bucket, which will be treated
+                      as the root output directory of the pipeline.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed StorageBucket
+                          resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                        type: string
+                      name:
+                        description: The name of a StorageBucket resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a StorageBucket resource.
+                        type: string
+                    type: object
                 type: object
               serviceAccountRef:
                 description: The service account that the pipeline workload runs as.
@@ -344,8 +372,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: VertexAIPipelineJobStatus defines the config connector machine
-              state of VertexAIPipelineJob
+            description: AIPlatformPipelineJobStatus defines the config connector
+              machine state of AIPlatformPipelineJob
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -374,7 +402,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAIPipelineJob resource
+                description: A unique specifier for the AIPlatformPipelineJob resource
                   in GCP.
                 type: string
               observedGeneration:
