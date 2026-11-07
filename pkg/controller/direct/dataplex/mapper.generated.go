@@ -2055,6 +2055,7 @@ func DataplexAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asse
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ResourceStatus = Asset_ResourceStatusObservedState_FromProto(mapCtx, in.GetResourceStatus())
 	out.SecurityStatus = Asset_SecurityStatus_FromProto(mapCtx, in.GetSecurityStatus())
@@ -2071,6 +2072,7 @@ func DataplexAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datap
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	out.ResourceStatus = Asset_ResourceStatusObservedState_ToProto(mapCtx, in.ResourceStatus)
 	out.SecurityStatus = Asset_SecurityStatus_ToProto(mapCtx, in.SecurityStatus)
@@ -2085,7 +2087,7 @@ func DataplexAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.D
 	out := &krm.DataplexAssetSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.ResourceSpec = Asset_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
 	out.DiscoverySpec = Asset_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
@@ -2099,7 +2101,7 @@ func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetS
 	out := &pb.Asset{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.ResourceSpec = Asset_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
 	out.DiscoverySpec = Asset_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)

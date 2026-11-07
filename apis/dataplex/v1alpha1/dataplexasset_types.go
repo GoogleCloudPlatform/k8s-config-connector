@@ -20,7 +20,6 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,21 +30,17 @@ var DataplexAssetGVK = GroupVersion.WithKind("DataplexAsset")
 // +kcc:spec:proto=google.cloud.dataplex.v1.Asset
 // +kcc:required-from-proto
 type DataplexAssetSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// The DataplexZone this DataplexAsset is created under.
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
+	ParentRef *ZoneRef `json:"parentRef"`
 
 	// The DataplexAsset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Optional. User friendly display name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.display_name
 	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User defined labels for the asset.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Description of the asset.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Asset.description

@@ -43,7 +43,6 @@ func dataplexAssetFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".description")
 	f.SpecField(".discovery_spec")
 	f.SpecField(".display_name")
-	f.SpecField(".labels")
 	f.SpecField(".resource_spec")
 
 	// Status fields
@@ -57,6 +56,7 @@ func dataplexAssetFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".discovery_spec.schedule")
