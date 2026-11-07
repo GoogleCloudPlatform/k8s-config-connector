@@ -31,6 +31,12 @@ func TestAccComputeBackendBucketSignedUrlKey_basic(t *testing.T) {
 				Config: testAccComputeBackendBucketSignedUrlKey_basic(context),
 				Check:  testAccCheckComputeBackendBucketSignedUrlKeyCreatedProducer(t),
 			},
+			{
+				ResourceName:            "google_compute_backend_bucket_signed_url_key.backend_key",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"key_value"},
+			},
 		},
 	})
 }

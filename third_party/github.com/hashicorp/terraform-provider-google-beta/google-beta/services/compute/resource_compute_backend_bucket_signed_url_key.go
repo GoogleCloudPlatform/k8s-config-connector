@@ -36,6 +36,10 @@ func ResourceComputeBackendBucketSignedUrlKey() *schema.Resource {
 		Read:   resourceComputeBackendBucketSignedUrlKeyRead,
 		Delete: resourceComputeBackendBucketSignedUrlKeyDelete,
 
+		Importer: &schema.ResourceImporter{
+			State: resourceComputeBackendBucketSignedUrlKeyImport,
+		},
+
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(20 * time.Minute),
 			Delete: schema.DefaultTimeout(20 * time.Minute),
@@ -95,12 +99,7 @@ func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta
 	} else if v, ok := d.GetOkExists("key_value"); !tpgresource.IsEmptyValue(reflect.ValueOf(keyValueProp)) && (ok || !reflect.DeepEqual(v, keyValueProp)) {
 		obj["keyValue"] = keyValueProp
 	}
-	backendBucketProp, err := expandNestedComputeBackendBucketSignedUrlKeyBackendBucket(d.Get("backend_bucket"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("backend_bucket"); !tpgresource.IsEmptyValue(reflect.ValueOf(backendBucketProp)) && (ok || !reflect.DeepEqual(v, backendBucketProp)) {
-		obj["backendBucket"] = backendBucketProp
-	}
+	// backend_bucket is part of the request URL, not the SignedUrlKey request body.
 
 	lockName, err := tpgresource.ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
 	if err != nil {
@@ -280,6 +279,27 @@ func resourceComputeBackendBucketSignedUrlKeyDelete(d *schema.ResourceData, meta
 
 	log.Printf("[DEBUG] Finished deleting BackendBucketSignedUrlKey %q: %#v", d.Id(), res)
 	return nil
+}
+
+func resourceComputeBackendBucketSignedUrlKeyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	config := meta.(*transport_tpg.Config)
+	if err := tpgresource.ParseImportId([]string{
+		"projects/(?P<project>[^/]+)/global/backendBuckets/(?P<backend_bucket>[^/]+)/signedUrlKeys/(?P<name>[^/]+)",
+		"projects/(?P<project>[^/]+)/global/backendBuckets/(?P<backend_bucket>[^/]+)/(?P<name>[^/]+)",
+		"(?P<project>[^/]+)/(?P<backend_bucket>[^/]+)/(?P<name>[^/]+)",
+		"(?P<backend_bucket>[^/]+)/(?P<name>[^/]+)",
+	}, d, config); err != nil {
+		return nil, err
+	}
+
+	// Keep the state ID consistent with resourceComputeBackendBucketSignedUrlKeyCreate
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
+	if err != nil {
+		return nil, fmt.Errorf("Error constructing id: %s", err)
+	}
+	d.SetId(id)
+
+	return []*schema.ResourceData{d}, nil
 }
 
 func flattenNestedComputeBackendBucketSignedUrlKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {

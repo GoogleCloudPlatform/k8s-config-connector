@@ -120,6 +120,10 @@ func (e *Entry) IsDelete() bool {
 			strings.HasSuffix(uPath, ":cancel") || strings.HasSuffix(uPath, ":drop") {
 			return true
 		}
+		lastSeg := strings.ToLower(e.ExtractResourceIDSegment())
+		if strings.HasPrefix(lastSeg, "delete") {
+			return true
+		}
 	}
 	if e.Request.Method == "GRPC" {
 		parts := strings.Split(e.Request.URL, "/")
