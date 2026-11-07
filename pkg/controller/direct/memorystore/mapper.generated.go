@@ -20,11 +20,13 @@
 // krm.group: memorystore.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.memorystore.v1
+// proto.service: google.cloud.memorystore.v1beta
 
 package memorystore
 
 import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	memorystorepb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	krmmemorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -33,7 +35,7 @@ import (
 )
 
 /* found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_FromProto", skipping
-func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *memorystorepb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
 	if in == nil {
 		return nil
 	}
@@ -43,19 +45,18 @@ func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapCo
 }
 */
 
-/*
-found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_ToProto", skipping
-
-	func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
-		if in == nil {
-			return nil
-		}
-		out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
-		out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
-		return out
+/* found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_ToProto", skipping
+func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *memorystorepb.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
 	}
+	out := &memorystorepb.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	return out
+}
 */
-func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfig {
+
+func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *memorystorepb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfig {
 	if in == nil {
 		return nil
 	}
@@ -67,19 +68,21 @@ func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Membership
 	return out
 }
-func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig) *pb.CrossInstanceReplicationConfig {
+
+func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig) *memorystorepb.CrossInstanceReplicationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CrossInstanceReplicationConfig{}
-	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
+	out := &memorystorepb.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_ToProto[memorystorepb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
 	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx, in.PrimaryInstance)
 	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_ToProto)
 	// MISSING: UpdateTime
 	// MISSING: Membership
 	return out
 }
-func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfigObservedState {
+
+func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -91,11 +94,12 @@ func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapCon
 	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx, in.GetMembership())
 	return out
 }
-func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfigObservedState) *pb.CrossInstanceReplicationConfig {
+
+func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfigObservedState) *memorystorepb.CrossInstanceReplicationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CrossInstanceReplicationConfig{}
+	out := &memorystorepb.CrossInstanceReplicationConfig{}
 	// MISSING: InstanceRole
 	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
 	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto)
@@ -103,7 +107,8 @@ func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapConte
 	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx, in.Membership)
 	return out
 }
-func CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_Membership) *krm.CrossInstanceReplicationConfig_MembershipObservedState {
+
+func CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.CrossInstanceReplicationConfig_Membership) *krm.CrossInstanceReplicationConfig_MembershipObservedState {
 	if in == nil {
 		return nil
 	}
@@ -112,16 +117,18 @@ func CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx *di
 	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto)
 	return out
 }
-func CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_MembershipObservedState) *pb.CrossInstanceReplicationConfig_Membership {
+
+func CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_MembershipObservedState) *memorystorepb.CrossInstanceReplicationConfig_Membership {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CrossInstanceReplicationConfig_Membership{}
+	out := &memorystorepb.CrossInstanceReplicationConfig_Membership{}
 	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
 	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto)
 	return out
 }
-func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstance {
+
+func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapContext, in *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstance {
 	if in == nil {
 		return nil
 	}
@@ -132,18 +139,20 @@ func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapC
 	// MISSING: Uid
 	return out
 }
-func CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstance) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+
+func CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstance) *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	out := &memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{}
 	if in.InstanceRef != nil {
 		out.Instance = in.InstanceRef.External
 	}
 	// MISSING: Uid
 	return out
 }
-func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState {
+
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -152,16 +161,18 @@ func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx
 	out.Uid = direct.LazyPtr(in.GetUid())
 	return out
 }
-func CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState) *memorystorepb.CrossInstanceReplicationConfig_RemoteInstance {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	out := &memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{}
 	out.Instance = direct.ValueOf(in.Instance)
 	out.Uid = direct.ValueOf(in.Uid)
 	return out
 }
-func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
+
+func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
 	if in == nil {
 		return nil
 	}
@@ -171,16 +182,49 @@ func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Network = direct.LazyPtr(in.GetNetwork())
 	return out
 }
-func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEndpointObservedState) *pb.DiscoveryEndpoint {
+
+func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEndpointObservedState) *memorystorepb.DiscoveryEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DiscoveryEndpoint{}
+	out := &memorystorepb.DiscoveryEndpoint{}
 	out.Address = direct.ValueOf(in.Address)
 	out.Port = direct.ValueOf(in.Port)
 	out.Network = direct.ValueOf(in.Network)
 	return out
 }
+
+/* found existing non-generated mapping function "EncryptionInfoObservedState_FromProto", skipping
+func EncryptionInfoObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.EncryptionInfo) *krm.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	// MISSING: KMSKeyVersions
+	// (near miss): "KMSKeyVersions" vs "KmsKeyVersions"
+	// MISSING: KMSKeyPrimaryState
+	// (near miss): "KMSKeyPrimaryState" vs "KmsKeyPrimaryState"
+	out.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EncryptionInfoObservedState_ToProto", skipping
+func EncryptionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfoObservedState) *memorystorepb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &memorystorepb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[memorystorepb.EncryptionInfo_Type](mapCtx, in.EncryptionType)
+	// MISSING: KMSKeyVersions
+	// (near miss): "KMSKeyVersions" vs "KmsKeyVersions"
+	// MISSING: KMSKeyPrimaryState
+	// (near miss): "KMSKeyPrimaryState" vs "KmsKeyPrimaryState"
+	out.LastUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUpdateTime)
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "Endpoint_FromProto", skipping
 func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmmemorystorev1alpha1.Endpoint {
@@ -279,7 +323,7 @@ func Endpoint_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 */
 
 /* found existing non-generated mapping function "Instance_ConnectionDetail_FromProto", skipping
-func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Instance_ConnectionDetail {
+func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_ConnectionDetail) *krm.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
@@ -292,11 +336,11 @@ func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 */
 
 /* found existing non-generated mapping function "Instance_ConnectionDetail_ToProto", skipping
-func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionDetail) *pb.Instance_ConnectionDetail {
+func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionDetail) *memorystorepb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_ConnectionDetail{}
+	out := &memorystorepb.Instance_ConnectionDetail{}
 	// MISSING: PSCAutoConnection
 	// (near miss): "PSCAutoConnection" vs "PscAutoConnection"
 	// MISSING: PSCConnection
@@ -305,7 +349,7 @@ func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krm.Instan
 */
 
 /* found existing non-generated mapping function "Instance_ConnectionDetailObservedState_FromProto", skipping
-func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krm.Instance_ConnectionDetailObservedState {
+func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_ConnectionDetail) *krm.Instance_ConnectionDetailObservedState {
 	if in == nil {
 		return nil
 	}
@@ -318,11 +362,11 @@ func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext,
 */
 
 /* found existing non-generated mapping function "Instance_ConnectionDetailObservedState_ToProto", skipping
-func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
+func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionDetailObservedState) *memorystorepb.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_ConnectionDetail{}
+	out := &memorystorepb.Instance_ConnectionDetail{}
 	// MISSING: PSCAutoConnection
 	// (near miss): "PSCAutoConnection" vs "PscAutoConnection"
 	// MISSING: PSCConnection
@@ -331,7 +375,7 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 */
 
 /* found existing non-generated mapping function "Instance_GCSBackupSource_FromProto", skipping
-func Instance_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Instance_GcsBackupSource) *krm.Instance_GCSBackupSource {
+func Instance_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_GcsBackupSource) *krm.Instance_GCSBackupSource {
 	if in == nil {
 		return nil
 	}
@@ -342,18 +386,18 @@ func Instance_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Instan
 */
 
 /* found existing non-generated mapping function "Instance_GCSBackupSource_ToProto", skipping
-func Instance_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Instance_GCSBackupSource) *pb.Instance_GcsBackupSource {
+func Instance_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Instance_GCSBackupSource) *memorystorepb.Instance_GcsBackupSource {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_GcsBackupSource{}
+	out := &memorystorepb.Instance_GcsBackupSource{}
 	out.Uris = in.Uris
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Instance_InstanceEndpoint_FromProto", skipping
-func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.Instance_InstanceEndpoint {
+func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_InstanceEndpoint) *krm.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
@@ -364,18 +408,18 @@ func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 */
 
 /* found existing non-generated mapping function "Instance_InstanceEndpoint_ToProto", skipping
-func Instance_InstanceEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Instance_InstanceEndpoint) *pb.Instance_InstanceEndpoint {
+func Instance_InstanceEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Instance_InstanceEndpoint) *memorystorepb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_InstanceEndpoint{}
+	out := &memorystorepb.Instance_InstanceEndpoint{}
 	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetail_ToProto)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Instance_InstanceEndpointObservedState_FromProto", skipping
-func Instance_InstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krm.Instance_InstanceEndpointObservedState {
+func Instance_InstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_InstanceEndpoint) *krm.Instance_InstanceEndpointObservedState {
 	if in == nil {
 		return nil
 	}
@@ -386,18 +430,18 @@ func Instance_InstanceEndpointObservedState_FromProto(mapCtx *direct.MapContext,
 */
 
 /* found existing non-generated mapping function "Instance_InstanceEndpointObservedState_ToProto", skipping
-func Instance_InstanceEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_InstanceEndpointObservedState) *pb.Instance_InstanceEndpoint {
+func Instance_InstanceEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_InstanceEndpointObservedState) *memorystorepb.Instance_InstanceEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_InstanceEndpoint{}
+	out := &memorystorepb.Instance_InstanceEndpoint{}
 	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, Instance_ConnectionDetailObservedState_ToProto)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Instance_StateInfoObservedState_FromProto", skipping
-func Instance_StateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo) *krm.Instance_StateInfoObservedState {
+func Instance_StateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_StateInfo) *krm.Instance_StateInfoObservedState {
 	if in == nil {
 		return nil
 	}
@@ -408,20 +452,20 @@ func Instance_StateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 */
 
 /* found existing non-generated mapping function "Instance_StateInfoObservedState_ToProto", skipping
-func Instance_StateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfoObservedState) *pb.Instance_StateInfo {
+func Instance_StateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfoObservedState) *memorystorepb.Instance_StateInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance_StateInfo{}
+	out := &memorystorepb.Instance_StateInfo{}
 	if oneof := Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx, in.UpdateInfo); oneof != nil {
-		out.Info = &pb.Instance_StateInfo_UpdateInfo_{UpdateInfo: oneof}
+		out.Info = &memorystorepb.Instance_StateInfo_UpdateInfo_{UpdateInfo: oneof}
 	}
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Instance_StateInfo_UpdateInfoObservedState_FromProto", skipping
-func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_StateInfo_UpdateInfo) *krm.Instance_StateInfo_UpdateInfoObservedState {
+func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance_StateInfo_UpdateInfo) *krm.Instance_StateInfo_UpdateInfoObservedState {
 	if in == nil {
 		return nil
 	}
@@ -434,22 +478,21 @@ func Instance_StateInfo_UpdateInfoObservedState_FromProto(mapCtx *direct.MapCont
 }
 */
 
-/*
-found existing non-generated mapping function "Instance_StateInfo_UpdateInfoObservedState_ToProto", skipping
-
-	func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfo_UpdateInfoObservedState) *pb.Instance_StateInfo_UpdateInfo {
-		if in == nil {
-			return nil
-		}
-		out := &pb.Instance_StateInfo_UpdateInfo{}
-		out.TargetShardCount = in.TargetShardCount
-		out.TargetReplicaCount = in.TargetReplicaCount
-		// MISSING: TargetEngineVersion
-		// MISSING: TargetNodeType
-		return out
+/* found existing non-generated mapping function "Instance_StateInfo_UpdateInfoObservedState_ToProto", skipping
+func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_StateInfo_UpdateInfoObservedState) *memorystorepb.Instance_StateInfo_UpdateInfo {
+	if in == nil {
+		return nil
 	}
+	out := &memorystorepb.Instance_StateInfo_UpdateInfo{}
+	out.TargetShardCount = in.TargetShardCount
+	out.TargetReplicaCount = in.TargetReplicaCount
+	// MISSING: TargetEngineVersion
+	// MISSING: TargetNodeType
+	return out
+}
 */
-func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicy {
+
+func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *memorystorepb.MaintenancePolicy) *krm.MaintenancePolicy {
 	if in == nil {
 		return nil
 	}
@@ -459,17 +502,19 @@ func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePo
 	out.WeeklyMaintenanceWindow = direct.Slice_FromProto(mapCtx, in.WeeklyMaintenanceWindow, WeeklyMaintenanceWindow_FromProto)
 	return out
 }
-func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicy) *pb.MaintenancePolicy {
+
+func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicy) *memorystorepb.MaintenancePolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MaintenancePolicy{}
+	out := &memorystorepb.MaintenancePolicy{}
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	out.WeeklyMaintenanceWindow = direct.Slice_ToProto(mapCtx, in.WeeklyMaintenanceWindow, WeeklyMaintenanceWindow_ToProto)
 	return out
 }
-func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicyObservedState {
+
+func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.MaintenancePolicy) *krm.MaintenancePolicyObservedState {
 	if in == nil {
 		return nil
 	}
@@ -479,17 +524,19 @@ func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: WeeklyMaintenanceWindow
 	return out
 }
-func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicyObservedState) *pb.MaintenancePolicy {
+
+func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicyObservedState) *memorystorepb.MaintenancePolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MaintenancePolicy{}
+	out := &memorystorepb.MaintenancePolicy{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: WeeklyMaintenanceWindow
 	return out
 }
-func MaintenanceScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceSchedule) *krm.MaintenanceScheduleObservedState {
+
+func MaintenanceScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.MaintenanceSchedule) *krm.MaintenanceScheduleObservedState {
 	if in == nil {
 		return nil
 	}
@@ -498,11 +545,12 @@ func MaintenanceScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func MaintenanceScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceScheduleObservedState) *pb.MaintenanceSchedule {
+
+func MaintenanceScheduleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceScheduleObservedState) *memorystorepb.MaintenanceSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MaintenanceSchedule{}
+	out := &memorystorepb.MaintenanceSchedule{}
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
@@ -677,7 +725,7 @@ func MemorystoreInstanceEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krmm
 */
 
 /* found existing non-generated mapping function "MemorystoreInstanceObservedState_FromProto", skipping
-func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceObservedState {
+func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance) *krm.MemorystoreInstanceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -695,27 +743,41 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.MaintenanceSchedule = MaintenanceScheduleObservedState_FromProto(mapCtx, in.GetMaintenanceSchedule())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	// MISSING: BackupCollection
+	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
+	// MISSING: MigrationConfig
+	// MISSING: AclPolicy
+	// MISSING: AclPolicyInfo
 	return out
 }
 */
 
 /* found existing non-generated mapping function "MemorystoreInstanceObservedState_ToProto", skipping
-func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceObservedState) *pb.Instance {
+func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceObservedState) *memorystorepb.Instance {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance{}
+	out := &memorystorepb.Instance{}
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	out.State = direct.Enum_ToProto[memorystorepb.Instance_State](mapCtx, in.State)
 	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
 	// MISSING: DiscoveryEndpoints
@@ -724,18 +786,32 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PSCAttachmentDetails
 	// (near miss): "PSCAttachmentDetails" vs "PscAttachmentDetails"
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = MaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
+	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	// MISSING: BackupCollection
+	out.EffectiveMaintenanceVersion = in.EffectiveMaintenanceVersion
+	out.AvailableMaintenanceVersions = in.AvailableMaintenanceVersions
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
+	// MISSING: MigrationConfig
+	// MISSING: AclPolicy
+	// MISSING: AclPolicyInfo
 	return out
 }
 */
 
 /* found existing non-generated mapping function "MemorystoreInstanceSpec_FromProto", skipping
-func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.MemorystoreInstanceSpec {
+func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *memorystorepb.Instance) *krm.MemorystoreInstanceSpec {
 	if in == nil {
 		return nil
 	}
@@ -759,34 +835,46 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.MaintenancePolicy = MaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
 	// MISSING: BackupCollection
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.MaintenanceVersion = in.MaintenanceVersion
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
+	// MISSING: MigrationConfig
+	// MISSING: AclPolicy
+	// MISSING: AclPolicyInfo
 	return out
 }
 */
 
 /* found existing non-generated mapping function "MemorystoreInstanceSpec_ToProto", skipping
-func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceSpec) *pb.Instance {
+func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MemorystoreInstanceSpec) *memorystorepb.Instance {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance{}
+	out := &memorystorepb.Instance{}
 	if oneof := Instance_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
-		out.ImportSources = &pb.Instance_GcsSource{GcsSource: oneof}
+		out.ImportSources = &memorystorepb.Instance_GcsSource{GcsSource: oneof}
 	}
 	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.Labels = in.Labels
 	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_ToProto[pb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_ToProto[pb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
+	out.AuthorizationMode = direct.Enum_ToProto[memorystorepb.Instance_AuthorizationMode](mapCtx, in.AuthorizationMode)
+	out.TransitEncryptionMode = direct.Enum_ToProto[memorystorepb.Instance_TransitEncryptionMode](mapCtx, in.TransitEncryptionMode)
 	out.ShardCount = direct.ValueOf(in.ShardCount)
 	// MISSING: DiscoveryEndpoints
-	out.NodeType = direct.Enum_ToProto[pb.Instance_NodeType](mapCtx, in.NodeType)
+	out.NodeType = direct.Enum_ToProto[memorystorepb.Instance_NodeType](mapCtx, in.NodeType)
 	out.PersistenceConfig = PersistenceConfig_ToProto(mapCtx, in.PersistenceConfig)
 	out.EngineVersion = direct.ValueOf(in.EngineVersion)
 	out.EngineConfigs = in.EngineConfigs
@@ -795,19 +883,31 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Memoryst
 	// MISSING: PSCAutoConnections
 	// MISSING: PSCAttachmentDetails
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
-	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	out.Mode = direct.Enum_ToProto[memorystorepb.Instance_Mode](mapCtx, in.Mode)
+	// MISSING: SimulateMaintenanceEvent
 	// MISSING: OndemandMaintenance
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	// MISSING: AsyncInstanceEndpointsDeletionEnabled
+	// MISSING: KMSKey
 	// MISSING: BackupCollection
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.MaintenanceVersion = in.MaintenanceVersion
+	// MISSING: AllowFewerZonesDeployment
+	// MISSING: ServerCAMode
+	// MISSING: ServerCAPool
+	// MISSING: RotateServerCertificate
+	// MISSING: MigrationConfig
+	// MISSING: AclPolicy
+	// MISSING: AclPolicyInfo
 	return out
 }
 */
 
 /* found existing non-generated mapping function "NodeConfigObservedState_FromProto", skipping
-func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfigObservedState {
+func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.NodeConfig) *krm.NodeConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -818,18 +918,18 @@ func NodeConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NodeCon
 */
 
 /* found existing non-generated mapping function "NodeConfigObservedState_ToProto", skipping
-func NodeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfigObservedState) *pb.NodeConfig {
+func NodeConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfigObservedState) *memorystorepb.NodeConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NodeConfig{}
+	out := &memorystorepb.NodeConfig{}
 	out.SizeGb = direct.ValueOf(in.SizeGB)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PersistenceConfig_FromProto", skipping
-func PersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig) *krm.PersistenceConfig {
+func PersistenceConfig_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PersistenceConfig) *krm.PersistenceConfig {
 	if in == nil {
 		return nil
 	}
@@ -842,12 +942,12 @@ func PersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceCo
 */
 
 /* found existing non-generated mapping function "PersistenceConfig_ToProto", skipping
-func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig) *pb.PersistenceConfig {
+func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig) *memorystorepb.PersistenceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PersistenceConfig{}
-	out.Mode = direct.Enum_ToProto[pb.PersistenceConfig_PersistenceMode](mapCtx, in.Mode)
+	out := &memorystorepb.PersistenceConfig{}
+	out.Mode = direct.Enum_ToProto[memorystorepb.PersistenceConfig_PersistenceMode](mapCtx, in.Mode)
 	out.RdbConfig = PersistenceConfig_RdbConfig_ToProto(mapCtx, in.RdbConfig)
 	out.AofConfig = PersistenceConfig_AofConfig_ToProto(mapCtx, in.AofConfig)
 	return out
@@ -855,7 +955,7 @@ func PersistenceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceCon
 */
 
 /* found existing non-generated mapping function "PersistenceConfig_AofConfig_FromProto", skipping
-func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_AOFConfig) *krm.PersistenceConfig_AofConfig {
+func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PersistenceConfig_AOFConfig) *krm.PersistenceConfig_AofConfig {
 	if in == nil {
 		return nil
 	}
@@ -866,18 +966,18 @@ func PersistenceConfig_AofConfig_FromProto(mapCtx *direct.MapContext, in *pb.Per
 */
 
 /* found existing non-generated mapping function "PersistenceConfig_AofConfig_ToProto", skipping
-func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_AofConfig) *pb.PersistenceConfig_AOFConfig {
+func PersistenceConfig_AofConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_AofConfig) *memorystorepb.PersistenceConfig_AOFConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PersistenceConfig_AOFConfig{}
-	out.AppendFsync = direct.Enum_ToProto[pb.PersistenceConfig_AOFConfig_AppendFsync](mapCtx, in.AppendFsync)
+	out := &memorystorepb.PersistenceConfig_AOFConfig{}
+	out.AppendFsync = direct.Enum_ToProto[memorystorepb.PersistenceConfig_AOFConfig_AppendFsync](mapCtx, in.AppendFsync)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PersistenceConfig_RdbConfig_FromProto", skipping
-func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *pb.PersistenceConfig_RDBConfig) *krm.PersistenceConfig_RdbConfig {
+func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PersistenceConfig_RDBConfig) *krm.PersistenceConfig_RdbConfig {
 	if in == nil {
 		return nil
 	}
@@ -888,20 +988,19 @@ func PersistenceConfig_RdbConfig_FromProto(mapCtx *direct.MapContext, in *pb.Per
 }
 */
 
-/*
-found existing non-generated mapping function "PersistenceConfig_RdbConfig_ToProto", skipping
-
-	func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_RdbConfig) *pb.PersistenceConfig_RDBConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.PersistenceConfig_RDBConfig{}
-		out.RdbSnapshotPeriod = direct.Enum_ToProto[pb.PersistenceConfig_RDBConfig_SnapshotPeriod](mapCtx, in.RdbSnapshotPeriod)
-		out.RdbSnapshotStartTime = direct.StringTimestamp_ToProto(mapCtx, in.RdbSnapshotStartTime)
-		return out
+/* found existing non-generated mapping function "PersistenceConfig_RdbConfig_ToProto", skipping
+func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krm.PersistenceConfig_RdbConfig) *memorystorepb.PersistenceConfig_RDBConfig {
+	if in == nil {
+		return nil
 	}
+	out := &memorystorepb.PersistenceConfig_RDBConfig{}
+	out.RdbSnapshotPeriod = direct.Enum_ToProto[memorystorepb.PersistenceConfig_RDBConfig_SnapshotPeriod](mapCtx, in.RdbSnapshotPeriod)
+	out.RdbSnapshotStartTime = direct.StringTimestamp_ToProto(mapCtx, in.RdbSnapshotStartTime)
+	return out
+}
 */
-func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAttachmentDetail) *krm.PscAttachmentDetailObservedState {
+
+func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PscAttachmentDetail) *krm.PscAttachmentDetailObservedState {
 	if in == nil {
 		return nil
 	}
@@ -910,18 +1009,19 @@ func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
 	return out
 }
-func PscAttachmentDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PscAttachmentDetailObservedState) *pb.PscAttachmentDetail {
+
+func PscAttachmentDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PscAttachmentDetailObservedState) *memorystorepb.PscAttachmentDetail {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PscAttachmentDetail{}
+	out := &memorystorepb.PscAttachmentDetail{}
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
-	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	out.ConnectionType = direct.Enum_ToProto[memorystorepb.ConnectionType](mapCtx, in.ConnectionType)
 	return out
 }
 
 /* found existing non-generated mapping function "PscAutoConnection_FromProto", skipping
-func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krm.PscAutoConnection {
+func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PscAutoConnection) *krm.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
@@ -937,16 +1037,17 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	// MISSING: ServiceAttachment
 	// MISSING: PSCConnectionStatus
 	// MISSING: ConnectionType
+	out.IPVersion = direct.Enum_FromProto(mapCtx, in.GetIpVersion())
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PscAutoConnection_ToProto", skipping
-func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnection) *pb.PscAutoConnection {
+func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnection) *memorystorepb.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PscAutoConnection{}
+	out := &memorystorepb.PscAutoConnection{}
 	// MISSING: Port
 	// MISSING: PSCConnectionID
 	// MISSING: IPAddress
@@ -958,12 +1059,13 @@ func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnect
 	// MISSING: ServiceAttachment
 	// MISSING: PSCConnectionStatus
 	// MISSING: ConnectionType
+	out.IpVersion = direct.Enum_ToProto[memorystorepb.IpVersion](mapCtx, in.IPVersion)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PscAutoConnectionObservedState_FromProto", skipping
-func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krm.PscAutoConnectionObservedState {
+func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *memorystorepb.PscAutoConnection) *krm.PscAutoConnectionObservedState {
 	if in == nil {
 		return nil
 	}
@@ -980,16 +1082,17 @@ func PscAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: PSCConnectionStatus
 	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	out.IPVersion = direct.Enum_FromProto(mapCtx, in.GetIpVersion())
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PscAutoConnectionObservedState_ToProto", skipping
-func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnectionObservedState) *pb.PscAutoConnection {
+func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PscAutoConnectionObservedState) *memorystorepb.PscAutoConnection {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PscAutoConnection{}
+	out := &memorystorepb.PscAutoConnection{}
 	if oneof := PscAutoConnectionObservedState_Port_ToProto(mapCtx, in.Port); oneof != nil {
 		out.Ports = oneof
 	}
@@ -1003,17 +1106,18 @@ func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	// MISSING: PSCConnectionStatus
 	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	out.ConnectionType = direct.Enum_ToProto[memorystorepb.ConnectionType](mapCtx, in.ConnectionType)
+	out.IpVersion = direct.Enum_ToProto[memorystorepb.IpVersion](mapCtx, in.IPVersion)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PscAutoConnectionObservedState_Port_ToProto", skipping
-func PscAutoConnectionObservedState_Port_ToProto(mapCtx *direct.MapContext, in *int32) *pb.PscAutoConnection_Port {
+func PscAutoConnectionObservedState_Port_ToProto(mapCtx *direct.MapContext, in *int32) *memorystorepb.PscAutoConnection_Port {
 	if in == nil {
 		return nil
 	}
-	return &pb.PscAutoConnection_Port{Port: *in}
+	return &memorystorepb.PscAutoConnection_Port{Port: *in}
 }
 */
 
@@ -1062,12 +1166,14 @@ found existing non-generated mapping function "PscConnection_ToProto", skipping
 		return out
 	}
 */
+
 func PscConnection_Port_ToProto(mapCtx *direct.MapContext, in *int32) *pb.PscConnection_Port {
 	if in == nil {
 		return nil
 	}
 	return &pb.PscConnection_Port{Port: *in}
 }
+
 func PscConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmmemorystorev1alpha1.PscConnectionObservedState {
 	if in == nil {
 		return nil
@@ -1085,6 +1191,7 @@ func PscConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscC
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
 	return out
 }
+
 func PscConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmmemorystorev1alpha1.PscConnectionObservedState) *pb.PscConnection {
 	if in == nil {
 		return nil
@@ -1102,7 +1209,8 @@ func PscConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmmemory
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
 	return out
 }
-func WeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyMaintenanceWindow) *krm.WeeklyMaintenanceWindow {
+
+func WeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *memorystorepb.WeeklyMaintenanceWindow) *krm.WeeklyMaintenanceWindow {
 	if in == nil {
 		return nil
 	}
@@ -1111,36 +1219,41 @@ func WeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyM
 	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
 	return out
 }
-func WeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMaintenanceWindow) *pb.WeeklyMaintenanceWindow {
+
+func WeeklyMaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyMaintenanceWindow) *memorystorepb.WeeklyMaintenanceWindow {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WeeklyMaintenanceWindow{}
+	out := &memorystorepb.WeeklyMaintenanceWindow{}
 	out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.Day)
 	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }
 
 /* found existing non-generated mapping function "ZoneDistributionConfig_FromProto", skipping
-func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
+func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *memorystorepb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ZoneDistributionConfig{}
 	out.Zone = direct.LazyPtr(in.GetZone())
+	// MISSING: Zones
+	// MISSING: ActiveZones
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	return out
 }
 */
 
 /* found existing non-generated mapping function "ZoneDistributionConfig_ToProto", skipping
-func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
+func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfig) *memorystorepb.ZoneDistributionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ZoneDistributionConfig{}
+	out := &memorystorepb.ZoneDistributionConfig{}
 	out.Zone = direct.ValueOf(in.Zone)
-	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	// MISSING: Zones
+	// MISSING: ActiveZones
+	out.Mode = direct.Enum_ToProto[memorystorepb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
 	return out
 }
 */

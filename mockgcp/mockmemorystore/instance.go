@@ -28,7 +28,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	v1pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 	"github.com/google/uuid"
@@ -37,6 +38,14 @@ import (
 type instanceServer struct {
 	*MockService
 	pb.UnimplementedMemorystoreServer
+}
+
+func roundTripProto(src proto.Message, dst proto.Message) error {
+	b, err := proto.Marshal(src)
+	if err != nil {
+		return err
+	}
+	return proto.Unmarshal(b, dst)
 }
 
 func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
@@ -60,6 +69,10 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 }
 
 func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
+	return r.createInstance(ctx, req, false)
+}
+
+func (r *instanceServer) createInstance(ctx context.Context, req *pb.CreateInstanceRequest, isV1 bool) (*longrunning.Operation, error) {
 	reqName := fmt.Sprintf("%s/instances/%s", req.GetParent(), req.GetInstanceId())
 	name, err := r.parseInstanceName(reqName)
 	if err != nil {
@@ -84,19 +97,40 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
+	var metadata proto.Message
+	if isV1 {
+		metadata = &v1pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "create",
+		}
+	} else {
+		metadata = &pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "create",
+		}
 	}
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+		if isV1 {
+			metadata.(*v1pb.OperationMetadata).EndTime = timestamppb.Now()
+		} else {
+			metadata.(*pb.OperationMetadata).EndTime = timestamppb.Now()
+		}
 
 		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		r.storage.Update(ctx, fqn, retObj)
+		if isV1 {
+			v1Obj := &v1pb.Instance{}
+			if err := roundTripProto(retObj, v1Obj); err != nil {
+				return nil, err
+			}
+			return v1Obj, nil
+		}
 		return retObj, nil
 	})
 }
@@ -165,6 +199,24 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if len(obj.Endpoints) > 0 {
+		var instanceIPVersion pb.IpVersion
+		for _, endpoint := range obj.Endpoints {
+			for _, conn := range endpoint.GetConnections() {
+				if autoConn := conn.GetPscAutoConnection(); autoConn != nil {
+					if v := autoConn.GetIpVersion(); v != pb.IpVersion_IP_VERSION_UNSPECIFIED {
+						if instanceIPVersion == pb.IpVersion_IP_VERSION_UNSPECIFIED {
+							instanceIPVersion = v
+						} else if instanceIPVersion != v {
+							return status.Errorf(codes.InvalidArgument, "all PSC auto connections on an instance must use the same IP version: got %v and %v", instanceIPVersion, v)
+						}
+					}
+				}
+			}
+		}
+		if instanceIPVersion == pb.IpVersion_IP_VERSION_UNSPECIFIED {
+			instanceIPVersion = pb.IpVersion_IPV4
+		}
+
 		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
 			connections := obj.Endpoints[0].Connections
 			if len(connections) == 1 {
@@ -188,9 +240,12 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
 					}
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
-					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.IpVersion = instanceIPVersion
+					if instanceIPVersion == pb.IpVersion_IPV6 {
+						autoConnection.IpAddress = fmt.Sprintf("fd20:0:0:0:0:0:0:%x", pscConnectionID%256)
+					} else {
+						autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					}
 					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					autoConnection.ConnectionType = attachmentDetails.ConnectionType
@@ -328,6 +383,10 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 }
 
 func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunning.Operation, error) {
+	return r.updateInstance(ctx, req, false)
+}
+
+func (r *instanceServer) updateInstance(ctx context.Context, req *pb.UpdateInstanceRequest, isV1 bool) (*longrunning.Operation, error) {
 	reqName := req.GetInstance().GetName()
 
 	name, err := r.parseInstanceName(reqName)
@@ -427,15 +486,29 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "update",
+	var metadata proto.Message
+	if isV1 {
+		metadata = &v1pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "update",
+		}
+	} else {
+		metadata = &pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "update",
+		}
 	}
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+		if isV1 {
+			metadata.(*v1pb.OperationMetadata).EndTime = timestamppb.Now()
+		} else {
+			metadata.(*pb.OperationMetadata).EndTime = timestamppb.Now()
+		}
 
 		if err := r.syncReplication(ctx, obj); err != nil {
 			return nil, err
@@ -445,6 +518,13 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		r.storage.Update(ctx, fqn, retObj)
+		if isV1 {
+			v1Obj := &v1pb.Instance{}
+			if err := roundTripProto(retObj, v1Obj); err != nil {
+				return nil, err
+			}
+			return v1Obj, nil
+		}
 		return retObj, nil
 	})
 }
@@ -465,6 +545,10 @@ func (r *instanceServer) mergeEndpoints(current, updates []*pb.Instance_Instance
 }
 
 func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
+	return r.deleteInstance(ctx, req, false)
+}
+
+func (r *instanceServer) deleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest, isV1 bool) (*longrunning.Operation, error) {
 	name, err := r.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -498,15 +582,29 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "delete",
+	var metadata proto.Message
+	if isV1 {
+		metadata = &v1pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "delete",
+		}
+	} else {
+		metadata = &pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "delete",
+		}
 	}
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+		if isV1 {
+			metadata.(*v1pb.OperationMetadata).EndTime = timestamppb.Now()
+		} else {
+			metadata.(*pb.OperationMetadata).EndTime = timestamppb.Now()
+		}
 		deletedObj := &pb.Instance{}
 		r.storage.Delete(ctx, fqn, deletedObj)
 		return &emptypb.Empty{}, nil
@@ -631,6 +729,10 @@ func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest
 }
 
 func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInstanceRequest) (*longrunning.Operation, error) {
+	return r.backupInstance(ctx, req, false)
+}
+
+func (r *instanceServer) backupInstance(ctx context.Context, req *pb.BackupInstanceRequest, isV1 bool) (*longrunning.Operation, error) {
 	instanceName, err := r.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -708,22 +810,47 @@ func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInsta
 	}
 
 	prefix := name.OperationPrefix()
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     instanceName.String(),
-		Verb:       "backup",
+	var metadata proto.Message
+	if isV1 {
+		metadata = &v1pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     instanceName.String(),
+			Verb:       "backup",
+		}
+	} else {
+		metadata = &pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     instanceName.String(),
+			Verb:       "backup",
+		}
 	}
 
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+		if isV1 {
+			metadata.(*v1pb.OperationMetadata).EndTime = timestamppb.Now()
+		} else {
+			metadata.(*pb.OperationMetadata).EndTime = timestamppb.Now()
+		}
 		obj.State = pb.Backup_ACTIVE
 		r.storage.Update(ctx, fqn, obj)
+		if isV1 {
+			v1Instance := &v1pb.Instance{}
+			if err := roundTripProto(instanceObj, v1Instance); err != nil {
+				return nil, err
+			}
+			return v1Instance, nil
+		}
 		return proto.CloneOf(instanceObj), nil
 	})
 }
 
 func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupRequest) (*longrunning.Operation, error) {
+	return r.deleteBackup(ctx, req, false)
+}
+
+func (r *instanceServer) deleteBackup(ctx context.Context, req *pb.DeleteBackupRequest, isV1 bool) (*longrunning.Operation, error) {
 	name, err := r.parseBackupName(req.Name)
 	if err != nil {
 		return nil, err
@@ -746,15 +873,29 @@ func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupR
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "delete",
+	var metadata proto.Message
+	if isV1 {
+		metadata = &v1pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "delete",
+		}
+	} else {
+		metadata = &pb.OperationMetadata{
+			ApiVersion: "v1",
+			CreateTime: timestamppb.New(now),
+			Target:     fqn,
+			Verb:       "delete",
+		}
 	}
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+		if isV1 {
+			metadata.(*v1pb.OperationMetadata).EndTime = timestamppb.Now()
+		} else {
+			metadata.(*pb.OperationMetadata).EndTime = timestamppb.Now()
+		}
 		deletedObj := &pb.Backup{}
 		r.storage.Delete(ctx, fqn, deletedObj)
 		return &emptypb.Empty{}, nil

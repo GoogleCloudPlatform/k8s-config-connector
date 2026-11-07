@@ -29,17 +29,22 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+PROTO_SHA="eef26aec30227ec265b3150fa79bab3df4e3a38b"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.memorystore.v1 \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.memorystore.v1beta \
   --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource MemorystoreInstance:Instance
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.memorystore.v1 \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.memorystore.v1beta \
   --api-version memorystore.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

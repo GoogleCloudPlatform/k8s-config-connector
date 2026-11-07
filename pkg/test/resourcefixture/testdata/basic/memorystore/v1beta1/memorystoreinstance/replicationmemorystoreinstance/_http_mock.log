@@ -1,6 +1,7 @@
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: CREATE
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fdependency-instance-${uniqueId}
 
 404 Not Found
@@ -23,9 +24,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=dependency-instance-${uniqueId}
+POST https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=dependency-instance-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -44,7 +45,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}",
@@ -55,9 +56,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -73,7 +74,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -82,7 +83,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -130,9 +131,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Finstances%2Finstance-${uniqueId}
 
 404 Not Found
@@ -155,9 +156,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=instance-${uniqueId}
+POST https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=instance-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1
 
 {
@@ -182,7 +183,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}",
@@ -193,9 +194,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
@@ -211,7 +212,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -220,7 +221,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -288,9 +289,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: UPDATE
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Finstances%2Finstance-${uniqueId}
 
 200 OK
@@ -370,9 +372,9 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=crossInstanceReplicationConfig
+PATCH https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=crossInstanceReplicationConfig
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Finstances%2Finstance-${uniqueId}
 
 {
@@ -400,7 +402,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}",
@@ -411,9 +413,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
@@ -429,7 +431,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -438,7 +440,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -508,9 +510,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: DELETE
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Finstances%2Finstance-${uniqueId}
 
 200 OK
@@ -592,9 +595,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fdependency-instance-${uniqueId}
 
 200 OK
@@ -674,9 +677,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fdependency-instance-${uniqueId}
 
 200 OK
@@ -691,7 +694,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}",
@@ -702,9 +705,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -720,7 +723,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",

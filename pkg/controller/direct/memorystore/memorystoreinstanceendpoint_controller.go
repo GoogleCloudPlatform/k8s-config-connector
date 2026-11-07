@@ -28,10 +28,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcpcompute "cloud.google.com/go/compute/apiv1"
-	gcp "cloud.google.com/go/memorystore/apiv1"
+	gcp "cloud.google.com/go/memorystore/apiv1beta"
 
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
-	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 

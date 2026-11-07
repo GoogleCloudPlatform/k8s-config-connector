@@ -16,236 +16,292 @@
 // +generated:types
 // krm.group: memorystore.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.cloud.memorystore.v1
+// proto.service: google.cloud.memorystore.v1beta
 // resource: MemorystoreInstance:Instance
 
 package v1beta1
 
+/* unreachable type AclPolicyInfo
+// +kcc:proto=google.cloud.memorystore.v1beta.AclPolicyInfo
+type AclPolicyInfo struct {
+}
+*/
+
+/* unreachable type AclPolicyRevisionStatus
+// +kcc:proto=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus
+type AclPolicyRevisionStatus struct {
+}
+*/
+
 /* found existing non-generated go type "AutomatedBackupConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.AutomatedBackupConfig
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
-	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AutomatedBackupConfig.fixed_frequency_schedule
 	FixedFrequencySchedule *AutomatedBackupConfig_FixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
 
 	// Optional. The automated backup mode. If the mode is disabled, the other
 	//  fields will be ignored.
-	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AutomatedBackupConfig.automated_backup_mode
 	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
 
 	// Optional. How long to keep automated backups before the backups are
 	//  deleted. The value should be between 1 day and 365 days. If not specified,
 	//  the default value is 35 days.
-	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AutomatedBackupConfig.retention
 	Retention *string `json:"retention,omitempty"`
 }
 */
 
 /* found existing non-generated go type "AutomatedBackupConfig_FixedFrequencySchedule", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
+// +kcc:proto=google.cloud.memorystore.v1beta.AutomatedBackupConfig.FixedFrequencySchedule
 type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// Required. The start time of every automated backup in UTC. It must be set
 	//  to the start of an hour. This field is required.
-	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AutomatedBackupConfig.FixedFrequencySchedule.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 */
 
 /* found existing non-generated go type "CrossInstanceReplicationConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.instance_role
 	InstanceRole *string `json:"instanceRole,omitempty"`
 
 	// Optional. Details of the primary instance that is used as the replication
 	//  source for this secondary instance.
 	//
 	//  This field is only set for a secondary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.primary_instance
 	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
 
 	// Optional. List of secondary instances that are replicating from this
 	//  primary instance.
 	//
 	//  This field is only set for a primary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
 }
 */
 
 /* unreachable type CrossInstanceReplicationConfig_Membership
-// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
+// +kcc:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_Membership struct {
 }
 */
 
 /* found existing non-generated go type "CrossInstanceReplicationConfig_RemoteInstance", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+// +kcc:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.RemoteInstance
 type CrossInstanceReplicationConfig_RemoteInstance struct {
 	// Optional. The full resource path of the remote instance in
 	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.RemoteInstance.instance
 	Instance *string `json:"instance,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.DiscoveryEndpoint", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.DiscoveryEndpoint", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.DiscoveryEndpoint
+// +kcc:proto=google.cloud.memorystore.v1beta.DiscoveryEndpoint
 type DiscoveryEndpoint struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.EncryptionInfo", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance
+// +kcc:proto=google.cloud.memorystore.v1beta.EncryptionInfo
+type EncryptionInfo struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.Instance", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance
 type Instance struct {
 	// Optional. Immutable. Backups that stored in Cloud Storage buckets.
 	//  The Cloud Storage buckets need to be the same region as the instances.
 	//  Read permission is required to import from the provided Cloud Storage
 	//  Objects.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.gcs_source
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.gcs_source
 	GCSSource *Instance_GCSBackupSource `json:"gcsSource,omitempty"`
 
 	// Optional. Immutable. Backups that generated and managed by memorystore
 	//  service.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.managed_backup_source
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.managed_backup_source
 	ManagedBackupSource *Instance_ManagedBackupSource `json:"managedBackupSource,omitempty"`
 
 	// Identifier. Unique name of the instance.
 	//  Format: projects/{project}/locations/{location}/instances/{instance}
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.name
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.name
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Labels to represent user-provided metadata.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.labels
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Number of replica nodes per shard. If omitted the default is 0
 	//  replicas.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.replica_count
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.replica_count
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 
 	// Optional. Immutable. Authorization mode of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.authorization_mode
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.authorization_mode
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
 
 	// Optional. Immutable. In-transit encryption mode of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.transit_encryption_mode
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.transit_encryption_mode
 	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 
 	// Optional. Number of shards for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.shard_count
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.shard_count
 	ShardCount *int32 `json:"shardCount,omitempty"`
 
 	// Optional. Machine type for individual nodes of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_type
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_type
 	NodeType *string `json:"nodeType,omitempty"`
 
 	// Optional. Persistence configuration of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.persistence_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.persistence_config
 	PersistenceConfig *PersistenceConfig `json:"persistenceConfig,omitempty"`
 
 	// Optional. Engine version of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_version
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.engine_version
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
 	// Optional. User-provided engine configurations for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.engine_configs
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.engine_configs
 	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
 
 	// Optional. Immutable. Zone distribution configuration of the instance for
 	//  node allocation.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.zone_distribution_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.zone_distribution_config
 	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
 
 	// Optional. If set to true deletion of the instance will fail.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.deletion_protection_enabled
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.deletion_protection_enabled
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
 	// Optional. Immutable. Deprecated: Use the
 	//  endpoints.connections.psc_auto_connection value instead.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_auto_connections
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
 	PSCAutoConnections []PSCAutoConnection `json:"pscAutoConnections,omitempty"`
 
 	// Optional. Endpoints for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
 	Endpoints []Instance_InstanceEndpoint `json:"endpoints,omitempty"`
 
-	// Optional. The mode config for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
+	// Optional. Immutable. The mode config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.mode
 	Mode *string `json:"mode,omitempty"`
 
+	// Optional. Input only. Simulate a maintenance event.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.simulate_maintenance_event
+	SimulateMaintenanceEvent *bool `json:"simulateMaintenanceEvent,omitempty"`
+
 	// Optional. Input only. Ondemand maintenance for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ondemand_maintenance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ondemand_maintenance
 	OndemandMaintenance *bool `json:"ondemandMaintenance,omitempty"`
 
 	// Optional. The maintenance policy for the instance. If not provided,
 	//  the maintenance event will be performed based on Memorystore
 	//  internal rollout schedule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.maintenance_policy
 	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
 	// Optional. The config for cross instance replication.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
 
 	// Optional. If true, instance endpoints that are created and registered by
 	//  customers can be deleted asynchronously. That is, such an instance endpoint
 	//  can be de-registered before the forwarding rules in the instance endpoint
 	//  are deleted.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.async_instance_endpoints_deletion_enabled
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.async_instance_endpoints_deletion_enabled
 	AsyncInstanceEndpointsDeletionEnabled *bool `json:"asyncInstanceEndpointsDeletionEnabled,omitempty"`
 
+	// Optional. The KMS key used to encrypt the at-rest data of the cluster.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+
 	// Optional. The automated backup config for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. This field can be used to trigger self service update to indicate
+	//  the desired maintenance version. The input to this field can be determined
+	//  by the available_maintenance_versions field.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.maintenance_version
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
+	// Optional. Immutable. Deprecated, do not use.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.allow_fewer_zones_deployment
+	AllowFewerZonesDeployment *bool `json:"allowFewerZonesDeployment,omitempty"`
+
+	// Optional. Immutable. The Server CA mode for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.server_ca_mode
+	ServerCAMode *string `json:"serverCAMode,omitempty"`
+
+	// Optional. Immutable. The customer-managed CA pool for the instance. Only
+	//  applicable if the Server CA mode is CUSTOMER_MANAGED_CAS_CA. Format:
+	//  "projects/{project}/locations/{region}/caPools/{ca_pool}".
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.server_ca_pool
+	ServerCAPool *string `json:"serverCAPool,omitempty"`
+
+	// Optional. Input only. Rotate the server certificates.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.rotate_server_certificate
+	RotateServerCertificate *bool `json:"rotateServerCertificate,omitempty"`
+
+	// Optional. The ACL policy for the instance.
+	//  Format: projects/{project}/locations/{location}/aclPolicies/{acl_policy}
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.acl_policy
+	AclPolicy *string `json:"aclPolicy,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_ConnectionDetail", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
 type Instance_ConnectionDetail struct {
 	// Immutable. Detailed information of a PSC connection that is created
 	//  through service connectivity automation.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_auto_connection
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_auto_connection
 	PSCAutoConnection *PSCAutoConnection `json:"pscAutoConnection,omitempty"`
 
 	// Detailed information of a PSC connection that is created by the user.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnection `json:"pscConnection,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_GCSBackupSource", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance.GcsBackupSource
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.GcsBackupSource
 type Instance_GCSBackupSource struct {
 	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.GcsBackupSource.uris
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.GcsBackupSource.uris
 	Uris []string `json:"uris,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_InstanceEndpoint", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint
 type Instance_InstanceEndpoint struct {
 	// Optional. A group of PSC connections. They are created in the same VPC
 	//  network, one for each service attachment in the cluster.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.InstanceEndpoint.connections
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint.connections
 	Connections []Instance_ConnectionDetail `json:"connections,omitempty"`
 }
 */
 
 /* unreachable type Instance_ManagedBackupSource
-// +kcc:proto=google.cloud.memorystore.v1.Instance.ManagedBackupSource
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.ManagedBackupSource
 type Instance_ManagedBackupSource struct {
 	// Optional. Example:
 	//  //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
@@ -253,222 +309,324 @@ type Instance_ManagedBackupSource struct {
 	//  supported, like
 	//  projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
 	//  In this case, it assumes the backup is under memorystore.googleapis.com.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ManagedBackupSource.backup
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ManagedBackupSource.backup
 	Backup *string `json:"backup,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.Instance.StateInfo", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.StateInfo
 type Instance_StateInfo struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo
 type Instance_StateInfo_UpdateInfo struct {
 }
 */
 
-// +kcc:proto=google.cloud.memorystore.v1.MaintenancePolicy
+// +kcc:proto=google.cloud.memorystore.v1beta.MaintenancePolicy
 type MaintenancePolicy struct {
 
 	// Optional. Maintenance window that is applied to resources covered by this
 	//  policy. Minimum 1. For the current version, the maximum number of
 	//  weekly_window is expected to be one.
-	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.weekly_maintenance_window
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MaintenancePolicy.weekly_maintenance_window
 	WeeklyMaintenanceWindow []WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
 
 /* unreachable type MaintenanceSchedule
-// +kcc:proto=google.cloud.memorystore.v1.MaintenanceSchedule
+// +kcc:proto=google.cloud.memorystore.v1beta.MaintenanceSchedule
 type MaintenanceSchedule struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.NodeConfig", skipping
+/* unreachable type MigrationConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.MigrationConfig
+type MigrationConfig struct {
+}
+*/
 
-// +kcc:proto=google.cloud.memorystore.v1.NodeConfig
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.NodeConfig", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1beta.NodeConfig
 type NodeConfig struct {
 }
 */
 
 /* found existing non-generated go type "PersistenceConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.PersistenceConfig
 type PersistenceConfig struct {
 	// Optional. Current persistence mode.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.mode
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.mode
 	Mode *string `json:"mode,omitempty"`
 
 	// Optional. RDB configuration. This field will be ignored if mode is not RDB.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.rdb_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.rdb_config
 	RdbConfig *PersistenceConfig_RdbConfig `json:"rdbConfig,omitempty"`
 
 	// Optional. AOF configuration. This field will be ignored if mode is not AOF.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.aof_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.aof_config
 	AofConfig *PersistenceConfig_AofConfig `json:"aofConfig,omitempty"`
 }
 */
 
 /* found existing non-generated go type "PersistenceConfig_AofConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.PersistenceConfig.AOFConfig
 type PersistenceConfig_AofConfig struct {
 	// Optional. The fsync mode.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig.append_fsync
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.AOFConfig.append_fsync
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 */
 
 /* found existing non-generated go type "PersistenceConfig_RdbConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.PersistenceConfig.RDBConfig
 type PersistenceConfig_RdbConfig struct {
 	// Optional. Period between RDB snapshots.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_period
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.RDBConfig.rdb_snapshot_period
 	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
 
 	// Optional. Time that the first snapshot was/will be attempted, and to
 	//  which future snapshots will be aligned. If not provided, the current time
 	//  will be used.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.PscAttachmentDetail", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.PscAttachmentDetail
+// +kcc:proto=google.cloud.memorystore.v1beta.PscAttachmentDetail
 type PSCAttachmentDetail struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAutoConnection", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.PscAutoConnection", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.PscAutoConnection
+// +kcc:proto=google.cloud.memorystore.v1beta.PscAutoConnection
 type PSCAutoConnection struct {
 	// Optional. port will only be set for Primary/Reader or Discovery endpoint.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.port
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.port
 	Port *int32 `json:"port,omitempty"`
 
 	// Required. The consumer project_id where PSC connections are established.
 	//  This should be the same project_id that the instance is being created in.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.project_id
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 
 	// Required. The network where the PSC endpoints are created, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.network
+	//  projects/{project_id}/global/networks/{network_name}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.network
 	Network *string `json:"network,omitempty"`
+
+	// Optional. Immutable. The IP version used for the PSC auto-created
+	//  endpoint. If not specified, defaults to IPV4.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
 }
 */
 
 /* unreachable type PSCConnection
-// +kcc:proto=google.cloud.memorystore.v1.PscConnection
+// +kcc:proto=google.cloud.memorystore.v1beta.PscConnection
 type PSCConnection struct {
 	// Optional. port will only be set for Primary/Reader or Discovery endpoint.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.port
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.port
 	Port *int32 `json:"port,omitempty"`
 
 	// Required. The PSC connection id of the forwarding rule connected to the
 	//  service attachment.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.psc_connection_id
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_id
 	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	// Required. The IP allocated on the consumer network for the PSC forwarding
 	//  rule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.ip_address
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.ip_address
 	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// Required. The URI of the consumer side forwarding rule.
 	//  Format:
 	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.forwarding_rule
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.forwarding_rule
 	ForwardingRule *string `json:"forwardingRule,omitempty"`
 
 	// Required. The consumer network where the IP address resides, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.network
+	//  projects/{project_id}/global/networks/{network_name}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.network
 	Network *string `json:"network,omitempty"`
 
 	// Required. The service attachment which is the target of the PSC connection,
 	//  in the form of
 	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.service_attachment
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 */
 
-// +kcc:proto=google.cloud.memorystore.v1.WeeklyMaintenanceWindow
+/* unreachable type SelfManagedSource
+// +kcc:proto=google.cloud.memorystore.v1beta.SelfManagedSource
+type SelfManagedSource struct {
+	// Required. The IP address of the source instance.
+	//  This IP address should be a stable IP address that can be accessed by the
+	//  Memorystore instance throughout the migration process.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.SelfManagedSource.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Required. The port of the source instance.
+	//  This port should be a stable port that can be accessed by the Memorystore
+	//  instance throughout the migration process.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.SelfManagedSource.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The resource name of the Private Service Connect Network
+	//  Attachment used to establish connectivity to the source instance. This
+	//  network attachment has the following requirements:
+	//  1. It must be in the same project as the Memorystore instance.
+	//  2. It must be in the same region as the Memorystore instance.
+	//  3. The subnet attached to the network attachment must be in the same VPC
+	//  network as the source instance nodes.
+	//
+	//  Format:
+	//  projects/{project}/regions/{region}/networkAttachments/{network_attachment}
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.SelfManagedSource.network_attachment
+	NetworkAttachment *string `json:"networkAttachment,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.memorystore.v1beta.WeeklyMaintenanceWindow
 type WeeklyMaintenanceWindow struct {
 	// Optional. Allows to define schedule that runs specified day of the week.
-	// +kcc:proto:field=google.cloud.memorystore.v1.WeeklyMaintenanceWindow.day
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.WeeklyMaintenanceWindow.day
 	Day *string `json:"day,omitempty"`
 
 	// Optional. Start time of the window in UTC.
-	// +kcc:proto:field=google.cloud.memorystore.v1.WeeklyMaintenanceWindow.start_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.WeeklyMaintenanceWindow.start_time
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
 /* found existing non-generated go type "ZoneDistributionConfig", skipping
 
-// +kcc:proto=google.cloud.memorystore.v1.ZoneDistributionConfig
+// +kcc:proto=google.cloud.memorystore.v1beta.ZoneDistributionConfig
 type ZoneDistributionConfig struct {
 	// Optional. Defines zone where all resources will be allocated with
 	//  SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
-	// +kcc:proto:field=google.cloud.memorystore.v1.ZoneDistributionConfig.zone
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.ZoneDistributionConfig.zone
 	Zone *string `json:"zone,omitempty"`
 
+	// Optional. Specify the zones of a multi-zone instance where Memorystore
+	//  instance allocates resources. This flag isn't applicable for single-zone
+	//  instances.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.ZoneDistributionConfig.zones
+	Zones []string `json:"zones,omitempty"`
+
 	// Optional. Current zone distribution mode. Defaults to MULTI_ZONE.
-	// +kcc:proto:field=google.cloud.memorystore.v1.ZoneDistributionConfig.mode
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.ZoneDistributionConfig.mode
 	Mode *string `json:"mode,omitempty"`
 }
 */
 
 // +kcc:proto=google.type.TimeOfDay
 type TimeOfDay struct {
-	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// Hours of a day in 24 hour format. Must be greater than or equal to 0 and
+	//  typically must be less than or equal to 23. An API may choose to allow the
+	//  value "24:00:00" for scenarios like business closing time.
 	// +kcc:proto:field=google.type.TimeOfDay.hours
 	Hours *int32 `json:"hours,omitempty"`
 
-	// Minutes of hour of day. Must be from 0 to 59.
+	// Minutes of an hour. Must be greater than or equal to 0 and less than or
+	//  equal to 59.
 	// +kcc:proto:field=google.type.TimeOfDay.minutes
 	Minutes *int32 `json:"minutes,omitempty"`
 
-	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-	//  allow the value 60 if it allows leap-seconds.
+	// Seconds of a minute. Must be greater than or equal to 0 and typically must
+	//  be less than or equal to 59. An API may allow the value 60 if it allows
+	//  leap-seconds.
 	// +kcc:proto:field=google.type.TimeOfDay.seconds
 	Seconds *int32 `json:"seconds,omitempty"`
 
-	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// Fractions of seconds, in nanoseconds. Must be greater than or equal to 0
+	//  and less than or equal to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+/* unreachable type AclPolicyInfoObservedState
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.AclPolicyInfo
+type AclPolicyInfoObservedState struct {
+	// Output only. The resource name of the applied ACL policy.
+	//  Format:
+	//  "projects/{project}/locations/{location}/aclPolicies/{acl_policy}"
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyInfo.applied_acl_policy
+	AppliedAclPolicy *string `json:"appliedAclPolicy,omitempty"`
+
+	// Output only. The resource name of the applied ACL policy revision.
+	//  Format:
+	//  "projects/{project}/locations/{location}/aclPolicies/{acl_policy}/revisions/{revision}"
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyInfo.applied_acl_policy_revision
+	AppliedAclPolicyRevision *string `json:"appliedAclPolicyRevision,omitempty"`
+
+	// Output only. The revision number of the applied ACL policy revision.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyInfo.applied_acl_policy_revision_number
+	AppliedAclPolicyRevisionNumber *int64 `json:"appliedAclPolicyRevisionNumber,omitempty"`
+
+	// Output only. A list of status for various revisions of this ACL policy on
+	//  the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyInfo.acl_policy_revision_statuses
+	AclPolicyRevisionStatuses []AclPolicyRevisionStatusObservedState `json:"aclPolicyRevisionStatuses,omitempty"`
+}
+*/
+
+/* unreachable type AclPolicyRevisionStatusObservedState
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus
+type AclPolicyRevisionStatusObservedState struct {
+	// Output only. The resource name of the ACL policy revision this status
+	//  refers to. Format:
+	//  "projects/{project}/locations/{location}/aclPolicies/{acl_policy}/revisions/{revision}"
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus.acl_policy_revision
+	AclPolicyRevision *string `json:"aclPolicyRevision,omitempty"`
+
+	// Output only. The revision number of the ACL policy revision this status
+	//  refers to.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus.acl_policy_revision_number
+	AclPolicyRevisionNumber *int64 `json:"aclPolicyRevisionNumber,omitempty"`
+
+	// Output only. AclPolicyRevision state.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Human-readable error message providing more details for FAILED
+	//  states.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.AclPolicyRevisionStatus.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "CrossInstanceReplicationConfigObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfigObservedState struct {
 	// Optional. Details of the primary instance that is used as the replication
 	//  source for this secondary instance.
 	//
 	//  This field is only set for a secondary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.primary_instance
 	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
 
 	// Optional. List of secondary instances that are replicating from this
 	//  primary instance.
 	//
 	//  This field is only set for a primary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 
 	// Output only. The last time cross instance replication config was updated.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. An output only view of all the member instances participating
@@ -482,289 +640,383 @@ type CrossInstanceReplicationConfigObservedState struct {
 	//  a Getinstance request can be sent to any other member instance and this
 	//  field will list all the member instances participating in cross instance
 	//  replication.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.membership
 	Membership *CrossInstanceReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
 }
 */
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.Membership
 type CrossInstanceReplicationConfig_MembershipObservedState struct {
 	// Output only. The primary instance that acts as the source of replication
 	//  for the secondary instances.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.primary_instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.Membership.primary_instance
 	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
 
 	// Output only. The list of secondary instances replicating from the primary
 	//  instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.Membership.secondary_instances
 	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
 }
 
 /* found existing non-generated go type "CrossInstanceReplicationConfig_RemoteInstanceObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.RemoteInstance
 type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
 	// Optional. The full resource path of the remote instance in
 	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.RemoteInstance.instance
 	Instance *string `json:"instance,omitempty"`
 
 	// Output only. The unique identifier of the remote instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.CrossInstanceReplicationConfig.RemoteInstance.uid
 	Uid *string `json:"uid,omitempty"`
 }
 */
 
 /* found existing non-generated go type "DiscoveryEndpointObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.DiscoveryEndpoint
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.DiscoveryEndpoint
 type DiscoveryEndpointObservedState struct {
 	// Output only. IP address of the exposed endpoint clients connect to.
-	// +kcc:proto:field=google.cloud.memorystore.v1.DiscoveryEndpoint.address
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.DiscoveryEndpoint.address
 	Address *string `json:"address,omitempty"`
 
 	// Output only. The port number of the exposed endpoint.
-	// +kcc:proto:field=google.cloud.memorystore.v1.DiscoveryEndpoint.port
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.DiscoveryEndpoint.port
 	Port *int32 `json:"port,omitempty"`
 
 	// Output only. The network where the IP address of the discovery endpoint
 	//  will be reserved, in the form of
-	//  projects/{network_project}/global/networks/{network_id}.
-	// +kcc:proto:field=google.cloud.memorystore.v1.DiscoveryEndpoint.network
+	//  projects/{network_project}/global/networks/{network_name}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.DiscoveryEndpoint.network
 	Network *string `json:"network,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.Instance", skipping
+/* found existing non-generated go type "EncryptionInfoObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. Type of encryption.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. KMS key versions that are being used to protect the data
+	//  at-rest.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.EncryptionInfo.kms_key_versions
+	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	// Output only. The state of the primary version of the KMS key perceived by
+	//  the system. This field is not populated in backups.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.EncryptionInfo.kms_key_primary_state
+	KMSKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	// Output only. The most recent time when the encryption info was updated.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.EncryptionInfo.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.Instance", skipping
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance
 type InstanceObservedState struct {
 	// Output only. Creation timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.create_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Latest update timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.update_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Current state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.state
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state
 	State *string `json:"state,omitempty"`
 
 	// Output only. Additional information about the state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.state_info
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state_info
 	StateInfo *Instance_StateInfoObservedState `json:"stateInfo,omitempty"`
 
 	// Output only. System assigned, unique identifier for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.uid
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.uid
 	Uid *string `json:"uid,omitempty"`
 
-	// Output only. Deprecated: Use the endpoints.connections.psc_auto_connection
-	//  or endpoints.connections.psc_connection values instead.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.discovery_endpoints
+	// Output only. Deprecated: The discovery_endpoints parameter is deprecated.
+	//  As a result, it will not be populated if the connections are created using
+	//  endpoints parameter. Instead of this parameter, for discovery, use
+	//  endpoints.connections.pscConnection and
+	//  endpoints.connections.pscAutoConnection
+	//  with connectionType CONNECTION_TYPE_DISCOVERY.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.discovery_endpoints
 	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
 	// Output only. Configuration of individual nodes of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
+
+	// Optional. Immutable. Zone distribution configuration of the instance for
+	//  node allocation.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.zone_distribution_config
+	ZoneDistributionConfig *ZoneDistributionConfigObservedState `json:"zoneDistributionConfig,omitempty"`
 
 	// Optional. Immutable. Deprecated: Use the
 	//  endpoints.connections.psc_auto_connection value instead.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_auto_connections
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
 	PSCAutoConnections []PSCAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
 
 	// Output only. Service attachment details to configure PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_attachment_details
 	PSCAttachmentDetails []PSCAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
 
 	// Optional. Endpoints for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
+
+	// Optional. Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Optional. Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 
 	// Optional. The maintenance policy for the instance. If not provided,
 	//  the maintenance event will be performed based on Memorystore
 	//  internal rollout schedule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_policy
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.maintenance_policy
 	MaintenancePolicy *MaintenancePolicyObservedState `json:"maintenancePolicy,omitempty"`
 
 	// Output only. Published maintenance schedule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.maintenance_schedule
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.maintenance_schedule
 	MaintenanceSchedule *MaintenanceScheduleObservedState `json:"maintenanceSchedule,omitempty"`
 
 	// Optional. The config for cross instance replication.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.cross_instance_replication_config
 	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+
+	// Output only. Encryption information of the data at rest of the cluster.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.encryption_info
+	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
 
 	// Output only. The backup collection full resource name. Example:
 	//  projects/{project}/locations/{location}/backupCollections/{collection}
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.backup_collection
 	BackupCollection *string `json:"backupCollection,omitempty"`
+
+	// Output only. This field represents the actual maintenance version of the
+	//  instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.effective_maintenance_version
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	// Output only. This field is used to determine the available maintenance
+	//  versions for the self service update.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.available_maintenance_versions
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
+	// Output only. Migration config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.migration_config
+	MigrationConfig *MigrationConfigObservedState `json:"migrationConfig,omitempty"`
+
+	// Output only. Details of the applied ACL policy.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.acl_policy_info
+	AclPolicyInfo *AclPolicyInfoObservedState `json:"aclPolicyInfo,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_ConnectionDetailObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
 	// Immutable. Detailed information of a PSC connection that is created
 	//  through service connectivity automation.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_auto_connection
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_auto_connection
 	PSCAutoConnection *PSCAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 
 	// Detailed information of a PSC connection that is created by the user.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnectionObservedState `json:"pscConnection,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_InstanceEndpointObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint
 type Instance_InstanceEndpointObservedState struct {
 	// Optional. A group of PSC connections. They are created in the same VPC
 	//  network, one for each service attachment in the cluster.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.InstanceEndpoint.connections
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint.connections
 	Connections []Instance_ConnectionDetailObservedState `json:"connections,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_StateInfoObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.StateInfo
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.StateInfo
 type Instance_StateInfoObservedState struct {
 	// Output only. Describes ongoing update when instance state is UPDATING.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.update_info
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.StateInfo.update_info
 	UpdateInfo *Instance_StateInfo_UpdateInfoObservedState `json:"updateInfo,omitempty"`
 }
 */
 
 /* found existing non-generated go type "Instance_StateInfo_UpdateInfoObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo
 type Instance_StateInfo_UpdateInfoObservedState struct {
 	// Output only. Target number of shards for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo.target_shard_count
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo.target_shard_count
 	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
 
 	// Output only. Target number of replica nodes per shard for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo.target_replica_count
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo.target_replica_count
 	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
 
 	// Output only. Target engine version for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo.target_engine_version
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo.target_engine_version
 	TargetEngineVersion *string `json:"targetEngineVersion,omitempty"`
 
 	// Output only. Target node type for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.StateInfo.UpdateInfo.target_node_type
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.StateInfo.UpdateInfo.target_node_type
 	TargetNodeType *string `json:"targetNodeType,omitempty"`
 }
 */
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.MaintenancePolicy
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.MaintenancePolicy
 type MaintenancePolicyObservedState struct {
 	// Output only. The time when the policy was created.
-	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.create_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MaintenancePolicy.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The time when the policy was updated.
-	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenancePolicy.update_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MaintenancePolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.MaintenanceSchedule
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.MaintenanceSchedule
 type MaintenanceScheduleObservedState struct {
 	// Output only. The start time of any upcoming scheduled maintenance for this
 	//  instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenanceSchedule.start_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MaintenanceSchedule.start_time
 	StartTime *string `json:"startTime,omitempty"`
 
 	// Output only. The end time of any upcoming scheduled maintenance for this
 	//  instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.MaintenanceSchedule.end_time
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MaintenanceSchedule.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
 
+/* unreachable type MigrationConfigObservedState
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.MigrationConfig
+type MigrationConfigObservedState struct {
+	// Output only. Configuration for migrating from a self-managed Valkey/Redis
+	//  instance
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MigrationConfig.self_managed_source
+	SelfManagedSource *SelfManagedSource `json:"selfManagedSource,omitempty"`
+
+	// Output only. Migration state of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MigrationConfig.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Represents a boolean flag to force migration finalization
+	//  without offset catch up validation between source and target before
+	//  stopping replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.MigrationConfig.force_finish_migration
+	ForceFinishMigration *bool `json:"forceFinishMigration,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "NodeConfigObservedState", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.NodeConfig
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.NodeConfig
 type NodeConfigObservedState struct {
 	// Output only. Memory size in GB of the node.
-	// +kcc:proto:field=google.cloud.memorystore.v1.NodeConfig.size_gb
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.NodeConfig.size_gb
 	SizeGB *float64 `json:"sizeGB,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.PscAttachmentDetail", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.PscAttachmentDetail
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.PscAttachmentDetail
 type PSCAttachmentDetailObservedState struct {
 	// Output only. Service attachment URI which your self-created PscConnection
 	//  should use as target.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.service_attachment
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAttachmentDetail.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 
 	// Output only. Type of Psc endpoint.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.connection_type
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAttachmentDetail.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAutoConnection", skipping
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.PscAutoConnection", skipping
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.PscAutoConnection
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.PscAutoConnection
 type PSCAutoConnectionObservedState struct {
 	// Output only. The PSC connection id of the forwarding rule connected to the
 	//  service attachment.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.psc_connection_id
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.psc_connection_id
 	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	// Output only. The IP allocated on the consumer network for the PSC
 	//  forwarding rule.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.ip_address
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.ip_address
 	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// Output only. The URI of the consumer side forwarding rule.
 	//  Format:
 	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.forwarding_rule
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.forwarding_rule
 	ForwardingRule *string `json:"forwardingRule,omitempty"`
 
 	// Output only. The service attachment which is the target of the PSC
 	//  connection, in the form of
 	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.service_attachment
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 
 	// Output only. The status of the PSC connection: whether a connection exists
 	//  and ACTIVE or it no longer exists. Please note that this value is updated
 	//  periodically. Please use Private Service Connect APIs for the latest
 	//  status.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.psc_connection_status
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.psc_connection_status
 	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 
 	// Output only. Type of the PSC connection.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscAutoConnection.connection_type
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
 */
 
 /* unreachable type PSCConnectionObservedState
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.PscConnection
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.PscConnection
 type PSCConnectionObservedState struct {
 	// Output only. The consumer project_id where the forwarding rule is created
 	//  from.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.project_id
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 
 	// Output only. The status of the PSC connection: whether a connection exists
 	//  and ACTIVE or it no longer exists. Please note that this value is updated
 	//  periodically. Please use Private Service Connect APIs for the latest
 	//  status.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.psc_connection_status
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_status
 	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 
 	// Output only. Type of the PSC connection.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.connection_type
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.memorystore.v1beta.ZoneDistributionConfig", skipping
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.ZoneDistributionConfig
+type ZoneDistributionConfigObservedState struct {
+	// Output only. The exact list of zones where the instance currently has
+	//  active VMs.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.ZoneDistributionConfig.active_zones
+	ActiveZones []string `json:"activeZones,omitempty"`
 }
 */

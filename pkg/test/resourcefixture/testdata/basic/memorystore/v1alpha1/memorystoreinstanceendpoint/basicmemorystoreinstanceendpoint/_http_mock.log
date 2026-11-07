@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -1779,7 +1780,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -1804,7 +1805,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=memorystoreinstance-1-${uniqueId}
+POST https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=memorystoreinstance-1-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -1843,7 +1844,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
@@ -1854,7 +1855,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
@@ -1872,7 +1873,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1881,7 +1882,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -1904,6 +1905,7 @@ X-Xss-Protection: 0
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -1915,6 +1917,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}-2",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -2870,7 +2873,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -2908,6 +2911,7 @@ X-Xss-Protection: 0
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -2919,6 +2923,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3043,7 +3048,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
+PATCH https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -3058,6 +3063,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3069,6 +3075,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3115,7 +3122,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
@@ -3126,7 +3133,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
@@ -3144,7 +3151,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -3153,7 +3160,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -3176,6 +3183,7 @@ X-Xss-Protection: 0
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -3187,6 +3195,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}-2",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -3258,7 +3267,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: UPDATE
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -3296,6 +3306,7 @@ X-Xss-Protection: 0
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3307,6 +3318,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3541,7 +3553,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
+PATCH https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -3556,6 +3568,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3567,6 +3580,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3635,7 +3649,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
@@ -3646,7 +3660,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
@@ -3664,7 +3678,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -3673,7 +3687,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -3696,6 +3710,7 @@ X-Xss-Protection: 0
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -3707,6 +3722,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}-2",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -3806,7 +3822,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+# Phase: DELETE
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -3844,6 +3861,7 @@ X-Xss-Protection: 0
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3855,6 +3873,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3953,7 +3972,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
+PATCH https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=endpoints
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -3968,6 +3987,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3979,6 +3999,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -4003,7 +4024,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
@@ -4014,7 +4035,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
@@ -4032,7 +4053,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -4041,7 +4062,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
@@ -4064,6 +4085,7 @@ X-Xss-Protection: 0
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -4075,6 +4097,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
               "ipAddress": "${ipAddress}-2",
+              "ipVersion": "IPV4",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -4550,7 +4573,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -4588,6 +4611,7 @@ X-Xss-Protection: 0
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -4599,6 +4623,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
             "ipAddress": "${ipAddress}-2",
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -4641,7 +4666,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-1-${uniqueId}
@@ -4658,7 +4683,7 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
@@ -4669,7 +4694,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
@@ -4687,7 +4712,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
