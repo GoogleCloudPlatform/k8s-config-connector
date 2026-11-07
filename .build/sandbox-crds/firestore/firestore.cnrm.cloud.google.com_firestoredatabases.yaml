@@ -1,0 +1,294 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: firestoredatabases.firestore.cnrm.cloud.google.com
+spec:
+  group: firestore.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: FirestoreDatabase
+    listKind: FirestoreDatabaseList
+    plural: firestoredatabases
+    shortNames:
+    - gcpfirestoredatabase
+    - gcpfirestoredatabases
+    singular: firestoredatabase
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: FirestoreDatabase is the Schema for the FirestoreDatabase API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
+            properties:
+              appEngineIntegrationMode:
+                description: The App Engine integration mode to use for this database.
+                type: string
+              cmekConfig:
+                description: Optional. Presence indicates CMEK is enabled for this
+                  database.
+                properties:
+                  kmsKeyName:
+                    description: |-
+                      Required. Only keys in the same location as this database are allowed to
+                       be used for encryption.
+
+                       For Firestore's nam5 multi-region, this corresponds to Cloud KMS
+                       multi-region us. For Firestore's eur3 multi-region, this corresponds to
+                       Cloud KMS multi-region europe. See
+                       https://cloud.google.com/kms/docs/locations.
+
+                       The expected format is
+                       `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                    type: string
+                type: object
+              concurrencyMode:
+                description: The concurrency control mode to use for this database.
+                type: string
+              databaseEdition:
+                description: Immutable. The edition of the database.
+                type: string
+              deleteProtectionState:
+                description: State of delete protection for the database.
+                type: string
+              etag:
+                description: This checksum is computed by the server based on the
+                  value of other fields, and may be sent on update and delete requests
+                  to ensure the client has an up-to-date value before proceeding.
+                type: string
+              locationID:
+                description: The location of the database. Available locations are
+                  listed at https://cloud.google.com/firestore/docs/locations.
+                type: string
+              pointInTimeRecoveryEnablement:
+                description: Whether to enable the PITR feature on this database.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The FirestoreDatabase name. If not given, the metadata.name
+                  will be used.
+                type: string
+              tags:
+                additionalProperties:
+                  type: string
+                description: 'Optional. Input only. Immutable. Tag keys/values directly
+                  bound to this resource. For example: "123/environment": "production",
+                  "123/costCenter": "marketing"'
+                type: object
+              type:
+                description: The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore
+                  for information about how to choose.
+                type: string
+            type: object
+          status:
+            description: FirestoreDatabaseStatus defines the config connector machine
+              state of FirestoreDatabase
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the FirestoreDatabase resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp at which this database
+                      was created. Databases created before 2016 do not populate create_time.
+                    type: string
+                  deleteTime:
+                    description: Output only. The timestamp at which this database
+                      was deleted. Only set if the database has been deleted.
+                    type: string
+                  earliestVersionTime:
+                    description: |-
+                      Output only. The earliest timestamp at which older versions of the data can
+                       be read from the database. See [version_retention_period] above; this field
+                       is populated with `now - version_retention_period`.
+
+                       This value is continuously updated, and becomes stale the moment it is
+                       queried. If you are using this value to recover data, make sure to account
+                       for the time from the moment when the value is queried to the moment when
+                       you initiate the recovery.
+                    type: string
+                  freeTier:
+                    description: |-
+                      Output only. Background: Free tier is the ability of a Firestore database
+                       to use a small amount of resources every day without being charged. Once
+                       usage exceeds the free tier limit further usage is charged.
+
+                       Whether this database can make use of the free tier. Only one database
+                       per project can be eligible for the free tier.
+
+                       The first (or next) database that is created in a project without a free
+                       tier database will be marked as eligible for the free tier. Databases that
+                       are created while there is a free tier database will not be eligible for
+                       the free tier.
+                    type: boolean
+                  keyPrefix:
+                    description: |-
+                      Output only. The key_prefix for this database. This key_prefix is used, in
+                       combination with the project ID ("<key prefix>~<project id>") to construct
+                       the application ID that is returned from the Cloud Datastore APIs in Google
+                       App Engine first generation runtimes.
+
+                       This value may be empty in which case the appid to use for URL-encoded keys
+                       is the project_id (eg: foo instead of v~foo).
+                    type: string
+                  previousID:
+                    description: Output only. The database resource's prior database
+                      ID. This field is only populated for deleted databases.
+                    type: string
+                  sourceInfo:
+                    description: Output only. Information about the provenance of
+                      this database.
+                    properties:
+                      backup:
+                        description: If set, this database was restored from the specified
+                          backup (or a snapshot thereof).
+                        properties:
+                          backup:
+                            description: 'The resource name of the backup that was
+                              used to restore this database. Format: `projects/{project}/locations/{location}/backups/{backup}`.'
+                            type: string
+                        type: object
+                      operation:
+                        description: 'The associated long-running operation. This
+                          field may not be set after the operation has completed.
+                          Format: `projects/{project}/databases/{database}/operations/{operation}`.'
+                        type: string
+                    type: object
+                  uid:
+                    description: Output only. The system-generated UUID4 for this
+                      Database.
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp at which this database
+                      was most recently updated. Note this only includes updates to
+                      the database resource and not data contained by the database.
+                    type: string
+                  versionRetentionPeriod:
+                    description: |-
+                      Output only. The period during which past versions of data are retained in
+                       the database.
+
+                       Any [read][google.firestore.v1.GetDocumentRequest.read_time]
+                       or [query][google.firestore.v1.ListDocumentsRequest.read_time] can specify
+                       a `read_time` within this window, and will read the state of the database
+                       at that time.
+
+                       If the PITR feature is enabled, the retention period is 7 days. Otherwise,
+                       the retention period is 1 hour.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,275 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: logginglogbuckets.logging.cnrm.cloud.google.com
+spec:
+  group: logging.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: LoggingLogBucket
+    listKind: LoggingLogBucketList
+    plural: logginglogbuckets
+    shortNames:
+    - gcplogginglogbucket
+    - gcplogginglogbuckets
+    singular: logginglogbucket
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: LoggingLogBucket is the Schema for the LoggingLogBucket API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LoggingLogBucketSpec defines the desired state of LoggingLogBucket
+            properties:
+              analyticsEnabled:
+                description: |-
+                  Whether log analytics is enabled for this bucket.
+
+                   Once enabled, log analytics features cannot be disabled.
+                type: boolean
+              cmekSettings:
+                description: |-
+                  The CMEK settings of the log bucket. If present, new log entries written to
+                   this log bucket are encrypted using the CMEK key provided in this
+                   configuration. If a log bucket has CMEK settings, the CMEK settings cannot
+                   be disabled later by updating the log bucket. Changing the KMS key is
+                   allowed.
+                properties:
+                  kmsKeyName:
+                    description: |-
+                      The resource name for the configured Cloud KMS key.
+
+                       KMS key name format:
+
+                           "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"
+
+                       For example:
+
+                         `"projects/my-project/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key"`
+
+                       To enable CMEK for the Log Router, set this field to a valid
+                       `kms_key_name` for which the associated service account has the required
+                       cloudkms.cryptoKeyEncrypterDecrypter roles assigned for the key.
+
+                       The Cloud KMS key used by the Log Router can be updated by changing the
+                       `kms_key_name` to a new valid key name or disabled by setting the key name
+                       to an empty string. Encryption operations that are in progress will be
+                       completed with the key that was in use when they started. Decryption
+                       operations will be completed using the key that was used at the time of
+                       encryption unless access to that key has been revoked.
+
+                       To disable CMEK for the Log Router, set this field to an empty string.
+
+                       See [Enabling CMEK for Log
+                       Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                       for more information.
+                    type: string
+                  kmsKeyVersionName:
+                    description: |-
+                      The CryptoKeyVersion resource name for the configured Cloud KMS key.
+
+                       KMS key name format:
+
+                           "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]/cryptoKeyVersions/[VERSION]"
+
+                       For example:
+
+                         `"projects/my-project/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key/cryptoKeyVersions/1"`
+
+                       This is a read-only field used to convey the specific configured
+                       CryptoKeyVersion of `kms_key` that has been configured. It will be
+                       populated in cases where the CMEK settings are bound to a single key
+                       version.
+
+                       If this field is populated, the `kms_key` is tied to a specific
+                       CryptoKeyVersion.
+                    type: string
+                type: object
+              description:
+                description: Describes this bucket.
+                type: string
+              indexConfigs:
+                description: A list of indexed fields and related configuration data.
+                items:
+                  properties:
+                    fieldPath:
+                      description: |-
+                        Required. The LogEntry field path to index.
+
+                         Note that some paths are automatically indexed, and other paths are not
+                         eligible for indexing. See [indexing documentation](
+                         https://cloud.google.com/logging/docs/view/advanced-queries#indexed-fields)
+                         for details.
+
+                         For example: `jsonPayload.request.status`
+                      type: string
+                    type:
+                      description: Required. The type of data in this index.
+                      type: string
+                  type: object
+                type: array
+              location:
+                description: The location of this resource.
+                type: string
+              locked:
+                description: |-
+                  Whether the bucket is locked.
+
+                   The retention period on a locked bucket cannot be changed. Locked buckets
+                   may only be deleted if they are empty.
+                type: boolean
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The LoggingLogBucket name. If not given, the metadata.name
+                  will be used.
+                type: string
+              restrictedFields:
+                description: |-
+                  Log entry field paths that are denied access in this bucket.
+
+                   The following fields and their children are eligible: `textPayload`,
+                   `jsonPayload`, `protoPayload`, `httpRequest`, `labels`, `sourceLocation`.
+
+                   Restricting a repeated field will restrict all values. Adding a parent will
+                   block all child fields. (e.g. `foo.bar` will block `foo.bar.baz`)
+                items:
+                  type: string
+                type: array
+              retentionDays:
+                description: |-
+                  Logs will be retained by default for this amount of time, after which they
+                   will automatically be deleted. The minimum retention period is 1 day. If
+                   this value is set to zero at bucket creation time, the default time of 30
+                   days will be used.
+                format: int32
+                type: integer
+            required:
+            - location
+            type: object
+          status:
+            description: LoggingLogBucketStatus defines the config connector machine
+              state of LoggingLogBucket
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the LoggingLogBucket resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: |-
+                      Output only. The creation timestamp of the bucket. This is not set for any
+                       of the default buckets.
+                    type: string
+                  lifecycleState:
+                    description: Output only. The bucket lifecycle state.
+                    type: string
+                  updateTime:
+                    description: Output only. The last update timestamp of the bucket.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
