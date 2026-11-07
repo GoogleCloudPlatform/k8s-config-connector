@@ -99,7 +99,7 @@ GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/UpdateRegistryBook
 {
   "registryBook": {
     "claimedScopes": [
-      "projects/${projectId}"
+      "projects/${projectNumber}"
     ],
     "labels": {
       "foo": "updated"
@@ -203,6 +203,7 @@ OK
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
 
 {
+  "force": true,
   "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
 }
 
