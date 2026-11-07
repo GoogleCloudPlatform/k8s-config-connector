@@ -1,0 +1,39 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  name: sqlinstance-stockout-${uniqueId}
+  namespace: ${projectId}
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-central1
+  settings:
+    backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 24
+        retentionUnit: COUNT
+      binaryLogEnabled: true
+      enabled: true
+      startTime: "12:00"
+      transactionLogRetentionDays: 14
+    edition: ENTERPRISE_PLUS
+    tier: db-perf-optimized-N-2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error updating: instance "sqlinstance-stockout-${uniqueId}"
+      is in state FAILED and cannot be reconciled; this usually means that instance
+      creation failed (for example with ERROR_STOCKOUT) or that a fatal error occurred
+      during maintenance. Run `gcloud sql operations list --instance=sqlinstance-stockout-${uniqueId}
+      --project=${projectId}` for details. To recover, delete the failed instance
+      (deleting this SQLInstance does this, unless its deletion policy is abandon)
+      and re-apply the SQLInstance'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
