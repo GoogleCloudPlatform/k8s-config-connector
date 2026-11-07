@@ -666,6 +666,10 @@ type KubeletConfig struct {
 	/* Maximum age an image can be unused before it is garbage collected. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_maximum_gc_age
 	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* Defines a comma-separated allowlist of unsafe sysctls or sysctl patterns which can be set on the Pods. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.allowed_unsafe_sysctls
+	AllowedUnsafeSysctls []string `json:"allowedUnsafeSysctls,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.LinuxNodeConfig

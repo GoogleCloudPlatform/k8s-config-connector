@@ -937,6 +937,10 @@ Content-Type: application/json
   "nodePool": {
     "config": {
       "kubeletConfig": {
+        "allowedUnsafeSysctls": [
+          "kernel.msg*",
+          "net.core.somaxconn"
+        ],
         "cpuCfsQuota": true,
         "cpuCfsQuotaPeriod": "100ms",
         "cpuManagerPolicy": "none",
@@ -999,6 +1003,10 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": 2,
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "allowedUnsafeSysctls": [
+        "kernel.msg*",
+        "net.core.somaxconn"
+      ],
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -1069,6 +1077,11 @@ Content-Type: application/json
 
 {
   "kubeletConfig": {
+    "allowedUnsafeSysctls": [
+      "kernel.msg*",
+      "kernel.sem",
+      "net.core.somaxconn"
+    ],
     "cpuCfsQuota": true,
     "cpuCfsQuotaPeriod": "100ms",
     "cpuManagerPolicy": "none",
@@ -1127,6 +1140,11 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": 2,
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "allowedUnsafeSysctls": [
+        "kernel.msg*",
+        "kernel.sem",
+        "net.core.somaxconn"
+      ],
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",

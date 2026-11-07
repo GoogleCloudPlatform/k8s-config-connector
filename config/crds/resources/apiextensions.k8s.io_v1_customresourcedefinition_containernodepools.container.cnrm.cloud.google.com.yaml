@@ -785,6 +785,12 @@ spec:
                   kubeletConfig:
                     description: Node kubelet configs.
                     properties:
+                      allowedUnsafeSysctls:
+                        description: Defines a comma-separated allowlist of unsafe
+                          sysctls or sysctl patterns which can be set on the Pods.
+                        items:
+                          type: string
+                        type: array
                       cpuCfsQuota:
                         description: 'Enable CPU CFS quota enforcement for containers
                           that specify CPU limits. Note: If nodeConfig.kubeletConfig
