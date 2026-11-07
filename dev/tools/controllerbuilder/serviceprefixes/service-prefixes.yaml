@@ -1,0 +1,811 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Approved service prefixes for KRM Kinds, one per GCP API. This file is
+# maintained by hand.
+#
+# A Kind is <servicePrefix><proto message>, with the acronyms in
+# hack/tools/greenfield/services_acronyms.json applied to the message: sqladmin
+# + BackupRun gives SQLAdminBackupRun. So the service prefix is all that needs
+# deciding, once per API.
+#
+# TestKindNamesFollowServicePrefixes in tests/apichecks checks every
+# --resource <Kind>:<Message> of generate-types in apis/*/generate.sh against
+# this file and service-prefix-pending.yaml: the API (found from the --service
+# package in protoPackages) must be listed here, not only in
+# service-prefix-pending.yaml, and the Kind must be its servicePrefix followed
+# by the message. Existing violations are in
+# tests/apichecks/testdata/exceptions/kind_name_violations.txt.
+#
+# Fields:
+#   api            the API name: google.api.default_host without .googleapis.com
+#                  (or the host of the resource type), e.g. sqladmin
+#   title          the API's service config title, for reference
+#   servicePrefix  the prefix of the API's Kinds
+#   protoPackages  the API's proto packages that apis/*/generate.sh passes to
+#                  --service, e.g. google.cloud.sql.v1; each package belongs to
+#                  one API. tests/apichecks TestKindNamesFollowServicePrefixes
+#                  uses it to find the API of each generated Kind
+#   reason         optional: what was decided and where, e.g.
+#                  "approved as proposed (PR #1234)"
+#
+# To approve a prefix proposed in service-prefix-pending.yaml, move its
+# entry here (keeping or changing servicePrefix) and replace the reason with
+# the decision.
+services:
+  - api: accesscontextmanager
+    title: Access Context Manager API
+    servicePrefix: AccessContextManager
+    protoPackages:
+      - google.identity.accesscontextmanager.v1
+  - api: agentregistry
+    title: Agent Registry API
+    servicePrefix: AgentRegistry
+    protoPackages:
+      - google.cloud.agentregistry.v1
+  - api: aiplatform
+    title: Vertex AI API
+    servicePrefix: AIPlatform
+    protoPackages:
+      - google.cloud.aiplatform.v1
+      - google.cloud.aiplatform.v1beta1
+  - api: alloydb
+    title: AlloyDB API
+    servicePrefix: AlloyDB
+    protoPackages:
+      - google.cloud.alloydb.v1beta
+  - api: analyticsadmin
+    title: Google Analytics Admin API
+    servicePrefix: Analytics
+    protoPackages:
+      - google.analytics.admin.v1beta
+  - api: analyticshub
+    title: Analytics Hub API
+    servicePrefix: BigQueryAnalyticsHub
+    protoPackages:
+      - google.cloud.bigquery.analyticshub.v1
+  - api: apigateway
+    title: API Gateway API
+    servicePrefix: APIGateway
+    protoPackages:
+      - google.cloud.apigateway.v1
+  - api: apigee
+    title: Apigee API
+    servicePrefix: Apigee
+    protoPackages:
+      - mockgcp.cloud.apigee.v1
+  - api: apigeeregistry
+    title: Apigee Registry API
+    servicePrefix: ApigeeRegistry
+    protoPackages:
+      - google.cloud.apigeeregistry.v1
+  - api: apihub
+    title: API hub API
+    servicePrefix: APIHub
+    protoPackages:
+      - google.cloud.apihub.v1
+  - api: apikeys
+    title: API Keys API
+    servicePrefix: APIKeys
+    protoPackages:
+      - google.api.apikeys.v2
+  - api: appengine
+    title: App Engine Admin API
+    servicePrefix: AppEngine
+    protoPackages:
+      - google.appengine.v1
+  - api: apphub
+    title: App Hub API
+    servicePrefix: AppHub
+    protoPackages:
+      - google.cloud.apphub.v1
+  - api: appoptimize
+    title: App Optimize API
+    servicePrefix: AppOptimize
+    protoPackages:
+      - google.cloud.appoptimize.v1beta
+  - api: artifactregistry
+    title: Artifact Registry API
+    servicePrefix: ArtifactRegistry
+    protoPackages:
+      - google.devtools.artifactregistry.v1
+  - api: assuredworkloads
+    title: Assured Workloads API
+    servicePrefix: AssuredWorkloads
+    protoPackages:
+      - google.cloud.assuredworkloads.v1
+  - api: automl
+    title: Cloud AutoML API
+    servicePrefix: AutoML
+    protoPackages:
+      - google.cloud.automl.v1
+  - api: backupdr
+    title: Backup and DR Service API
+    servicePrefix: BackupDR
+    protoPackages:
+      - google.cloud.backupdr.v1
+  - api: batch
+    title: Batch API
+    servicePrefix: Batch
+    protoPackages:
+      - google.cloud.batch.v1
+      - google.cloud.batch.v1alpha
+  - api: beyondcorp
+    title: BeyondCorp API
+    servicePrefix: BeyondCorp
+    protoPackages:
+      - google.cloud.beyondcorp.appgateways.v1
+      - google.cloud.beyondcorp.clientconnectorservices.v1
+  - api: biglake
+    title: BigLake API
+    servicePrefix: BigLake
+    protoPackages:
+      - google.cloud.bigquery.biglake.v1
+  - api: bigquery
+    title: BigQuery API
+    servicePrefix: BigQuery
+    protoPackages:
+      - google.cloud.bigquery.v2
+  - api: bigqueryconnection
+    title: BigQuery Connection API
+    servicePrefix: BigQueryConnection
+    protoPackages:
+      - google.cloud.bigquery.connection.v1
+  - api: bigquerydatapolicy
+    title: BigQuery Data Policy API
+    servicePrefix: BigQueryDataPolicy
+    protoPackages:
+      - google.cloud.bigquery.datapolicies.v1beta1
+  - api: bigquerydatatransfer
+    title: BigQuery Data Transfer API
+    servicePrefix: BigQueryDataTransfer
+  - api: bigquerymigration
+    title: BigQuery Migration API
+    servicePrefix: BigQueryMigration
+    protoPackages:
+      - google.cloud.bigquery.migration.v2alpha
+  - api: bigqueryreservation
+    title: BigQuery Reservation API
+    servicePrefix: BigQueryReservation
+    protoPackages:
+      - google.cloud.bigquery.reservation.v1
+  - api: bigtableadmin
+    title: Cloud Bigtable Admin API
+    servicePrefix: Bigtable
+    protoPackages:
+      - google.bigtable.admin.v2
+  - api: billingbudgets
+    title: Cloud Billing Budget API
+    servicePrefix: BillingBudgets
+    protoPackages:
+      - google.cloud.billing.budgets.v1
+  - api: binaryauthorization
+    title: Binary Authorization API
+    servicePrefix: BinaryAuthorization
+  - api: blockchainnodeengine
+    title: Blockchain Node Engine API
+    servicePrefix: BlockchainNodeEngine
+    protoPackages:
+      - google.cloud.blockchainnodeengine.v1
+  - api: certificatemanager
+    title: Certificate Manager API
+    servicePrefix: CertificateManager
+    protoPackages:
+      - google.cloud.certificatemanager.v1
+  - api: chronicle
+    title: Chronicle API
+    servicePrefix: Chronicle
+    protoPackages:
+      - google.cloud.chronicle.v1
+  - api: cloudasset
+    title: Cloud Asset API
+    servicePrefix: Asset
+    protoPackages:
+      - google.cloud.asset.v1
+  - api: cloudbilling
+    title: Cloud Billing API
+    servicePrefix: Billing
+    protoPackages:
+      - google.cloud.billing.v1
+  - api: cloudbuild
+    title: Cloud Build API
+    servicePrefix: CloudBuild
+    protoPackages:
+      - google.devtools.cloudbuild.v1
+      - google.devtools.cloudbuild.v2
+  - api: cloudchannel
+    title: Cloud Channel API
+    servicePrefix: Cloudchannel
+    protoPackages:
+      - google.cloud.channel.v1
+  - api: clouddeploy
+    title: Cloud Deploy API
+    servicePrefix: CloudDeploy
+    protoPackages:
+      - google.cloud.deploy.v1
+  - api: cloudfunctions
+    title: Cloud Functions API
+    servicePrefix: CloudFunctions
+  - api: cloudidentity
+    title: Cloud Identity API
+    servicePrefix: CloudIdentity
+  - api: cloudkms
+    title: Cloud Key Management Service (KMS) API
+    servicePrefix: KMS
+    protoPackages:
+      - google.cloud.kms.v1
+  - api: cloudnumberregistry
+    title: Cloud Number Registry API
+    servicePrefix: CloudNumberRegistry
+    protoPackages:
+      - google.cloud.numberregistry.v1alpha
+  - api: cloudresourcemanager
+    title: Cloud Resource Manager API
+    servicePrefix: CloudResourceManager
+    protoPackages:
+      - google.cloud.resourcemanager.v3
+  - api: cloudscheduler
+    title: Cloud Scheduler API
+    servicePrefix: CloudScheduler
+  - api: cloudsecuritycompliance
+    title: Cloud Security Compliance API
+    servicePrefix: CloudSecurityCompliance
+    protoPackages:
+      - google.cloud.cloudsecuritycompliance.v1
+  - api: cloudsupport
+    title: Google Cloud Support API
+    servicePrefix: CloudSupport
+    protoPackages:
+      - google.cloud.support.v2
+  - api: cloudtasks
+    title: Cloud Tasks API
+    servicePrefix: Tasks
+    protoPackages:
+      - google.cloud.tasks.v2
+  - api: commerceproducer
+    title: Cloud Commerce Producer API
+    servicePrefix: CommerceProducer
+    protoPackages:
+      - google.cloud.commerceproducer.v1beta
+  - api: composer
+    title: Cloud Composer API
+    servicePrefix: Composer
+    protoPackages:
+      - google.cloud.orchestration.airflow.service.v1
+  - api: compute
+    title: Compute Engine API
+    servicePrefix: Compute
+    protoPackages:
+      - google.cloud.compute.v1
+  - api: config
+    title: Infrastructure Manager API
+    servicePrefix: ConfigDeployment
+    protoPackages:
+      - google.cloud.config.v1
+  - api: configdelivery
+    title: Config Delivery API
+    servicePrefix: ConfigDelivery
+    protoPackages:
+      - google.cloud.configdelivery.v1
+  - api: connectors
+    title: Connectors API
+    servicePrefix: Connectors
+    protoPackages:
+      - google.cloud.connectors.v1
+  - api: contactcenterinsights
+    title: Contact Center AI Insights API
+    servicePrefix: CCInsights
+    protoPackages:
+      - google.cloud.contactcenterinsights.v1
+  - api: container
+    title: Kubernetes Engine API
+    servicePrefix: Container
+    protoPackages:
+      - google.container.v1
+  - api: contentwarehouse
+    title: Document AI Warehouse API
+    servicePrefix: ContentWarehouse
+    protoPackages:
+      - google.cloud.contentwarehouse.v1
+  - api: datacatalog
+    title: Google Cloud Data Catalog API
+    servicePrefix: DataCatalog
+    protoPackages:
+      - google.cloud.datacatalog.v1
+  - api: dataflow
+    title: Dataflow API
+    servicePrefix: Dataflow
+    protoPackages:
+      - google.dataflow.v1beta3
+  - api: dataform
+    title: Dataform API
+    servicePrefix: Dataform
+    protoPackages:
+      - google.cloud.dataform.v1
+      - google.cloud.dataform.v1beta1
+  - api: datafusion
+    title: Cloud Data Fusion API
+    servicePrefix: DataFusion
+  - api: datalabeling
+    title: Data Labeling API
+    servicePrefix: DataLabeling
+    protoPackages:
+      - google.cloud.datalabeling.v1beta1
+  - api: datalineage
+    title: Data Lineage API
+    servicePrefix: DataLineage
+    protoPackages:
+      - google.cloud.datacatalog.lineage.v1
+  - api: dataplex
+    title: Cloud Dataplex API
+    servicePrefix: Dataplex
+    protoPackages:
+      - google.cloud.dataplex.v1
+  - api: dataproc
+    title: Cloud Dataproc API
+    servicePrefix: Dataproc
+    protoPackages:
+      - google.cloud.dataproc.v1
+  - api: datastore
+    title: Cloud Datastore API
+    servicePrefix: Datastore
+  - api: datastream
+    title: Datastream API
+    servicePrefix: Datastream
+    protoPackages:
+      - google.cloud.datastream.v1
+  - api: deploymentmanager
+    title: Cloud Deployment Manager V2 API
+    servicePrefix: DeploymentManager
+  - api: developerconnect
+    title: Developer Connect API
+    servicePrefix: DevConnect
+    protoPackages:
+      - google.cloud.developerconnect.v1
+  - api: devicestreaming
+    title: Device Streaming API
+    servicePrefix: DeviceStreaming
+    protoPackages:
+      - google.cloud.devicestreaming.v1
+  - api: dialogflow
+    title: Dialogflow API
+    servicePrefix: Dialogflow
+    protoPackages:
+      - google.cloud.dialogflow.cx.v3
+      - google.cloud.dialogflow.v2
+      - google.cloud.dialogflow.v2beta1
+  - api: discoveryengine
+    title: Discovery Engine API
+    servicePrefix: DiscoveryEngine
+    protoPackages:
+      - google.cloud.discoveryengine.v1
+      - google.cloud.discoveryengine.v1beta
+  - api: dlp
+    title: Sensitive Data Protection (DLP)
+    servicePrefix: DLP
+    protoPackages:
+      - google.privacy.dlp.v2
+  - api: dns
+    title: Cloud DNS API
+    servicePrefix: DNS
+  - api: documentai
+    title: Cloud Document AI API
+    servicePrefix: DocumentAI
+    protoPackages:
+      - google.cloud.documentai.v1
+  - api: edgecontainer
+    title: Distributed Cloud Edge Container API
+    servicePrefix: EdgeContainer
+    protoPackages:
+      - google.cloud.edgecontainer.v1
+  - api: edgenetwork
+    title: Distributed Cloud Edge Network API
+    servicePrefix: EdgeNetwork
+    protoPackages:
+      - google.cloud.edgenetwork.v1
+  - api: essentialcontacts
+    title: Essential Contacts API
+    servicePrefix: EssentialContacts
+    protoPackages:
+      - google.cloud.essentialcontacts.v1
+  - api: eventarc
+    title: Eventarc API
+    servicePrefix: Eventarc
+    protoPackages:
+      - google.cloud.eventarc.v1
+  - api: file
+    title: Cloud Filestore API
+    servicePrefix: Filestore
+    protoPackages:
+      - google.cloud.filestore.v1
+  - api: financialservices
+    title: Financial Services API
+    servicePrefix: FinancialServices
+    protoPackages:
+      - google.cloud.financialservices.v1
+  - api: firebase
+    title: Firebase Management API
+    servicePrefix: Firebase
+  - api: firebasedatabase
+    title: Firebase Realtime Database Management API
+    servicePrefix: FirebaseDatabase
+  - api: firebasehosting
+    title: Firebase Hosting API
+    servicePrefix: FirebaseHosting
+  - api: firebasestorage
+    title: Cloud Storage for Firebase API
+    servicePrefix: FirebaseStorage
+  - api: firestore
+    title: Cloud Firestore API
+    servicePrefix: Firestore
+    protoPackages:
+      - google.firestore.admin.v1
+      - google.firestore.v1
+  - api: geminidataanalytics
+    title: Gemini Data Analytics API
+    servicePrefix: GeminiDataAnalytics
+    protoPackages:
+      - google.cloud.geminidataanalytics.v1beta
+  - api: gkebackup
+    title: Backup for GKE API
+    servicePrefix: GKEBackup
+    protoPackages:
+      - google.cloud.gkebackup.v1
+  - api: gkehub
+    title: GKE Hub
+    servicePrefix: GKEHub
+    protoPackages:
+      - google.cloud.gkehub.v1
+      - google.cloud.gkehub.v1beta
+  - api: gsuiteaddons
+    title: Google Workspace add-ons API
+    servicePrefix: GSuiteAddons
+    protoPackages:
+      - google.cloud.gsuiteaddons.v1
+  - api: healthcare
+    title: Cloud Healthcare API
+    servicePrefix: Healthcare
+  - api: hypercomputecluster
+    title: Cluster Director API
+    servicePrefix: HypercomputeCluster
+    protoPackages:
+      - google.cloud.hypercomputecluster.v1
+  - api: iam
+    title: Identity and Access Management (IAM) API
+    servicePrefix: IAM
+    protoPackages:
+      - google.iam.admin.v1
+      - google.iam.v2
+      - google.iam.v3
+  - api: iap
+    title: Cloud Identity-Aware Proxy API
+    servicePrefix: IAP
+    protoPackages:
+      - google.cloud.iap.v1
+  - api: identitytoolkit
+    title: Identity Toolkit API
+    servicePrefix: IdentityPlatform
+  - api: ids
+    title: Cloud IDS API
+    servicePrefix: CloudIDS
+  - api: jobs
+    title: Cloud Talent Solution API
+    servicePrefix: CloudTalentSolution
+    protoPackages:
+      - google.cloud.talent.v4
+  - api: krmapihosting
+    title: KRM API Hosting API
+    servicePrefix: ConfigController
+  - api: licensemanager
+    title: License Manager API
+    servicePrefix: LicenseManager
+    protoPackages:
+      - google.cloud.licensemanager.v1
+  - api: livestream
+    title: Live Stream API
+    servicePrefix: LiveStream
+    protoPackages:
+      - google.cloud.video.livestream.v1
+  - api: logging
+    title: Cloud Logging API
+    servicePrefix: Logging
+    protoPackages:
+      - google.logging.v2
+  - api: managedkafka
+    title: Managed Service for Apache Kafka API
+    servicePrefix: ManagedKafka
+    protoPackages:
+      - google.cloud.managedkafka.schemaregistry.v1
+      - google.cloud.managedkafka.v1
+  - api: mapmanagement
+    title: Map Management API
+    servicePrefix: MapManagement
+    protoPackages:
+      - google.maps.mapmanagement.v2
+      - google.maps.mapmanagement.v2beta
+  - api: memcache
+    title: Cloud Memorystore for Memcached API
+    servicePrefix: Memcache
+  - api: memorystore
+    title: Memorystore API
+    servicePrefix: Memorystore
+    protoPackages:
+      - google.cloud.memorystore.v1
+  - api: metastore
+    title: Dataproc Metastore API
+    servicePrefix: Metastore
+  - api: migrationcenter
+    title: Migration Center API
+    servicePrefix: MigrationCenter
+    protoPackages:
+      - google.cloud.migrationcenter.v1
+  - api: ml
+    title: AI Platform Training & Prediction API
+    servicePrefix: MLEngine
+  - api: modelarmor
+    title: Model Armor API
+    servicePrefix: ModelArmor
+    protoPackages:
+      - google.cloud.modelarmor.v1
+  - api: monitoring
+    title: Cloud Monitoring API
+    servicePrefix: Monitoring
+    protoPackages:
+      - google.monitoring.dashboard.v1
+      - google.monitoring.metricsscope.v1
+      - google.monitoring.v3
+  - api: netapp
+    title: NetApp API
+    servicePrefix: NetApp
+    protoPackages:
+      - google.cloud.netapp.v1
+  - api: networkconnectivity
+    title: Network Connectivity API
+    servicePrefix: NetworkConnectivity
+    protoPackages:
+      - google.cloud.networkconnectivity.v1
+      - mockgcp.cloud.networkconnectivity.v1
+  - api: networkmanagement
+    title: Network Management API
+    servicePrefix: NetworkManagement
+    protoPackages:
+      - google.cloud.networkmanagement.v1
+  - api: networksecurity
+    title: Network Security API
+    servicePrefix: NetworkSecurity
+    protoPackages:
+      - google.cloud.networksecurity.v1
+      - google.cloud.networksecurity.v1alpha1
+      - google.cloud.networksecurity.v1beta1
+  - api: networkservices
+    title: Network Services API
+    servicePrefix: NetworkServices
+    protoPackages:
+      - google.cloud.networkservices.v1
+  - api: notebooks
+    title: Notebooks API
+    servicePrefix: Notebooks
+    protoPackages:
+      - google.cloud.notebooks.v1
+      - google.cloud.notebooks.v2
+  - api: oracledatabase
+    title: Oracle Database@Google Cloud API
+    servicePrefix: OracleDatabase
+    protoPackages:
+      - google.cloud.oracledatabase.v1
+  - api: orgpolicy
+    title: Organization Policy API
+    servicePrefix: OrgPolicy
+    protoPackages:
+      - google.cloud.orgpolicy.v2
+  - api: osconfig
+    title: OS Config API
+    servicePrefix: OSConfig
+    protoPackages:
+      - google.cloud.osconfig.v1
+      - google.cloud.osconfig.v1beta
+  - api: oslogin
+    title: Cloud OS Login API
+    servicePrefix: OSLogin
+    protoPackages:
+      - google.cloud.oslogin.common
+      - google.cloud.oslogin.v1
+  - api: parallelstore
+    title: Parallelstore API
+    servicePrefix: Parallelstore
+    protoPackages:
+      - google.cloud.parallelstore.v1
+  - api: parametermanager
+    title: Parameter Manager API
+    servicePrefix: ParameterManager
+    protoPackages:
+      - google.cloud.parametermanager.v1
+  - api: privateca
+    title: Certificate Authority API
+    servicePrefix: PrivateCA
+    protoPackages:
+      - google.cloud.security.privateca.v1
+  - api: privilegedaccessmanager
+    title: Privileged Access Manager API
+    servicePrefix: PrivilegedAccessManager
+    protoPackages:
+      - google.cloud.privilegedaccessmanager.v1
+  - api: pubsub
+    title: Cloud Pub/Sub API
+    servicePrefix: PubSub
+    protoPackages:
+      - google.pubsub.v1
+  - api: pubsublite
+    title: Pub/Sub Lite API
+    servicePrefix: PubSubLite
+  - api: rapidmigrationassessment
+    title: Rapid Migration Assessment API
+    servicePrefix: RapidMigrationAssessment
+    protoPackages:
+      - google.cloud.rapidmigrationassessment.v1
+  - api: recaptchaenterprise
+    title: reCAPTCHA Enterprise API
+    servicePrefix: ReCAPTCHAEnterprise
+    protoPackages:
+      - google.cloud.recaptchaenterprise.v1
+  - api: redis
+    title: Google Cloud Memorystore for Redis API
+    servicePrefix: Redis
+    protoPackages:
+      - google.cloud.redis.cluster.v1
+      - google.cloud.redis.v1
+  - api: retail
+    title: Vertex AI Search for commerce API
+    servicePrefix: Retail
+    protoPackages:
+      - google.cloud.retail.v2
+  - api: run
+    title: Cloud Run Admin API
+    servicePrefix: Run
+    protoPackages:
+      - google.cloud.run.v2
+  - api: saasservicemgmt
+    title: SaaS Runtime API
+    servicePrefix: SaaSServiceMgmt
+    protoPackages:
+      - google.cloud.saasplatform.saasservicemgmt.v1beta1
+  - api: secretmanager
+    title: Secret Manager API
+    servicePrefix: SecretManager
+  - api: securesourcemanager
+    title: Secure Source Manager API
+    servicePrefix: SecureSourceManager
+    protoPackages:
+      - google.cloud.securesourcemanager.v1
+  - api: securitycenter
+    title: Security Command Center API
+    servicePrefix: SecurityCenter
+    protoPackages:
+      - google.cloud.securitycenter.v1
+  - api: securitycentermanagement
+    title: Security Command Center Management API
+    servicePrefix: SecurityCenterManagement
+    protoPackages:
+      - google.cloud.securitycentermanagement.v1
+  - api: securityposture
+    title: Security Posture API
+    servicePrefix: Securityposture
+    protoPackages:
+      - google.cloud.securityposture.v1
+  - api: servicedirectory
+    title: Service Directory API
+    servicePrefix: ServiceDirectory
+    protoPackages:
+      - google.cloud.servicedirectory.v1beta1
+  - api: servicenetworking
+    title: Service Networking API
+    servicePrefix: ServiceNetworking
+    protoPackages:
+      - mockgcp.cloud.servicenetworking.v1
+  - api: sourcerepo
+    title: Cloud Source Repositories API
+    servicePrefix: SourceRepo
+  - api: spanner
+    title: Cloud Spanner API
+    servicePrefix: Spanner
+    protoPackages:
+      - google.spanner.admin.database.v1
+      - google.spanner.admin.instance.v1
+  - api: speech
+    title: Cloud Speech-to-Text API
+    servicePrefix: Speech
+    protoPackages:
+      - google.cloud.speech.v2
+  - api: storage
+    title: Storage Control API
+    servicePrefix: Storage
+    protoPackages:
+      - google.storage.control.v2
+      - google.storage.v1
+  - api: storageinsights
+    title: Storage Insights API
+    servicePrefix: StorageInsights
+    protoPackages:
+      - google.cloud.storageinsights.v1
+  - api: storagetransfer
+    title: Storage Transfer API
+    servicePrefix: StorageTransfer
+  - api: telcoautomation
+    title: Telco Automation API
+    servicePrefix: TelcoAutomation
+    protoPackages:
+      - google.cloud.telcoautomation.v1
+  - api: testing
+    title: Cloud Testing API
+    servicePrefix: Testing
+    protoPackages:
+      - google.devtools.testing.v1
+  - api: tpu
+    title: Cloud TPU API
+    servicePrefix: TPU
+    protoPackages:
+      - google.cloud.tpu.v2
+  - api: transcoder
+    title: Transcoder API
+    servicePrefix: Transcoder
+    protoPackages:
+      - google.cloud.video.transcoder.v1
+  - api: translate
+    title: Cloud Translation API
+    servicePrefix: Translate
+    protoPackages:
+      - google.cloud.translation.v3
+  - api: vectorsearch
+    title: Vector Search API
+    servicePrefix: VectorSearch
+    protoPackages:
+      - google.cloud.vectorsearch.v1
+  - api: videostitcher
+    title: Video Stitcher API
+    servicePrefix: VideoStitcher
+    protoPackages:
+      - google.cloud.video.stitcher.v1
+  - api: vision
+    title: Cloud Vision API
+    servicePrefix: Vision
+    protoPackages:
+      - google.cloud.vision.v1
+  - api: visionai
+    title: Vision AI API
+    servicePrefix: VisionAI
+    protoPackages:
+      - google.cloud.visionai.v1
+  - api: vmmigration
+    title: VM Migration API
+    servicePrefix: VMMigration
+    protoPackages:
+      - google.cloud.vmmigration.v1
+  - api: vmwareengine
+    title: VMware Engine API
+    servicePrefix: VMwareEngine
+    protoPackages:
+      - google.cloud.vmwareengine.v1
+  - api: vpcaccess
+    title: Serverless VPC Access API
+    servicePrefix: VPCAccess
+  - api: workflows
+    title: Workflows API
+    servicePrefix: Workflows
+    protoPackages:
+      - google.cloud.workflows.v1
+  - api: workloadmanager
+    title: Workload Manager API
+    servicePrefix: WorkloadManager
+    protoPackages:
+      - google.cloud.workloadmanager.v1
