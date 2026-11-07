@@ -417,18 +417,8 @@ func (in *DialogflowAgentSpec) DeepCopyInto(out *DialogflowAgentSpec) {
 		*out = new(float32)
 		**out = **in
 	}
-	if in.DefaultLanguageCode != nil {
-		in, out := &in.DefaultLanguageCode, &out.DefaultLanguageCode
-		*out = new(string)
-		**out = **in
-	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(string)
-		**out = **in
-	}
-	if in.DisplayName != nil {
-		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
 		**out = **in
 	}
@@ -454,11 +444,6 @@ func (in *DialogflowAgentSpec) DeepCopyInto(out *DialogflowAgentSpec) {
 	}
 	if in.Tier != nil {
 		in, out := &in.Tier, &out.Tier
-		*out = new(string)
-		**out = **in
-	}
-	if in.TimeZone != nil {
-		in, out := &in.TimeZone, &out.TimeZone
 		*out = new(string)
 		**out = **in
 	}

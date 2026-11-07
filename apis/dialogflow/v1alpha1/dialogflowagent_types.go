@@ -50,7 +50,7 @@ type DialogflowAgentSpec struct {
 	// for a list of the currently supported language codes. This field cannot be updated after creation.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.Agent.default_language_code
 	// +required
-	DefaultLanguageCode *string `json:"defaultLanguageCode"`
+	DefaultLanguageCode string `json:"defaultLanguageCode"`
 
 	// The description of this agent. The maximum length is 500 characters. If exceeded, the request is rejected.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.Agent.description
@@ -59,7 +59,7 @@ type DialogflowAgentSpec struct {
 	// The name of this agent.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.Agent.display_name
 	// +required
-	DisplayName *string `json:"displayName"`
+	DisplayName string `json:"displayName"`
 
 	// Determines whether this agent should log conversation queries.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.Agent.enable_logging
@@ -87,7 +87,7 @@ type DialogflowAgentSpec struct {
 	// Europe/Paris.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.Agent.time_zone
 	// +required
-	TimeZone *string `json:"timeZone"`
+	TimeZone string `json:"timeZone"`
 }
 
 type DialogflowAgentStatus struct {
