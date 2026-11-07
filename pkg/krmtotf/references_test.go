@@ -2031,3 +2031,267 @@ func TestIsRequiredParentReference(t *testing.T) {
 		})
 	}
 }
+
+func TestComputeForwardingRulePSCReferenceResolution(t *testing.T) {
+	testID := testvariable.NewUniqueID()
+	c := mgr.GetClient()
+	ns := testID
+	testcontroller.EnsureNamespaceExistsT(t, c, ns)
+
+	addressName := "psc-ip-" + testID
+	addressSelfLink := "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/addresses/" + addressName
+	addressExternalRef := "projects/my-project/regions/us-central1/addresses/" + addressName
+	addressIP := "10.80.0.3"
+
+	addrWithSelfLink := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ComputeAddress",
+			"metadata": map[string]interface{}{
+				"name":      addressName,
+				"namespace": ns,
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+				"selfLink": addressSelfLink,
+				"observedState": map[string]interface{}{
+					"address": addressIP,
+				},
+			},
+		},
+	}
+
+	addressOnlyExternalRefName := "psc-ip-ext-" + testID
+	addrWithExternalRefOnly := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ComputeAddress",
+			"metadata": map[string]interface{}{
+				"name":      addressOnlyExternalRefName,
+				"namespace": ns,
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": "True",
+					},
+				},
+				"externalRef": addressExternalRef,
+				"observedState": map[string]interface{}{
+					"address": addressIP,
+				},
+			},
+		},
+	}
+
+	test.EnsureObjectsExist(t, []*unstructured.Unstructured{addrWithSelfLink, addrWithExternalRefOnly}, c)
+
+	refConfig := v1alpha1.ReferenceConfig{
+		TFField: "ip_address",
+		Types: []v1alpha1.TypeConfig{
+			{
+				Key:            "ip",
+				JSONSchemaType: "string",
+			},
+			{
+				Key: "addressRef",
+				GVK: schema.GroupVersionKind{
+					Group:   "compute.cnrm.cloud.google.com",
+					Version: "v1beta1",
+					Kind:    "ComputeAddress",
+				},
+				TargetField: "address",
+			},
+		},
+	}
+
+	smLoader := testservicemappingloader.NewForUnitTest()
+
+	t.Run("PSC forwarding rule resolves addressRef to status.selfLink", func(t *testing.T) {
+		fwdRuleResource := &Resource{}
+		fwdRuleResource.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputeForwardingRule",
+		})
+		fwdRuleResource.SetNamespace(ns)
+		fwdRuleResource.Spec = map[string]interface{}{
+			"target": map[string]interface{}{
+				"serviceAttachmentRef": map[string]interface{}{
+					"name": "producer-service-attachment",
+				},
+			},
+		}
+
+		config := map[string]interface{}{
+			"ipAddress": map[string]interface{}{
+				"addressRef": map[string]interface{}{
+					"name": addressName,
+				},
+			},
+		}
+		path := strings.Split(refConfig.TFField, ".")
+		if err := ResolveResourceReference(path, config, refConfig, fwdRuleResource, c, smLoader); err != nil {
+			t.Fatalf("ResolveResourceReference failed: %v", err)
+		}
+		if got, want := config["ipAddress"], addressSelfLink; got != want {
+			t.Errorf("got ipAddress = %v, want %v", got, want)
+		}
+	})
+
+	t.Run("PSC forwarding rule falls back to status.externalRef when selfLink is empty", func(t *testing.T) {
+		fwdRuleResource := &Resource{}
+		fwdRuleResource.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputeForwardingRule",
+		})
+		fwdRuleResource.SetNamespace(ns)
+		fwdRuleResource.Spec = map[string]interface{}{
+			"target": map[string]interface{}{
+				"serviceAttachmentRef": map[string]interface{}{
+					"name": "producer-service-attachment",
+				},
+			},
+		}
+
+		config := map[string]interface{}{
+			"ipAddress": map[string]interface{}{
+				"addressRef": map[string]interface{}{
+					"name": addressOnlyExternalRefName,
+				},
+			},
+		}
+		path := strings.Split(refConfig.TFField, ".")
+		if err := ResolveResourceReference(path, config, refConfig, fwdRuleResource, c, smLoader); err != nil {
+			t.Fatalf("ResolveResourceReference failed: %v", err)
+		}
+		if got, want := config["ipAddress"], addressExternalRef; got != want {
+			t.Errorf("got ipAddress = %v, want %v", got, want)
+		}
+	})
+
+	t.Run("non-PSC forwarding rule resolves addressRef to status.observedState.address", func(t *testing.T) {
+		nonPSCFwdRule := &Resource{}
+		nonPSCFwdRule.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputeForwardingRule",
+		})
+		nonPSCFwdRule.SetNamespace(ns)
+		nonPSCFwdRule.Spec = map[string]interface{}{
+			"target": map[string]interface{}{
+				"targetVPNGatewayRef": map[string]interface{}{
+					"name": "my-vpn-gateway",
+				},
+			},
+		}
+
+		config := map[string]interface{}{
+			"ipAddress": map[string]interface{}{
+				"addressRef": map[string]interface{}{
+					"name": addressName,
+				},
+			},
+		}
+		path := strings.Split(refConfig.TFField, ".")
+		if err := ResolveResourceReference(path, config, refConfig, nonPSCFwdRule, c, smLoader); err != nil {
+			t.Fatalf("ResolveResourceReference failed: %v", err)
+		}
+		if got, want := config["ipAddress"], addressIP; got != want {
+			t.Errorf("got ipAddress = %v, want %v (IP literal)", got, want)
+		}
+	})
+}
+
+func TestComputeForwardingRulePSCLoadBalancingScheme(t *testing.T) {
+	newFwdRule := func(spec map[string]interface{}) *Resource {
+		r := &Resource{
+			Resource: k8s.Resource{
+				TypeMeta: metav1.TypeMeta{
+					Kind: "ComputeForwardingRule",
+				},
+			},
+		}
+		r.Spec = spec
+		return r
+	}
+
+	tests := []struct {
+		name          string
+		resource      *Resource
+		initialConfig map[string]interface{}
+		wantScheme    interface{}
+	}{
+		{
+			name: "PSC target with serviceAttachmentRef and omitted loadBalancingScheme sets it to empty string",
+			resource: newFwdRule(map[string]interface{}{
+				"target": map[string]interface{}{
+					"serviceAttachmentRef": map[string]interface{}{
+						"name": "my-sa",
+					},
+				},
+			}),
+			initialConfig: map[string]interface{}{},
+			wantScheme:    "",
+		},
+		{
+			name:     "PSC target with resolved serviceAttachments URL in config and omitted loadBalancingScheme sets it to empty string",
+			resource: newFwdRule(map[string]interface{}{}),
+			initialConfig: map[string]interface{}{
+				"target": "projects/my-proj/regions/us-central1/serviceAttachments/my-sa",
+			},
+			wantScheme: "",
+		},
+		{
+			name: "PSC target with explicit loadBalancingScheme preserves explicit value",
+			resource: newFwdRule(map[string]interface{}{
+				"target": map[string]interface{}{
+					"serviceAttachmentRef": map[string]interface{}{
+						"name": "my-sa",
+					},
+				},
+				"loadBalancingScheme": "INTERNAL",
+			}),
+			initialConfig: map[string]interface{}{
+				"load_balancing_scheme": "INTERNAL",
+			},
+			wantScheme: "INTERNAL",
+		},
+		{
+			name: "non-PSC target does not set loadBalancingScheme to empty string",
+			resource: newFwdRule(map[string]interface{}{
+				"target": map[string]interface{}{
+					"targetVPNGatewayRef": map[string]interface{}{
+						"name": "my-vpn",
+					},
+				},
+			}),
+			initialConfig: map[string]interface{}{},
+			wantScheme:    nil,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			config := make(map[string]interface{})
+			for k, v := range tc.initialConfig {
+				config[k] = v
+			}
+			if krmtotf.IsPSCForwardingRule(tc.resource, config) {
+				if v, ok := config["load_balancing_scheme"]; !ok || v == nil {
+					config["load_balancing_scheme"] = ""
+				}
+			}
+			if got := config["load_balancing_scheme"]; got != tc.wantScheme {
+				t.Errorf("got load_balancing_scheme = %v, want %v", got, tc.wantScheme)
+			}
+		})
+	}
+}

@@ -1360,6 +1360,13 @@ func expandComputeForwardingRuleBackendService(v interface{}, d tpgresource.Terr
 }
 
 func expandComputeForwardingRuleLoadBalancingScheme(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if target, ok := d.GetOk("target"); ok {
+		if targetStr, ok := target.(string); ok && strings.Contains(targetStr, "/serviceAttachments/") {
+			if v == "EXTERNAL" {
+				return "", nil
+			}
+		}
+	}
 	return v, nil
 }
 
