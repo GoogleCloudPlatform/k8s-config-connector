@@ -4762,15 +4762,6 @@
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.tableSpecs" is not set in unstructured objects
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone.id" is not set in unstructured objects
 [missing_field] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone.version" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.endTime" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.explainabilityDestination.tableURI" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.explainabilityDestination.writeDisposition" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.predictionDestination.tableURI" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.predictionDestination.writeDisposition" is not set in unstructured objects
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictionPeriods" is not set in unstructured objects
 [missing_field] crd=firebaseandroidapps.firebase.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiKeyId" is not set in unstructured objects
 [missing_field] crd=firebaseandroidapps.firebase.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletionPolicy" is not set in unstructured objects
 [missing_field] crd=firebasedatabaseinstances.firebasedatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.desiredState" is not set in unstructured objects

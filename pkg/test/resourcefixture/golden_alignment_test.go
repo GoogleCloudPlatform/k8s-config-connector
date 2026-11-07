@@ -654,6 +654,19 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "billingAccount")
 		delete(v, "resourceSettings")
 
+		// FinancialServices PredictionResult BigQuery destination default writeDisposition enum (0 / unspecified)
+		if name, ok := v["name"].(string); ok && strings.Contains(name, "/predictionResults/") {
+			if outputs, ok := v["outputs"].(map[string]interface{}); ok {
+				for _, destKey := range []string{"predictionDestination", "explainabilityDestination"} {
+					if dest, ok := outputs[destKey].(map[string]interface{}); ok {
+						if wd, ok := dest["writeDisposition"]; ok && (wd == float64(0) || wd == "WRITE_DISPOSITION_UNSPECIFIED") {
+							delete(dest, "writeDisposition")
+						}
+					}
+				}
+			}
+		}
+
 		// ConnectorsConnection specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "billingConfig")
 		delete(v, "connectionRevision")
