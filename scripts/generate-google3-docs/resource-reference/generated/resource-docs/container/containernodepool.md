@@ -71,6 +71,7 @@ title: "ContainerNodePool"
 #### Schema
 ```yaml
 autoscaling:
+  enabled: boolean
   locationPolicy: string
   maxNodeCount: integer
   minNodeCount: integer
@@ -310,6 +311,16 @@ version: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscaling.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Is autoscaling enabled for this node pool.</p>
         </td>
     </tr>
     <tr>

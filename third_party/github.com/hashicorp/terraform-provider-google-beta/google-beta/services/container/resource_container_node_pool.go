@@ -133,9 +133,16 @@ var schemaNodePool = map[string]*schema.Schema{
 		Type:        schema.TypeList,
 		Optional:    true,
 		MaxItems:    1,
-		Description: `Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0.`,
+		Description: `Configuration required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. To disable autoscaling, set minNodeCount and maxNodeCount to 0 or set enabled to false.`,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
+				"enabled": {
+					Type:        schema.TypeBool,
+					Optional:    true,
+					Default:     true,
+					Description: `Is autoscaling enabled for this node pool. Defaults to true.`,
+				},
+
 				"min_node_count": {
 					Type:         schema.TypeInt,
 					Optional:     true,
@@ -928,15 +935,23 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 	}
 
 	if v, ok := d.GetOk(prefix + "autoscaling"); ok {
-		autoscaling := v.([]interface{})[0].(map[string]interface{})
-		np.Autoscaling = &container.NodePoolAutoscaling{
-			Enabled:           true,
-			MinNodeCount:      int64(autoscaling["min_node_count"].(int)),
-			MaxNodeCount:      int64(autoscaling["max_node_count"].(int)),
-			TotalMinNodeCount: int64(autoscaling["total_min_node_count"].(int)),
-			TotalMaxNodeCount: int64(autoscaling["total_max_node_count"].(int)),
-			LocationPolicy:    autoscaling["location_policy"].(string),
-			ForceSendFields:   []string{"MinNodeCount", "MaxNodeCount", "TotalMinNodeCount", "TotalMaxNodeCount"},
+		if l, ok := v.([]interface{}); ok && len(l) > 0 && l[0] != nil {
+			autoscaling := l[0].(map[string]interface{})
+			autoscalingEnabled := true
+			if enabledVal, ok := autoscaling["enabled"]; ok && enabledVal != nil {
+				autoscalingEnabled = enabledVal.(bool)
+			}
+			if autoscalingEnabled {
+				np.Autoscaling = &container.NodePoolAutoscaling{
+					Enabled:           true,
+					MinNodeCount:      int64(autoscaling["min_node_count"].(int)),
+					MaxNodeCount:      int64(autoscaling["max_node_count"].(int)),
+					TotalMinNodeCount: int64(autoscaling["total_min_node_count"].(int)),
+					TotalMaxNodeCount: int64(autoscaling["total_max_node_count"].(int)),
+					LocationPolicy:    autoscaling["location_policy"].(string),
+					ForceSendFields:   []string{"MinNodeCount", "MaxNodeCount", "TotalMinNodeCount", "TotalMaxNodeCount"},
+				}
+			}
 		}
 	}
 
@@ -1145,20 +1160,50 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		"queued_provisioning":         flattenNodePoolQueuedProvisioning(np.QueuedProvisioning),
 	}
 
-	if np.Autoscaling != nil {
-		if np.Autoscaling.Enabled {
-			nodePool["autoscaling"] = []map[string]interface{}{
-				{
-					"min_node_count":       np.Autoscaling.MinNodeCount,
-					"max_node_count":       np.Autoscaling.MaxNodeCount,
-					"total_min_node_count": np.Autoscaling.TotalMinNodeCount,
-					"total_max_node_count": np.Autoscaling.TotalMaxNodeCount,
-					"location_policy":      np.Autoscaling.LocationPolicy,
-				},
+	if np.Autoscaling != nil && np.Autoscaling.Enabled {
+		nodePool["autoscaling"] = []map[string]interface{}{
+			{
+				"enabled":              np.Autoscaling.Enabled,
+				"min_node_count":       np.Autoscaling.MinNodeCount,
+				"max_node_count":       np.Autoscaling.MaxNodeCount,
+				"total_min_node_count": np.Autoscaling.TotalMinNodeCount,
+				"total_max_node_count": np.Autoscaling.TotalMaxNodeCount,
+				"location_policy":      np.Autoscaling.LocationPolicy,
+			},
+		}
+	} else if v, ok := d.GetOk(prefix + "autoscaling"); ok {
+		if l, ok := v.([]interface{}); ok && len(l) > 0 && l[0] != nil {
+			autoscaling := l[0].(map[string]interface{})
+			if enabledVal, ok := autoscaling["enabled"]; ok && enabledVal != nil && !enabledVal.(bool) {
+				nodePool["autoscaling"] = []map[string]interface{}{
+					{
+						"enabled":              false,
+						"min_node_count":       autoscaling["min_node_count"],
+						"max_node_count":       autoscaling["max_node_count"],
+						"total_min_node_count": autoscaling["total_min_node_count"],
+						"total_max_node_count": autoscaling["total_max_node_count"],
+						"location_policy":      autoscaling["location_policy"],
+					},
+				}
+			} else if np.Autoscaling != nil && !np.Autoscaling.Enabled {
+				nodePool["autoscaling"] = []map[string]interface{}{
+					{
+						"enabled":              np.Autoscaling.Enabled,
+						"min_node_count":       np.Autoscaling.MinNodeCount,
+						"max_node_count":       np.Autoscaling.MaxNodeCount,
+						"total_min_node_count": np.Autoscaling.TotalMinNodeCount,
+						"total_max_node_count": np.Autoscaling.TotalMaxNodeCount,
+						"location_policy":      np.Autoscaling.LocationPolicy,
+					},
+				}
+			} else {
+				nodePool["autoscaling"] = []map[string]interface{}{}
 			}
 		} else {
 			nodePool["autoscaling"] = []map[string]interface{}{}
 		}
+	} else {
+		nodePool["autoscaling"] = []map[string]interface{}{}
 	}
 
 	if np.PlacementPolicy != nil {
@@ -1332,25 +1377,35 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			DesiredNodePoolId: name,
 		}
 		if v, ok := d.GetOk(prefix + "autoscaling"); ok {
-			autoscaling := v.([]interface{})[0].(map[string]interface{})
-			// disable autoscaling if both min/max node counts are set to 0
-			minNodeCount := autoscaling["min_node_count"].(int)
-			maxNodeCount := autoscaling["max_node_count"].(int)
-			totalMaxNodeCount := autoscaling["total_max_node_count"].(int)
-			totalMinNodeCount := autoscaling["total_min_node_count"].(int)
-			if ((minNodeCount == 0) && (maxNodeCount == 0)) && ((totalMaxNodeCount == 0) && (totalMinNodeCount == 0)) {
-				update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
-					Enabled: false,
+			if l, ok := v.([]interface{}); ok && len(l) > 0 && l[0] != nil {
+				autoscaling := l[0].(map[string]interface{})
+				// disable autoscaling if both min/max node counts are set to 0 or enabled is explicitly false
+				minNodeCount := autoscaling["min_node_count"].(int)
+				maxNodeCount := autoscaling["max_node_count"].(int)
+				totalMaxNodeCount := autoscaling["total_max_node_count"].(int)
+				totalMinNodeCount := autoscaling["total_min_node_count"].(int)
+				autoscalingEnabled := true
+				if enabledVal, ok := autoscaling["enabled"]; ok && enabledVal != nil {
+					autoscalingEnabled = enabledVal.(bool)
+				}
+				if !autoscalingEnabled || (((minNodeCount == 0) && (maxNodeCount == 0)) && ((totalMaxNodeCount == 0) && (totalMinNodeCount == 0))) {
+					update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
+						Enabled: false,
+					}
+				} else {
+					update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
+						Enabled:           true,
+						MinNodeCount:      int64(minNodeCount),
+						MaxNodeCount:      int64(maxNodeCount),
+						TotalMinNodeCount: int64(totalMinNodeCount),
+						TotalMaxNodeCount: int64(totalMaxNodeCount),
+						LocationPolicy:    autoscaling["location_policy"].(string),
+						ForceSendFields:   []string{"MinNodeCount", "TotalMinNodeCount"},
+					}
 				}
 			} else {
 				update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
-					Enabled:           true,
-					MinNodeCount:      int64(minNodeCount),
-					MaxNodeCount:      int64(maxNodeCount),
-					TotalMinNodeCount: int64(totalMinNodeCount),
-					TotalMaxNodeCount: int64(totalMaxNodeCount),
-					LocationPolicy:    autoscaling["location_policy"].(string),
-					ForceSendFields:   []string{"MinNodeCount", "TotalMinNodeCount"},
+					Enabled: false,
 				}
 			}
 		} else {
