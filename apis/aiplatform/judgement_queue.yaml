@@ -247,13 +247,17 @@ entries:
     field: .spec.tools[].functionDeclarations[].parameters.additionalProperties
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.defs
@@ -267,7 +271,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].parameters.example
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].parameters.properties
@@ -281,19 +287,25 @@ entries:
     field: .spec.tools[].functionDeclarations[].parametersJsonSchema
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].response.additionalProperties
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].response.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].response.defs
@@ -307,7 +319,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].response.example
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].functionDeclarations[].response.properties
@@ -321,7 +335,9 @@ entries:
     field: .spec.tools[].functionDeclarations[].responseJsonSchema
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: accepted
+    note: generated wrapper Value is standard KRM representation in direct controllers
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.tools[].retrieval.disableAttribution
