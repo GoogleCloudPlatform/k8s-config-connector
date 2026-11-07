@@ -1,0 +1,114 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "CertificateManagerCertificate/certificatemanagercertificate-${uniqueId}",
+    "fields": [
+      {
+        "id": "description",
+        "old": "",
+        "new": "sample managed cert for kcc"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "global"
+      },
+      {
+        "id": "managed.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "managed.0.authorization_attempt_info.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "managed.0.dns_authorizations.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "managed.0.dns_authorizations.0",
+        "old": "",
+        "new": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}"
+      },
+      {
+        "id": "managed.0.dns_authorizations.1",
+        "old": "",
+        "new": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+      },
+      {
+        "id": "managed.0.domains.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "managed.0.domains.0",
+        "old": "",
+        "new": "${uniqueId}1.hashicorptest.com"
+      },
+      {
+        "id": "managed.0.domains.1",
+        "old": "",
+        "new": "${uniqueId}2.hashicorptest.com"
+      },
+      {
+        "id": "managed.0.provisioning_issue.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "managed.0.state",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "certificatemanagercertificate${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "scope",
+        "old": "",
+        "new": "EDGE_CACHE"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "CertificateManagerDNSAuthorization/certificatemanagerdnsauthorization-1-${uniqueId}"
+  },
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "CertificateManagerDNSAuthorization/certificatemanagerdnsauthorization-2-${uniqueId}"
+  }
+]
