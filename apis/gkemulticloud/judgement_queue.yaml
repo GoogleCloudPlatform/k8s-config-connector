@@ -49,6 +49,12 @@ entries:
     status: open
   - kind: GKEMultiCloudAWSNodePool
     group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.config.proxyConfig.secretVersion
+    reason: possible-reference-by-description
+    detail: the field name ends in secretVersion
+    status: open
+  - kind: GKEMultiCloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
     field: .spec.config.securityGroupIDs
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
