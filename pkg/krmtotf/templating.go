@@ -193,6 +193,10 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 			}
 		}
 
+		if path == "location" && r.Kind == "CertificateManagerCertificateMap" {
+			return "global"
+		}
+
 		if isRequired {
 			resolutionError = fmt.Errorf("unable to resolve missing value: %v", field)
 		}
