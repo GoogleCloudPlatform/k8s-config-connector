@@ -153,10 +153,11 @@ func (s *BusinessGlossaryService) DeleteGlossaryCategory(ctx context.Context, re
 func (s *BusinessGlossaryService) ListGlossaryCategories(ctx context.Context, req *pb.ListGlossaryCategoriesRequest) (*pb.ListGlossaryCategoriesResponse, error) {
 	response := &pb.ListGlossaryCategoriesResponse{}
 
+	parentPrefix := strings.TrimSuffix(req.GetParent(), "/") + "/categories/"
 	kind := (&pb.GlossaryCategory{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
 		category := obj.(*pb.GlossaryCategory)
-		if strings.HasPrefix(category.GetName(), req.GetParent()) {
+		if strings.HasPrefix(category.GetName(), parentPrefix) {
 			response.Categories = append(response.Categories, category)
 		}
 		return nil
