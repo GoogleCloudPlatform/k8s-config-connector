@@ -322,10 +322,11 @@ oneOf:
 			} else {
 				ruleYAML = refRuleWithKind
 			}
-		} else if signature == "serviceAccountRef,user" && kind == "AccessContextManagerServicePerimeter" {
+		} else if signature == "group,serviceAccountRef,user" && kind == "AccessContextManagerServicePerimeter" {
 			ruleYAML = `
 oneOf:
   - required: [serviceAccountRef]
+  - required: [group]
   - required: [user]
 `
 		} else if signature == "billingAccountRef,folderRef,name,organizationRef,resourceID" && kind == "Project" {
