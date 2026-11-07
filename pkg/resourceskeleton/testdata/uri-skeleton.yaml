@@ -883,6 +883,9 @@
 - ExpectedSkeleton: null
   ResourceConfigId: AccessContextManagerServicePerimeterResource
   URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AccessContextManagerAuthorizedOrgsDesc
+  URI: "https://accesscontextmanager.googleapis.com/v1/accessPolicies/578359180191/authorizedOrgsDescs/test-desc?alt=json"
 - ExpectedSkeleton:
     apiVersion: dns.cnrm.cloud.google.com/v1beta1
     kind: DNSManagedZone
