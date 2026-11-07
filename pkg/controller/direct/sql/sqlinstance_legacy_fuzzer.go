@@ -186,6 +186,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Settings.PasswordValidationPolicy.ReuseInterval")
 	f.SpecField(".Settings.PricingPlan")
 	f.SpecField(".Settings.ReplicationType")
+	f.SpecField(".Settings.RetainBackupsOnDelete")
 	f.SpecField(".Settings.SqlServerAuditConfig")
 	f.SpecField(".Settings.SqlServerAuditConfig.Bucket")
 	f.SpecField(".Settings.SqlServerAuditConfig.RetentionInterval")
@@ -261,7 +262,6 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCaMode")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCaPool")
 	f.Unimplemented_NotYetTriaged(".Settings.ServerCertificateRotationMode")
-	f.Unimplemented_NotYetTriaged(".Settings.RetainBackupsOnDelete")
 
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.AdminCredentialSecretName")
 	f.Unimplemented_NotYetTriaged(".Settings.ActiveDirectoryConfig.DnsServers")

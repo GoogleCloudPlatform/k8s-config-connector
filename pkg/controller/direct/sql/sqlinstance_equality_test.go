@@ -471,3 +471,136 @@ func TestToProto_PreservesServerCaFields(t *testing.T) {
 		t.Errorf("expected change cookie to differ when serverCaPool and customSubjectAlternativeNames change, got identical cookie %q", cookie1)
 	}
 }
+
+func TestDiffSettings_RetainBackupsOnDelete(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		desired  bool
+		actual   bool
+		wantDiff bool
+	}{
+		{
+			name:     "both false has no diff",
+			desired:  false,
+			actual:   false,
+			wantDiff: false,
+		},
+		{
+			name:     "both true has no diff",
+			desired:  true,
+			actual:   true,
+			wantDiff: false,
+		},
+		{
+			name:     "desired true actual false has diff",
+			desired:  true,
+			actual:   false,
+			wantDiff: true,
+		},
+		{
+			name:     "desired false actual true has diff",
+			desired:  false,
+			actual:   true,
+			wantDiff: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			desired := &api.Settings{RetainBackupsOnDelete: tc.desired}
+			actual := &api.Settings{RetainBackupsOnDelete: tc.actual}
+
+			diff := DiffSettings(desired, actual)
+			if got := diff.HasDiff(); got != tc.wantDiff {
+				t.Fatalf("DiffSettings(desired=%v, actual=%v).HasDiff() = %v, want %v (fields: %v)", tc.desired, tc.actual, got, tc.wantDiff, diff.Fields)
+			}
+			if tc.wantDiff {
+				found := false
+				for _, f := range diff.Fields {
+					if f.ID == ".settings.retainBackupsOnDelete" {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Errorf("expected diff.Fields to contain .settings.retainBackupsOnDelete, got: %v", diff.Fields)
+				}
+			}
+		})
+	}
+}
+
+func TestSQLInstanceChangeCookie_RetainBackupsOnDelete(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	adapter := &sqlInstanceAdapter{}
+
+	actual := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			Tier:                  "db-custom-1-3840",
+			RetainBackupsOnDelete: true,
+		},
+	}
+	desiredTrue := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			Tier:                  "db-custom-1-3840",
+			RetainBackupsOnDelete: true,
+			ForceSendFields:       []string{"RetainBackupsOnDelete"},
+		},
+	}
+	desiredFalse := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			Tier:                  "db-custom-1-3840",
+			RetainBackupsOnDelete: false,
+			ForceSendFields:       []string{"RetainBackupsOnDelete"},
+		},
+	}
+	desiredUnset := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			Tier: "db-custom-1-3840",
+		},
+	}
+
+	actualProto, err := adapter.toProto(ctx, actual)
+	if err != nil {
+		t.Fatalf("toProto(actual) failed: %v", err)
+	}
+	trueProto, err := adapter.toProto(ctx, desiredTrue)
+	if err != nil {
+		t.Fatalf("toProto(desiredTrue) failed: %v", err)
+	}
+	falseProto, err := adapter.toProto(ctx, desiredFalse)
+	if err != nil {
+		t.Fatalf("toProto(desiredFalse) failed: %v", err)
+	}
+	unsetProto, err := adapter.toProto(ctx, desiredUnset)
+	if err != nil {
+		t.Fatalf("toProto(desiredUnset) failed: %v", err)
+	}
+
+	cookieTrue, err := changecookies.ComputeChangeCookie(trueProto, actualProto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(desiredTrue) failed: %v", err)
+	}
+	cookieFalse, err := changecookies.ComputeChangeCookie(falseProto, actualProto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(desiredFalse) failed: %v", err)
+	}
+	cookieUnset, err := changecookies.ComputeChangeCookie(unsetProto, actualProto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(desiredUnset) failed: %v", err)
+	}
+
+	if cookieTrue == cookieFalse {
+		t.Errorf("expected change cookie to differ between desired RetainBackupsOnDelete=true and false, got identical cookie %q", cookieTrue)
+	}
+	if cookieFalse == cookieUnset {
+		t.Errorf("expected change cookie to differ between explicit RetainBackupsOnDelete=false and unset, got identical cookie %q", cookieFalse)
+	}
+}
