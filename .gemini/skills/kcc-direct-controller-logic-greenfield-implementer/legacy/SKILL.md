@@ -63,6 +63,6 @@ Use this legacy guide **only** when iterating on an in-flight PR that already ha
 
 8.  **Validation & Final Generation**:
     - `dev/ci/presubmits/fuzz-roundtrippers`
-    - `go test ./tests/apichecks/... ./pkg/controller/direct/<service>/...` (don't run the fixtures against MockGCP here: MockGCP comes in Step 3)
+    - `go test ./tests/apichecks/... ./pkg/controller/direct/<service>/...` (don't run the fixtures against MockGCP here: MockGCP comes in Step 3; do NOT create individual CI presubmit scripts)
     - `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`
     - `make ready-pr`
