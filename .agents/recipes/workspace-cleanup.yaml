@@ -1,23 +1,22 @@
 # workspace-cleanup: makes room on a factory sandbox's workspace disk for
 # k8s-config-connector. A recipe on sandboxes (on: [sandbox]): the
 # overseer's watch rule runs it on an idle sandbox whose workspace is low
-# on space, and the board offers it on sandbox cards.
+# on space, and the board offers it on sandbox cards. It replaces
+# factory's built-in workspace-cleanup, which only reports.
 #
-# Run by factory's recipe runner in the checkout: its inputs are
-# INPUT_WORKSPACE, INPUT_FREE_BYTES and INPUT_TARGET_BYTES, beside the
-# sandbox's environment (TMPDIR, GOCACHE). Each step goes on after a
-# failure (continue-on-error), so one that fails does not keep the others
-# from making room.
+# Run by factory's recipe runner in the sandbox: its input is
+# INPUT_TARGET_BYTES (the watch rule passes it), beside the sandbox's
+# environment (TMPDIR, GOCACHE). The workspace is mounted at /workspaces.
+# Each step goes on after a failure (continue-on-error), so one that
+# fails does not keep the others from making room.
 name: workspace-cleanup
 label: Clean disk
 on: [sandbox]
+as: coder
 inputs:
-  workspace:
-    description: the workspace's mount (/workspaces)
-  free_bytes:
-    description: free space on the workspace now, in bytes
   target_bytes:
-    description: free space wanted, in bytes
+    description: free space wanted on the workspace, in bytes
+    default: "21474836480"
 start:
   steps:
     # Leftovers of earlier tasks: go build's work directories, envtest's,
@@ -25,10 +24,11 @@ start:
     # person's terminal, or a build running now, may use newer ones.
     - continue-on-error: true
       run: |
-        tmp="${TMPDIR:-/workspaces/.tmp}"
-        before=$(df -P "$INPUT_WORKSPACE" | awk 'NR==2 {print $4}')
+        ws=/workspaces
+        tmp="${TMPDIR:-$ws/.tmp}"
+        before=$(df -P "$ws" | awk 'NR==2 {print $4}')
         find "$tmp" -mindepth 1 -maxdepth 1 \( -name 'go-build*' -o -name 'k8s_test_framework_*' -o -name 'gemini-shell-*' -o -name 'tmp.*' \) -mmin +120 -exec rm -rf {} + 2>/dev/null || true
-        after=$(df -P "$INPUT_WORKSPACE" | awk 'NR==2 {print $4}')
+        after=$(df -P "$ws" | awk 'NR==2 {print $4}')
         echo "Removed temporary leftovers older than 2h from $tmp: $(( (after - before) / 1048576 )) GB"
     # Still short: trim the Go build cache, least recently used first (go
     # refreshes an entry's mtime when it uses it), until INPUT_TARGET_BYTES is
@@ -36,21 +36,23 @@ start:
     # needed, and most of the warm cache survives (unlike go clean -cache).
     - continue-on-error: true
       run: |
-        free=$(( $(df -P "$INPUT_WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        ws=/workspaces
+        free=$(( $(df -P "$ws" | awk 'NR==2 {print $4}') * 1024 ))
         if [ "$free" -ge "$INPUT_TARGET_BYTES" ]; then exit 0; fi
-        cache="${GOCACHE:-/workspaces/.cache/go-build}"
+        cache="${GOCACHE:-$ws/.cache/go-build}"
         need=$(( INPUT_TARGET_BYTES - free ))
         find "$cache" -mindepth 2 -type f -printf '%T@ %s %p\n' 2>/dev/null \
           | sort -n \
           | awk -v need="$need" '{ if (got >= need) exit; print $3; got += $2 }' \
           | xargs -r rm -f
-        now=$(( $(df -P "$INPUT_WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        now=$(( $(df -P "$ws" | awk 'NR==2 {print $4}') * 1024 ))
         echo "Trimmed the Go build cache, least recently used first: $(( (now - free) / 1073741824 )) GB"
     # Still short: temporary leftovers older than 10 minutes too.
     - continue-on-error: true
       run: |
-        free=$(( $(df -P "$INPUT_WORKSPACE" | awk 'NR==2 {print $4}') * 1024 ))
+        ws=/workspaces
+        free=$(( $(df -P "$ws" | awk 'NR==2 {print $4}') * 1024 ))
         if [ "$free" -ge "$INPUT_TARGET_BYTES" ]; then exit 0; fi
-        tmp="${TMPDIR:-/workspaces/.tmp}"
+        tmp="${TMPDIR:-$ws/.tmp}"
         find "$tmp" -mindepth 1 -maxdepth 1 \( -name 'go-build*' -o -name 'k8s_test_framework_*' -o -name 'gemini-shell-*' -o -name 'tmp.*' \) -mmin +10 -exec rm -rf {} + 2>/dev/null || true
-        df -h "$INPUT_WORKSPACE" | awk 'NR==2 {print "Workspace now: " $3 " used of " $2 ", " $4 " free"}'
+        df -h "$ws" | awk 'NR==2 {print "Workspace now: " $3 " used of " $2 ", " $4 " free"}'
