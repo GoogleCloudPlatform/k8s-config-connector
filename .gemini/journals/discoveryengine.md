@@ -93,3 +93,14 @@
   3. Handled the `unsupported result type <nil>: <nil>` error gracefully in `Delete()` during `op.Wait(ctx)`.
 - **Impact**: Enables reliable creation, modification, re-reconciliation, and deletion of `DiscoveryEngineSchema` resources against real GCP.
 
+### [2026-11-06] DiscoveryEngineWidgetConfig Prepopulation and Proto SHA Isolation
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `DiscoveryEngineWidgetConfig` (Issue #15181).
+- **Problem**:
+  1. `WidgetConfig` was introduced in googleapis commit `6a1db32dc52fd9421c1743dc8f5faa7a15e518d1`, which is newer than the stable pinned `PROTO_SHA` (`665784f816da130b27edb566694b2441d0cfddf2`).
+  2. Upgrading the global `PROTO_SHA` for all discoveryengine resources introduced breaking proto changes on existing resources (e.g. `dasher_customer_id` became output-only in `WorkspaceConfig` affecting `DataStore` CRD backward compatibility, and new `AssistAnswer` fields caused mapper compilation failures against the client library).
+- **Solution**:
+  1. Pinned a separate `WIDGET_PROTO_SHA` in `apis/discoveryengine/generate.sh` specifically for `DiscoveryEngineWidgetConfig` code generation.
+  2. Preserved the stable `PROTO_SHA` for the existing `v1` and `v1beta` resources and mapper generation.
+- **Impact**: Allows clean mechanical prepopulation and CRD generation for `DiscoveryEngineWidgetConfig` without destabilizing existing DiscoveryEngine CRDs or controller mappers.
+
+

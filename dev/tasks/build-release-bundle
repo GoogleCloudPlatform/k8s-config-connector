@@ -206,6 +206,7 @@ BLOCKED_KINDS=(
     "DiscoveryEngineConversation"
     "DiscoveryEngineIdentityMappingStore"
     "DiscoveryEngineSampleQuerySet"
+    "DiscoveryEngineWidgetConfig"
     "DLPConnection"
     "DLPContentPolicy"
     "DLPDiscoveryConfig"

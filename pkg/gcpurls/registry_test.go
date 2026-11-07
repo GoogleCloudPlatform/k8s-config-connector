@@ -145,7 +145,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
 		// Discovery Engine
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":             true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/widgetConfigs/{}": true,
 
 		// DNS
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":    true,
