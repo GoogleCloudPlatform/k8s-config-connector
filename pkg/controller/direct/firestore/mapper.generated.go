@@ -161,7 +161,6 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: DeleteTime
-	// MISSING: Type
 	out.VersionRetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetVersionRetentionPeriod())
 	out.EarliestVersionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestVersionTime())
 	// MISSING: AppEngineIntegrationMode
@@ -185,7 +184,6 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: DeleteTime
-	// MISSING: Type
 	out.VersionRetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.VersionRetentionPeriod)
 	out.EarliestVersionTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestVersionTime)
 	// MISSING: AppEngineIntegrationMode
@@ -207,7 +205,7 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Name
 	// MISSING: DeleteTime
 	out.LocationID = direct.LazyPtr(in.GetLocationId())
-	// MISSING: Type
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.ConcurrencyMode = direct.Enum_FromProto(mapCtx, in.GetConcurrencyMode())
 	out.PointInTimeRecoveryEnablement = direct.Enum_FromProto(mapCtx, in.GetPointInTimeRecoveryEnablement())
 	// MISSING: AppEngineIntegrationMode
@@ -228,7 +226,7 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfir
 	// MISSING: Name
 	// MISSING: DeleteTime
 	out.LocationId = direct.ValueOf(in.LocationID)
-	// MISSING: Type
+	out.Type = direct.Enum_ToProto[pb.Database_DatabaseType](mapCtx, in.Type)
 	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
 	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
 	// MISSING: AppEngineIntegrationMode
@@ -308,7 +306,7 @@ func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Inde
 	out := &krmfirestorev1beta1.FirestoreIndexSpec{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_FromProto(mapCtx, in.GetQueryScope())
-	// MISSING: APIScope
+	out.APIScope = direct.Enum_FromProto(mapCtx, in.GetApiScope())
 	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, IndexFields_v1beta1_FromProto)
 	// MISSING: State
 	// MISSING: Density
@@ -323,7 +321,7 @@ func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirest
 	out := &pb.Index{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_ToProto[pb.Index_QueryScope](mapCtx, in.QueryScope)
-	// MISSING: APIScope
+	out.ApiScope = direct.Enum_ToProto[pb.Index_ApiScope](mapCtx, in.APIScope)
 	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, IndexFields_v1beta1_ToProto)
 	// MISSING: State
 	// MISSING: Density
