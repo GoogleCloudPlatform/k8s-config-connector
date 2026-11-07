@@ -41,6 +41,8 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".secondary_location")
 	f.SpecFields.Insert(".scheduling_policy")
 	f.SpecFields.Insert(".reservation_group")
+	f.SpecFields.Insert(".max_slots")
+	f.SpecFields.Insert(".scaling_mode")
 
 	f.StatusFields.Insert(".primary_location")
 	f.StatusFields.Insert(".original_primary_location")
@@ -50,10 +52,8 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".creation_time")
 	f.UnimplementedFields.Insert(".update_time")
 	f.UnimplementedFields.Insert(".multi_region_auxiliary")
-	f.UnimplementedFields.Insert(".scaling_mode")
 	f.UnimplementedFields.Insert(".autoscale.current_slots")
 	f.UnimplementedFields.Insert(".replication_status")
-	f.UnimplementedFields.Insert(".max_slots")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 

@@ -209,8 +209,6 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
 	// MISSING: Labels
 	// MISSING: ReplicationStatus
 	return out
@@ -231,8 +229,6 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
 	// MISSING: Labels
 	// MISSING: ReplicationStatus
 	return out
@@ -257,8 +253,8 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_FromProto(mapCtx, in.GetScalingMode())
 	// MISSING: Labels
 	if in.GetReservationGroup() != "" {
 		out.ReservationGroupRef = &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef{External: in.GetReservationGroup()}
@@ -289,8 +285,8 @@ found existing non-generated mapping function "BigQueryReservationReservationSpe
 		// MISSING: PrimaryLocation
 		// MISSING: SecondaryLocation
 		// MISSING: OriginalPrimaryLocation
-		// MISSING: MaxSlots
-		// MISSING: ScalingMode
+		out.MaxSlots = in.MaxSlots
+		out.ScalingMode = direct.Enum_ToProto[pb.Reservation_ScalingMode](mapCtx, in.ScalingMode)
 		// MISSING: Labels
 		if in.ReservationGroupRef != nil {
 			out.ReservationGroup = in.ReservationGroupRef.External
