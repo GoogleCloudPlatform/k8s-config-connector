@@ -16,7 +16,6 @@ package v1alpha1
 
 import (
 	"context"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -71,7 +70,8 @@ func (r *AIPlatformModelRef) ValidateExternal(ref string) error {
 	if err := id.FromExternal(ref); err == nil {
 		return nil
 	}
-	if strings.HasPrefix(ref, "publishers/") || strings.Contains(ref, "/publishers/") {
+	pubID := &AIPlatformPublisherModelIdentity{}
+	if err := pubID.FromExternal(ref); err == nil {
 		return nil
 	}
 	return id.FromExternal(ref)
@@ -79,10 +79,14 @@ func (r *AIPlatformModelRef) ValidateExternal(ref string) error {
 
 func (r *AIPlatformModelRef) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &AIPlatformModelIdentity{}
-	if err := id.FromExternal(r.External); err != nil {
-		return nil, err
+	if err := id.FromExternal(r.External); err == nil {
+		return id, nil
 	}
-	return id, nil
+	pubID := &AIPlatformPublisherModelIdentity{}
+	if err := pubID.FromExternal(r.External); err == nil {
+		return pubID, nil
+	}
+	return nil, id.FromExternal(r.External)
 }
 
 func (r *AIPlatformModelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
