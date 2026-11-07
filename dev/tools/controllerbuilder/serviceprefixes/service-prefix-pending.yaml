@@ -42,14 +42,26 @@ services:
     title: Access Approval API
     servicePrefix: AccessApproval
     reason: new API with no KCC Kinds yet
+  - api: admanager
+    title: Google Ad Manager API
+    servicePrefix: AdManager
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: advisorynotifications
     title: Advisory Notifications API
     servicePrefix: AdvisoryNotifications
     reason: new API with no KCC Kinds yet
+  - api: analyticsdata
+    title: Google Analytics Data API
+    servicePrefix: AnalyticsData
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: baremetalsolution
     title: Bare Metal Solution API
     servicePrefix: BareMetalSolution
     reason: new API with no KCC Kinds yet
+  - api: bigquerystorage
+    title: BigQuery Storage API
+    servicePrefix: BigQueryStorage
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: ces
     title: Customer Engagement Suite API
     servicePrefix: CES
@@ -57,6 +69,10 @@ services:
       - google.cloud.ces.v1
       - google.cloud.ces.v1beta
     reason: existing Kinds disagree on casing (CesAgent, CESApp); decide which one new Kinds use
+  - api: chromeosmoblab
+    title: Chrome OS Moblab API
+    servicePrefix: ChromeOSMoblab
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: cloudcommerceconsumerprocurement
     title: Cloud Commerce Consumer Procurement API
     servicePrefix: CloudCommerceConsumerProcurement
@@ -71,34 +87,78 @@ services:
     title: Cloud IoT API
     servicePrefix: CloudIoT
     reason: existing Kinds (CloudIOTDevice, CloudIOTDeviceRegistry) use CloudIOT, but the title casing gives CloudIoT; decide whether new Kinds use CloudIoT or follow the existing names
+  - api: cloudprofiler
+    title: Cloud Profiler API
+    servicePrefix: Profiler
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: cloudquotas
     title: Cloud Quotas API
     servicePrefix: CloudQuotas
     protoPackages:
       - google.api.cloudquotas.v1beta
     reason: existing Kinds (APIQuotaAdjusterSettings, APIQuotaPreference) use APIQuota, which is not the API name; decide whether new Kinds use CloudQuotas or APIQuota
+  - api: cloudtrace
+    title: Stackdriver Trace API
+    servicePrefix: Trace
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: confidentialcomputing
+    title: Confidential Computing API
+    servicePrefix: ConfidentialComputing
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: containeranalysis
     title: Container Analysis API
     servicePrefix: ContainerAnalysis
     protoPackages:
       - grafeas.v1
     reason: existing Kinds use two prefixes (ContainerAnalysisNote, ContainerAnalysisOccurrence; GrafeasNote from the grafeas.v1 protos, whose default host is containeranalysis); decide which one new Kinds use
+  - api: datamanager
+    title: Data Manager API
+    servicePrefix: DataManager
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: datamigration
     title: Database Migration API
     servicePrefix: CloudDMS
     protoPackages:
       - google.cloud.clouddms.v1
     reason: existing Kinds use four prefixes (CloudDMSConversionWorkspace, CloudDMSMigrationJob, CloudDMSPrivateConnection; DatabaseMigrationConversionWorkspace, DatabaseMigrationMigrationJob, DatabaseMigrationPrivateConnection; DatamigrationConnectionProfile; DataMigrationMappingRule); decide which one new Kinds use
+  - api: dataqna
+    title: Data QnA API
+    servicePrefix: DataQnA
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: domains
     title: Cloud Domains API
     servicePrefix: Domains
     reason: single-word API name; new API with no KCC Kinds yet
+  - api: drivelabels
+    title: Drive Labels API
+    servicePrefix: DriveLabels
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: enterpriseknowledgegraph
+    title: Enterprise Knowledge Graph API
+    servicePrefix: EnterpriseKnowledgeGraph
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: fleetengine
+    title: Local Rides and Deliveries API
+    servicePrefix: FleetEngine
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: gdchardwaremanagement
+    title: GDC Hardware Management API
+    servicePrefix: GDCHardwareManagement
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: generativelanguage
+    title: Generative Language API
+    servicePrefix: GenerativeLanguage
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: gkemulticloud
     title: GKE Multi-Cloud API
     servicePrefix: GKEMultiCloud
     protoPackages:
       - google.cloud.gkemulticloud.v1
     reason: existing Kinds disagree on casing (GKEMultiCloudAWSNodePool, GKEMultiCloudAzureClient, GKEMultiCloudAzureNodePool; GKEMulticloudAttachedCluster); decide which one new Kinds use
+  - api: googleads
+    title: Google Ads API
+    servicePrefix: GoogleAds
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: issuerswitch
     title: Issuer switch API
     servicePrefix: IssuerSwitch
@@ -115,14 +175,42 @@ services:
     title: Managed Service for Microsoft Active Directory API
     servicePrefix: Managedidentities
     reason: API name words not found in the title; new API with no KCC Kinds yet
+  - api: mapsplatformdatasets
+    title: Maps Platform Datasets API
+    servicePrefix: MapsPlatformDatasets
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: marketingplatformadmin
+    title: Google Marketing Platform Admin API
+    servicePrefix: MarketingPlatform
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: merchantapi
+    title: Merchant API
+    servicePrefix: Merchant
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: policysimulator
     title: Policy Simulator API
     servicePrefix: PolicySimulator
     reason: new API with no KCC Kinds yet
+  - api: publicca
+    title: Public Certificate Authority API
+    servicePrefix: PublicCA
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: recommendationengine
+    title: Recommendations AI
+    servicePrefix: RecommendationEngine
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: recommender
     title: Recommender API
     servicePrefix: Recommender
     reason: single-word API name; new API with no KCC Kinds yet
+  - api: remoteworkers
+    title: Remote Workers API
+    servicePrefix: RemoteWorkers
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
+  - api: resultstore
+    title: Result Store API
+    servicePrefix: ResultStore
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: serviceusage
     title: Service Usage API
     servicePrefix: ServiceUsage
@@ -136,16 +224,30 @@ services:
       - google.cloud.sql.v1
       - google.cloud.sql.v1beta4
     reason: existing Kinds use two prefixes (SQLDatabase, SQLInstance, SQLSSLCert, SQLUser; SQLAdminBackup); decide whether new Kinds use SQLAdmin or SQL
+  - api: storagebatchoperations
+    title: Storage Batch Operations API
+    servicePrefix: StorageBatchOperations
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: timeseriesinsights
     title: Timeseries Insights API
     servicePrefix: TimeseriesInsights
     reason: new API with no KCC Kinds yet
+  - api: websecurityscanner
+    title: Web Security Scanner API
+    servicePrefix: WebSecurityScanner
+    protoPackages:
+      - google.cloud.websecurityscanner.v1
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: workflowexecutions
     title: Workflow Executions API
     servicePrefix: WorkflowExecutions
     protoPackages:
       - google.cloud.workflows.executions.v1
     reason: existing Kind WorkflowsExecution uses Workflows (the workflows API's prefix), not the API name; decide whether new Kinds use WorkflowExecutions or Workflows
+  - api: workspaceevents
+    title: Google Workspace Events API
+    servicePrefix: WorkspaceEvents
+    reason: carried over from the prefix list formerly in hack/tools/greenfield/services_acronyms.json; needs approval
   - api: workstations
     title: Cloud Workstations API
     servicePrefix: Workstations

@@ -15,7 +15,6 @@
 package lint
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -74,10 +73,12 @@ func parseGenerateTypesResources(script, content string) []generateTypesResource
 	return out
 }
 
-// The service-prefix files in dev/tools/controllerbuilder/serviceprefixes.
+// The Kind naming files in dev/tools/controllerbuilder/serviceprefixes.
 const (
+	servicePrefixesDir         = "../../dev/tools/controllerbuilder/serviceprefixes"
 	servicePrefixesFile        = "service-prefixes.yaml"
 	servicePrefixesPendingFile = "service-prefix-pending.yaml"
+	acronymsFile               = "acronyms.yaml"
 )
 
 // servicePrefixEntry is the service prefix of one API.
@@ -124,9 +125,10 @@ func loadServicePrefixes(dir string) (map[string]servicePrefixEntry, error) {
 	return out, nil
 }
 
-// loadAcronyms reads the "acronyms" map of services_acronyms.json, e.g.
-// "Api": "API".
-func loadAcronyms(path string) (map[string]string, error) {
+// loadAcronyms reads the "acronyms" map of acronymsFile in dir, e.g.
+// Api: API.
+func loadAcronyms(dir string) (map[string]string, error) {
+	path := filepath.Join(dir, acronymsFile)
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -134,7 +136,7 @@ func loadAcronyms(path string) (map[string]string, error) {
 	var f struct {
 		Acronyms map[string]string `json:"acronyms"`
 	}
-	if err := json.Unmarshal(data, &f); err != nil {
+	if err := yaml.Unmarshal(data, &f); err != nil {
 		return nil, fmt.Errorf("parsing %s: %w", path, err)
 	}
 	return f.Acronyms, nil
@@ -229,7 +231,7 @@ func isKnownKindName(servicePrefix, message, kind string) bool {
 // passes to generate-types against the service-prefix table: the Kind must be
 // a CRD Kind, its API must have an approved service prefix, and the Kind must
 // be that prefix followed by the proto message name, with the
-// acronyms in hack/tools/greenfield/services_acronyms.json applied to the
+// acronyms in acronymsFile applied to the
 // message words (UrlMap gives URLMap).
 //
 // The API is the one whose protoPackages lists a package of the
@@ -307,11 +309,11 @@ func kindNameViolations(apisDir string, prefixes map[string]servicePrefixEntry, 
 func TestKindNamesFollowServicePrefixes(t *testing.T) {
 	t.Parallel()
 
-	prefixes, err := loadServicePrefixes("../../dev/tools/controllerbuilder/serviceprefixes")
+	prefixes, err := loadServicePrefixes(servicePrefixesDir)
 	if err != nil {
 		t.Fatalf("loading service-prefix table: %v", err)
 	}
-	acronyms, err := loadAcronyms("../../hack/tools/greenfield/services_acronyms.json")
+	acronyms, err := loadAcronyms(servicePrefixesDir)
 	if err != nil {
 		t.Fatalf("loading acronyms: %v", err)
 	}

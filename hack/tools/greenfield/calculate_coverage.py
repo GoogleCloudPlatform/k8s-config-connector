@@ -329,12 +329,42 @@ def get_layer(patterns, ops):
 
     return "Not Manageable"
 
+SERVICE_PREFIXES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    "..", "..", "..", "dev", "tools", "controllerbuilder", "serviceprefixes")
+
 def load_service_prefixes():
-    prefixes_file = os.path.join(os.path.dirname(__file__), "services_acronyms.json")
-    if os.path.exists(prefixes_file):
-        with open(prefixes_file, 'r') as f:
-            return json.load(f)
-    return {}
+    """Returns {"prefixes": {api: servicePrefix}, "acronyms": {word: replacement}}.
+
+    Prefixes come from service-prefixes.yaml (approved) and
+    service-prefix-pending.yaml (proposed); acronyms from acronyms.yaml. These
+    files have a fixed, hand-maintained layout, so they are parsed line by line
+    to avoid a PyYAML dependency.
+    """
+    prefixes = {}
+    for name in ("service-prefixes.yaml", "service-prefix-pending.yaml"):
+        api = None
+        with open(os.path.join(SERVICE_PREFIXES_DIR, name), 'r') as f:
+            for line in f:
+                m = re.match(r'^  - api:\s*(\S+)\s*$', line)
+                if m:
+                    api = m.group(1)
+                    continue
+                m = re.match(r'^    servicePrefix:\s*(\S+)\s*$', line)
+                if m and api:
+                    prefixes.setdefault(api, m.group(1))
+
+    acronyms = {}
+    in_acronyms = False
+    with open(os.path.join(SERVICE_PREFIXES_DIR, "acronyms.yaml"), 'r') as f:
+        for line in f:
+            if line.startswith("acronyms:"):
+                in_acronyms = True
+                continue
+            m = re.match(r'^  (\S+):\s*(\S+)\s*$', line)
+            if in_acronyms and m:
+                acronyms[m.group(1)] = m.group(2)
+
+    return {"prefixes": prefixes, "acronyms": acronyms}
 
 def load_deprecated_services():
     deprecated_file = os.path.join(os.path.dirname(__file__), "deprecated_services.json")

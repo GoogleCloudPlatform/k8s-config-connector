@@ -13,10 +13,12 @@
 # limitations under the License.
 
 # Approved service prefixes for KRM Kinds, one per GCP API. This file is
-# maintained by hand.
+# maintained by hand. Together with service-prefix-pending.yaml it is the only
+# list of service prefixes; tests/apichecks and
+# hack/tools/greenfield/calculate_coverage.py both read it.
 #
 # A Kind is <servicePrefix><proto message>, with the acronyms in
-# hack/tools/greenfield/services_acronyms.json applied to the message: sqladmin
+# acronyms.yaml applied to the message: sqladmin
 # + BackupRun gives SQLAdminBackupRun. So the service prefix is all that needs
 # deciding, once per API.
 #

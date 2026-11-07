@@ -23,7 +23,7 @@ go run . generate-direct-reconciler \
 ## Kind names for new resources
 
 A Kind is `<service prefix><proto message>`, with the acronyms in
-`hack/tools/greenfield/services_acronyms.json` applied to the message: `sqladmin`
+[`serviceprefixes/acronyms.yaml`](serviceprefixes/acronyms.yaml) applied to the message: `sqladmin`
 + `BackupRun` gives `SQLAdminBackupRun`. So only the service prefix needs
 deciding, once per API.
 
