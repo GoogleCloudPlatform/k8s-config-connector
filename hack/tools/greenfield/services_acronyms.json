@@ -164,6 +164,17 @@
     "Gke": "GKE",
     "Api": "API",
     "Db": "DB",
-    "Vm": "VM"
+    "Vm": "VM",
+    "Vpn": "VPN",
+    "Ssl": "SSL",
+    "Http": "HTTP",
+    "Https": "HTTPS",
+    "Tls": "TLS",
+    "Grpc": "GRPC",
+    "Ssh": "SSH",
+    "Nat": "NAT",
+    "Ca": "CA",
+    "Tcp": "TCP",
+    "Gcp": "GCP"
   }
 }
