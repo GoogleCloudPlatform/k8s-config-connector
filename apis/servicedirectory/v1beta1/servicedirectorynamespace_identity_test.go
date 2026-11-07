@@ -15,9 +15,15 @@
 package v1beta1
 
 import (
+	"context"
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/google/go-cmp/cmp"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestServiceDirectoryNamespaceIdentity_FromExternal(t *testing.T) {
@@ -67,6 +73,148 @@ func TestServiceDirectoryNamespaceIdentity_FromExternal(t *testing.T) {
 				expectedParent := "projects/" + tt.want.Project + "/locations/" + tt.want.Location
 				if actualParent := i.ParentString(); actualParent != expectedParent {
 					t.Errorf("ParentString() = %q, want %q", actualParent, expectedParent)
+				}
+			}
+		})
+	}
+}
+
+func TestServiceDirectoryNamespace_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name                 string
+		obj                  *ServiceDirectoryNamespace
+		namespaceAnnotations map[string]string
+		wantErr              bool
+		want                 *ServiceDirectoryNamespaceIdentity
+	}{
+		{
+			name: "project from spec.projectRef",
+			obj: &ServiceDirectoryNamespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-ns",
+					Namespace: "k8s-ns",
+				},
+				Spec: ServiceDirectoryNamespaceSpec{
+					Location: "us-central1",
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+				},
+			},
+			want: &ServiceDirectoryNamespaceIdentity{
+				Project:   "my-project",
+				Location:  "us-central1",
+				Namespace: "test-ns",
+			},
+		},
+		{
+			name: "project from object annotation cnrm.cloud.google.com/project-id",
+			obj: &ServiceDirectoryNamespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-ns",
+					Namespace: "k8s-ns",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "annotated-project",
+					},
+				},
+				Spec: ServiceDirectoryNamespaceSpec{
+					Location: "us-central1",
+				},
+			},
+			want: &ServiceDirectoryNamespaceIdentity{
+				Project:   "annotated-project",
+				Location:  "us-central1",
+				Namespace: "test-ns",
+			},
+		},
+		{
+			name: "spec.projectRef takes precedence over object annotation",
+			obj: &ServiceDirectoryNamespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-ns",
+					Namespace: "k8s-ns",
+					Annotations: map[string]string{
+						"cnrm.cloud.google.com/project-id": "annotated-project",
+					},
+				},
+				Spec: ServiceDirectoryNamespaceSpec{
+					Location: "us-central1",
+					ProjectRef: &refs.ProjectRef{
+						External: "precedent-project",
+					},
+				},
+			},
+			want: &ServiceDirectoryNamespaceIdentity{
+				Project:   "precedent-project",
+				Location:  "us-central1",
+				Namespace: "test-ns",
+			},
+		},
+		{
+			name: "project from namespace annotation cnrm.cloud.google.com/project-id",
+			obj: &ServiceDirectoryNamespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-ns",
+					Namespace: "k8s-ns",
+				},
+				Spec: ServiceDirectoryNamespaceSpec{
+					Location: "us-central1",
+				},
+			},
+			namespaceAnnotations: map[string]string{
+				"cnrm.cloud.google.com/project-id": "ns-annotated-project",
+			},
+			want: &ServiceDirectoryNamespaceIdentity{
+				Project:   "ns-annotated-project",
+				Location:  "us-central1",
+				Namespace: "test-ns",
+			},
+		},
+		{
+			name: "fallback to namespace name when no projectRef or annotation",
+			obj: &ServiceDirectoryNamespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "test-ns",
+					Namespace: "k8s-project",
+				},
+				Spec: ServiceDirectoryNamespaceSpec{
+					Location: "us-central1",
+				},
+			},
+			want: &ServiceDirectoryNamespaceIdentity{
+				Project:   "k8s-project",
+				Location:  "us-central1",
+				Namespace: "test-ns",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			scheme := runtime.NewScheme()
+			_ = AddToScheme(scheme)
+			_ = corev1.AddToScheme(scheme)
+			ns := &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:        tt.obj.Namespace,
+					Annotations: tt.namespaceAnnotations,
+				},
+			}
+			fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(ns).Build()
+
+			idVal, err := tt.obj.GetIdentity(ctx, fakeClient)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !tt.wantErr {
+				got, ok := idVal.(*ServiceDirectoryNamespaceIdentity)
+				if !ok {
+					t.Fatalf("unexpected identity type: %T", idVal)
+				}
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
