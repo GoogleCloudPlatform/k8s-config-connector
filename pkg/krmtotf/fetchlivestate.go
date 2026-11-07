@@ -31,6 +31,7 @@ import (
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -132,8 +133,13 @@ func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, pr
 		return nil, err
 	}
 	state = SetBlueprintAttribution(state, resource, provider)
+	originalState := state
 	state, diagnostics := resource.TFResource.RefreshWithoutUpgrade(ctx, state, provider.Meta())
 	if err := NewErrorFromDiagnostics(diagnostics); err != nil {
+		if resource.Kind == "BigQueryTable" && !resource.GetDeletionTimestamp().IsZero() {
+			klog.Warningf("ignoring error reading BigQueryTable during deletion: %v", err)
+			return originalState, nil
+		}
 		return nil, fmt.Errorf("error reading underlying resource: %w", err)
 	}
 	// Set the blueprint attribution again in case the Refresh returns nil, which
