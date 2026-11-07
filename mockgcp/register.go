@@ -22,6 +22,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapihub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockappengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
