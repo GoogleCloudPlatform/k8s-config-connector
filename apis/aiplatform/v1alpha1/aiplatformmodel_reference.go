@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -74,7 +75,7 @@ func (r *AIPlatformModelRef) ValidateExternal(ref string) error {
 	if err := pubID.FromExternal(ref); err == nil {
 		return nil
 	}
-	return id.FromExternal(ref)
+	return fmt.Errorf("format of AIPlatformModel external=%q was not known (use %s, %s, or %s)", ref, AIPlatformModelIdentityFormat.CanonicalForm(), AIPlatformPublisherModelIdentityFormat.CanonicalForm(), AIPlatformGlobalPublisherModelIdentityFormat.CanonicalForm())
 }
 
 func (r *AIPlatformModelRef) ParseExternalToIdentity() (identity.Identity, error) {
@@ -86,7 +87,7 @@ func (r *AIPlatformModelRef) ParseExternalToIdentity() (identity.Identity, error
 	if err := pubID.FromExternal(r.External); err == nil {
 		return pubID, nil
 	}
-	return nil, id.FromExternal(r.External)
+	return nil, fmt.Errorf("format of AIPlatformModel external=%q was not known (use %s, %s, or %s)", r.External, AIPlatformModelIdentityFormat.CanonicalForm(), AIPlatformPublisherModelIdentityFormat.CanonicalForm(), AIPlatformGlobalPublisherModelIdentityFormat.CanonicalForm())
 }
 
 func (r *AIPlatformModelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

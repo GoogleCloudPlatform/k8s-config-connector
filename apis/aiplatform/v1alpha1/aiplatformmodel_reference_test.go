@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -62,9 +63,13 @@ func TestAIPlatformModelRef(t *testing.T) {
 			if tc.expectError {
 				if valErr == nil {
 					t.Errorf("ValidateExternal(%q) expected error, got nil", tc.external)
+				} else if !strings.Contains(valErr.Error(), "publishers/") {
+					t.Errorf("ValidateExternal(%q) error %q does not mention publisher format", tc.external, valErr.Error())
 				}
 				if parseErr == nil {
-					t.Errorf("ParseExternalToIdentity() expected error, got nil")
+					t.Errorf("ParseExternalToIdentity(%q) expected error, got nil", tc.external)
+				} else if !strings.Contains(parseErr.Error(), "publishers/") {
+					t.Errorf("ParseExternalToIdentity(%q) error %q does not mention publisher format", tc.external, parseErr.Error())
 				}
 			} else {
 				if valErr != nil {
