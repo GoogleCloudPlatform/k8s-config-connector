@@ -1739,6 +1739,116 @@ func SearchLinkPromotion_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdisc
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+func SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec) *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec{}
+	out.ImageSource = direct.Enum_FromProto(mapCtx, in.GetImageSource())
+	return out
+}
+func SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec{}
+	out.ImageSource = direct.Enum_ToProto[discoveryenginepb.SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec_ImageSource](mapCtx, in.ImageSource)
+	return out
+}
+func SearchResponse_Summary_Citation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Citation) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation{}
+	out.StartIndex = direct.LazyPtr(in.GetStartIndex())
+	out.EndIndex = direct.LazyPtr(in.GetEndIndex())
+	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, SearchResponse_Summary_CitationSource_v1alpha1_FromProto)
+	return out
+}
+func SearchResponse_Summary_Citation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Citation) *pb.SearchResponse_Summary_Citation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Citation{}
+	out.StartIndex = direct.ValueOf(in.StartIndex)
+	out.EndIndex = direct.ValueOf(in.EndIndex)
+	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, SearchResponse_Summary_CitationSource_v1alpha1_ToProto)
+	return out
+}
+func SearchResponse_Summary_CitationSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_CitationSource) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource{}
+	out.ReferenceIndex = direct.LazyPtr(in.GetReferenceIndex())
+	return out
+}
+func SearchResponse_Summary_CitationSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_CitationSource) *pb.SearchResponse_Summary_CitationSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_CitationSource{}
+	out.ReferenceIndex = direct.ValueOf(in.ReferenceIndex)
+	return out
+}
+func SearchResponse_Summary_Reference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Reference) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Document = direct.LazyPtr(in.GetDocument())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.ChunkContents = direct.Slice_FromProto(mapCtx, in.ChunkContents, SearchResponse_Summary_Reference_ChunkContent_v1alpha1_FromProto)
+	return out
+}
+func SearchResponse_Summary_Reference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference) *pb.SearchResponse_Summary_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Reference{}
+	out.Title = direct.ValueOf(in.Title)
+	out.Document = direct.ValueOf(in.Document)
+	out.Uri = direct.ValueOf(in.URI)
+	out.ChunkContents = direct.Slice_ToProto(mapCtx, in.ChunkContents, SearchResponse_Summary_Reference_ChunkContent_v1alpha1_ToProto)
+	return out
+}
+func SearchResponse_Summary_Reference_ChunkContent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_Reference_ChunkContent) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.PageIdentifier = direct.LazyPtr(in.GetPageIdentifier())
+	return out
+}
+func SearchResponse_Summary_Reference_ChunkContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_Reference_ChunkContent) *pb.SearchResponse_Summary_Reference_ChunkContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_Reference_ChunkContent{}
+	out.Content = direct.ValueOf(in.Content)
+	out.PageIdentifier = direct.ValueOf(in.PageIdentifier)
+	return out
+}
+func SearchResponse_Summary_SafetyAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary_SafetyAttributes) *krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes{}
+	out.Categories = in.Categories
+	out.Scores = in.Scores
+	return out
+}
+func SearchResponse_Summary_SafetyAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SearchResponse_Summary_SafetyAttributes) *pb.SearchResponse_Summary_SafetyAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchResponse_Summary_SafetyAttributes{}
+	out.Categories = in.Categories
+	out.Scores = in.Scores
+	return out
+}
 func ServingConfig_GenericConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig_GenericConfig) *krmdiscoveryenginev1alpha1.ServingConfig_GenericConfig {
 	if in == nil {
 		return nil
