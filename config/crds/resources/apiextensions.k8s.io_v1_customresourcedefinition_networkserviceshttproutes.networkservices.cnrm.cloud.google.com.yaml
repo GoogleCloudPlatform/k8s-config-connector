@@ -258,16 +258,27 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The value of an externally managed
-                                      ComputeBackendService resource.
+                                    description: |-
+                                      The URL of a BackendService to route traffic to.
+
+                                      Allowed values:
+                                      * The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                      * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                                    type: string
+                                  kind:
+                                    description: 'Kind of the referent. Allowed values:
+                                      ComputeBackendService,StorageBucket'
+                                    enum:
+                                    - ComputeBackendService
+                                    - StorageBucket
                                     type: string
                                   name:
-                                    description: The name of a ComputeBackendService
-                                      resource.
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                     type: string
                                   namespace:
-                                    description: The namespace of a ComputeBackendService
-                                      resource.
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                     type: string
                                 type: object
                               weight:
@@ -434,16 +445,27 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: The value of an externally managed
-                                        ComputeBackendService resource.
+                                      description: |-
+                                        The URL of a BackendService to route traffic to.
+
+                                        Allowed values:
+                                        * The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+                                        * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+                                      type: string
+                                    kind:
+                                      description: 'Kind of the referent. Allowed
+                                        values: ComputeBackendService,StorageBucket'
+                                      enum:
+                                      - ComputeBackendService
+                                      - StorageBucket
                                       type: string
                                     name:
-                                      description: The name of a ComputeBackendService
-                                        resource.
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                       type: string
                                     namespace:
-                                      description: The namespace of a ComputeBackendService
-                                        resource.
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                                       type: string
                                   type: object
                                 weight:

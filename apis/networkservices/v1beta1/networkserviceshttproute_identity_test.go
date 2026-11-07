@@ -225,3 +225,138 @@ func TestNetworkServicesHTTPRouteRef_Normalize(t *testing.T) {
 		})
 	}
 }
+
+func TestBackendServiceRef_Normalize(t *testing.T) {
+	scheme := runtime.NewScheme()
+
+	tests := []struct {
+		name             string
+		ref              *BackendServiceRef
+		objects          []runtime.Object
+		defaultNamespace string
+		wantExternal     string
+		wantErr          bool
+	}{
+		{
+			name: "external already set",
+			ref: &BackendServiceRef{
+				External: "projects/my-project/global/backendServices/my-backend",
+			},
+			wantExternal: "projects/my-project/global/backendServices/my-backend",
+			wantErr:      false,
+		},
+		{
+			name: "both name and external set",
+			ref: &BackendServiceRef{
+				Name:     "my-backend",
+				External: "projects/my-project/global/backendServices/my-backend",
+			},
+			wantErr: true,
+		},
+		{
+			name: "both kind and external set",
+			ref: &BackendServiceRef{
+				Kind:     "ComputeBackendService",
+				External: "projects/my-project/global/backendServices/my-backend",
+			},
+			wantErr: true,
+		},
+		{
+			name: "resolve ComputeBackendService without explicit kind",
+			ref: &BackendServiceRef{
+				Name: "my-backend",
+			},
+			defaultNamespace: "test-ns",
+			objects: []runtime.Object{
+				&unstructured.Unstructured{
+					Object: map[string]interface{}{
+						"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+						"kind":       "ComputeBackendService",
+						"metadata": map[string]interface{}{
+							"name":      "my-backend",
+							"namespace": "test-ns",
+						},
+						"status": map[string]interface{}{
+							"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend",
+						},
+					},
+				},
+			},
+			wantExternal: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend",
+			wantErr:      false,
+		},
+		{
+			name: "resolve ComputeBackendService with explicit kind",
+			ref: &BackendServiceRef{
+				Kind: "ComputeBackendService",
+				Name: "my-backend",
+			},
+			defaultNamespace: "test-ns",
+			objects: []runtime.Object{
+				&unstructured.Unstructured{
+					Object: map[string]interface{}{
+						"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+						"kind":       "ComputeBackendService",
+						"metadata": map[string]interface{}{
+							"name":      "my-backend",
+							"namespace": "test-ns",
+						},
+						"status": map[string]interface{}{
+							"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend",
+						},
+					},
+				},
+			},
+			wantExternal: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend",
+			wantErr:      false,
+		},
+		{
+			name: "resolve StorageBucket with kind StorageBucket",
+			ref: &BackendServiceRef{
+				Kind: "StorageBucket",
+				Name: "my-bucket",
+			},
+			defaultNamespace: "test-ns",
+			objects: []runtime.Object{
+				&unstructured.Unstructured{
+					Object: map[string]interface{}{
+						"apiVersion": "storage.cnrm.cloud.google.com/v1beta1",
+						"kind":       "StorageBucket",
+						"metadata": map[string]interface{}{
+							"name":      "my-bucket",
+							"namespace": "test-ns",
+						},
+						"status": map[string]interface{}{
+							"selfLink": "https://www.googleapis.com/storage/v1/b/my-bucket",
+						},
+					},
+				},
+			},
+			wantExternal: "my-bucket",
+			wantErr:      false,
+		},
+		{
+			name: "missing StorageBucket reference",
+			ref: &BackendServiceRef{
+				Kind: "StorageBucket",
+				Name: "non-existent-bucket",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client := fake.NewClientBuilder().WithScheme(scheme).WithRuntimeObjects(tt.objects...).Build()
+			err := tt.ref.Normalize(context.Background(), client, tt.defaultNamespace)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("BackendServiceRef.Normalize() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr && tt.ref.External != tt.wantExternal {
+				t.Errorf("BackendServiceRef.Normalize() got = %v, want %v", tt.ref.External, tt.wantExternal)
+			}
+		})
+	}
+}

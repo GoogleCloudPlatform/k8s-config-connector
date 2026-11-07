@@ -124,13 +124,25 @@ type HttprouteDelay struct {
 }
 
 type BackendServiceRef struct {
-	// The value of an externally managed ComputeBackendService resource.
+	/* The URL of a BackendService to route traffic to.
+
+	Allowed values:
+	* The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).
+	* The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`). */
+	// +optional
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeBackendService resource.
+	/* Kind of the referent. Allowed values: ComputeBackendService,StorageBucket */
+	// +optional
+	// +kubebuilder:validation:Enum=ComputeBackendService;StorageBucket
+	Kind string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeBackendService resource.
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
 	Namespace string `json:"namespace,omitempty"`
 }
 
