@@ -285,7 +285,6 @@ BLOCKED_KINDS=(
     "RetailModel"
     "RetailServingConfig"
     "SaasServiceMgmtRelease"
-    "SaaSServiceMgmtUnitKind"
     "SecretManagerRegionalSecret"
     "SecureSourceManagerHook"
     "SecurityCenterBigQueryExport"
