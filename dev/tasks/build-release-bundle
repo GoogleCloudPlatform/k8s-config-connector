@@ -160,7 +160,6 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
     "ConfigDeliveryFleetPackage"
-    "ConfigdeliveryVariant"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
