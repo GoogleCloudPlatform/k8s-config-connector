@@ -157,6 +157,20 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 
 	originalSecret := &corev1.Secret{}
 	if err = r.Get(ctx, request.NamespacedName, originalSecret); err == nil {
+		// Refuse to overwrite a pre-existing Secret that was not previously
+		// created by this controller. Otherwise an IAMServiceAccountKey CRD
+		// with a name that collides with any existing Secret in the same
+		// namespace would replace that Secret's contents with the SA key
+		// material and re-parent it via OwnerReferences.
+		if originalSecret.Labels[label.CnrmManagedKey] != "true" {
+			msg := fmt.Sprintf("refusing to overwrite Secret %v/%v: it is not managed by Config Connector (missing label %s=true); rename the IAMServiceAccountKey or remove the conflicting Secret",
+				request.Namespace, request.Name, label.CnrmManagedKey)
+			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), msg)
+			return reconcile.Result{}, fmt.Errorf("%s", msg)
+		}
+		// Update only the Secret we just checked: if it changed since the
+		// Get (e.g. its label was removed), the Update fails with a conflict.
+		secret.ResourceVersion = originalSecret.ResourceVersion
 		logger.Info("updating the secret", "resource", request.NamespacedName)
 		if err = r.Update(ctx, secret); err != nil {
 			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Errorf("update call failed: %w", err))
