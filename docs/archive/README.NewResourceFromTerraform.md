@@ -1,5 +1,9 @@
 # Add a New Resource
 
+> [!WARNING]
+> **DEPRECATED**: This document is archived and no longer maintained.
+> Please refer to the updated canonical guide: **[Terraform-Based Field and Resource Playbook](../develop-resources/scenarios/terraform-field-and-resource.md)**.
+
 The instructions will help you add a new resource to Config Connector through
 [Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google).
 A Config Connector resource is the kubernetes representation of a GCP resource.
