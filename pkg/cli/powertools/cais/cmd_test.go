@@ -362,6 +362,58 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for ConfigDeliveryResourceBundle to simulate a reconciled bundle in static unit tests.
+			if u.GetKind() == "ConfigDeliveryResourceBundle" && u.GroupVersionKind().Group == "configdelivery.cnrm.cloud.google.com" {
+				projectID := annotations["cnrm.cloud.google.com/project-id"]
+				if proj, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external"); proj != "" {
+					projectID = proj
+				}
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "us-central1"
+				}
+				bundleID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if bundleID == "" {
+					bundleID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/resourceBundles/%s", projectID, location, bundleID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for ConfigDeliveryResourceBundle %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.externalRef for ConfigDeliveryRelease to simulate a reconciled release in static unit tests.
+			if u.GetKind() == "ConfigDeliveryRelease" && u.GroupVersionKind().Group == "configdelivery.cnrm.cloud.google.com" {
+				releaseID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if releaseID == "" {
+					releaseID = u.GetName()
+				}
+				var extRef string
+				if parentExt, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "external"); parentExt != "" {
+					extRef = fmt.Sprintf("%s/releases/%s", strings.TrimSuffix(parentExt, "/"), releaseID)
+				} else if parentName, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "name"); parentName != "" {
+					location := "us-central1"
+					projectID := annotations["cnrm.cloud.google.com/project-id"]
+					for _, other := range kccObjs {
+						if other.GetKind() == "ConfigDeliveryResourceBundle" && other.GetName() == parentName {
+							if loc, _, _ := unstructured.NestedString(other.Object, "spec", "location"); loc != "" {
+								location = loc
+							}
+							if proj, _, _ := unstructured.NestedString(other.Object, "spec", "projectRef", "external"); proj != "" {
+								projectID = proj
+							}
+							break
+						}
+					}
+					extRef = fmt.Sprintf("projects/%s/locations/%s/resourceBundles/%s/releases/%s", projectID, location, parentName, releaseID)
+				}
+				if extRef != "" {
+					if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+						t.Fatalf("failed to inject status.externalRef for ConfigDeliveryRelease %s: %v", u.GetName(), err)
+					}
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {

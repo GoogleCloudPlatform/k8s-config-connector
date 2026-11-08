@@ -38,6 +38,17 @@
   4. Regenerated CRD, deepcopy code, identity, and mappers via `apis/configdelivery/generate.sh`, and updated pre-generated controller and fuzzer in lockstep.
 - **Impact**: Clean direct KRM types, identity, controller, and fuzzer for `ConfigdeliveryVariant`.
 
+### [2026-11-07] Implementing ConfigdeliveryVariant Direct Controller and E2E Fixtures
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `ConfigdeliveryVariant` ([Issue 15218](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15218)).
+- **Observations**:
+  1. `ConfigDeliveryRelease` requires the GCP label `configdelivery-skip-creating-variant-resources: "false"` when created with `lifecycle: DRAFT`, allowing child `Variant` resources to be created and managed under that release. Without that label, `Release` creation with `DRAFT` is rejected by GCP.
+  2. `ConfigDeliveryRelease` controller was updated to support `metadata.labels` via `label.NewGCPLabelsFromK8sLabels` and `common.CompareGreenfieldSpecAndLabels`.
+  3. The `Variant` GCP GET endpoint does not return `resources` in GET responses (it is write-only in GETs though mutable via PATCH with updateMask=resources). Implemented MBUR (mutable-but-unreadable) tracking with `SetMBUR` and `CompareMBUR` on `resources` hash in the `Variant` adapter.
+  4. In `ConfigdeliveryVariant` controller, ensured `resource.Name` and `resource.Labels` are populated on creation and update.
+  5. Both minimal and maximal fixtures were recorded against real GCP (`cnrm-barni-4`) and pass all 7 automated lifecycle validation checks.
+- **Impact**: Fully working and verified direct controller and golden test fixtures for `ConfigdeliveryVariant`.
+
+
 
 
 
