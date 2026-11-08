@@ -1,0 +1,28 @@
+# assess-types-judgement: a greenfield Step 1b PR (step/types-judgement) that
+# the overseer has handed to people (overseer/ready-for-human) is scored on
+# how likely a maintainer is to approve it as it is: the
+# assess-types-judgement recipe comments its findings and adds one score
+# label, assess/score-1 (far from it) to assess/score-5 (like the PRs approved
+# without comment). Once per head: a new head takes ready-for-human off
+# (ready-unreview), and the next time it is handed over it is scored again,
+# its old score label taken off first.
+#
+# Order 70: after factory's PR rules (ready is 50, ready-unreview 60), so it
+# runs only on a PR nothing else wants.
+name: assess-types-judgement
+description: Score a ready step/types-judgement PR on how likely it is to be approved as it is
+on: pr
+order: 70
+when:
+  labels:
+    all: [step/types-judgement, overseer/ready-for-human]
+run:
+  recipe: assess-types-judgement
+  apply: [comment, label]
+  on-start:
+    unlabel: [assess/score-1, assess/score-2, assess/score-3, assess/score-4, assess/score-5]
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 1h

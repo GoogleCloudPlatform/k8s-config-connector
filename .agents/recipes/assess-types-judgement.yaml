@@ -1,0 +1,138 @@
+# assess-types-judgement: scores a greenfield Step 1b PR (step/types-judgement:
+# judgement queue triaged, direct KRM types, identity and references
+# finalized) on how likely a maintainer is to approve it as it is, and says
+# why - a score label (assess/score-1 .. assess/score-5) and a comment.
+#
+# The rubric comes from the 33 merged step/types-judgement PRs (to
+# 2026-11-08). 24 were approved with no feedback beyond /lgtm /approve or a
+# request to rebase: about 10 files, under ~250 added lines, nothing but the
+# kind's types, identity, references, judgement queue, generated CRD, apichecks
+# exceptions and journal. The feedback the others got:
+#   - a field that should be a reference to a kind KCC has was left a string,
+#     or put in refs_deferred.txt (#14876, #15084, #14716, #14235);
+#   - required-ness wrong: a field the proto marks Required left optional
+#     (#14716);
+#   - deprecated fields kept (#15084);
+#   - redundant fields: a location the parent's name already holds (#14235);
+#   - changes beyond the kind - code generators, controllerbuilder, test
+#     exception files edited instead of the test fixed - to split out (#14235,
+#     #14462);
+#   - multi-parent modelling left open (#14235); size (+671, +836, +1376).
+#
+# Run by the assess-types-judgement watch rule (.agents/watch/) on a
+# step/types-judgement PR labelled overseer/ready-for-human, once per head.
+# The agent changes nothing and posts nothing: it writes a Triage, which the
+# rule applies (apply: [comment, label]).
+name: assess-types-judgement
+label: Assess (types-judgement)
+on: [pr]
+as: reviewer
+credentials: clone
+
+context: |
+  You assess a Config Connector (KCC) greenfield Step 1b pull request: the
+  judgement queue of a new kind triaged, its direct KRM types, identity and
+  references finalized. You score how likely a maintainer is to approve it as
+  it is, from what maintainers asked for on earlier Step 1b PRs.
+
+  You must not change anything: do NOT modify or create files in the
+  repository (the result file you are asked to write is outside it), do NOT
+  run git write operations, and do NOT post anything to GitHub. You have no
+  GitHub credentials.
+
+  The PR is checked out in the current directory, detached at its head.
+  `refs/factory/pr/base` is its base branch: `git diff
+  refs/factory/pr/base...HEAD` is the PR's change.
+
+start:
+  steps:
+    - uses: clone
+    - uses: configure-engine
+
+    - ask: |
+        Assess this pull request. Do not write the result yet.
+
+        <pr_url>{{ .Inputs.pr_url }}</pr_url>
+        <pr_title>{{ .Inputs.pr_title }}</pr_title>
+        <pr_body>
+        {{ .Inputs.pr_body }}
+        </pr_body>
+
+        1. See what changed: `git diff --stat refs/factory/pr/base...HEAD`,
+           then the files.
+        2. Check each of these, noting what you found and where (file, field):
+           - **Scope**: only the kind's own files - `apis/<service>/` (types,
+             identity, reference, judgement_queue.yaml, generate.sh, mappers),
+             its generated CRD under `config/crds/`, `tests/apichecks`
+             exception lists, the service's `.gemini/journals/` entry. Code
+             generators (`dev/tools/controllerbuilder`), other kinds, or an
+             exception file edited where a test should be fixed are out of
+             scope: maintainers asked for those to be split out.
+           - **References**: every field that names a GCP resource of a kind
+             KCC supports (search `apis/` for the kind and its `*Ref`) must be
+             a reference (`<Kind>Ref`), not a string - and not listed in
+             `tests/apichecks/testdata/exceptions/refs_deferred.txt` when the
+             kind exists.
+           - **Required-ness**: fields the proto comments mark `Required` are
+             required in the types (or the spec has a WithRequired form);
+             optional ones are not.
+           - **Deprecated fields**: none the proto marks deprecated is kept.
+           - **Redundant fields**: no field duplicates what the parent's name
+             or reference already says (a separate location when the parent's
+             path holds it).
+           - **Parent and identity**: one parent reference, its multi-parent
+             form (one-of, CEL) decided when the resource has several.
+           - **Judgement queue**: every entry for the kind resolved, each
+             resolution matching what the types do.
+           - **Size**: files changed and lines added.
+        3. Score it, from 5 down:
+           - **5**: in scope; nothing above found. Like the PRs approved
+             without comment.
+           - **4**: one small finding (one field's required-ness, one
+             deprecated field) a maintainer would point out but likely approve.
+           - **3**: a few findings, or one reference missing, or over ~500
+             added lines.
+           - **2**: several missing references, or out-of-scope changes to
+             split out.
+           - **1**: the kind modelled wrongly (parent, identity, multi-parent
+             form), or unresolved judgement queue entries.
+
+        Summarise what you found in a few lines.
+
+    - ask: |
+        Now write the result to the file {{ output "triage-output.yaml" }}, as
+        YAML in EXACTLY this structure, with nothing else in the file:
+
+        triage:
+          labels: []        # exactly one: [assess/score-N], N the score (1-5)
+          priority: ""      # leave empty
+          duplicates: []    # leave empty
+          assessment: ""    # the comment for the PR, in Markdown (see below)
+
+        The assessment starts with one line "**Score N/5**" and a short
+        reason, then a bullet per check (scope, references, required-ness,
+        deprecated fields, redundant fields, parent and identity, judgement
+        queue, size) with what you found, naming files and fields. End with
+        "To raise the score:" and each change, when the score is below 5.
+
+        Write the whole file with your file tool (if it refuses the path,
+        with the shell), replacing anything in it. Then say in a line or two
+        that it is written.
+      expects: triage-output.yaml
+
+outputs:
+  - triage-output.yaml
+
+task-output:
+  kind: Triage
+  from: triage-output.yaml
+  preview: spec.assessment
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: comment
+      label: Post assessment
+    - verb: label
+      label: Add the score label
+    - verb: reject
