@@ -96,12 +96,10 @@ task-output:
   from: triage-output.yaml
   preview: spec.assessment
   # The comment is a result, not a request: /overseer-ignore keeps the
-  # overseer from acting on it. The label action applies the labels, so the
-  # comment does not list them.
+  # overseer from acting on it.
   comment:
     prefix: /overseer-ignore
     heading: "**PR assessment (types-judgement)**"
-    suggested-labels: false
   actions:
     - verb: edit
       field: spec
