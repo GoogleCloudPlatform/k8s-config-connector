@@ -98,6 +98,11 @@ task-output:
   kind: Triage
   from: triage-output.yaml
   preview: spec.assessment
+  # The comment is a result, not a request: /overseer-ignore keeps the
+  # overseer from acting on it.
+  comment:
+    prefix: /overseer-ignore
+    heading: "**Greenfield triage**"
   actions:
     - verb: edit
       field: spec
