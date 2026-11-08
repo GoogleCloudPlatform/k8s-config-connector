@@ -1,7 +1,8 @@
 # greenfield-triage: checks whether a greenfield Kind can be implemented
 # now, before (or while) its issue graph works on it, and says so on the
 # issue: ready - labelled overseer/graph, its graph starts or goes on - or
-# blocked - labelled overseer/stop, with each blocker and what clears it.
+# not - labelled overseer/stop, with each blocker and what clears it, or
+# what a person must check when the agent could not tell.
 #
 # Greenfield graphs got stuck, or built the wrong thing, for reasons a
 # check up front finds: the API needs quota (#15037) or project
@@ -87,6 +88,8 @@ start:
              implement the parent kind first - name it - or decide the
              modelling);
            - **unsure**: you could not tell; say what a person must check.
+             Unsure stops it too: nothing starts on a kind nobody has
+             cleared.
 
         Summarise what you found in a few lines.
 
@@ -95,7 +98,7 @@ start:
         as YAML in EXACTLY this structure, with nothing else in the file:
 
         triage:
-          labels: []        # [overseer/graph] when ready, [overseer/stop] when blocked, [] when unsure
+          labels: []        # [overseer/graph] when ready; [overseer/stop] when blocked or unsure
           priority: ""      # leave empty
           duplicates: []    # leave empty
           assessment: ""    # the comment for the issue, in Markdown (see below)
@@ -106,7 +109,8 @@ start:
         dependencies, lifecycle, state on master), a bullet with what you
         found and how. When blocked, end with "To unblock:" and what a
         maintainer must do, each item its own bullet; name the missing KCC
-        kinds. Use no other labels than those above.
+        kinds. When unsure, end with "To check:" and what a person must
+        check. Use no other labels than those above.
 
         Write the whole file with your file tool (if it refuses the path,
         with the shell), replacing anything in it. Then say in a line or two
