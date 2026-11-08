@@ -3,21 +3,34 @@
 # finalized) on how likely a maintainer is to approve it as it is, and says
 # why - a score label (assess/score-1 .. assess/score-5) and a comment.
 #
-# The rubric comes from the 33 merged step/types-judgement PRs (to
-# 2026-11-08). 24 were approved with no feedback beyond /lgtm /approve or a
-# request to rebase: about 10 files, under ~250 added lines, nothing but the
-# kind's types, identity, references, judgement queue, generated CRD, apichecks
-# exceptions and journal. The feedback the others got:
-#   - a field that should be a reference to a kind KCC has was left a string,
-#     or put in refs_deferred.txt (#14876, #15084, #14716, #14235);
-#   - required-ness wrong: a field the proto marks Required left optional
-#     (#14716);
-#   - deprecated fields kept (#15084);
-#   - redundant fields: a location the parent's name already holds (#14235);
-#   - changes beyond the kind - code generators, controllerbuilder, test
-#     exception files edited instead of the test fixed - to split out (#14235,
-#     #14462);
-#   - multi-parent modelling left open (#14235); size (+671, +836, +1376).
+# The rules come from the 33 merged step/types-judgement PRs (to 2026-11-08),
+# their judgement_queue.yaml resolutions and the review comments on them.
+# 24 were approved with no feedback beyond /lgtm /approve or a rebase. Nearly
+# every review comment on the others landed on a judgement queue entry the PR
+# resolved WITHOUT changing the types (accepted / not-applicable / deferred)
+# where reviewers wanted an edit:
+#   - required-not-enforced accepted "kept optional to match the shared
+#     struct" / "kept optional in KRM" -> "Generate WithRequired version of
+#     the type" (#14716 x9, #14876, #15084: 30 such entries, all in PRs that
+#     got feedback; #15053 generated WithRequired types and merged clean);
+#   - a reference marked not-applicable "not a managed KCC resource" when KCC
+#     has the kind (VertexAIEndpoint, AIPlatformBatchPredictionJob,
+#     ComputeReservation in #14876), or deferred to refs_deferred.txt when the
+#     Ref type exists (#14716, #15084 spec.model -> AIPlatformModelRef);
+#     "already modeled as XRef" notes drew "double check" (#14716);
+#   - deprecated-field accepted "kept for compatibility" on a new kind ->
+#     "Remove the deprecated field" (#15084 x3); kept was fine only where the
+#     struct is shared with released kinds (#14686);
+#   - location-or-parent-ref accepted when every parent pattern already holds
+#     the location -> remove location (#14235);
+#   - multi-parent kinds: CEL "exactly one parent" (#14235);
+#   - silencing a test by editing a tests/apichecks exception file -> t.Skip
+#     the test in its own commit (#14462); controllerbuilder changes -> their
+#     own PR (#14235).
+# Never commented on, so not findings: reference-not-representable (URIs),
+# message-map-derived, well-known-proto-type, identity-server-generated-id
+# with the Create request cited, docs-link fixes, etag moved to
+# observedState, labels dropped from spec (16 merged PRs did that).
 #
 # Run by the assess-types-judgement watch rule (.agents/watch/) on a
 # step/types-judgement PR labelled overseer/ready-for-human, once per head.
@@ -58,44 +71,103 @@ start:
         {{ .Inputs.pr_body }}
         </pr_body>
 
-        1. See what changed: `git diff --stat refs/factory/pr/base...HEAD`,
-           then the files.
-        2. Check each of these, noting what you found and where (file, field):
-           - **Scope**: only the kind's own files - `apis/<service>/` (types,
-             identity, reference, judgement_queue.yaml, generate.sh, mappers),
-             its generated CRD under `config/crds/`, `tests/apichecks`
-             exception lists, the service's `.gemini/journals/` entry. Code
-             generators (`dev/tools/controllerbuilder`), other kinds, or an
-             exception file edited where a test should be fixed are out of
-             scope: maintainers asked for those to be split out.
-           - **References**: every field that names a GCP resource of a kind
-             KCC supports (search `apis/` for the kind and its `*Ref`) must be
-             a reference (`<Kind>Ref`), not a string - and not listed in
-             `tests/apichecks/testdata/exceptions/refs_deferred.txt` when the
-             kind exists.
-           - **Required-ness**: fields the proto comments mark `Required` are
-             required in the types (or the spec has a WithRequired form);
-             optional ones are not.
-           - **Deprecated fields**: none the proto marks deprecated is kept.
-           - **Redundant fields**: no field duplicates what the parent's name
-             or reference already says (a separate location when the parent's
-             path holds it).
-           - **Parent and identity**: one parent reference, its multi-parent
-             form (one-of, CEL) decided when the resource has several.
-           - **Judgement queue**: every entry for the kind resolved, each
-             resolution matching what the types do.
-           - **Size**: files changed and lines added.
-        3. Score it, from 5 down:
-           - **5**: in scope; nothing above found. Like the PRs approved
-             without comment.
-           - **4**: one small finding (one field's required-ness, one
-             deprecated field) a maintainer would point out but likely approve.
-           - **3**: a few findings, or one reference missing, or over ~500
-             added lines.
-           - **2**: several missing references, or out-of-scope changes to
-             split out.
-           - **1**: the kind modelled wrongly (parent, identity, multi-parent
-             form), or unresolved judgement queue entries.
+        Maintainers review a Step 1b PR mostly through its judgement queue:
+        they read each entry's resolution and note, and object when an entry
+        that called for a change to the types was closed without one. Assess
+        it the same way.
+
+        1. See what changed: `git diff --stat refs/factory/pr/base...HEAD`.
+           Find the kind (the PR title, the `apis/<service>/` files) and read
+           the judgement queue diff: `git diff refs/factory/pr/base...HEAD --
+           apis/<service>/judgement_queue.yaml`, then the types, identity and
+           reference files.
+
+        2. **Completeness.** Every entry for the kind in
+           `apis/<service>/judgement_queue.yaml` must be `status: resolved`
+           with a `resolution` (edited | accepted | not-applicable | deferred)
+           and a `note`. Any entry still open is a finding.
+
+        3. **Check every entry resolved `accepted`, `not-applicable` or
+           `deferred`** - those are what reviewers push back on. By reason:
+
+           - `required-not-enforced`: the proto marks the field REQUIRED. Kept
+             optional because the struct is shared ("to match the shared
+             struct", "to avoid breaking resources sharing it", "kept optional
+             in KRM") is a FINDING: reviewers ask for the WithRequired version
+             of the type - the entry's `detail` names it (change the field
+             from `<Type>` to `<Type>WithRequired`, run generate.sh), as
+             #15053 did. Not-applicable is fine when the field sits inside a oneof
+             variant or an optional sub-message, said so in the note.
+           - `authoritative-proto-reference`, `possible-reference-by-name`,
+             `possible-reference-by-description`,
+             `possible-reference-by-description-loose`,
+             `possible-reference-by-sibling`: when the note says the target is
+             "not a managed KCC resource", "has no Ref type" or defers it to
+             `refs_deferred.txt`, CHECK: search `apis/` for the target kind
+             and its `<Kind>Ref` type (`grep -rn "type <Kind>Ref struct"
+             apis/`, `grep -rln "Kind: <Kind>\|<Kind>Spec" apis/`). If KCC
+             has it, that is a FINDING (a missing reference). When the note
+             says "already modeled as <X>Ref", confirm the field in this
+             kind's types really is that Ref. Not-applicable is fine for
+             identifiers local to the resource (metric IDs, action IDs,
+             version IDs, user-chosen keys) and for locations.
+           - `deprecated-field`: kept ("for compatibility") on this new kind
+             is a FINDING - remove it. Kept is fine only when the struct is
+             shared with kinds already released, said so in the note.
+           - `location-or-parent-ref`: if every resource-name pattern of the
+             parent already contains `locations/{location}`, a separate
+             `location` field kept beside the parent reference(s) is a
+             FINDING. (A single parent: `parentRef` to the parent kind, no
+             projectRef/location.)
+           - `identity-multi-pattern`, multi-parent kinds: one optional
+             reference per parent scope and a CEL rule that exactly one is
+             set; missing CEL is a finding.
+           - `parent-ref-not-modelled`, `identity-root-unknown`,
+             `parent-ref-guessed`: resolved by a `parentRef` to the parent
+             kind (adding its Ref type when missing), projectRef and location
+             removed. Anything else is a finding.
+           - `identity-server-generated-id`: the note must cite whether the
+             Create request has an `<x>_id` parameter; check the proto under
+             `.build/third_party/googleapis` if unsure.
+           - `sensitive-field` deferred: note it, not a finding.
+           - `reference-not-representable` (URIs), `message-map-derived`,
+             `well-known-proto-type`, `verify-*-docs-link`,
+             `possible-output-only-pattern-in-comment`: accepted is fine.
+
+        4. **Check the `edited` entries** against the types: pick the ones
+           naming a field or a reference and confirm the types diff does
+           what the note says. A note the code does not match is a finding.
+
+        5. **Scope.** In scope: `apis/<service>/` (types, identity,
+           reference, judgement_queue.yaml, generate.sh, mappers,
+           `*_identity.go` / `*_reference.go`), the kind's CRD under
+           `config/crds/`, fixture `_identities.yaml`,
+           `tests/apichecks/testdata/exceptions/` entries for the kind,
+           `.gemini/journals/` and the skill journal. Findings: entries added
+           to an apichecks exception file to silence a test that should be
+           fixed or `t.Skip`ped (reviewers want the skip, in its own commit);
+           changes to `dev/tools/controllerbuilder` or other kinds beyond a
+           small helper (reviewers want them in their own PR). Dropping
+           `labels` from the spec is the convention, not a finding.
+
+        6. **Size**: files changed and lines added. Merged-without-comment
+           PRs were ~10 files and under ~250 added lines; over ~500 added
+           lines usually drew comments.
+
+        7. Score it. Count findings by weight - MAJOR: a missing reference to
+           a kind KCC has, the parent or identity modelled wrongly, an open
+           entry, missing multi-parent CEL; MINOR: one required field kept
+           optional, one deprecated field kept, a kept location, an
+           out-of-scope change, a note the code does not match.
+           - **5**: no findings. Like the 24 PRs approved without comment.
+           - **4**: one or two MINOR findings.
+           - **3**: one MAJOR, or three or more MINOR (e.g. required fields
+             kept optional across a shared struct), or over ~500 added lines
+             with any finding.
+           - **2**: two or more MAJOR, or a MAJOR plus the required-optional
+             pattern. (#14716, #14876, #15084 would have scored 2.)
+           - **1**: the kind modelled wrongly (parent, identity), or entries
+             left open.
 
         Summarise what you found in a few lines.
 
@@ -110,10 +182,14 @@ start:
           assessment: ""    # the comment for the PR, in Markdown (see below)
 
         The assessment starts with one line "**Score N/5**" and a short
-        reason, then a bullet per check (scope, references, required-ness,
-        deprecated fields, redundant fields, parent and identity, judgement
-        queue, size) with what you found, naming files and fields. End with
-        "To raise the score:" and each change, when the score is below 5.
+        reason, then a bullet per check - judgement queue completeness,
+        entries closed without an edit, edited entries against the code,
+        scope, size - with what you found. Name each finding by its judgement
+        queue entry (field, reason, resolution) and what a maintainer would
+        ask for, e.g. "`.spec.model` (possible-reference-by-description,
+        deferred): AIPlatformModelRef exists in apis/aiplatform - make it a
+        reference and drop it from refs_deferred.txt". End with "To raise the
+        score:" and each change, when the score is below 5.
 
         Write the whole file with your file tool (if it refuses the path,
         with the shell), replacing anything in it. Then say in a line or two
