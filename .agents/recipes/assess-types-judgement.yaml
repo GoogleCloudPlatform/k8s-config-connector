@@ -1,7 +1,8 @@
 # assess-types-judgement: scores a greenfield Step 1b PR (step/types-judgement:
 # judgement queue triaged, direct KRM types, identity and references
 # finalized) on how likely a maintainer is to approve it as it is, and says
-# why - a score label (assess/score-1 .. assess/score-5) and a comment.
+# why - one of three score labels (assess/good, assess/fair, assess/poor)
+# and a comment.
 #
 # The rules come from the 33 merged step/types-judgement PRs (to 2026-11-08),
 # their judgement_queue.yaml resolutions and the review comments on them.
@@ -154,20 +155,22 @@ start:
            PRs were ~10 files and under ~250 added lines; over ~500 added
            lines usually drew comments.
 
-        7. Score it. Count findings by weight - MAJOR: a missing reference to
-           a kind KCC has, the parent or identity modelled wrongly, an open
-           entry, missing multi-parent CEL; MINOR: one required field kept
-           optional, one deprecated field kept, a kept location, an
-           out-of-scope change, a note the code does not match.
-           - **5**: no findings. Like the 24 PRs approved without comment.
-           - **4**: one or two MINOR findings.
-           - **3**: one MAJOR, or three or more MINOR (e.g. required fields
-             kept optional across a shared struct), or over ~500 added lines
-             with any finding.
-           - **2**: two or more MAJOR, or a MAJOR plus the required-optional
-             pattern. (#14716, #14876, #15084 would have scored 2.)
-           - **1**: the kind modelled wrongly (parent, identity), or entries
-             left open.
+        7. Score it - one of three, by the findings' weight. MAJOR: a
+           missing reference to a kind KCC has, the parent or identity
+           modelled wrongly, an entry left open, missing multi-parent CEL.
+           MINOR: one required field kept optional, one deprecated field
+           kept, a kept location, an out-of-scope change, a note the code
+           does not match.
+           - **good**: no findings, or one or two MINOR. Like the 24 PRs
+             approved without comment - a maintainer can approve it as it is
+             or with a nit.
+           - **fair**: one MAJOR, or three or more MINOR (e.g. required
+             fields kept optional across a shared struct), or over ~500 added
+             lines with any finding. A round of review comments to expect.
+           - **poor**: two or more MAJOR, a MAJOR plus the required-optional
+             pattern, the kind modelled wrongly (parent, identity), or
+             entries left open. (#14716, #14876, #15084 would have been
+             poor.)
 
         Summarise what you found in a few lines.
 
@@ -176,20 +179,21 @@ start:
         YAML in EXACTLY this structure, with nothing else in the file:
 
         triage:
-          labels: []        # exactly one: [assess/score-N], N the score (1-5)
+          labels: []        # exactly one: [assess/good], [assess/fair] or [assess/poor]
           priority: ""      # leave empty
           duplicates: []    # leave empty
           assessment: ""    # the comment for the PR, in Markdown (see below)
 
-        The assessment starts with one line "**Score N/5**" and a short
+        The assessment starts with one line "**Assessment: good | fair |
+        poor**" (the one you chose) and a short
         reason, then a bullet per check - judgement queue completeness,
         entries closed without an edit, edited entries against the code,
         scope, size - with what you found. Name each finding by its judgement
         queue entry (field, reason, resolution) and what a maintainer would
         ask for, e.g. "`.spec.model` (possible-reference-by-description,
         deferred): AIPlatformModelRef exists in apis/aiplatform - make it a
-        reference and drop it from refs_deferred.txt". End with "To raise the
-        score:" and each change, when the score is below 5.
+        reference and drop it from refs_deferred.txt". End with "To make it
+        good:" and each change, unless it is already good.
 
         Write the whole file with your file tool (if it refuses the path,
         with the shell), replacing anything in it. Then say in a line or two
@@ -210,5 +214,5 @@ task-output:
     - verb: comment
       label: Post assessment
     - verb: label
-      label: Add the score label
+      label: Add the assessment label
     - verb: reject
