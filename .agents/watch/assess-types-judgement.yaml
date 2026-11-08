@@ -1,0 +1,42 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# assess-types-judgement: a greenfield Step 1b PR (step/types-judgement) that
+# the overseer has handed to people (overseer/ready-for-human) is scored on
+# how likely a maintainer is to approve it as it is: the
+# assess-types-judgement recipe comments its findings and adds one score
+# label: assess/good (like the PRs approved without comment), assess/fair (a
+# round of review comments to expect) or assess/poor. Once per head: a new head takes ready-for-human off
+# (ready-unreview), and the next time it is handed over it is scored again,
+# its old score label taken off first.
+#
+# Order 70: after factory's PR rules (ready is 50, ready-unreview 60), so it
+# runs only on a PR nothing else wants.
+name: assess-types-judgement
+description: Score a ready step/types-judgement PR on how likely it is to be approved as it is
+on: pr
+order: 70
+when:
+  labels:
+    all: [step/types-judgement, overseer/ready-for-human]
+run:
+  recipe: assess-types-judgement
+  apply: [comment, label]
+  on-start:
+    unlabel: [assess/good, assess/fair, assess/poor]
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 1h
