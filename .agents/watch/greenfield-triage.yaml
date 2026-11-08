@@ -7,6 +7,10 @@
 # could not tell (the comment says what a person must check). overseer/triage comes off once the triage is posted;
 # adding it again triages again.
 #
+# To triage a stopped issue again, once its blocker is cleared: take
+# overseer/stop off and add overseer/triage (the overseer skips an issue
+# labelled overseer/stop), or add overseer/graph to start it straight away.
+#
 # Order 3: before factory's issue rules (workflow-missing is 5), so a
 # triage asked for runs before anything else takes the issue. The
 # overseer's gates skip an issue labelled overseer/stop. Needs a factory

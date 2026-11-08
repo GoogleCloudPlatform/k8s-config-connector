@@ -81,6 +81,11 @@ start:
            - **State on master**: are its types, identity and judgement
              queue there already (and resolved)? Is it implemented already,
              or blocked in `dev/tasks/build-release-bundle`'s BLOCKED_KINDS?
+           - **Start block**: the issue's description must hold a
+             `factory-graph` block with `graph: kcc-greenfield` and
+             `params.kind` set to this kind: labelling it overseer/graph
+             starts nothing without one. Missing or wrong, the outcome is
+             unsure, and "To check:" gives the block to add, written out.
         3. Decide:
            - **ready**: nothing above blocks it;
            - **blocked**: at least one thing blocks it - which, and what a
@@ -106,7 +111,7 @@ start:
         The assessment starts with one line - "**Ready to implement.**",
         "**Blocked: recommend overseer/stop.**" or "**Needs a person to
         check.**" - then, for each check (API access, quota, parent and
-        dependencies, lifecycle, state on master), a bullet with what you
+        dependencies, lifecycle, state on master, start block), a bullet with what you
         found and how. When blocked, end with "To unblock:" and what a
         maintainer must do, each item its own bullet; name the missing KCC
         kinds. When unsure, end with "To check:" and what a person must
