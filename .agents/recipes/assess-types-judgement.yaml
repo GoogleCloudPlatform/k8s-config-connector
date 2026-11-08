@@ -1,0 +1,106 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# assess-types-judgement: scores a greenfield Step 1b PR (step/types-judgement:
+# judgement queue triaged, direct KRM types, identity and references
+# finalized) on how likely a maintainer is to approve it as it is, and says
+# why - one of three score labels (assess/good, assess/fair, assess/poor)
+# and a comment.
+#
+# How to assess - the checks, the grading and the evidence behind them (the
+# merged step/types-judgement PRs and their review comments) - lives in the
+# skill .gemini/skills/assess-greenfield-types-judgement/SKILL.md, so it can
+# be used by hand too and kept current in one place.
+#
+# Run by the assess-types-judgement watch rule (.agents/watch/) on a
+# step/types-judgement PR labelled overseer/ready-for-human, once per head.
+# The agent changes nothing and posts nothing: it writes a Triage, which the
+# rule applies (apply: [comment, label]).
+name: assess-types-judgement
+label: Assess (types-judgement)
+on: [pr]
+as: reviewer
+credentials: clone
+
+context: |
+  You assess a Config Connector (KCC) greenfield Step 1b pull request: the
+  judgement queue of a new kind triaged, its direct KRM types, identity and
+  references finalized. You grade how likely a maintainer is to approve it as
+  it is, from what maintainers asked for on earlier Step 1b PRs.
+
+  You must not change anything: do NOT modify or create files in the
+  repository (the result file you are asked to write is outside it), do NOT
+  run git write operations, and do NOT post anything to GitHub. You have no
+  GitHub credentials.
+
+  The PR is checked out in the current directory, detached at its head.
+  `refs/factory/pr/base` is its base branch: `git diff
+  refs/factory/pr/base...HEAD` is the PR's change.
+
+start:
+  steps:
+    - uses: clone
+    - uses: configure-engine
+
+    - ask: |
+        Assess this pull request. Do not write the result yet.
+
+        <pr_url>{{ .Inputs.pr_url }}</pr_url>
+        <pr_title>{{ .Inputs.pr_title }}</pr_title>
+        <pr_body>
+        {{ .Inputs.pr_body }}
+        </pr_body>
+
+        Use .gemini/skills/assess-greenfield-types-judgement/SKILL.md to
+        assess this pull request: follow its checks and grade it good, fair
+        or poor.
+
+        Summarise what you found in a few lines.
+
+    - ask: |
+        Now write the result to the file {{ output "triage-output.yaml" }}, as
+        YAML in EXACTLY this structure, with nothing else in the file:
+
+        triage:
+          labels: []        # exactly one: [assess/good], [assess/fair] or [assess/poor]
+          priority: ""      # leave empty
+          duplicates: []    # leave empty
+          assessment: ""    # the comment for the PR, in Markdown (see below)
+
+        The assessment is the report the skill's "Reporting" section
+        describes: the "**Assessment: ...**" line, a bullet per check, each
+        finding named by its judgement queue entry, and "To make it good:"
+        unless it is good. The label matches the grade.
+
+        Write the whole file with your file tool (if it refuses the path,
+        with the shell), replacing anything in it. Then say in a line or two
+        that it is written.
+      expects: triage-output.yaml
+
+outputs:
+  - triage-output.yaml
+
+task-output:
+  kind: Triage
+  from: triage-output.yaml
+  preview: spec.assessment
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: comment
+      label: Post assessment
+    - verb: label
+      label: Add the assessment label
+    - verb: reject
