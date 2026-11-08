@@ -79,9 +79,29 @@ start:
              Is it enabled, or can it be enabled, in the test project
              (`gcloud services list --enabled --project {{ .Inputs.gcp_project }}`
              when a project is set; read-only)?
-           - **Quota**: does creating one need quota a test project
-             usually lacks (dedicated hardware, nodes, clusters, private
-             clouds - VMware Engine, say)?
+           - **Quota**: does creating one - or creating its parent and
+             dependencies, which its E2E fixtures create too - need quota
+             a test project usually lacks (dedicated hardware, nodes,
+             clusters, private clouds - VMware Engine, say)? Check it the
+             same way every time, so kinds that share a parent get the
+             same answer:
+             - Read every quota that applies to what the fixtures create,
+               regional and global, for the region the service's fixtures
+               use (`gcloud alpha services quota list --service=<api>
+               --consumer=projects/{{ .Inputs.gcp_project }}`). The
+               strictest one decides: an effective limit of 0 on any quota
+               the creation needs blocks it, whatever another quota allows.
+             - Look at the other greenfield issues of the same service or
+               parent kind (`gh issue list --label workflow/greenfield
+               --search "<service> in:title" --state all`) and their
+               comments: if one is stopped for quota on the same parent,
+               this one is blocked the same way unless you find why not -
+               and then say why.
+             - Say whether the parent's own E2E fixtures were ever recorded
+               against real GCP (an `_http.log` beside them, under
+               `pkg/test/resourcefixture/testdata/`): recorded, its
+               creation worked in a test project once.
+             Name the quotas you read, their limits and the region.
            - **Parent and dependencies in KCC**: the parent resource and
              every resource the kind's references point to must already be
              a KCC kind with a controller (direct or legacy), so that E2E
