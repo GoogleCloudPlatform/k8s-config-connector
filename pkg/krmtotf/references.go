@@ -160,6 +160,9 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 			return nil, nil
 		}
 	}
+	if r != nil && r.GroupVersionKind().Kind == "ComputeForwardingRule" && refConfig.TFField == "ip_address" && typeConfig.Key == "addressRef" && isPSCForwardingRuleSpec(r.Spec) {
+		typeConfig.TargetField = "self_link"
+	}
 	resourceRef := &v1alpha1.ResourceReference{}
 	if err := util.Marshal(resourceRefValRaw, resourceRef); err != nil {
 		return nil, fmt.Errorf("field %v is a wrong format", typeConfig.Key)
@@ -219,6 +222,11 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 		// Check 'status.observedState' for the observed, optional 'spec' fields.
 		if val, exists, _ := unstructured.NestedString(getObservedStateFromStatus(r.Status), strings.Split(key, ".")...); exists {
 			return val, nil
+		}
+		if key == "selfLink" {
+			if val, exists, _ := unstructured.NestedString(r.Status, "externalRef"); exists && val != "" {
+				return val, nil
+			}
 		}
 	}
 
@@ -334,4 +342,30 @@ func GetReferenceConfigForHierarchicalReference(hierarchicalRef corekccv1alpha1.
 		}
 	}
 	return nil, fmt.Errorf("no reference config found for hierarchical reference field %v", hierarchicalRef.Key)
+}
+
+func isPSCForwardingRuleSpec(spec map[string]interface{}) bool {
+	if len(spec) == 0 {
+		return false
+	}
+	if lbs, exists, _ := unstructured.NestedString(spec, "loadBalancingScheme"); exists && lbs == "" {
+		return true
+	}
+	targetMap, exists, _ := unstructured.NestedMap(spec, "target")
+	if !exists || len(targetMap) == 0 {
+		return false
+	}
+	if _, ok := targetMap["serviceAttachmentRef"]; ok {
+		return true
+	}
+	if _, ok := targetMap["memorystoreInstanceServiceAttachment"]; ok {
+		return true
+	}
+	if _, ok := targetMap["redisClusterServiceAttachment"]; ok {
+		return true
+	}
+	if bundle, ok := targetMap["googleAPIsBundle"].(string); ok {
+		return bundle == "all-apis" || bundle == "vpc-sc"
+	}
+	return false
 }
