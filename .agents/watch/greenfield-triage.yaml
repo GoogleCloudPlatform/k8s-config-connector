@@ -1,0 +1,29 @@
+# greenfield-triage: a workflow/greenfield issue labelled overseer/triage is
+# checked for what would block its implementation (API access and
+# allowlisting, quota, a parent or dependency not in KCC, a non-standard
+# lifecycle, the state on master: the greenfield-triage recipe), and the
+# result is commented on it and its label added: overseer/graph when ready
+# (its graph starts, or goes on), overseer/stop when blocked, none when a
+# person must check. overseer/triage comes off once the triage is posted;
+# adding it again triages again.
+#
+# Order 3: before factory's issue rules (workflow-missing is 5), so a
+# triage asked for runs before anything else takes the issue. The
+# overseer's gates skip an issue labelled overseer/stop. Needs a factory
+# whose rules take a list under apply (gke-labs/gemini-for-kubernetes-development#2240).
+name: greenfield-triage
+description: Check whether a greenfield kind can be implemented now, and comment and label it
+on: issue
+order: 3
+when:
+  labels:
+    all: [overseer/triage, workflow/greenfield]
+run:
+  recipe: greenfield-triage
+  apply: [comment, label]
+  on-success:
+    unlabel: [overseer/triage]
+policy:
+  cooldown:
+    success: 1h
+    failure: 1h

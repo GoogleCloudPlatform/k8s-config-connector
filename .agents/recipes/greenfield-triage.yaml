@@ -1,0 +1,131 @@
+# greenfield-triage: checks whether a greenfield Kind can be implemented
+# now, before (or while) its issue graph works on it, and says so on the
+# issue: ready - labelled overseer/graph, its graph starts or goes on - or
+# blocked - labelled overseer/stop, with each blocker and what clears it.
+#
+# Greenfield graphs got stuck, or built the wrong thing, for reasons a
+# check up front finds: the API needs quota (#15037) or project
+# allowlisting (#14955), the parent or a dependent resource is not in KCC
+# yet (#13259, #15221), or the resource does not follow standard CRUD
+# (#15221).
+#
+# Run by the greenfield-triage watch rule (.agents/watch/) on a
+# workflow/greenfield issue labelled overseer/triage. The agent changes
+# nothing and posts nothing: it writes a Triage, which the rule applies
+# (apply: [comment, label]).
+name: greenfield-triage
+label: Greenfield triage
+on: [issue]
+as: coder
+
+context: |
+  You are a triage assistant for Config Connector (KCC) greenfield work:
+  adding a new GCP resource kind to KCC as a direct resource, step by step
+  (prepopulate, types-judgement, controller, mockgcp, mockgcp-alignment,
+  release). You check whether the kind can be implemented now, and why not
+  if it cannot.
+
+  You must not change anything: do NOT modify or create files (but the
+  result file you are asked to write), do NOT run git write operations,
+  do NOT post anything to GitHub (no comments, labels or assignments), and
+  do NOT create, change or delete cloud resources.
+
+  The repository is already cloned in the current directory.
+
+start:
+  steps:
+    - uses: setup-git
+    - uses: setup-repo
+    - run: sleep 5 # lib.sh's HACK: avoid git lock issues
+    - uses: checkout-default-branch
+    - uses: configure-engine
+
+    - ask: |
+        Check whether the greenfield kind of this issue can be implemented
+        now. Do not write the result yet.
+
+        <issue_url>{{ .Inputs.issue_url }}</issue_url>
+        <issue_number>{{ .Inputs.issue_number }}</issue_number>
+        <issue_title>{{ .Inputs.issue_title }}</issue_title>
+        <issue_body>
+        {{ .Inputs.issue_body }}
+        </issue_body>
+
+        1. Find the kind (the issue's `factory-graph` block names it as
+           `params.kind`, else its title) and its service and GCP resource:
+           read its comments (`gh issue view {{ .Inputs.issue_number }} --comments`)
+           and its sub-issues, and find its proto message, service and
+           RPCs under `.build/third_party/googleapis` (or the googleapis
+           repository online).
+        2. Check each of these, and note what you found and how:
+           - **API access**: is the API generally available, or does it
+             need project allowlisting, early access or a private preview
+             (its documentation, release notes, the discovery document)?
+             Is it enabled, or can it be enabled, in the test project
+             (`gcloud services list --enabled --project {{ .Inputs.gcp_project }}`
+             when a project is set; read-only)?
+           - **Quota**: does creating one need quota a test project
+             usually lacks (dedicated hardware, nodes, clusters, private
+             clouds - VMware Engine, say)?
+           - **Parent and dependencies in KCC**: the parent resource and
+             every resource the kind's references point to must already be
+             a KCC kind with a controller (direct or legacy), so that E2E
+             fixtures can create them in `dependencies.yaml`. Search
+             `apis/`, `config/crds/` and `pkg/controller/` for each. Name
+             any that is missing, or that has types but no controller.
+           - **Lifecycle**: does the resource follow standard
+             Create/Get/Update/Delete (and List) RPCs? A singleton, a
+             "SetUp"/"Provision" RPC instead of Create, no Delete, or
+             deletion through another resource needs a maintainer's design.
+           - **State on master**: are its types, identity and judgement
+             queue there already (and resolved)? Is it implemented already,
+             or blocked in `dev/tasks/build-release-bundle`'s BLOCKED_KINDS?
+        3. Decide:
+           - **ready**: nothing above blocks it;
+           - **blocked**: at least one thing blocks it - which, and what a
+             maintainer must do (request quota, ask for allowlisting,
+             implement the parent kind first - name it - or decide the
+             modelling);
+           - **unsure**: you could not tell; say what a person must check.
+
+        Summarise what you found in a few lines.
+
+    - ask: |
+        Now write the result to the file {{ output "triage-output.yaml" }},
+        as YAML in EXACTLY this structure, with nothing else in the file:
+
+        triage:
+          labels: []        # [overseer/graph] when ready, [overseer/stop] when blocked, [] when unsure
+          priority: ""      # leave empty
+          duplicates: []    # leave empty
+          assessment: ""    # the comment for the issue, in Markdown (see below)
+
+        The assessment starts with one line - "**Ready to implement.**",
+        "**Blocked: recommend overseer/stop.**" or "**Needs a person to
+        check.**" - then, for each check (API access, quota, parent and
+        dependencies, lifecycle, state on master), a bullet with what you
+        found and how. When blocked, end with "To unblock:" and what a
+        maintainer must do, each item its own bullet; name the missing KCC
+        kinds. Use no other labels than those above.
+
+        Write the whole file with your file tool (if it refuses the path,
+        with the shell), replacing anything in it. Then say in a line or two
+        that it is written.
+      expects: triage-output.yaml
+
+outputs:
+  - triage-output.yaml
+
+task-output:
+  kind: Triage
+  from: triage-output.yaml
+  preview: spec.assessment
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: comment
+      label: Post assessment
+    - verb: label
+      label: Add the label
+    - verb: reject
