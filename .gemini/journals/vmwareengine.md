@@ -11,3 +11,10 @@
 - **Parent & References**: `VMwareEngineCluster` is a child resource of `VMwareEnginePrivateCloud`. Modeled parent as `ParentRef *PrivateCloudRef` in `VMwareEngineClusterSpec`. Implemented `refs.Ref` interface methods on `PrivateCloudRef` in `apis/vmwareengine/v1alpha1/vmwareengineprivatecloud_reference.go` to support canonical reference normalization.
 - **Documentation**: Updated resource docs URL in `vmwareenginecluster_types.go` to the official REST reference URL (`https://cloud.google.com/vmware-engine/docs/reference/rest/v1/projects.locations.privateClouds.clusters`).
 
+### [2026-11-08] VMwareEngineLoggingServer Greenfield Types Judgement & Identity
+- **Context**: Triaged `judgement_queue.yaml` and finalized KRM types & identity for `VMwareEngineLoggingServer`.
+- **Parent & References**: `VMwareEngineLoggingServer` is a child resource of `VMwareEnginePrivateCloud` (`projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}`). Modeled parent as `ParentRef *PrivateCloudRef` in `VMwareEngineLoggingServerSpec`.
+- **Identity & Creation**: Verified `CreateLoggingServerRequest` has `logging_server_id`, confirming client-specified ID despite `.name` being marked `OUTPUT_ONLY` in proto. `VMwareEngineLoggingServerIdentity` implements `identity.IdentityV2`.
+- **Documentation**: Updated resource docs URL in `vmwareengineloggingserver_types.go` to `https://cloud.google.com/vmware-engine/docs/reference/rest/v1/projects.locations.privateClouds.loggingServers`.
+- **Controller/Fuzzer**: Regenerated controller and fuzzer via one-shot controllerbuilder commands in lockstep with the updated types and references.
+
