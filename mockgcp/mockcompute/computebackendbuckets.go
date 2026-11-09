@@ -56,35 +56,6 @@ func (s *backendBuckets) Get(ctx context.Context, req *pb.GetBackendBucketReques
 	return obj, nil
 }
 
-func populateBackendBucketDefaults(obj *pb.BackendBucket) {
-	if obj.GetEnableCdn() {
-		if obj.CdnPolicy == nil {
-			obj.CdnPolicy = &pb.BackendBucketCdnPolicy{}
-		}
-		if obj.CdnPolicy.CacheMode == nil {
-			obj.CdnPolicy.CacheMode = PtrTo("CACHE_ALL_STATIC")
-		}
-		if obj.CdnPolicy.ClientTtl == nil {
-			obj.CdnPolicy.ClientTtl = PtrTo(int32(3600))
-		}
-		if obj.CdnPolicy.DefaultTtl == nil {
-			obj.CdnPolicy.DefaultTtl = PtrTo(int32(3600))
-		}
-		if obj.CdnPolicy.MaxTtl == nil {
-			obj.CdnPolicy.MaxTtl = PtrTo(int32(86400))
-		}
-		if obj.CdnPolicy.NegativeCaching == nil {
-			obj.CdnPolicy.NegativeCaching = PtrTo(true)
-		}
-		if obj.CdnPolicy.RequestCoalescing == nil {
-			obj.CdnPolicy.RequestCoalescing = PtrTo(true)
-		}
-		if obj.CdnPolicy.ServeWhileStale == nil {
-			obj.CdnPolicy.ServeWhileStale = PtrTo(int32(86400))
-		}
-	}
-}
-
 func (s *backendBuckets) Insert(ctx context.Context, req *pb.InsertBackendBucketRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/global/backendBuckets/%s", req.GetProject(), req.GetBackendBucketResource().GetName())
 	name, err := s.parseBackendBucketName(reqName)
@@ -102,8 +73,6 @@ func (s *backendBuckets) Insert(ctx context.Context, req *pb.InsertBackendBucket
 	if obj.Description == nil {
 		obj.Description = PtrTo("")
 	}
-
-	populateBackendBucketDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -159,7 +128,6 @@ func (s *backendBuckets) Update(ctx context.Context, req *pb.UpdateBackendBucket
 
 	// TODO: Apply field mask.
 	proto.Merge(obj, req.GetBackendBucketResource())
-	populateBackendBucketDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -191,7 +159,6 @@ func (s *backendBuckets) Patch(ctx context.Context, req *pb.PatchBackendBucketRe
 
 	// TODO: Apply field mask.
 	proto.Merge(obj, req.GetBackendBucketResource())
-	populateBackendBucketDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -224,10 +191,6 @@ func (s *backendBuckets) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedU
 	keyName := req.GetSignedUrlKeyResource().GetKeyName()
 	if obj.CdnPolicy == nil {
 		obj.CdnPolicy = &pb.BackendBucketCdnPolicy{}
-	}
-	populateBackendBucketDefaults(obj)
-	if obj.CdnPolicy.SignedUrlCacheMaxAgeSec == nil {
-		obj.CdnPolicy.SignedUrlCacheMaxAgeSec = PtrTo(int64(3600))
 	}
 	for _, existing := range obj.CdnPolicy.SignedUrlKeyNames {
 		if existing == keyName {

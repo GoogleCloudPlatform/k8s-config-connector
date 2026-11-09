@@ -249,15 +249,6 @@ X-Xss-Protection: 0
 
 {
   "bucketName": "storagebucket-${uniqueId}",
-  "cdnPolicy": {
-    "cacheMode": "CACHE_ALL_STATIC",
-    "clientTtl": 3600,
-    "defaultTtl": 3600,
-    "maxTtl": 86400,
-    "negativeCaching": true,
-    "requestCoalescing": true,
-    "serveWhileStale": 86400
-  },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "enableCdn": true,
@@ -353,14 +344,6 @@ X-Xss-Protection: 0
 {
   "bucketName": "storagebucket-${uniqueId}",
   "cdnPolicy": {
-    "cacheMode": "CACHE_ALL_STATIC",
-    "clientTtl": 3600,
-    "defaultTtl": 3600,
-    "maxTtl": 86400,
-    "negativeCaching": true,
-    "requestCoalescing": true,
-    "serveWhileStale": 86400,
-    "signedUrlCacheMaxAgeSec": "3600",
     "signedUrlKeyNames": [
       "key-${uniqueId}"
     ]
@@ -455,16 +438,7 @@ X-Xss-Protection: 0
 
 {
   "bucketName": "storagebucket-${uniqueId}",
-  "cdnPolicy": {
-    "cacheMode": "CACHE_ALL_STATIC",
-    "clientTtl": 3600,
-    "defaultTtl": 3600,
-    "maxTtl": 86400,
-    "negativeCaching": true,
-    "requestCoalescing": true,
-    "serveWhileStale": 86400,
-    "signedUrlCacheMaxAgeSec": "3600"
-  },
+  "cdnPolicy": {},
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "enableCdn": true,
