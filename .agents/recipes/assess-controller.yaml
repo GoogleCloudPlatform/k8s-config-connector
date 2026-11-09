@@ -176,10 +176,14 @@ task-output:
   from: triage-output.yaml
   preview: spec.assessment
   # The comment is a result, not a request: /overseer-ignore keeps the
-  # overseer from acting on it.
+  # overseer from acting on it. It carries the deterministic capture
+  # verbatim, collapsed under the assessment, with its size and sha256 -
+  # factory copies it, not the agent - so a reader sees the evidence the
+  # grade rests on. (Needs a factory with comment attach.)
   comment:
     prefix: /overseer-ignore
     heading: "**PR assessment (controller)**"
+    attach: [audit-capture.md]
   actions:
     - verb: edit
       field: spec
