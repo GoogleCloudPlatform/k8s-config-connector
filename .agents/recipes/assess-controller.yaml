@@ -164,10 +164,11 @@ start:
         that it is written.
       expects: triage-output.yaml
 
+# What `recipe run` prints when the task ends (the overseer's log): the
+# capture and the result. The raw entries (audit-capture.json) and the plan
+# stay in the task directory, which the token-usage collector archives.
 outputs:
-  - audit-query.yaml
   - audit-capture.md
-  - audit-capture.json
   - triage-output.yaml
 
 task-output:

@@ -41,7 +41,11 @@ record is the evidence; the files are claims to check against it.
 ## Evidence, strongest first
 
 1. **Probe markers** for each fixture, in the window, probing real resource
-   names of the kind (real IDs, not `${uniqueId}`).
+   names of the kind (real IDs, not `${uniqueId}`). The harness writes a
+   marker only when the fixture's test passed against real GCP (the probe
+   is skipped once the test has failed), so no marker after a
+   `RECORD_AUDIT_PROBE=1` run means that run failed or never reached GCP -
+   whatever the committed `_http.log` shows.
 2. **Audit entries for the mutations the `_http.log` records** - the same
    methods, by the recording principal, in the window, with outcomes that
    agree with the log (a call the log shows `OK` must not be a failure, or
