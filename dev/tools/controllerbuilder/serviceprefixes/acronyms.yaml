@@ -14,7 +14,7 @@
 
 # Acronym and casing corrections for the words of a proto message name, used
 # to build a Kind from <servicePrefix><message> (see service-prefixes.yaml):
-# UrlMap gives URLMap, TensorboardExperiment gives TensorBoardExperiment. A
+# UrlMap gives URLMap, QaQuestion gives QAQuestion. A
 # word is replaced only when it matches a key whole, so Apis and Rapid are left
 # alone.
 #

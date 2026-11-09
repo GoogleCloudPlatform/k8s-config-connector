@@ -11,6 +11,9 @@
 [kind-name-violation] kind=CloudDMSMigrationJob api=datamigration message=MigrationJob: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudDMSPrivateConnection api=datamigration message=PrivateConnection: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=CloudNumberRegistryIpamAdminScope api=cloudnumberregistry message=IpamAdminScope: expected kind name is CloudNumberRegistryIPAMAdminScope
+[kind-name-violation] kind=CloudcontrolspartnerCustomer api=cloudcontrolspartner message=Customer: the service prefix of API cloudcontrolspartner (Cloudcontrolspartner) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=ComputeOrganizationSecurityPolicyRule api=compute message=FirewallPolicyRule: expected kind name is ComputeFirewallPolicyRule
+[kind-name-violation] kind=ConfigDeployment api=config message=Deployment: expected kind name is ConfigDeploymentDeployment
 [kind-name-violation] kind=ConfigdeliveryVariant api=configdelivery message=Variant: expected kind name is ConfigDeliveryVariant
 [kind-name-violation] kind=DataMigrationMappingRule api=datamigration message=MappingRule: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=DatabaseMigrationConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
@@ -45,7 +48,6 @@
 [kind-name-violation] kind=ServiceIdentity api=serviceusage message=ServiceIdentity: the service prefix of API serviceusage (ServiceUsage) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=TPUVirtualMachine api=tpu message=Node: expected kind name is TPUNode
 [kind-name-violation] kind=VectorsearchIndex api=vectorsearch message=Index: expected kind name is VectorSearchIndex
-[kind-name-violation] kind=VertexAICustomJob api=aiplatform message=CustomJob: expected kind name is AIPlatformCustomJob
 [kind-name-violation] kind=VertexAIDataLabelingJob api=aiplatform message=DataLabelingJob: expected kind name is AIPlatformDataLabelingJob
 [kind-name-violation] kind=VertexAIDataset api=aiplatform message=Dataset: expected kind name is AIPlatformDataset
 [kind-name-violation] kind=VertexAIDeploymentResourcePool api=aiplatform message=DeploymentResourcePool: expected kind name is AIPlatformDeploymentResourcePool
@@ -56,13 +58,12 @@
 [kind-name-violation] kind=VertexAIFeaturestoreEntityType api=aiplatform message=EntityType: expected kind name is AIPlatformEntityType
 [kind-name-violation] kind=VertexAIFeaturestoreEntityTypeFeature api=aiplatform message=Feature: expected kind name is AIPlatformFeature
 [kind-name-violation] kind=VertexAIMetadataStore api=aiplatform message=MetadataStore: expected kind name is AIPlatformMetadataStore
-[kind-name-violation] kind=VertexAIPipelineJob api=aiplatform message=PipelineJob: expected kind name is AIPlatformPipelineJob
-[kind-name-violation] kind=VertexAISchedule api=aiplatform message=Schedule: expected kind name is AIPlatformSchedule
 [kind-name-violation] kind=VertexAIStudy api=aiplatform message=Study: expected kind name is AIPlatformStudy
-[kind-name-violation] kind=VertexAITensorboard api=aiplatform message=Tensorboard: expected kind name is AIPlatformTensorBoard
-[kind-name-violation] kind=VertexAITensorboardExperiment api=aiplatform message=TensorboardExperiment: expected kind name is AIPlatformTensorBoardExperiment
+[kind-name-violation] kind=VertexAITensorboard api=aiplatform message=Tensorboard: expected kind name is AIPlatformTensorboard
+[kind-name-violation] kind=VertexAITensorboardExperiment api=aiplatform message=TensorboardExperiment: expected kind name is AIPlatformTensorboardExperiment
 [kind-name-violation] kind=VertexAITrainingPipeline api=aiplatform message=TrainingPipeline: expected kind name is AIPlatformTrainingPipeline
 [kind-name-violation] kind=VertexAITuningJob api=aiplatform message=TuningJob: expected kind name is AIPlatformTuningJob
+[kind-name-violation] kind=WebSecurityScannerScanConfig api=websecurityscanner message=ScanConfig: the service prefix of API websecurityscanner (WebSecurityScanner) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=WorkflowsExecution api=workflowexecutions message=Execution: the service prefix of API workflowexecutions (WorkflowExecutions) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=Workstation api=workstations message=Workstation: the service prefix of API workstations (Workstations) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=WorkstationCluster api=workstations message=WorkstationCluster: the service prefix of API workstations (Workstations) is pending approval in service-prefix-pending.yaml

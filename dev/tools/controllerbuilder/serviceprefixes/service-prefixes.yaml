@@ -147,6 +147,8 @@ services:
     title: BeyondCorp API
     servicePrefix: BeyondCorp
     protoPackages:
+      - google.cloud.beyondcorp.appconnections.v1
+      - google.cloud.beyondcorp.appconnectors.v1
       - google.cloud.beyondcorp.appgateways.v1
       - google.cloud.beyondcorp.clientconnectorservices.v1
   - api: biglake

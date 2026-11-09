@@ -47,3 +47,10 @@ Kind must be the service prefix followed by the message. Kinds that keep an
 older name (for example from Terraform) are listed in `knownKindNames` in the
 test, and existing violations in
 `tests/apichecks/testdata/exceptions/kind_name_violations.txt`.
+
+To regenerate that file after changing the service-prefix files or a
+`generate.sh`, run:
+
+```bash
+WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks -run TestKindNamesFollowServicePrefixes
+```
