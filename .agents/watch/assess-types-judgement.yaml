@@ -16,8 +16,9 @@
 # the overseer has handed to people (overseer/ready-for-human) is scored on
 # how likely a maintainer is to approve it as it is: the
 # assess-types-judgement recipe comments its findings and adds one score
-# label: assess/good (like the PRs approved without comment), assess/fair (a
-# round of review comments to expect) or assess/poor. Once per head: a new head takes ready-for-human off
+# label: overseer/assessment/good (like the PRs approved without comment),
+# overseer/assessment/fair (a round of review comments to expect) or
+# overseer/assessment/poor. Once per head: a new head takes ready-for-human off
 # (ready-unreview), and the next time it is handed over it is scored again,
 # its old score label taken off first.
 #
@@ -34,7 +35,7 @@ run:
   recipe: assess-types-judgement
   apply: [comment, label]
   on-start:
-    unlabel: [assess/good, assess/fair, assess/poor]
+    unlabel: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
 policy:
   dedupe: head
   cooldown:
