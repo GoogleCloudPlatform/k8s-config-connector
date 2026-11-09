@@ -122,8 +122,8 @@ func (e *Entry) IsDelete() bool {
 			strings.HasSuffix(uPath, "/delete") {
 			return true
 		}
-		lastSeg := strings.ToLower(e.ExtractResourceIDSegment())
-		if strings.HasPrefix(lastSeg, "delete") {
+		origSeg := e.ExtractResourceIDSegment()
+		if origSeg == "delete" || (strings.HasPrefix(origSeg, "delete") && len(origSeg) > 6 && origSeg[6] >= 'A' && origSeg[6] <= 'Z') {
 			return true
 		}
 	}
