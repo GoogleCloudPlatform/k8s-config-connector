@@ -25,19 +25,25 @@ entries:
     group: clouddms.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: accepted
+    note: "all queue entries triaged, references modeled, parent standardized to ProjectAndLocationRef, state moved to observedState, and labels removed from spec"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.alloydb.clusterID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: "clusterID is a cluster identifier string used when creating or associating an AlloyDB cluster, not a full GCP resource reference"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.alloydb.settings.encryptionConfig.kmsKeyName
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]"
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as KmsKeyRef (*kmsv1beta1.KMSCryptoKeyRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.alloydb.settings.initialUser.password
@@ -49,13 +55,17 @@ entries:
     field: .spec.alloydb.settings.vpcNetwork
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_number}/global/networks/{network_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as VpcNetworkRef (*computerefs.ComputeNetworkRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.cmekKeyName
     reason: possible-reference-by-name
     detail: KMSCryptoKeyRef
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as CmekKeyNameRef (*kmsv1beta1.KMSCryptoKeyRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.rootPassword
@@ -67,25 +77,33 @@ entries:
     field: .spec.cloudsql.settings.sourceID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as SourceRef (*CloudDMSConnectionProfileRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.zone
     reason: location-or-parent-ref
     detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
-    status: open
+    status: resolved
+    resolution: accepted
+    note: "plain GCP zone parameter for Cloud SQL instance location, kept as string"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: "replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.mysql.cloudSQLID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: "cloudSQLID is the plain instance ID of the source Cloud SQL instance, not a full GCP resource reference"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.mysql.password
@@ -108,19 +126,25 @@ entries:
     group: clouddms.cnrm.cloud.google.com
     field: .spec.oracle.privateConnectivity.privateConnection
     reason: possible-reference-by-description-loose
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as PrivateConnectionRef (*PrivateConnectionRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.oracle.privateConnectivity.privateConnection
     reason: possible-reference-by-sibling
     detail: the name matches CloudDMSPrivateConnection, a resource this service declares; confirm whether it should be a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as PrivateConnectionRef (*PrivateConnectionRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.postgresql.cloudSQLID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: "cloudSQLID is the plain instance ID of the source Cloud SQL instance, not a full GCP resource reference"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.postgresql.password
@@ -132,10 +156,14 @@ entries:
     field: .spec.postgresql.privateServiceConnectConnectivity.serviceAttachment
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as ServiceAttachmentRef (*refsv1beta1.ComputeServiceAttachmentRef)"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.state
     reason: possible-status-field-in-spec
     detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: "moved to status.observedState.state; lifecycle state is server-managed"
