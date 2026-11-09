@@ -23,8 +23,9 @@ test project (skip the project checks when there is none).
 Greenfield graphs got stuck, or built the wrong thing, for reasons a
 check up front finds: the API needs quota (#15037) or project
 allowlisting (#14955), the parent or a dependent resource is not in KCC
-yet (#13259, #15221), or the resource does not follow standard CRUD
-(#15221).
+yet (#13259, #15221), the resource does not follow standard CRUD
+(#15221), or real GCP rejects the create although the API is GA - a
+feature turned off for every model (#12690).
 
 ## Checks
 
@@ -41,6 +42,18 @@ yet (#13259, #15221), or the resource does not follow standard CRUD
      Is it enabled, or can it be enabled, in the test project
      (`gcloud services list --enabled --project <gcp_project>`
      when a project is set; read-only)?
+     **Usable, not only documented:** GA in the docs does not mean a
+     create succeeds today. Read the release notes and deprecation
+     notices for the resource and for anything a create request
+     needs from outside KCC (a model, a machine type, a region, a
+     feature): a feature turned off, deprecated or limited to some
+     models or regions blocks it the same way. AIPlatformCachedContent
+     (#12690) was triaged ready while real GCP rejected every create
+     ("does not support explicit context caching") for every model.
+     Sibling kinds of the same service recorded against real GCP say
+     nothing about this kind. When the kind is already being worked
+     on (its graph past the first steps), read what its PRs found:
+     a real-GCP failure reported there outweighs the documentation.
    - **Quota**: does creating one - or creating its parent and
      dependencies, which its E2E fixtures create too - need quota
      a test project usually lacks (dedicated hardware, nodes,
