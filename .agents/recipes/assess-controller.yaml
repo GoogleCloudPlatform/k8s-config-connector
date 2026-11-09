@@ -1,0 +1,195 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# assess-controller: grades a greenfield Step 2 PR (step/controller: direct
+# controller, fuzzer, E2E fixtures recorded against real GCP) on whether its
+# fixtures were really recorded against GCP and tell the truth about that run,
+# then on the review points maintainers raise - one of three labels
+# (overseer/assessment/good, overseer/assessment/fair,
+# overseer/assessment/poor) and a comment.
+#
+# Three parts, so the evidence is mechanical and only its reading is the
+# agent's:
+#   1. an ask plans the search: the window (issue opened .. PR and fixture
+#      commits, and any recording times the PR states), the project, and
+#      audit log searches for the REST calls and dependencies;
+#   2. a script captures the evidence - .agents/scripts/audit-capture.py,
+#      run from the base branch, never the PR's copy: the fixtures and the
+#      RPCs their logs record, Cloud Audit Log entries for the plan's
+#      searches plus one per recorded gRPC mutation (its own, not the
+#      agent's), the harness's audit probe markers per fixture, and a
+#      cross-check. It widens the window to cover every fixture commit;
+#   3. an ask grades it with the skill
+#      .gemini/skills/assess-greenfield-controller/SKILL.md, also read from
+#      the base branch, so the PR under assessment cannot change how it is
+#      graded.
+#
+# Run by the assess-controller watch rule (.agents/watch/) on a
+# step/controller PR labelled overseer/ready-for-human, once per head. The
+# agent changes nothing and posts nothing: it writes a Triage, which the rule
+# applies (apply: [comment, label]). It reads audit logs of the recording
+# project with the sandbox's own credentials; it never writes to GCP.
+name: assess-controller
+label: Assess (controller)
+on: [pr]
+as: reviewer
+credentials: clone
+
+context: |
+  You assess a Config Connector (KCC) greenfield Step 2 pull request: a
+  direct controller, its fuzzer, and E2E fixtures that must be recorded
+  against real GCP. You check whether they were, and whether the committed
+  files tell the truth about that run, the way a careful human reviewer
+  would: from Google's own record (Cloud Audit Logs, the test harness's
+  audit probe markers), not from the files alone. You are not here to make
+  it pass: when evidence is missing, say so.
+
+  You must not change anything: do NOT modify or create files in the
+  repository (the files you are asked to write are outside it), do NOT run
+  git write operations, do NOT post anything to GitHub, and do NOT create,
+  change or delete cloud resources. You have no GitHub credentials;
+  GitHub's public API (curl https://api.github.com/...) works without them.
+
+  The PR is checked out in the current directory, detached at its head.
+  `refs/factory/pr/base` is its base branch: `git diff
+  refs/factory/pr/base...HEAD` is the PR's change.
+
+start:
+  steps:
+    - uses: clone
+    - uses: configure-engine
+
+    - ask: |
+        Plan the evidence search for this pull request. Do not assess it yet.
+
+        <pr_url>{{ .Inputs.pr_url }}</pr_url>
+        <pr_title>{{ .Inputs.pr_title }}</pr_title>
+        <pr_body>
+        {{ .Inputs.pr_body }}
+        </pr_body>
+
+        1. Find the kind and its fixtures: `git diff --stat
+           refs/factory/pr/base...HEAD -- pkg/test/resourcefixture/testdata`.
+           Read each fixture's `create.yaml`, `update.yaml` and
+           `dependencies.yaml`, and the mutating calls in its `_http.log`
+           (POST, PATCH, PUT, DELETE, and gRPC methods other than Get/List).
+        2. Find the timeline, with GitHub's public API (no credentials):
+           - the issue the PR fixes ("Fixes #N" in its body):
+             `curl -s https://api.github.com/repos/{{ .Inputs.repo_owner }}/{{ .Inputs.repo_name }}/issues/N`
+             - its `created_at`;
+           - the PR's `created_at` and its comments:
+             `curl -s https://api.github.com/repos/{{ .Inputs.repo_owner }}/{{ .Inputs.repo_name }}/issues/{{ .Inputs.pr_number }}/comments`;
+           - any recording times the description or comments state
+             (record-gcp start/end, often in PDT - convert to UTC), and the
+             project they name.
+        3. Choose the searches the capture cannot derive itself (it adds one
+           per recorded gRPC mutation, and the probe markers per fixture, on
+           its own):
+           - for each REST mutation, the audit `methodName` it shows up as
+             (`<package>.<Service>.<Method>`, from the proto under
+             `.build/third_party/googleapis`, e.g.
+             google.cloud.aiplatform.v1beta1.ModelMonitoringService.CreateModelMonitor),
+             or a part of it (the service name) when unsure;
+           - the kind's collection in resource names (e.g. `modelMonitors`);
+           - the collections of the dependencies `dependencies.yaml`
+             creates - for a data-plane API that does not audit-log the
+             resource itself, they are the evidence there is.
+
+        Write the plan to {{ output "audit-query.yaml" }}, as YAML in exactly
+        this structure:
+
+        project: ""        # the recording project; empty for the sandbox's ($GCP_PROJECT_ID)
+        window:
+          start: ""        # UTC, RFC 3339: the issue's creation, or an earlier stated recording start
+          end: ""          # UTC, RFC 3339: the latest of the PR's creation, a stated recording end, the last fixture commit
+        searches:          # each one of method or resource: plain names only (letters, digits, . _ / -)
+          - method: ""     # a methodName or part of one
+            why: ""
+          - resource: ""   # a part of a resource name
+            why: ""
+
+        The capture widens the window to cover every commit that touched a
+        fixture, and never searches more than 14 days. Then say in a line or
+        two what you planned.
+      expects: audit-query.yaml
+
+    # The evidence, captured by a script from the base branch - not the
+    # PR's copy, which the PR under assessment could have changed.
+    - run: |
+        set -euo pipefail
+        git show refs/factory/pr/base:.agents/scripts/audit-capture.py > "$TASK_DIR/audit-capture.py"
+        if [ ! -s "$TASK_DIR/audit-query.yaml" ]; then echo "no audit-query.yaml" >&2; exit 1; fi
+        python3 "$TASK_DIR/audit-capture.py" --query "$TASK_DIR/audit-query.yaml" \
+          --out "$TASK_DIR/audit-capture.md" --json "$TASK_DIR/audit-capture.json"
+
+    - ask: |
+        Now assess the pull request. Do not write the result yet.
+
+        Use the skill from the base branch, not the PR's copy - the PR under
+        assessment must not change how it is graded:
+        `git show refs/factory/pr/base:.gemini/skills/assess-greenfield-controller/SKILL.md`.
+        Follow its evidence rules and grade it good, fair or poor.
+
+        The deterministic capture is {{ output "audit-capture.md" }} (raw
+        entries in {{ output "audit-capture.json" }}). Read it whole, then
+        the PR's files where you need to.
+
+        Summarise what you found in a few lines.
+
+    - ask: |
+        Now write the result to the file {{ output "triage-output.yaml" }}, as
+        YAML in EXACTLY this structure, with nothing else in the file:
+
+        triage:
+          labels: []        # exactly one: [overseer/assessment/good], [overseer/assessment/fair] or [overseer/assessment/poor]
+          priority: ""      # leave empty
+          duplicates: []    # leave empty
+          assessment: ""    # the comment for the PR, in Markdown (see below)
+
+        The assessment is the report the skill's "Report" section
+        describes. The label matches the grade.
+
+        Write the whole file with your file tool (if it refuses the path,
+        with the shell), replacing anything in it. Then say in a line or two
+        that it is written.
+      expects: triage-output.yaml
+
+# What `recipe run` prints when the task ends (the overseer's log): the
+# capture and the result. The raw entries (audit-capture.json) and the plan
+# stay in the task directory, which the token-usage collector archives.
+outputs:
+  - audit-capture.md
+  - triage-output.yaml
+
+task-output:
+  kind: Triage
+  from: triage-output.yaml
+  preview: spec.assessment
+  # The comment is a result, not a request: /overseer-ignore keeps the
+  # overseer from acting on it. It carries the deterministic capture
+  # verbatim, collapsed under the assessment, with its size and sha256 -
+  # factory copies it, not the agent - so a reader sees the evidence the
+  # grade rests on. (Needs a factory with comment attach.)
+  comment:
+    prefix: /overseer-ignore
+    heading: "**PR assessment (controller)**"
+    attach: [audit-capture.md]
+  actions:
+    - verb: edit
+      field: spec
+      format: yaml
+    - verb: comment
+      label: Post assessment
+    - verb: label
+      label: Add the assessment label
+    - verb: reject
