@@ -130,6 +130,12 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
     - **API Field Coverage**: `go test ./tests/apichecks/...`. 
       - If `TestCRDFieldPresenceInTestsForAlpha` fails, you may need to regenerate the exceptions file by running it with `WRITE_GOLDEN_OUTPUT=1`.
+8.  **PR Description & Metadata**:
+    Ensure the controller implementation follows the clean architecture and style rules in [reviewgen-code-health](file:///.gemini/skills/reviewgen-code-health/SKILL.md) (`.gemini/skills/reviewgen-code-health/SKILL.md`).
+    When opening the PR, include the release note block set to `NONE`:
+    ```release-note
+    NONE
+    ```
 
 ## Journaling
-Append any controller/reconciliation quirks or API check hurdles to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+Append any controller/reconciliation quirks or API check hurdles to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill. Do NOT commit internal journal files to PR branches.
