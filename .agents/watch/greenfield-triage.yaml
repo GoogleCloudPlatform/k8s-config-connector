@@ -16,10 +16,13 @@
 # checked for what would block its implementation (API access and
 # allowlisting, quota, a parent or dependency not in KCC, a non-standard
 # lifecycle, the state on master: the greenfield-triage recipe), and the
-# result is commented on it and its label added: overseer/graph when ready
-# (its graph starts, or goes on), overseer/stop when blocked or when it
-# could not tell (the comment says what a person must check). overseer/triage comes off once the triage is posted;
-# adding it again triages again.
+# result is commented on it: overseer/stop is added when it is blocked or
+# when the agent could not tell (the comment says what a person must
+# check); when it is ready, no label - a maintainer starts its graph by
+# adding overseer/graph. Once the triage
+# is posted, overseer/triage comes off and overseer/triaged goes on (it
+# stays, to show the issue was triaged); adding overseer/triage again
+# triages again.
 #
 # To triage a stopped issue again, once its blocker is cleared: take
 # overseer/stop off and add overseer/triage (the overseer skips an issue
@@ -41,6 +44,7 @@ run:
   apply: [comment, label]
   on-success:
     unlabel: [overseer/triage]
+    label: [overseer/triaged]
 policy:
   cooldown:
     success: 1h

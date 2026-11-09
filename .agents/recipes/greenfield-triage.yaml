@@ -14,9 +14,10 @@
 
 # greenfield-triage: checks whether a greenfield Kind can be implemented
 # now, before (or while) its issue graph works on it, and says so on the
-# issue: ready - labelled overseer/graph, its graph starts or goes on - or
-# not - labelled overseer/stop, with each blocker and what clears it, or
-# what a person must check when the agent could not tell.
+# issue: ready - no label; a maintainer starts its graph by adding
+# overseer/graph - or not - labelled overseer/stop, with each blocker and
+# what clears it, or what a person must check when the agent could not
+# tell.
 #
 # The checks, the decision and the report format live in the skill
 # .gemini/skills/kcc-greenfield-triage/SKILL.md (with why each check is
@@ -76,7 +77,7 @@ start:
         as YAML in EXACTLY this structure, with nothing else in the file:
 
         triage:
-          labels: []        # [overseer/graph] when ready; [overseer/stop] when blocked or unsure
+          labels: []        # [] when ready; [overseer/stop] when blocked or unsure
           priority: ""      # leave empty
           duplicates: []    # leave empty
           assessment: ""    # the comment for the issue, in Markdown (see below)
