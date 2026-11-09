@@ -11,7 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# assess-controller: a greenfield Step 2 PR (step/controller) that the
+# assess-controller: a greenfield Step 2 PR (step/controller, labelled
+# greenfield - a direct-migration controller PR is not one) that the
 # overseer has handed to people (overseer/ready-for-human) is graded on
 # whether its E2E fixtures were really recorded against real GCP and tell
 # the truth about that run (Cloud Audit Logs and the harness's audit probe
@@ -30,7 +31,7 @@ on: pr
 order: 71
 when:
   labels:
-    all: [step/controller, overseer/ready-for-human]
+    all: [step/controller, greenfield, overseer/ready-for-human]
 run:
   recipe: assess-controller
   apply: [comment, label]
