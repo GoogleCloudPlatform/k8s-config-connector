@@ -413,9 +413,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
-				// Allow CancelCustomJob to have fewer calls in mock because job cancellation
+				// Allow CancelCustomJob and CancelHyperparameterTuningJob to have fewer calls in mock because job cancellation
 				// in real GCP is an asynchronous operation requiring variable polling iterations.
-				if method == "GRPC" && strings.HasSuffix(path, "/CancelCustomJob") && len(mockEvs) < len(realEvs) {
+				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
 				if !allowed {
