@@ -24,13 +24,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vertexAIPipelineJobFuzzer())
+	fuzztesting.RegisterKRMFuzzer(aiPlatformPipelineJobFuzzer())
 }
 
-func vertexAIPipelineJobFuzzer() fuzztesting.KRMFuzzer {
+func aiPlatformPipelineJobFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.PipelineJob{},
-		VertexAIPipelineJobSpec_FromProto, VertexAIPipelineJobSpec_ToProto,
-		VertexAIPipelineJobObservedState_FromProto, VertexAIPipelineJobObservedState_ToProto,
+		AIPlatformPipelineJobSpec_FromProto, AIPlatformPipelineJobSpec_ToProto,
+		AIPlatformPipelineJobObservedState_FromProto, AIPlatformPipelineJobObservedState_ToProto,
 	)
 
 	// Identity and special fields

@@ -13,16 +13,22 @@
 # limitations under the License.
 
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
-kind: VertexAIPipelineJob
+kind: AIPlatformPipelineJob
 metadata:
-  name: vertexaipipelinejob-minimal-${uniqueId}
+  name: aiplatformpipelinejob-maximal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  displayName: "Minimal Pipeline Job"
+  displayName: "Maximal Pipeline Job"
+  preflightValidations: false
+  labels:
+    foo: bar
+    baz: qux
   runtimeConfig:
-    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+    gcsOutputDirectoryRef:
+      name: bucket-${uniqueId}
+    failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
   pipelineSpec:
     pipelineInfo:
       name: "hello-world-pipeline"

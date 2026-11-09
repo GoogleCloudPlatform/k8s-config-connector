@@ -39,7 +39,8 @@ spec:
       labels:
         environment: test
       runtimeConfig:
-        gcsOutputDirectory: gs://vertexai-schedmax-bucket-${uniqueId}
+        gcsOutputDirectoryRef:
+          name: bucket-${uniqueId}
         failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
       pipelineSpec:
         pipelineInfo:

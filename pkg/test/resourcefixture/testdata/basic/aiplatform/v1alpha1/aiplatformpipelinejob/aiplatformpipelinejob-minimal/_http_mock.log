@@ -1,4 +1,5 @@
-GET https://storage.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}?alt=json&prettyPrint=false
+# Phase: CREATE
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
@@ -42,7 +43,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "rule": []
   },
   "location": "us-central1",
-  "name": "vertexai-pipelinejob-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "softDeletePolicy": {
     "retentionDurationSeconds": "604800"
   },
@@ -77,10 +78,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-pipelinejob-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -92,7 +93,7 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -122,10 +123,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-pipelinejob-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -140,10 +141,10 @@ Vary: X-Origin
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = pipelineJob "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}" not found
+error: rpc error: code = NotFound desc = pipelineJob "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}" not found
 
 {}
 
@@ -200,10 +201,10 @@ GRPC /google.cloud.aiplatform.v1.PipelineService/CreatePipelineJob
       "schemaVersion": "2.1.0"
     },
     "runtimeConfig": {
-      "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+      "gcsOutputDirectory": "gs://bucket-${uniqueId}"
     }
   },
-  "pipelineJobId": "vertexaipipelinejob-minimal-${uniqueId}"
+  "pipelineJobId": "aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -214,7 +215,7 @@ OK
   "labels": {
     "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
   "pipelineSpec": {
     "components": {
       "hello-world-component": {
@@ -260,7 +261,77 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
+  },
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Pipeline Job",
+  "labels": {
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
+  "pipelineSpec": {
+    "components": {
+      "hello-world-component": {
+        "executorLabel": "hello-world-executor"
+      }
+    },
+    "deploymentConfig": {
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
+      "executors": {
+        "hello-world-executor": {
+          "container": {
+            "command": [
+              "echo",
+              "Hello World"
+            ],
+            "image": "alpine:latest"
+          }
+        }
+      }
+    },
+    "pipelineInfo": {
+      "name": "hello-world-pipeline"
+    },
+    "root": {
+      "dag": {
+        "tasks": {
+          "hello-world-task": {
+            "cachingOptions": {
+              "enableCache": true
+            },
+            "componentRef": {
+              "name": "hello-world-component"
+            },
+            "taskInfo": {
+              "name": "hello-world-task"
+            }
+          }
+        }
+      }
+    },
+    "schemaVersion": "2.1.0"
+  },
+  "runtimeConfig": {
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -272,7 +343,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -283,7 +354,7 @@ OK
   "labels": {
     "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
   "pipelineSpec": {
     "components": {
       "hello-world-component": {
@@ -329,7 +400,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -341,7 +412,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -352,7 +423,7 @@ OK
   "labels": {
     "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
   "pipelineSpec": {
     "components": {
       "hello-world-component": {
@@ -398,76 +469,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-  },
-  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-  "state": "PIPELINE_STATE_PENDING",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Minimal Pipeline Job",
-  "labels": {
-    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
-  "pipelineSpec": {
-    "components": {
-      "hello-world-component": {
-        "executorLabel": "hello-world-executor"
-      }
-    },
-    "deploymentConfig": {
-      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
-    },
-    "deploymentSpec": {
-      "executors": {
-        "hello-world-executor": {
-          "container": {
-            "command": [
-              "echo",
-              "Hello World"
-            ],
-            "image": "alpine:latest"
-          }
-        }
-      }
-    },
-    "pipelineInfo": {
-      "name": "hello-world-pipeline"
-    },
-    "root": {
-      "dag": {
-        "tasks": {
-          "hello-world-task": {
-            "cachingOptions": {
-              "enableCache": true
-            },
-            "componentRef": {
-              "name": "hello-world-component"
-            },
-            "taskInfo": {
-              "name": "hello-world-task"
-            }
-          }
-        }
-      }
-    },
-    "schemaVersion": "2.1.0"
-  },
-  "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -479,7 +481,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/CancelPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -491,7 +493,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -502,7 +504,7 @@ OK
   "labels": {
     "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
   "pipelineSpec": {
     "components": {
       "hello-world-component": {
@@ -548,7 +550,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_CANCELLED",
@@ -560,7 +562,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -571,7 +573,7 @@ OK
   "labels": {
     "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}",
   "pipelineSpec": {
     "components": {
       "hello-world-component": {
@@ -617,7 +619,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_CANCELLED",
@@ -629,7 +631,7 @@ OK
 GRPC /google.cloud.aiplatform.v1.PipelineService/DeletePipelineJob
 
 {
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/aiplatformpipelinejob-minimal-${uniqueId}"
 }
 
 OK
@@ -651,7 +653,7 @@ OK
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -681,10 +683,10 @@ Vary: X-Origin
   "location": "US-CENTRAL1",
   "locationType": "region",
   "metageneration": "1",
-  "name": "vertexai-pipelinejob-bucket-${uniqueId}",
+  "name": "bucket-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -696,7 +698,7 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -715,7 +717,7 @@ Vary: X-Origin
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/vertexai-pipelinejob-bucket-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 204 No Content
