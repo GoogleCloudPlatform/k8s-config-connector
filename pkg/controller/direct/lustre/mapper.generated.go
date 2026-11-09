@@ -25,6 +25,7 @@ package lustre
 
 import (
 	pb "cloud.google.com/go/lustre/apiv1/lustrepb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/lustre/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -39,6 +40,7 @@ func LustreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ins
 	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	// MISSING: GKESupportEnabled
 	return out
 }
@@ -52,6 +54,7 @@ func LustreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Lust
 	out.MountPoint = direct.ValueOf(in.MountPoint)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	// MISSING: GKESupportEnabled
 	return out
 }
@@ -63,9 +66,11 @@ func LustreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *k
 	// MISSING: Name
 	out.Filesystem = direct.LazyPtr(in.GetFilesystem())
 	out.CapacityGib = direct.LazyPtr(in.GetCapacityGib())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.PerUnitStorageThroughput = direct.LazyPtr(in.GetPerUnitStorageThroughput())
 	// MISSING: GKESupportEnabled
 	return out
@@ -78,9 +83,11 @@ func LustreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.LustreInstanc
 	// MISSING: Name
 	out.Filesystem = direct.ValueOf(in.Filesystem)
 	out.CapacityGib = direct.ValueOf(in.CapacityGib)
-	out.Network = direct.ValueOf(in.Network)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.PerUnitStorageThroughput = direct.ValueOf(in.PerUnitStorageThroughput)
 	// MISSING: GKESupportEnabled
 	return out
