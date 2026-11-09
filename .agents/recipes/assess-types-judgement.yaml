@@ -15,8 +15,8 @@
 # assess-types-judgement: scores a greenfield Step 1b PR (step/types-judgement:
 # judgement queue triaged, direct KRM types, identity and references
 # finalized) on how likely a maintainer is to approve it as it is, and says
-# why - one of three score labels (assess/good, assess/fair, assess/poor)
-# and a comment.
+# why - one of three score labels (overseer/assessment/good,
+# overseer/assessment/fair, overseer/assessment/poor) and a comment.
 #
 # How to assess - the checks, the grading and the evidence behind them (the
 # merged step/types-judgement PRs and their review comments) - lives in the
@@ -73,7 +73,7 @@ start:
         YAML in EXACTLY this structure, with nothing else in the file:
 
         triage:
-          labels: []        # exactly one: [assess/good], [assess/fair] or [assess/poor]
+          labels: []        # exactly one: [overseer/assessment/good], [overseer/assessment/fair] or [overseer/assessment/poor]
           priority: ""      # leave empty
           duplicates: []    # leave empty
           assessment: ""    # the comment for the PR, in Markdown (see below)
