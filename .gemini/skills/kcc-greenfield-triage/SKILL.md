@@ -25,8 +25,7 @@ check up front finds: the API needs quota (#15037) or project
 allowlisting (#14955), the parent or a dependent resource is not in KCC
 yet (#13259, #15221), the resource does not follow standard CRUD
 (#15221), or real GCP rejects the create although the API is GA - a
-feature turned off for every model, found by an earlier attempt the
-triage did not read (#12690, PR #15203).
+feature turned off for every model (#12690).
 
 ## Checks
 
@@ -51,24 +50,10 @@ triage did not read (#12690, PR #15203).
      models or regions blocks it the same way. AIPlatformCachedContent
      (#12690) was triaged ready while real GCP rejected every create
      ("does not support explicit context caching") for every model.
-   - **Earlier attempts**: what happened when this kind was tried
-     before. Read, and quote what you find:
-     - its sub-issues and every PR for the kind, open or closed
-       (`gh pr list --state all --search "<Kind> in:title"`) - their
-       descriptions ("Real GCP testing" notes) and comments;
-     - `.gemini/journals/<service>.md` for the kind;
-     - the test project's Cloud Audit Logs for the kind's create
-       method over the last 30 days (`gcloud logging read
-       'logName:"cloudaudit.googleapis.com" AND
-       protoPayload.methodName:"Create<Resource>"' --freshness=30d
-       --project <gcp_project>`; read-only): failed creates and their
-       error messages.
-     A real-GCP failure there (an API error on create, a feature not
-     supported, permission or quota) means blocked - or unsure when
-     it may have been fixed since - never ready, until someone shows
-     it now works. A PR "underway" is not evidence that it works:
-     read what it found. Siblings recorded against real GCP say
-     nothing about this kind.
+     Sibling kinds of the same service recorded against real GCP say
+     nothing about this kind. When the kind is already being worked
+     on (its graph past the first steps), read what its PRs found:
+     a real-GCP failure reported there outweighs the documentation.
    - **Quota**: does creating one - or creating its parent and
      dependencies, which its E2E fixtures create too - need quota
      a test project usually lacks (dedicated hardware, nodes,
@@ -110,9 +95,8 @@ triage did not read (#12690, PR #15203).
      `params.kind` set to this kind: labelling it overseer/graph
      starts nothing without one. Missing or wrong, the outcome is
      unsure, and "To check:" gives the block to add, written out.
-3. Decide, from evidence, not from documentation alone:
-   - **ready**: nothing above blocks it, and nothing found in earlier
-     attempts says real GCP rejects it;
+3. Decide:
+   - **ready**: nothing above blocks it;
    - **blocked**: at least one thing blocks it - which, and what a
      maintainer must do (request quota, ask for allowlisting,
      implement the parent kind first - name it - or decide the
@@ -125,9 +109,8 @@ triage did not read (#12690, PR #15203).
 
 The report starts with one line - "**Ready to implement.**",
 "**Blocked: recommend overseer/stop.**" or "**Needs a person to
-check.**" - then, for each check (API access, earlier attempts,
-quota, parent and dependencies, lifecycle, state on master, start
-block), a bullet with
+check.**" - then, for each check (API access, quota, parent and
+dependencies, lifecycle, state on master, start block), a bullet with
 what you found and how. When blocked, end with "To unblock:" and what a
 maintainer must do, each item its own bullet; name the missing KCC
 kinds. When unsure, end with "To check:" and what a person must
