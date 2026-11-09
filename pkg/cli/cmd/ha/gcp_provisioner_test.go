@@ -20,7 +20,7 @@ import (
 	"testing"
 )
 
-func TestGCPProvisionerDeduplicatesProjectsAndNormalizesZonalBucketLocation(t *testing.T) {
+func TestGCPProvisionerDeduplicatesProjectsAndUsesMultiRegionBucketLocation(t *testing.T) {
 	runner := &recordingCommandRunner{}
 	provisioner := newGCPProvisioner(runner, "my-ha-bucket")
 	clusters := []gkeClusterInfo{
@@ -34,7 +34,7 @@ func TestGCPProvisionerDeduplicatesProjectsAndNormalizesZonalBucketLocation(t *t
 		t.Fatalf("unexpected error: %v", err)
 	}
 	wantCommands := []string{
-		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us-central1",
+		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.objectAdmin",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.legacyBucketReader",
 		"gcloud iam service-accounts add-iam-policy-binding kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-mcl]",
@@ -53,14 +53,54 @@ func TestGCSBucketLocation(t *testing.T) {
 		want     string
 	}{
 		{
-			name:     "regional GKE location is unchanged",
+			name:     "regional US location maps to us",
 			location: "us-central1",
-			want:     "us-central1",
+			want:     "us",
 		},
 		{
-			name:     "zonal GKE location strips zone suffix",
+			name:     "zonal US location maps to us",
 			location: "us-central1-a",
-			want:     "us-central1",
+			want:     "us",
+		},
+		{
+			name:     "regional Europe location maps to eu",
+			location: "europe-west1",
+			want:     "eu",
+		},
+		{
+			name:     "zonal Europe location maps to eu",
+			location: "europe-west3-b",
+			want:     "eu",
+		},
+		{
+			name:     "regional Asia location maps to asia",
+			location: "asia-east1",
+			want:     "asia",
+		},
+		{
+			name:     "zonal Asia location maps to asia",
+			location: "asia-northeast1-a",
+			want:     "asia",
+		},
+		{
+			name:     "preserves already multi-region location",
+			location: "eu",
+			want:     "eu",
+		},
+		{
+			name:     "case insensitive matching",
+			location: "US-EAST1",
+			want:     "us",
+		},
+		{
+			name:     "defaults to us for location without multi-region",
+			location: "australia-southeast1",
+			want:     "us",
+		},
+		{
+			name:     "defaults to us for empty location",
+			location: "",
+			want:     "us",
 		},
 	}
 

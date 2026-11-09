@@ -57,25 +57,22 @@ func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClust
 	return nil
 }
 
-// gcsBucketLocation returns a valid GCS bucket region derived from a GKE cluster location.
-// If the GKE cluster is zonal (e.g. "us-central1-a"), the zone suffix is stripped ("us-central1").
+// gcsBucketLocation returns a GCS multi-region location derived from a GKE cluster location.
+// Regional and zonal GKE locations are mapped to their corresponding GCS multi-region
+// ("us", "eu", or "asia"), defaulting to "us" if no match is found. This ensures that
+// the multi-cluster lease bucket remains accessible even during a regional outage.
 func gcsBucketLocation(location string) string {
-	if isZonalGKELocation(location) {
-		lastHyphen := strings.LastIndex(location, "-")
-		return location[:lastHyphen]
+	loc := strings.ToLower(strings.TrimSpace(location))
+	switch {
+	case strings.HasPrefix(loc, "us-") || loc == "us":
+		return "us"
+	case strings.HasPrefix(loc, "europe-") || loc == "eu":
+		return "eu"
+	case strings.HasPrefix(loc, "asia-") || loc == "asia":
+		return "asia"
+	default:
+		return "us"
 	}
-
-	return location
-}
-
-func isZonalGKELocation(location string) bool {
-	if strings.Count(location, "-") != 2 {
-		return false
-	}
-
-	lastHyphen := strings.LastIndex(location, "-")
-	suffix := location[lastHyphen+1:]
-	return len(suffix) == 1 && suffix[0] >= 'a' && suffix[0] <= 'z'
 }
 
 func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {
