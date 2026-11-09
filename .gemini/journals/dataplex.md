@@ -110,6 +110,20 @@
   4. Verified all 7 HTTP log validation checks pass (`TestCommittedHTTPLogReports/dataplexdataasset`), unit tests pass, and focused fuzzer passes.
 - **Impact**: Full Greenfield direct controller coverage and verified golden test fixtures for DataplexDataAsset.
 
+### [2026-11-06] Triage Judgement Queue and Finalize Direct KRM Types for DataplexAsset
+- **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexAsset` under `v1alpha1` (#15187).
+- **Problem**:
+  1. `DataplexAsset` is a child resource under `DataplexZone` (`projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}`). Initial bulk scaffolding used separate `projectRef` and `location` fields rather than `parentRef *ZoneRef`.
+  2. `spec.labels` was in `DataplexAssetSpec`, which conflicts with KRM conventions where top-level labels are managed via `metadata.labels`.
+  3. `spec.resourceSpec.name` is a polymorphic relative resource name (can be a Cloud Storage bucket `projects/{project_number}/buckets/{bucket_id}` or BigQuery dataset `projects/{project_number}/datasets/{dataset_id}`), which cannot be represented as a single typed KCC reference. It triggered `TestMissingRefs` in `tests/apichecks`.
+- **Solution**:
+  1. Replaced `projectRef` and `location` with `parentRef *ZoneRef` marked `+required` and immutable via CEL (`self == oldSelf`).
+  2. Removed `labels` from `DataplexAssetSpec`.
+  3. Added `[refs] crd=dataplexassets.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSpec.name" reason=polymorphic relative resource name (Storage bucket or BigQuery dataset) cannot be represented as a single typed reference` to `tests/apichecks/testdata/exceptions/refs_deferred.txt`.
+  4. Triaged all 5 judgement queue entries in `apis/dataplex/judgement_queue.yaml` to `status: resolved`.
+  5. Regenerated types, identity, CRDs, controller, and fuzzer; updated `alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1`.
+- **Impact**: All unit tests, conformance tests, apichecks, and focused fuzzer tests (`FOCUS=DataplexAsset`) pass cleanly.
+
 ### [2026-11-06] Triage Judgement Queue and Finalize Direct KRM Types for DataplexGlossaryTerm
 - **Context**: Triaging judgement queue and finalizing KRM types, identity, and references for `DataplexGlossaryTerm` under `v1alpha1` (#15153).
 - **Problem**:

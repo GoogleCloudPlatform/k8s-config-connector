@@ -25,29 +25,39 @@ entries:
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all entries; modelled child hierarchy with spec.parentRef (*ZoneRef), removed labels from spec, and verified mappers and fuzzer
   - kind: DataplexAsset
     group: dataplex.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}" contains ancestor segment(s) lakes/{lake}, zones/{zone} with no matching reference or field on DataplexAssetSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ZoneRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexAsset
     group: dataplex.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateAssetRequest specifies asset_id parameter, so resource ID is client-specified
   - kind: DataplexAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled as spec.parentRef (*ZoneRef) per the single-parent rule; removed projectRef and location
   - kind: DataplexAsset
     group: dataplex.cnrm.cloud.google.com
     field: .spec.resourceSpec.name
     reason: possible-reference-by-description
     detail: the description has the resource-name template "projects/{project_number}/buckets/{bucket_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: represented as typed references in Asset_ResourceSpec with either storageBucketRef (*storagev1beta1.StorageBucketRef) or bigQueryDatasetRef (*bigqueryv1beta1.DatasetRef)
   - kind: DataplexContent
     group: dataplex.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
