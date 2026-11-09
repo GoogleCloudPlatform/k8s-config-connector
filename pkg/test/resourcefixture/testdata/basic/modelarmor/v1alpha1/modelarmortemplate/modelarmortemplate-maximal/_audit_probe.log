@@ -1,0 +1,55 @@
+GET https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: envoy
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "labels": {
+    "foo": "updated-bar",
+    "new-key": "new-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 789,
+    "customPromptSafetyErrorMessage": "Blocked prompt updated",
+    "dataResidencyCompliant": true,
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

@@ -14,7 +14,7 @@ spec:
     maliciousURIFilterSettings:
       filterEnforcement: ENABLED
     piAndJailbreakFilterSettings:
-      confidenceLevel: MEDIUM_AND_ABOVE
+      confidenceLevel: LOW_AND_ABOVE
       filterEnforcement: ENABLED
     raiSettings:
       raiFilters:
