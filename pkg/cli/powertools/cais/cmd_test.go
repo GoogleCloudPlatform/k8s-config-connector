@@ -250,6 +250,20 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				u.SetAnnotations(annotations)
 			}
 
+			// Inject status.externalRef for AIPlatformRAGCorpus to simulate a reconciled corpus in static unit tests.
+			if u.GetKind() == "AIPlatformRAGCorpus" && u.GroupVersionKind().Group == "aiplatform.cnrm.cloud.google.com" {
+				goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+				for _, gPath := range goldens {
+					for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+						if gu.GetKind() == u.GetKind() && gu.GetName() == u.GetName() {
+							if extRef, ok, _ := unstructured.NestedString(gu.Object, "status", "externalRef"); ok && extRef != "" {
+								_ = unstructured.SetNestedField(u.Object, extRef, "status", "externalRef")
+							}
+						}
+					}
+				}
+			}
+
 			// Inject status.name and status.externalRef for Folders to simulate a reconciled folder in static unit tests.
 			if u.GetKind() == "Folder" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
 				folderID := u.GetName()
