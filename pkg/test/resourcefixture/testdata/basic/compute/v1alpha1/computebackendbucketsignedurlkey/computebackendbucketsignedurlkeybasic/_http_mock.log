@@ -265,6 +265,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
+  "backendBucket": "projects/${projectId}/global/backendBuckets/${backendBucketID}",
   "keyName": "key-${uniqueId}",
   "keyValue": "MTIzNDU2Nzg5MDEyMzQ1Ng=="
 }
