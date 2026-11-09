@@ -136,6 +136,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize AIPlatformHyperparameterTuningJob IDs: locations/.../hyperparameterTuningJobs/<hyperparameterTuningJobId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/hyperparameterTuningJobs/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize StorageInsightsReportConfig UUIDs: locations/.../reportConfigs/<reportConfigId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/reportConfigs/"); idx != -1 {
