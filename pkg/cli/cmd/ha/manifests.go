@@ -65,8 +65,11 @@ const (
 	mclServiceAccountName    = "kcc-mcl"
 	syncerServiceAccountName = "kcc-syncer"
 
-	mclClusterRoleName    = "cnrm-mcl-controller"
-	syncerClusterRoleName = "cnrm-syncer-controller"
+	mclClusterRoleName       = "cnrm-mcl-controller"
+	syncerClusterRoleName    = "cnrm-syncer-controller"
+	managerHAClusterRoleName = "cnrm-manager-ha"
+	cnrmAdminClusterRoleName = "cnrm-admin"
+	syncerAdminBindingName   = "cnrm-syncer-cnrm-admin"
 
 	mclDeploymentName    = "multiclusterlease-controller-manager"
 	syncerDeploymentName = "syncer-controller-manager"
@@ -83,9 +86,19 @@ func (b *manifestBuilder) buildClusterObjects() []client.Object {
 		clusterRoleName:    mclClusterRoleName,
 		policyRules: []rbacv1.PolicyRule{
 			{
+				APIGroups: []string{""},
+				Resources: []string{"events"},
+				Verbs:     []string{"create", "patch"},
+			},
+			{
 				APIGroups: []string{"multicluster.core.cnrm.cloud.google.com"},
 				Resources: []string{"multiclusterleases", "multiclusterleases/status"},
 				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+			},
+			{
+				APIGroups: []string{"multicluster.core.cnrm.cloud.google.com"},
+				Resources: []string{"multiclusterleases/finalizers"},
+				Verbs:     []string{"update"},
 			},
 		},
 		container: corev1.Container{
@@ -106,11 +119,6 @@ func (b *manifestBuilder) buildClusterObjects() []client.Object {
 				Resources: []string{"krmsyncers", "krmsyncers/status"},
 				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
 			},
-			{
-				APIGroups: []string{"*.cnrm.cloud.google.com"},
-				Resources: []string{"*"},
-				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
-			},
 		},
 		container: corev1.Container{
 			Name:    "manager",
@@ -119,9 +127,11 @@ func (b *manifestBuilder) buildClusterObjects() []client.Object {
 		},
 	}
 
-	objs := make([]client.Object, 0, 8)
+	objs := make([]client.Object, 0, 11)
 	objs = append(objs, b.buildComponentObjects(mclComponent)...)
 	objs = append(objs, b.buildComponentObjects(syncerComponent)...)
+	objs = append(objs, b.buildSyncerAdminBinding())
+	objs = append(objs, b.buildManagerHAObjects()...)
 	return objs
 }
 
@@ -131,6 +141,63 @@ const (
 	workloadIdentityGSAAnnot  = "iam.gke.io/gcp-service-account"
 	manifestComponentLabelKey = "cnrm.cloud.google.com/component"
 )
+
+func (b *manifestBuilder) buildSyncerAdminBinding() *rbacv1.ClusterRoleBinding {
+	return &rbacv1.ClusterRoleBinding{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
+		ObjectMeta: metav1.ObjectMeta{Name: syncerAdminBindingName},
+		RoleRef: rbacv1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Kind:     "ClusterRole",
+			Name:     cnrmAdminClusterRoleName,
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:      "ServiceAccount",
+				Name:      syncerServiceAccountName,
+				Namespace: manifestSystemNamespace,
+			},
+		},
+	}
+}
+
+func (b *manifestBuilder) buildManagerHAObjects() []client.Object {
+	role := &rbacv1.ClusterRole{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
+		ObjectMeta: metav1.ObjectMeta{Name: managerHAClusterRoleName},
+		Rules: []rbacv1.PolicyRule{
+			{
+				APIGroups: []string{"multicluster.core.cnrm.cloud.google.com"},
+				Resources: []string{"multiclusterleases"},
+				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+			},
+			{
+				APIGroups: []string{"syncer.gkelabs.io"},
+				Resources: []string{"krmsyncers"},
+				Verbs:     []string{"get", "list", "watch", "create", "update", "patch", "delete"},
+			},
+		},
+	}
+
+	binding := &rbacv1.ClusterRoleBinding{
+		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRoleBinding"},
+		ObjectMeta: metav1.ObjectMeta{Name: managerHAClusterRoleName},
+		RoleRef: rbacv1.RoleRef{
+			APIGroup: "rbac.authorization.k8s.io",
+			Kind:     "ClusterRole",
+			Name:     managerHAClusterRoleName,
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:     "Group",
+				APIGroup: "rbac.authorization.k8s.io",
+				Name:     manifestSystemSAGroup,
+			},
+		},
+	}
+
+	return []client.Object{role, binding}
+}
 
 func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []client.Object {
 	gsaEmail := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", comp.serviceAccountName, b.project)
@@ -166,11 +233,6 @@ func (b *manifestBuilder) buildComponentObjects(comp controllerComponent) []clie
 				Kind:      "ServiceAccount",
 				Name:      comp.serviceAccountName,
 				Namespace: manifestSystemNamespace,
-			},
-			{
-				Kind:     "Group",
-				APIGroup: "rbac.authorization.k8s.io",
-				Name:     manifestSystemSAGroup,
 			},
 		},
 	}
