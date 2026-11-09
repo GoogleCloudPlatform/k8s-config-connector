@@ -81,11 +81,36 @@ spec:
                           When this field is not specified, the cluster will then
                           use default encryption scheme to protect the user data.
                         properties:
-                          kmsKeyName:
+                          kmsKeyRef:
                             description: 'The fully-qualified resource name of the
                               KMS key. Each Cloud KMS key is regionalized and has
                               the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
+                                type: string
+                              name:
+                                description: The name of a KMSCryptoKey resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a KMSCryptoKey resource.
+                                type: string
+                            type: object
                         type: object
                       initialUser:
                         description: Required. Input only. Initial user to setup during
@@ -105,6 +130,7 @@ spec:
                           An object containing a list of 'key', 'value' pairs.
                         type: object
                       primaryInstanceSettings:
+                        description: Settings for the cluster's primary instance
                         properties:
                           databaseFlags:
                             additionalProperties:
@@ -136,17 +162,42 @@ spec:
                         required:
                         - id
                         type: object
-                      vpcNetwork:
+                      vpcNetworkRef:
                         description: 'Required. The resource link for the VPC network
                           in which cluster resources are created and from which they
                           are accessible via Private IP. The network must belong to
                           the same project as the cluster. It is specified in the
                           form: "projects/{project_number}/global/networks/{network_id}".
                           This is required to create a cluster.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed ComputeNetwork
+                              resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                            type: string
+                          name:
+                            description: The name of a ComputeNetwork resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ComputeNetwork resource.
+                            type: string
+                        type: object
                     required:
                     - initialUser
-                    - vpcNetwork
+                    - vpcNetworkRef
                     type: object
                 required:
                 - clusterID
@@ -159,24 +210,10 @@ spec:
                       Cloud SQL database.
                     properties:
                       activationPolicy:
-                        description: |-
-                          The activation policy specifies when the instance is activated; it is
-                           applicable only when the instance state is 'RUNNABLE'. Valid values:
-
-                           'ALWAYS': The instance is on, and remains so even in
-                           the absence of connection requests.
-
-                           `NEVER`: The instance is off; it is not activated, even if a
-                           connection request arrives.
+                        description: The activation policy for the database instance.
                         type: string
                       autoStorageIncrease:
-                        description: '[default: ON] If you enable this setting, Cloud
-                          SQL checks your available storage every 30 seconds. If the
-                          available storage falls below a threshold size, Cloud SQL
-                          automatically adds additional storage capacity. If the available
-                          storage repeatedly falls below the threshold size, Cloud
-                          SQL continues to add storage until it reaches the maximum
-                          of 30 TB.'
+                        description: Storage auto increase.
                         type: boolean
                       availabilityType:
                         description: 'Optional. Availability type. Potential values:
@@ -185,15 +222,39 @@ spec:
                           The instance can serve data from more than one zone in a
                           region (it is highly available).'
                         type: string
-                      cmekKeyName:
+                      cmekKeyNameRef:
                         description: The KMS key name used for the csql instance.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed KMSCryptoKey
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
+                            type: string
+                          name:
+                            description: The name of a KMSCryptoKey resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a KMSCryptoKey resource.
+                            type: string
+                        type: object
                       collation:
                         description: The Cloud SQL default instance level collation.
                         type: string
                       dataDiskSizeGB:
-                        description: The storage capacity available to the database,
-                          in GB. The minimum (and default) size is 10GB.
+                        description: The storage capacity for the database.
                         format: int64
                         type: integer
                       dataDiskType:
@@ -202,10 +263,8 @@ spec:
                       databaseFlags:
                         additionalProperties:
                           type: string
-                        description: 'The database flags passed to the Cloud SQL instance
-                          at startup. An object containing a list of "key": value
-                          pairs. Example: { "name": "wrench", "mass": "1.3kg", "count":
-                          "3" }.'
+                        description: Database flags to pass to Cloud SQL database
+                          when the database is created.
                         type: object
                       databaseVersion:
                         description: The database engine type and version.
@@ -215,10 +274,7 @@ spec:
                           instance.
                         type: string
                       ipConfig:
-                        description: The settings for IP Management. This allows to
-                          enable or disable the instance IP and manage which external
-                          networks can connect to the instance. The IPv4 address cannot
-                          be disabled.
+                        description: The settings for IP Management.
                         properties:
                           allocatedIPRange:
                             description: Optional. The name of the allocated IP address
@@ -232,8 +288,8 @@ spec:
                             type: string
                           authorizedNetworks:
                             description: The list of external networks that are allowed
-                              to connect to the instance using the IP. See https://en.wikipedia.org/wiki/CIDR_notation#CIDR_notation,
-                              also known as 'slash' notation (e.g. `192.168.100.0/24`).
+                              to connect to the instance using the IP. See https://en.wikipedia.org/wiki/CIDR_notation#CIDR_address_blocks
+                              for information on block notation.
                             items:
                               properties:
                                 expireTime:
@@ -258,52 +314,94 @@ spec:
                             description: Whether the instance should be assigned an
                               IPv4 address or not.
                             type: boolean
-                          privateNetwork:
+                          privateNetworkRef:
                             description: The resource link for the VPC network from
                               which the Cloud SQL instance is accessible for private
                               IP. For example, `projects/myProject/global/networks/default`.
                               This setting can be updated, but it cannot be removed
                               after it is set.
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  ComputeNetwork resource. Should be in the format
+                                  "projects/{{projectID}}/global/networks/{{networkID}}".
+                                type: string
+                              name:
+                                description: The name of a ComputeNetwork resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a ComputeNetwork resource.
+                                type: string
+                            type: object
                           requireSSL:
-                            description: Whether SSL connections over IP should be
-                              enforced or not.
+                            description: Whether SSL connections over IP are enforced
+                              or not.
                             type: boolean
                         type: object
                       rootPassword:
                         description: Input only. Initial root password.
                         type: string
                       secondaryZone:
-                        description: Optional. The Google Cloud Platform zone where
-                          the failover Cloud SQL database instance is located. Used
-                          when the Cloud SQL database availability type is REGIONAL
-                          (i.e. multiple zones / highly available).
+                        description: The Google Cloud Platform secondary zone where
+                          your Cloud SQL database instance will be located in case
+                          of a failover.
                         type: string
-                      sourceID:
+                      sourceRef:
                         description: 'The Database Migration Service source connection
                           profile ID, in the format: `projects/my_project_name/locations/us-central1/connectionProfiles/connection_profile_ID`'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed CloudDMSConnectionProfile
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}}".
+                            type: string
+                          name:
+                            description: The name of a CloudDMSConnectionProfile resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a CloudDMSConnectionProfile
+                              resource.
+                            type: string
+                        type: object
                       storageAutoResizeLimit:
-                        description: The maximum size to which storage capacity can
-                          be automatically increased. The default value is 0, which
-                          specifies that there is no limit.
+                        description: The storage capacity of the database instance.
                         format: int64
                         type: integer
                       tier:
-                        description: 'The tier (or machine type) for this instance,
-                          for example: `db-n1-standard-1` (MySQL instances) or `db-custom-1-3840`
-                          (PostgreSQL instances). For more information, see [Cloud
-                          SQL Instance Settings](https://cloud.google.com/sql/docs/mysql/instance-settings).'
+                        description: The tier of the Cloud SQL database instance.
                         type: string
                       userLabels:
                         additionalProperties:
                           type: string
-                        description: |-
-                          The resource labels for a Cloud SQL instance to use to annotate any related
-                           underlying resources such as Compute Engine VMs.
-                           An object containing a list of "key": "value" pairs.
-
-                           Example: `{ "name": "wrench", "mass": "18kg", "count": "3" }`.
+                        description: The labels for the Cloud SQL database instance.
+                          An object containing a list of 'key', 'value' pairs.
                         type: object
                       zone:
                         description: The Google Cloud Platform zone where your Cloud
@@ -314,19 +412,12 @@ spec:
               displayName:
                 description: The connection profile display name.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The resource labels for connection profile to use to annotate any related
-                   underlying resources such as Compute Engine VMs. An object containing a
-                   list of "key": "value" pairs.
-
-                   Example: `{ "name": "wrench", "mass": "1.3kg", "count": "3" }`.
-                type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               mysql:
                 description: A MySQL database connection profile.
                 properties:
@@ -430,12 +521,38 @@ spec:
                   privateConnectivity:
                     description: Private connectivity.
                     properties:
-                      privateConnection:
+                      privateConnectionRef:
                         description: Required. The resource name (URI) of the private
                           connection.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed CloudDMSPrivateConnection
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateconnections/{{privateconnectionID}}".
+                            type: string
+                          name:
+                            description: The name of a CloudDMSPrivateConnection resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a CloudDMSPrivateConnection
+                              resource.
+                            type: string
+                        type: object
                     required:
-                    - privateConnection
+                    - privateConnectionRef
                     type: object
                   ssl:
                     description: |-
@@ -505,12 +622,40 @@ spec:
                   privateServiceConnectConnectivity:
                     description: Private service connect connectivity.
                     properties:
-                      serviceAttachment:
+                      serviceAttachmentRef:
                         description: 'Required. A service attachment that exposes
                           a database, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The ComputeServiceAttachment selflink in
+                              the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                              when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a `ComputeServiceAttachment`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `ComputeServiceAttachment`
+                              resource.
+                            type: string
+                        type: object
                     required:
-                    - serviceAttachment
+                    - serviceAttachmentRef
                     type: object
                   ssl:
                     description: SSL configuration for the destination to connect
@@ -553,7 +698,7 @@ spec:
                 - username
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -590,10 +735,6 @@ spec:
               resourceID:
                 description: The CloudDMSConnectionProfile name. If not given, the
                   metadata.name will be used.
-                type: string
-              state:
-                description: The current connection profile state (e.g. DRAFT, READY,
-                  or FAILED).
                 type: string
             required:
             - location
@@ -781,6 +922,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  state:
+                    description: Output only. The current connection profile state
+                      (e.g. DRAFT, READY, or FAILED).
+                    type: string
                   updateTime:
                     description: 'Output only. The timestamp when the resource was
                       last updated. A timestamp in RFC3339 UTC "Zulu" format, accurate
