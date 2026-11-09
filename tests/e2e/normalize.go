@@ -356,6 +356,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.resourceStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.securityStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.discoveryStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.discoveryStatus.lastRunTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.executionStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.executionStatus.latestJob.uid"] = "0123456789abcdef"
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -1705,6 +1709,14 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.resourceStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".resourceStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.securityStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".securityStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.discoveryStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".discoveryStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.discoveryStatus.lastRunTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".discoveryStatus.lastRunTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".lakes[].updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".lakes[].createTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
