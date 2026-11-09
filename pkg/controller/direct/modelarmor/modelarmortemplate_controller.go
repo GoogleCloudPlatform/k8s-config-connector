@@ -192,7 +192,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("updating ModelArmorTemplate %s: %w", a.id.String(), err)
 	}
 
-	return a.updateStatus(ctx, updateOp, updated)
+	// Fetch fully-populated resource after update because UpdateTemplate does not return labels
+	latest, err := a.gcpClient.GetTemplate(ctx, &pb.GetTemplateRequest{Name: a.id.String()})
+	if err != nil {
+		latest = updated
+	}
+
+	return a.updateStatus(ctx, updateOp, latest)
 }
 
 func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Template) error {
