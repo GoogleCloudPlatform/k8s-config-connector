@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,14 +32,11 @@ var LustreInstanceGVK = GroupVersion.WithKind("LustreInstance")
 // +kcc:spec:proto=google.cloud.lustre.v1.Instance
 // +kcc:required-from-proto
 type LustreInstanceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The LustreInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Immutable. The filesystem name for this instance. This name is
 	//  used by client-side tools, including when mounting the instance. Must be
 	//  eight characters or less and can only contain letters and numbers.
@@ -52,20 +50,14 @@ type LustreInstanceSpec struct {
 	// +required
 	CapacityGib *int64 `json:"capacityGib,omitempty"`
 
-	// Required. Immutable. The full name of the VPC network to which the instance
-	//  is connected. Must be in the format
-	//  `projects/{project_id}/global/networks/{network_name}`.
+	// Required. Immutable. The VPC network to which the instance is connected.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.network
 	// +required
-	Network *string `json:"network,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. A user-readable description of the instance.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.description
 	Description *string `json:"description,omitempty"`
-
-	// Optional. Labels as key value pairs.
-	// +kcc:proto:field=google.cloud.lustre.v1.Instance.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The throughput of the instance in MB/s/TiB.
 	//  Valid values are 125, 250, 500, 1000.

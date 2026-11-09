@@ -15,3 +15,12 @@
   - Added `cloud.google.com/go/lustre` at `v0.7.0` to `go.mod` without forcing unwanted transitive dependency upgrades.
   - Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` and `operator/pkg/controllers/configconnector/testdata/golden/simple/_expected.yaml`.
   - All unit tests and apichecks pass.
+- **Judgement Queue Triage & Finalization (Step 1b)**:
+  - Inlined `*parent.ProjectAndLocationRef` replacing separate `ProjectRef` and `Location` fields on `LustreInstanceSpec`.
+  - Converted `network` string to `NetworkRef *computerefs.ComputeNetworkRef` referencing `compute.googleapis.com/Network`.
+  - Omitted deprecated `gkeSupportEnabled` field from `LustreInstanceSpec`.
+  - Removed top-level `Labels` from `LustreInstanceSpec` (managed via `metadata.labels`).
+  - Regenerated CRD and `mapper.generated.go`.
+  - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+  - All tests and apichecks pass.
+
