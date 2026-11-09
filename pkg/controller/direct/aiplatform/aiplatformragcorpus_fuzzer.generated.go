@@ -42,6 +42,7 @@ func aiPlatformRAGCorpusFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".description")
 	f.SpecField(".display_name")
+	f.SpecField(".encryption_spec")
 	f.SpecField(".vector_db_config.api_auth")
 	f.SpecField(".vector_db_config.pinecone")
 	f.SpecField(".vector_db_config.rag_embedding_model_config.vertex_prediction_endpoint.endpoint")
@@ -58,9 +59,6 @@ func aiPlatformRAGCorpusFuzzer() fuzztesting.KRMFuzzer {
 
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
-
-	// Unimplemented / Not Yet Triaged fields
-	f.Unimplemented_NotYetTriaged(".encryption_spec")
 
 	return f
 }
