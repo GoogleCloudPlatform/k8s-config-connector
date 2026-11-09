@@ -194,13 +194,26 @@ func (a *CachedContentAdapter) Update(ctx context.Context, updateOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating CachedContent", "name", a.id)
 
+	u := updateOp.GetUnstructured()
+	normalize := func(ctx context.Context, pb *aiplatformpb.CachedContent) error {
+		if u != nil && a.desired.Spec.TTL != nil && a.actual.GetExpireTime() != nil {
+			obsGen, found, _ := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+			if found && obsGen == u.GetGeneration() {
+				// The spec has not changed since the last reconciliation.
+				// Preserve actual expiration time to avoid re-triggering updates for input-only ttl.
+				pb.Expiration = a.actual.GetExpiration()
+			}
+		}
+		return nil
+	}
+
 	resource, report, updateMask, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
 		AIPlatformCachedContentSpec_FromProto,
 		AIPlatformCachedContentSpec_ToProto,
-		nil,
+		normalize,
 	)
 	if err != nil {
 		return err

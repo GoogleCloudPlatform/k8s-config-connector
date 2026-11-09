@@ -325,6 +325,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize AIPlatformCachedContent IDs: locations/.../cachedContents/<cachedContentId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/cachedContents/"); idx != -1 && strings.Contains(line, "aiplatform") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 	}
 	return strings.Join(lines, "\n")
 }
