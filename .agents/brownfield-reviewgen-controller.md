@@ -62,6 +62,6 @@ You are strictly responsible for reviewing the following files generated or modi
 
 # Review Criteria
 
-Use to `.gemini/skills/reviewgen-brownfield-controller/SKILL.md` to conduct the review.
+Use `.gemini/skills/reviewgen-brownfield-controller/SKILL.md` to conduct the review.
 
 ---
