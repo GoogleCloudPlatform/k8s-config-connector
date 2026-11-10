@@ -156,6 +156,13 @@ spec:
     # Step 3.
     - id: mockgcp
       after: [controller]
+      # Wait for the controller step's assessment (assess-controller-step adds
+      # one of these to the PR carrying the controller's work once it is green
+      # and reviewed at its head), so MockGCP is built only on controller
+      # evidence graded good or fair.
+      requires:
+        labels:
+          any: [overseer/assessment/good, overseer/assessment/fair]
       title: 'Greenfield: Implement MockGCP and Alignment for {{ .Params.kind }}'
       labels: [step/mockgcp]
       review: |
