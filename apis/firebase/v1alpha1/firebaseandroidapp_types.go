@@ -1,0 +1,124 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var FirebaseAndroidAppGVK = GroupVersion.WithKind("FirebaseAndroidApp")
+
+type FirebaseAndroidAppSpec struct {
+	/* The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AndroidApp.
+	If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AndroidApp.
+	This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. */
+	// +optional
+	ApiKeyId *string `json:"apiKeyId,omitempty"`
+
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+
+	/* The user-assigned display name of the AndroidApp. */
+	// +required
+	DisplayName string `json:"displayName"`
+
+	/* Immutable. The canonical package name of the Android app as would appear in the Google Play
+	Developer Console. */
+	// +optional
+	PackageName *string `json:"packageName,omitempty"`
+
+	/* The project that this resource belongs to. */
+	// +required
+	ProjectRef refs.ProjectRef `json:"projectRef"`
+
+	/* Immutable. Optional. The service-generated appId of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The SHA1 certificate hashes for the AndroidApp. */
+	// +optional
+	Sha1Hashes []string `json:"sha1Hashes,omitempty"`
+
+	/* The SHA256 certificate hashes for the AndroidApp. */
+	// +optional
+	Sha256Hashes []string `json:"sha256Hashes,omitempty"`
+}
+
+type FirebaseAndroidAppStatus struct {
+	/* Conditions represent the latest available observation of the
+	   resource's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* A unique specifier for the FirebaseAndroidApp resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The globally unique, Firebase-assigned identifier of the AndroidApp.
+	This identifier should be treated as an opaque token, as the data format is not specified. */
+	// +optional
+	AppId *string `json:"appId,omitempty"`
+
+	/* This checksum is computed by the server based on the value of other fields, and it may be sent
+	with update requests to ensure the client has an up-to-date value before proceeding. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
+	/* The fully qualified resource name of the AndroidApp, for example:
+	projects/projectId/androidApps/appId. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpfirebaseandroidapp;gcpfirebaseandroidapps
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:printcolumn:name="Ready",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].reason",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",description="The last transition time for the value in 'Status'"
+
+// FirebaseAndroidApp is the Schema for the firebase API
+// +k8s:openapi-gen=true
+type FirebaseAndroidApp struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   FirebaseAndroidAppSpec   `json:"spec"`
+	Status FirebaseAndroidAppStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// FirebaseAndroidAppList contains a list of FirebaseAndroidApp
+type FirebaseAndroidAppList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []FirebaseAndroidApp `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&FirebaseAndroidApp{}, &FirebaseAndroidAppList{})
+}
