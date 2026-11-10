@@ -240,6 +240,10 @@ class Repo:
             d = os.path.dirname(d)
         return None
 
+    def has_mock(self, group):
+        """Whether the service has a mock (mockgcp/mock<group>)."""
+        return os.path.isdir(self.path(os.path.join("mockgcp", "mock" + group)))
+
     def fixture_services(self):
         groups = set()
         crds = self.path("config/crds")
@@ -427,6 +431,17 @@ def derive_groups(repo, impact):
     impact.groups.update(impact.client_dirs)
 
 
+def add_service_mocks(repo, impact):
+    """A service's mock is tested whenever the service is: its fixtures'
+    _http_mock.log and its mockgcp script tests (mockgcp/mock<svc>/testdata)
+    exercise the same mock, so a fixture change that only passes against an
+    updated mock - or that the mock rejects - is caught on the PR, not first
+    in the merge queue's full run."""
+    for group in impact.groups:
+        if repo.has_mock(group):
+            impact.mocks.add(f"./mock{group}/...")
+
+
 # ---------------------------------------------------------------------------
 # Plan
 # ---------------------------------------------------------------------------
@@ -514,6 +529,7 @@ def make_plan(repo, changed, event, labels=()):
             classify_file(repo, path, impact, fixture_services)
         expand_go_impact(repo, impact)
         derive_groups(repo, impact)
+        add_service_mocks(repo, impact)
         n = len(impact.apis_dirs | impact.direct_dirs | impact.client_dirs | impact.groups)
         if n > MAX_SCOPED_SERVICES:
             raise Escalate(f"{n} services affected (max {MAX_SCOPED_SERVICES})")

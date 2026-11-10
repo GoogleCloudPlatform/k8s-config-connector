@@ -35,4 +35,23 @@ export WRITE_GOLDEN_OUTPUT=1
 # MOCKGCP_PACKAGES (space-separated, relative to mockgcp/) scopes the run; it is
 # set by dev/tasks/plan-tests for changes that only touch some mocks.
 # shellcheck disable=SC2086
-go test -parallel 4 -v ${MOCKGCP_PACKAGES:-./...}
+if [ -z "${MOCKGCP_PACKAGES:-}" ]; then
+  go test -parallel 4 -v ./...
+else
+  # A scoped run (dev/tasks/plan-tests): the mocks' own packages, and their
+  # script tests - TestScripts lives in ./mockgcptests and runs every
+  # mock<svc>/testdata/**/script.yaml, one subtest per script, named
+  # <mock>/testdata/...; -run matches its first level against the mocks.
+  go test -parallel 4 -v ${MOCKGCP_PACKAGES}
+  mocks=""
+  for p in ${MOCKGCP_PACKAGES}; do
+    p="${p#./}"
+    p="${p%%/*}"
+    if [[ "${p}" == mock* && "|${mocks}|" != *"|${p}|"* ]]; then
+      mocks="${mocks:+${mocks}|}${p}"
+    fi
+  done
+  if [ -n "${mocks}" ]; then
+    go test -parallel 4 -v ./mockgcptests -run "^TestScripts\$/^(${mocks})\$"
+  fi
+fi

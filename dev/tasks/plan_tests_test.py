@@ -280,6 +280,21 @@ class PlanTestsTest(unittest.TestCase):
     def test_unknown_path_is_full(self):
         self.assertFull(self.plan([".github/workflows/x.yaml"]), "not attributable")
 
+    def test_fixture_change_runs_the_services_mock(self):
+        # A fixture-only change (dates in a _http_mock.log, say) runs the
+        # service's mock tests, its mockgcp script tests included.
+        plan = self.plan(["pkg/test/resourcefixture/testdata/basic/kms/v1beta1/kmskeyring/x/_http_mock.log"])
+        self.assertEqual(plan["scope"], "scoped", plan["reason"])
+        self.assertEqual(plan["mock_packages"], ["./mockkms/..."])
+        self.assertTrue(plan["run_mock"])
+        self.assertEqual(pt.plan_outputs(plan)["run_mock"], "true")
+
+    def test_a_service_without_a_mock_runs_no_mock(self):
+        plan = self.plan(["pkg/test/resourcefixture/testdata/basic/vectorsearch/v1alpha1/x/create.yaml"])
+        self.assertEqual(plan["scope"], "scoped", plan["reason"])
+        self.assertEqual(plan["mock_packages"], [])
+        self.assertFalse(plan["run_mock"])
+
     def test_shared_mock_is_full(self):
         self.assertFull(self.plan(["mockgcp/common/common.go"]), "shared mockgcp")
 
