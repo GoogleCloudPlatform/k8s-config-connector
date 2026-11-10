@@ -514,6 +514,7 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 		"google.cloud.contactcenterinsights.v1.ListQaScorecardRevisionsResponse",
 		"google.cloud.deploy.v1.Release",
 		"google.cloud.sql.v1.BackupRun",
+		"google.cloud.compute.v1.SignedUrlKey",
 		"google.cloud.saasplatform.saasservicemgmt.v1beta1.Saas":
 		// Discard unknown fields (e.g. databaseVersion on BackupRun, source on QaScorecard, conditions on Release) returned in real GCP responses
 		// but absent in vendored googleapis proto schemas.
