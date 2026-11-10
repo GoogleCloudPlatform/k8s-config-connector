@@ -2033,6 +2033,64 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeGlobalNetworkEndpointGroupSpec_v1alpha1_FromProto", skipping
+func ComputeGlobalNetworkEndpointGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpointGroup) *krmcomputev1alpha1.ComputeGlobalNetworkEndpointGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeGlobalNetworkEndpointGroupSpec{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	out.DefaultPort = in.DefaultPort
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	out.NetworkEndpointType = in.NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeGlobalNetworkEndpointGroupSpec_v1alpha1_ToProto", skipping
+func ComputeGlobalNetworkEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeGlobalNetworkEndpointGroupSpec) *pb.NetworkEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpointGroup{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	out.DefaultPort = in.DefaultPort
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	out.NetworkEndpointType = in.NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krmcomputev1beta1.ComputeHTTPHealthCheckSpec {
 	if in == nil {
