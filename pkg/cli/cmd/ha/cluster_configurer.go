@@ -57,7 +57,7 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName,
 		return nil, err
 	}
 
-	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.identity, gkeInfo.project, image, leaseName, leaseNamespace, bucket)
+	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.gkeCluster(), gkeInfo.project, image, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
 		handle:          handle,
 		gkeInfo:         gkeInfo,
@@ -112,8 +112,8 @@ func (c *clusterConfigurer) apply(ctx context.Context, stdout io.Writer, dryRun 
 	objs := c.manifests.buildClusterObjects()
 	if dryRun {
 		if stdout != nil {
-			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (identity=%q, lease=%s)\n",
-				c.handle.contextName, len(objs), c.gkeInfo.identity, c.manifests.leaseKey())
+			fmt.Fprintf(stdout, "[dry-run] cluster %q: apply %d HA manifests and configure spec.experiments.multiClusterLease (gkeCluster=%q, lease=%s)\n",
+				c.handle.contextName, len(objs), c.manifests.gkeCluster.ResourceName(), c.manifests.leaseKey())
 		}
 
 		return nil
@@ -194,7 +194,9 @@ func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
 	return nil
 }
 
-func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
+// clusterInfo returns the GKE project/location/cluster parsed from the cluster's context,
+// used by the GCP provisioner.
+func (c *clusterConfigurer) clusterInfo() gkeClusterInfo {
 	return c.gkeInfo
 }
 

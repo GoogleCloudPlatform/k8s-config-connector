@@ -167,6 +167,9 @@ func assertClusterConfigured(t *testing.T, h *clusterHandle, wantImage string) {
 	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
 		t.Fatalf("expected MultiClusterLease to be configured on %s, got %+v", h.contextName, cc)
 	}
+	if _, err := cc.Spec.Experiments.MultiClusterLease.CandidateIdentity(); err != nil {
+		t.Fatalf("expected a valid MultiClusterLease gkeCluster on %s: %v", h.contextName, err)
+	}
 }
 
 func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) {
@@ -187,8 +190,8 @@ func TestExecuteSetupDryRunPrintsPlannedK8sActionsWithoutMutating(t *testing.T) 
 	if err != nil {
 		t.Fatalf("executeSetup failed: %v", err)
 	}
-	const wantOutput = `[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply 8 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-a-us-central1-cluster-a", lease=cnrm-system/kcc-multicluster-lease)
-[dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply 8 HA manifests and configure spec.experiments.multiClusterLease (identity="gke-proj-b-us-east1-cluster-b", lease=cnrm-system/kcc-multicluster-lease)
+	const wantOutput = `[dry-run] cluster "gke_proj-a_us-central1_cluster-a": apply 8 HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-a/locations/us-central1/clusters/cluster-a", lease=cnrm-system/kcc-multicluster-lease)
+[dry-run] cluster "gke_proj-b_us-east1_cluster-b": apply 8 HA manifests and configure spec.experiments.multiClusterLease (gkeCluster="projects/proj-b/locations/us-east1/clusters/cluster-b", lease=cnrm-system/kcc-multicluster-lease)
 `
 	if stdout.String() != wantOutput {
 		t.Fatalf("got dry-run output:\n%s\nwant:\n%s", stdout.String(), wantOutput)
@@ -221,8 +224,12 @@ func TestExecuteSetupYAMLOnlyRendersWithoutMutating(t *testing.T) {
 		t.Fatalf("expected 0 gcloud commands in --yaml-only mode, got %d", len(runner.commands))
 	}
 	rendered := stdout.String()
-	if !strings.Contains(rendered, "multiclusterlease-controller-manager") || !strings.Contains(rendered, "gke-proj-a-us-central1-cluster-a") {
-		t.Fatalf("expected rendered YAML to contain multiclusterlease-controller-manager and cluster identity, got:\n%s", rendered)
+	wantGKECluster := "gkeCluster:\n        location: us-central1\n        name: cluster-a\n        project: proj-a\n"
+	if !strings.Contains(rendered, "multiclusterlease-controller-manager") || !strings.Contains(rendered, wantGKECluster) {
+		t.Fatalf("expected rendered YAML to contain multiclusterlease-controller-manager and %q, got:\n%s", wantGKECluster, rendered)
+	}
+	if strings.Contains(rendered, "clusterCandidateIdentity") {
+		t.Fatalf("expected rendered YAML not to contain deprecated clusterCandidateIdentity, got:\n%s", rendered)
 	}
 }
 
