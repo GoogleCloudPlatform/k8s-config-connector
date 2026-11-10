@@ -1,0 +1,18 @@
+apiVersion: syncer.gkelabs.io/v1alpha1
+kind: KRMSyncer
+metadata:
+  name: pull-glob
+  namespace: default
+spec:
+  mode: pull
+  remote:
+    gkeCluster:
+      project: test-project
+      location: us-central1
+      name: cluster-b
+  rules:
+  - group: "*.cnrm.cloud.google.com"
+    version: "*"
+    kind: "*"
+    namespaces: ["default"]
+    syncFields: ["spec"]

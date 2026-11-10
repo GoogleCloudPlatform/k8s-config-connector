@@ -1,0 +1,9 @@
+apiVersion: e2e.gkelabs.io/v1alpha1
+kind: TestCRD
+metadata:
+  name: integration-test
+  namespace: default
+spec:
+  resourceID: "generated-id"
+status:
+  bar: "initial-status"

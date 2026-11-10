@@ -1850,10 +1850,6 @@ github.com/gammazero/workerpool v0.0.0-20190608213748-0ed5e40ec55e h1:fqgNEGLc7p
 github.com/gammazero/workerpool v0.0.0-20190608213748-0ed5e40ec55e/go.mod h1:avlwxCMavNtjwf7NrfnzdIGU3OZYI5D1NFQ2Rn3nHKg=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84 h1:vwG+Yiiza4oLtGIY6b9ixE4facRkTL21az8DonyV9GA=
-github.com/gke-labs/kube-etl/syncer v0.0.0-20261027010125-063e4a30cf84/go.mod h1:qlQ73PHIUTv+2Ah0z1PVH4R+FvoCEN1mNN3J+O72rLA=
-github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e h1:EQpiKF8SC+vtHHBVRfZPOxGQVbFlVx/hu76WbIHktS0=
-github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e/go.mod h1:b7VCq8riA4aSpGjr5dAx+WSbQwzzLvPBXaGdPEXlPl8=
 github.com/gliderlabs/ssh v0.2.2/go.mod h1:U7qILu1NlMHj9FlMhZLlkCdDnU1DBEAqr0aevW3Awn0=
 github.com/gliderlabs/ssh v0.3.8 h1:a4YXD1V7xMF9g5nTkdfnja3Sxy1PVDCj1Zg4Wb8vY6c=
 github.com/gliderlabs/ssh v0.3.8/go.mod h1:xYoytBv1sV0aL3CavoDuJIQNURXkkfPA/wxQ1pL1fAU=

@@ -8,6 +8,10 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 
 replace github.com/hashicorp/terraform-provider-google-beta => ../third_party/github.com/hashicorp/terraform-provider-google-beta
 
+replace github.com/gke-labs/multicluster-leader-election => ../third_party/github.com/gke-labs/multicluster-leader-election
+
+replace github.com/gke-labs/kube-etl/syncer => ../third_party/github.com/gke-labs/kube-etl/syncer
+
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/aiplatform v1.125.0
