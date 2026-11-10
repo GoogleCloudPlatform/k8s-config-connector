@@ -1,4 +1,5 @@
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+# Phase: CREATE
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/dffolder-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2Fdffolder-${uniqueId}
@@ -38,6 +39,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
+# Phase: UPDATE
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -81,6 +83,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
+# Phase: DELETE
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
