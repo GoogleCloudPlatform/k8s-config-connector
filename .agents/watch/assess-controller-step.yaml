@@ -13,11 +13,12 @@
 # limitations under the License.
 # assess-controller-step: a greenfield Step 2 (controller) PR - step/controller,
 # labelled greenfield (a direct-migration controller PR is not one) - is
-# graded once the controller step itself is done: green, reviewed at its
-# head without changes asked, and no trusted feedback waiting. These are
-# factory's ready rule's predicates without `draft: false`, so it runs on
-# a grouped graph's shared draft PR as well as on an ungrouped controller
-# PR. The assess-controller recipe grades it on whether its E2E fixtures
+# graded once the controller step itself is done: green, no trusted
+# feedback waiting, and reviewed at its head without changes asked - or
+# already handed to people (overseer/ready-for-human), after which the
+# automated reviewer no longer reviews new heads. These are factory's ready
+# rule's predicates without `draft: false`, so it runs on a grouped graph's
+# shared draft PR as well as on an ungrouped controller PR. The assess-controller recipe grades it on whether its E2E fixtures
 # were really recorded against real GCP and tell the truth about that run
 # (Cloud Audit Logs and the harness's audit probe markers, captured by a
 # script), then on the review points maintainers raise: it comments its
@@ -29,11 +30,12 @@
 # work (factory graph `requires: labels`), so MockGCP is never built on
 # controller evidence that has not been assessed.
 #
-# Once per head, and only while the controller is the PR's latest step:
-# when the mockgcp step pushes to a grouped PR it inherits step/mockgcp,
-# and the rule stops. A new head before then takes the label off
-# (assess-controller-step-stale), and the next time the step is done it is
-# graded again.
+# Once per head (dedupe: head; the old label comes off when a run starts),
+# and only while the controller is the PR's latest step: when the mockgcp
+# step pushes to a grouped PR it inherits step/mockgcp, and the rule stops.
+# Before hand-over, a new head takes the label off at once
+# (assess-controller-step-stale), so nothing builds on a grade of an older
+# head; after hand-over, each new head is simply graded again here.
 #
 # Order 71: after factory's PR rules (ready is 50, ready-unreview 60) and
 # assess-types-judgement (70).
@@ -45,15 +47,19 @@ when:
   author: pool
   labels:
     all: [step/controller, greenfield]
-    none: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor, step/mockgcp]
+    none: [step/mockgcp]
   mergeable: true
   checks: green
   feedback: none
-  reviewed-at-head: true
-  changes-requested: false
+  any-of:
+    - reviewed-at-head: true
+      changes-requested: false
+    - labels: {all: [overseer/ready-for-human]}
 run:
   recipe: assess-controller
   apply: [comment, label]
+  on-start:
+    unlabel: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
 policy:
   dedupe: head
   cooldown:

@@ -12,15 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # assess-controller-step-stale: the assessment label assess-controller-step
-# added is for the head it graded. When a new head arrives while the
-# controller is still the PR's latest step (no step/mockgcp yet), the
-# automated reviewer has not reviewed it yet (reviewed-at-head: false):
-# the label comes off, so the graph's mockgcp step (which requires good or
-# fair) waits, and assess-controller-step grades the new head once it is
+# added is for the head it graded. When a new head arrives before the PR is
+# handed to people, while the controller is still its latest step (no
+# step/mockgcp yet), the automated reviewer has not reviewed it yet
+# (reviewed-at-head: false): the label comes off at once, so the graph's
+# mockgcp step (which requires good or fair) does not start on a grade of
+# an older head, and assess-controller-step grades the new head once it is
 # green and reviewed again.
 #
-# Once mockgcp has started on the PR (step/mockgcp), later pushes are its
-# work, and the controller's assessment stays.
+# Not after hand-over (overseer/ready-for-human): the automated reviewer no
+# longer reviews new heads then, so reviewed-at-head stays false, and this
+# rule would take off the grade assess-controller-step just gave the head.
+# Nor once mockgcp has started on the PR (step/mockgcp): later pushes are
+# its work, and the controller's assessment stays.
 name: assess-controller-step-stale
 description: Take a controller step's assessment label off when its PR moves to a new head
 on: pr
@@ -30,7 +34,7 @@ when:
   labels:
     all: [step/controller, greenfield]
     any: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
-    none: [step/mockgcp]
+    none: [step/mockgcp, overseer/ready-for-human]
   reviewed-at-head: false
 run:
   unlabel: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor]
