@@ -96,6 +96,32 @@ func TestEntry_Predicates(t *testing.T) {
 			wantStatusCode:    200,
 		},
 		{
+			name: "POST /deleteSignedUrlKey custom action delete",
+			entry: &Entry{
+				Request:  HTTPRequest{Method: "POST", URL: "https://compute.googleapis.com/compute/v1/projects/p/global/backendBuckets/bb/deleteSignedUrlKey?keyName=k1"},
+				Response: HTTPResponse{Status: "200 OK", StatusCode: 200},
+			},
+			wantIsMutation:    true,
+			wantIsReadOnly:    false,
+			wantIsDelete:      true,
+			wantIsOpsPoll:     false,
+			wantRespIsSuccess: true,
+			wantStatusCode:    200,
+		},
+		{
+			name: "POST /deleters collection create is not delete",
+			entry: &Entry{
+				Request:  HTTPRequest{Method: "POST", URL: "https://example.googleapis.com/v1/projects/p/deleters"},
+				Response: HTTPResponse{Status: "200 OK", StatusCode: 200},
+			},
+			wantIsMutation:    true,
+			wantIsReadOnly:    false,
+			wantIsDelete:      false,
+			wantIsOpsPoll:     false,
+			wantRespIsSuccess: true,
+			wantStatusCode:    200,
+		},
+		{
 			name: "POST :getIamPolicy read-only",
 			entry: &Entry{
 				Request:  HTTPRequest{Method: "POST", URL: "https://example.googleapis.com/v1/projects/p/locations/l/widgets/w1:getIamPolicy"},

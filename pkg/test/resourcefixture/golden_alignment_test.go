@@ -1340,6 +1340,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${healthCheckID}"}
 	case "ComputeBackendService":
 		return []string{"${backendServiceID}"}
+	case "ComputeBackendBucket":
+		return []string{"${backendBucketID}"}
 	case "ComputeURLMap":
 		return []string{"${urlMapID}"}
 	case "ComputeTargetHTTPProxy":
