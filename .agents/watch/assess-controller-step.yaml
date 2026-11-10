@@ -1,0 +1,61 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# assess-controller-step: a greenfield Step 2 (controller) PR - step/controller,
+# labelled greenfield (a direct-migration controller PR is not one) - is
+# graded once the controller step itself is done: green, reviewed at its
+# head without changes asked, and no trusted feedback waiting. These are
+# factory's ready rule's predicates without `draft: false`, so it runs on
+# a grouped graph's shared draft PR as well as on an ungrouped controller
+# PR. The assess-controller recipe grades it on whether its E2E fixtures
+# were really recorded against real GCP and tell the truth about that run
+# (Cloud Audit Logs and the harness's audit probe markers, captured by a
+# script), then on the review points maintainers raise: it comments its
+# findings and adds one label, overseer/assessment/good,
+# overseer/assessment/fair or overseer/assessment/poor.
+#
+# The label is what the graph's next step waits on: kcc-greenfield's
+# mockgcp step requires good or fair on the PR carrying the controller's
+# work (factory graph `requires: labels`), so MockGCP is never built on
+# controller evidence that has not been assessed.
+#
+# Once per head, and only while the controller is the PR's latest step:
+# when the mockgcp step pushes to a grouped PR it inherits step/mockgcp,
+# and the rule stops. A new head before then takes the label off
+# (assess-controller-step-stale), and the next time the step is done it is
+# graded again.
+#
+# Order 71: after factory's PR rules (ready is 50, ready-unreview 60) and
+# assess-types-judgement (70).
+name: assess-controller-step
+description: Grade a greenfield controller step on real-GCP evidence once it is green and reviewed at its head
+on: pr
+order: 71
+when:
+  author: pool
+  labels:
+    all: [step/controller, greenfield]
+    none: [overseer/assessment/good, overseer/assessment/fair, overseer/assessment/poor, step/mockgcp]
+  mergeable: true
+  checks: green
+  feedback: none
+  reviewed-at-head: true
+  changes-requested: false
+run:
+  recipe: assess-controller
+  apply: [comment, label]
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 1h

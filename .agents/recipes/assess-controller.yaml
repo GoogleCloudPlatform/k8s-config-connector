@@ -34,8 +34,9 @@
 #      the base branch, so the PR under assessment cannot change how it is
 #      graded.
 #
-# Run by the assess-controller watch rule (.agents/watch/) on a
-# step/controller PR labelled overseer/ready-for-human, once per head. The
+# Run by the assess-controller-step watch rule (.agents/watch/) on a
+# greenfield step/controller PR once the controller step is green and
+# reviewed at its head (a grouped graph's draft PR too), once per head. The
 # agent changes nothing and posts nothing: it writes a Triage, which the rule
 # applies (apply: [comment, label]). It reads audit logs of the recording
 # project with the sandbox's own credentials; it never writes to GCP.
