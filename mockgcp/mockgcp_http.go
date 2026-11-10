@@ -159,6 +159,11 @@ func toHostRegex(host string) *regexp.Regexp {
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
+	// An upload's body is the object's data (media) or a multipart
+	// document, not JSON.
+	if strings.HasPrefix(req.URL.Path, "/upload/") {
+		return nil
+	}
 	if req.Body != nil {
 		var requestBody bytes.Buffer
 		if _, err := io.Copy(&requestBody, req.Body); err != nil {

@@ -16,7 +16,11 @@ package mockstorage
 
 import (
 	"context"
+	"net/http"
+	"net/url"
 	"time"
+
+	"github.com/golang/protobuf/ptypes/empty"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
@@ -42,7 +46,23 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 }
 
 func (s *objects) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.Object, error) {
-	// A stub implementation, just to support deletion (for now)
+	// Objects are uploaded through handleObjectMedia (objectmedia.go).
+	name, err := url.PathUnescape(req.GetName())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "object name %q: %v", req.GetName(), err)
+	}
+	return s.getStoredObject(ctx, req.GetBucket(), name)
+}
 
-	return nil, status.Errorf(codes.NotFound, "No such object: %s/%s", req.GetBucket(), req.GetName())
+// DeleteObject deletes an object uploaded through handleObjectMedia.
+func (s *objects) DeleteObject(ctx context.Context, req *pb.DeleteObjectRequest) (*empty.Empty, error) {
+	name, err := url.PathUnescape(req.GetName())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "object name %q: %v", req.GetName(), err)
+	}
+	if err := s.deleteStoredObject(ctx, req.GetBucket(), name); err != nil {
+		return nil, err
+	}
+	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+	return &empty.Empty{}, nil
 }
