@@ -17,12 +17,40 @@ package ha
 import (
 	"context"
 	"slices"
+	"strings"
 	"testing"
 )
 
-func TestGCPProvisionerDeduplicatesProjectsAndNormalizesZonalBucketLocation(t *testing.T) {
-	runner := &recordingCommandRunner{}
-	provisioner := newGCPProvisioner(runner, "my-ha-bucket")
+func TestGCPProvisionerCreatesMissingBucketAndServiceAccounts(t *testing.T) {
+	runner := &recordingCommandRunner{failDescribe: true}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", false)
+	clusters := []gkeClusterInfo{
+		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
+		{contextName: "ctx-2", project: "proj-b", location: "us-east1-b", clusterName: "c2"},
+	}
+
+	err := provisioner.provision(context.Background(), clusters)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	joinedCmds := strings.Join(runner.commands, "\n")
+	for _, wantCmd := range []string{
+		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us-central1",
+		"gcloud iam service-accounts create kcc-mcl --project=proj-a",
+		"gcloud iam service-accounts create kcc-syncer --project=proj-a",
+		"gcloud iam service-accounts create kcc-mcl --project=proj-b",
+		"gcloud iam service-accounts create kcc-syncer --project=proj-b",
+	} {
+		if !strings.Contains(joinedCmds, wantCmd) {
+			t.Fatalf("expected command %q in recorded commands:\n%s", wantCmd, joinedCmds)
+		}
+	}
+}
+
+func TestGCPProvisionerSkipsCreatingExistingBucketAndServiceAccounts(t *testing.T) {
+	runner := &recordingCommandRunner{failDescribe: false}
+	provisioner := newGCPProvisioner(runner, "my-ha-bucket", false)
 	clusters := []gkeClusterInfo{
 		{contextName: "ctx-1", project: "proj-a", location: "us-central1-a", clusterName: "c1"},
 		{contextName: "ctx-2", project: "proj-a", location: "us-east1-b", clusterName: "c2"},
@@ -34,7 +62,9 @@ func TestGCPProvisionerDeduplicatesProjectsAndNormalizesZonalBucketLocation(t *t
 		t.Fatalf("unexpected error: %v", err)
 	}
 	wantCommands := []string{
-		"gcloud storage buckets create gs://my-ha-bucket --project=proj-a --location=us-central1",
+		"gcloud storage buckets describe gs://my-ha-bucket --project=proj-a",
+		"gcloud iam service-accounts describe kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a",
+		"gcloud iam service-accounts describe kcc-syncer@proj-a.iam.gserviceaccount.com --project=proj-a",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.objectAdmin",
 		"gcloud storage buckets add-iam-policy-binding gs://my-ha-bucket --member=serviceAccount:kcc-mcl@proj-a.iam.gserviceaccount.com --role=roles/storage.legacyBucketReader",
 		"gcloud iam service-accounts add-iam-policy-binding kcc-mcl@proj-a.iam.gserviceaccount.com --project=proj-a --role=roles/iam.workloadIdentityUser --member=serviceAccount:proj-a.svc.id.goog[cnrm-system/kcc-mcl]",

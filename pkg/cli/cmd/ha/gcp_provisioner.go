@@ -20,21 +20,23 @@ import (
 	"strings"
 )
 
-// gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
+// gcpProvisioner provisions the GCS lease bucket, GCP service accounts, and IAM bindings required for multi-cluster HA.
 type gcpProvisioner struct {
 	runner    commandRunner
 	bucketURI string
+	dryRun    bool
 }
 
-func newGCPProvisioner(runner commandRunner, bucket string) *gcpProvisioner {
+func newGCPProvisioner(runner commandRunner, bucket string, dryRun bool) *gcpProvisioner {
 	return &gcpProvisioner{
 		runner:    runner,
 		bucketURI: "gs://" + bucket,
+		dryRun:    dryRun,
 	}
 }
 
 func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInfo) error {
-	if err := p.createLeaseBucket(ctx, clusters[0]); err != nil {
+	if err := p.ensureLeaseBucket(ctx, clusters[0]); err != nil {
 		return err
 	}
 
@@ -48,7 +50,11 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 	return nil
 }
 
-func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClusterInfo) error {
+func (p *gcpProvisioner) ensureLeaseBucket(ctx context.Context, primary gkeClusterInfo) error {
+	if !p.dryRun && p.runner.run(ctx, "gcloud", "storage", "buckets", "describe", p.bucketURI, "--project="+primary.project) == nil {
+		return nil
+	}
+
 	location := gcsBucketLocation(primary.location)
 	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "create", p.bucketURI, "--project="+primary.project, "--location="+location); err != nil {
 		return fmt.Errorf("creating GCS lease bucket %q in location %q (project %q): %w", p.bucketURI, location, primary.project, err)
@@ -99,11 +105,15 @@ const (
 
 func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID string, allProjects []gkeClusterInfo) error {
 	mclGSA := gsaEmail(gcpMCLServiceAccountName, projectID)
-	if err := p.configureIAMForLeaseBucket(ctx, mclGSA); err != nil {
+	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
+
+	if err := p.ensureServiceAccounts(ctx, projectID, mclGSA, syncerGSA); err != nil {
 		return err
 	}
 
-	syncerGSA := gsaEmail(gcpSyncerServiceAccountName, projectID)
+	if err := p.configureIAMForLeaseBucket(ctx, mclGSA); err != nil {
+		return err
+	}
 
 	if err := p.configureIAMForWorkloadIdentity(ctx, projectID, mclGSA, syncerGSA); err != nil {
 		return err
@@ -118,6 +128,28 @@ func (p *gcpProvisioner) configureProjectIAM(ctx context.Context, projectID stri
 
 func gsaEmail(serviceAccountName, projectID string) string {
 	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", serviceAccountName, projectID)
+}
+
+func (p *gcpProvisioner) ensureServiceAccounts(ctx context.Context, projectID, mclGSA, syncerGSA string) error {
+	serviceAccounts := []struct {
+		name  string
+		email string
+	}{
+		{name: gcpMCLServiceAccountName, email: mclGSA},
+		{name: gcpSyncerServiceAccountName, email: syncerGSA},
+	}
+
+	for _, sa := range serviceAccounts {
+		if !p.dryRun && p.runner.run(ctx, "gcloud", "iam", "service-accounts", "describe", sa.email, "--project="+projectID) == nil {
+			continue
+		}
+
+		if err := p.runner.run(ctx, "gcloud", "iam", "service-accounts", "create", sa.name, "--project="+projectID); err != nil {
+			return fmt.Errorf("creating GCP service account %q in project %q: %w", sa.email, projectID, err)
+		}
+	}
+
+	return nil
 }
 
 func (p *gcpProvisioner) configureIAMForLeaseBucket(ctx context.Context, mclGSA string) error {
@@ -156,6 +188,7 @@ func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, pr
 			return fmt.Errorf("binding Workload Identity on %q for %q: %w", b.gsa, wiMember, err)
 		}
 	}
+
 	return nil
 }
 
