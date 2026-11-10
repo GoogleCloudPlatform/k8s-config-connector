@@ -38,5 +38,10 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowCXFlow:Flow \
   --resource DialogflowCXEntityType:EntityType
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowCXEntityType:EntityType
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
