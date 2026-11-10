@@ -4,7 +4,7 @@
 - **Resource Name:** `computebackendbucketsignedurlkey-${uniqueId} (resourceID: key-${uniqueId})`
 - **Source Log:** `_http.log` (18 total HTTP entries, 14 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:3b48d035f74c5fba`
+- **Integrity Hash:** `sha256:042543d450837919`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

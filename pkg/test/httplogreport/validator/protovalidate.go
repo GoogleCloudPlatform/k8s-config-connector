@@ -481,7 +481,8 @@ func unmarshalDynamicJSON(reg *descriptorRegistry, msgDesc protoreflect.MessageD
 	s := strings.ReplaceAll(string(rawBytes), `"000000000000000000000"`, `"0"`)
 	s = strings.ReplaceAll(s, `"111111111111111111111"`, `"1"`)
 	dynMsg := dynamicpb.NewMessage(msgDesc)
-	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" {
+	if msgDesc.FullName() == "google.cloud.orchestration.airflow.service.v1.Environment" ||
+		msgDesc.FullName() == "google.cloud.compute.v1.SignedUrlKey" {
 		discardUnknown = true
 	}
 	opts := protojson.UnmarshalOptions{
