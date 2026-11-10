@@ -17,24 +17,33 @@ package ha
 import (
 	"context"
 	"fmt"
+	"io"
 	"strings"
 )
 
 // gcpProvisioner provisions the GCS lease bucket and IAM bindings required for multi-cluster HA.
 type gcpProvisioner struct {
-	runner    commandRunner
-	bucketURI string
+	runner         commandRunner
+	bucketURI      string
+	bucketLocation string
+	warnWriter     io.Writer
 }
 
-func newGCPProvisioner(runner commandRunner, bucket string) *gcpProvisioner {
+func newGCPProvisioner(runner commandRunner, bucket, bucketLocation string, warnWriter io.Writer) *gcpProvisioner {
 	return &gcpProvisioner{
-		runner:    runner,
-		bucketURI: "gs://" + bucket,
+		runner:         runner,
+		bucketURI:      "gs://" + bucket,
+		bucketLocation: bucketLocation,
+		warnWriter:     warnWriter,
 	}
 }
 
 func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInfo) error {
-	if err := p.createLeaseBucket(ctx, clusters[0]); err != nil {
+	if len(clusters) == 0 {
+		return fmt.Errorf("no clusters provided to provision GCP resources")
+	}
+
+	if err := p.createLeaseBucket(ctx, clusters); err != nil {
 		return err
 	}
 
@@ -48,8 +57,13 @@ func (p *gcpProvisioner) provision(ctx context.Context, clusters []gkeClusterInf
 	return nil
 }
 
-func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClusterInfo) error {
-	location := gcsBucketLocation(primary.location)
+func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, clusters []gkeClusterInfo) error {
+	location, err := resolveBucketLocation(clusters, p.bucketLocation, p.warnWriter)
+	if err != nil {
+		return err
+	}
+
+	primary := clusters[0]
 	if err := p.runner.run(ctx, "gcloud", "storage", "buckets", "create", p.bucketURI, "--project="+primary.project, "--location="+location); err != nil {
 		return fmt.Errorf("creating GCS lease bucket %q in location %q (project %q): %w", p.bucketURI, location, primary.project, err)
 	}
@@ -57,22 +71,114 @@ func (p *gcpProvisioner) createLeaseBucket(ctx context.Context, primary gkeClust
 	return nil
 }
 
-// gcsBucketLocation returns a GCS multi-region location derived from a GKE cluster location.
-// Regional and zonal GKE locations are mapped to their corresponding GCS multi-region
-// ("us", "eu", or "asia"), defaulting to "us" if no match is found. This ensures that
-// the multi-cluster lease bucket remains accessible even during a regional outage.
-func gcsBucketLocation(location string) string {
-	loc := strings.ToLower(strings.TrimSpace(location))
-	switch {
-	case strings.HasPrefix(loc, "us-") || loc == "us":
-		return "us"
-	case strings.HasPrefix(loc, "europe-") || loc == "eu":
-		return "eu"
-	case strings.HasPrefix(loc, "asia-") || loc == "asia":
-		return "asia"
-	default:
-		return "us"
+// resolveBucketLocation determines the GCS bucket location for the lease bucket.
+// If explicitLocation is non-empty, it is used directly. Otherwise, it maps all
+// cluster locations to candidate bucket locations. If all clusters agree, that
+// location is used (with a warning printed if falling back to a regional bucket).
+// If clusters differ, an error is returned instructing the operator to provide
+// --bucket-location explicitly.
+func resolveBucketLocation(clusters []gkeClusterInfo, explicitLocation string, warnWriter io.Writer) (string, error) {
+	if explicitLocation != "" {
+		return explicitLocation, nil
 	}
+
+	if len(clusters) == 0 {
+		return "", fmt.Errorf("no clusters provided to determine lease bucket location")
+	}
+
+	type clusterResult struct {
+		cluster        gkeClusterInfo
+		bucketLocation string
+		isMultiRegion  bool
+	}
+
+	results := make([]clusterResult, len(clusters))
+	for i, c := range clusters {
+		loc, isMulti := mapClusterToBucketLocation(c.location)
+		results[i] = clusterResult{
+			cluster:        c,
+			bucketLocation: loc,
+			isMultiRegion:  isMulti,
+		}
+	}
+
+	first := results[0]
+	if first.bucketLocation == "" {
+		return "", fmt.Errorf("unable to determine bucket location from cluster location %q; specify an explicit GCS bucket location using --%s", first.cluster.location, bucketLocationFlag)
+	}
+
+	for _, r := range results[1:] {
+		if r.bucketLocation != first.bucketLocation {
+			var details []string
+			for _, res := range results {
+				details = append(details, fmt.Sprintf("cluster %q (location %q) maps to %q", res.cluster.contextName, res.cluster.location, res.bucketLocation))
+			}
+			return "", fmt.Errorf("clusters have differing bucket locations: %s; specify an explicit GCS bucket location using --%s (e.g. a multi-region, dual-region, or single region)", strings.Join(details, ", "), bucketLocationFlag)
+		}
+	}
+
+	if !first.isMultiRegion && warnWriter != nil {
+		fmt.Fprintf(warnWriter, "Warning: cluster location %q does not map to a GCS multi-region; using regional bucket location %q. For cross-region redundancy, specify --%s (e.g. a multi-region or dual-region).\n", first.cluster.location, first.bucketLocation, bucketLocationFlag)
+	}
+
+	return first.bucketLocation, nil
+}
+
+// mapClusterToBucketLocation maps a GKE cluster location (zonal or regional)
+// to a candidate GCS bucket location. If the region is within a GCS multi-region
+// ("us", "eu", or "asia"), the multi-region code is returned with isMultiRegion=true.
+// Otherwise, it falls back to the regional location with isMultiRegion=false.
+//
+// Per GCS documentation (https://cloud.google.com/storage/docs/locations#location-mr):
+// - The EU multi-region does not store data in europe-west2 (London) or europe-west6 (Zürich).
+// - The ASIA multi-region excludes asia-east2 (Hong Kong) and asia-southeast2 (Jakarta).
+func mapClusterToBucketLocation(location string) (string, bool) {
+	loc := strings.ToLower(strings.TrimSpace(location))
+	if loc == "" {
+		return "", false
+	}
+
+	region := loc
+	if isZonalGKELocation(loc) {
+		lastHyphen := strings.LastIndex(loc, "-")
+		region = loc[:lastHyphen]
+	}
+
+	switch {
+	case region == "us" || strings.HasPrefix(region, "us-"):
+		return "us", true
+	case region == "eu":
+		return "eu", true
+	case strings.HasPrefix(region, "europe-"):
+		if region == "europe-west2" || region == "europe-west6" {
+			return region, false
+		}
+		return "eu", true
+	case region == "asia":
+		return "asia", true
+	case strings.HasPrefix(region, "asia-"):
+		if region == "asia-east2" || region == "asia-southeast2" {
+			return region, false
+		}
+		return "asia", true
+	default:
+		return region, false
+	}
+}
+
+func isZonalGKELocation(location string) bool {
+	lastHyphen := strings.LastIndex(location, "-")
+	if lastHyphen == -1 {
+		return false
+	}
+
+	suffix := location[lastHyphen+1:]
+	return len(suffix) == 1 && suffix[0] >= 'a' && suffix[0] <= 'z'
+}
+
+func gcsBucketLocation(location string) string {
+	loc, _ := mapClusterToBucketLocation(location)
+	return loc
 }
 
 func dedupeProjects(clusters []gkeClusterInfo) []gkeClusterInfo {

@@ -52,6 +52,7 @@ func TestSetupValidateErrors(t *testing.T) {
 		name           string
 		contexts       []string
 		bucket         string
+		bucketLocation string
 		leaseName      string
 		leaseNamespace string
 		wantErr        string
@@ -101,6 +102,13 @@ func TestSetupValidateErrors(t *testing.T) {
 			wantErr:        "--lease-name \"INVALID_LEASE!\" is not a valid DNS-1123 subdomain (a lowercase RFC 1123 subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com', regex used for validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')); use lowercase alphanumeric characters, '-' or '.'\n--lease-namespace \"BAD_NAMESPACE!\" is not a valid DNS-1123 namespace label (a lowercase RFC 1123 label must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc', regex used for validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?')); use lowercase alphanumeric characters or '-'",
 		},
 		{
+			name:           "invalid bucket-location syntax",
+			contexts:       []string{"cluster-a", "cluster-b"},
+			bucket:         "my-bucket",
+			bucketLocation: "invalid location!",
+			wantErr:        "--bucket-location \"invalid location!\" is not a valid GCS bucket location; use lowercase alphanumeric characters and hyphens (e.g. 'us', 'eu', 'asia', 'us-central1')",
+		},
+		{
 			name:     "accumulates multiple flag errors",
 			contexts: []string{"cluster-a"},
 			bucket:   "",
@@ -113,6 +121,7 @@ func TestSetupValidateErrors(t *testing.T) {
 			opts := newSetupOptions()
 			opts.contexts = slices.Clone(tc.contexts)
 			opts.bucket = tc.bucket
+			opts.bucketLocation = tc.bucketLocation
 			if tc.leaseName != "" {
 				opts.leaseName = tc.leaseName
 			}
@@ -149,6 +158,49 @@ func TestExecuteSetupAppliesManifestsAndConfiguresClusters(t *testing.T) {
 	}
 	assertClusterConfigured(t, handles[0], kccImage)
 	assertClusterConfigured(t, handles[1], kccImage)
+}
+
+func TestExecuteSetupWithExplicitBucketLocation(t *testing.T) {
+	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+		newFakeClusterHandle(t, "gke_proj-b_europe-west1_cluster-b", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newSetupOptions()
+	opts.bucket = "my-ha-bucket"
+	opts.bucketLocation = "nam4"
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+
+	if err != nil {
+		t.Fatalf("executeSetup failed: %v", err)
+	}
+	if len(runner.commands) == 0 || !strings.Contains(runner.commands[0], "--location=nam4") {
+		t.Fatalf("expected gcloud buckets create to specify --location=nam4, got %v", runner.commands)
+	}
+	assertClusterConfigured(t, handles[0], kccImage)
+	assertClusterConfigured(t, handles[1], kccImage)
+}
+
+func TestExecuteSetupFailsOnConflictingClusterLocationsWithoutExplicitLocation(t *testing.T) {
+	const kccImage = "gcr.io/gke-release/cnrm/controller:1.158.0"
+	handles := []*clusterHandle{
+		newFakeClusterHandle(t, "gke_proj-a_us-central1_cluster-a", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+		newFakeClusterHandle(t, "gke_proj-b_europe-west1_cluster-b", newBaseConfigConnector(), newManagerStatefulSet(kccImage)),
+	}
+	runner := &recordingCommandRunner{}
+	opts := newSetupOptions()
+	opts.bucket = "my-ha-bucket"
+
+	err := executeSetup(context.Background(), opts, handles, runner)
+
+	if err == nil {
+		t.Fatalf("expected executeSetup to fail on differing cluster locations, got nil")
+	}
+	if !strings.Contains(err.Error(), "clusters have differing bucket locations") || !strings.Contains(err.Error(), "--bucket-location") {
+		t.Fatalf("expected error mentioning differing bucket locations and --bucket-location, got: %v", err)
+	}
 }
 
 func assertClusterConfigured(t *testing.T, h *clusterHandle, wantImage string) {
