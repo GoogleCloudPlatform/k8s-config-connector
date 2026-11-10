@@ -343,7 +343,6 @@
 [missing_field] crd=aiplatformmodeldeploymentmonitoringjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.samplePredictInstance.stringValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodeldeploymentmonitoringjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.samplePredictInstance.structValue" is not set in unstructured objects
 [missing_field] crd=aiplatformmodeldeploymentmonitoringjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.statsAnomaliesBaseDirectory.outputURIPrefix" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.inputs" is not set in unstructured objects
@@ -373,23 +372,13 @@
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.smoothGradConfig.noiseSigma" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.smoothGradConfig.noisySampleCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.stepCount" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.featureFields[].dataType" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.featureFields[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.featureFields[].repeated" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.groundTruthFields[].dataType" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.groundTruthFields[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.groundTruthFields[].repeated" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.predictionFields[].dataType" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.predictionFields[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringSchema.predictionFields[].repeated" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringTarget.vertexModel.modelRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringTarget.vertexModel.modelVersionID" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationSpec.emailConfig.userEmails[]" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationSpec.enableCloudLogging" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationSpec.notificationChannelConfigs[].notificationChannelRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputSpec.gcsBaseDirectory.outputURIPrefix" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.flexStart.maxRuntimeDuration" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.machineSpec.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureAttributionSpec.batchExplanationDedicatedResources.machineSpec.acceleratorType" is not set in unstructured objects
@@ -407,9 +396,7 @@
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureAttributionSpec.features[]" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.categoricalMetricType" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.defaultCategoricalAlertCondition.threshold" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.defaultNumericAlertCondition.threshold" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.featureAlertConditions" is not set in unstructured objects
-[missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.features[]" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.featureDriftSpec.numericMetricType" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.predictionOutputDriftSpec.categoricalMetricType" is not set in unstructured objects
 [missing_field] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tabularObjective.predictionOutputDriftSpec.defaultCategoricalAlertCondition.threshold" is not set in unstructured objects

@@ -439,6 +439,15 @@ func (v *Validator) validateV7Authenticity() Check {
 				}
 				foundInURL := strings.Contains(decodedURL, decodedVal) || strings.Contains(ce.Entry.Request.URL, decodedVal)
 				foundInBody := ce.Entry.Request.Method == "GRPC" && strings.Contains(ce.Entry.Request.Body, decodedVal)
+				if !foundInURL && ce.Entry.IsOperationsPoll() && strings.Contains(decodedVal, "/operations/") {
+					// APIs like Vertex AI use nested operation resource names in X-Goog-Request-Params
+					// (e.g. projects/.../locations/.../modelMonitors/.../operations/...) while polling
+					// at the location-level operations endpoint (projects/.../locations/.../operations/...).
+					opID := decodedVal[strings.LastIndex(decodedVal, "/operations/")+len("/operations/"):]
+					if strings.HasSuffix(strings.TrimRight(decodedURL, "/"), "/operations/"+opID) {
+						foundInURL = true
+					}
+				}
 				if !foundInURL && !foundInBody {
 					summaries = append(summaries, fmt.Sprintf("`X-Goog-Request-Params` mismatch in stanza #%d (`%s`): header `%s=%s` does not match request URL `%s`.", ce.Index, ce.Entry.Request.Method, paramKey, decodedVal, ce.ShortEndpoint))
 					hints = append(hints, "HAND-EDITED URL DETECTED: The X-Goog-Request-Params header path does not match the request URL. Do not hand-edit URLs or locations in _http.log; re-record against RealGCP.")
