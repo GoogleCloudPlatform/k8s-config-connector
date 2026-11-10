@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
 
 {
@@ -94,28 +95,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Original description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "PUBLIC_ROOTS"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateBackendAuthenticationConfig
 
 {
@@ -202,52 +182,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz",
-    "new-key": "new-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "NONE"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description of backend auth config",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz",
-    "new-key": "new-val"
-  },
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "NONE"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig
 
 {

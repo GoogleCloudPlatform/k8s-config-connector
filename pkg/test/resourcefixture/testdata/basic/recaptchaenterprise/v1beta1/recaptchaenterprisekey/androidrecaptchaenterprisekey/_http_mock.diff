@@ -1,10 +1,19 @@
-1,2c1,16
+1,2c1,2
 < POST https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys?alt=json
 < Content-Type: application/json
 ---
+> # Phase: CREATE
 > GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
-> 
-> {
+5,12c5,12
+<   "androidSettings": {
+<     "allowAllPackageNames": true
+<   },
+<   "displayName": "display-name-one",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
 >   "key": {
 >     "androidSettings": {
 >       "allowAllPackageNames": true
@@ -13,22 +22,13 @@
 >     "testingOptions": {
 >       "testingScore": 0.8
 >     }
->   },
->   "parent": "projects/kcc-recaptcha-enterprise"
-> }
-> 
-> OK
-7a22
->   "createTime": "2024-04-01T12:34:56.123456Z",
-9,13c24
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
-<   },
+14,16c14
+<   "testingOptions": {
+<     "testingScore": 0.8
+<   }
 ---
->   "name": "projects/1935411576/keys/${keyID}",
-19,27c30,38
+>   "parent": "projects/kcc-recaptcha-enterprise"
+19,27c17
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
 < Server: ESF
@@ -39,22 +39,14 @@
 < X-Frame-Options: SAMEORIGIN
 < X-Xss-Protection: 0
 ---
-> ---
-> 
-> GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-> 
-> {
->   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-> }
-> 
 > OK
-35,39d45
+35,39d24
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-48,49c54,58
+48,49c33,37
 < GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
 < Content-Type: application/json
 ---
@@ -63,7 +55,7 @@
 > {
 >   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
 > }
-51,59c60
+51,59c39
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
 < Server: ESF
@@ -75,19 +67,25 @@
 < X-Xss-Protection: 0
 ---
 > OK
-67,71d67
+67,71d46
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-80,81c76,94
+80,81c55,56
 < PATCH https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json&updateMask=androidSettings.allowAllPackageNames%2CandroidSettings.allowedPackageNames%2CdisplayName%2Clabels
 < Content-Type: application/json
 ---
+> # Phase: UPDATE
 > GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
-> 
-> {
+84,88c59,69
+<   "androidSettings": {
+<     "allowAllPackageNames": false,
+<     "allowedPackageNames": [
+<       "com.android.application"
+<     ]
+---
 >   "key": {
 >     "androidSettings": {
 >       "allowedPackageNames": [
@@ -99,26 +97,17 @@
 >     "testingOptions": {
 >       "testingScore": 0.8
 >     }
->   },
->   "updateMask": "androidSettings.allowAllPackageNames,androidSettings.allowedPackageNames,displayName"
-> }
-> 
-> OK
-85d97
-<     "allowAllPackageNames": false,
-89a102
->   "createTime": "2024-04-01T12:34:56.123456Z",
-91,95c104,106
+90,96c71
+<   "displayName": "display-name-two",
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "label-two": "value-two",
 <     "managed-by-cnrm": "true"
+<   }
 ---
->   "name": "projects/1935411576/keys/${keyID}",
->   "testingOptions": {
->     "testingScore": 0.8
-99,107c110,118
+>   "updateMask": "androidSettings.allowAllPackageNames,androidSettings.allowedPackageNames,displayName"
+99,107c74
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
 < Server: ESF
@@ -129,32 +118,21 @@
 < X-Frame-Options: SAMEORIGIN
 < X-Xss-Protection: 0
 ---
-> ---
-> 
-> GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-> 
-> {
->   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-> }
-> 
 > OK
-117,122d127
+117,122d83
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "label-two": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-131,132c136,140
+131,132c92,93
 < GET https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
 < Content-Type: application/json
 ---
+> # Phase: DELETE
 > GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-> 
-> {
->   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-> }
-134,142c142
+134,142c95,99
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
 < Server: ESF
@@ -165,15 +143,19 @@
 < X-Frame-Options: SAMEORIGIN
 < X-Xss-Protection: 0
 ---
+> {
+>   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+> }
+> 
 > OK
-152,157d151
+152,157d108
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "label-two": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-166,167c160,164
+166,167c117,121
 < DELETE https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/${keyID}?alt=json
 < Content-Type: application/json
 ---
@@ -182,7 +164,7 @@
 > {
 >   "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
 > }
-169,177c166
+169,177c123
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
 < Server: ESF

@@ -265,25 +265,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2090",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup
 
 {
@@ -337,44 +318,6 @@ OK
     "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2090",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2090",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -464,25 +407,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "threatPreventionProfile": {},
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
@@ -526,25 +450,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
-  "threatPreventionProfile": {},
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

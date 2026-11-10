@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy
 
 {
@@ -76,6 +77,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy
 
 {
@@ -166,30 +168,7 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/dataTaxonomies/dt-maximal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for maximal test",
-  "displayName": "Updated Data Taxonomy Name",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "test-label": "test-value-2"
-  },
-  "name": "projects/${projectId}/locations/us-central1/dataTaxonomies/dt-maximal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy
 
 {

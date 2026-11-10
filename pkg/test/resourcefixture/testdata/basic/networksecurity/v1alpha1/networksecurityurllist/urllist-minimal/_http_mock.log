@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
 
 {
@@ -69,25 +70,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
-
-{
-  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "values": [
-    "google.com"
-  ]
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
 
 {

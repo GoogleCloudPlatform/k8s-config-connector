@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -239,6 +240,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
@@ -408,100 +410,7 @@ OK
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
-}
-
-OK
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 15,
-            "minutes": 30
-          },
-          "periodicity": 2
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
-}
-
-OK
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 15,
-            "minutes": 30
-          },
-          "periodicity": 2
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
 
 {

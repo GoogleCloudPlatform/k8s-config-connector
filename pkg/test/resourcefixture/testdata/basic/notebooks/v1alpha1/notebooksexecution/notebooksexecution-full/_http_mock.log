@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -476,34 +477,7 @@ OK
 
 ---
 
-GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
-
-{
-  "name": "projects/${projectId}/locations/us-central1/executions/n-exec-full-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "executionTemplate": {
-    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
-    "jobType": "VERTEX_AI",
-    "masterType": "n1-standard-4",
-    "scaleTier": "CUSTOM",
-    "serviceAccount": "n-exec-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-    "tensorboard": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
-    "vertexAiParameters": {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  },
-  "name": "projects/${projectId}/locations/us-central1/executions/n-exec-full-${uniqueId}",
-  "state": "SUCCEEDED",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {

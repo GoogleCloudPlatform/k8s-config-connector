@@ -86,42 +86,6 @@ OK
 
 ---
 
-GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
-
-{
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
-OK
-
-{
-  "googleCdnKey": {
-    "keyName": "test-key-name"
-  },
-  "hostname": "test-hostname-${uniqueId}.com",
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
----
-
-GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
-
-{
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
-OK
-
-{
-  "googleCdnKey": {
-    "keyName": "test-key-name"
-  },
-  "hostname": "test-hostname-${uniqueId}.com",
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
----
-
 GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/DeleteCdnKey
 
 {

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
 
 {
@@ -74,6 +75,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
 
 {
@@ -162,30 +164,7 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
 
 {

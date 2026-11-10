@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -256,38 +257,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 
 {
@@ -386,30 +355,7 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
-}
-
-OK
-
-{
-  "backupType": "HOT",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "hotToStandardTime": "2028-04-30T12:00:00Z",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateBackup
 
 {
@@ -490,54 +436,7 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
-}
-
-OK
-
-{
-  "backupType": "HOT",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "hotToStandardTime": "2028-05-30T12:00:00Z",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}"
-}
-
-OK
-
-{
-  "backupType": "HOT",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "hotToStandardTime": "2028-05-30T12:00:00Z",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}/backups/bigtablebackup-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteBackup
 
 {

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
@@ -982,33 +983,7 @@ OK
 
 ---
 
-GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
-
-{
-  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexec-dp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "executionTemplate": {
-    "dataprocParameters": {
-      "cluster": "projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}"
-    },
-    "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-    "jobType": "DATAPROC",
-    "masterType": "n1-standard-4",
-    "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM"
-  },
-  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexec-dp-${uniqueId}",
-  "state": "SUCCEEDED",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {

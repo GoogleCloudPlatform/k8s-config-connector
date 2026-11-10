@@ -1,3 +1,4 @@
+# Phase: CREATE
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
 
@@ -366,6 +367,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
@@ -600,132 +602,7 @@ OK
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
-}
-
-OK
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionThreshold": {
-        "aggregations": [
-          {
-            "alignmentPeriod": "60s",
-            "crossSeriesReducer": "REDUCE_MEAN",
-            "groupByFields": [
-              "project",
-              "resource.label.instance_id",
-              "resource.label.zone"
-            ],
-            "perSeriesAligner": "ALIGN_MAX"
-          }
-        ],
-        "comparison": "COMPARISON_LT",
-        "duration": "900s",
-        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
-        "thresholdValue": 0.1,
-        "trigger": {
-          "count": 3
-        }
-      },
-      "displayName": "Very low CPU usage"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Updated Test Alert Policy",
-  "documentation": {
-    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
-  },
-  "enabled": false,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "notificationChannels": [
-    "projects/${projectId}/notificationChannels/${notificationChannelID}",
-    "projects/${projectId}/notificationChannels/${notificationChannelID}"
-  ],
-  "severity": "ERROR",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
-}
-
-OK
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionThreshold": {
-        "aggregations": [
-          {
-            "alignmentPeriod": "60s",
-            "crossSeriesReducer": "REDUCE_MEAN",
-            "groupByFields": [
-              "project",
-              "resource.label.instance_id",
-              "resource.label.zone"
-            ],
-            "perSeriesAligner": "ALIGN_MAX"
-          }
-        ],
-        "comparison": "COMPARISON_LT",
-        "duration": "900s",
-        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
-        "thresholdValue": 0.1,
-        "trigger": {
-          "count": 3
-        }
-      },
-      "displayName": "Very low CPU usage"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Updated Test Alert Policy",
-  "documentation": {
-    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
-  },
-  "enabled": false,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "notificationChannels": [
-    "projects/${projectId}/notificationChannels/${notificationChannelID}",
-    "projects/${projectId}/notificationChannels/${notificationChannelID}"
-  ],
-  "severity": "ERROR",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
 
 {

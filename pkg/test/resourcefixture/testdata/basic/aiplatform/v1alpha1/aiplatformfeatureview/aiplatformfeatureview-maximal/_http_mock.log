@@ -496,32 +496,6 @@ OK
 ---
 
 # Phase: UPDATE
-GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureView
-
-{
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}"
-}
-
-OK
-
-{
-  "bigQuerySource": {
-    "entityIdColumns": [
-      "entity_id"
-    ],
-    "uri": "bq://${projectId}.bqdataset${uniqueId}.bqtable${uniqueId}"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}",
-  "syncConfig": {
-    "cron": "0 0 * * *"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/UpdateFeatureView
 
 {
@@ -587,58 +561,6 @@ OK
 ---
 
 # Phase: DELETE
-GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureView
-
-{
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}"
-}
-
-OK
-
-{
-  "bigQuerySource": {
-    "entityIdColumns": [
-      "entity_id"
-    ],
-    "uri": "bq://${projectId}.bqdataset${uniqueId}.bqtable${uniqueId}"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}",
-  "syncConfig": {
-    "cron": "0 12 * * *"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureView
-
-{
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}"
-}
-
-OK
-
-{
-  "bigQuerySource": {
-    "entityIdColumns": [
-      "entity_id"
-    ],
-    "uri": "bq://${projectId}.bqdataset${uniqueId}.bqtable${uniqueId}"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/featureViews/featureview${uniqueId}",
-  "syncConfig": {
-    "cron": "0 12 * * *"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/DeleteFeatureView
 
 {
@@ -660,31 +582,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
-
-{
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
-}
-
-OK
-
-{
-  "bigtable": {
-    "autoScaling": {
-      "cpuUtilizationTarget": 50,
-      "maxNodeCount": 2,
-      "minNodeCount": 1
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
-  "state": "STABLE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

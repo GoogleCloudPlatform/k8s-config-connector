@@ -88,48 +88,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
-
-{
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-min-${uniqueId}",
-  "pairingKey": {
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "key": "dummy-pairing-key"
-  },
-  "state": "PENDING_PARTNER_ATTACHMENT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SSERealmService/GetSACRealm
-
-{
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/sacRealms/sacrealm-min-${uniqueId}",
-  "pairingKey": {
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "key": "dummy-pairing-key"
-  },
-  "state": "PENDING_PARTNER_ATTACHMENT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SSERealmService/DeleteSACRealm
 
 {

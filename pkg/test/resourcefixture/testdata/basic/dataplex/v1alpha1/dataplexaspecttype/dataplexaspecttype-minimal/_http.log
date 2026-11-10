@@ -119,37 +119,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Minimal aspect type",
-  "etag": "abcdef0123A=",
-  "metadataTemplate": {
-    "name": "minimal_template",
-    "recordFields": [
-      {
-        "index": 1,
-        "name": "minimal_field",
-        "type": "string"
-      }
-    ],
-    "type": "record"
-  },
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/UpdateAspectType
 
 {
@@ -224,68 +193,6 @@ OK
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Minimal aspect type updated",
-  "etag": "abcdef0123A=",
-  "metadataTemplate": {
-    "name": "minimal_template",
-    "recordFields": [
-      {
-        "index": 1,
-        "name": "minimal_field",
-        "type": "string"
-      }
-    ],
-    "type": "record"
-  },
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Minimal aspect type updated",
-  "etag": "abcdef0123A=",
-  "metadataTemplate": {
-    "name": "minimal_template",
-    "recordFields": [
-      {
-        "index": 1,
-        "name": "minimal_field",
-        "type": "string"
-      }
-    ],
-    "type": "record"
-  },
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

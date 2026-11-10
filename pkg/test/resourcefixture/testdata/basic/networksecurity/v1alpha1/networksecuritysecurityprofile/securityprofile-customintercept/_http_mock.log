@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
 
 {
@@ -192,31 +193,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customInterceptProfile": {
-    "interceptEndpointGroup": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-  },
-  "description": "security profile description",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "CUSTOM_INTERCEPT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfile
 
 {
@@ -312,56 +289,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customInterceptProfile": {
-    "interceptEndpointGroup": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-  },
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "CUSTOM_INTERCEPT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customInterceptProfile": {
-    "interceptEndpointGroup": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-  },
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "CUSTOM_INTERCEPT",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
@@ -405,24 +333,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-idg",
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

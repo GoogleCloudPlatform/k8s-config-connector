@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
 
 {
@@ -84,24 +85,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.Mirroring/UpdateMirroringEndpointGroup
 
 {
@@ -188,50 +172,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for minimal mirroring endpoint group",
-  "labels": {
-    "updated-key": "updated-value"
-  },
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for minimal mirroring endpoint group",
-  "labels": {
-    "updated-key": "updated-value"
-  },
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.Mirroring/DeleteMirroringEndpointGroup
 
 {

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
 
 {
@@ -103,54 +104,7 @@ OK
 
 ---
 
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
-
-{
-  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": {
-    "engine": "POSTGRESQL",
-    "version": "14"
-  },
-  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
-  "source": {
-    "engine": "MYSQL",
-    "version": "5.7"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
-
-{
-  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": {
-    "engine": "POSTGRESQL",
-    "version": "14"
-  },
-  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-min-${uniqueId}",
-  "source": {
-    "engine": "MYSQL",
-    "version": "5.7"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace
 
 {

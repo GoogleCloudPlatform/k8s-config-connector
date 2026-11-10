@@ -216,38 +216,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
-
-{
-  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "assetStatus": {
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "metastore": {},
-  "metastoreStatus": {
-    "state": "NONE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
-  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
-  "state": "ACTIVE",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.DataplexService/DeleteLake
 
 {

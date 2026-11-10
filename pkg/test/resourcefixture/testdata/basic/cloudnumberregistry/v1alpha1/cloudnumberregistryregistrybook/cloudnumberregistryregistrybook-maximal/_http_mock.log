@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
 
 {
@@ -72,6 +73,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
 
 {
@@ -156,28 +158,7 @@ OK
 
 ---
 
-GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
-
-{
-  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
-}
-
-OK
-
-{
-  "claimedScopes": [
-    "projects/${projectNumber}"
-  ],
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "foo": "updated"
-  },
-  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
 
 {

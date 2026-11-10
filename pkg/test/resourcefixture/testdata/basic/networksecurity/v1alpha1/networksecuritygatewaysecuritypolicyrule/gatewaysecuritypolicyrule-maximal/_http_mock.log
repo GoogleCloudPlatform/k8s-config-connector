@@ -34,6 +34,51 @@ OK
 
 ---
 
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.GatewaySecurityPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -134,51 +179,6 @@ X-Xss-Protection: 0
     "sessionMatcher": "host() == 'test.com'",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.GatewaySecurityPolicy",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -294,88 +294,6 @@ X-Xss-Protection: 0
 ---
 
 # Phase: DELETE
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FgatewaySecurityPolicies%2Fgsp-${uniqueId}%2Frules%2Fgsprule-max-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "applicationMatcher": "request.headers['user-agent'].contains('Firefox')",
-  "basicProfile": 1,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "enabled": true,
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-max-${uniqueId}",
-  "priority": 201,
-  "sessionMatcher": "host() == 'test.com'",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
 GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}/rules/gsprule-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -462,6 +380,43 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---

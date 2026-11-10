@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
 
 {
@@ -82,23 +83,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Gateway Security Policy Created",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateGatewaySecurityPolicy
 
 {
@@ -171,40 +156,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Gateway Security Policy Updated",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Gateway Security Policy Updated",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicy
 
 {

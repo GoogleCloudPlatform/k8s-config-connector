@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
 
 {
@@ -281,29 +282,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
-  "dataPathId": "12345",
-  "description": "security profile group",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup
 
 {
@@ -392,52 +371,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
-  "dataPathId": "12345",
-  "description": "security profile group - updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
-  "dataPathId": "12345",
-  "description": "security profile group - updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfileGroup
 
 {
@@ -506,27 +440,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "customMirroringProfile": {
-    "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
-  "type": "CUSTOM_MIRRORING",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
@@ -570,24 +483,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
-  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

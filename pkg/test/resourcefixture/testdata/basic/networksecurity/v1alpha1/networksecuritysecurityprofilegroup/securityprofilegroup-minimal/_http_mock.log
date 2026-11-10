@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
@@ -261,25 +262,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup
 
 {
@@ -356,44 +339,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfileGroup
 
 {
@@ -459,24 +405,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
@@ -520,24 +448,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

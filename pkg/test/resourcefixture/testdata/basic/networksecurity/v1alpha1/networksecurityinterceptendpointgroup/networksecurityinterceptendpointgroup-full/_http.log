@@ -96,28 +96,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Initial description",
-  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
-  "labels": {
-    "my-key": "my-value"
-  },
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.Intercept/UpdateInterceptEndpointGroup
 
 {
@@ -178,50 +156,6 @@ OK
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
-  "labels": {
-    "my-key": "my-updated-value"
-  },
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
-
-{
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
-  "labels": {
-    "my-key": "my-updated-value"
-  },
-  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

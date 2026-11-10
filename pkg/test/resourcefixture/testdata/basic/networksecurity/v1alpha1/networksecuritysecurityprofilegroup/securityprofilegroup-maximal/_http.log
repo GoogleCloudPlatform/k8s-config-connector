@@ -331,30 +331,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2676",
-  "description": "Maximal security profile group",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup
 
 {
@@ -418,54 +394,6 @@ OK
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2676",
-  "description": "Maximal security profile group - updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "2676",
-  "description": "Maximal security profile group - updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
 }
 
 ---
@@ -579,44 +507,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      },
-      {
-        "filteringAction": "DENY",
-        "priority": 2147483647,
-        "urls": [
-          "*"
-        ]
-      }
-    ]
-  }
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
@@ -660,25 +550,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "threatPreventionProfile": {},
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

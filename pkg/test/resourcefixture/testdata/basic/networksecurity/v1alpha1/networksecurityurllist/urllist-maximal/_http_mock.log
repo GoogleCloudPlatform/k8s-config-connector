@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
 
 {
@@ -73,6 +74,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
 
 {
@@ -159,28 +161,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
-
-{
-  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated URL list maximal test",
-  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "values": [
-    "google.com",
-    "github.com",
-    "gitlab.com"
-  ]
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
 
 {

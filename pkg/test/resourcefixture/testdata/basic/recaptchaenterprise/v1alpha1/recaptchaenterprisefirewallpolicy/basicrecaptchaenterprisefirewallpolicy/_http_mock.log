@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateFirewallPolicy
 
 {
@@ -16,6 +17,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
 
 {
@@ -50,21 +52,7 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
-
-{
-  "name": "projects/${projectId}/firewallpolicies/200"
-}
-
-OK
-
-{
-  "description": "Updated description",
-  "name": "projects/${projectId}/firewallpolicies/200"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
 
 {

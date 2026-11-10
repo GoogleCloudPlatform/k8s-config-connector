@@ -1,5 +1,6 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +27,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "iamConfiguration": {
@@ -93,7 +94,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -409,6 +410,7 @@ OK
 
 ---
 
+# Phase: DELETE
 GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
 
 {
@@ -454,81 +456,6 @@ OK
     "updateTime": "1970-01-01T00:00:00Z"
   },
   "type": "IMPORT",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "importResult": {
-    "createdEntries": "10",
-    "unchangedEntries": "100",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "updatedEntries": "5"
-  },
-  "importSpec": {
-    "aspectSyncMode": "INCREMENTAL",
-    "entrySyncMode": "FULL",
-    "logLevel": "DEBUG",
-    "scope": {
-      "aspectTypes": [
-        "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
-      ],
-      "entryGroups": [
-        "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-${uniqueId}"
-      ],
-      "entryTypes": [
-        "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-${uniqueId}"
-      ]
-    },
-    "sourceCreateTime": "2026-06-30T10:00:00Z",
-    "sourceStorageUri": "gs://dataplex-metadatajob-bucket-max-${uniqueId}/import/"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-${uniqueId}",
-  "status": {
-    "completionPercent": 100,
-    "state": "SUCCEEDED",
-    "updateTime": "1970-01-01T00:00:00Z"
-  },
-  "type": "IMPORT",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Entry Type for Dataplex Metadata Job Maximal Test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -627,29 +554,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Entry Group for Dataplex Metadata Job Maximal Test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup
 
 {
@@ -696,7 +600,7 @@ OK
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -741,7 +645,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -760,7 +664,7 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 204 No Content
 Content-Type: application/json

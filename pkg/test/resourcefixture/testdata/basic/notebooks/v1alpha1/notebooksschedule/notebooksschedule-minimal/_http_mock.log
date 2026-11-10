@@ -1,15 +1,4 @@
-GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
-
-{
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}" not found
-
-{}
-
----
-
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
@@ -31,77 +20,6 @@ Vary: X-Origin
       }
     ],
     "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-GRPC /google.cloud.notebooks.v1.NotebookService/CreateSchedule
-
-{
-  "parent": "projects/${projectId}/locations/us-central1",
-  "schedule": {
-    "cronSchedule": "0 0 * * WED",
-    "executionTemplate": {
-      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
-      "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-      "masterType": "n1-standard-4",
-      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-      "scaleTier": "CUSTOM"
-    }
-  },
-  "scheduleId": "notebooksschedule-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpoint": "CreateSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "endpoint": "CreateSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Schedule",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "cronSchedule": "0 0 * * WED",
-    "executionTemplate": {
-      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
-      "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-      "masterType": "n1-standard-4",
-      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-      "scaleTier": "CUSTOM"
-    },
-    "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -227,24 +145,84 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
   "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
 }
 
+error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/CreateSchedule
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "schedule": {
+    "cronSchedule": "0 0 * * WED",
+    "executionTemplate": {
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+      "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+      "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
+      "scaleTier": "CUSTOM"
+    }
+  },
+  "scheduleId": "notebooksschedule-minimal-${uniqueId}"
+}
+
 OK
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "cronSchedule": "0 0 * * WED",
-  "executionTemplate": {
-    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
-    "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-    "masterType": "n1-standard-4",
-    "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateSchedule",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateSchedule",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Schedule",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "cronSchedule": "0 0 * * WED",
+    "executionTemplate": {
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
+      "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+      "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
+      "scaleTier": "CUSTOM"
+    },
+    "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
 GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
 
 {

@@ -17,6 +17,7 @@ package e2e
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -47,25 +48,25 @@ func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 	// Remove repeated GET requests (after normalization)
 	var previous *test.LogEntry
+	// grpcGetMethodRegex matches GRPC methods that are the equivalent of an HTTP GET,
+	// e.g. /google.cloud.dataplex.v1.CatalogService/GetEntryGroup or /google.longrunning.Operations/GetOperation
+	var grpcGetMethodRegex = regexp.MustCompile(`^/[\w.]+/Get[A-Z]\w*$`)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-
 		// isGet checks if this is a GET request, or a GRPC equivalent
 		isGet := func(r test.Request) bool {
 			if r.Method == "GET" {
 				return true
 			}
-			if r.Method == "GRPC" {
-				url := r.URL
-				switch url {
-				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
-					return true
-				}
+			if r.Method == "GRPC" && grpcGetMethodRegex.MatchString(r.URL) {
+				return true
 			}
 			return false
 		}
 		keep := true
 		if isGet(e.Request) && previous != nil {
-			if isGet(previous.Request) && previous.Request.URL == e.Request.URL {
+			// For GRPC, the URL is only the method name, so we also compare the request body
+			// (which identifies the resource being fetched).
+			if isGet(previous.Request) && previous.Request.URL == e.Request.URL && previous.Request.Body == e.Request.Body {
 				if previous.Response.Status == e.Response.Status {
 					if previous.Response.Body == e.Response.Body {
 						keep = false

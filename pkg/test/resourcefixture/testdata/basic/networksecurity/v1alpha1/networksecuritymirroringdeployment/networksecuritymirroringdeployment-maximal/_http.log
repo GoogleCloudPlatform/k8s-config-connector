@@ -90,26 +90,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal mirroring deployment description",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.Mirroring/UpdateMirroringDeployment
 
 {
@@ -166,46 +146,6 @@ OK
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for maximal mirroring deployment",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringDeployment
-
-{
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description for maximal mirroring deployment",
-  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
-  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-max-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
