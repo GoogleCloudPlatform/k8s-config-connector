@@ -35,7 +35,8 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource DialogflowCXFlow:Flow
+  --resource DialogflowCXFlow:Flow \
+  --resource DialogflowCXEntityType:EntityType
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
