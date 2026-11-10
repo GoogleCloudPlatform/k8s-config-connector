@@ -161,7 +161,7 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 		}
 
 		configurers = append(configurers, cfg)
-		gkeClusters = append(gkeClusters, cfg.gkeCluster())
+		gkeClusters = append(gkeClusters, cfg.clusterInfo())
 	}
 
 	if len(errs) > 0 {

@@ -57,12 +57,7 @@ func newClusterConfigurer(ctx context.Context, handle *clusterHandle, leaseName,
 		return nil, err
 	}
 
-	gkeCluster := operatorv1beta1.GKECluster{
-		Project:  gkeInfo.project,
-		Location: gkeInfo.location,
-		Name:     gkeInfo.clusterName,
-	}
-	manifests := newManifestBuilder(gkeInfo.contextName, gkeCluster, gkeInfo.project, image, leaseName, leaseNamespace, bucket)
+	manifests := newManifestBuilder(gkeInfo.contextName, gkeInfo.gkeCluster(), gkeInfo.project, image, leaseName, leaseNamespace, bucket)
 	return &clusterConfigurer{
 		handle:          handle,
 		gkeInfo:         gkeInfo,
@@ -199,7 +194,9 @@ func (c *clusterConfigurer) updateConfigConnector(ctx context.Context) error {
 	return nil
 }
 
-func (c *clusterConfigurer) gkeCluster() gkeClusterInfo {
+// clusterInfo returns the GKE project/location/cluster parsed from the cluster's context,
+// used by the GCP provisioner.
+func (c *clusterConfigurer) clusterInfo() gkeClusterInfo {
 	return c.gkeInfo
 }
 
