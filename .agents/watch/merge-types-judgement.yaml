@@ -18,19 +18,18 @@
 # approves it - the review's text carries prow's /lgtm and /approve - and
 # sets auto-merge at the head it checked, which the merge queue takes.
 #
-# For now a maintainer's lgtm is required too: the merger adds the rest.
-# Drop lgtm from labels.all to merge good Step 1b PRs on the assessment
-# alone.
+# Opt-in: only a PR labelled overseer/auto-merge is merged; take the label
+# off to keep a PR for a person.
 #
 # Order 80: after factory's PR rules and the assessments (70, 71), which
 # put the grade on first.
 name: merge-types-judgement
-description: Merge a Step 1b PR graded good, with green checks and a maintainer's lgtm
+description: Merge a Step 1b PR opted in (overseer/auto-merge) and graded good, with green checks
 on: pr
 order: 80
 when:
   labels:
-    all: [step/types-judgement, greenfield, overseer/ready-for-human, overseer/assessment/good, lgtm]
+    all: [overseer/auto-merge, step/types-judgement, greenfield, overseer/ready-for-human, overseer/assessment/good]
     none: [do-not-merge/hold, overseer/stop]
   checks: green
   mergeable: true
@@ -45,7 +44,7 @@ run:
       /lgtm
       /approve
 
-      Approved for merge by the overseer: assess-types-judgement graded this Step 1b PR good, its checks are green, and a maintainer gave it lgtm.
+      Approved for merge by the overseer: this Step 1b PR meets the criteria for approval - assess-types-judgement graded it good, its checks are green, and it is mergeable.
 policy:
   dedupe: head
   cooldown:
