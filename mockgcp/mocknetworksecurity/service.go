@@ -65,6 +65,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pbv1.RegisterDnsThreatDetectorServiceServer(grpcServer, &DnsThreatDetectorServer{MockService: s})
 	pbv1.RegisterSecurityProfileGroupServiceServer(grpcServer, &SecurityProfileGroupServer{MockService: s})
 	pbv1.RegisterAddressGroupServiceServer(grpcServer, &AddressGroupServer{MockService: s})
+	pbv1.RegisterOrganizationSecurityProfileGroupServiceServer(grpcServer, &OrganizationSecurityProfileGroupServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -82,6 +83,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pbv1.NewDnsThreatDetectorServiceClient(conn))
 	mux.AddService(pbv1.NewSecurityProfileGroupServiceClient(conn))
 	mux.AddService(pbv1.NewAddressGroupServiceClient(conn))
+	// Named, since the client's methods match the project service's too.
+	mux.AddService(pbv1.NewOrganizationSecurityProfileGroupServiceClient(conn), httptogrpc.WithServiceName("google.cloud.networksecurity.v1.OrganizationSecurityProfileGroupService"))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
