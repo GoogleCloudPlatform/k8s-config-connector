@@ -1,0 +1,514 @@
+# Phase: CREATE
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "endpoint \"projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints?alt=json&endpointId=vertexaiendpoint-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "vertexai-endpoint-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateEndpointOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateEndpointOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Endpoint",
+    "displayName": "vertexai-endpoint-${uniqueId}",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "vertexai-endpoint-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/CreateModelDeploymentMonitoringJob
+
+{
+  "modelDeploymentMonitoringJob": {
+    "displayName": "Minimal Model Deployment Monitoring Job ${uniqueId}",
+    "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+    "loggingSamplingStrategy": {
+      "randomSampleConfig": {
+        "sampleRate": 0.5
+      }
+    },
+    "modelDeploymentMonitoringObjectiveConfigs": [
+      {
+        "deployedModelId": "deployed-model-1",
+        "objectiveConfig": {
+          "predictionDriftDetectionConfig": {
+            "defaultDriftThreshold": {
+              "value": 0.05
+            }
+          }
+        }
+      }
+    ],
+    "modelDeploymentMonitoringScheduleConfig": {
+      "monitorInterval": "3600s"
+    }
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "bigqueryTables": [
+    {
+      "bigqueryTablePath": "bq://${projectId}.model_deployment_monitoring_vertexaiendpoint-${uniqueId}.serving_predict",
+      "logSource": "SERVING",
+      "logType": "PREDICT",
+      "requestResponseLoggingSchemaVersion": "v1"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Deployment Monitoring Job ${uniqueId}",
+  "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "loggingSamplingStrategy": {
+    "randomSampleConfig": {
+      "sampleRate": 0.5
+    }
+  },
+  "modelDeploymentMonitoringObjectiveConfigs": [
+    {
+      "deployedModelId": "deployed-model-1",
+      "objectiveConfig": {
+        "predictionDriftDetectionConfig": {
+          "defaultDriftThreshold": {
+            "value": 0.05
+          }
+        }
+      }
+    }
+  ],
+  "modelDeploymentMonitoringScheduleConfig": {
+    "monitorInterval": "3600s"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}",
+  "nextScheduleTime": "2024-04-01T12:34:56.123456Z",
+  "scheduleState": "OFFLINE",
+  "state": "JOB_STATE_RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GRPC /google.cloud.aiplatform.v1.JobService/GetModelDeploymentMonitoringJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}"
+}
+
+OK
+
+{
+  "bigqueryTables": [
+    {
+      "bigqueryTablePath": "bq://${projectId}.model_deployment_monitoring_vertexaiendpoint-${uniqueId}.serving_predict",
+      "logSource": "SERVING",
+      "logType": "PREDICT",
+      "requestResponseLoggingSchemaVersion": "v1"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Deployment Monitoring Job ${uniqueId}",
+  "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "loggingSamplingStrategy": {
+    "randomSampleConfig": {
+      "sampleRate": 0.5
+    }
+  },
+  "modelDeploymentMonitoringObjectiveConfigs": [
+    {
+      "deployedModelId": "deployed-model-1",
+      "objectiveConfig": {
+        "predictionDriftDetectionConfig": {
+          "defaultDriftThreshold": {
+            "value": 0.05
+          }
+        }
+      }
+    }
+  ],
+  "modelDeploymentMonitoringScheduleConfig": {
+    "monitorInterval": "3600s"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}",
+  "nextScheduleTime": "2024-04-01T12:34:56.123456Z",
+  "scheduleState": "OFFLINE",
+  "state": "JOB_STATE_RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/UpdateModelDeploymentMonitoringJob
+
+{
+  "modelDeploymentMonitoringJob": {
+    "displayName": "Minimal Model Deployment Monitoring Job Updated ${uniqueId}",
+    "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+    "loggingSamplingStrategy": {
+      "randomSampleConfig": {
+        "sampleRate": 0.8
+      }
+    },
+    "modelDeploymentMonitoringObjectiveConfigs": [
+      {
+        "deployedModelId": "deployed-model-1",
+        "objectiveConfig": {
+          "predictionDriftDetectionConfig": {
+            "defaultDriftThreshold": {
+              "value": 0.1
+            }
+          }
+        }
+      }
+    ],
+    "modelDeploymentMonitoringScheduleConfig": {
+      "monitorInterval": "3600s"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}"
+  },
+  "updateMask": "displayName,loggingSamplingStrategy,modelDeploymentMonitoringObjectiveConfigs"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UpdateModelDeploymentMonitoringJobOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.ModelDeploymentMonitoringJob",
+    "bigqueryTables": [
+      {
+        "bigqueryTablePath": "bq://${projectId}.model_deployment_monitoring_vertexaiendpoint-${uniqueId}.serving_predict",
+        "logSource": "SERVING",
+        "logType": "PREDICT",
+        "requestResponseLoggingSchemaVersion": "v1"
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Minimal Model Deployment Monitoring Job Updated ${uniqueId}",
+    "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+    "loggingSamplingStrategy": {
+      "randomSampleConfig": {
+        "sampleRate": 0.8
+      }
+    },
+    "modelDeploymentMonitoringObjectiveConfigs": [
+      {
+        "deployedModelId": "deployed-model-1",
+        "objectiveConfig": {
+          "predictionDriftDetectionConfig": {
+            "defaultDriftThreshold": {
+              "value": 0.1
+            }
+          }
+        }
+      }
+    ],
+    "modelDeploymentMonitoringScheduleConfig": {
+      "monitorInterval": "3600s"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}",
+    "nextScheduleTime": "2024-04-01T12:34:56.123456Z",
+    "scheduleState": "OFFLINE",
+    "state": "JOB_STATE_RUNNING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+# Phase: DELETE
+GRPC /google.cloud.aiplatform.v1.JobService/GetModelDeploymentMonitoringJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}"
+}
+
+OK
+
+{
+  "bigqueryTables": [
+    {
+      "bigqueryTablePath": "bq://${projectId}.model_deployment_monitoring_vertexaiendpoint-${uniqueId}.serving_predict",
+      "logSource": "SERVING",
+      "logType": "PREDICT",
+      "requestResponseLoggingSchemaVersion": "v1"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Deployment Monitoring Job Updated ${uniqueId}",
+  "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "loggingSamplingStrategy": {
+    "randomSampleConfig": {
+      "sampleRate": 0.8
+    }
+  },
+  "modelDeploymentMonitoringObjectiveConfigs": [
+    {
+      "deployedModelId": "deployed-model-1",
+      "objectiveConfig": {
+        "predictionDriftDetectionConfig": {
+          "defaultDriftThreshold": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  ],
+  "modelDeploymentMonitoringScheduleConfig": {
+    "monitorInterval": "3600s"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}",
+  "nextScheduleTime": "2024-04-01T12:34:56.123456Z",
+  "scheduleState": "OFFLINE",
+  "state": "JOB_STATE_RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/GetModelDeploymentMonitoringJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}"
+}
+
+OK
+
+{
+  "bigqueryTables": [
+    {
+      "bigqueryTablePath": "bq://${projectId}.model_deployment_monitoring_vertexaiendpoint-${uniqueId}.serving_predict",
+      "logSource": "SERVING",
+      "logType": "PREDICT",
+      "requestResponseLoggingSchemaVersion": "v1"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Model Deployment Monitoring Job Updated ${uniqueId}",
+  "endpoint": "projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "loggingSamplingStrategy": {
+    "randomSampleConfig": {
+      "sampleRate": 0.8
+    }
+  },
+  "modelDeploymentMonitoringObjectiveConfigs": [
+    {
+      "deployedModelId": "deployed-model-1",
+      "objectiveConfig": {
+        "predictionDriftDetectionConfig": {
+          "defaultDriftThreshold": {
+            "value": 0.1
+          }
+        }
+      }
+    }
+  ],
+  "modelDeploymentMonitoringScheduleConfig": {
+    "monitorInterval": "3600s"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}",
+  "nextScheduleTime": "2024-04-01T12:34:56.123456Z",
+  "scheduleState": "OFFLINE",
+  "state": "JOB_STATE_RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.JobService/DeleteModelDeploymentMonitoringJob
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/modelDeploymentMonitoringJobs/${modelDeploymentMonitoringJobID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "vertexai-endpoint-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

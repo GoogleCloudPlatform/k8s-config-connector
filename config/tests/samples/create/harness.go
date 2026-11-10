@@ -1532,6 +1532,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformSpecialistPool"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformCustomJob"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformHyperparameterTuningJob"}:
+			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "AIPlatformModelDeploymentMonitoringJob"}:
 
 			case schema.GroupKind{Group: "videostitcher.cnrm.cloud.google.com", Kind: "VideoStitcherCDNKey"}:
 

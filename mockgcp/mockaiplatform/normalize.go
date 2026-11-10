@@ -119,7 +119,10 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 	}
 
-	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") {
+	if strings.Contains(event.URL(), "JobService") || strings.Contains(event.URL(), "customJobs") || strings.Contains(event.URL(), "modelDeploymentMonitoringJobs") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateModelDeploymentMonitoringJobOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.UpdateModelDeploymentMonitoringJobOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+
 		previsitCustomJob := func(val string) {
 			if strings.Contains(val, "/customJobs/") {
 				tokens := strings.Split(val, "/")
@@ -142,6 +145,30 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 		event.VisitResponseStringValues(func(path string, value string) {
 			previsitCustomJob(value)
+		})
+
+		previsitMonitoringJob := func(val string) {
+			if strings.Contains(val, "/modelDeploymentMonitoringJobs/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "modelDeploymentMonitoringJobs" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${modelDeploymentMonitoringJobID}")
+						}
+					}
+				}
+			}
+		}
+		previsitMonitoringJob(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitMonitoringJob(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitMonitoringJob(value)
 		})
 	}
 }

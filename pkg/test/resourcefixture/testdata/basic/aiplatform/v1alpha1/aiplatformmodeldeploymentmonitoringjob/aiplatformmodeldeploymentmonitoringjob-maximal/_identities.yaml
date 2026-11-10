@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIEndpoint
+  name: vertexaiendpoint-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformModelDeploymentMonitoringJob
+  name: aiplatformmodeldeploymentmonitoringjob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

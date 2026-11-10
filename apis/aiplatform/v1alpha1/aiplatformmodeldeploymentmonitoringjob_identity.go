@@ -105,13 +105,13 @@ func (obj *AIPlatformModelDeploymentMonitoringJob) GetIdentity(ctx context.Conte
 		}
 
 		if specIdentity.ModelDeploymentMonitoringJob == "" {
-			if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+			if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location {
 				return nil, fmt.Errorf("cannot change AIPlatformModelDeploymentMonitoringJob parent (old parent=%s/%s, new parent=%s/%s)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
 			}
 			return statusIdentity, nil
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location || statusIdentity.ModelDeploymentMonitoringJob != specIdentity.ModelDeploymentMonitoringJob {
 			return nil, fmt.Errorf("cannot change AIPlatformModelDeploymentMonitoringJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
