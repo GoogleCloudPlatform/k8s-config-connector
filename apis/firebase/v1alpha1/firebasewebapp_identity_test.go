@@ -16,6 +16,8 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestFirebaseWebAppIdentity(t *testing.T) {
@@ -28,6 +30,15 @@ func TestFirebaseWebAppIdentity(t *testing.T) {
 		{
 			name: "valid external reference",
 			ref:  "projects/test-project/webApps/1:123456789:web:abcdef",
+			expected: &FirebaseWebAppIdentity{
+				Project: "test-project",
+				App:     "1:123456789:web:abcdef",
+			},
+			expectedErr: false,
+		},
+		{
+			name: "valid full URL",
+			ref:  "//firebase.googleapis.com/projects/test-project/webApps/1:123456789:web:abcdef",
 			expected: &FirebaseWebAppIdentity{
 				Project: "test-project",
 				App:     "1:123456789:web:abcdef",
@@ -55,11 +66,45 @@ func TestFirebaseWebAppIdentity(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if id.Project != tc.expected.Project || id.App != tc.expected.App {
-				t.Fatalf("got %v, want %v", id, tc.expected)
+			if diff := cmp.Diff(tc.expected, id); diff != "" {
+				t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 			}
-			if got := id.String(); got != tc.ref {
-				t.Fatalf("id.String() got %q, want %q", got, tc.ref)
+			if got := id.String(); got != tc.expected.String() {
+				t.Fatalf("id.String() got %q, want %q", got, tc.expected.String())
+			}
+		})
+	}
+}
+
+func TestFirebaseWebAppRef_ValidateExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+	}{
+		{
+			name: "valid relative external ref",
+			ref:  "projects/test-project/webApps/1:123456789:web:abcdef",
+		},
+		{
+			name: "valid full external ref",
+			ref:  "//firebase.googleapis.com/projects/test-project/webApps/1:123456789:web:abcdef",
+		},
+		{
+			name:    "invalid external ref",
+			ref:     "invalid",
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := &FirebaseWebAppRef{
+				External: tt.ref,
+			}
+			err := r.ValidateExternal(r.External)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
