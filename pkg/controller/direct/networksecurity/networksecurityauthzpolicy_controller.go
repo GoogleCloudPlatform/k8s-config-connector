@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -89,7 +90,7 @@ func (m *authzPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 	}
 
 	// Propagating KRM Metadata Labels
-	desired.Labels = obj.GetLabels()
+	desired.Labels = label.GCPLabels(u)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {

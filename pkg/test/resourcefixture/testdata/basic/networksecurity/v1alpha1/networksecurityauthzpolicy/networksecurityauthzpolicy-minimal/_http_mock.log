@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -47,7 +48,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
     }
   ],
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "target": {
     "loadBalancingScheme": 1,
@@ -127,7 +129,8 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-min-${uniqueId}",
     "target": {
@@ -177,7 +180,8 @@ X-Xss-Protection: 0
     }
   ],
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-min-${uniqueId}",
   "target": {
@@ -191,6 +195,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)

@@ -45,7 +45,7 @@ func authzPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".update_time")
 
 	f.Unimplemented_Identity(".name")
-	f.Unimplemented_NotYetTriaged(".labels")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }
