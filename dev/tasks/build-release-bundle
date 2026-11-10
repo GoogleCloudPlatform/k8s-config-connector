@@ -98,7 +98,6 @@ BLOCKED_KINDS=(
     "ApigeeRegistryArtifact"
     "ApigeeRegistryInstance"
     "APIHubAPI"
-    "ApiHubAttribute"
     "ApiHubCuration"
     "ApiHubDependency"
     "ApiHubDeployment"
