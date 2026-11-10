@@ -19,8 +19,8 @@ spec:
       machineType: n1-standard-1
     totalCount: 1
   timeWindow:
-    endTime: "2026-11-11T00:00:00Z"
-    startTime: "2026-11-10T00:00:00Z"
+    endTime: "2036-11-11T00:00:00Z"
+    startTime: "2036-11-10T00:00:00Z"
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

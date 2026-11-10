@@ -3,6 +3,7 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
+X-Goog-Api-Version: 2026-09-01
 
 {
   "autoDeleteAutoCreatedReservations": false,
@@ -15,8 +16,8 @@ Content-Type: application/json
     "totalCount": "10"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2036-11-11T00:00:00Z",
+    "startTime": "2036-11-10T00:00:00Z"
   }
 }
 
@@ -52,6 +53,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-ce
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -86,6 +88,7 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -121,8 +124,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2036-11-11T00:00:00Z",
+    "startTime": "2036-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
@@ -134,6 +137,7 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
+X-Goog-Api-Version: 2026-09-01
 
 {
   "description": "test future reservation updated",
@@ -175,6 +179,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-ce
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -209,6 +214,7 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -244,8 +250,8 @@ X-Xss-Protection: 0
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
-    "endTime": "2026-11-11T00:00:00Z",
-    "startTime": "2026-11-10T00:00:00Z"
+    "endTime": "2036-11-11T00:00:00Z",
+    "startTime": "2036-11-10T00:00:00Z"
   },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
@@ -256,6 +262,7 @@ DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -289,6 +296,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-ce
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
+X-Goog-Api-Version: 2026-09-01
 
 200 OK
 Content-Type: application/json; charset=UTF-8

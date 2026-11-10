@@ -32,7 +32,7 @@ spec:
       machineType: n2-standard-4
   timeWindow:
     # Future reservation must specify a future start time.
-    startTime: 2026-11-10T00:00:00Z
+    startTime: 2036-11-10T00:00:00Z
     # Future reservation end time must be at least 24 hours later than start time.
     # One of duration or endTime must be set.
     duration:
