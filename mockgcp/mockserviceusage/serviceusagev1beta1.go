@@ -30,6 +30,10 @@ type ServiceUsageV1Beta1 struct {
 }
 
 func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *pb.GenerateServiceIdentityRequest) (*longrunning.Operation, error) {
+	// Folders and organizations (hierarchyidentity.go).
+	if op, ok, err := s.hierarchyServiceIdentity(ctx, req.Parent); ok {
+		return op, err
+	}
 	name, err := s.parseServiceName(req.Parent)
 	if err != nil {
 		return nil, err
