@@ -1,0 +1,7 @@
+# Adds namespace to all resources.
+namespace: krmsyncer-system
+
+resources:
+- ../crd
+- ../rbac
+- ../manager

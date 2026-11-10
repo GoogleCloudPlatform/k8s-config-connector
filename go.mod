@@ -387,6 +387,12 @@ replace github.com/hashicorp/terraform-provider-google-beta => ./third_party/git
 
 replace github.com/GoogleCloudPlatform/declarative-resource-client-library => ./third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library
 
+// Forks of the multi-cluster leader election components, copied at the versions required above.
+// See third_party/github.com/gke-labs/README.md.
+replace github.com/gke-labs/multicluster-leader-election => ./third_party/github.com/gke-labs/multicluster-leader-election
+
+replace github.com/gke-labs/kube-etl/syncer => ./third_party/github.com/gke-labs/kube-etl/syncer
+
 replace (
 	github.com/google/gnostic-models => github.com/google/gnostic-models v0.6.9
 	k8s.io/api => k8s.io/api v0.33.10
