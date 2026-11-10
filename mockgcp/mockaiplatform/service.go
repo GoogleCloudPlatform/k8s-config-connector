@@ -73,6 +73,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pbv1.RegisterSpecialistPoolServiceServer(grpcServer, &specialistPoolService{MockService: s})
 	pbv1.RegisterReasoningEngineServiceServer(grpcServer, &reasoningEngineService{MockService: s})
 	pbv1.RegisterJobServiceServer(grpcServer, &jobService{MockService: s})
+	pbv1.RegisterGenAiCacheServiceServer(grpcServer, &cachedContentService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
 	desc := pb.FeatureOnlineStoreAdminService_ServiceDesc
@@ -118,6 +119,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pbv1.NewSpecialistPoolServiceClient(conn))
 	mux.AddService(pbv1.NewReasoningEngineServiceClient(conn))
 	mux.AddService(pbv1.NewJobServiceClient(conn))
+	mux.AddService(pbv1.NewGenAiCacheServiceClient(conn))
 
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
