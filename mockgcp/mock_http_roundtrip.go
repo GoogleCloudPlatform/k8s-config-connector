@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 	"regexp"
 
 	"google.golang.org/grpc"
@@ -172,7 +173,12 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	mockRoundTripper.server = server
 
 	// We listen on a random port on 127.0.0.2, to avoid conflicts with the webhook server which starts on a random port on "default" localhost
-	listener, err := net.Listen("tcp", "127.0.0.2:0")
+	// MOCKGCP_LISTEN_ADDRESS overrides it: macOS has no 127.0.0.2 unless lo0 is aliased.
+	listenAddress := os.Getenv("MOCKGCP_LISTEN_ADDRESS")
+	if listenAddress == "" {
+		listenAddress = "127.0.0.2:0"
+	}
+	listener, err := net.Listen("tcp", listenAddress)
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen failed: %w", err)
 	}
