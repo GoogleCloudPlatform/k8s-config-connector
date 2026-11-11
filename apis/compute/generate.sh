@@ -50,14 +50,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
   --resource ComputeInstantSnapshot:InstantSnapshot \
+  --resource ComputeHealthCheckService:HealthCheckService \
   --include-skipped-output
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --prepopulate-resource \
-  --resource ComputeHealthCheckService:HealthCheckService
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \

@@ -15,8 +15,7 @@
 // API sources for ComputeHealthCheckService, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthCheckServices
 
 package v1alpha1
 
@@ -33,13 +32,16 @@ var ComputeHealthCheckServiceGVK = GroupVersion.WithKind("ComputeHealthCheckServ
 // +kcc:required-from-proto
 type ComputeHealthCheckServiceSpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Location represents the geographical location of the ComputeHealthCheckService. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// +required
+	Location string `json:"location"`
 
 	// The ComputeHealthCheckService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// An optional description of this resource. Provide this property when you create the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.description
 	Description *string `json:"description,omitempty"`
@@ -64,10 +66,6 @@ type ComputeHealthCheckServiceSpec struct {
 	// A list of URLs to the NotificationEndpoint resources. Must not have more than 10. A list of endpoints for receiving notifications of change in health status. For regional HealthCheckService, NotificationEndpoint must be regional and in the same region. For global HealthCheckService, NotificationEndpoint must be global.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.notification_endpoints
 	NotificationEndpoints []string `json:"notificationEndpoints,omitempty"`
-
-	// [Output Only] URL of the region where the health check service resides. This field is not applicable to global health check services. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.region
-	Region *string `json:"region,omitempty"`
 }
 
 // ComputeHealthCheckServiceStatus defines the config connector machine state of ComputeHealthCheckService
@@ -90,22 +88,22 @@ type ComputeHealthCheckServiceStatus struct {
 // +kcc:observedstate:proto=google.cloud.compute.v1.HealthCheckService
 type ComputeHealthCheckServiceObservedState struct {
 	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// [Output only] Type of the resource. Always compute#healthCheckServicefor health check services.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.kind
 	Kind *string `json:"kind,omitempty"`
 
+	// [Output Only] URL of the region where the health check service resides. This field is not applicable to global health check services. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.region
+	Region *string `json:"region,omitempty"`
+
 	// [Output Only] Server-defined URL for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }

@@ -1244,6 +1244,11 @@ func (in *ComputeHealthCheckServiceObservedState) DeepCopyInto(out *ComputeHealt
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -1284,11 +1289,6 @@ func (in *ComputeHealthCheckServiceSpec) DeepCopyInto(out *ComputeHealthCheckSer
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -1323,11 +1323,6 @@ func (in *ComputeHealthCheckServiceSpec) DeepCopyInto(out *ComputeHealthCheckSer
 		in, out := &in.NotificationEndpoints, &out.NotificationEndpoints
 		*out = make([]string, len(*in))
 		copy(*out, *in)
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
-		**out = **in
 	}
 }
 

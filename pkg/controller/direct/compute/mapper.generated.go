@@ -2283,6 +2283,7 @@ func ComputeHealthCheckServiceObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -2295,6 +2296,7 @@ func ComputeHealthCheckServiceObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -2310,7 +2312,6 @@ func ComputeHealthCheckServiceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.NetworkEndpointGroups = in.NetworkEndpointGroups
 	out.NotificationEndpoints = in.NotificationEndpoints
-	out.Region = in.Region
 	return out
 }
 func ComputeHealthCheckServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthCheckServiceSpec) *pb.HealthCheckService {
@@ -2325,7 +2326,6 @@ func ComputeHealthCheckServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.NetworkEndpointGroups = in.NetworkEndpointGroups
 	out.NotificationEndpoints = in.NotificationEndpoints
-	out.Region = in.Region
 	return out
 }
 

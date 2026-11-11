@@ -2125,7 +2125,6 @@
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkEndpointGroups[]" is not set in unstructured objects
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationEndpoints[]" is not set in unstructured objects
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.groupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

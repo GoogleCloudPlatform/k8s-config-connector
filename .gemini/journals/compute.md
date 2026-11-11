@@ -110,4 +110,14 @@
   4. Added `computehealthcheckservices.compute.cnrm.cloud.google.com` entries to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Idempotency verified and all tests pass.
 
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeHealthCheckService
+- **Context**: Triaging `apis/compute/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeHealthCheckService` (issue #15418).
+- **Findings & Resolutions**:
+  1. `ComputeHealthCheckService` is a regional resource under `projects/{project}/regions/{region}/healthCheckServices/{healthcheckservice}`. In `computehealthcheckservice_types.go`, `spec.location` was made a required string (`Location string`) representing the region name, matching standard Compute conventions.
+  2. `spec.region` was confirmed as output-only per proto comments ("It is not settable as a field in the request body") and moved to `ComputeHealthCheckServiceObservedState.Region`.
+  3. Verified documentation link and updated `+kcc:source:resource-docs` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthCheckServices`, removing guess annotations.
+  4. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only and retained in `ComputeHealthCheckServiceObservedState` with guess markers removed.
+  5. Deterministic identity and reference generation via `controllerbuilder generate-identity` were retained in `apis/compute/generate.sh`, while `ComputeHealthCheckService:HealthCheckService` was moved into the primary `generate-types` invocation.
+  6. Resolved all 9 entries in `apis/compute/judgement_queue.yaml` for `ComputeHealthCheckService`.
+- **Impact**: Cleanly resolved the entire judgement queue for `ComputeHealthCheckService`. CRDs and mapper bindings updated, and all unit tests and API checks pass.
 
