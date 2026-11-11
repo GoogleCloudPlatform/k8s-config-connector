@@ -51,6 +51,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionSSLPolicy:SslPolicy \
   --resource ComputeInstantSnapshot:InstantSnapshot \
   --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -59,12 +60,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ComputeHealthCheckService:HealthCheckService
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --prepopulate-resource \
-  --resource ComputeVMExtensionPolicy:VmExtensionPolicy
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
