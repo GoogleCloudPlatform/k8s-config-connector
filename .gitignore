@@ -103,6 +103,7 @@ anaconda-mode/
 
 # pycache
 scripts/dclsampleconverter/__pycache__
+hack/tools/**/__pycache__/
 
 # temporary YAMLs
 config/installbundle/components/manager/base/manager_image_patch.yaml
