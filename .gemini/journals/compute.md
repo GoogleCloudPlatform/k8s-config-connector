@@ -126,7 +126,7 @@
 - **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for `ComputeVMExtensionPolicy` under `apis/compute/v1alpha1/` (issue #15353).
 - **Proto & Service Details**: `VmExtensionPolicy` and `ZoneVmExtensionPolicies` service exist in `cloud.google.com/go/compute/apiv1/computepb` and newer googleapis revisions, but are missing from the pinned googleapis commit (1765b559c4). Following the established pattern for Compute (e.g. `SecurityPolicyAssociation`), patched `dev/tools/controllerbuilder/generate-proto.sh` to inject `VmExtensionPolicy` and `ZoneVmExtensionPolicies` into `google/cloud/compute/v1/compute.proto`.
 - **Implementation**:
-  1. Configured `apis/compute/generate.sh` with `generate-types`, `generate-identity`, and `--prepopulate-resource` on `generate-mapper` for `ComputeVMExtensionPolicy`.
+  1. Configured `apis/compute/generate.sh` with a dedicated `generate-types` command (with `--prepopulate-resource`) and `generate-identity` for `ComputeVMExtensionPolicy`, and added manual mapper helpers in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` for `ExtensionPolicies` map conversion.
   2. Registered `ComputeVMExtensionPolicy` in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   3. Generated types, CRD, and `apis/compute/judgement_queue.yaml` with open triage findings.
   4. Verified conformance tests and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.

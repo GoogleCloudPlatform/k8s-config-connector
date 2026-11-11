@@ -46,16 +46,27 @@ if [[ "${OUTPUT_PATH}" != /* ]]; then
     OUTPUT_PATH="$(realpath -m "${CALLER_DIR}/${OUTPUT_PATH}")"
 fi
 
+if [ -n "${2:-}" ]; then
+    # Explicitly provided output path, use it directly
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
+else
+    # Default output path, version it with the SHA.
+    # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+fi
+
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
 
-# Fast-path check: if versioned pb file already exists (and force is not set), exit immediately
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
-if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+# Fast-path check: if versioned pb file already exists, matches script hash, and force is not set, exit immediately
+SCRIPT_HASH=$(sha256sum "${REPO_ROOT}/dev/tools/controllerbuilder/generate-proto.sh" | awk '{print $1}')
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ] && [ -f "${VERSIONED_OUTPUT_PATH}.hash" ]; then
+    if [ "$(cat "${VERSIONED_OUTPUT_PATH}.hash" 2>/dev/null)" == "${SCRIPT_HASH}" ]; then
+        if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+            cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+        fi
+        exit 0
     fi
-    exit 0
 fi
 
 DEFAULT_GOOGLEAPI_DIR="${THIRD_PARTY}/googleapis"
@@ -67,15 +78,6 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     echo "Fetching latest googleapis for HEAD version"
     cd "${DEFAULT_GOOGLEAPI_DIR}"
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
-fi
-
-if [ -n "${2:-}" ]; then
-    # Explicitly provided output path, use it directly
-    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
-else
-    # Default output path, version it with the SHA.
-    # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
-    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 fi
 
 if [[ "${FORCE_GENERATE}" != "1" ]] && [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
@@ -382,16 +384,6 @@ else
     fi
 fi
 
-
-if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    fi
-    exit 0
-fi
-
-
 # Enable nullglob shell option so that unmatched glob patterns (e.g. if certain subdirectories don't contain any .proto files)
 # expand to an empty string instead of the literal wildcard string, avoiding protoc errors.
 shopt -s nullglob
@@ -452,3 +444,4 @@ protoc --include_imports --include_source_info \
 if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
 fi
+echo "${SCRIPT_HASH}" > "${VERSIONED_OUTPUT_PATH}.hash"
