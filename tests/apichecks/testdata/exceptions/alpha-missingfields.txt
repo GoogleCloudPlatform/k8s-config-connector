@@ -6234,13 +6234,6 @@
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.postureID" is not set in unstructured objects
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.postureRevisionID" is not set in unstructured objects
 [missing_field] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetResource" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].description" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].complianceStandards[].control" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].complianceStandards[].standard" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraint.cannedConstraintID" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraint.policyRules[].allowAll" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.orgPolicyConstraint.policyRules[].condition.description" is not set in unstructured objects
@@ -6282,12 +6275,6 @@
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.securityHealthAnalyticsCustomModule.config.severity" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.securityHealthAnalyticsCustomModule.displayName" is not set in unstructured objects
 [missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.securityHealthAnalyticsCustomModule.moduleEnablementState" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.securityHealthAnalyticsModule.moduleEnablementState" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].constraint.securityHealthAnalyticsModule.moduleName" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].description" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policies[].policyID" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.policySets[].policySetID" is not set in unstructured objects
-[missing_field] crd=securityposturepostures.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.dimensions" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.force" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.limit" is not set in unstructured objects
