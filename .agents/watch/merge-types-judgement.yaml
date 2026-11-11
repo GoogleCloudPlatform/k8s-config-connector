@@ -1,0 +1,52 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# merge-types-judgement: a greenfield Step 1b PR (step/types-judgement) that
+# the overseer handed to people and assess-types-judgement graded good is
+# merged by the merger once its checks are green, it is mergeable, not a
+# draft, not held, and nobody asked for changes: factory's merge recipe
+# approves it - the review's text carries prow's /lgtm and /approve - and
+# sets auto-merge at the head it checked, which the merge queue takes.
+#
+# Opt-in: only a PR labelled overseer/auto-merge is merged; take the label
+# off to keep a PR for a person.
+#
+# Order 80: after factory's PR rules and the assessments (70, 71), which
+# put the grade on first.
+name: merge-types-judgement
+description: Merge a Step 1b PR opted in (overseer/auto-merge) and graded good, with green checks
+on: pr
+order: 80
+when:
+  labels:
+    all: [overseer/auto-merge, step/types-judgement, greenfield, overseer/ready-for-human, overseer/assessment/good]
+    none: [do-not-merge/hold, overseer/stop]
+  checks: green
+  mergeable: true
+  draft: false
+  changes-requested: false
+run:
+  recipe: merge
+  inputs:
+    # The approving review. prow reads commands in it, one per line, at
+    # the start of the line.
+    message: |
+      /lgtm
+      /approve
+
+      Approved for merge by the overseer: this Step 1b PR meets the criteria for approval - assess-types-judgement graded it good, its checks are green, and it is mergeable.
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 12h
