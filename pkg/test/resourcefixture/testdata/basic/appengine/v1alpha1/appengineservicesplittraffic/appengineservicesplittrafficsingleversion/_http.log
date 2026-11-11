@@ -1,0 +1,229 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "name": "apps/${projectId}/services/default",
+  "split": {
+    "allocations": {
+      "v1": 0.8,
+      "v2": 0.2
+    },
+    "shardBy": 2
+  }
+}
+
+---
+
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+Content-Type: application/json
+
+{
+  "id": "000000000000000000000",
+  "split": {
+    "allocations": {
+      "v1": 0.5,
+      "v2": 0.5
+    },
+    "shardBy": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Services.UpdateService",
+    "target": "apps/${projectId}/services/default",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Services.UpdateService",
+    "target": "apps/${projectId}/services/default",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Service",
+    "id": "000000000000000000000",
+    "name": "apps/${projectId}/services/default",
+    "split": {
+      "allocations": {
+        "v1": 0.5,
+        "v2": 0.5
+      },
+      "shardBy": "IP"
+    }
+  }
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "name": "apps/${projectId}/services/default",
+  "split": {
+    "allocations": {
+      "v1": 0.5,
+      "v2": 0.5
+    },
+    "shardBy": 2
+  }
+}
+
+---
+
+# Phase: UPDATE
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint&updateMask=split
+Content-Type: application/json
+
+{
+  "id": "000000000000000000000",
+  "split": {
+    "allocations": {
+      "v2": 1
+    },
+    "shardBy": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Services.UpdateService",
+    "target": "apps/${projectId}/services/default",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}"
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.appengine.v1.OperationMetadataV1",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "insertTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.appengine.v1.Services.UpdateService",
+    "target": "apps/${projectId}/services/default",
+    "user": "user@${projectId}.iam.gserviceaccount.com"
+  },
+  "name": "apps/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.appengine.v1.Service",
+    "id": "000000000000000000000",
+    "name": "apps/${projectId}/services/default",
+    "split": {
+      "allocations": {
+        "v2": 1
+      }
+    }
+  }
+}
+
+---
+
+GET https://appengine.googleapis.com/v1/apps/${projectId}/services/default?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "name": "apps/${projectId}/services/default",
+  "split": {
+    "allocations": {
+      "v2": 1
+    }
+  }
+}

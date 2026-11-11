@@ -109,6 +109,12 @@ func (s *servicesServer) UpdateService(ctx context.Context, req *pb.UpdateServic
 			case "split":
 				if req.GetService() != nil && req.GetService().GetSplit() != nil {
 					obj.Split = proto.Clone(req.GetService().GetSplit()).(*pb.TrafficSplit)
+					// Like App Engine: when an update that is not a traffic migration leaves
+					// one version in the split, the diversion method is irrelevant, so
+					// shardBy is cleared.
+					if !req.GetMigrateTraffic() && len(obj.Split.GetAllocations()) == 1 {
+						obj.Split.ShardBy = pb.TrafficSplit_UNSPECIFIED
+					}
 				} else {
 					obj.Split = nil
 				}
