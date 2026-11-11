@@ -23,8 +23,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/kubecli"
 	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
+	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
@@ -196,7 +198,18 @@ func TestValidateMultiClusterLeaseConfigsErrors(t *testing.T) {
 	}
 }
 
+// newFakeClusterHandle returns a handle to a fake cluster that reports every Deployment as rolled
+// out, like a cluster whose pods start and stay healthy.
 func newFakeClusterHandle(t *testing.T, contextName string, objs ...runtime.Object) *clusterHandle {
+	t.Helper()
+	handle := newFakeClusterHandleWithPendingDeployments(t, contextName, objs...)
+	handle.client.Client = &rolledOutDeploymentsClient{Client: handle.client.Client}
+	return handle
+}
+
+// newFakeClusterHandleWithPendingDeployments returns a handle to a fake cluster whose Deployments
+// never roll out: the fake client has no Deployment controller, so their status stays empty.
+func newFakeClusterHandleWithPendingDeployments(t *testing.T, contextName string, objs ...runtime.Object) *clusterHandle {
 	t.Helper()
 	scheme, err := newHAScheme()
 	if err != nil {
@@ -209,6 +222,32 @@ func newFakeClusterHandle(t *testing.T, contextName string, objs ...runtime.Obje
 			Client: fakeClient,
 		},
 	}
+}
+
+// rolledOutDeploymentsClient stands in for the Deployment controller: every Deployment it returns
+// has finished rolling out its current spec.
+type rolledOutDeploymentsClient struct {
+	client.Client
+}
+
+func (c *rolledOutDeploymentsClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+	if err := c.Client.Get(ctx, key, obj, opts...); err != nil {
+		return err
+	}
+	if deployment, ok := obj.(*appsv1.Deployment); ok {
+		replicas := int32(1)
+		if deployment.Spec.Replicas != nil {
+			replicas = *deployment.Spec.Replicas
+		}
+		deployment.Status = appsv1.DeploymentStatus{
+			ObservedGeneration: deployment.Generation,
+			Replicas:           replicas,
+			UpdatedReplicas:    replicas,
+			ReadyReplicas:      replicas,
+			AvailableReplicas:  replicas,
+		}
+	}
+	return nil
 }
 
 // newConfigConnectorWithMCL returns a ConfigConnector whose MultiClusterLease runs in the GKE
