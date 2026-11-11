@@ -2280,9 +2280,11 @@ func ComputeHealthCheckServiceObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	}
 	out := &krmcomputev1alpha1.ComputeHealthCheckServiceObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthChecks
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	// MISSING: NetworkEndpointGroups
 	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
@@ -2293,9 +2295,11 @@ func ComputeHealthCheckServiceObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.HealthCheckService{}
 	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: HealthChecks
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	// MISSING: NetworkEndpointGroups
 	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
@@ -2307,10 +2311,22 @@ func ComputeHealthCheckServiceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext,
 	out := &krmcomputev1alpha1.ComputeHealthCheckServiceSpec{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthChecks = in.HealthChecks
+
+	if v := in.GetHealthChecks(); len(v) != 0 {
+		for i := range v {
+			out.HealthCheckRefs = append(out.HealthCheckRefs, &krmcomputev1beta1.ComputeHealthCheckRef{External: v[i]})
+		}
+	}
+
 	out.HealthStatusAggregationPolicy = in.HealthStatusAggregationPolicy
 	// MISSING: Name
-	out.NetworkEndpointGroups = in.NetworkEndpointGroups
+
+	if v := in.GetNetworkEndpointGroups(); len(v) != 0 {
+		for i := range v {
+			out.NetworkEndpointGroupRefs = append(out.NetworkEndpointGroupRefs, &krmcomputev1beta1.ComputeNetworkEndpointGroupRef{External: v[i]})
+		}
+	}
+
 	out.NotificationEndpoints = in.NotificationEndpoints
 	return out
 }
@@ -2321,10 +2337,22 @@ func ComputeHealthCheckServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.HealthCheckService{}
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
-	out.HealthChecks = in.HealthChecks
+
+	if v := in.HealthCheckRefs; len(v) != 0 {
+		for i := range v {
+			out.HealthChecks = append(out.HealthChecks, v[i].External)
+		}
+	}
+
 	out.HealthStatusAggregationPolicy = in.HealthStatusAggregationPolicy
 	// MISSING: Name
-	out.NetworkEndpointGroups = in.NetworkEndpointGroups
+
+	if v := in.NetworkEndpointGroupRefs; len(v) != 0 {
+		for i := range v {
+			out.NetworkEndpointGroups = append(out.NetworkEndpointGroups, v[i].External)
+		}
+	}
+
 	out.NotificationEndpoints = in.NotificationEndpoints
 	return out
 }

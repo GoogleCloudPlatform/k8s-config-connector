@@ -76,7 +76,7 @@ spec:
                   412 conditionNotMet. To see the latest fingerprint, make a get()
                   request to retrieve the HealthCheckService.
                 type: string
-              healthChecks:
+              healthCheckRefs:
                 description: A list of URLs to the HealthCheck resources. Must have
                   at least one HealthCheck, and not more than 10 for regional HealthCheckService,
                   and not more than 1 for global HealthCheckService. HealthCheck resources
@@ -91,7 +91,34 @@ spec:
                   that specify sourceRegions can only be used with global INTERNET_IP_PORT
                   NetworkEndpointGroups.
                 items:
-                  type: string
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: |-
+                        The URL for the health check that signals autohealing.
+
+                        Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
                 type: array
               healthStatusAggregationPolicy:
                 description: Optional. Policy for how the results from multiple health
@@ -109,13 +136,41 @@ spec:
                   ComputeHealthCheckService. Specify a region name. Reference: GCP
                   definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
-              networkEndpointGroups:
+              networkEndpointGroupRefs:
                 description: A list of URLs to the NetworkEndpointGroup resources.
                   Must not have more than 100. For regional HealthCheckService, NEGs
                   must be in zones in the region of the HealthCheckService. For global
                   HealthCheckServices, the NetworkEndpointGroups must be global INTERNET_IP_PORT.
                 items:
-                  type: string
+                  description: ComputeNetworkEndpointGroupRef is a reference to a
+                    ComputeNetworkEndpointGroup.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed ComputeNetworkEndpointGroup
+                        resource. Should be in the format "projects/{project}/zones/{zone}/networkEndpointGroups/{networkEndpointGroup}".
+                      type: string
+                    name:
+                      description: The name of a ComputeNetworkEndpointGroup resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a ComputeNetworkEndpointGroup
+                        resource.
+                      type: string
+                  type: object
                 type: array
               notificationEndpoints:
                 description: A list of URLs to the NotificationEndpoint resources.

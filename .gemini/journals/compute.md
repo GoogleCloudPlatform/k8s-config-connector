@@ -118,6 +118,7 @@
   3. Verified documentation link and updated `+kcc:source:resource-docs` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthCheckServices`, removing guess annotations.
   4. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only and retained in `ComputeHealthCheckServiceObservedState` with guess markers removed.
   5. Deterministic identity and reference generation via `controllerbuilder generate-identity` were retained in `apis/compute/generate.sh`, while `ComputeHealthCheckService:HealthCheckService` was moved into the primary `generate-types` invocation.
-  6. Resolved all 9 entries in `apis/compute/judgement_queue.yaml` for `ComputeHealthCheckService`.
+  6. Modeled `spec.healthChecks` and `spec.networkEndpointGroups` as typed KCC references (`HealthCheckRefs []*computev1beta1.ComputeHealthCheckRef` and `NetworkEndpointGroupRefs []*computev1beta1.ComputeNetworkEndpointGroupRef`) referencing existing KCC resources `ComputeHealthCheck` and `ComputeNetworkEndpointGroup`.
+  7. Resolved all 9 entries in `apis/compute/judgement_queue.yaml` for `ComputeHealthCheckService`.
 - **Impact**: Cleanly resolved the entire judgement queue for `ComputeHealthCheckService`. CRDs and mapper bindings updated, and all unit tests and API checks pass.
 

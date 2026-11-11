@@ -20,6 +20,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,7 +53,7 @@ type ComputeHealthCheckServiceSpec struct {
 
 	// A list of URLs to the HealthCheck resources. Must have at least one HealthCheck, and not more than 10 for regional HealthCheckService, and not more than 1 for global HealthCheckService. HealthCheck resources must have portSpecification=USE_SERVING_PORT or portSpecification=USE_FIXED_PORT. For regional HealthCheckService, the HealthCheck must be regional and in the same region. For global HealthCheckService, HealthCheck must be global. Mix of regional and global HealthChecks is not supported. Multiple regional HealthChecks must belong to the same region. Regional HealthChecks must belong to the same region as zones of NetworkEndpointGroups. For global HealthCheckService using global INTERNET_IP_PORT NetworkEndpointGroups, the global HealthChecks must specify sourceRegions, and HealthChecks that specify sourceRegions can only be used with global INTERNET_IP_PORT NetworkEndpointGroups.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.health_checks
-	HealthChecks []string `json:"healthChecks,omitempty"`
+	HealthCheckRefs []*computev1beta1.ComputeHealthCheckRef `json:"healthCheckRefs,omitempty"`
 
 	// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. . This is only allowed with regional HealthCheckService.
 	//  Check the HealthStatusAggregationPolicy enum for the list of possible values.
@@ -61,7 +62,7 @@ type ComputeHealthCheckServiceSpec struct {
 
 	// A list of URLs to the NetworkEndpointGroup resources. Must not have more than 100. For regional HealthCheckService, NEGs must be in zones in the region of the HealthCheckService. For global HealthCheckServices, the NetworkEndpointGroups must be global INTERNET_IP_PORT.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.network_endpoint_groups
-	NetworkEndpointGroups []string `json:"networkEndpointGroups,omitempty"`
+	NetworkEndpointGroupRefs []*computev1beta1.ComputeNetworkEndpointGroupRef `json:"networkEndpointGroupRefs,omitempty"`
 
 	// A list of URLs to the NotificationEndpoint resources. Must not have more than 10. A list of endpoints for receiving notifications of change in health status. For regional HealthCheckService, NotificationEndpoint must be regional and in the same region. For global HealthCheckService, NotificationEndpoint must be global.
 	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckService.notification_endpoints

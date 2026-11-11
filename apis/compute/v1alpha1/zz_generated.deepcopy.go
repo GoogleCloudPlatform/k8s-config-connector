@@ -1304,20 +1304,32 @@ func (in *ComputeHealthCheckServiceSpec) DeepCopyInto(out *ComputeHealthCheckSer
 		*out = new(string)
 		**out = **in
 	}
-	if in.HealthChecks != nil {
-		in, out := &in.HealthChecks, &out.HealthChecks
-		*out = make([]string, len(*in))
-		copy(*out, *in)
+	if in.HealthCheckRefs != nil {
+		in, out := &in.HealthCheckRefs, &out.HealthCheckRefs
+		*out = make([]*computev1beta1.ComputeHealthCheckRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(computev1beta1.ComputeHealthCheckRef)
+				**out = **in
+			}
+		}
 	}
 	if in.HealthStatusAggregationPolicy != nil {
 		in, out := &in.HealthStatusAggregationPolicy, &out.HealthStatusAggregationPolicy
 		*out = new(string)
 		**out = **in
 	}
-	if in.NetworkEndpointGroups != nil {
-		in, out := &in.NetworkEndpointGroups, &out.NetworkEndpointGroups
-		*out = make([]string, len(*in))
-		copy(*out, *in)
+	if in.NetworkEndpointGroupRefs != nil {
+		in, out := &in.NetworkEndpointGroupRefs, &out.NetworkEndpointGroupRefs
+		*out = make([]*computev1beta1.ComputeNetworkEndpointGroupRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(computev1beta1.ComputeNetworkEndpointGroupRef)
+				**out = **in
+			}
+		}
 	}
 	if in.NotificationEndpoints != nil {
 		in, out := &in.NotificationEndpoints, &out.NotificationEndpoints
