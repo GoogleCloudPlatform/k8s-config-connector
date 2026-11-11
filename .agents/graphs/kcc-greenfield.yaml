@@ -77,6 +77,12 @@ spec:
   defaults:
     labels: [greenfield]
 
+  # Labelling this graph's parent overseer/auto-merge puts the label on the
+  # open PRs carrying its steps' work, which opts them in to the merge rules
+  # (.agents/watch/merge-*.yaml); taking it off the parent takes it off the
+  # PRs the graph labelled. Children are not labelled.
+  pr-labels-from-parent: [overseer/auto-merge]
+
   steps:
     # Step 1a. Only for Kinds not yet prepopulated on master; the others use
     # kcc-greenfield-prepopulated.
