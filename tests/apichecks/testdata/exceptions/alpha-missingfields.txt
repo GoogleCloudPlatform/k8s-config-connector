@@ -6,6 +6,24 @@
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredAccessLevels[]" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowedScopes[]" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.apiKey.apiKey" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.geAuthProvider" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.authorizationURL" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.clientID" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.clientSecret" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.defaultContinueURI" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.enablePkce" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.threeLeggedOauth.tokenURL" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.twoLeggedOauth.clientID" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.twoLeggedOauth.clientSecret" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderTypeParams.twoLeggedOauth.tokenURL" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.blockedScopes[]" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=agentidentityauthproviders.agentidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.workloadIDs[]" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].codeExecutionResult.outcome" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].codeExecutionResult.output" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.contents[].parts[].executableCode.code" is not set in unstructured objects
