@@ -42,6 +42,7 @@ func parameterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".policy_member") // Output Only
 
 	f.Unimplemented_LabelsAnnotations(".labels")
+	f.Unimplemented_NotYetTriaged(".tags")
 
 	return f
 }

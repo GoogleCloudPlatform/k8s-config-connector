@@ -79,7 +79,7 @@ require (
 	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/osconfig v1.21.0
 	cloud.google.com/go/oslogin v1.18.0
-	cloud.google.com/go/parametermanager v0.3.1
+	cloud.google.com/go/parametermanager v1.1.0
 	cloud.google.com/go/pubsub v1.50.2
 	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0

@@ -1111,8 +1111,8 @@ cloud.google.com/go/oslogin v1.18.0 h1:OkccORMcY2XEHwN5+AP0XH/SCUNBl39GGjaQuSCVc
 cloud.google.com/go/oslogin v1.18.0/go.mod h1:3Oa36T3781Mv+yCSVYlfasi7auHjfPFqvNOd1q92umc=
 cloud.google.com/go/parallelstore v1.2.0 h1:VXi9dggRgjugOoSC2iCsdwSmfqwqoSj1H6Tn9ALjl2E=
 cloud.google.com/go/parallelstore v1.2.0/go.mod h1:WvAO6RXodd9N39pM5mCzLSB+X7aZYDQYskeGCcNC80o=
-cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
-cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
+cloud.google.com/go/parametermanager v1.1.0 h1:4v/Ra8K5GR8TtK+JCIx6xVDZX9nH9ZEtG1MGNsHUU98=
+cloud.google.com/go/parametermanager v1.1.0/go.mod h1:kMe4ZH0nuH7LIrfVowtVeT9zuJlWXZVIxRr7IzySIbI=
 cloud.google.com/go/phishingprotection v0.5.0/go.mod h1:Y3HZknsK9bc9dMi+oE8Bim0lczMU6hrX0UpADuMefr0=
 cloud.google.com/go/phishingprotection v0.6.0/go.mod h1:9Y3LBLgy0kDTcYET8ZH3bq/7qni15yVUoAxiFxnlSUA=
 cloud.google.com/go/phishingprotection v0.7.0/go.mod h1:8qJI4QKHoda/sb/7/YmMQ2omRLSLYSu9bU0EKCNI+Lk=

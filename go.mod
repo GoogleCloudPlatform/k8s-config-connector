@@ -92,7 +92,7 @@ require (
 	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/osconfig v1.21.0
 	cloud.google.com/go/oslogin v1.18.0
-	cloud.google.com/go/parametermanager v0.3.1
+	cloud.google.com/go/parametermanager v1.1.0
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
 	cloud.google.com/go/pubsub/v2 v2.5.1
