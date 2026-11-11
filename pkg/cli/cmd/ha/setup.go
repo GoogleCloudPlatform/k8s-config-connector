@@ -33,8 +33,12 @@ type setupOptions struct {
 	bucket         string
 	leaseName      string
 	leaseNamespace string
-	yamlOnly       bool
-	dryRun         bool
+	// mclImage and syncerImage have no default: Config Connector releases don't publish these
+	// images yet.
+	mclImage    string
+	syncerImage string
+	yamlOnly    bool
+	dryRun      bool
 }
 
 const (
@@ -73,6 +77,8 @@ const (
 	bucketFlag         = "bucket"
 	leaseNameFlag      = "lease-name"
 	leaseNamespaceFlag = "lease-namespace"
+	mclImageFlag       = "mcl-image"
+	syncerImageFlag    = "syncer-image"
 	yamlOnlyFlag       = "yaml-only"
 	dryRunFlag         = "dry-run"
 )
@@ -82,6 +88,8 @@ func (o *setupOptions) addFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&o.bucket, bucketFlag, o.bucket, "GCS bucket name used to store the multi-cluster leader election lock.")
 	flags.StringVar(&o.leaseName, leaseNameFlag, o.leaseName, "Name of the MultiClusterLease object across all clusters.")
 	flags.StringVar(&o.leaseNamespace, leaseNamespaceFlag, o.leaseNamespace, "Namespace of the MultiClusterLease object across all clusters.")
+	flags.StringVar(&o.mclImage, mclImageFlag, o.mclImage, "Container image of the MultiClusterLease controller: Config Connector's multiclusterlease image (required).")
+	flags.StringVar(&o.syncerImage, syncerImageFlag, o.syncerImage, "Container image of the KRM syncer: Config Connector's krmsyncer image (required).")
 	flags.BoolVar(&o.yamlOnly, yamlOnlyFlag, o.yamlOnly, "If true, print rendered manifests to stdout without applying them.")
 	flags.BoolVar(&o.dryRun, dryRunFlag, o.dryRun, "If true, print planned actions without mutating clusters or GCP resources.")
 }
@@ -95,6 +103,8 @@ func (o *setupOptions) validate() error {
 	o.bucket = normalizeBucketName(o.bucket)
 	o.leaseName = strings.TrimSpace(o.leaseName)
 	o.leaseNamespace = strings.TrimSpace(o.leaseNamespace)
+	o.mclImage = strings.TrimSpace(o.mclImage)
+	o.syncerImage = strings.TrimSpace(o.syncerImage)
 
 	if o.bucket == "" {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a GCS bucket name for the multi-cluster lease lock, e.g. --%s=my-kcc-ha-bucket", bucketFlag, bucketFlag))
@@ -112,6 +122,13 @@ func (o *setupOptions) validate() error {
 		errs = append(errs, fmt.Errorf("--%s is required; specify a DNS-1123 namespace name, e.g. --%s=%s", leaseNamespaceFlag, leaseNamespaceFlag, defaultLeaseNamespace))
 	} else if dnsErrs := validation.IsDNS1123Label(o.leaseNamespace); len(dnsErrs) > 0 {
 		errs = append(errs, fmt.Errorf("--%s %q is not a valid DNS-1123 namespace label (%s); use lowercase alphanumeric characters or '-'", leaseNamespaceFlag, o.leaseNamespace, strings.Join(dnsErrs, "; ")))
+	}
+
+	if o.mclImage == "" {
+		errs = append(errs, fmt.Errorf("--%s is required; specify the multiclusterlease image that runs the MultiClusterLease controller, e.g. --%s=gcr.io/my-project/multiclusterlease:my-tag", mclImageFlag, mclImageFlag))
+	}
+	if o.syncerImage == "" {
+		errs = append(errs, fmt.Errorf("--%s is required; specify the krmsyncer image that runs the KRM syncer, e.g. --%s=gcr.io/my-project/krmsyncer:my-tag", syncerImageFlag, syncerImageFlag))
 	}
 
 	return errors.Join(errs...)
@@ -154,7 +171,7 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 	configurers := make([]*clusterConfigurer, 0, len(handles))
 	gkeClusters := make([]gkeClusterInfo, 0, len(handles))
 	for _, h := range handles {
-		cfg, err := newClusterConfigurer(ctx, h, opts.leaseName, opts.leaseNamespace, opts.bucket)
+		cfg, err := newClusterConfigurer(ctx, h, opts.mclImage, opts.syncerImage, opts.leaseName, opts.leaseNamespace, opts.bucket)
 		if err != nil {
 			errs = append(errs, err)
 			continue
@@ -168,7 +185,28 @@ func initClusterConfigurers(ctx context.Context, handles []*clusterHandle, opts 
 		return nil, nil, errors.Join(errs...)
 	}
 
+	for i, cfg := range configurers {
+		cfg.setPeerProjects(peerProjectsForCluster(gkeClusters, i))
+	}
+
 	return configurers, gkeClusters, nil
+}
+
+// peerProjectsForCluster returns the projects of every cluster other than clusters[selfIndex].
+// The cluster's own project is among them when another cluster shares it.
+func peerProjectsForCluster(clusters []gkeClusterInfo, selfIndex int) []string {
+	seen := make(map[string]bool, len(clusters))
+	peers := make([]string, 0, len(clusters))
+	for i, c := range clusters {
+		if i == selfIndex {
+			continue
+		}
+		if !seen[c.project] {
+			seen[c.project] = true
+			peers = append(peers, c.project)
+		}
+	}
+	return peers
 }
 
 func renderClusterYAMLs(configurers []*clusterConfigurer, stdout io.Writer) error {

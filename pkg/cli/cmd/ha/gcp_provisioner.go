@@ -159,13 +159,21 @@ func (p *gcpProvisioner) configureIAMForWorkloadIdentity(ctx context.Context, pr
 	return nil
 }
 
+// syncerClusterAccessRole lets a syncer find and connect to a peer cluster: it looks up the
+// cluster's endpoint and CA through the GKE API (container.clusters.get), and the cluster's DNS
+// endpoint requires container.clusters.connect.
+//
+// The role grants no access to the objects in the cluster. A syncer reads Config Connector
+// resources through the cnrm-syncer-peers ClusterRoleBinding that setup creates on each cluster.
+const syncerClusterAccessRole = "roles/container.clusterViewer"
+
 func (p *gcpProvisioner) configureIAMForServiceAccounts(ctx context.Context, allProjects []gkeClusterInfo, syncerGSA string) error {
 	for _, peer := range allProjects {
 		if err := p.runner.run(ctx, "gcloud", "projects", "add-iam-policy-binding", peer.project,
 			"--member=serviceAccount:"+syncerGSA,
-			"--role=roles/container.viewer",
+			"--role="+syncerClusterAccessRole,
 		); err != nil {
-			return fmt.Errorf("granting container.viewer on project %q to %q: %w", peer.project, syncerGSA, err)
+			return fmt.Errorf("granting %s on project %q to %q: %w", syncerClusterAccessRole, peer.project, syncerGSA, err)
 		}
 	}
 

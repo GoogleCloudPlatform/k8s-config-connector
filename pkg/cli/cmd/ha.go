@@ -23,7 +23,8 @@ const (
 	haCommandName = "ha"
 	haExamples    = `
 	# Set up multi-cluster HA across two clusters
-	config-connector ha setup --contexts=cluster-a,cluster-b --bucket=my-lease-bucket
+	config-connector ha setup --contexts=cluster-a,cluster-b --bucket=my-lease-bucket \
+	    --mcl-image=gcr.io/my-project/multiclusterlease:my-tag --syncer-image=gcr.io/my-project/krmsyncer:my-tag
 
 	# Check HA leadership and syncer health across clusters
 	config-connector ha status --contexts=cluster-a,cluster-b
