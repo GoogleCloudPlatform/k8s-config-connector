@@ -17,4 +17,5 @@
   2. Registered the overlay in `dev/tools/controllerbuilder/generate-proto.sh` and in `kccProtoOverrides` in `dev/tools/controllerbuilder/pkg/sourcelinks/sourcelinks.go`.
   3. Added `DLPContentPolicy` to `dev/tasks/build-release-bundle` blocked kinds list.
   4. Added `dlpcontentpolicies.dlp.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to the empty oneof option (`spec.rules[].conditions[].infoTypeCondition.anyInfoType`).
-- **Impact**: Enables clean mechanical scaffolding of `DLPContentPolicy` without regressions on existing DLP resources.
+  5. Added `generate-mapper` with `--prepopulate-resource` in `apis/dlp/generate.sh`, generated `pkg/controller/direct/dlp/mapper.generated.go`, added `cloud.google.com/go/dlp v1.38.0` to `go.mod`, and defined `Empty` and `timestamppb.Timestamp` mapping helpers in `pkg/controller/direct/dlp/mappings.go`.
+- **Impact**: Enables clean mechanical scaffolding of `DLPContentPolicy` and downstream controller/fuzzer generation without regressions on existing DLP resources.
