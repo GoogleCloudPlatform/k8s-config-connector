@@ -1093,6 +1093,7 @@ func TestCRDObjectTypes(t *testing.T) {
 	// status.observedState in its status struct. Comment it out in the Go types instead.
 	knownInvalidCRDs := map[string]bool{
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
+		"agentidentityauthproviders.agentidentity.cnrm.cloud.google.com":                true, // GCP known pattern: Empty oneof option (spec.authProviderTypeParams.geAuthProvider)
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object

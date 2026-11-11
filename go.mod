@@ -12,6 +12,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controller
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
+	cloud.google.com/go/agentidentity v0.1.0
 	cloud.google.com/go/agentregistry v0.2.0
 	cloud.google.com/go/aiplatform v1.127.0
 	cloud.google.com/go/alloydb v1.26.0

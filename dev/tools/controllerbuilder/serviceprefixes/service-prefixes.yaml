@@ -51,6 +51,11 @@ services:
     servicePrefix: AccessContextManager
     protoPackages:
       - google.identity.accesscontextmanager.v1
+  - api: agentidentity
+    title: Enterprise Agent Identity API
+    servicePrefix: AgentIdentity
+    protoPackages:
+      - google.cloud.agentidentity.v1
   - api: agentregistry
     title: Agent Registry API
     servicePrefix: AgentRegistry
