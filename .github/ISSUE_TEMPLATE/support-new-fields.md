@@ -3,7 +3,7 @@ name: Support new field(s)
 about: Request field(s) that exist in the GCP API but is missing from an existing
   KCC resource.
 title: 'ai:feat: Add field <field_path> to <resource_kind_name>'
-labels: enhancement, overseer
+labels: enhancement, overseer, overseer/review
 assignees: ''
 type: Feature
 
@@ -13,6 +13,9 @@ type: Feature
 Use this template to request missing fields on an EXISTING KCC resource.
 Overseer picks up issues labeled `overseer` and implements the field by following
 the skill referenced at the bottom of this issue.
+
+At the bottom of this issue, keep ONLY the instructions block for your Kind's
+controller type (Direct or Terraform) and delete the other one.
 
 To keep the generated PR small and easy to review:
 - One Kind per issue.
@@ -33,13 +36,6 @@ To keep the generated PR small and easy to review:
 
 <!-- The CamelCase KCC Kind, e.g. SpannerDatabase -->
 
-
-## Controller type
-
-<!-- Check one. Terraform-based CRDs carry the label `cnrm.cloud.google.com/tf2crd: "true"`. -->
-
-- [ ] Direct
-- [ ] Terraform
 
 ## Missing field(s)
 
@@ -64,23 +60,32 @@ Example:
 
 ---
 
-## Instructions for Overseer (please do not edit)
+<!--
+CHOOSE ONE: keep EITHER the Direct block OR the Terraform block below, and delete the other.
+Do not edit the text inside the block you keep.
+Terraform-based CRDs carry the label `cnrm.cloud.google.com/tf2crd: "true"`; otherwise the Kind uses a Direct controller.
+-->
 
-Implement the field(s) listed in this issue on the given Kind.
+<!-- ===== Direct controller: delete this block if the Kind is Terraform-based ===== -->
 
-Select the skill based on "Controller type":
-- **Direct**: follow `.gemini/skills/add-missing-field/SKILL.md`.
-- **Terraform**: follow `.gemini/skills/update-terraform-fields/SKILL.md`, then `.gemini/skills/test-terraform-fields/SKILL.md` for test coverage and golden files. Use .gemini/skills/reviewgen-legacy-feature/SKILL.md to conduct the review.
+## Instructions for Overseer
 
-Please update the skill where you find it can be improved (and put observations that aren't necessarily as general in the journal.md file in the same folder)
+Implement the field(s) listed in this issue on the given Kind by following `.gemini/skills/add-missing-field/SKILL.md` end-to-end.
 
-When creating the PR, include the release note block:
-```release-note
-<resource_kind_name>: Added support for <field_path>.
-```
-For example:
-```release-note
-BigtableTable: Added support for spec.columnFamily[].type.
-```
+## Review Instructions
 
+Verify the PR follows `.gemini/skills/add-missing-field/SKILL.md`.
 
+<!-- ===== End of Direct controller block ===== -->
+
+<!-- ===== Terraform controller: delete this block if the Kind uses a Direct controller ===== -->
+
+## Instructions for Overseer
+
+Implement the field(s) listed in this issue on the given Kind by following `.gemini/skills/update-terraform-fields/SKILL.md` end-to-end.
+
+## Review Instructions
+
+Use `.gemini/skills/reviewgen-legacy-feature/SKILL.md` to conduct the review.
+
+<!-- ===== End of Terraform controller block ===== -->

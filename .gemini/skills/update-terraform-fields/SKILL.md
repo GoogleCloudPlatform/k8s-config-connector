@@ -176,3 +176,28 @@ Once definitions are updated, the agent must verify correctness of the field usi
      git commit -m "chore: ensure clean generated state for CI/CD presubmits"
      ```
 
+---
+
+## 5. Creating the PR
+
+1. **Create the PR with a Release Note**:
+   - Follow [.gemini/skills/send-pr/SKILL.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.gemini/skills/send-pr/SKILL.md) to push and open the PR.
+   - Include a `release-note` block in the PR description, one line per added field, using the KRM field path:
+     ````
+     ```release-note
+     <ResourceKind>: Added support for <field_path>.
+     ```
+     ````
+     For example:
+     ````
+     ```release-note
+     BigtableTable: Added support for spec.columnFamily[].type.
+     ```
+     ````
+
+---
+
+## 6. Improving this Skill
+
+- If you found steps in this skill (or in `test-terraform-fields`) that were missing, wrong, or could be clearer, update the corresponding `SKILL.md` directly.
+- Record observations that are useful but not general enough for the skill (e.g. resource- or service-specific gotchas) in the `journal/` folder next to this skill, as `journal/<resourcekind>.md` (lowercase kind, e.g. `journal/bigtabletable.md`).
