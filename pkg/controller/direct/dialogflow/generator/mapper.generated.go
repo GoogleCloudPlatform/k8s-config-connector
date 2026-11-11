@@ -163,6 +163,48 @@ func DialogflowConversationModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	return out
 }
+func DialogflowFulfillmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.DialogflowFulfillmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowFulfillmentObservedState{}
+	// MISSING: Name
+	return out
+}
+func DialogflowFulfillmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFulfillmentObservedState) *pb.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment{}
+	// MISSING: Name
+	return out
+}
+func DialogflowFulfillmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment) *krm.DialogflowFulfillmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowFulfillmentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.GenericWebService = Fulfillment_GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Features = direct.Slice_FromProto(mapCtx, in.Features, Fulfillment_Feature_FromProto)
+	return out
+}
+func DialogflowFulfillmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowFulfillmentSpec) *pb.Fulfillment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := Fulfillment_GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
+		out.Fulfillment = &pb.Fulfillment_GenericWebService_{GenericWebService: oneof}
+	}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Features = direct.Slice_ToProto(mapCtx, in.Features, Fulfillment_Feature_ToProto)
+	return out
+}
 func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorObservedState {
 	if in == nil {
 		return nil
@@ -311,6 +353,46 @@ func FreeFormSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormSugge
 	}
 	out := &pb.FreeFormSuggestion{}
 	out.Response = direct.ValueOf(in.Response)
+	return out
+}
+func Fulfillment_Feature_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_Feature) *krm.Fulfillment_Feature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_Feature{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Fulfillment_Feature_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_Feature) *pb.Fulfillment_Feature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_Feature{}
+	out.Type = direct.Enum_ToProto[pb.Fulfillment_Feature_Type](mapCtx, in.Type)
+	return out
+}
+func Fulfillment_GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Fulfillment_GenericWebService) *krm.Fulfillment_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Fulfillment_GenericWebService{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.RequestHeaders = in.RequestHeaders
+	// MISSING: IsCloudFunction
+	return out
+}
+func Fulfillment_GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.Fulfillment_GenericWebService) *pb.Fulfillment_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Fulfillment_GenericWebService{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	out.RequestHeaders = in.RequestHeaders
+	// MISSING: IsCloudFunction
 	return out
 }
 func GCSSources_FromProto(mapCtx *direct.MapContext, in *pb.GcsSources) *krm.GCSSources {

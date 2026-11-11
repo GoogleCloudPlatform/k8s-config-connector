@@ -36,7 +36,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowFulfillment:Fulfillment
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
@@ -56,7 +57,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowFulfillment:Fulfillment
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
