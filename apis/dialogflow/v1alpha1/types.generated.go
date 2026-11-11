@@ -1102,18 +1102,6 @@ type ArticleSuggestionModelMetadata struct {
 	TrainingModelType *string `json:"trainingModelType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.v2.CesToolSpec
-type CesToolSpec struct {
-	// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app
-	//  ID>/tools/<tool ID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.ces_tool
-	CesTool *string `json:"cesTool,omitempty"`
-
-	// Optional. Indicates whether the tool requires human confirmation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.confirmation_requirement
-	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig
 type CompanionAgent_GuidanceSkillConfig struct {
 	// Optional. Customized instructions for guidance.
@@ -1424,25 +1412,6 @@ type SummarySuggestion_SummarySection struct {
 	// Required. Summary text for the section.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
 	Summary *string `json:"summary,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.v2.ToolsetTool
-type ToolsetTool struct {
-	// Required. The name of the toolset to retrieve the schema for.
-	//  Format:
-	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
-	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.toolset
-	// +required
-	Toolset *string `json:"toolset,omitempty"`
-
-	// Optional. The operationId field of the OpenAPI endpoint. The operationId
-	//  must be present in the toolset's definition.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-
-	// Optional. Indicates whether the tool requires human confirmation.
-	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.confirmation_requirement
-	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
 }
 
 // +kcc:proto=google.protobuf.Value

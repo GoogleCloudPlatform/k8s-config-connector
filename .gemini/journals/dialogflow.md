@@ -102,3 +102,13 @@
   4. Added `DialogflowCompanionAgent` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   5. Handled empty proto struct `CompanionAgent_KnowledgeSource` by allowlisting `dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com` in `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
 - **Impact**: Sets up clean scaffolding and open judgement queue items for subsequent triage in Step 1b.
+
+### [2026-11-11] DialogflowCompanionAgent Greenfield Step 1b Judgement Queue Triage
+- **Context**: Triaging judgement queue and finalizing KRM types and identity for DialogflowCompanionAgent (Issue #15377).
+- **Details**:
+  1. Resolved `location-or-parent-ref`: Regional project-parented resource (`projects/{project}/locations/{location}/companionAgents/{companion_agent}`), replaced separate `projectRef` and `location` with inlined `*parent.ProjectAndLocationRef`.
+  2. Resolved `authoritative-proto-reference` for `ces_tool`: Proto references `ces.googleapis.com/Tool` (`projects/{project}/locations/{location}/apps/{app}/tools/{tool}`). Moved `CesToolSpec` to `dialogflowcompanionagent_types.go`, defined external-only `CesTool` identity and reference in `apis/ces/v1alpha1/`, and updated field to `CesToolRef *cesv1alpha1.CesToolRef`.
+  3. Resolved `authoritative-proto-reference` for `toolset`: Proto references `ces.googleapis.com/Toolset` (`projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`). Moved `ToolsetTool` to `dialogflowcompanionagent_types.go`, defined external-only `CesToolset` identity and reference in `apis/ces/v1alpha1/`, and updated field to required `ToolsetRef *cesv1alpha1.CesToolsetRef`.
+  4. Resolved `possible-reference-by-name` for `operationID`: Confirmed it is an OpenAPI operationId within the toolset schema, not a GCP resource reference (`resolution: not-applicable`).
+  5. Resolved `untriaged-bulk-generation` after verifying all fields and types.
+- **Impact**: All 5 judgement queue entries for DialogflowCompanionAgent resolved; CRD and API checks cleanly pass.

@@ -20,7 +20,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	cesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +32,7 @@ var DialogflowCompanionAgentGVK = GroupVersion.WithKind("DialogflowCompanionAgen
 // +kcc:spec:proto=google.cloud.dialogflow.v2.CompanionAgent
 // +kcc:required-from-proto
 type DialogflowCompanionAgentSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The DialogflowCompanionAgent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -62,6 +59,37 @@ type DialogflowCompanionAgentSpec struct {
 	//  [SkillConfig][google.cloud.dialogflow.v2.CompanionAgent.SkillConfig] type.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.skill_configs
 	SkillConfigs []CompanionAgent_SkillConfig `json:"skillConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.CesToolSpec
+type CesToolSpec struct {
+	// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app
+	//  ID>/tools/<tool ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.ces_tool
+	CesToolRef *cesv1alpha1.CesToolRef `json:"cesToolRef,omitempty"`
+
+	// Optional. Indicates whether the tool requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.ToolsetTool
+type ToolsetTool struct {
+	// Required. The name of the toolset to retrieve the schema for.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.toolset
+	// +required
+	ToolsetRef *cesv1alpha1.CesToolsetRef `json:"toolsetRef"`
+
+	// Optional. The operationId field of the OpenAPI endpoint. The operationId
+	//  must be present in the toolset's definition.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.operation_id
+	OperationID *string `json:"operationID,omitempty"`
+
+	// Optional. Indicates whether the tool requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
 }
 
 // DialogflowCompanionAgentStatus defines the config connector machine state of DialogflowCompanionAgent

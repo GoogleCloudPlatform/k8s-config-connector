@@ -25,31 +25,41 @@ entries:
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: 'triaged all findings: modelled parent as inlined *parent.ProjectAndLocationRef, converted tool and toolset to typed external references, verified KRM types and identity'
   - kind: DialogflowCompanionAgent
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.cesToolSpecs[].cesTool
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to cesToolRef (*CesToolRef)
   - kind: DialogflowCompanionAgent
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: DialogflowCompanionAgent
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.toolsetTools[].operationID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: OpenAPI endpoint operationId string defined in the toolset schema, not a GCP resource reference
   - kind: DialogflowCompanionAgent
     group: dialogflow.cnrm.cloud.google.com
     field: .spec.toolsetTools[].toolset
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to toolsetRef (*CesToolsetRef)
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

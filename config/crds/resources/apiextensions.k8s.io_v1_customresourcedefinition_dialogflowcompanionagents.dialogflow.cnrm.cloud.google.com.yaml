@@ -68,10 +68,15 @@ spec:
                   can choose from.
                 items:
                   properties:
-                    cesTool:
+                    cesToolRef:
                       description: 'Optional. Format: `projects/<Project ID>/locations/<Location
                         ID>/apps/<app ID>/tools/<tool ID>`.'
-                      type: string
+                      properties:
+                        external:
+                          description: A reference to an externally managed CesTool
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/tools/{{toolID}}".
+                          type: string
+                      type: object
                     confirmationRequirement:
                       description: Optional. Indicates whether the tool requires human
                         confirmation.
@@ -86,10 +91,13 @@ spec:
                   limit is 63.
                 type: string
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -222,12 +230,17 @@ spec:
                         endpoint. The operationId must be present in the toolset's
                         definition.
                       type: string
-                    toolset:
+                    toolsetRef:
                       description: 'Required. The name of the toolset to retrieve
                         the schema for. Format: `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`'
-                      type: string
+                      properties:
+                        external:
+                          description: A reference to an externally managed CesToolset
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/toolsets/{{toolsetID}}".
+                          type: string
+                      type: object
                   required:
-                  - toolset
+                  - toolsetRef
                   type: object
                 type: array
             required:
