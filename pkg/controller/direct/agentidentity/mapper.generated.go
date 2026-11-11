@@ -53,6 +53,7 @@ func AgentIdentityAuthProviderObservedState_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.AuthProviderTypeParams = AuthProvider_AuthProviderTypeParamsObservedState_FromProto(mapCtx, in.GetAuthProviderTypeParams())
 	out.Deleted = direct.LazyPtr(in.GetDeleted())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
@@ -68,6 +69,7 @@ func AgentIdentityAuthProviderObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	out.AuthProviderTypeParams = AuthProvider_AuthProviderTypeParamsObservedState_ToProto(mapCtx, in.AuthProviderTypeParams)
 	out.Deleted = direct.ValueOf(in.Deleted)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
@@ -81,7 +83,7 @@ func AgentIdentityAuthProviderSpec_FromProto(mapCtx *direct.MapContext, in *pb.A
 	}
 	out := &krm.AgentIdentityAuthProviderSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.AuthProviderTypeParams = AuthProvider_AuthProviderTypeParams_FromProto(mapCtx, in.GetAuthProviderTypeParams())
 	out.AllowedScopes = in.AllowedScopes
 	out.BlockedScopes = in.BlockedScopes
@@ -95,7 +97,7 @@ func AgentIdentityAuthProviderSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ag
 	}
 	out := &pb.AuthProvider{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.AuthProviderTypeParams = AuthProvider_AuthProviderTypeParams_ToProto(mapCtx, in.AuthProviderTypeParams)
 	out.AllowedScopes = in.AllowedScopes
 	out.BlockedScopes = in.BlockedScopes

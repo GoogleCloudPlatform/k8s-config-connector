@@ -8,3 +8,12 @@
 - **Validation**:
   - `geAuthProvider` (`GeminiEnterpriseAuthProviderParams`) is an empty oneof option message; added `agentidentityauthproviders.agentidentity.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
   - Added `AgentIdentityAuthProvider` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+
+### [2026-11-11] AgentIdentityAuthProvider Types & Judgement Queue Finalization
+- **Context**: Triaged `apis/agentidentity/judgement_queue.yaml` and finalized KRM types and identity for `AgentIdentityAuthProvider`.
+- **Decisions**:
+  - **Parent & Location**: Inlined `*parent.ProjectAndLocationRef` into `AgentIdentityAuthProviderSpec`, removing separate `projectRef` and `location` fields while preserving CRD schema keys with immutable location validation.
+  - **Labels**: Removed top-level `Labels` map from `AgentIdentityAuthProviderSpec` so labels are reconciled via standard KRM `metadata.labels`.
+  - **OAuth Credentials**: Resolved `clientID` and `clientSecret` under `threeLeggedOauth` and `twoLeggedOauth` as `not-applicable`; these represent external identity provider client identifiers/secrets, not GCP resource references or Secret Manager secret versions.
+  - **Workload IDs**: Triaged `spec.workloadIDs` as `not-applicable` in judgement queue and deferred in `tests/apichecks/testdata/exceptions/refs_deferred.txt`; the field accepts IAM principal strings in `principal://` URI format rather than direct KCC resource references.
+  - **Documentation Links**: Removed unverified REST doc URL guess annotation as no public REST reference page currently exists for `projects.locations.authProviders`.

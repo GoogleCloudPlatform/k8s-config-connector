@@ -15,13 +15,11 @@
 // API sources for AgentIdentityAuthProvider, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/2c4dd791cc44104f1fdc49b4cbdadb160772b11e/google/cloud/agentidentity/v1/auth_provider_service.proto
 // +kcc:source:service-docs=https://cloud.google.com/iam/docs/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.locations.authProviders
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,17 +30,10 @@ var AgentIdentityAuthProviderGVK = GroupVersion.WithKind("AgentIdentityAuthProvi
 // +kcc:spec:proto=google.cloud.agentidentity.v1.AuthProvider
 // +kcc:required-from-proto
 type AgentIdentityAuthProviderSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AgentIdentityAuthProvider name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. Labels as key value pairs
-	// +kcc:proto:field=google.cloud.agentidentity.v1.AuthProvider.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. AuthProvider type specific parameters.
 	// +kcc:proto:field=google.cloud.agentidentity.v1.AuthProvider.auth_provider_type_params
