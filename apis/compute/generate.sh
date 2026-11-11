@@ -51,6 +51,18 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionSSLPolicy:SslPolicy \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeInstantSnapshot:InstantSnapshot
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstantSnapshot:InstantSnapshot
+
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 # --- v1beta1 ---
@@ -111,7 +123,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

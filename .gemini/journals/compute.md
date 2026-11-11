@@ -58,3 +58,14 @@
   5. Validated against real GCP and MockGCP with recorded test fixtures and golden comparisons.
 - **Impact**: Provides a robust, idiomatic direct controller for `ComputeManagedSSLCertificate` with zero-write re-reconciliation and clean immutability enforcement.
 
+### [2026-11-11] Greenfield Prepopulate of ComputeInstantSnapshot
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for Greenfield resource `ComputeInstantSnapshot` (issue #15354).
+- **Problem**: When configuring `apis/compute/generate.sh`, passing `--prepopulate-resource` to the existing multi-resource `generate-types` command enabled `--emit-message-maps`, causing `AutoscalingPolicy` to be un-commented in `apis/compute/v1alpha1/types.generated.go`. This triggered a compilation conflict in `mapper.generated.go` because a handwritten `FixedOrPercent_v1alpha1_FromProto` had a mismatched return type.
+- **Solution**:
+  1. Kept the existing multi-resource `generate-types` invocation untouched without `--prepopulate-resource`.
+  2. Added a separate, dedicated `generate-types` invocation with `--prepopulate-resource` and `generate-identity` strictly for `ComputeInstantSnapshot`.
+  3. Added `--prepopulate-resource` to `generate-mapper` (alongside `--multiversion`), which correctly emits inline message map conversions without compiler collisions.
+  4. Added `ComputeInstantSnapshot` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Added non-idiomatic proto comment exception to `tests/apichecks/testdata/exceptions/comments.txt` and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Complies with Greenfield Step 1 review standards by enabling `--prepopulate-resource` on `generate-mapper` while safely isolating `--prepopulate-resource` in `generate-types` for newly scaffolded resources in shared services.
+

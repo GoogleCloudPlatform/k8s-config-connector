@@ -2928,62 +2928,132 @@ func ComputeInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.I
 }
 */
 
-/* found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToProto", skipping
-func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInstanceStatus) *pb.Instance {
+/*
+found existing non-generated mapping function "ComputeInstanceStatus_v1beta1_ToProto", skipping
+
+	func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeInstanceStatus) *pb.Instance {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Instance{}
+		// MISSING: AdvancedMachineFeatures
+		// MISSING: CanIPForward
+		// MISSING: ConfidentialInstanceConfig
+		// MISSING: CPUPlatform
+		// (near miss): "CPUPlatform" vs "CpuPlatform"
+		// MISSING: CreationTimestamp
+		// MISSING: DeletionProtection
+		// MISSING: Description
+		// MISSING: Disks
+		// MISSING: DisplayDevice
+		// MISSING: Fingerprint
+		// MISSING: GuestAccelerators
+		// MISSING: Hostname
+		// MISSING: ID
+		// MISSING: InstanceEncryptionKey
+		// MISSING: KeyRevocationActionType
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: LastStartTimestamp
+		// MISSING: LastStopTimestamp
+		// MISSING: LastSuspendedTimestamp
+		// MISSING: MachineType
+		// MISSING: Metadata
+		// MISSING: MinCPUPlatform
+		// MISSING: Name
+		// MISSING: NetworkInterfaces
+		// MISSING: NetworkPerformanceConfig
+		// MISSING: Params
+		// MISSING: PrivateIPV6GoogleAccess
+		// MISSING: ReservationAffinity
+		// MISSING: ResourcePolicies
+		// MISSING: ResourceStatus
+		// MISSING: SatisfiesPzi
+		// MISSING: SatisfiesPzs
+		// MISSING: Scheduling
+		out.SelfLink = in.SelfLink
+		// MISSING: ServiceAccounts
+		// MISSING: ShieldedInstanceConfig
+		// MISSING: ShieldedInstanceIntegrityPolicy
+		// MISSING: SourceMachineImage
+		// MISSING: SourceMachineImageEncryptionKey
+		// MISSING: StartRestricted
+		// MISSING: Status
+		// MISSING: StatusMessage
+		// MISSING: Tags
+		// MISSING: Zone
+		return out
+	}
+*/
+func ComputeInstantSnapshotObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Instance{}
-	// MISSING: AdvancedMachineFeatures
-	// MISSING: CanIPForward
-	// MISSING: ConfidentialInstanceConfig
-	// MISSING: CPUPlatform
-	// (near miss): "CPUPlatform" vs "CpuPlatform"
-	// MISSING: CreationTimestamp
-	// MISSING: DeletionProtection
-	// MISSING: Description
-	// MISSING: Disks
-	// MISSING: DisplayDevice
-	// MISSING: Fingerprint
-	// MISSING: GuestAccelerators
-	// MISSING: Hostname
-	// MISSING: ID
-	// MISSING: InstanceEncryptionKey
-	// MISSING: KeyRevocationActionType
-	// MISSING: Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	// MISSING: Labels
-	// MISSING: LastStartTimestamp
-	// MISSING: LastStopTimestamp
-	// MISSING: LastSuspendedTimestamp
-	// MISSING: MachineType
-	// MISSING: Metadata
-	// MISSING: MinCPUPlatform
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: NetworkInterfaces
-	// MISSING: NetworkPerformanceConfig
-	// MISSING: Params
-	// MISSING: PrivateIPV6GoogleAccess
-	// MISSING: ReservationAffinity
-	// MISSING: ResourcePolicies
-	// MISSING: ResourceStatus
-	// MISSING: SatisfiesPzi
-	// MISSING: SatisfiesPzs
-	// MISSING: Scheduling
 	out.SelfLink = in.SelfLink
-	// MISSING: ServiceAccounts
-	// MISSING: ShieldedInstanceConfig
-	// MISSING: ShieldedInstanceIntegrityPolicy
-	// MISSING: SourceMachineImage
-	// MISSING: SourceMachineImageEncryptionKey
-	// MISSING: StartRestricted
-	// MISSING: Status
-	// MISSING: StatusMessage
-	// MISSING: Tags
-	// MISSING: Zone
+	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
 }
-*/
+func ComputeInstantSnapshotObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotObservedState) *pb.InstantSnapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshot{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeInstantSnapshotSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstantSnapshotSpec{}
+	out.Architecture = in.Architecture
+	out.Description = in.Description
+	out.DiskSizeGB = in.DiskSizeGb
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SourceDisk = in.SourceDisk
+	out.SourceDiskID = in.SourceDiskId
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
+func ComputeInstantSnapshotSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotSpec) *pb.InstantSnapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshot{}
+	out.Architecture = in.Architecture
+	out.Description = in.Description
+	out.DiskSizeGb = in.DiskSizeGB
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SourceDisk = in.SourceDisk
+	out.SourceDiskId = in.SourceDiskID
+	out.Status = in.Status
+	out.Zone = in.Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_FromProto", skipping
 func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krmcomputev1beta1.ComputeInterconnectAttachmentSpec {
@@ -6970,6 +7040,22 @@ found existing non-generated mapping function "InstanceGroupNamedPort_v1beta1_To
 		return out
 	}
 */
+func InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshotResourceStatus) *krmcomputev1alpha1.InstantSnapshotResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InstantSnapshotResourceStatus{}
+	out.StorageSizeBytes = in.StorageSizeBytes
+	return out
+}
+func InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InstantSnapshotResourceStatus) *pb.InstantSnapshotResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstantSnapshotResourceStatus{}
+	out.StorageSizeBytes = in.StorageSizeBytes
+	return out
+}
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
 	if in == nil {
 		return nil
@@ -8563,7 +8649,14 @@ func ShareSettingsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krmcomputev1alpha1.ShareSettingsObservedState{}
-	out.ProjectMap = ProjectMap_FromProto(mapCtx, in.ProjectMap)
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]krmcomputev1alpha1.ShareSettingsProjectConfigObservedState, len(in.ProjectMap))
+		for k, v := range in.ProjectMap {
+			if c := ShareSettingsProjectConfigObservedState_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.ProjectMap[k] = *c
+			}
+		}
+	}
 	out.ShareType = in.ShareType
 	return out
 }
@@ -8575,7 +8668,12 @@ func ShareSettingsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.ShareSettings{}
-	out.ProjectMap = ProjectMap_ToProto(mapCtx, in.ProjectMap)
+	if in.ProjectMap != nil {
+		out.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig, len(in.ProjectMap))
+		for k, v := range in.ProjectMap {
+			out.ProjectMap[k] = ShareSettingsProjectConfigObservedState_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
 	out.ShareType = in.ShareType
 	return out
 }
