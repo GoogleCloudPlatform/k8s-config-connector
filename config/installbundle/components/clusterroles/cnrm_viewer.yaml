@@ -639,6 +639,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - designcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - developerconnect.cnrm.cloud.google.com
   resources:
   - '*'
