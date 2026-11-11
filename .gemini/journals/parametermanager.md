@@ -10,3 +10,10 @@
 - **Identity & References**: Generated `parametermanagertemplate_identity.generated.go` and `parametermanagertemplate_reference.generated.go` with pattern `projects/{project}/locations/{location}/templates/{template}`. Conformance tests pass.
 - **Release Bundle**: Added `ParameterManagerTemplate` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
 
+### [2026-11-11] Triage judgement queue and finalize KRM types for ParameterManagerTemplate
+- **Context**: Greenfield Step 1b types-judgement for ParameterManagerTemplate.
+- **Parent & Location**: Replaced separate `ProjectRef` and `Location` with inlined `*parent.ProjectAndLocationRef` following Case A of PARENT_AND_IDENTITY.md.
+- **Labels**: Removed top-level `labels` from `Spec` since top-level labels are managed via Kubernetes `metadata.labels`.
+- **Documentation**: Resolved `verify-resource-docs-link` by updating resource-docs link to canonical `cloud.google.com` URL and removing the guess marker.
+
+

@@ -25,15 +25,21 @@ entries:
     group: parametermanager.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef; removed top-level labels; resolved resource-docs link
   - kind: ParameterManagerTemplate
     group: parametermanager.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.templates: https://docs.cloud.google.com/secret-manager/parameter-manager/docs/reference/rest/v1/projects.locations.templates, https://docs.cloud.google.com/secret-manager/parameter-manager/docs/overview/reference/rest/v1/projects.locations.templates, https://docs.cloud.google.com/secret-manager/docs/reference/rest/v1/projects.locations.templates'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs URL to valid cloud.google.com URL and removed guess annotation
   - kind: ParameterManagerTemplate
     group: parametermanager.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef

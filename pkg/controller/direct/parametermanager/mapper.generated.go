@@ -141,6 +141,7 @@ func ParameterManagerTemplateObservedState_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 func ParameterManagerTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerTemplateObservedState) *pb.Template {
@@ -151,6 +152,7 @@ func ParameterManagerTemplateObservedState_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 func ParameterManagerTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Template) *krm.ParameterManagerTemplateSpec {
@@ -159,7 +161,7 @@ func ParameterManagerTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Te
 	}
 	out := &krm.ParameterManagerTemplateSpec{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
 	return out
 }
@@ -169,7 +171,7 @@ func ParameterManagerTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.Par
 	}
 	out := &pb.Template{}
 	// MISSING: Name
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.Format = direct.Enum_ToProto[pb.TemplateFormat](mapCtx, in.Format)
 	return out
 }

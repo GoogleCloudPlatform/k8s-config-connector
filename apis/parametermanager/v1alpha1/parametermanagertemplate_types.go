@@ -15,13 +15,12 @@
 // API sources for ParameterManagerTemplate, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/4fabd6e4b356307d319b55a86a3f200e9c52b594/google/cloud/parametermanager/v1/service.proto
 // +kcc:source:service-docs=https://cloud.google.com/secret-manager/parameter-manager/docs/overview
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/secret-manager/parameter-manager/docs/reference/rest/v1/projects.locations.templates
+// +kcc:source:resource-docs=https://cloud.google.com/secret-manager/parameter-manager/docs/reference/rest/v1/projects.locations.templates
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,17 +31,11 @@ var ParameterManagerTemplateGVK = GroupVersion.WithKind("ParameterManagerTemplat
 // +kcc:spec:proto=google.cloud.parametermanager.v1.Template
 // +kcc:required-from-proto
 type ParameterManagerTemplateSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ParameterManagerTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. Labels as key value pairs
-	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.labels
-	Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Specifies the format of a Template.
 	// +kcc:proto:field=google.cloud.parametermanager.v1.Template.format
