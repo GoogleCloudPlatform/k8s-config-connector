@@ -1,0 +1,6 @@
+- caisURL: //appengine.googleapis.com/apps/${projectId}/services/default
+  group: appengine.cnrm.cloud.google.com
+  kind: AppEngineServiceSplitTraffic
+  name: appengineservicesplittraffic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
