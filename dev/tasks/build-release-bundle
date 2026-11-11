@@ -181,7 +181,6 @@ BLOCKED_KINDS=(
     "DataplexContent"
     "DataplexDataAttribute"
     "DataplexDataAttributeBinding"
-    "DataplexDataScan"
     "DataplexDataTaxonomy"
     "DataplexEncryptionConfig"
     "DataplexEntity"
