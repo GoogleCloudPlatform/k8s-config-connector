@@ -126,7 +126,6 @@ BLOCKED_KINDS=(
     "BlockchainNodeEngineBlockchainNode"
     "CCInsightsConversation"
     "CCInsightsIssueModel"
-    "CCInsightsPhraseMatcher"
     "CCInsightsQaQuestion"
     "CCInsightsQAScorecard"
     "CCInsightsView"
