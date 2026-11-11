@@ -1,0 +1,68 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# merge-types-judgement: a greenfield Step 1b PR (step/types-judgement) that
+# merge-controller: a greenfield Step 2 PR (step/controller) that the
+# overseer handed to people and assess-controller-step graded good - its
+# E2E fixtures evidenced against real GCP (Cloud Audit Logs, the harness's
+# audit probe markers) - is merged by the merger once its checks are green,
+# it is mergeable, not a draft, not held, and nobody asked for changes:
+# factory's merge recipe approves it - the review's text carries prow's
+# /lgtm and /approve - and sets auto-merge at the head it checked, which
+# the merge queue takes.
+#
+# An ungrouped controller PR, or a grouped graph's shared PR that carries
+# the controller's work on through mockgcp and the later steps: that one is
+# a draft until its last step, and is merged once it is undrafted and handed
+# to people (overseer/ready-for-human) - draft: false keeps it out until
+# then. Its grade is the controller step's (assess-controller-step stops
+# once mockgcp starts on it): the real-GCP evidence the later steps build
+# on, which the graph's mockgcp step already required to be good or fair.
+#
+# On an ungrouped PR the grade is the current head's: after hand-over a new
+# head takes overseer/ready-for-human off (factory's ready-unreview), and
+# when the PR is handed over again assess-controller-step (71) takes the old
+# grade off and grades the new head before this rule (81) can match.
+#
+# Opt-in: only a PR labelled overseer/auto-merge is merged; take the label
+# off to keep a PR for a person.
+#
+# Order 81: after factory's PR rules, the assessments (70, 71, 72) and
+# merge-types-judgement (80).
+name: merge-controller
+description: Merge a controller PR - ungrouped, or a grouped graph's PR once handed over - opted in and graded good on real-GCP evidence
+on: pr
+order: 81
+when:
+  labels:
+    all: [overseer/auto-merge, step/controller, greenfield, overseer/ready-for-human, overseer/assessment/good]
+    none: [do-not-merge/hold, overseer/stop]
+  checks: green
+  mergeable: true
+  draft: false
+  changes-requested: false
+run:
+  recipe: merge
+  inputs:
+    # The approving review. prow reads commands in it, one per line, at
+    # the start of the line.
+    message: |
+      /lgtm
+      /approve
+
+      Approved for merge by the overseer: this controller PR meets the criteria for approval - assess-controller-step graded its real-GCP evidence good, its checks are green, and it is mergeable.
+policy:
+  dedupe: head
+  cooldown:
+    success: 1h
+    failure: 12h
