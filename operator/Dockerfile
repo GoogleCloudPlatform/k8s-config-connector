@@ -16,7 +16,7 @@
 ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 # Build the manager binary
-FROM --platform=$BUILDPLATFORM golang:1.27.3 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.27.4 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+    CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -p 4 -ldflags "-s -w -buildid=" -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
 RUN go mod vendor -o temp-vendor # So we can load license files
