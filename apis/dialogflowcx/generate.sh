@@ -58,6 +58,11 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DialogflowCXWebhook:Webhook \
   --resource DialogflowCXPage:Page
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --skip-proto Flow,Fulfillment,EventHandler,ResponseMessage,NluSettings,TransitionRoute,ConditionalCases,SetParameterAction,ConversationSuccess,LiveAgentHandoff,OutputAudioText,PlayAudio,TelephonyTransferCall,Text,Agent,SpeechToTextSettings,Page,Form,Parameter,FillBehavior,Webhook,GenericWebService,ServiceDirectoryConfig
+
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
   dev/tasks/generate-crds
