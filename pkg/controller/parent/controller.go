@@ -155,6 +155,8 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		return reconcile.Result{}, client.IgnoreNotFound(err)
 	}
 
+	ctx = k8s.ContextWithUnstructured(ctx, u)
+
 	controllerType, err := r.determineControllerType(ctx, u)
 	if err != nil {
 		return reconcile.Result{}, err
