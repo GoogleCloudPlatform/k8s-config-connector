@@ -25,43 +25,57 @@ entries:
     group: securityposture.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged judgement queue entries for SecurityposturePosture
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: removed etag from Spec and added to ObservedState
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is organizations/{organization}/locations/{location}, and no shared reference type covers it yet; keep location unless one is added
-    status: open
+    status: resolved
+    resolution: accepted
+    note: kept OrganizationRef and Location as no shared parent reference exists for organization+location
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.policySets[].policies[].constraint.orgPolicyConstraint.cannedConstraintID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: cannedConstraintID is a predefined OrgPolicy constraint ID string, not a reference to a KCC managed GCP resource
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.policySets[].policies[].constraint.orgPolicyConstraintCustom.customConstraint.name
     reason: possible-reference-by-description
     detail: the description has the resource-name template "organizations/{organization_id}/customConstraints/{custom_constraint_id}"
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to customConstraintRef (*orgpolicyv1beta1.CustomConstraintRef)
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.policySets[].policies[].policyID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: policyID is a user-generated identifier string for the policy within a policy set, not a reference to an external KCC resource
   - kind: SecurityposturePosture
     group: securityposture.cnrm.cloud.google.com
     field: .spec.policySets[].policySetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: policySetID is a user-generated identifier string for the policy set within the posture, not a reference to an external KCC resource
   - kind: SecurityposturePostureDeployment
     group: securityposture.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -42,7 +42,6 @@ func securityposturePostureFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".annotations")
 	f.SpecField(".description")
-	f.SpecField(".etag")
 	f.SpecField(".policy_sets[].description")
 	f.SpecField(".policy_sets[].policies[].compliance_standards")
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint")
@@ -51,7 +50,6 @@ func securityposturePostureFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.description")
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.display_name")
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.method_types")
-	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.name")
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.resource_types")
 	f.SpecField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.policy_rules")
 	f.SpecField(".policy_sets[].policies[].constraint.security_health_analytics_custom_module.config")
@@ -65,6 +63,7 @@ func securityposturePostureFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".create_time")
+	f.StatusField(".etag")
 	f.StatusField(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.update_time")
 	f.StatusField(".policy_sets[].policies[].constraint.security_health_analytics_custom_module.id")
 	f.StatusField(".reconciling")
@@ -78,6 +77,7 @@ func securityposturePostureFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint.policy_rules[].allow_all")
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint.policy_rules[].deny_all")
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint.policy_rules[].enforce")
+	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint_custom.custom_constraint.name")
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint_custom.policy_rules[].allow_all")
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint_custom.policy_rules[].deny_all")
 	f.Unimplemented_NotYetTriaged(".policy_sets[].policies[].constraint.org_policy_constraint_custom.policy_rules[].enforce")

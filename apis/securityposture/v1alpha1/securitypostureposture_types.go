@@ -20,6 +20,7 @@
 package v1alpha1
 
 import (
+	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,19 +53,6 @@ type SecurityposturePostureSpec struct {
 	// +kcc:proto:field=google.cloud.securityposture.v1.Posture.policy_sets
 	// +required
 	PolicySets []PolicySet `json:"policySets,omitempty"`
-
-	// Optional. An opaque tag indicating the current version of the Posture, used
-	//  for concurrency control. When the `Posture` is returned from either a
-	//  `GetPosture` or a `ListPostures` request, this `etag` indicates the version
-	//  of the current `Posture` to use when executing a read-modify-write loop.
-	//
-	//  When the `Posture` is used in a `UpdatePosture` method, use the `etag`
-	//  value that was returned from a `GetPosture` request as part of a
-	//  read-modify-write loop for concurrency control. Not setting the `etag` in a
-	//  `UpdatePosture` request will result in an unconditional write of the
-	//  `Posture`.
-	// +kcc:proto:field=google.cloud.securityposture.v1.Posture.etag
-	Etag *string `json:"etag,omitempty"`
 
 	// Optional. User annotations. These attributes can only be set and used by
 	//  the user, and not by Google Security Postures.
@@ -114,6 +102,10 @@ type SecurityposturePostureObservedState struct {
 	//  updated.
 	// +kcc:proto:field=google.cloud.securityposture.v1.Posture.reconciling
 	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Optional. An opaque tag indicating the current version of the Posture.
+	// +kcc:proto:field=google.cloud.securityposture.v1.Posture.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
@@ -148,4 +140,53 @@ type SecurityposturePostureList struct {
 
 func init() {
 	SchemeBuilder.Register(&SecurityposturePosture{}, &SecurityposturePostureList{})
+}
+
+// +kcc:proto=google.cloud.securityposture.v1.CustomConstraint
+type CustomConstraint struct {
+	// Immutable. Name of the constraint. This is unique within the organization.
+	//  Format of the name should be
+	//
+	//  -
+	//  `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
+	//
+	//  Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
+	//
+	//  The max length is 70 characters and the minimum length is 1. Note that the
+	//  prefix `organizations/{organization_id}/customConstraints/` is not counted.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.name
+	CustomConstraintRef *orgpolicyv1beta1.CustomConstraintRef `json:"customConstraintRef,omitempty"`
+
+	// Immutable. The resource instance type on which this policy applies. Format
+	//  will be of the form : `<canonical service name>/<type>` Example:
+	//
+	//   - `compute.googleapis.com/Instance`.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.resource_types
+	ResourceTypes []string `json:"resourceTypes,omitempty"`
+
+	// All the operations being applied for this constraint.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.method_types
+	MethodTypes []string `json:"methodTypes,omitempty"`
+
+	// Org policy condition/expression. For example:
+	//  `resource.instanceName.matches("[production|test]_.*_(\d)+")` or,
+	//  `resource.management.auto_upgrade == true`
+	//
+	//  The max length of the condition is 1000 characters.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Allow or deny type.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.action_type
+	ActionType *string `json:"actionType,omitempty"`
+
+	// One line display name for the UI.
+	//  The max length of the display_name is 200 characters.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Detailed information about this custom policy constraint.
+	//  The max length of the description is 2000 characters.
+	// +kcc:proto:field=google.cloud.securityposture.v1.CustomConstraint.description
+	Description *string `json:"description,omitempty"`
 }
