@@ -3607,6 +3607,11 @@ func (in *ComputeVMExtensionPolicyObservedState) DeepCopyInto(out *ComputeVMExte
 		*out = new(string)
 		**out = **in
 	}
+	if in.GlobalResourceLink != nil {
+		in, out := &in.GlobalResourceLink, &out.GlobalResourceLink
+		*out = new(string)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(uint64)
@@ -3617,6 +3622,11 @@ func (in *ComputeVMExtensionPolicyObservedState) DeepCopyInto(out *ComputeVMExte
 		*out = new(string)
 		**out = **in
 	}
+	if in.ManagedByGlobal != nil {
+		in, out := &in.ManagedByGlobal, &out.ManagedByGlobal
+		*out = new(bool)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -3624,6 +3634,16 @@ func (in *ComputeVMExtensionPolicyObservedState) DeepCopyInto(out *ComputeVMExte
 	}
 	if in.SelfLinkWithID != nil {
 		in, out := &in.SelfLinkWithID, &out.SelfLinkWithID
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.UpdateTimestamp != nil {
+		in, out := &in.UpdateTimestamp, &out.UpdateTimestamp
 		*out = new(string)
 		**out = **in
 	}
@@ -3662,11 +3682,6 @@ func (in *ComputeVMExtensionPolicySpec) DeepCopyInto(out *ComputeVMExtensionPoli
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -3684,11 +3699,6 @@ func (in *ComputeVMExtensionPolicySpec) DeepCopyInto(out *ComputeVMExtensionPoli
 			(*out)[key] = *val.DeepCopy()
 		}
 	}
-	if in.GlobalResourceLink != nil {
-		in, out := &in.GlobalResourceLink, &out.GlobalResourceLink
-		*out = new(string)
-		**out = **in
-	}
 	if in.InstanceSelectors != nil {
 		in, out := &in.InstanceSelectors, &out.InstanceSelectors
 		*out = make([]VMExtensionPolicyInstanceSelector, len(*in))
@@ -3696,24 +3706,9 @@ func (in *ComputeVMExtensionPolicySpec) DeepCopyInto(out *ComputeVMExtensionPoli
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.ManagedByGlobal != nil {
-		in, out := &in.ManagedByGlobal, &out.ManagedByGlobal
-		*out = new(bool)
-		**out = **in
-	}
 	if in.Priority != nil {
 		in, out := &in.Priority, &out.Priority
 		*out = new(int32)
-		**out = **in
-	}
-	if in.State != nil {
-		in, out := &in.State, &out.State
-		*out = new(string)
-		**out = **in
-	}
-	if in.UpdateTimestamp != nil {
-		in, out := &in.UpdateTimestamp, &out.UpdateTimestamp
-		*out = new(string)
 		**out = **in
 	}
 }

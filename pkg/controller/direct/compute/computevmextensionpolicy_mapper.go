@@ -43,3 +43,29 @@ func ExtensionPolicies_ToProto(mapCtx *direct.MapContext, in map[string]krmcompu
 	}
 	return out
 }
+
+func ComputeVMExtensionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicy) *krmcomputev1alpha1.ComputeVMExtensionPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeVMExtensionPolicySpec{}
+	out.Description = in.Description
+	out.ExtensionPolicies = ExtensionPolicies_FromProto(mapCtx, in.ExtensionPolicies)
+	out.InstanceSelectors = direct.Slice_FromProto(mapCtx, in.InstanceSelectors, VMExtensionPolicyInstanceSelector_v1alpha1_FromProto)
+	// MISSING: Name
+	out.Priority = in.Priority
+	return out
+}
+
+func ComputeVMExtensionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeVMExtensionPolicySpec) *pb.VmExtensionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicy{}
+	out.Description = in.Description
+	out.ExtensionPolicies = ExtensionPolicies_ToProto(mapCtx, in.ExtensionPolicies)
+	out.InstanceSelectors = direct.Slice_ToProto(mapCtx, in.InstanceSelectors, VMExtensionPolicyInstanceSelector_v1alpha1_ToProto)
+	// MISSING: Name
+	out.Priority = in.Priority
+	return out
+}

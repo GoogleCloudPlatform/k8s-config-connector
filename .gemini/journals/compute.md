@@ -131,3 +131,13 @@
   3. Generated types, CRD, and `apis/compute/judgement_queue.yaml` with open triage findings.
   4. Verified conformance tests and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeVMExtensionPolicy
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeVMExtensionPolicy` (issue #15399).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeVMExtensionPolicy` is managed via the `ZoneVmExtensionPolicies` REST API under `projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}`. Locked in this pattern in `apis/compute/generate.sh` via `--pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}` and resolved `identity-multi-pattern`.
+  2. **Location**: Retained `spec.location` as a required string representing the zone name (`location-parent-unknown`), matching Compute conventions (e.g. `ComputeInstantSnapshot`).
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/zoneVmExtensionPolicies` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields**: `globalResourceLink`, `managedByGlobal`, `state`, and `updateTimestamp` were identified as output-only per proto comments and moved from `ComputeVMExtensionPolicySpec` to `ComputeVMExtensionPolicyObservedState`. Removed resolved `// +kcc:guess=placement` comments.
+  5. **Custom Mappers**: Implemented `ComputeVMExtensionPolicySpec_v1alpha1_FromProto` and `ComputeVMExtensionPolicySpec_v1alpha1_ToProto` in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` so `generate-mapper` avoids attempting to map the moved output-only fields to Spec.
+  6. **Testing**: Added unit tests in `computevmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+

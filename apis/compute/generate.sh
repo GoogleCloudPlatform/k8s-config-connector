@@ -64,7 +64,8 @@ rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeVMExtensionPolicy:VmExtensionPolicy
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
+  --pattern ComputeVMExtensionPolicy=projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
