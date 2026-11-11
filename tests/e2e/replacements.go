@@ -162,6 +162,9 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "firewallPolicies":
 		return "${firewallPolicyID}"
 	case "folders":
+		if strings.HasPrefix(name, "dffolder") || strings.HasPrefix(name, "dataform") {
+			return ""
+		}
 		return "${folderID}"
 	case "memberships":
 		return "${membershipID}"

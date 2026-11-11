@@ -170,7 +170,6 @@ BLOCKED_KINDS=(
     "DatabaseMigrationJob"
     "DatabaseMigrationMigrationJob"
     "DatabaseMigrationPrivateConnection"
-    "DataformFolder"
     "DataformTeamFolder"
     "DataformWorkspace"
     "DataLabelingAnnotationSpecSet"
