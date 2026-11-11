@@ -15,8 +15,7 @@
 // API sources for ComputeCrossSiteNetwork, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/crossSiteNetworks
 
 package v1alpha1
 
@@ -34,9 +33,6 @@ var ComputeCrossSiteNetworkGVK = GroupVersion.WithKind("ComputeCrossSiteNetwork"
 type ComputeCrossSiteNetworkSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// The ComputeCrossSiteNetwork name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -65,22 +61,18 @@ type ComputeCrossSiteNetworkStatus struct {
 // +kcc:observedstate:proto=google.cloud.compute.v1.CrossSiteNetwork
 type ComputeCrossSiteNetworkObservedState struct {
 	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.kind
 	Kind *string `json:"kind,omitempty"`
 
 	// Output only. [Output Only] Server-defined URL for the resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }

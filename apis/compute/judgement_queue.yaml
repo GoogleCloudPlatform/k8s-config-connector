@@ -25,42 +25,56 @@ entries:
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all entries, verified global project scope, updated docs link, and confirmed observed state fields
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to https://cloud.google.com/compute/docs/reference/rest/v1/crossSiteNetworks and removed guess annotation
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     field: .spec.location
     reason: location-parent-unknown
     detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
-    status: open
+    status: resolved
+    resolution: edited
+    note: dropped location as CrossSiteNetwork is a global project-level resource under projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.creationTimestamp
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed creationTimestamp is server-set output-only field and belongs in observedState
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.id
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed id is server-generated uint64 identifier and belongs in observedState
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.kind
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed kind is server-set type string compute#crossSiteNetwork and belongs in observedState
   - kind: ComputeCrossSiteNetwork
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.selfLink
     reason: server-set-field-placed
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed selfLink is server-defined URL and belongs in observedState
   - kind: ComputeHealthCheckService
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -231,7 +245,7 @@ entries:
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
     status: resolved
     resolution: accepted
-    note: confirmed output-only; already placed in status.observedState.id
+    note: confirmed id is server-generated uint64 identifier and belongs in observedState
   - kind: ComputeInstantSnapshot
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.kind
@@ -239,7 +253,7 @@ entries:
     detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
     status: resolved
     resolution: accepted
-    note: confirmed output-only; already placed in status.observedState.kind
+    note: confirmed kind is server-set type string compute#crossSiteNetwork and belongs in observedState
   - kind: ComputeInstantSnapshot
     group: compute.cnrm.cloud.google.com
     field: .status.observedState.region
