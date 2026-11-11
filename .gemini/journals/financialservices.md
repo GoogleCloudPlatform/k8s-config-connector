@@ -9,6 +9,17 @@
   6. Generated mock HTTP logs and golden object files for minimal and maximal fixtures via `hack/compare-mock`.
   7. Verified fixtures using `./dev/ci/presubmits/tests-e2e-fixtures-suite financialservices`.
 
+### [2026-11-06] FinancialServicesDataset Direct Controller, Fixtures, and Fuzzer
+- **Context**: Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesDataset` (#15091).
+- **Action**:
+  1. Verified `FinancialServicesDataset` direct controller (`pkg/controller/direct/financialservices/financialservicesdataset_controller.go`) and round-trip fuzzer (`pkg/controller/direct/financialservices/financialservicesdataset_fuzzer.generated.go`).
+  2. Verified `pkg/controller/resourceconfig/static_config.go` with `generate_static_config.py`.
+  3. Created minimal and maximal E2E fixtures under `pkg/test/resourcefixture/testdata/basic/financialservices/v1alpha1/financialservicesdataset/` referencing `parentRef`, `resourceID`, `dateRange`, `tableSpecs`, and `timeZone`.
+  4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha` to update alpha missing fields exceptions.
+  5. Verified 200-seed fuzzer round-trip (`TestFocusedMappers/FinancialServicesDataset`), CRD schema tests, and direct controller compilation.
+- **Observation**:
+  - `financialservices.googleapis.com` (Financial Services / Anti-Money Laundering API) is an Early Access / allowlist-restricted Google Cloud service requiring `servicemanagement.services.bind` permissions for enablement; recording golden logs against real GCP is blocked in non-allowlisted projects.
+
 ### [2026-11-06] FinancialServicesModel Direct Controller, Fixtures, and Fuzzer
 - **Context**: Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesModel` (#15055).
 - **Action**:
