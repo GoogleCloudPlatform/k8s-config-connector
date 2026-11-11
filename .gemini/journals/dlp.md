@@ -30,3 +30,14 @@
   5. Nested output-only comment (`possible-output-only-pattern-in-comment`): Kept `.spec.inspectConfig.customInfoTypes[].storedType.createTime` in Spec as an optional field to match proto message and direct mapper.
 - **Impact**: Fully resolves the judgement queue for `DLPContentPolicy`, preparing the resource for controller and test fixture implementation.
 
+### [2026-11-11] DLPContentPolicy Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing direct controller, round-trip fuzzer, and recording authentic E2E fixtures for `DLPContentPolicy`.
+- **Findings & Actions**:
+  1. Generated direct controller (`dlpcontentpolicy_controller.go`) and fuzzer (`dlpcontentpolicy_fuzzer.generated.go`) using `controllerbuilder` one-shot generation flags with `--prepopulate-resource`.
+  2. Registered `common.NormalizeGreenfieldReferences` in `AdapterForObject`.
+  3. Triaged unimplemented custom info type subfields (`file_label_info_type` and `metadata_key_value_expression`) in the fuzzer via `f.Unimplemented_NotYetTriaged`.
+  4. Discovered empirically that real GCP DLP API requires `inspect_config` during creation (`inspect_config is required.` 400 error if omitted), and reflected this requirement in minimal and maximal fixtures.
+  5. Recorded authentic `_http.log` and `_generated_object_*.golden.yaml` on real GCP (`cnrm-barni-4`) for `dlpcontentpolicy-minimal` and `dlpcontentpolicy-maximal`, passing all 7 HTTP lifecycle report validation checks.
+- **Impact**: Completes Step 2 for `DLPContentPolicy` with verified round-trip fuzzing and authentic E2E fixtures.
+
+

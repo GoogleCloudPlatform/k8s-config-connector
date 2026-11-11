@@ -1,0 +1,74 @@
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultAction": {
+    "returnVerdict": 2
+  },
+  "displayName": "Maximal DLP Content Policy Updated",
+  "failedToScanSupportedFileType": {
+    "returnVerdict": 2
+  },
+  "inputTooLarge": {
+    "returnVerdict": 2
+  },
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      },
+      {
+        "name": "PHONE_NUMBER"
+      }
+    ],
+    "limits": {
+      "maxFindingsPerItem": 20
+    },
+    "minLikelihood": 4
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-maximal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            },
+            "minCount": "1"
+          }
+        }
+      ]
+    },
+    {
+      "action": {
+        "returnVerdict": 1
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "PHONE_NUMBER"
+              ]
+            },
+            "minCount": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "unsupportedFileType": {
+    "returnVerdict": 2
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
