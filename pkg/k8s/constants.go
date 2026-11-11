@@ -78,6 +78,9 @@ const (
 	StateMergeIntoSpec      = "merge"
 	StateAbsentInSpec       = "absent"
 
+	// Priority queue annotation
+	UsePriorityQueueAnnotation = "cnrm.cloud.google.com/use-priority-queue"
+
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
 	ManagedFieldsTypeFieldsV1          = "FieldsV1"

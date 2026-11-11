@@ -36,6 +36,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -342,5 +343,56 @@ func buildTestCRD(name, group, version, kind string, specProperties map[string]a
 				},
 			},
 		},
+	}
+}
+
+func TestUsePriorityQueueOptionPlumbing(t *testing.T) {
+	tests := []struct {
+		name                 string
+		ccUsePriorityQueue   *bool
+		cccUsePriorityQueue  *bool
+		wantUsePriorityQueue bool
+	}{
+		{
+			name:                 "both unset -> false",
+			wantUsePriorityQueue: false,
+		},
+		{
+			name:                 "cc true -> true",
+			ccUsePriorityQueue:   ptr.To(true),
+			wantUsePriorityQueue: true,
+		},
+		{
+			name:                 "cc false -> false",
+			ccUsePriorityQueue:   ptr.To(false),
+			wantUsePriorityQueue: false,
+		},
+		{
+			name:                 "cc true but ccc false -> false (ccc override)",
+			ccUsePriorityQueue:   ptr.To(true),
+			cccUsePriorityQueue:  ptr.To(false),
+			wantUsePriorityQueue: false,
+		},
+		{
+			name:                 "cc false but ccc true -> true (ccc override)",
+			ccUsePriorityQueue:   ptr.To(false),
+			cccUsePriorityQueue:  ptr.To(true),
+			wantUsePriorityQueue: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			usePriorityQueue := false
+			if tc.ccUsePriorityQueue != nil && *tc.ccUsePriorityQueue {
+				usePriorityQueue = true
+			}
+			if tc.cccUsePriorityQueue != nil {
+				usePriorityQueue = *tc.cccUsePriorityQueue
+			}
+			if usePriorityQueue != tc.wantUsePriorityQueue {
+				t.Errorf("got %v, want %v", usePriorityQueue, tc.wantUsePriorityQueue)
+			}
+		})
 	}
 }
