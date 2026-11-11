@@ -1,0 +1,15 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtSaaS
+metadata:
+  name: saasservicemgmtsaas-${uniqueId}
+  labels:
+    env: prod
+    team: beta
+spec:
+  resourceID: saasservicemgmtsaas-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  locations:
+    - name: us-central1
+    - name: us-east1

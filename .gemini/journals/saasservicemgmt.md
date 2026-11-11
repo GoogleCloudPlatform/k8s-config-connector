@@ -1,3 +1,22 @@
+### [2026-11-11] MockGCP Implementation and Alignment for SaaSServiceMgmtSaaS
+- **Context**: Implementing MockGCP service handlers, unit tests, and HTTP log alignment for `SaaSServiceMgmtSaaS` under `saasservicemgmt.cnrm.cloud.google.com/v1alpha1`.
+- **Implementation**:
+  - Implemented `GetSaas`, `CreateSaas`, `UpdateSaas`, `DeleteSaas`, and `ListSaas` in `mockgcp/mocksaasservicemgmt/saas.go`.
+  - In `CreateSaas` and `UpdateSaas`, responses strip `createTime`, `updateTime`, `etag`, `blueprintRepo`, `conditions`, and `state`, matching live GCP API behavior.
+  - On `UpdateSaas`, simulated background provisioning by setting `blueprintRepo`, `state` (ACTIVE), and `conditions` (READY / TRUE) on the stored object.
+  - Added unit test suite `mockgcp/mocksaasservicemgmt/saas_test.go` covering full lifecycle, parent validation, field mask updates, and list operations.
+  - Added `SaaSServiceMgmtSaaS` to the supported GroupKind allowlist in `config/tests/samples/create/harness.go`.
+  - Generated and aligned mock HTTP logs (`_http_mock.log`) for both `saasservicemgmtsaas-minimal` and `saasservicemgmtsaas-maximal` fixtures with 0 diff against real GCP golden logs.
+
+### [2026-11-11] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtSaaS
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtSaaS`.
+- **Observations**:
+  - **Synchronous API**: All operations (`CreateSaas`, `GetSaas`, `UpdateSaas`, `DeleteSaas`) on `SaasDeploymentsClient` are synchronous (do not return LROs).
+  - **Client Selection**: Utilized GAPIC REST client (`NewSaasDeploymentsRESTClient`) with `m.config.RESTClientOptions()`.
+  - **Location Requirement**: GCP requires at least one location in `spec.locations` upon creation (`Need to specify at least one location for a SaaS`). Therefore, both minimal and maximal fixtures must provide at least one location entry.
+  - **Labels and Spec Mutability**: Top-level `labels` are reconciled via `metadata.labels` using `label.GCPLabels` on creation and `common.CompareGreenfieldSpecAndLabels` during update. Both `locations` and `labels` are mutable and updated via `UpdateSaas` with updateMask `labels,locations`.
+  - **Normalization**: Real GCP automatically sets `blueprintRepo` with a random 8-hex-character suffix (`<location>-docker.pkg.dev/<project>/<saas_id>-<hash>`) and returns condition `lastTransitionTime`. Normalization in `mockgcp/mocksaasservicemgmt/normalize.go` was updated to mask `lastTransitionTime` and normalize the random suffix of `blueprintRepo`.
+
 ### [2026-11-11] Greenfield Judgement Queue Triage and Types Finalization for SaaSServiceMgmtSaaS
 - **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and CRD for `SaaSServiceMgmtSaaS` under `saasservicemgmt.cnrm.cloud.google.com/v1alpha1`.
 - **Triage Decisions**:
