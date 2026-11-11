@@ -52,6 +52,18 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeInstantSnapshot:InstantSnapshot \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeHealthCheckService:HealthCheckService
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeHealthCheckService:HealthCheckService
+
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 # --- v1beta1 ---

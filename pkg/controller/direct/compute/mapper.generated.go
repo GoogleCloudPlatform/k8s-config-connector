@@ -2243,35 +2243,91 @@ func ComputeHTTPSHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 }
 */
 
-/* found existing non-generated mapping function "ComputeHTTPSHealthCheckStatus_v1beta1_ToProto", skipping
-func ComputeHTTPSHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHTTPSHealthCheckStatus) *pb.HealthCheck {
+/*
+found existing non-generated mapping function "ComputeHTTPSHealthCheckStatus_v1beta1_ToProto", skipping
+
+	func ComputeHTTPSHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeHTTPSHealthCheckStatus) *pb.HealthCheck {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HealthCheck{}
+		// MISSING: CheckIntervalSec
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Description
+		// MISSING: GrpcHealthCheck
+		// MISSING: HealthyThreshold
+		// MISSING: Http2HealthCheck
+		// MISSING: HTTPHealthCheck
+		// MISSING: HTTPSHealthCheck
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: LogConfig
+		// MISSING: Name
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: SourceRegions
+		// MISSING: SSLHealthCheck
+		// MISSING: TCPHealthCheck
+		// MISSING: TimeoutSec
+		// MISSING: Type
+		// MISSING: UnhealthyThreshold
+		return out
+	}
+*/
+func ComputeHealthCheckServiceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheckService) *krmcomputev1alpha1.ComputeHealthCheckServiceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.HealthCheck{}
-	// MISSING: CheckIntervalSec
+	out := &krmcomputev1alpha1.ComputeHealthCheckServiceObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Description
-	// MISSING: GrpcHealthCheck
-	// MISSING: HealthyThreshold
-	// MISSING: Http2HealthCheck
-	// MISSING: HTTPHealthCheck
-	// MISSING: HTTPSHealthCheck
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: LogConfig
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: Region
 	out.SelfLink = in.SelfLink
-	// MISSING: SourceRegions
-	// MISSING: SSLHealthCheck
-	// MISSING: TCPHealthCheck
-	// MISSING: TimeoutSec
-	// MISSING: Type
-	// MISSING: UnhealthyThreshold
 	return out
 }
-*/
+func ComputeHealthCheckServiceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthCheckServiceObservedState) *pb.HealthCheckService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheckService{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeHealthCheckServiceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheckService) *krmcomputev1alpha1.ComputeHealthCheckServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeHealthCheckServiceSpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthChecks = in.HealthChecks
+	out.HealthStatusAggregationPolicy = in.HealthStatusAggregationPolicy
+	// MISSING: Name
+	out.NetworkEndpointGroups = in.NetworkEndpointGroups
+	out.NotificationEndpoints = in.NotificationEndpoints
+	out.Region = in.Region
+	return out
+}
+func ComputeHealthCheckServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthCheckServiceSpec) *pb.HealthCheckService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthCheckService{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthChecks = in.HealthChecks
+	out.HealthStatusAggregationPolicy = in.HealthStatusAggregationPolicy
+	// MISSING: Name
+	out.NetworkEndpointGroups = in.NetworkEndpointGroups
+	out.NotificationEndpoints = in.NotificationEndpoints
+	out.Region = in.Region
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krmcomputev1beta1.ComputeHealthCheckSpec {
