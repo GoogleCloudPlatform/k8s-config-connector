@@ -1555,6 +1555,8 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 		return "google.golang.org/genproto/googleapis/cloud/contentwarehouse/v1"
 	case "cloud.google.com/go/connectors/apiv1/connectorspb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/connectors/pb"
+	case "cloud.google.com/go/observability/apiv1/observabilitypb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/observability/pb"
 	}
 
 	return protoGoPackage
