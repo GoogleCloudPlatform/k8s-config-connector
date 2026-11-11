@@ -210,6 +210,15 @@ func NormalizeDynamicIDs(s string) string {
 			lines[i] = line[:start] + "${customJobID}"
 			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
 		}
+		// Normalize AIPlatformModelDeploymentMonitoringJob IDs: locations/.../modelDeploymentMonitoringJobs/<id>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/modelDeploymentMonitoringJobs/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize AIPlatformSpecialistPool specialistPools IDs: locations/.../specialistPools/<specialistPoolId>
 		if idx := strings.Index(line, "/specialistPools/"); idx != -1 {
 			start := idx + len("/specialistPools/")
