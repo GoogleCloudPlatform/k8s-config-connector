@@ -116,6 +116,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud
 mkdir -p google/logging/v2
 cp ${REPO_ROOT}/mockgcp/apis/google/logging/v2/logging_config.proto google/logging/v2/logging_config.proto
 
+# Overwrite dlp.proto with the updated version that has ContentPolicy
+mkdir -p google/privacy/dlp/v2
+cp ${REPO_ROOT}/mockgcp/apis/google/privacy/dlp/v2/dlp.proto google/privacy/dlp/v2/dlp.proto
+
 # Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
 sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
 cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF

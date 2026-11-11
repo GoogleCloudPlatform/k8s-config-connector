@@ -194,6 +194,7 @@ var kccProtoOverrides = map[string]bool{
 	"google/cloud/config/v1/config.proto":       true,
 	"google/cloud/dataplex/v1/catalog.proto":    true,
 	"google/logging/v2/logging_config.proto":    true,
+	"google/privacy/dlp/v2/dlp.proto":           true,
 }
 
 func (r *Resolver) protoLink(path string) Link {

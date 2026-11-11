@@ -649,6 +649,8 @@ cloud.google.com/go/dlp v1.10.2/go.mod h1:ZbdKIhcnyhILgccwVDzkwqybthh7+MplGC3kZV
 cloud.google.com/go/dlp v1.10.3/go.mod h1:iUaTc/ln8I+QT6Ai5vmuwfw8fqTk2kaz0FvCwhLCom0=
 cloud.google.com/go/dlp v1.11.1/go.mod h1:/PA2EnioBeXTL/0hInwgj0rfsQb3lpE3R8XUJxqUNKI=
 cloud.google.com/go/dlp v1.11.2/go.mod h1:9Czi+8Y/FegpWzgSfkRlyz+jwW6Te9Rv26P3UfU/h/w=
+cloud.google.com/go/dlp v1.38.0 h1:/prU5AN590nNArmU6qERiSkRNsixwPaOKYnnmriBGGg=
+cloud.google.com/go/dlp v1.38.0/go.mod h1:gmqoT21fkrLI/mHz3/RBmLuIrKcxrKDPq86NWF8At9Y=
 cloud.google.com/go/documentai v1.7.0/go.mod h1:lJvftZB5NRiFSX4moiye1SMxHx0Bc3x1+p9e/RfXYiU=
 cloud.google.com/go/documentai v1.8.0/go.mod h1:xGHNEB7CtsnySCNrCFdCyyMz44RhFEEX2Q7UD0c5IhU=
 cloud.google.com/go/documentai v1.9.0/go.mod h1:FS5485S8R00U10GhgBC0aNGrJxBP8ZVpEeJ7PQDZd6k=

@@ -19,8 +19,98 @@
 // proto.service: google.privacy.dlp.v2
 // resource: DLPDiscoveryConfig:DiscoveryConfig
 // resource: DLPConnection:Connection
+// resource: DLPContentPolicy:ContentPolicy
 
 package v1alpha1
+
+/* unreachable type AdjustByImageFindings
+// +kcc:proto=google.privacy.dlp.v2.AdjustByImageFindings
+type AdjustByImageFindings struct {
+	// A list of image-supported infoTypes—excluding [document
+	//  infoTypes](https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents)—to
+	//  be used as context for the adjustment rule. Sensitive Data Protection
+	//  adjusts the likelihood of an image finding if its bounding box has the
+	//  specified spatial relationship (defined by `image_containment_type`) with a
+	//  finding of an infoType in this list.
+	//
+	//  For example, you can create a rule to adjust the likelihood of a
+	//  `US_PASSPORT` finding if it is enclosed by a finding of
+	//  `OBJECT_TYPE/PERSON/PASSPORT`. To configure this, set `US_PASSPORT` in
+	//  `InspectionRuleSet.info_types`. Add an `adjustment_rule` with an
+	//  `adjust_by_image_findings.info_types` that contains
+	//  `OBJECT_TYPE/PERSON/PASSPORT` and `image_containment_type` set
+	//  to `encloses`. In this case, the likelihood of the `US_PASSPORT` finding is
+	//  adjusted, but the likelihood of the `OBJECT_TYPE/PERSON/PASSPORT`
+	//  finding is not.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByImageFindings.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+
+	// Required. Minimum likelihood of the
+	//  `adjust_by_image_findings.info_types` finding. If the likelihood is
+	//  lower than this value, Sensitive Data Protection doesn't adjust the
+	//  likelihood of the `InspectionRuleSet.info_types` finding.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByImageFindings.min_likelihood
+	MinLikelihood *string `json:"minLikelihood,omitempty"`
+
+	// Specifies the required spatial relationship between the bounding boxes
+	//  of the target finding and the context infoType findings.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByImageFindings.image_containment_type
+	ImageContainmentType *ImageContainmentType `json:"imageContainmentType,omitempty"`
+}
+*/
+
+/* unreachable type AdjustByMatchingInfoTypes
+// +kcc:proto=google.privacy.dlp.v2.AdjustByMatchingInfoTypes
+type AdjustByMatchingInfoTypes struct {
+	// Sensitive Data Protection adjusts the likelihood of a finding if that
+	//  finding also matches one of these infoTypes.
+	//
+	//  For example, you can create a rule to adjust the likelihood of a
+	//  `PHONE_NUMBER` finding if the string is found within a document that is
+	//  classified as `DOCUMENT_TYPE/HR/RESUME`. To configure this, set
+	//  `PHONE_NUMBER` in `InspectionRuleSet.info_types`. Add an `adjustment_rule`
+	//  with an `adjust_by_matching_info_types.info_types` that contains
+	//  `DOCUMENT_TYPE/HR/RESUME`. In this case, the likelihood of the
+	//  `PHONE_NUMBER` finding is adjusted, but the likelihood of the
+	//  `DOCUMENT_TYPE/HR/RESUME` finding is not.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByMatchingInfoTypes.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+
+	// Required. Minimum likelihood of the
+	//  `adjust_by_matching_info_types.info_types` finding. If the likelihood is
+	//  lower than this value, Sensitive Data Protection doesn't adjust the
+	//  likelihood of the `InspectionRuleSet.info_types` finding.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByMatchingInfoTypes.min_likelihood
+	MinLikelihood *string `json:"minLikelihood,omitempty"`
+
+	// How the adjustment rule is applied.
+	//
+	//  Only `MATCHING_TYPE_PARTIAL_MATCH` is supported:
+	//
+	//  - Partial match: adjusts the findings of infoTypes specified in the
+	//  inspection rule when they have a nonempty intersection with a finding of an
+	//  infoType specified in this adjustment rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustByMatchingInfoTypes.matching_type
+	MatchingType *string `json:"matchingType,omitempty"`
+}
+*/
+
+/* unreachable type AdjustmentRule
+// +kcc:proto=google.privacy.dlp.v2.AdjustmentRule
+type AdjustmentRule struct {
+	// Set of infoTypes for which findings would affect this rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustmentRule.adjust_by_matching_info_types
+	AdjustByMatchingInfoTypes *AdjustByMatchingInfoTypes `json:"adjustByMatchingInfoTypes,omitempty"`
+
+	// AdjustmentRule condition for image findings.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustmentRule.adjust_by_image_findings
+	AdjustByImageFindings *AdjustByImageFindings `json:"adjustByImageFindings,omitempty"`
+
+	// Likelihood adjustment to apply to the infoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.AdjustmentRule.likelihood_adjustment
+	LikelihoodAdjustment *CustomInfoType_DetectionRule_LikelihoodAdjustment `json:"likelihoodAdjustment,omitempty"`
+}
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.AllOtherDatabaseResources
 type AllOtherDatabaseResources struct {
@@ -248,6 +338,14 @@ type CloudStorageDiscoveryTarget struct {
 	Disabled *Disabled `json:"disabled,omitempty"`
 }
 
+// +kcc:proto=google.privacy.dlp.v2.CloudStoragePath
+type CloudStoragePath struct {
+	// A URL representing a file or path (no wildcards) in Cloud Storage.
+	//  Example: `gs://[BUCKET_NAME]/dictionary.txt`
+	// +kcc:proto:field=google.privacy.dlp.v2.CloudStoragePath.path
+	Path *string `json:"path,omitempty"`
+}
+
 // +kcc:proto=google.privacy.dlp.v2.CloudStorageRegex
 type CloudStorageRegex struct {
 	// Optional. For organizations, if unset, will match all projects.
@@ -287,6 +385,291 @@ type Connection struct {
 	CloudSQL *CloudSQLProperties `json:"cloudSQL,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.ContentPolicy", skipping
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy
+type ContentPolicy struct {
+
+	// Optional. Display name (max 63 chars)
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. InspectConfig to use to produce findings.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.inspect_config
+	InspectConfig *InspectConfig `json:"inspectConfig,omitempty"`
+
+	// Required. Policies to apply, based on the findings returned by inspection.
+	//  The first rule to match applies.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.rules
+	Rules []ContentPolicy_PolicyRule `json:"rules,omitempty"`
+
+	// Optional. Action to take if the content is an unsupported file type.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.unsupported_file_type
+	UnsupportedFileType *ContentPolicy_PolicyAction `json:"unsupportedFileType,omitempty"`
+
+	// Optional. Action to take if the content is a supported file type but is too
+	//  large to be scanned.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.input_too_large
+	InputTooLarge *ContentPolicy_PolicyAction `json:"inputTooLarge,omitempty"`
+
+	// Optional. Action to take if the content is a supported file type and size
+	//  but fails to be scanned, for example because the file is encrypted or
+	//  corrupted.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.failed_to_scan_supported_file_type
+	FailedToScanSupportedFileType *ContentPolicy_PolicyAction `json:"failedToScanSupportedFileType,omitempty"`
+
+	// Action to take if the content is scanned and no rules match.
+	//  Defaults to returning an ALLOW verdict if not set.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.default_action
+	DefaultAction *ContentPolicy_PolicyAction `json:"defaultAction,omitempty"`
+
+	// Optional. Log the actions taken by the content policy to external systems.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.logging_configs
+	LoggingConfigs []ContentPolicy_LoggingConfig `json:"loggingConfigs,omitempty"`
+}
+*/
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.LoggingConfig
+type ContentPolicy_LoggingConfig struct {
+	// Optional. Log the actions taken to a BigQuery table.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.LoggingConfig.log_to_big_query
+	LogToBigQuery *ContentPolicy_LoggingConfig_LogToBigQuery `json:"logToBigQuery,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.LoggingConfig.LogToBigQuery
+type ContentPolicy_LoggingConfig_LogToBigQuery struct {
+	// Required. The ID of the project containing the BigQuery table to write
+	//  to.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.LoggingConfig.LogToBigQuery.project_id
+	// +required
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The ID of the dataset containing the BigQuery table to write
+	//  to.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.LoggingConfig.LogToBigQuery.dataset_id
+	// +required
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Required. The ID of the BigQuery table to write to.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.LoggingConfig.LogToBigQuery.table_id
+	// +required
+	TableID *string `json:"tableID,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.PolicyAction
+type ContentPolicy_PolicyAction struct {
+	// Optional. If set, the verdict will be returned to the user.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyAction.return_verdict
+	ReturnVerdict *string `json:"returnVerdict,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.PolicyRule
+type ContentPolicy_PolicyRule struct {
+	// Optional. Conditions that must match for this rule to apply.
+	//  All conditions must match (`AND`). For `OR` conditions, use multiple
+	//  rules.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.conditions
+	Conditions []ContentPolicy_PolicyRule_PolicyCondition `json:"conditions,omitempty"`
+
+	// Required. Action to take if this rule applies.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.action
+	// +required
+	Action *ContentPolicy_PolicyAction `json:"action,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition
+type ContentPolicy_PolicyRule_PolicyCondition struct {
+	// A condition based on info types.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.info_type_condition
+	InfoTypeCondition *ContentPolicy_PolicyRule_PolicyCondition_InfoTypeCondition `json:"infoTypeCondition,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition
+type ContentPolicy_PolicyRule_PolicyCondition_InfoTypeCondition struct {
+	// Optional. The minimum total number of findings of all matching info
+	//  types required for this condition to evaluate to true. Defaults to 1
+	//  if unset.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition.min_count
+	MinCount *int64 `json:"minCount,omitempty"`
+
+	// match any of these info types.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition.info_types
+	InfoTypes *ContentPolicy_PolicyRule_PolicyCondition_InfoTypeCondition_InfoTypes `json:"infoTypes,omitempty"`
+
+	// match any info types.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition.any_info_type
+	AnyInfoType *Empty `json:"anyInfoType,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition.InfoTypes
+type ContentPolicy_PolicyRule_PolicyCondition_InfoTypeCondition_InfoTypes struct {
+	// Required. A list of info types to match.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.PolicyRule.PolicyCondition.InfoTypeCondition.InfoTypes.info_type_names
+	// +required
+	InfoTypeNames []string `json:"infoTypeNames,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType
+type CustomInfoType struct {
+	// CustomInfoType can either be a new infoType, or an extension of built-in
+	//  infoType, when the name matches one of existing infoTypes and that infoType
+	//  is specified in `InspectContent.info_types` field. Specifying the latter
+	//  adds findings to the one detected by the system. If built-in info type is
+	//  not specified in `InspectContent.info_types` list then the name is treated
+	//  as a custom info type.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.info_type
+	InfoType *InfoType `json:"infoType,omitempty"`
+
+	// Likelihood to return for this CustomInfoType. This base value can be
+	//  altered by a detection rule if the finding meets the criteria specified by
+	//  the rule. Defaults to `VERY_LIKELY` if not specified.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.likelihood
+	Likelihood *string `json:"likelihood,omitempty"`
+
+	// A list of phrases to detect as a CustomInfoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.dictionary
+	Dictionary *CustomInfoType_Dictionary `json:"dictionary,omitempty"`
+
+	// Regular expression based CustomInfoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.regex
+	Regex *CustomInfoType_Regex `json:"regex,omitempty"`
+
+	// Message for detecting output from deidentification transformations that
+	//  support reversing.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.surrogate_type
+	SurrogateType *CustomInfoType_SurrogateType `json:"surrogateType,omitempty"`
+
+	// Load an existing `StoredInfoType` resource for use in
+	//  `InspectDataSource`. Not currently supported in `InspectContent`.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.stored_type
+	StoredType *StoredType `json:"storedType,omitempty"`
+
+	// Set of detection rules to apply to all findings of this CustomInfoType.
+	//  Rules are applied in order that they are specified. Not supported for the
+	//  `surrogate_type` CustomInfoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.detection_rules
+	DetectionRules []CustomInfoType_DetectionRule `json:"detectionRules,omitempty"`
+
+	// If set to EXCLUSION_TYPE_EXCLUDE this infoType will not cause a finding
+	//  to be returned. It still can be used for rules matching.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.exclusion_type
+	ExclusionType *string `json:"exclusionType,omitempty"`
+
+	// Sensitivity for this CustomInfoType. If this CustomInfoType extends an
+	//  existing InfoType, the sensitivity here will take precedence over that of
+	//  the original InfoType. If unset for a CustomInfoType, it will default to
+	//  HIGH.
+	//  This only applies to data profiling.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.sensitivity_score
+	SensitivityScore *SensitivityScore `json:"sensitivityScore,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.DetectionRule
+type CustomInfoType_DetectionRule struct {
+	// Hotword-based detection rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.hotword_rule
+	HotwordRule *CustomInfoType_DetectionRule_HotwordRule `json:"hotwordRule,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule
+type CustomInfoType_DetectionRule_HotwordRule struct {
+	// Regular expression pattern defining what qualifies as a hotword.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.hotword_regex
+	HotwordRegex *CustomInfoType_Regex `json:"hotwordRegex,omitempty"`
+
+	// Range of characters within which the entire hotword must reside.
+	//  The total length of the window cannot exceed 1000 characters.
+	//  The finding itself will be included in the window, so that hotwords can
+	//  be used to match substrings of the finding itself. Suppose you
+	//  want Cloud DLP to promote the likelihood of the phone number
+	//  regex "\(\d{3}\) \d{3}-\d{4}" if the area code is known to be the
+	//  area code of a company's office. In this case, use the hotword regex
+	//  "\(xxx\)", where "xxx" is the area code in question.
+	//
+	//  For tabular data, if you want to modify the likelihood of an entire
+	//  column of findngs, see
+	//  [Hotword example: Set the match likelihood of a table column]
+	//  (https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values).
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.proximity
+	Proximity *CustomInfoType_DetectionRule_Proximity `json:"proximity,omitempty"`
+
+	// Likelihood adjustment to apply to all matching findings.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.HotwordRule.likelihood_adjustment
+	LikelihoodAdjustment *CustomInfoType_DetectionRule_LikelihoodAdjustment `json:"likelihoodAdjustment,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment
+type CustomInfoType_DetectionRule_LikelihoodAdjustment struct {
+	// Set the likelihood of a finding to a fixed value.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment.fixed_likelihood
+	FixedLikelihood *string `json:"fixedLikelihood,omitempty"`
+
+	// Increase or decrease the likelihood by the specified number of
+	//  levels. For example, if a finding would be `POSSIBLE` without the
+	//  detection rule and `relative_likelihood` is 1, then it is upgraded to
+	//  `LIKELY`, while a value of -1 would downgrade it to `UNLIKELY`.
+	//  Likelihood may never drop below `VERY_UNLIKELY` or exceed
+	//  `VERY_LIKELY`, so applying an adjustment of 1 followed by an
+	//  adjustment of -1 when base likelihood is `VERY_LIKELY` will result in
+	//  a final likelihood of `LIKELY`.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.LikelihoodAdjustment.relative_likelihood
+	RelativeLikelihood *int32 `json:"relativeLikelihood,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity
+type CustomInfoType_DetectionRule_Proximity struct {
+	// Number of characters before the finding to consider. For tabular data,
+	//  if you want to modify the likelihood of an entire column of findngs,
+	//  set this to 1. For more information, see
+	//  [Hotword example: Set the match likelihood of a table column]
+	//  (https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values).
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity.window_before
+	WindowBefore *int32 `json:"windowBefore,omitempty"`
+
+	// Number of characters after the finding to consider.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.DetectionRule.Proximity.window_after
+	WindowAfter *int32 `json:"windowAfter,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.Dictionary
+type CustomInfoType_Dictionary struct {
+	// List of words or phrases to search for.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.Dictionary.word_list
+	WordList *CustomInfoType_Dictionary_WordList `json:"wordList,omitempty"`
+
+	// Newline-delimited file of words in Cloud Storage. Only a single file
+	//  is accepted.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.Dictionary.cloud_storage_path
+	CloudStoragePath *CloudStoragePath `json:"cloudStoragePath,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.Dictionary.WordList
+type CustomInfoType_Dictionary_WordList struct {
+	// Words or phrases defining the dictionary. The dictionary must contain
+	//  at least one phrase and every phrase must contain at least 2 characters
+	//  that are letters or digits. [required]
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.Dictionary.WordList.words
+	Words []string `json:"words,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.Regex
+type CustomInfoType_Regex struct {
+	// Pattern defining the regular expression. Its syntax
+	//  (https://github.com/google/re2/wiki/Syntax) can be found under the
+	//  google/re2 repository on GitHub.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.Regex.pattern
+	Pattern *string `json:"pattern,omitempty"`
+
+	// The index of the submatch to extract as findings. When not
+	//  specified, the entire match is returned. No more than 3 may be included.
+	// +kcc:proto:field=google.privacy.dlp.v2.CustomInfoType.Regex.group_indexes
+	GroupIndexes []int32 `json:"groupIndexes,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.CustomInfoType.SurrogateType
+type CustomInfoType_SurrogateType struct {
+}
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction
 type DataProfileAction struct {
@@ -1025,6 +1408,12 @@ type DiscoveryVertexDatasetGenerationCadence struct {
 	InspectTemplateModifiedCadence *DiscoveryInspectTemplateModifiedCadence `json:"inspectTemplateModifiedCadence,omitempty"`
 }
 
+/* unreachable type Encloses
+// +kcc:proto=google.privacy.dlp.v2.Encloses
+type Encloses struct {
+}
+*/
+
 /* found existing non-generated go type "Error", skipping
 
 // +kcc:proto=google.privacy.dlp.v2.Error
@@ -1043,6 +1432,83 @@ type Error struct {
 	ExtraInfo *string `json:"extraInfo,omitempty"`
 }
 */
+
+// +kcc:proto=google.privacy.dlp.v2.ExcludeByHotword
+type ExcludeByHotword struct {
+	// Regular expression pattern defining what qualifies as a hotword.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExcludeByHotword.hotword_regex
+	HotwordRegex *CustomInfoType_Regex `json:"hotwordRegex,omitempty"`
+
+	// Range of characters within which the entire hotword must reside.
+	//  The total length of the window cannot exceed 1000 characters.
+	//  The windowBefore property in proximity should be set to 1 if the hotword
+	//  needs to be included in a column header.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExcludeByHotword.proximity
+	Proximity *CustomInfoType_DetectionRule_Proximity `json:"proximity,omitempty"`
+}
+
+/* unreachable type ExcludeByImageFindings
+// +kcc:proto=google.privacy.dlp.v2.ExcludeByImageFindings
+type ExcludeByImageFindings struct {
+	// A list of image-supported infoTypes—excluding [document
+	//   infoTypes](https://docs.cloud.google.com/sensitive-data-protection/docs/infotypes-reference#documents)—to
+	//   be used as context for the exclusion rule. A finding is excluded if
+	//   its bounding box has the specified spatial relationship (defined by
+	//   `image_containment_type`) with a finding of an infoType in this list.
+	//
+	//   For example, if `InspectionRuleSet.info_types` includes
+	//   `OBJECT_TYPE/PERSON` and this `exclusion_rule` specifies `info_types` as
+	//   `OBJECT_TYPE/PERSON/PASSPORT` with `image_containment_type` set to
+	//   `encloses`, then `OBJECT_TYPE/PERSON` findings will be excluded if they
+	//   are fully contained within the bounding box of an
+	//   `OBJECT_TYPE/PERSON/PASSPORT` finding.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExcludeByImageFindings.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+
+	// Specifies the required spatial relationship between the bounding boxes
+	//  of the target finding and the context infoType findings.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExcludeByImageFindings.image_containment_type
+	ImageContainmentType *ImageContainmentType `json:"imageContainmentType,omitempty"`
+}
+*/
+
+// +kcc:proto=google.privacy.dlp.v2.ExcludeInfoTypes
+type ExcludeInfoTypes struct {
+	// InfoType list in ExclusionRule rule drops a finding when it overlaps or
+	//  contained within with a finding of an infoType from this list. For
+	//  example, for `InspectionRuleSet.info_types` containing "PHONE_NUMBER"` and
+	//  `exclusion_rule` containing `exclude_info_types.info_types` with
+	//  "EMAIL_ADDRESS" the phone number findings are dropped if they overlap
+	//  with EMAIL_ADDRESS finding.
+	//  That leads to "555-222-2222@example.org" to generate only a single
+	//  finding, namely email address.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExcludeInfoTypes.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ExclusionRule
+type ExclusionRule struct {
+	// Dictionary which defines the rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExclusionRule.dictionary
+	Dictionary *CustomInfoType_Dictionary `json:"dictionary,omitempty"`
+
+	// Regular expression which defines the rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExclusionRule.regex
+	Regex *CustomInfoType_Regex `json:"regex,omitempty"`
+
+	// Set of infoTypes for which findings would affect this rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExclusionRule.exclude_info_types
+	ExcludeInfoTypes *ExcludeInfoTypes `json:"excludeInfoTypes,omitempty"`
+
+	// Drop if the hotword rule is contained in the proximate context. For
+	//  tabular data, the context includes the column name.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExclusionRule.exclude_by_hotword
+	ExcludeByHotword *ExcludeByHotword `json:"excludeByHotword,omitempty"`
+
+	// How the rule is applied, see MatchingType documentation for details.
+	// +kcc:proto:field=google.privacy.dlp.v2.ExclusionRule.matching_type
+	MatchingType *string `json:"matchingType,omitempty"`
+}
 
 // +kcc:proto=google.privacy.dlp.v2.FileStoreCollection
 type FileStoreCollection struct {
@@ -1066,6 +1532,218 @@ type FileStoreRegexes struct {
 	//  expression's length can't exceed 10 KiB.
 	// +kcc:proto:field=google.privacy.dlp.v2.FileStoreRegexes.patterns
 	Patterns []FileStoreRegex `json:"patterns,omitempty"`
+}
+
+/* unreachable type FullyInside
+// +kcc:proto=google.privacy.dlp.v2.FullyInside
+type FullyInside struct {
+}
+*/
+
+/* unreachable type ImageContainmentType
+// +kcc:proto=google.privacy.dlp.v2.ImageContainmentType
+type ImageContainmentType struct {
+	// The context finding's bounding box must fully contain the target
+	//  finding's bounding box.
+	// +kcc:proto:field=google.privacy.dlp.v2.ImageContainmentType.encloses
+	Encloses *Encloses `json:"encloses,omitempty"`
+
+	// The context finding's bounding box must be fully inside the target
+	//  finding's bounding box.
+	// +kcc:proto:field=google.privacy.dlp.v2.ImageContainmentType.fully_inside
+	FullyInside *FullyInside `json:"fullyInside,omitempty"`
+
+	// The context finding's bounding box and the target finding's bounding box
+	//  must have a non-zero intersection.
+	// +kcc:proto:field=google.privacy.dlp.v2.ImageContainmentType.overlaps
+	Overlaps *Overlap `json:"overlaps,omitempty"`
+}
+*/
+
+// +kcc:proto=google.privacy.dlp.v2.InfoType
+type InfoType struct {
+	// Name of the information type. Either a name of your choosing when
+	//  creating a CustomInfoType, or one of the names listed
+	//  at
+	//  https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
+	//  when specifying a built-in type.  When sending Cloud DLP results to Data
+	//  Catalog, infoType names should conform to the pattern
+	//  `[A-Za-z0-9$_-]{1,64}`.
+	// +kcc:proto:field=google.privacy.dlp.v2.InfoType.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional version name for this InfoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.InfoType.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional custom sensitivity for this InfoType.
+	//  This only applies to data profiling.
+	// +kcc:proto:field=google.privacy.dlp.v2.InfoType.sensitivity_score
+	SensitivityScore *SensitivityScore `json:"sensitivityScore,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectConfig
+type InspectConfig struct {
+	// Restricts what info_types to look for. The values must correspond to
+	//  InfoType values returned by ListInfoTypes or listed at
+	//  https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference.
+	//
+	//  When no InfoTypes or CustomInfoTypes are specified in a request, the
+	//  system may automatically choose a default list of detectors to run, which
+	//  may change over time.
+	//
+	//  If you need precise control and predictability as to what detectors are
+	//  run you should specify specific InfoTypes listed in the reference,
+	//  otherwise a default list will be used, which may change over time.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+
+	// Only returns findings equal to or above this threshold. The default is
+	//  POSSIBLE.
+	//
+	//  In general, the highest likelihood setting yields the fewest findings in
+	//  results and the lowest chance of a false positive. For more information,
+	//  see [Match
+	//  likelihood](https://cloud.google.com/sensitive-data-protection/docs/likelihood).
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.min_likelihood
+	MinLikelihood *string `json:"minLikelihood,omitempty"`
+
+	// Minimum likelihood per infotype. For each infotype, a user can specify a
+	//  minimum likelihood. The system only returns a finding if its likelihood is
+	//  above this threshold. If this field is not set, the system uses the
+	//  InspectConfig min_likelihood.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.min_likelihood_per_info_type
+	MinLikelihoodPerInfoType []InspectConfig_InfoTypeLikelihood `json:"minLikelihoodPerInfoType,omitempty"`
+
+	// Configuration to control the number of findings returned.
+	//  This is not used for data profiling.
+	//
+	//  When redacting sensitive data from images, finding limits don't apply. They
+	//  can cause unexpected or inconsistent results, where only some data is
+	//  redacted. Don't include finding limits in
+	//  [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
+	//  requests. Otherwise, Cloud DLP returns an error.
+	//
+	//  When set within an
+	//  [InspectJobConfig][google.privacy.dlp.v2.InspectJobConfig], the specified
+	//  maximum values aren't hard limits. If an inspection job reaches these
+	//  limits, the job ends gradually, not abruptly. Therefore, the actual number
+	//  of findings that Cloud DLP returns can be multiple times higher than these
+	//  maximum values.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.limits
+	Limits *InspectConfig_FindingLimits `json:"limits,omitempty"`
+
+	// When true, a contextual quote from the data that triggered a finding is
+	//  included in the response; see
+	//  [Finding.quote][google.privacy.dlp.v2.Finding.quote]. This is not used for
+	//  data profiling.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.include_quote
+	IncludeQuote *bool `json:"includeQuote,omitempty"`
+
+	// When true, excludes type information of the findings.
+	//  This is not used for data profiling.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.exclude_info_types
+	ExcludeInfoTypes *bool `json:"excludeInfoTypes,omitempty"`
+
+	// CustomInfoTypes provided by the user. See
+	//  https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes
+	//  to learn more.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.custom_info_types
+	CustomInfoTypes []CustomInfoType `json:"customInfoTypes,omitempty"`
+
+	// Deprecated and unused.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.content_options
+	ContentOptions []string `json:"contentOptions,omitempty"`
+
+	// Set of rules to apply to the findings for this InspectConfig.
+	//  Exclusion rules, contained in the set are executed in the end, other
+	//  rules are executed in the order they are specified for each info type.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.rule_set
+	RuleSet []InspectionRuleSet `json:"ruleSet,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectConfig.FindingLimits
+type InspectConfig_FindingLimits struct {
+	// Max number of findings that are returned for each item scanned.
+	//
+	//  When set within an
+	//  [InspectContentRequest][google.privacy.dlp.v2.InspectContentRequest],
+	//  this field is ignored.
+	//
+	//  This value isn't a hard limit. If the number of findings for an item
+	//  reaches this limit, the inspection of that item ends gradually, not
+	//  abruptly. Therefore, the actual number of findings that Cloud DLP returns
+	//  for the item can be multiple times higher than this value.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_item
+	MaxFindingsPerItem *int32 `json:"maxFindingsPerItem,omitempty"`
+
+	// Max number of findings that are returned per request or job.
+	//
+	//  If you set this field in an
+	//  [InspectContentRequest][google.privacy.dlp.v2.InspectContentRequest], the
+	//  resulting maximum value is the value that you set or 3,000, whichever is
+	//  lower.
+	//
+	//  This value isn't a hard limit. If an inspection reaches this limit, the
+	//  inspection ends gradually, not abruptly. Therefore, the actual number of
+	//  findings that Cloud DLP returns can be multiple times higher than this
+	//  value.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_request
+	MaxFindingsPerRequest *int32 `json:"maxFindingsPerRequest,omitempty"`
+
+	// Configuration of findings limit given for specified infoTypes.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.FindingLimits.max_findings_per_info_type
+	MaxFindingsPerInfoType []InspectConfig_FindingLimits_InfoTypeLimit `json:"maxFindingsPerInfoType,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit
+type InspectConfig_FindingLimits_InfoTypeLimit struct {
+	// Type of information the findings limit applies to. Only one limit per
+	//  info_type should be provided. If InfoTypeLimit does not have an
+	//  info_type, the DLP API applies the limit against all info_types that
+	//  are found but not specified in another InfoTypeLimit.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit.info_type
+	InfoType *InfoType `json:"infoType,omitempty"`
+
+	// Max findings limit for the given infoType.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.FindingLimits.InfoTypeLimit.max_findings
+	MaxFindings *int32 `json:"maxFindings,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectConfig.InfoTypeLikelihood
+type InspectConfig_InfoTypeLikelihood struct {
+	// Type of information the likelihood threshold applies to. Only one
+	//  likelihood per info_type should be provided. If InfoTypeLikelihood does
+	//  not have an info_type, the configuration fails.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.InfoTypeLikelihood.info_type
+	InfoType *InfoType `json:"infoType,omitempty"`
+
+	// Only returns findings equal to or above this threshold. This field is
+	//  required or else the configuration fails.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectConfig.InfoTypeLikelihood.min_likelihood
+	MinLikelihood *string `json:"minLikelihood,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectionRule
+type InspectionRule struct {
+	// Hotword-based detection rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectionRule.hotword_rule
+	HotwordRule *CustomInfoType_DetectionRule_HotwordRule `json:"hotwordRule,omitempty"`
+
+	// Exclusion rule.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectionRule.exclusion_rule
+	ExclusionRule *ExclusionRule `json:"exclusionRule,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.InspectionRuleSet
+type InspectionRuleSet struct {
+	// List of infoTypes this rule set is applied to.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectionRuleSet.info_types
+	InfoTypes []InfoType `json:"infoTypes,omitempty"`
+
+	// Set of rules to be applied to infoTypes. The rules are applied in order.
+	// +kcc:proto:field=google.privacy.dlp.v2.InspectionRuleSet.rules
+	Rules []InspectionRule `json:"rules,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.OtherCloudDiscoveryStartingLocation
@@ -1150,12 +1828,32 @@ type OtherCloudSingleResourceReference struct {
 	AmazonS3Bucket *AmazonS3Bucket `json:"amazonS3Bucket,omitempty"`
 }
 
+/* unreachable type Overlap
+// +kcc:proto=google.privacy.dlp.v2.Overlap
+type Overlap struct {
+}
+*/
+
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation
 type ProcessingLocation struct {
 	// Image processing will fall back using this configuration.
 	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.image_fallback_location
 	ImageFallbackLocation *ProcessingLocation_ImageFallbackLocation `json:"imageFallbackLocation,omitempty"`
 }
+
+/* unreachable type ProcessingLocation_DocumentFallbackLocation
+// +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation
+type ProcessingLocation_DocumentFallbackLocation struct {
+	// Processing occurs in a multi-region that contains the current region
+	//  if available.
+	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation.multi_region_processing
+	MultiRegionProcessing *ProcessingLocation_MultiRegionProcessing `json:"multiRegionProcessing,omitempty"`
+
+	// Processing occurs in the global region.
+	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation.global_processing
+	GlobalProcessing *ProcessingLocation_GlobalProcessing `json:"globalProcessing,omitempty"`
+}
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.GlobalProcessing
 type ProcessingLocation_GlobalProcessing struct {
@@ -1203,6 +1901,20 @@ type SensitivityScore struct {
 	Score *string `json:"score,omitempty"`
 }
 
+// +kcc:proto=google.privacy.dlp.v2.StoredType
+type StoredType struct {
+	// Resource name of the requested `StoredInfoType`, for example
+	//  `organizations/433245324/storedInfoTypes/432452342` or
+	//  `projects/project-id/storedInfoTypes/432452342`.
+	// +kcc:proto:field=google.privacy.dlp.v2.StoredType.name
+	Name *string `json:"name,omitempty"`
+
+	// Timestamp indicating when the version of the `StoredInfoType` used for
+	//  inspection was created. Output-only field, populated by the system.
+	// +kcc:proto:field=google.privacy.dlp.v2.StoredType.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
 // +kcc:proto=google.privacy.dlp.v2.TableReference
 type TableReference struct {
 	// Dataset ID of the table.
@@ -1219,6 +1931,34 @@ type TableReference struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.TableReference.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+
+/* unreachable type TagFilter
+// +kcc:proto=google.privacy.dlp.v2.TagFilter
+type TagFilter struct {
+	// The namespaced name for the tag value. Must be in the format
+	//  `{parent_id}/{tag_key_short_name}/{short_name}`, for example,
+	//  "123456/environment/prod" for an organization parent, or
+	//  "my-project/environment/prod" for a project parent.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilter.namespaced_tag_value
+	NamespacedTagValue *string `json:"namespacedTagValue,omitempty"`
+
+	// The namespaced name for the tag key. Must be in the format
+	//  `{parent_id}/{tag_key_short_name}`, for example, "123456/sensitive" for
+	//  an organization parent, or "my-project/sensitive" for a project parent.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilter.namespaced_tag_key
+	NamespacedTagKey *string `json:"namespacedTagKey,omitempty"`
+}
+*/
+
+/* unreachable type TagFilters
+// +kcc:proto=google.privacy.dlp.v2.TagFilters
+type TagFilters struct {
+	// Required. A resource must match ALL of the specified tag filters to be
+	//  included in the collection.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilters.tag_filters
+	TagFilters []TagFilter `json:"tagFilters,omitempty"`
+}
+*/
 
 // +kcc:proto=google.privacy.dlp.v2.VertexDatasetCollection
 type VertexDatasetCollection struct {
@@ -1275,6 +2015,10 @@ type VertexDatasetResourceReference struct {
 	DatasetResourceName *string `json:"datasetResourceName,omitempty"`
 }
 
+// +kcc:proto=google.protobuf.Empty
+type Empty struct {
+}
+
 /* found existing non-generated go type with proto tag "google.privacy.dlp.v2.Connection", skipping
 
 // +kcc:observedstate:proto=google.privacy.dlp.v2.Connection
@@ -1287,6 +2031,31 @@ type ConnectionObservedState struct {
 	// Output only. Set if status == ERROR, to provide additional details. Will
 	//  store the last 10 errors sorted with the most recent first.
 	// +kcc:proto:field=google.privacy.dlp.v2.Connection.errors
+	Errors []Error `json:"errors,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.privacy.dlp.v2.ContentPolicy", skipping
+
+// +kcc:observedstate:proto=google.privacy.dlp.v2.ContentPolicy
+type ContentPolicyObservedState struct {
+	// Output only. Resource name of the policy.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The creation timestamp of a contentPolicy; output-only field.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last update timestamp of a contentPolicy; output-only
+	//  field.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. A stream of errors encountered when the policy was applied.
+	//  Output only field. Will return the last 100 errors. Whenever the policy is
+	//  modified this list will be cleared.
+	// +kcc:proto:field=google.privacy.dlp.v2.ContentPolicy.errors
 	Errors []Error `json:"errors,omitempty"`
 }
 */
