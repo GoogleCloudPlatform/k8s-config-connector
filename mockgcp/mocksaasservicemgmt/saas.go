@@ -140,7 +140,7 @@ func (s *SaasDeploymentsServer) UpdateSaas(ctx context.Context, req *pb.UpdateSa
 
 	// In real GCP, background provisioning completes after creation, populating blueprintRepo, state, and conditions.
 	if obj.BlueprintRepo == "" {
-		obj.BlueprintRepo = fmt.Sprintf("us-central1-docker.pkg.dev/%s/%s-00000000", name.Project.ID, name.Saas)
+		obj.BlueprintRepo = fmt.Sprintf("%s-docker.pkg.dev/%s/%s-00000000", name.Location, name.Project.ID, name.Saas)
 	}
 	if obj.State == pb.Saas_STATE_TYPE_UNSPECIFIED {
 		obj.State = pb.Saas_STATE_ACTIVE
