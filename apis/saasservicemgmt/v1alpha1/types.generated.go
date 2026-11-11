@@ -23,6 +23,7 @@
 // resource: SaaSServiceMgmtTenant:Tenant
 // resource: SaaSServiceMgmtUnit:Unit
 // resource: SaaSServiceMgmtUnitKind:UnitKind
+// resource: SaaSServiceMgmtSaaS:Saas
 
 package v1alpha1
 
@@ -89,6 +90,13 @@ type FromMapping struct {
 	OutputVariable *string `json:"outputVariable,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Location
+type Location struct {
+	// Optional. Name of location.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Location.name
+	Name *string `json:"name,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
 

@@ -1,3 +1,13 @@
+### [2026-11-10] Greenfield Prepopulation of Types and Identity for SaaSServiceMgmtSaaS
+- **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for `SaaSServiceMgmtSaaS` under `saasservicemgmt.cnrm.cloud.google.com/v1alpha1`.
+- **Problem**: 
+  1. The proto package `google.cloud.saasplatform.saasservicemgmt.v1beta1` is non-GA (beta), so initial scaffolding required `--allow-non-ga-proto` during generation when the types file did not yet exist. However, Greenfield Step 1 policy forbids keeping `--allow-non-ga-proto` in `generate.sh` unless explicitly authorized in the issue description.
+  2. `SaaSServiceMgmtSaaSRef` and `SaaSServiceMgmtSaaSIdentity` were previously defined as an external-only temporary stub inside `saasservicemgmttenant_reference.go` and tested in `saasservicemgmttenant_identity_test.go`.
+- **Solution**:
+  1. Once `saasservicemgmtsaas_types.go` is scaffolded on disk, `controllerbuilder` skips the non-GA proto check, so `--allow-non-ga-proto` was removed from `apis/saasservicemgmt/generate.sh`.
+  2. Removed the external-only reference and identity stubs from `saasservicemgmttenant_reference.go` and corresponding tests from `saasservicemgmttenant_identity_test.go` so `controllerbuilder generate-identity` generated canonical `.generated.go` reference and identity implementations with full KRM naming and namespacing support.
+- **Impact**: Complies with Greenfield Step 1 reviewer standards, enables Step 1b triage on `SaaSServiceMgmtSaaS`, and resolves reference conflicts with dependent resources like `SaaSServiceMgmtTenant` and `SaaSServiceMgmtUnitKind`.
+
 ### [2026-11-04] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtUnitKind
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtUnitKind`.
 - **Observations**:
