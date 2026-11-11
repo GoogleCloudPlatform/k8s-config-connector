@@ -23,9 +23,12 @@
 [kind-name-violation] kind=DatamigrationConnectionProfile api=datamigration message=ConnectionProfile: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
 [kind-name-violation] kind=DeveloperConnectGitRepositoryLink api=developerconnect message=GitRepositoryLink: expected kind name is DevConnectGitRepositoryLink
 [kind-name-violation] kind=DeviceStreamingSession api=devicestreaming message=DeviceSession: expected kind name is DeviceStreamingDeviceSession
-[kind-name-violation] kind=DialogflowCXEntityType api=dialogflow message=EntityType: expected kind name is DialogflowEntityType
-[kind-name-violation] kind=DialogflowCXFlow api=dialogflow message=Flow: expected kind name is DialogflowFlow
-[kind-name-violation] kind=DialogflowCXWebhook api=dialogflow message=Webhook: expected kind name is DialogflowWebhook
+[kind-name-violation] kind=DialogflowEnvironment api=dialogflow message=Environment: expected kind name is DialogflowCXEnvironment
+[kind-name-violation] kind=DialogflowFlow api=dialogflow message=Flow: expected kind name is DialogflowCXFlow
+[kind-name-violation] kind=DialogflowPage api=dialogflow message=Page: expected kind name is DialogflowCXPage
+[kind-name-violation] kind=DialogflowPlaybook api=dialogflow message=Playbook: expected kind name is DialogflowCXPlaybook
+[kind-name-violation] kind=DialogflowSecuritySettings api=dialogflow message=SecuritySettings: expected kind name is DialogflowCXSecuritySettings
+[kind-name-violation] kind=DialogflowTransitionRouteGroup api=dialogflow message=TransitionRouteGroup: expected kind name is DialogflowCXTransitionRouteGroup
 [kind-name-violation] kind=DiscoveryEngineDataStoreTargetSite api=discoveryengine message=TargetSite: expected kind name is DiscoveryEngineTargetSite
 [kind-name-violation] kind=EdgenetworkRouter api=edgenetwork message=Router: expected kind name is EdgeNetworkRouter
 [kind-name-violation] kind=GKEHubFeatureMembership api=gkehub message=MembershipFeatureSpec: expected kind name is GKEHubMembershipFeatureSpec

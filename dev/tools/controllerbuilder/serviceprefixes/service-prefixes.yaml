@@ -386,9 +386,13 @@ services:
     title: Dialogflow API
     servicePrefix: Dialogflow
     protoPackages:
-      - google.cloud.dialogflow.cx.v3
       - google.cloud.dialogflow.v2
       - google.cloud.dialogflow.v2beta1
+  - api: dialogflow
+    title: Dialogflow API
+    servicePrefix: DialogflowCX
+    protoPackages:
+      - google.cloud.dialogflow.cx.v3
   - api: discoveryengine
     title: Discovery Engine API
     servicePrefix: DiscoveryEngine
