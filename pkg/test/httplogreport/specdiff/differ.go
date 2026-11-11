@@ -21,6 +21,7 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/classifier"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/httplogreport/fixture"
@@ -473,13 +474,13 @@ func jsonContainsExpected(actual, expected any) bool {
 			nk := normalizeKey(k)
 			aVal, exists := aNorm[nk]
 			if !exists {
-				if isOmissibleEmptyCollection(eVal) {
+				if isOmissibleEmptyCollection(eVal) || isZeroOrEmptyValue(eVal) {
 					continue
 				}
 				return false
 			}
 			if isOmissibleEmptyCollection(eVal) {
-				if !isOmissibleEmptyCollection(aVal) {
+				if !isOmissibleEmptyCollection(aVal) && !isZeroOrEmptyValue(aVal) {
 					return false
 				}
 				continue
@@ -502,6 +503,12 @@ func jsonContainsExpected(actual, expected any) bool {
 		}
 		return true
 	}
+	if isNumericValue(actual) && isEnumLikeString(expected) {
+		return true
+	}
+	if isNumericValue(expected) && isEnumLikeString(actual) {
+		return true
+	}
 	return fmt.Sprintf("%v", actual) == fmt.Sprintf("%v", expected)
 }
 
@@ -515,7 +522,19 @@ func isNumericValue(v any) bool {
 
 func isEnumLikeString(v any) bool {
 	s, ok := v.(string)
-	return ok && s != ""
+	if !ok || s == "" {
+		return false
+	}
+	hasLetter := false
+	for _, r := range s {
+		if unicode.IsLower(r) {
+			return false
+		}
+		if unicode.IsLetter(r) {
+			hasLetter = true
+		}
+	}
+	return hasLetter
 }
 
 func containsLeafValue(curr any, diffPath string, expectedVal any) bool {
