@@ -1,0 +1,69 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .spec.loggingConfigs[].logToBigQuery.datasetID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .spec.loggingConfigs[].logToBigQuery.projectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .spec.loggingConfigs[].logToBigQuery.tableID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .spec.rules[].conditions[].infoTypeCondition.anyInfoType
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
+    status: open
+  - kind: DLPContentPolicy
+    group: dlp.cnrm.cloud.google.com
+    field: .status.observedState.inspectConfig.customInfoTypes[].storedType.createTime
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.inspectConfig.customInfoTypes[].storedType.createTime. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.inspectConfig.customInfoTypes[].storedType.createTime if it is confirmed output only. Proto comment: Timestamp indicating when the version of the `StoredInfoType` used for inspection was created. Output-only field, populated by the system.'
+    status: open

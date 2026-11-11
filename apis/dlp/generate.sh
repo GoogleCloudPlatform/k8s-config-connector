@@ -39,6 +39,18 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DLPConnection:Connection \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.privacy.dlp.v2 \
+  --api-version dlp.cnrm.cloud.google.com/v1alpha1 \
+  --resource DLPContentPolicy:ContentPolicy \
+  --include-skipped-output \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.privacy.dlp.v2 \
+  --api-version dlp.cnrm.cloud.google.com/v1alpha1 \
+  --resource DLPContentPolicy:ContentPolicy
+
 
 
 # Format generated code
