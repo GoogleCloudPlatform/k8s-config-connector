@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -59,6 +60,9 @@ func GetLocation(obj runtime.Object) (string, error) {
 	}
 	if location == "" {
 		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if err := gcpurls.ValidateLocation(location); err != nil {
+		return "", fmt.Errorf("invalid spec.location in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	return location, nil
 }

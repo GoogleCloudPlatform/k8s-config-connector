@@ -42,6 +42,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -60,6 +61,10 @@ type runtimeTemplateModel struct {
 }
 
 func (m *runtimeTemplateModel) client(ctx context.Context, projectID, location string) (*gcp.NotebookClient, error) {
+	if err := gcpurls.ValidateLocation(location); err != nil {
+		return nil, err
+	}
+
 	var opts []option.ClientOption
 	config := m.config
 	opts, err := config.RESTClientOptions()

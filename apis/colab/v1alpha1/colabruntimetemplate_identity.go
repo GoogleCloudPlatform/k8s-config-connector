@@ -17,11 +17,29 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &NotebookRuntimeTemplateIdentity{}
+	_ identity.Resource   = &ColabRuntimeTemplate{}
+)
+
+// +k8s:deepcopy-gen=false
+type notebookRuntimeTemplateURL struct {
+	ProjectID                 string
+	Location                  string
+	NotebookRuntimeTemplateID string
+}
+
+var NotebookRuntimeTemplateIdentityFormat = gcpurls.Template[notebookRuntimeTemplateURL](
+	"aiplatform.googleapis.com",
+	"projects/{projectID}/locations/{location}/notebookRuntimeTemplates/{notebookRuntimeTemplateID}",
 )
 
 // NotebookRuntimeTemplateIdentity is the identity of a ColabRuntimeTemplate.
@@ -31,7 +49,25 @@ type NotebookRuntimeTemplateIdentity struct {
 }
 
 func (i *NotebookRuntimeTemplateIdentity) String() string {
-	return i.parent.String() + "/notebookRuntimeTemplates/" + i.id
+	return NotebookRuntimeTemplateIdentityFormat.ToString(notebookRuntimeTemplateURL{
+		ProjectID:                 i.parent.ProjectID,
+		Location:                  i.parent.Location,
+		NotebookRuntimeTemplateID: i.id,
+	})
+}
+
+func (i *NotebookRuntimeTemplateIdentity) FromExternal(ref string) error {
+	parsed, err := ParseNotebookRuntimeTemplateExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parsed.parent
+	i.id = parsed.id
+	return nil
+}
+
+func (i *NotebookRuntimeTemplateIdentity) Host() string {
+	return NotebookRuntimeTemplateIdentityFormat.Host()
 }
 
 func (i *NotebookRuntimeTemplateIdentity) ID() string {
@@ -49,6 +85,11 @@ type NotebookRuntimeTemplateParent struct {
 
 func (p *NotebookRuntimeTemplateParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
+}
+
+// GetIdentity builds a NotebookRuntimeTemplateIdentity from the ColabRuntimeTemplate object.
+func (obj *ColabRuntimeTemplate) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewNotebookRuntimeTemplateIdentity(ctx, reader, obj)
 }
 
 // New builds a NotebookRuntimeTemplateIdentity from the Config Connector NotebookRuntimeTemplate object.
@@ -72,6 +113,14 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	if err := NotebookRuntimeTemplateIdentityFormat.Validate(notebookRuntimeTemplateURL{
+		ProjectID:                 projectID,
+		Location:                  location,
+		NotebookRuntimeTemplateID: resourceID,
+	}); err != nil {
+		return nil, err
 	}
 
 	// Use approved External
@@ -103,18 +152,19 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 }
 
 func ParseNotebookRuntimeTemplateExternal(external string) (*NotebookRuntimeTemplateIdentity, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookRuntimeTemplates" {
+	parsed, match, err := NotebookRuntimeTemplateIdentityFormat.Parse(external)
+	if err != nil {
+		return nil, fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}): %w", external, err)
+	}
+	if !match {
 		return nil, fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}})", external)
 	}
 	parent := &NotebookRuntimeTemplateParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID: parsed.ProjectID,
+		Location:  parsed.Location,
 	}
-	resourceID := tokens[5]
-
 	return &NotebookRuntimeTemplateIdentity{
 		parent: parent,
-		id:     resourceID,
+		id:     parsed.NotebookRuntimeTemplateID,
 	}, nil
 }
