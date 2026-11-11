@@ -1130,6 +1130,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"notebooksruntimes.notebooks.cnrm.cloud.google.com":                             true, // GCP known pattern: Empty oneof option (spec.virtualMachine.virtualMachineConfig.bootImage)
 		"datamigrationmappingrules.datamigration.cnrm.cloud.google.com":                 true, // GCP known pattern: Empty oneof option (spec.conditionalColumnSetValue.valueTransformation.applyHash.uuidFromBytes)
 		"dialogflowflows.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
+		"dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com":                    true, // spec.skillConfigs[].guidanceSkillConfig.knowledgeSource is an empty object
 		"dialogflowpages.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.conditionalCases[].cases[].caseContent[].message.knowledgeInfoCard)
 		"gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com":                    true, // GCP known pattern: Empty oneof option (spec.addOns.gmail.contextualTriggers[].unconditional)
 		"retailcontrols.retail.cnrm.cloud.google.com":                                   true, // GCP known pattern: Empty oneof option (spec.rule.pinAction)

@@ -22,6 +22,7 @@
 // resource: DialogflowGenerator:Generator
 // resource: DialogflowConversationDataset:ConversationDataset
 // resource: DialogflowConversationModel:ConversationModel
+// resource: DialogflowCompanionAgent:CompanionAgent
 // resource: DialogflowEnvironment:Environment
 // resource: DialogflowPlaybook:Playbook
 // resource: DialogflowTransitionRouteGroup:TransitionRouteGroup
@@ -1101,6 +1102,54 @@ type ArticleSuggestionModelMetadata struct {
 	TrainingModelType *string `json:"trainingModelType,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig
+type CompanionAgent_GuidanceSkillConfig struct {
+	// Optional. Customized instructions for guidance.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig.guidance_instructions
+	GuidanceInstructions []GuidanceInstruction `json:"guidanceInstructions,omitempty"`
+
+	// Optional. This is specific additional guidance that can configured by the
+	//  user.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig.overarching_guidance
+	OverarchingGuidance *string `json:"overarchingGuidance,omitempty"`
+
+	// Optional. Knowledge source configuration for guidance.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.GuidanceSkillConfig.knowledge_source
+	KnowledgeSource *CompanionAgent_KnowledgeSource `json:"knowledgeSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.KnowledgeSource
+type CompanionAgent_KnowledgeSource struct {
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.SkillConfig
+type CompanionAgent_SkillConfig struct {
+	// Optional. Guidance skill configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.SkillConfig.guidance_skill_config
+	GuidanceSkillConfig *CompanionAgent_GuidanceSkillConfig `json:"guidanceSkillConfig,omitempty"`
+
+	// Optional. Translation skill configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.SkillConfig.translation_skill_config
+	TranslationSkillConfig *CompanionAgent_TranslationSkillConfig `json:"translationSkillConfig,omitempty"`
+
+	// Optional. The event that should trigger the skill.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.SkillConfig.skill_triggering_event
+	SkillTriggeringEvent *string `json:"skillTriggeringEvent,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.CompanionAgent.TranslationSkillConfig
+type CompanionAgent_TranslationSkillConfig struct {
+	// Optional. Target language code for the agent, in IETF BCP-47 format
+	//  (e.g., "en-US").
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.TranslationSkillConfig.agent_language_code
+	AgentLanguageCode *string `json:"agentLanguageCode,omitempty"`
+
+	// Optional. Target language code for the customer, in IETF BCP-47 format
+	//  (e.g., "es").
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CompanionAgent.TranslationSkillConfig.customer_language_code
+	CustomerLanguageCode *string `json:"customerLanguageCode,omitempty"`
+}
+
 // +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
 type ConversationContext struct {
 	// Optional. List of message transcripts in the conversation.
@@ -1170,6 +1219,51 @@ type GeneratorSuggestion struct {
 	// Optional. Suggested summary.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
 	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GuidanceInstruction
+type GuidanceInstruction struct {
+	// Optional. Display name for the instruction. This name should be unique
+	//  within the companion agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of this instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.display_details
+	DisplayDetails *string `json:"displayDetails,omitempty"`
+
+	// Optional. The condition of the instruction. For example, "the customer
+	//  wants to cancel an order".  If the users want the instruction to be
+	//  triggered unconditionally, the condition can be empty.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Optional. The action items that can be processed.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.actions
+	Actions []GuidanceInstruction_Action `json:"actions,omitempty"`
+
+	// Optional. Event that triggers the guidance instruction.
+	//  If UNSPECIFIED, the instruction triggering will be the same as the skill's
+	//  skill_triggering_event.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.trigger_event
+	TriggerEvent *string `json:"triggerEvent,omitempty"`
+
+	// Optional. Whether to disable suggested reply generation for this
+	//  instruction. When set to `true`, guidance generated from this instruction
+	//  will not include a suggested reply. Default is `false` (suggested reply
+	//  enabled).
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.disable_suggested_reply
+	DisableSuggestedReply *bool `json:"disableSuggestedReply,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GuidanceInstruction.Action
+type GuidanceInstruction_Action struct {
+	// Required. Description of action item. It can be a agent action (e.g.
+	//  "Send a message to the customer", "greet the customer") or system action
+	//  (e.g. "Update the ticket", "Create a task", "cancel the order").
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GuidanceInstruction.Action.description
+	// +required
+	Description *string `json:"description,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.InferenceParameter
