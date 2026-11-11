@@ -607,6 +607,12 @@ services:
     protoPackages:
       - google.cloud.notebooks.v1
       - google.cloud.notebooks.v2
+  - api: observability
+    title: Observability API
+    servicePrefix: Observability
+    protoPackages:
+      - google.cloud.observability.v1
+    reason: approved as proposed (PR #15415)
   - api: oracledatabase
     title: Oracle Database@Google Cloud API
     servicePrefix: OracleDatabase

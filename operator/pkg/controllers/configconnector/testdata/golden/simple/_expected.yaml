@@ -3752,6 +3752,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - observability.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - oracledatabase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5611,6 +5623,14 @@ rules:
   - watch
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - observability.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
