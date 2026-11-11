@@ -20,6 +20,7 @@
 // krm.group: ces.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.ces.v1
+// proto.service: google.protobuf
 
 package ces
 
@@ -27,6 +28,7 @@ import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func Agent_AgentToolset_FromProto(mapCtx *direct.MapContext, in *pb.Agent_AgentToolset) *krm.Agent_AgentToolset {
@@ -85,6 +87,264 @@ func Agent_RemoteDialogflowAgent_ToProto(mapCtx *direct.MapContext, in *krm.Agen
 	out.InputVariableMapping = in.InputVariableMapping
 	out.OutputVariableMapping = in.OutputVariableMapping
 	out.RespectResponseInterruptionSettings = direct.ValueOf(in.RespectResponseInterruptionSettings)
+	return out
+}
+func AmbientSoundConfig_FromProto(mapCtx *direct.MapContext, in *pb.AmbientSoundConfig) *krm.AmbientSoundConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AmbientSoundConfig{}
+	out.PrebuiltAmbientNoise = direct.Enum_FromProto(mapCtx, in.GetPrebuiltAmbientNoise())
+	out.GCSURI = direct.LazyPtr(in.GetGcsUri())
+	out.PrebuiltAmbientSound = direct.LazyPtr(in.GetPrebuiltAmbientSound())
+	out.VolumeGainDb = direct.LazyPtr(in.GetVolumeGainDb())
+	return out
+}
+func AmbientSoundConfig_ToProto(mapCtx *direct.MapContext, in *krm.AmbientSoundConfig) *pb.AmbientSoundConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AmbientSoundConfig{}
+	if oneof := AmbientSoundConfig_PrebuiltAmbientNoise_ToProto(mapCtx, in.PrebuiltAmbientNoise); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := AmbientSoundConfig_GcsUri_ToProto(mapCtx, in.GCSURI); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := AmbientSoundConfig_PrebuiltAmbientSound_ToProto(mapCtx, in.PrebuiltAmbientSound); oneof != nil {
+		out.Source = oneof
+	}
+	out.VolumeGainDb = direct.ValueOf(in.VolumeGainDb)
+	return out
+}
+func AmbientSoundConfig_PrebuiltAmbientNoise_ToProto(mapCtx *direct.MapContext, in *string) *pb.AmbientSoundConfig_PrebuiltAmbientNoise_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.AmbientSoundConfig_PrebuiltAmbientNoise_{PrebuiltAmbientNoise: direct.Enum_ToProto[pb.AmbientSoundConfig_PrebuiltAmbientNoise](mapCtx, in)}
+}
+func AmbientSoundConfig_GcsUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.AmbientSoundConfig_GcsUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.AmbientSoundConfig_GcsUri{GcsUri: *in}
+}
+func AmbientSoundConfig_PrebuiltAmbientSound_ToProto(mapCtx *direct.MapContext, in *string) *pb.AmbientSoundConfig_PrebuiltAmbientSound {
+	if in == nil {
+		return nil
+	}
+	return &pb.AmbientSoundConfig_PrebuiltAmbientSound{PrebuiltAmbientSound: *in}
+}
+func App_VariableDeclaration_FromProto(mapCtx *direct.MapContext, in *pb.App_VariableDeclaration) *krm.App_VariableDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.App_VariableDeclaration{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Schema = SchemaWithRequired_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+func App_VariableDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.App_VariableDeclaration) *pb.App_VariableDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.App_VariableDeclaration{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Schema = SchemaWithRequired_ToProto(mapCtx, in.Schema)
+	return out
+}
+func App_VariableDeclarationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.App_VariableDeclaration) *krm.App_VariableDeclarationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.App_VariableDeclarationObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Schema = SchemaObservedState_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+func App_VariableDeclarationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.App_VariableDeclarationObservedState) *pb.App_VariableDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.App_VariableDeclaration{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Schema = SchemaObservedState_ToProto(mapCtx, in.Schema)
+	return out
+}
+func AudioProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AudioProcessingConfig) *krm.AudioProcessingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AudioProcessingConfig{}
+	if in.SynthesizeSpeechConfigs != nil {
+		out.SynthesizeSpeechConfigs = make(map[string]krm.SynthesizeSpeechConfig, len(in.SynthesizeSpeechConfigs))
+		for k, v := range in.SynthesizeSpeechConfigs {
+			if c := SynthesizeSpeechConfig_FromProto(mapCtx, v); c != nil {
+				out.SynthesizeSpeechConfigs[k] = *c
+			}
+		}
+	}
+	out.BargeInConfig = BargeInConfig_FromProto(mapCtx, in.GetBargeInConfig())
+	out.InactivityTimeout = direct.StringDuration_FromProto(mapCtx, in.GetInactivityTimeout())
+	out.AmbientSoundConfig = AmbientSoundConfig_FromProto(mapCtx, in.GetAmbientSoundConfig())
+	return out
+}
+func AudioProcessingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AudioProcessingConfig) *pb.AudioProcessingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AudioProcessingConfig{}
+	if in.SynthesizeSpeechConfigs != nil {
+		out.SynthesizeSpeechConfigs = make(map[string]*pb.SynthesizeSpeechConfig, len(in.SynthesizeSpeechConfigs))
+		for k, v := range in.SynthesizeSpeechConfigs {
+			out.SynthesizeSpeechConfigs[k] = SynthesizeSpeechConfig_ToProto(mapCtx, &v)
+		}
+	}
+	out.BargeInConfig = BargeInConfig_ToProto(mapCtx, in.BargeInConfig)
+	out.InactivityTimeout = direct.StringDuration_ToProto(mapCtx, in.InactivityTimeout)
+	out.AmbientSoundConfig = AmbientSoundConfig_ToProto(mapCtx, in.AmbientSoundConfig)
+	return out
+}
+func AudioRecordingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AudioRecordingConfig) *krm.AudioRecordingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AudioRecordingConfig{}
+	out.GCSBucket = direct.LazyPtr(in.GetGcsBucket())
+	out.GCSPathPrefix = direct.LazyPtr(in.GetGcsPathPrefix())
+	return out
+}
+func AudioRecordingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AudioRecordingConfig) *pb.AudioRecordingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AudioRecordingConfig{}
+	out.GcsBucket = direct.ValueOf(in.GCSBucket)
+	out.GcsPathPrefix = direct.ValueOf(in.GCSPathPrefix)
+	return out
+}
+func BargeInConfig_FromProto(mapCtx *direct.MapContext, in *pb.BargeInConfig) *krm.BargeInConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BargeInConfig{}
+	out.DisableBargeIn = direct.LazyPtr(in.GetDisableBargeIn())
+	out.BargeInAwareness = direct.LazyPtr(in.GetBargeInAwareness())
+	return out
+}
+func BargeInConfig_ToProto(mapCtx *direct.MapContext, in *krm.BargeInConfig) *pb.BargeInConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BargeInConfig{}
+	out.DisableBargeIn = direct.ValueOf(in.DisableBargeIn)
+	out.BargeInAwareness = direct.ValueOf(in.BargeInAwareness)
+	return out
+}
+func BigQueryExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryExportSettings) *krm.BigQueryExportSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryExportSettings{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	return out
+}
+func BigQueryExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryExportSettings) *pb.BigQueryExportSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryExportSettings{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Project = direct.ValueOf(in.Project)
+	out.Dataset = direct.ValueOf(in.Dataset)
+	return out
+}
+func CESAppObservedState_FromProto(mapCtx *direct.MapContext, in *pb.App) *krm.CESAppObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESAppObservedState{}
+	// MISSING: Name
+	out.PredefinedVariableDeclarations = direct.Slice_FromProto(mapCtx, in.PredefinedVariableDeclarations, App_VariableDeclarationObservedState_FromProto)
+	out.DataStoreSettings = DataStoreSettingsObservedState_FromProto(mapCtx, in.GetDataStoreSettings())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DeploymentCount = direct.LazyPtr(in.GetDeploymentCount())
+	return out
+}
+func CESAppObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESAppObservedState) *pb.App {
+	if in == nil {
+		return nil
+	}
+	out := &pb.App{}
+	// MISSING: Name
+	out.PredefinedVariableDeclarations = direct.Slice_ToProto(mapCtx, in.PredefinedVariableDeclarations, App_VariableDeclarationObservedState_ToProto)
+	out.DataStoreSettings = DataStoreSettingsObservedState_ToProto(mapCtx, in.DataStoreSettings)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DeploymentCount = direct.ValueOf(in.DeploymentCount)
+	return out
+}
+func CESAppSpec_FromProto(mapCtx *direct.MapContext, in *pb.App) *krm.CESAppSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CESAppSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Pinned = direct.LazyPtr(in.GetPinned())
+	out.RootAgent = direct.LazyPtr(in.GetRootAgent())
+	out.LanguageSettings = LanguageSettings_FromProto(mapCtx, in.GetLanguageSettings())
+	out.TimeZoneSettings = TimeZoneSettings_FromProto(mapCtx, in.GetTimeZoneSettings())
+	out.AudioProcessingConfig = AudioProcessingConfig_FromProto(mapCtx, in.GetAudioProcessingConfig())
+	out.LoggingSettings = LoggingSettings_FromProto(mapCtx, in.GetLoggingSettings())
+	out.ErrorHandlingSettings = ErrorHandlingSettings_FromProto(mapCtx, in.GetErrorHandlingSettings())
+	out.ModelSettings = ModelSettings_FromProto(mapCtx, in.GetModelSettings())
+	out.ToolExecutionMode = direct.Enum_FromProto(mapCtx, in.GetToolExecutionMode())
+	out.EvaluationMetricsThresholds = EvaluationMetricsThresholds_FromProto(mapCtx, in.GetEvaluationMetricsThresholds())
+	out.VariableDeclarations = direct.Slice_FromProto(mapCtx, in.VariableDeclarations, App_VariableDeclaration_FromProto)
+	out.GlobalInstruction = direct.LazyPtr(in.GetGlobalInstruction())
+	out.Guardrails = in.Guardrails
+	out.DefaultChannelProfile = ChannelProfile_FromProto(mapCtx, in.GetDefaultChannelProfile())
+	out.Metadata = in.Metadata
+	out.ClientCertificateSettings = ClientCertificateSettings_FromProto(mapCtx, in.GetClientCertificateSettings())
+	out.Locked = direct.LazyPtr(in.GetLocked())
+	return out
+}
+func CESAppSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESAppSpec) *pb.App {
+	if in == nil {
+		return nil
+	}
+	out := &pb.App{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Pinned = direct.ValueOf(in.Pinned)
+	out.RootAgent = direct.ValueOf(in.RootAgent)
+	out.LanguageSettings = LanguageSettings_ToProto(mapCtx, in.LanguageSettings)
+	out.TimeZoneSettings = TimeZoneSettings_ToProto(mapCtx, in.TimeZoneSettings)
+	out.AudioProcessingConfig = AudioProcessingConfig_ToProto(mapCtx, in.AudioProcessingConfig)
+	out.LoggingSettings = LoggingSettings_ToProto(mapCtx, in.LoggingSettings)
+	out.ErrorHandlingSettings = ErrorHandlingSettings_ToProto(mapCtx, in.ErrorHandlingSettings)
+	out.ModelSettings = ModelSettings_ToProto(mapCtx, in.ModelSettings)
+	out.ToolExecutionMode = direct.Enum_ToProto[pb.App_ToolExecutionMode](mapCtx, in.ToolExecutionMode)
+	out.EvaluationMetricsThresholds = EvaluationMetricsThresholds_ToProto(mapCtx, in.EvaluationMetricsThresholds)
+	out.VariableDeclarations = direct.Slice_ToProto(mapCtx, in.VariableDeclarations, App_VariableDeclaration_ToProto)
+	out.GlobalInstruction = direct.ValueOf(in.GlobalInstruction)
+	out.Guardrails = in.Guardrails
+	out.DefaultChannelProfile = ChannelProfile_ToProto(mapCtx, in.DefaultChannelProfile)
+	out.Metadata = in.Metadata
+	out.ClientCertificateSettings = ClientCertificateSettings_ToProto(mapCtx, in.ClientCertificateSettings)
+	out.Locked = direct.ValueOf(in.Locked)
 	return out
 }
 func Callback_FromProto(mapCtx *direct.MapContext, in *pb.Callback) *krm.Callback {
@@ -195,6 +455,290 @@ func CesAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CesAgentSpec) *pb.A
 	out.TransferRules = direct.Slice_ToProto(mapCtx, in.TransferRules, TransferRule_ToProto)
 	return out
 }
+func ChannelProfile_FromProto(mapCtx *direct.MapContext, in *pb.ChannelProfile) *krm.ChannelProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelProfile{}
+	out.ProfileID = direct.LazyPtr(in.GetProfileId())
+	out.ChannelType = direct.Enum_FromProto(mapCtx, in.GetChannelType())
+	out.PersonaProperty = ChannelProfile_PersonaProperty_FromProto(mapCtx, in.GetPersonaProperty())
+	out.DisableDtmf = direct.LazyPtr(in.GetDisableDtmf())
+	out.DisableBargeInControl = direct.LazyPtr(in.GetDisableBargeInControl())
+	out.WebWidgetConfig = ChannelProfile_WebWidgetConfig_FromProto(mapCtx, in.GetWebWidgetConfig())
+	out.NoiseSuppressionLevel = direct.LazyPtr(in.GetNoiseSuppressionLevel())
+	return out
+}
+func ChannelProfile_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProfile) *pb.ChannelProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelProfile{}
+	out.ProfileId = direct.ValueOf(in.ProfileID)
+	out.ChannelType = direct.Enum_ToProto[pb.ChannelProfile_ChannelType](mapCtx, in.ChannelType)
+	out.PersonaProperty = ChannelProfile_PersonaProperty_ToProto(mapCtx, in.PersonaProperty)
+	out.DisableDtmf = direct.ValueOf(in.DisableDtmf)
+	out.DisableBargeInControl = direct.ValueOf(in.DisableBargeInControl)
+	out.WebWidgetConfig = ChannelProfile_WebWidgetConfig_ToProto(mapCtx, in.WebWidgetConfig)
+	out.NoiseSuppressionLevel = direct.ValueOf(in.NoiseSuppressionLevel)
+	return out
+}
+func ChannelProfile_PersonaProperty_FromProto(mapCtx *direct.MapContext, in *pb.ChannelProfile_PersonaProperty) *krm.ChannelProfile_PersonaProperty {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelProfile_PersonaProperty{}
+	out.Persona = direct.Enum_FromProto(mapCtx, in.GetPersona())
+	return out
+}
+func ChannelProfile_PersonaProperty_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProfile_PersonaProperty) *pb.ChannelProfile_PersonaProperty {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelProfile_PersonaProperty{}
+	out.Persona = direct.Enum_ToProto[pb.ChannelProfile_PersonaProperty_Persona](mapCtx, in.Persona)
+	return out
+}
+func ChannelProfile_WebWidgetConfig_FromProto(mapCtx *direct.MapContext, in *pb.ChannelProfile_WebWidgetConfig) *krm.ChannelProfile_WebWidgetConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelProfile_WebWidgetConfig{}
+	out.Modality = direct.Enum_FromProto(mapCtx, in.GetModality())
+	out.Theme = direct.Enum_FromProto(mapCtx, in.GetTheme())
+	out.WebWidgetTitle = direct.LazyPtr(in.GetWebWidgetTitle())
+	out.SecuritySettings = ChannelProfile_WebWidgetConfig_SecuritySettings_FromProto(mapCtx, in.GetSecuritySettings())
+	return out
+}
+func ChannelProfile_WebWidgetConfig_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProfile_WebWidgetConfig) *pb.ChannelProfile_WebWidgetConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelProfile_WebWidgetConfig{}
+	out.Modality = direct.Enum_ToProto[pb.ChannelProfile_WebWidgetConfig_Modality](mapCtx, in.Modality)
+	out.Theme = direct.Enum_ToProto[pb.ChannelProfile_WebWidgetConfig_Theme](mapCtx, in.Theme)
+	out.WebWidgetTitle = direct.ValueOf(in.WebWidgetTitle)
+	out.SecuritySettings = ChannelProfile_WebWidgetConfig_SecuritySettings_ToProto(mapCtx, in.SecuritySettings)
+	return out
+}
+func ChannelProfile_WebWidgetConfig_SecuritySettings_FromProto(mapCtx *direct.MapContext, in *pb.ChannelProfile_WebWidgetConfig_SecuritySettings) *krm.ChannelProfile_WebWidgetConfig_SecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChannelProfile_WebWidgetConfig_SecuritySettings{}
+	out.EnablePublicAccess = direct.LazyPtr(in.GetEnablePublicAccess())
+	out.EnableOriginCheck = direct.LazyPtr(in.GetEnableOriginCheck())
+	out.AllowedOrigins = in.AllowedOrigins
+	out.EnableRecaptcha = direct.LazyPtr(in.GetEnableRecaptcha())
+	return out
+}
+func ChannelProfile_WebWidgetConfig_SecuritySettings_ToProto(mapCtx *direct.MapContext, in *krm.ChannelProfile_WebWidgetConfig_SecuritySettings) *pb.ChannelProfile_WebWidgetConfig_SecuritySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelProfile_WebWidgetConfig_SecuritySettings{}
+	out.EnablePublicAccess = direct.ValueOf(in.EnablePublicAccess)
+	out.EnableOriginCheck = direct.ValueOf(in.EnableOriginCheck)
+	out.AllowedOrigins = in.AllowedOrigins
+	out.EnableRecaptcha = direct.ValueOf(in.EnableRecaptcha)
+	return out
+}
+func ClientCertificateSettings_FromProto(mapCtx *direct.MapContext, in *pb.ClientCertificateSettings) *krm.ClientCertificateSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClientCertificateSettings{}
+	out.TLSCertificate = direct.LazyPtr(in.GetTlsCertificate())
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	out.Passphrase = direct.LazyPtr(in.GetPassphrase())
+	return out
+}
+func ClientCertificateSettings_ToProto(mapCtx *direct.MapContext, in *krm.ClientCertificateSettings) *pb.ClientCertificateSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClientCertificateSettings{}
+	out.TlsCertificate = direct.ValueOf(in.TLSCertificate)
+	out.PrivateKey = direct.ValueOf(in.PrivateKey)
+	out.Passphrase = direct.ValueOf(in.Passphrase)
+	return out
+}
+func CloudLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudLoggingSettings) *krm.CloudLoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudLoggingSettings{}
+	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
+	return out
+}
+func CloudLoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.CloudLoggingSettings) *pb.CloudLoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudLoggingSettings{}
+	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
+	return out
+}
+func ConversationLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.ConversationLoggingSettings) *krm.ConversationLoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConversationLoggingSettings{}
+	out.DisableConversationLogging = direct.LazyPtr(in.GetDisableConversationLogging())
+	return out
+}
+func ConversationLoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.ConversationLoggingSettings) *pb.ConversationLoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConversationLoggingSettings{}
+	out.DisableConversationLogging = direct.ValueOf(in.DisableConversationLogging)
+	return out
+}
+func DataStoreSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreSettings) *krm.DataStoreSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreSettingsObservedState{}
+	out.Engines = direct.Slice_FromProto(mapCtx, in.Engines, DataStoreSettings_EngineObservedState_FromProto)
+	return out
+}
+func DataStoreSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreSettingsObservedState) *pb.DataStoreSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreSettings{}
+	out.Engines = direct.Slice_ToProto(mapCtx, in.Engines, DataStoreSettings_EngineObservedState_ToProto)
+	return out
+}
+func DataStoreSettings_EngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreSettings_Engine) *krm.DataStoreSettings_EngineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreSettings_EngineObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func DataStoreSettings_EngineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreSettings_EngineObservedState) *pb.DataStoreSettings_Engine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreSettings_Engine{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.DataStoreSettings_Engine_Type](mapCtx, in.Type)
+	return out
+}
+func ErrorHandlingSettings_FromProto(mapCtx *direct.MapContext, in *pb.ErrorHandlingSettings) *krm.ErrorHandlingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ErrorHandlingSettings{}
+	out.ErrorHandlingStrategy = direct.Enum_FromProto(mapCtx, in.GetErrorHandlingStrategy())
+	return out
+}
+func ErrorHandlingSettings_ToProto(mapCtx *direct.MapContext, in *krm.ErrorHandlingSettings) *pb.ErrorHandlingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorHandlingSettings{}
+	out.ErrorHandlingStrategy = direct.Enum_ToProto[pb.ErrorHandlingSettings_ErrorHandlingStrategy](mapCtx, in.ErrorHandlingStrategy)
+	return out
+}
+func EvaluationMetricsThresholds_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationMetricsThresholds) *krm.EvaluationMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationMetricsThresholds{}
+	out.GoldenEvaluationMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_FromProto(mapCtx, in.GetGoldenEvaluationMetricsThresholds())
+	out.HallucinationMetricBehavior = direct.Enum_FromProto(mapCtx, in.GetHallucinationMetricBehavior())
+	out.GoldenHallucinationMetricBehavior = direct.Enum_FromProto(mapCtx, in.GetGoldenHallucinationMetricBehavior())
+	out.ScenarioHallucinationMetricBehavior = direct.Enum_FromProto(mapCtx, in.GetScenarioHallucinationMetricBehavior())
+	return out
+}
+func EvaluationMetricsThresholds_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationMetricsThresholds) *pb.EvaluationMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationMetricsThresholds{}
+	out.GoldenEvaluationMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ToProto(mapCtx, in.GoldenEvaluationMetricsThresholds)
+	out.HallucinationMetricBehavior = direct.Enum_ToProto[pb.EvaluationMetricsThresholds_HallucinationMetricBehavior](mapCtx, in.HallucinationMetricBehavior)
+	out.GoldenHallucinationMetricBehavior = direct.Enum_ToProto[pb.EvaluationMetricsThresholds_HallucinationMetricBehavior](mapCtx, in.GoldenHallucinationMetricBehavior)
+	out.ScenarioHallucinationMetricBehavior = direct.Enum_ToProto[pb.EvaluationMetricsThresholds_HallucinationMetricBehavior](mapCtx, in.ScenarioHallucinationMetricBehavior)
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds) *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds{}
+	out.TurnLevelMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds_FromProto(mapCtx, in.GetTurnLevelMetricsThresholds())
+	out.ExpectationLevelMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds_FromProto(mapCtx, in.GetExpectationLevelMetricsThresholds())
+	out.ToolMatchingSettings = EvaluationMetricsThresholds_ToolMatchingSettings_FromProto(mapCtx, in.GetToolMatchingSettings())
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds) *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds{}
+	out.TurnLevelMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds_ToProto(mapCtx, in.TurnLevelMetricsThresholds)
+	out.ExpectationLevelMetricsThresholds = EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds_ToProto(mapCtx, in.ExpectationLevelMetricsThresholds)
+	out.ToolMatchingSettings = EvaluationMetricsThresholds_ToolMatchingSettings_ToProto(mapCtx, in.ToolMatchingSettings)
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds) *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds{}
+	out.ToolInvocationParameterCorrectnessThreshold = in.ToolInvocationParameterCorrectnessThreshold
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds) *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_ExpectationLevelMetricsThresholds{}
+	out.ToolInvocationParameterCorrectnessThreshold = in.ToolInvocationParameterCorrectnessThreshold
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds) *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds{}
+	out.SemanticSimilaritySuccessThreshold = in.SemanticSimilaritySuccessThreshold
+	out.OverallToolInvocationCorrectnessThreshold = in.OverallToolInvocationCorrectnessThreshold
+	out.SemanticSimilarityChannel = direct.Enum_FromProto(mapCtx, in.GetSemanticSimilarityChannel())
+	return out
+}
+func EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds) *pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds{}
+	out.SemanticSimilaritySuccessThreshold = in.SemanticSimilaritySuccessThreshold
+	out.OverallToolInvocationCorrectnessThreshold = in.OverallToolInvocationCorrectnessThreshold
+	out.SemanticSimilarityChannel = direct.Enum_ToProto[pb.EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds_TurnLevelMetricsThresholds_SemanticSimilarityChannel](mapCtx, in.SemanticSimilarityChannel)
+	return out
+}
+func EvaluationMetricsThresholds_ToolMatchingSettings_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationMetricsThresholds_ToolMatchingSettings) *krm.EvaluationMetricsThresholds_ToolMatchingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationMetricsThresholds_ToolMatchingSettings{}
+	out.ExtraToolCallBehavior = direct.Enum_FromProto(mapCtx, in.GetExtraToolCallBehavior())
+	return out
+}
+func EvaluationMetricsThresholds_ToolMatchingSettings_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationMetricsThresholds_ToolMatchingSettings) *pb.EvaluationMetricsThresholds_ToolMatchingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationMetricsThresholds_ToolMatchingSettings{}
+	out.ExtraToolCallBehavior = direct.Enum_ToProto[pb.EvaluationMetricsThresholds_ToolMatchingSettings_ExtraToolCallBehavior](mapCtx, in.ExtraToolCallBehavior)
+	return out
+}
 func ExpressionCondition_FromProto(mapCtx *direct.MapContext, in *pb.ExpressionCondition) *krm.ExpressionCondition {
 	if in == nil {
 		return nil
@@ -209,6 +753,88 @@ func ExpressionCondition_ToProto(mapCtx *direct.MapContext, in *krm.ExpressionCo
 	}
 	out := &pb.ExpressionCondition{}
 	out.Expression = direct.ValueOf(in.Expression)
+	return out
+}
+func LanguageSettings_FromProto(mapCtx *direct.MapContext, in *pb.LanguageSettings) *krm.LanguageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LanguageSettings{}
+	out.DefaultLanguageCode = direct.LazyPtr(in.GetDefaultLanguageCode())
+	out.SupportedLanguageCodes = in.SupportedLanguageCodes
+	out.EnableMultilingualSupport = direct.LazyPtr(in.GetEnableMultilingualSupport())
+	out.FallbackAction = direct.LazyPtr(in.GetFallbackAction())
+	return out
+}
+func LanguageSettings_ToProto(mapCtx *direct.MapContext, in *krm.LanguageSettings) *pb.LanguageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LanguageSettings{}
+	out.DefaultLanguageCode = direct.ValueOf(in.DefaultLanguageCode)
+	out.SupportedLanguageCodes = in.SupportedLanguageCodes
+	out.EnableMultilingualSupport = direct.ValueOf(in.EnableMultilingualSupport)
+	out.FallbackAction = direct.ValueOf(in.FallbackAction)
+	return out
+}
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_FromProto)
+	return out
+}
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_ToProto)
+	return out
+}
+func LoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.LoggingSettings) *krm.LoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingSettings{}
+	out.RedactionConfig = RedactionConfig_FromProto(mapCtx, in.GetRedactionConfig())
+	out.AudioRecordingConfig = AudioRecordingConfig_FromProto(mapCtx, in.GetAudioRecordingConfig())
+	out.BigqueryExportSettings = BigQueryExportSettings_FromProto(mapCtx, in.GetBigqueryExportSettings())
+	out.CloudLoggingSettings = CloudLoggingSettings_FromProto(mapCtx, in.GetCloudLoggingSettings())
+	out.ConversationLoggingSettings = ConversationLoggingSettings_FromProto(mapCtx, in.GetConversationLoggingSettings())
+	out.EvaluationAudioRecordingConfig = AudioRecordingConfig_FromProto(mapCtx, in.GetEvaluationAudioRecordingConfig())
+	out.MetricAnalysisSettings = MetricAnalysisSettings_FromProto(mapCtx, in.GetMetricAnalysisSettings())
+	return out
+}
+func LoggingSettings_ToProto(mapCtx *direct.MapContext, in *krm.LoggingSettings) *pb.LoggingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingSettings{}
+	out.RedactionConfig = RedactionConfig_ToProto(mapCtx, in.RedactionConfig)
+	out.AudioRecordingConfig = AudioRecordingConfig_ToProto(mapCtx, in.AudioRecordingConfig)
+	out.BigqueryExportSettings = BigQueryExportSettings_ToProto(mapCtx, in.BigqueryExportSettings)
+	out.CloudLoggingSettings = CloudLoggingSettings_ToProto(mapCtx, in.CloudLoggingSettings)
+	out.ConversationLoggingSettings = ConversationLoggingSettings_ToProto(mapCtx, in.ConversationLoggingSettings)
+	out.EvaluationAudioRecordingConfig = AudioRecordingConfig_ToProto(mapCtx, in.EvaluationAudioRecordingConfig)
+	out.MetricAnalysisSettings = MetricAnalysisSettings_ToProto(mapCtx, in.MetricAnalysisSettings)
+	return out
+}
+func MetricAnalysisSettings_FromProto(mapCtx *direct.MapContext, in *pb.MetricAnalysisSettings) *krm.MetricAnalysisSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetricAnalysisSettings{}
+	out.LlmMetricsOptedOut = direct.LazyPtr(in.GetLlmMetricsOptedOut())
+	return out
+}
+func MetricAnalysisSettings_ToProto(mapCtx *direct.MapContext, in *krm.MetricAnalysisSettings) *pb.MetricAnalysisSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetricAnalysisSettings{}
+	out.LlmMetricsOptedOut = direct.ValueOf(in.LlmMetricsOptedOut)
 	return out
 }
 func ModelSettings_FromProto(mapCtx *direct.MapContext, in *pb.ModelSettings) *krm.ModelSettings {
@@ -243,6 +869,288 @@ func PythonCodeCondition_ToProto(mapCtx *direct.MapContext, in *krm.PythonCodeCo
 	}
 	out := &pb.PythonCodeCondition{}
 	out.PythonCode = direct.ValueOf(in.PythonCode)
+	return out
+}
+func RedactionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RedactionConfig) *krm.RedactionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RedactionConfig{}
+	out.EnableRedaction = direct.LazyPtr(in.GetEnableRedaction())
+	out.InspectTemplate = direct.LazyPtr(in.GetInspectTemplate())
+	out.DeidentifyTemplate = direct.LazyPtr(in.GetDeidentifyTemplate())
+	return out
+}
+func RedactionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RedactionConfig) *pb.RedactionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RedactionConfig{}
+	out.EnableRedaction = direct.ValueOf(in.EnableRedaction)
+	out.InspectTemplate = direct.ValueOf(in.InspectTemplate)
+	out.DeidentifyTemplate = direct.ValueOf(in.DeidentifyTemplate)
+	return out
+}
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	if in.Properties != nil {
+		out.Properties = make(map[string]krm.Schema, len(in.Properties))
+		for k, v := range in.Properties {
+			if c := Schema_FromProto(mapCtx, v); c != nil {
+				out.Properties[k] = *c
+			}
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Items = Schema_FromProto(mapCtx, in.GetItems())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
+	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, Schema_FromProto)
+	out.AdditionalProperties = Schema_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, Schema_FromProto)
+	out.Enum = in.Enum
+	out.Default = Value_FromProto(mapCtx, in.GetDefault())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	if in.Defs != nil {
+		out.Defs = make(map[string]krm.Schema, len(in.Defs))
+		for k, v := range in.Defs {
+			if c := Schema_FromProto(mapCtx, v); c != nil {
+				out.Defs[k] = *c
+			}
+		}
+	}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.MinItems = direct.LazyPtr(in.GetMinItems())
+	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	if in.Properties != nil {
+		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
+		for k, v := range in.Properties {
+			out.Properties[k] = Schema_ToProto(mapCtx, &v)
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.ValueOf(in.Description)
+	out.Items = Schema_ToProto(mapCtx, in.Items)
+	out.Nullable = direct.ValueOf(in.Nullable)
+	out.UniqueItems = direct.ValueOf(in.UniqueItems)
+	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, Schema_ToProto)
+	out.AdditionalProperties = Schema_ToProto(mapCtx, in.AdditionalProperties)
+	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, Schema_ToProto)
+	out.Enum = in.Enum
+	out.Default = Value_ToProto(mapCtx, in.Default)
+	out.Ref = direct.ValueOf(in.Ref)
+	if in.Defs != nil {
+		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
+		for k, v := range in.Defs {
+			out.Defs[k] = Schema_ToProto(mapCtx, &v)
+		}
+	}
+	out.Title = direct.ValueOf(in.Title)
+	out.MinItems = direct.ValueOf(in.MinItems)
+	out.MaxItems = direct.ValueOf(in.MaxItems)
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func SchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.SchemaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SchemaObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	if in.Properties != nil {
+		out.Properties = make(map[string]krm.Schema, len(in.Properties))
+		for k, v := range in.Properties {
+			if c := Schema_FromProto(mapCtx, v); c != nil {
+				out.Properties[k] = *c
+			}
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Items = SchemaObservedState_FromProto(mapCtx, in.GetItems())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
+	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, SchemaObservedState_FromProto)
+	out.AdditionalProperties = SchemaObservedState_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, SchemaObservedState_FromProto)
+	out.Enum = in.Enum
+	out.Default = Value_FromProto(mapCtx, in.GetDefault())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	if in.Defs != nil {
+		out.Defs = make(map[string]krm.Schema, len(in.Defs))
+		for k, v := range in.Defs {
+			if c := Schema_FromProto(mapCtx, v); c != nil {
+				out.Defs[k] = *c
+			}
+		}
+	}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.MinItems = direct.LazyPtr(in.GetMinItems())
+	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func SchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SchemaObservedState) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	if in.Properties != nil {
+		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
+		for k, v := range in.Properties {
+			out.Properties[k] = Schema_ToProto(mapCtx, &v)
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.ValueOf(in.Description)
+	out.Items = SchemaObservedState_ToProto(mapCtx, in.Items)
+	out.Nullable = direct.ValueOf(in.Nullable)
+	out.UniqueItems = direct.ValueOf(in.UniqueItems)
+	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, SchemaObservedState_ToProto)
+	out.AdditionalProperties = SchemaObservedState_ToProto(mapCtx, in.AdditionalProperties)
+	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, SchemaObservedState_ToProto)
+	out.Enum = in.Enum
+	out.Default = Value_ToProto(mapCtx, in.Default)
+	out.Ref = direct.ValueOf(in.Ref)
+	if in.Defs != nil {
+		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
+		for k, v := range in.Defs {
+			out.Defs[k] = Schema_ToProto(mapCtx, &v)
+		}
+	}
+	out.Title = direct.ValueOf(in.Title)
+	out.MinItems = direct.ValueOf(in.MinItems)
+	out.MaxItems = direct.ValueOf(in.MaxItems)
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func SchemaWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.SchemaWithRequired {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SchemaWithRequired{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	if in.Properties != nil {
+		out.Properties = make(map[string]krm.SchemaWithRequired, len(in.Properties))
+		for k, v := range in.Properties {
+			if c := SchemaWithRequired_FromProto(mapCtx, v); c != nil {
+				out.Properties[k] = *c
+			}
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Items = SchemaWithRequired_FromProto(mapCtx, in.GetItems())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
+	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, SchemaWithRequired_FromProto)
+	out.AdditionalProperties = SchemaWithRequired_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, SchemaWithRequired_FromProto)
+	out.Enum = in.Enum
+	out.Default = Value_FromProto(mapCtx, in.GetDefault())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	if in.Defs != nil {
+		out.Defs = make(map[string]krm.SchemaWithRequired, len(in.Defs))
+		for k, v := range in.Defs {
+			if c := SchemaWithRequired_FromProto(mapCtx, v); c != nil {
+				out.Defs[k] = *c
+			}
+		}
+	}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.MinItems = direct.LazyPtr(in.GetMinItems())
+	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func SchemaWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.SchemaWithRequired) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	if in.Properties != nil {
+		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
+		for k, v := range in.Properties {
+			out.Properties[k] = SchemaWithRequired_ToProto(mapCtx, &v)
+		}
+	}
+	out.Required = in.Required
+	out.Description = direct.ValueOf(in.Description)
+	out.Items = SchemaWithRequired_ToProto(mapCtx, in.Items)
+	out.Nullable = direct.ValueOf(in.Nullable)
+	out.UniqueItems = direct.ValueOf(in.UniqueItems)
+	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, SchemaWithRequired_ToProto)
+	out.AdditionalProperties = SchemaWithRequired_ToProto(mapCtx, in.AdditionalProperties)
+	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, SchemaWithRequired_ToProto)
+	out.Enum = in.Enum
+	out.Default = Value_ToProto(mapCtx, in.Default)
+	out.Ref = direct.ValueOf(in.Ref)
+	if in.Defs != nil {
+		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
+		for k, v := range in.Defs {
+			out.Defs[k] = SchemaWithRequired_ToProto(mapCtx, &v)
+		}
+	}
+	out.Title = direct.ValueOf(in.Title)
+	out.MinItems = direct.ValueOf(in.MinItems)
+	out.MaxItems = direct.ValueOf(in.MaxItems)
+	out.Minimum = in.Minimum
+	out.Maximum = in.Maximum
+	return out
+}
+func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SynthesizeSpeechConfig{}
+	out.Voice = direct.LazyPtr(in.GetVoice())
+	out.SpeakingRate = direct.LazyPtr(in.GetSpeakingRate())
+	return out
+}
+func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SynthesizeSpeechConfig) *pb.SynthesizeSpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SynthesizeSpeechConfig{}
+	out.Voice = direct.ValueOf(in.Voice)
+	out.SpeakingRate = direct.ValueOf(in.SpeakingRate)
+	return out
+}
+func TimeZoneSettings_FromProto(mapCtx *direct.MapContext, in *pb.TimeZoneSettings) *krm.TimeZoneSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeZoneSettings{}
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	return out
+}
+func TimeZoneSettings_ToProto(mapCtx *direct.MapContext, in *krm.TimeZoneSettings) *pb.TimeZoneSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeZoneSettings{}
+	out.TimeZone = direct.ValueOf(in.TimeZone)
 	return out
 }
 func TransferRule_FromProto(mapCtx *direct.MapContext, in *pb.TransferRule) *krm.TransferRule {
@@ -308,4 +1216,43 @@ func TransferRule_DisablePlannerTransfer_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.TransferRule_DisablePlannerTransfer{}
 	out.ExpressionCondition = ExpressionCondition_ToProto(mapCtx, in.ExpressionCondition)
 	return out
+}
+func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Value{}
+	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
+	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructValue()); v != nil {
+		out.StructValue = *v
+	}
+	out.ListValue = ListValue_FromProto(mapCtx, in.GetListValue())
+	return out
+}
+func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_NullValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
+}
+func Value_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *structpb.Value_NumberValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_NumberValue{NumberValue: *in}
+}
+func Value_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_StringValue{StringValue: *in}
+}
+func Value_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *structpb.Value_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &structpb.Value_BoolValue{BoolValue: *in}
 }

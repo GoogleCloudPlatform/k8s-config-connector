@@ -21,6 +21,149 @@
 # file does not have.
 
 entries:
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.audioProcessingConfig.ambientSoundConfig.gcsURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.audioProcessingConfig.ambientSoundConfig.prebuiltAmbientNoise
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.audioProcessingConfig.bargeInConfig.disableBargeIn
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.audioProcessingConfig.synthesizeSpeechConfigs
+    reason: message-map-derived
+    detail: derived as map[string]SynthesizeSpeechConfig from proto google.cloud.ces.v1.SynthesizeSpeechConfig; verify Go type and mapping
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.clientCertificateSettings.passphrase
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret}/versions/{version}"
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.clientCertificateSettings.privateKey
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.defaultChannelProfile.profileID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.evaluationMetricsThresholds.hallucinationMetricBehavior
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.guardrails
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Guardrail (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.languageSettings.fallbackAction
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.loggingSettings.audioRecordingConfig.gcsBucket
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.loggingSettings.bigqueryExportSettings.project
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.loggingSettings.evaluationAudioRecordingConfig.gcsBucket
+    reason: possible-reference-by-description
+    detail: the field name has bucket and the description mentions Cloud Storage
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.loggingSettings.redactionConfig.deidentifyTemplate
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dlp.googleapis.com/DeidentifyTemplate (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.loggingSettings.redactionConfig.inspectTemplate
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to dlp.googleapis.com/InspectTemplate (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.rootAgent
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].schema.default
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].schema.defs
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].schema.properties
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .status.observedState.predefinedVariableDeclarations[].schema.default
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .status.observedState.predefinedVariableDeclarations[].schema.defs
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .status.observedState.predefinedVariableDeclarations[].schema.properties
+    reason: message-map-derived
+    detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
+    status: open
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
