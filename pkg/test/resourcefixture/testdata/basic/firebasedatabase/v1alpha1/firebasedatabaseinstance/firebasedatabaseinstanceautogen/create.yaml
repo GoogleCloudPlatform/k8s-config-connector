@@ -18,6 +18,6 @@ metadata:
   name: firebasedatabaseinstance-${uniqueId}
 spec:
   projectRef:
-    name: project-${uniqueId}
+    external: "${projectId}"
   region: us-central1
   resourceID: firebasedatabaseinstance${uniqueId}
