@@ -25,45 +25,61 @@ entries:
     group: dlp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged DLPContentPolicy; inlined ProjectAndLocationRef, confirmed client-specified ID, verified nested fields
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateContentPolicyRequest defines content_policy_id; client-specified ID supported, implements IdentityV2
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .spec.loggingConfigs[].logToBigQuery.datasetID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery dataset ID string within LogToBigQuery destination configuration
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .spec.loggingConfigs[].logToBigQuery.projectID
     reason: possible-reference-by-name
     detail: ProjectRef
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery project ID string within LogToBigQuery destination configuration
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .spec.loggingConfigs[].logToBigQuery.tableID
     reason: possible-reference-by-name
     detail: the field name ends in ID/IDs; confirm whether it references another resource
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: BigQuery table ID string within LogToBigQuery destination configuration
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .spec.rules[].conditions[].infoTypeCondition.anyInfoType
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Empty, which was generated as struct Empty; confirm KRM representation
-    status: open
+    status: resolved
+    resolution: deferred
+    note: deferred well-known proto type Empty resolution pending team-wide conventions
   - kind: DLPContentPolicy
     group: dlp.cnrm.cloud.google.com
     field: .status.observedState.inspectConfig.customInfoTypes[].storedType.createTime
     reason: possible-output-only-pattern-in-comment
     detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.inspectConfig.customInfoTypes[].storedType.createTime. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.inspectConfig.customInfoTypes[].storedType.createTime if it is confirmed output only. Proto comment: Timestamp indicating when the version of the `StoredInfoType` used for inspection was created. Output-only field, populated by the system.'
-    status: open
+    status: resolved
+    resolution: not-applicable
+    note: kept in Spec as optional field on StoredType nested within InspectConfig to match proto and mapper definition

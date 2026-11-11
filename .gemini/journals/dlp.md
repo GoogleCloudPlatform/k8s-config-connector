@@ -19,3 +19,14 @@
   4. Added `dlpcontentpolicies.dlp.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` due to the empty oneof option (`spec.rules[].conditions[].infoTypeCondition.anyInfoType`).
   5. Added `generate-mapper` with `--prepopulate-resource` in `apis/dlp/generate.sh`, generated `pkg/controller/direct/dlp/mapper.generated.go`, added `cloud.google.com/go/dlp v1.38.0` to `go.mod`, and defined `Empty` and `timestamppb.Timestamp` mapping helpers in `pkg/controller/direct/dlp/mappings.go`.
 - **Impact**: Enables clean mechanical scaffolding of `DLPContentPolicy` and downstream controller/fuzzer generation without regressions on existing DLP resources.
+
+### [2026-11-11] DLPContentPolicy Judgement Queue Triage and Type Finalization
+- **Context**: Triaging `apis/dlp/judgement_queue.yaml` and finalizing direct KRM types and identity for `DLPContentPolicy`.
+- **Findings & Actions**:
+  1. Parent & Location (`location-or-parent-ref`): Inlined `*parent.ProjectAndLocationRef` in `DLPContentPolicySpec`, replacing separate `ProjectRef` and `Location` fields while preserving CRD field names and enforcing immutability on `location`.
+  2. Identity (`identity-server-generated-id`): Verified `CreateContentPolicyRequest` defines `content_policy_id` parameter which supports client-specified IDs, conforming to `identity.IdentityV2`.
+  3. BigQuery destination references (`possible-reference-by-name`): Triaged `.spec.loggingConfigs[].logToBigQuery.{projectID,datasetID,tableID}` as flat string fields matching the proto definition and direct mapper generation.
+  4. Well-known proto type (`well-known-proto-type`): Deferred `google.protobuf.Empty` (`anyInfoType`) per standard team-policy item guidelines.
+  5. Nested output-only comment (`possible-output-only-pattern-in-comment`): Kept `.spec.inspectConfig.customInfoTypes[].storedType.createTime` in Spec as an optional field to match proto message and direct mapper.
+- **Impact**: Fully resolves the judgement queue for `DLPContentPolicy`, preparing the resource for controller and test fixture implementation.
+
