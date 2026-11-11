@@ -21,6 +21,10 @@
 # Opt-in: only a PR labelled overseer/auto-merge is merged; take the label
 # off to keep a PR for a person.
 #
+# Retries: the merge queue can drop a PR after auto-merge is set. The rule
+# then runs again an hour after its last run, and gives up (overseer/stop
+# and a comment) after 6 runs at one head.
+#
 # Order 80: after factory's PR rules and the assessments (70, 71), which
 # put the grade on first.
 name: merge-types-judgement
@@ -46,7 +50,15 @@ run:
 
       Approved for merge by the overseer: this Step 1b PR meets the criteria for approval - assess-types-judgement graded it good, its checks are green, and it is mergeable.
 policy:
-  dedupe: head
+  # No dedupe: an auto-merge the queue drops (a flaky check, a conflict)
+  # leaves the PR open with this rule's when still holding, so it runs
+  # again once the success cooldown is over. The merge recipe approves
+  # once per head and re-sets auto-merge, which puts the PR back in the
+  # queue. A PR in the queue gets nothing from any rule.
   cooldown:
     success: 1h
     failure: 12h
+  give-up:
+    attempts: 6
+    since: [head, pause]
+    comment: Pausing auto-merge after 6 attempts at this head. Take overseer/stop off to let the overseer try again, or merge it by hand.
