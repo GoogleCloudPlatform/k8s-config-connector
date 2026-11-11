@@ -6516,32 +6516,92 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 }
 */
 
-/* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
-func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeURLMapSpec) *pb.UrlMap {
+/*
+found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
+
+	func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeURLMapSpec) *pb.UrlMap {
+		if in == nil {
+			return nil
+		}
+		out := &pb.UrlMap{}
+		// MISSING: CreationTimestamp
+		out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
+		out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+		out.DefaultService = in.DefaultService
+		// MISSING: DefaultURLRedirect
+		// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+		out.Description = in.Description
+		// MISSING: Fingerprint
+		out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+		// MISSING: HostRules
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: PathMatchers
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: Tests
+		return out
+	}
+*/
+func ComputeVMExtensionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicy) *krmcomputev1alpha1.ComputeVMExtensionPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.UrlMap{}
-	// MISSING: CreationTimestamp
-	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
-	out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
-	out.DefaultService = in.DefaultService
-	// MISSING: DefaultURLRedirect
-	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
-	out.Description = in.Description
-	// MISSING: Fingerprint
-	out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	// MISSING: HostRules
-	// MISSING: ID
-	// MISSING: Kind
+	out := &krmcomputev1alpha1.ComputeVMExtensionPolicyObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
 	// MISSING: Name
-	// MISSING: PathMatchers
-	// MISSING: Region
-	// MISSING: SelfLink
-	// MISSING: Tests
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
 }
-*/
+func ComputeVMExtensionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeVMExtensionPolicyObservedState) *pb.VmExtensionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeVMExtensionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicy) *krmcomputev1alpha1.ComputeVMExtensionPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeVMExtensionPolicySpec{}
+	out.Description = in.Description
+	out.ExtensionPolicies = ExtensionPolicies_FromProto(mapCtx, in.ExtensionPolicies)
+	out.GlobalResourceLink = in.GlobalResourceLink
+	out.InstanceSelectors = direct.Slice_FromProto(mapCtx, in.InstanceSelectors, VMExtensionPolicyInstanceSelector_v1alpha1_FromProto)
+	out.ManagedByGlobal = in.ManagedByGlobal
+	// MISSING: Name
+	out.Priority = in.Priority
+	out.State = in.State
+	out.UpdateTimestamp = in.UpdateTimestamp
+	return out
+}
+func ComputeVMExtensionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeVMExtensionPolicySpec) *pb.VmExtensionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicy{}
+	out.Description = in.Description
+	out.ExtensionPolicies = ExtensionPolicies_ToProto(mapCtx, in.ExtensionPolicies)
+	out.GlobalResourceLink = in.GlobalResourceLink
+	out.InstanceSelectors = direct.Slice_ToProto(mapCtx, in.InstanceSelectors, VMExtensionPolicyInstanceSelector_v1alpha1_ToProto)
+	out.ManagedByGlobal = in.ManagedByGlobal
+	// MISSING: Name
+	out.Priority = in.Priority
+	out.State = in.State
+	out.UpdateTimestamp = in.UpdateTimestamp
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_FromProto", skipping
 func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGateway) *krmcomputev1beta1.ComputeVPNGatewaySpec {
@@ -9802,20 +9862,72 @@ func UrlmapWeightedBackendServices_v1beta1_FromProto(mapCtx *direct.MapContext, 
 }
 */
 
-/* found existing non-generated mapping function "UrlmapWeightedBackendServices_v1beta1_ToProto", skipping
-func UrlmapWeightedBackendServices_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.UrlmapWeightedBackendServices) *pb.WeightedBackendService {
+/*
+found existing non-generated mapping function "UrlmapWeightedBackendServices_v1beta1_ToProto", skipping
+
+	func UrlmapWeightedBackendServices_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.UrlmapWeightedBackendServices) *pb.WeightedBackendService {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WeightedBackendService{}
+		if in.BackendServiceRef != nil {
+			out.BackendService = &in.BackendServiceRef.External
+		}
+		out.HeaderAction = UrlmapHeaderActionOptional_v1beta1_ToProto(mapCtx, in.HeaderAction)
+		out.Weight = in.Weight
+		return out
+	}
+*/
+func VMExtensionPolicyExtensionPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicyExtensionPolicy) *krmcomputev1alpha1.VMExtensionPolicyExtensionPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.WeightedBackendService{}
-	if in.BackendServiceRef != nil {
-		out.BackendService = &in.BackendServiceRef.External
-	}
-	out.HeaderAction = UrlmapHeaderActionOptional_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.Weight = in.Weight
+	out := &krmcomputev1alpha1.VMExtensionPolicyExtensionPolicy{}
+	out.PinnedVersion = in.PinnedVersion
+	out.StringConfig = in.StringConfig
 	return out
 }
-*/
+func VMExtensionPolicyExtensionPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.VMExtensionPolicyExtensionPolicy) *pb.VmExtensionPolicyExtensionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicyExtensionPolicy{}
+	out.PinnedVersion = in.PinnedVersion
+	out.StringConfig = in.StringConfig
+	return out
+}
+func VMExtensionPolicyInstanceSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicyInstanceSelector) *krmcomputev1alpha1.VMExtensionPolicyInstanceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.VMExtensionPolicyInstanceSelector{}
+	out.LabelSelector = VMExtensionPolicyLabelSelector_v1alpha1_FromProto(mapCtx, in.GetLabelSelector())
+	return out
+}
+func VMExtensionPolicyInstanceSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.VMExtensionPolicyInstanceSelector) *pb.VmExtensionPolicyInstanceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicyInstanceSelector{}
+	out.LabelSelector = VMExtensionPolicyLabelSelector_v1alpha1_ToProto(mapCtx, in.LabelSelector)
+	return out
+}
+func VMExtensionPolicyLabelSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmExtensionPolicyLabelSelector) *krmcomputev1alpha1.VMExtensionPolicyLabelSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.VMExtensionPolicyLabelSelector{}
+	out.InclusionLabels = in.InclusionLabels
+	return out
+}
+func VMExtensionPolicyLabelSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.VMExtensionPolicyLabelSelector) *pb.VmExtensionPolicyLabelSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VmExtensionPolicyLabelSelector{}
+	out.InclusionLabels = in.InclusionLabels
+	return out
+}
 
 /* found existing non-generated mapping function "VPNGatewayInterface_v1beta1_FromProto", skipping
 func VPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayVpnGatewayInterface) *krmcomputev1beta1.VPNGatewayInterface {

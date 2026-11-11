@@ -24,7 +24,6 @@
 // resource: ComputeRegionPerInstanceConfig:PerInstanceConfig
 // resource: ComputeAutoscaler:Autoscaler
 // resource: ComputeBackendServiceSignedURLKey:SignedUrlKey
-// resource: ComputeRegionAutoscaler:Autoscaler
 // resource: ComputeOrganizationSecurityPolicy:SecurityPolicy
 // resource: ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation
 // resource: ComputeOrganizationSecurityPolicyRule:FirewallPolicyRule
@@ -33,6 +32,7 @@
 // resource: ComputeRegionSSLPolicy:SslPolicy
 // resource: ComputeInstantSnapshot:InstantSnapshot
 // resource: ComputeHealthCheckService:HealthCheckService
+// resource: ComputeVMExtensionPolicy:VmExtensionPolicy
 
 package v1alpha1
 
@@ -2794,6 +2794,95 @@ type Tags struct {
 	Items []string `json:"items,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.VmExtensionPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicy
+type VMExtensionPolicy struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// Optional. Output only. [Output Only] Link to the global policy that manages this zone policy, if
+	//  applicable.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.global_resource_link
+	GlobalResourceLink *string `json:"globalResourceLink,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Optional. Selectors to target VMs for this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.instance_selectors
+	InstanceSelectors []VMExtensionPolicyInstanceSelector `json:"instanceSelectors,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#vmExtensionPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Optional. Output only. [Output Only] Indicates if this policy is managed by a global policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.managed_by_global
+	ManagedByGlobal *bool `json:"managedByGlobal,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Priority of this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Optional. Output only. [Output Only] Current state of the policy: ACTIVE or DELETING.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. [Output Only] Update timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicy.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy
+type VMExtensionPolicyExtensionPolicy struct {
+	// Optional. The specific version of the extension to install. If not set, the latest
+	//  version is used.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy.pinned_version
+	PinnedVersion *string `json:"pinnedVersion,omitempty"`
+
+	// Optional. String-based configuration data for the extension.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy.string_config
+	StringConfig *string `json:"stringConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyInstanceSelector
+type VMExtensionPolicyInstanceSelector struct {
+	// Optional. LabelSelector selects VMs based on their labels.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyInstanceSelector.label_selector
+	LabelSelector *VMExtensionPolicyLabelSelector `json:"labelSelector,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.VmExtensionPolicyLabelSelector
+type VMExtensionPolicyLabelSelector struct {
+	// Optional. A map of key-value pairs representing VM labels.
+	// +kcc:proto:field=google.cloud.compute.v1.VmExtensionPolicyLabelSelector.inclusion_labels
+	InclusionLabels map[string]string `json:"inclusionLabels,omitempty"`
+}
 
 /* unreachable type Warnings
 // +kcc:proto=google.cloud.compute.v1.Warnings

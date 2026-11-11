@@ -42,7 +42,6 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
   --resource ComputeAutoscaler:Autoscaler \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
-  --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --resource ComputeOrganizationSecurityPolicyAssociation:SecurityPolicyAssociation \
   --resource ComputeOrganizationSecurityPolicyRule:FirewallPolicyRule \
@@ -51,6 +50,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionSSLPolicy:SslPolicy \
   --resource ComputeInstantSnapshot:InstantSnapshot \
   --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -59,6 +59,11 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ComputeHealthCheckService:HealthCheckService
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeVMExtensionPolicy:VmExtensionPolicy
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
