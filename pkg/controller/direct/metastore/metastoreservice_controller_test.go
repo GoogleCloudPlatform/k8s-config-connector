@@ -18,6 +18,7 @@ import (
 	"context"
 	"testing"
 
+	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -148,4 +149,76 @@ func TestMetastoreService_NormalizeReferences(t *testing.T) {
 			t.Errorf("protoObj = %v, want nil", protoObj)
 		}
 	})
+}
+
+func TestNetworkConfigEqual(t *testing.T) {
+	tests := []struct {
+		name    string
+		desired *pb.NetworkConfig
+		actual  *pb.NetworkConfig
+		want    bool
+	}{
+		{
+			name:    "both nil",
+			desired: nil,
+			actual:  nil,
+			want:    true,
+		},
+		{
+			name: "equal when actual consumers have output-only endpoint_uri and endpoint_location",
+			desired: &pb.NetworkConfig{
+				Consumers: []*pb.NetworkConfig_Consumer{
+					{
+						VpcResource: &pb.NetworkConfig_Consumer_Subnetwork{
+							Subnetwork: "projects/p/regions/us-central1/subnetworks/s1",
+						},
+					},
+				},
+			},
+			actual: &pb.NetworkConfig{
+				Consumers: []*pb.NetworkConfig_Consumer{
+					{
+						VpcResource: &pb.NetworkConfig_Consumer_Subnetwork{
+							Subnetwork: "projects/p/regions/us-central1/subnetworks/s1",
+						},
+						EndpointUri:      "thrift://10.0.0.2:9083",
+						EndpointLocation: "projects/p/locations/us-central1",
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "not equal when consumer subnetwork differs",
+			desired: &pb.NetworkConfig{
+				Consumers: []*pb.NetworkConfig_Consumer{
+					{
+						VpcResource: &pb.NetworkConfig_Consumer_Subnetwork{
+							Subnetwork: "projects/p/regions/us-central1/subnetworks/s2",
+						},
+					},
+				},
+			},
+			actual: &pb.NetworkConfig{
+				Consumers: []*pb.NetworkConfig_Consumer{
+					{
+						VpcResource: &pb.NetworkConfig_Consumer_Subnetwork{
+							Subnetwork: "projects/p/regions/us-central1/subnetworks/s1",
+						},
+						EndpointUri: "thrift://10.0.0.2:9083",
+					},
+				},
+			},
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &direct.MapContext{}
+			if got := networkConfigEqual(mapCtx, tc.desired, tc.actual); got != tc.want {
+				t.Errorf("networkConfigEqual() = %v, want %v", got, tc.want)
+			}
+		})
+	}
 }

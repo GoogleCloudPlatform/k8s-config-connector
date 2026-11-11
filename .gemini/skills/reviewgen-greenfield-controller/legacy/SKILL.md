@@ -9,6 +9,7 @@ Use this review guide **only** for in-flight PRs whose controller (`pkg/controll
 
 ## 1. Proto Diffs and Field Masks
 *   Verify that `common.CompareGreenfieldSpec` (preferred), `tags.DiffForTopLevelFields`, or `common.CompareProtoMessage` is used to calculate differences between the desired state (`krm` spec mapped to proto) and the actual state (actual proto returned from API).
+*   **No Unmasked `a.actual` Comparisons:** Verify that the controller does NOT compare raw `a.actual` (or its sub-messages/maps/slices) directly against `desiredPb` via `proto.Equal` or `reflect.DeepEqual` when `a.actual` contains output-only or unmapped (`// MISSING:` in `*_ToProto`) fields (e.g., `etag`, `update_time`), which causes infinite update loops. See `kcc-direct-proto-comparison`.
 *   Verify that the resulting diff paths are used to populate an `UpdateMask` in the `Update` operation if required by the API.
 
 ## 2. Structured Reporting

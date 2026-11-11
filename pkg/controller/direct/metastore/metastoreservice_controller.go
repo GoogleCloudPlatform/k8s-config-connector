@@ -36,6 +36,7 @@ import (
 
 	gcp "cloud.google.com/go/metastore/apiv1"
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -217,21 +218,21 @@ func (a *MetastoreServiceAdapter) Update(ctx context.Context, updateOp *directba
 	if desired.Spec.Tier != nil && !reflect.DeepEqual(resource.Tier, a.actual.Tier) {
 		paths = append(paths, "tier")
 	}
-	if desired.Spec.MaintenanceWindow != nil && !reflect.DeepEqual(resource.MaintenanceWindow, a.actual.MaintenanceWindow) {
+	if desired.Spec.MaintenanceWindow != nil && !proto.Equal(resource.MaintenanceWindow, a.actual.MaintenanceWindow) {
 		paths = append(paths, "maintenance_window")
 	}
-	if desired.Spec.HiveMetastoreConfig != nil && !reflect.DeepEqual(resource.GetHiveMetastoreConfig(), a.actual.GetHiveMetastoreConfig()) {
+	if desired.Spec.HiveMetastoreConfig != nil && !proto.Equal(resource.GetHiveMetastoreConfig().GetKerberosConfig(), a.actual.GetHiveMetastoreConfig().GetKerberosConfig()) {
 		// TODO(kcc): Add support for hiveMetastoreConfig.configOverrides and auxiliaryVersions
 		paths = append(paths, "hive_metastore_config.kerberos_config")
 		// Endpoint protocol is output_only
 	}
-	if desired.Spec.NetworkConfig != nil && !reflect.DeepEqual(resource.NetworkConfig, a.actual.NetworkConfig) {
+	if desired.Spec.NetworkConfig != nil && !networkConfigEqual(mapCtx, resource.GetNetworkConfig(), a.actual.GetNetworkConfig()) {
 		paths = append(paths, "network_config")
 	}
-	if desired.Spec.TelemetryConfig != nil && !reflect.DeepEqual(resource.TelemetryConfig, a.actual.TelemetryConfig) {
+	if desired.Spec.TelemetryConfig != nil && !proto.Equal(resource.TelemetryConfig, a.actual.TelemetryConfig) {
 		paths = append(paths, "telemetry_config")
 	}
-	if desired.Spec.ScalingConfig != nil && !reflect.DeepEqual(resource.ScalingConfig, a.actual.ScalingConfig) {
+	if desired.Spec.ScalingConfig != nil && !proto.Equal(resource.ScalingConfig, a.actual.ScalingConfig) {
 		paths = append(paths, "scaling_config")
 	}
 
@@ -318,4 +319,17 @@ func (a *MetastoreServiceAdapter) Delete(ctx context.Context, deleteOp *directba
 		return false, fmt.Errorf("waiting delete MetastoreService %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+// networkConfigEqual compares desired and actual NetworkConfig protos while ignoring
+// output-only consumer fields (endpoint_uri and endpoint_location) populated on actual.
+func networkConfigEqual(mapCtx *direct.MapContext, desired, actual *pb.NetworkConfig) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if desired == nil || actual == nil {
+		return false
+	}
+	maskedActual := NetworkConfig_ToProto(mapCtx, NetworkConfig_FromProto(mapCtx, actual))
+	return proto.Equal(desired, maskedActual)
 }
