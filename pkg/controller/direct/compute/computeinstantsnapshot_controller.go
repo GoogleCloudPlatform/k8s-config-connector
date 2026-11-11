@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -284,6 +285,14 @@ func (a *InstantSnapshotAdapter) Export(ctx context.Context) (*unstructured.Unst
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+	if a.id.IsZonal() {
+		obj.Spec.Location = a.id.Zone
+	} else if a.id.IsRegional() {
+		obj.Spec.Location = a.id.Region
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
