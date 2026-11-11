@@ -43,13 +43,27 @@ ${CONTROLLERBUILDER} generate-types \
   --resource SaaSServiceMgmtUnit:Unit \
   --resource SaaSServiceMgmtUnitKind:UnitKind
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
+  --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource SaaSServiceMgmtSaaS:Saas
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
+  --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
+  --resource SaaSServiceMgmtSaaS:Saas
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
   --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/saasservicemgmt" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/saasservicemgmt/
