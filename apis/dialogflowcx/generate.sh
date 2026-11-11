@@ -42,7 +42,8 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowCXEntityType:EntityType
+  --resource DialogflowCXEntityType:EntityType \
+  --resource DialogflowCXWebhook:Webhook
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
