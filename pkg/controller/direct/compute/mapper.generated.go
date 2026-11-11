@@ -2991,12 +2991,23 @@ func ComputeInstantSnapshotObservedState_v1alpha1_FromProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeInstantSnapshotObservedState{}
+	out.Architecture = in.Architecture
 	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGB = in.DiskSizeGb
 	out.ID = in.Id
 	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
 	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
+	out.SourceDiskID = in.SourceDiskId
+	out.Status = in.Status
+	out.Zone = in.Zone
 	return out
 }
 func ComputeInstantSnapshotObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotObservedState) *pb.InstantSnapshot {
@@ -3004,12 +3015,23 @@ func ComputeInstantSnapshotObservedState_v1alpha1_ToProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &pb.InstantSnapshot{}
+	out.Architecture = in.Architecture
 	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGb = in.DiskSizeGB
 	out.Id = in.ID
 	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
 	// MISSING: Name
+	out.Region = in.Region
+	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	out.SourceDiskId = in.SourceDiskID
+	out.Status = in.Status
+	out.Zone = in.Zone
 	return out
 }
 func ComputeInstantSnapshotSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstantSnapshot) *krmcomputev1alpha1.ComputeInstantSnapshotSpec {
@@ -3017,20 +3039,12 @@ func ComputeInstantSnapshotSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeInstantSnapshotSpec{}
-	out.Architecture = in.Architecture
 	out.Description = in.Description
-	out.DiskSizeGB = in.DiskSizeGb
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
+	// MISSING: Labels
 	// MISSING: Name
-	out.Region = in.Region
-	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_FromProto(mapCtx, in.GetResourceStatus())
-	out.SatisfiesPzi = in.SatisfiesPzi
-	out.SatisfiesPzs = in.SatisfiesPzs
-	out.SourceDisk = in.SourceDisk
-	out.SourceDiskID = in.SourceDiskId
-	out.Status = in.Status
-	out.Zone = in.Zone
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &krmcomputev1beta1.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
 	return out
 }
 func ComputeInstantSnapshotSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstantSnapshotSpec) *pb.InstantSnapshot {
@@ -3038,20 +3052,12 @@ func ComputeInstantSnapshotSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.InstantSnapshot{}
-	out.Architecture = in.Architecture
 	out.Description = in.Description
-	out.DiskSizeGb = in.DiskSizeGB
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
+	// MISSING: Labels
 	// MISSING: Name
-	out.Region = in.Region
-	out.ResourceStatus = InstantSnapshotResourceStatus_v1alpha1_ToProto(mapCtx, in.ResourceStatus)
-	out.SatisfiesPzi = in.SatisfiesPzi
-	out.SatisfiesPzs = in.SatisfiesPzs
-	out.SourceDisk = in.SourceDisk
-	out.SourceDiskId = in.SourceDiskID
-	out.Status = in.Status
-	out.Zone = in.Zone
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
 	return out
 }
 

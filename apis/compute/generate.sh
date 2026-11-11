@@ -49,19 +49,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
+  --resource ComputeInstantSnapshot:InstantSnapshot \
   --include-skipped-output
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --prepopulate-resource \
-  --resource ComputeInstantSnapshot:InstantSnapshot
-
-${CONTROLLERBUILDER} generate-identity \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeInstantSnapshot:InstantSnapshot
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 

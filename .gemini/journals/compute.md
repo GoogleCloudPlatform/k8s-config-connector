@@ -69,3 +69,13 @@
   5. Added non-idiomatic proto comment exception to `tests/apichecks/testdata/exceptions/comments.txt` and updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Complies with Greenfield Step 1 review standards by enabling `--prepopulate-resource` on `generate-mapper` while safely isolating `--prepopulate-resource` in `generate-types` for newly scaffolded resources in shared services.
 
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeInstantSnapshot
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeInstantSnapshot` (issue #15378).
+- **Findings**:
+  1. `ComputeInstantSnapshot` can be created either for a zonal disk or a regional disk. In GCP CAIS, it has two name formats: `//compute.googleapis.com/projects/{project}/zones/{zone}/instantSnapshots/{name}` and `//compute.googleapis.com/projects/{project}/regions/{region}/instantSnapshots/{name}`.
+  2. Because `controllerbuilder generate-identity` only generates a single template pattern and cannot express dual zonal and regional templates for a resource, `ComputeInstantSnapshotIdentity` was promoted to handwritten `computeinstantsnapshot_identity.go`, mirroring `ComputeDisk` (`ZonalComputeInstantSnapshotIdentityFormat` and `RegionalComputeInstantSnapshotIdentityFormat`).
+  3. `SourceDisk` is a reference to a `ComputeDisk` and was converted to `SourceDiskRef *computev1beta1.ComputeDiskRef` with `json:"sourceDiskRef,omitempty"` and `// +kcc:proto:field=google.cloud.compute.v1.InstantSnapshot.source_disk`.
+  4. Top-level `Labels` and output-only fields (`architecture`, `diskSizeGB`, `labelFingerprint`, `region`, `resourceStatus`, `satisfiesPzi`, `satisfiesPzs`, `sourceDiskID`, `status`, `zone`) were moved to `ComputeInstantSnapshotObservedState` or omitted from Spec.
+  5. In `apis/compute/generate.sh`, removed the isolated prepopulation block and added `ComputeInstantSnapshot:InstantSnapshot` to the main `generate-types` invocation without `--prepopulate-resource`.
+- **Impact**: Cleanly resolved all 24 entries in `apis/compute/judgement_queue.yaml`. All unit tests, CAIS golden tests, and API checks pass.
+
