@@ -52,6 +52,7 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
+	cloud.google.com/go/designcenter v0.1.0
 	cloud.google.com/go/developerconnect v1.1.0
 	cloud.google.com/go/devicestreaming v1.0.0
 	cloud.google.com/go/dialogflow v1.82.0
@@ -410,3 +411,5 @@ replace (
 	k8s.io/kubectl => k8s.io/kubectl v0.32.1
 	sigs.k8s.io/yaml => sigs.k8s.io/yaml v1.4.0
 )
+
+replace cloud.google.com/go/designcenter => ./third_party/cloud.google.com/go/designcenter

@@ -3164,6 +3164,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - designcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - developerconnect.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5219,6 +5231,14 @@ rules:
   - watch
 - apiGroups:
   - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - designcenter.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
