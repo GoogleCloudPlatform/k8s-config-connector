@@ -56,7 +56,7 @@ require (
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/financialservices v1.2.0
 	cloud.google.com/go/firestore v1.22.0
-	cloud.google.com/go/geminidataanalytics v1.3.0
+	cloud.google.com/go/geminidataanalytics v1.6.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/hypercomputecluster v1.1.0
 	cloud.google.com/go/iam v1.11.0

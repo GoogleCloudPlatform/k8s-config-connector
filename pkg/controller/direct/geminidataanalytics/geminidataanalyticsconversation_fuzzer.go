@@ -43,6 +43,7 @@ func geminiDataAnalyticsConversationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".kms_key")
 	f.Unimplemented_NotYetTriaged(".memory_paused")
+	f.Unimplemented_NotYetTriaged(".title")
 
 	return f
 }

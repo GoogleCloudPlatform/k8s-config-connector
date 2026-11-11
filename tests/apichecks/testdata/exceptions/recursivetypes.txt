@@ -8,6 +8,7 @@
 [recursive_type] package=apis/dialogflow/v1alpha1: InlineSchema -> TypeSchema -> InlineSchema
 [recursive_type] package=apis/dialogflow/v1alpha1: ListValue -> Value -> ListValue
 [recursive_type] package=apis/dialogflow/v1alpha1: Playbook_Step -> Playbook_Step
+[recursive_type] package=apis/geminidataanalytics/v1alpha1: Field -> Field
 [recursive_type] package=apis/gsuiteaddons/v1alpha1: ListValue -> Value -> ListValue
 [recursive_type] package=apis/visionai/v1alpha1: AnnotationCustomizedStruct -> AnnotationValue -> AnnotationCustomizedStruct
 [recursive_type] package=apis/visionai/v1alpha1: AnnotationList -> AnnotationValue -> AnnotationList
