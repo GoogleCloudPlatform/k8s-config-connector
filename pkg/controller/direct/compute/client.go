@@ -375,6 +375,30 @@ func (m *gcpClient) newRegionDisksClient(ctx context.Context) (*compute.RegionDi
 	return client, err
 }
 
+func (m *gcpClient) newInstantSnapshotsClient(ctx context.Context) (*compute.InstantSnapshotsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewInstantSnapshotsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeInstantSnapshots client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionInstantSnapshotsClient(ctx context.Context) (*compute.RegionInstantSnapshotsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionInstantSnapshotsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeRegionInstantSnapshots client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newAutoscalersClient(ctx context.Context) (*compute.AutoscalersClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {

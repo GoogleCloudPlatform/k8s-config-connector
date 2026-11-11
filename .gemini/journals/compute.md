@@ -79,3 +79,14 @@
   5. In `apis/compute/generate.sh`, removed the isolated prepopulation block and added `ComputeInstantSnapshot:InstantSnapshot` to the main `generate-types` invocation without `--prepopulate-resource`.
 - **Impact**: Cleanly resolved all 24 entries in `apis/compute/judgement_queue.yaml`. All unit tests, CAIS golden tests, and API checks pass.
 
+### [2026-11-11] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeInstantSnapshot
+- **Context**: Implementing the direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeInstantSnapshot` (issue #15386).
+- **Findings**:
+  1. `InstantSnapshots` in Compute Engine are regional or zonal and require separate clients: `compute.InstantSnapshotsClient` and `compute.RegionInstantSnapshotsClient`. Added `newInstantSnapshotsClient` and `newRegionInstantSnapshotsClient` in `pkg/controller/direct/compute/client.go`.
+  2. Instant snapshots in GCP are immutable (no update or patch method exists on the client). In `Update`, `common.CompareGreenfieldSpec` checks for changes and returns a clear error if modified.
+  3. When `SourceDisk` is returned from GCP `Get`, it has the full URL format (`https://www.googleapis.com/...`), while `SourceDiskRef` on KRM objects or resolved by `NormalizeGreenfieldReferences` uses the relative format (`projects/...`). A normalization hook was supplied to `CompareGreenfieldSpec` to strip the compute URL prefix, preventing false diffs during re-reconciliation.
+  4. Fuzzer round-trip testing (`FOCUS=ComputeInstantSnapshot`) required marking unmapped proto fields (`.params`, `.source_instant_snapshot_group`, `.source_instant_snapshot_group_id`) as `f.Unimplemented_NotYetTriaged`.
+  5. Minimal and maximal fixtures were created and recorded against real GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated validation checks.
+- **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
+
+
