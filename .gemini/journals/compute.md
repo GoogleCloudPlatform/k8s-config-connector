@@ -87,6 +87,19 @@
   3. When `SourceDisk` is returned from GCP `Get`, it has the full URL format (`https://www.googleapis.com/...`), while `SourceDiskRef` on KRM objects or resolved by `NormalizeGreenfieldReferences` uses the relative format (`projects/...`). A normalization hook was supplied to `CompareGreenfieldSpec` to strip the compute URL prefix, preventing false diffs during re-reconciliation.
   4. Fuzzer round-trip testing (`FOCUS=ComputeInstantSnapshot`) required marking unmapped proto fields (`.params`, `.source_instant_snapshot_group`, `.source_instant_snapshot_group_id`) as `f.Unimplemented_NotYetTriaged`.
   5. Minimal and maximal fixtures were created and recorded against real GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated validation checks.
-- **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
+  - **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
+
+  ### [2026-11-11] MockGCP Implementation and Alignment for ComputeInstantSnapshot
+  - **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeInstantSnapshot` (issue #15421).
+  - **Implementation**:
+  1. Implemented `InstantSnapshotsV1` (zonal) and `RegionInstantSnapshotsV1` (regional) in `mockgcp/mockcompute/instantsnapshotsv1.go`, handling Get, Insert, Delete, and SetLabels.
+  2. Registered both gRPC servers and HTTP mux handlers in `mockgcp/mockcompute/service.go`.
+  3. Added `ComputeInstantSnapshot` to supported GroupKinds for MockGCP testing in `config/tests/samples/create/harness.go`.
+  4. Updated empty labels fingerprint in `mockgcp/mockcompute/utils.go` to return standard Compute Engine constant `42WmSpB8rSM=` when no labels are specified.
+  5. Populated `SatisfiesPzi: true` on instant snapshots to match real GCP behavior observed in KRM status objects.
+  6. Automatically populated source disk metadata (`SourceDiskId`, `DiskSizeGb`) from mock storage when available, defaulting to standard 10GB pd size.
+  7. Ran `hack/compare-mock` and verified 0 diff in golden objects, generated `_http_mock.log` files, and verified clean pass of `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
+  - **Impact**: Provides hermetic MockGCP simulation for both zonal and regional instant snapshots with zero diff against authentic real GCP golden logs.
+
 
 
