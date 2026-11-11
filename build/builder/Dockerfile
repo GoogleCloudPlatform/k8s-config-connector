@@ -61,6 +61,25 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
+# Build the MultiClusterLease controller and the KRM syncer, used for multi-cluster
+# leader election, from the forks in third_party/github.com/gke-labs. Each fork is
+# built as its own module, with its own go.mod and go.sum, not with KCC's module graph.
+# GOWORK=off ignores a local go.work, and GOTOOLCHAIN=local builds them with this
+# image's Go, like the other binaries. Each one ships in its own image
+# (build/multiclusterlease and build/krmsyncer). The output names are explicit because
+# the MultiClusterLease main package is cmd/manager, which would collide with KCC's
+# manager binary.
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    for arch in amd64 arm64; do \
+      GOWORK=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=${arch} \
+        go build -C third_party/github.com/gke-labs/multicluster-leader-election \
+        -trimpath -ldflags "-s -w -buildid=" -o "${PWD}/linux_${arch}/multiclusterlease" ./cmd/manager && \
+      GOWORK=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=${arch} \
+        go build -C third_party/github.com/gke-labs/kube-etl/syncer \
+        -trimpath -ldflags "-s -w -buildid=" -o "${PWD}/linux_${arch}/krmsyncer" . || exit 1; \
+    done
+
 RUN --mount=type=cache,target=/go/pkg/mod \
     go run scripts/generate-third-party-licenses/main.go
 
