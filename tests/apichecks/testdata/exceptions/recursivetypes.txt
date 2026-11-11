@@ -1,7 +1,3 @@
-[recursive_type] package=apis/ces/v1alpha1: ListValue -> Value -> ListValue
-[recursive_type] package=apis/ces/v1alpha1: Schema -> Schema
-[recursive_type] package=apis/ces/v1alpha1: SchemaObservedState -> SchemaObservedState
-[recursive_type] package=apis/ces/v1alpha1: SchemaWithRequired -> SchemaWithRequired
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValue -> Parameter -> ParamValue
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValueObservedState -> ParameterObservedState -> ParamValueObservedState
 [recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParameterSpecObservedState -> ParameterSpecObservedState

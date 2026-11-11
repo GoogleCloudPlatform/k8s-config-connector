@@ -20,7 +20,6 @@
 // krm.group: ces.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.ces.v1
-// proto.service: google.protobuf
 
 package ces
 
@@ -30,7 +29,6 @@ import (
 	krmdlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func Agent_AgentToolset_FromProto(mapCtx *direct.MapContext, in *pb.Agent_AgentToolset) *krm.Agent_AgentToolset {
@@ -164,7 +162,7 @@ func App_VariableDeclarationObservedState_FromProto(mapCtx *direct.MapContext, i
 	out := &krm.App_VariableDeclarationObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Schema = SchemaObservedState_FromProto(mapCtx, in.GetSchema())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
 	return out
 }
 func App_VariableDeclarationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.App_VariableDeclarationObservedState) *pb.App_VariableDeclaration {
@@ -174,7 +172,7 @@ func App_VariableDeclarationObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out := &pb.App_VariableDeclaration{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.Schema = SchemaObservedState_ToProto(mapCtx, in.Schema)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
 	return out
 }
 func AudioProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AudioProcessingConfig) *krm.AudioProcessingConfig {
@@ -807,22 +805,6 @@ func LanguageSettings_ToProto(mapCtx *direct.MapContext, in *krm.LanguageSetting
 	out.FallbackAction = direct.ValueOf(in.FallbackAction)
 	return out
 }
-func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListValue{}
-	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_FromProto)
-	return out
-}
-func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.ListValue{}
-	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_ToProto)
-	return out
-}
 func LoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.LoggingSettings) *krm.LoggingSettings {
 	if in == nil {
 		return nil
@@ -929,234 +911,6 @@ func RedactionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RedactionConfig)
 	}
 	return out
 }
-func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Schema{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	if in.Properties != nil {
-		out.Properties = make(map[string]krm.Schema, len(in.Properties))
-		for k, v := range in.Properties {
-			if c := Schema_FromProto(mapCtx, v); c != nil {
-				out.Properties[k] = *c
-			}
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Items = Schema_FromProto(mapCtx, in.GetItems())
-	out.Nullable = direct.LazyPtr(in.GetNullable())
-	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
-	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, Schema_FromProto)
-	out.AdditionalProperties = Schema_FromProto(mapCtx, in.GetAdditionalProperties())
-	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, Schema_FromProto)
-	out.Enum = in.Enum
-	out.Default = Value_FromProto(mapCtx, in.GetDefault())
-	out.Ref = direct.LazyPtr(in.GetRef())
-	if in.Defs != nil {
-		out.Defs = make(map[string]krm.Schema, len(in.Defs))
-		for k, v := range in.Defs {
-			if c := Schema_FromProto(mapCtx, v); c != nil {
-				out.Defs[k] = *c
-			}
-		}
-	}
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.MinItems = direct.LazyPtr(in.GetMinItems())
-	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schema{}
-	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
-	if in.Properties != nil {
-		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
-		for k, v := range in.Properties {
-			out.Properties[k] = Schema_ToProto(mapCtx, &v)
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.ValueOf(in.Description)
-	out.Items = Schema_ToProto(mapCtx, in.Items)
-	out.Nullable = direct.ValueOf(in.Nullable)
-	out.UniqueItems = direct.ValueOf(in.UniqueItems)
-	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, Schema_ToProto)
-	out.AdditionalProperties = Schema_ToProto(mapCtx, in.AdditionalProperties)
-	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, Schema_ToProto)
-	out.Enum = in.Enum
-	out.Default = Value_ToProto(mapCtx, in.Default)
-	out.Ref = direct.ValueOf(in.Ref)
-	if in.Defs != nil {
-		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
-		for k, v := range in.Defs {
-			out.Defs[k] = Schema_ToProto(mapCtx, &v)
-		}
-	}
-	out.Title = direct.ValueOf(in.Title)
-	out.MinItems = direct.ValueOf(in.MinItems)
-	out.MaxItems = direct.ValueOf(in.MaxItems)
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
-func SchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.SchemaObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SchemaObservedState{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	if in.Properties != nil {
-		out.Properties = make(map[string]krm.Schema, len(in.Properties))
-		for k, v := range in.Properties {
-			if c := Schema_FromProto(mapCtx, v); c != nil {
-				out.Properties[k] = *c
-			}
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Items = SchemaObservedState_FromProto(mapCtx, in.GetItems())
-	out.Nullable = direct.LazyPtr(in.GetNullable())
-	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
-	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, SchemaObservedState_FromProto)
-	out.AdditionalProperties = SchemaObservedState_FromProto(mapCtx, in.GetAdditionalProperties())
-	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, SchemaObservedState_FromProto)
-	out.Enum = in.Enum
-	out.Default = Value_FromProto(mapCtx, in.GetDefault())
-	out.Ref = direct.LazyPtr(in.GetRef())
-	if in.Defs != nil {
-		out.Defs = make(map[string]krm.Schema, len(in.Defs))
-		for k, v := range in.Defs {
-			if c := Schema_FromProto(mapCtx, v); c != nil {
-				out.Defs[k] = *c
-			}
-		}
-	}
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.MinItems = direct.LazyPtr(in.GetMinItems())
-	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
-func SchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SchemaObservedState) *pb.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schema{}
-	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
-	if in.Properties != nil {
-		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
-		for k, v := range in.Properties {
-			out.Properties[k] = Schema_ToProto(mapCtx, &v)
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.ValueOf(in.Description)
-	out.Items = SchemaObservedState_ToProto(mapCtx, in.Items)
-	out.Nullable = direct.ValueOf(in.Nullable)
-	out.UniqueItems = direct.ValueOf(in.UniqueItems)
-	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, SchemaObservedState_ToProto)
-	out.AdditionalProperties = SchemaObservedState_ToProto(mapCtx, in.AdditionalProperties)
-	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, SchemaObservedState_ToProto)
-	out.Enum = in.Enum
-	out.Default = Value_ToProto(mapCtx, in.Default)
-	out.Ref = direct.ValueOf(in.Ref)
-	if in.Defs != nil {
-		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
-		for k, v := range in.Defs {
-			out.Defs[k] = Schema_ToProto(mapCtx, &v)
-		}
-	}
-	out.Title = direct.ValueOf(in.Title)
-	out.MinItems = direct.ValueOf(in.MinItems)
-	out.MaxItems = direct.ValueOf(in.MaxItems)
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
-func SchemaWithRequired_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.SchemaWithRequired {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SchemaWithRequired{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	if in.Properties != nil {
-		out.Properties = make(map[string]krm.SchemaWithRequired, len(in.Properties))
-		for k, v := range in.Properties {
-			if c := SchemaWithRequired_FromProto(mapCtx, v); c != nil {
-				out.Properties[k] = *c
-			}
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Items = SchemaWithRequired_FromProto(mapCtx, in.GetItems())
-	out.Nullable = direct.LazyPtr(in.GetNullable())
-	out.UniqueItems = direct.LazyPtr(in.GetUniqueItems())
-	out.PrefixItems = direct.Slice_FromProto(mapCtx, in.PrefixItems, SchemaWithRequired_FromProto)
-	out.AdditionalProperties = SchemaWithRequired_FromProto(mapCtx, in.GetAdditionalProperties())
-	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, SchemaWithRequired_FromProto)
-	out.Enum = in.Enum
-	out.Default = Value_FromProto(mapCtx, in.GetDefault())
-	out.Ref = direct.LazyPtr(in.GetRef())
-	if in.Defs != nil {
-		out.Defs = make(map[string]krm.SchemaWithRequired, len(in.Defs))
-		for k, v := range in.Defs {
-			if c := SchemaWithRequired_FromProto(mapCtx, v); c != nil {
-				out.Defs[k] = *c
-			}
-		}
-	}
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.MinItems = direct.LazyPtr(in.GetMinItems())
-	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
-func SchemaWithRequired_ToProto(mapCtx *direct.MapContext, in *krm.SchemaWithRequired) *pb.Schema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Schema{}
-	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
-	if in.Properties != nil {
-		out.Properties = make(map[string]*pb.Schema, len(in.Properties))
-		for k, v := range in.Properties {
-			out.Properties[k] = SchemaWithRequired_ToProto(mapCtx, &v)
-		}
-	}
-	out.Required = in.Required
-	out.Description = direct.ValueOf(in.Description)
-	out.Items = SchemaWithRequired_ToProto(mapCtx, in.Items)
-	out.Nullable = direct.ValueOf(in.Nullable)
-	out.UniqueItems = direct.ValueOf(in.UniqueItems)
-	out.PrefixItems = direct.Slice_ToProto(mapCtx, in.PrefixItems, SchemaWithRequired_ToProto)
-	out.AdditionalProperties = SchemaWithRequired_ToProto(mapCtx, in.AdditionalProperties)
-	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, SchemaWithRequired_ToProto)
-	out.Enum = in.Enum
-	out.Default = Value_ToProto(mapCtx, in.Default)
-	out.Ref = direct.ValueOf(in.Ref)
-	if in.Defs != nil {
-		out.Defs = make(map[string]*pb.Schema, len(in.Defs))
-		for k, v := range in.Defs {
-			out.Defs[k] = SchemaWithRequired_ToProto(mapCtx, &v)
-		}
-	}
-	out.Title = direct.ValueOf(in.Title)
-	out.MinItems = direct.ValueOf(in.MinItems)
-	out.MaxItems = direct.ValueOf(in.MaxItems)
-	out.Minimum = in.Minimum
-	out.Maximum = in.Maximum
-	return out
-}
 func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
 	if in == nil {
 		return nil
@@ -1254,43 +1008,4 @@ func TransferRule_DisablePlannerTransfer_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.TransferRule_DisablePlannerTransfer{}
 	out.ExpressionCondition = ExpressionCondition_ToProto(mapCtx, in.ExpressionCondition)
 	return out
-}
-func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Value{}
-	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
-	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
-	out.StringValue = direct.LazyPtr(in.GetStringValue())
-	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
-	if v := direct.Struct_FromProto(mapCtx, in.GetStructValue()); v != nil {
-		out.StructValue = *v
-	}
-	out.ListValue = ListValue_FromProto(mapCtx, in.GetListValue())
-	return out
-}
-func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_NullValue {
-	if in == nil {
-		return nil
-	}
-	return &structpb.Value_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
-}
-func Value_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *structpb.Value_NumberValue {
-	if in == nil {
-		return nil
-	}
-	return &structpb.Value_NumberValue{NumberValue: *in}
-}
-func Value_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *structpb.Value_StringValue {
-	if in == nil {
-		return nil
-	}
-	return &structpb.Value_StringValue{StringValue: *in}
-}
-func Value_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *structpb.Value_BoolValue {
-	if in == nil {
-		return nil
-	}
-	return &structpb.Value_BoolValue{BoolValue: *in}
 }

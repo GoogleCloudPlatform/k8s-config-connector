@@ -30,6 +30,11 @@ import (
 
 var CESAppGVK = GroupVersion.WithKind("CESApp")
 
+// +kubebuilder:pruning:PreserveUnknownFields
+// +kubebuilder:validation:Schemaless
+type Schema struct {
+}
+
 // +kcc:proto=google.cloud.ces.v1.App.VariableDeclaration
 type App_VariableDeclaration struct {
 	// Required. The name of the variable. The name must start with a letter or
@@ -43,9 +48,6 @@ type App_VariableDeclaration struct {
 
 	// Required. The schema of the variable.
 	// +kcc:proto:field=google.cloud.ces.v1.App.VariableDeclaration.schema
-	// +kubebuilder:validation:Schemaless
-	// +kubebuilder:validation:XPreserveUnknownFields
-	// +kubebuilder:validation:Type=object
 	Schema *Schema `json:"schema,omitempty"`
 }
 
@@ -62,10 +64,7 @@ type App_VariableDeclarationObservedState struct {
 
 	// Required. The schema of the variable.
 	// +kcc:proto:field=google.cloud.ces.v1.App.VariableDeclaration.schema
-	// +kubebuilder:validation:Schemaless
-	// +kubebuilder:validation:XPreserveUnknownFields
-	// +kubebuilder:validation:Type=object
-	Schema *SchemaObservedState `json:"schema,omitempty"`
+	Schema *Schema `json:"schema,omitempty"`
 }
 
 // CESAppSpec defines the desired state of CESApp

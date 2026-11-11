@@ -170,48 +170,48 @@ entries:
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
     status: resolved
-    resolution: accepted
-    note: mapped to/from google.protobuf.Value in controller direct mapper
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESApp
     group: ces.cnrm.cloud.google.com
     field: .spec.variableDeclarations[].schema.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
     status: resolved
-    resolution: accepted
-    note: verified map[string]Schema mapping
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESApp
     group: ces.cnrm.cloud.google.com
     field: .spec.variableDeclarations[].schema.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
     status: resolved
-    resolution: accepted
-    note: verified map[string]Schema mapping
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESApp
     group: ces.cnrm.cloud.google.com
     field: .status.observedState.predefinedVariableDeclarations[].schema.default
     reason: well-known-proto-type
     detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
     status: resolved
-    resolution: accepted
-    note: mapped to/from google.protobuf.Value in controller direct mapper
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESApp
     group: ces.cnrm.cloud.google.com
     field: .status.observedState.predefinedVariableDeclarations[].schema.defs
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
     status: resolved
-    resolution: accepted
-    note: verified map[string]Schema mapping
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CESApp
     group: ces.cnrm.cloud.google.com
     field: .status.observedState.predefinedVariableDeclarations[].schema.properties
     reason: message-map-derived
     detail: derived as map[string]Schema from proto google.cloud.ces.v1.Schema; verify Go type and mapping
     status: resolved
-    resolution: accepted
-    note: verified map[string]Schema mapping
+    resolution: edited
+    note: omitted nested fields from Schema due to recursive type cycle; kept Schema as schemaless object
   - kind: CesAgent
     group: ces.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

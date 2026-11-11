@@ -18,7 +18,6 @@ import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func DataStoreSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreSettings) *pb.DataStoreSettings {
@@ -35,28 +34,16 @@ func DataStoreSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreSett
 	return &krm.DataStoreSettings{}
 }
 
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 	if in == nil {
 		return nil
 	}
-	out := &structpb.Value{}
-	if oneof := Value_NullValue_ToProto(mapCtx, in.NullValue); oneof != nil {
-		out.Kind = oneof
+	return &pb.Schema{}
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
 	}
-	if oneof := Value_NumberValue_ToProto(mapCtx, in.NumberValue); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := Value_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := direct.Struct_ToProto(mapCtx, &in.StructValue); oneof != nil {
-		out.Kind = &structpb.Value_StructValue{StructValue: oneof}
-	}
-	if oneof := ListValue_ToProto(mapCtx, in.ListValue); oneof != nil {
-		out.Kind = &structpb.Value_ListValue{ListValue: oneof}
-	}
-	return out
+	return &krm.Schema{}
 }
