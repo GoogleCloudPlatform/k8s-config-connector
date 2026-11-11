@@ -49,6 +49,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
+  --resource ComputeInstantSnapshot:InstantSnapshot \
   --include-skipped-output
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
@@ -111,7 +112,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --multiversion \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

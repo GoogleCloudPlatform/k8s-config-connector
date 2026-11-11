@@ -2121,6 +2121,10 @@
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
+[missing_field] crd=computeinstantsnapshots.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computeinstantsnapshots.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computeinstantsnapshots.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeinstantsnapshots.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceDiskRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.adminEnabled" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerName" is not set in unstructured objects
 [missing_field] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
