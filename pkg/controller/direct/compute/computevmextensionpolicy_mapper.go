@@ -39,7 +39,9 @@ func ExtensionPolicies_ToProto(mapCtx *direct.MapContext, in map[string]krmcompu
 	}
 	out := make(map[string]*pb.VmExtensionPolicyExtensionPolicy, len(in))
 	for k, v := range in {
-		out[k] = VMExtensionPolicyExtensionPolicy_v1alpha1_ToProto(mapCtx, &v)
+		if mapped := VMExtensionPolicyExtensionPolicy_v1alpha1_ToProto(mapCtx, &v); mapped != nil {
+			out[k] = mapped
+		}
 	}
 	return out
 }

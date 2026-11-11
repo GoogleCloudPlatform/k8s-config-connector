@@ -32,9 +32,11 @@ var ComputeVMExtensionPolicyGVK = GroupVersion.WithKind("ComputeVMExtensionPolic
 // +kcc:required-from-proto
 type ComputeVMExtensionPolicySpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// Location represents the geographical location of the ComputeVMExtensionPolicy. Specify the zone name.
+	// +required
 	Location string `json:"location"`
 
 	// The ComputeVMExtensionPolicy name. If not given, the metadata.name will be used.
