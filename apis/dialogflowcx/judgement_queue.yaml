@@ -21,6 +21,13 @@
 # file does not have.
 
 entries:
+  - kind: DialogflowCXAgent
+    group: dialogflowcx.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated DialogflowCXAgentIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: resolved
+    resolution: accepted
+    note: Dialogflow CX Agents have server-generated IDs with support for acquisition via spec.resourceID.
   - kind: DialogflowCXEntityType
     group: dialogflowcx.cnrm.cloud.google.com
     reason: identity-root-unknown

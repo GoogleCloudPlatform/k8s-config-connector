@@ -34,6 +34,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowCXAgent:Agent
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowCXAgent:Agent
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource DialogflowCXFlow:Flow \
   --resource DialogflowCXEntityType:EntityType \
@@ -46,4 +56,10 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource DialogflowCXEntityType:EntityType
 
 cd ${REPO_ROOT}
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
+  dev/tasks/generate-crds
+fi
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/dialogflowcx" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dialogflowcx/
+fi
