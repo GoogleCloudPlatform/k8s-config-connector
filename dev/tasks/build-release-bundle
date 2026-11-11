@@ -210,7 +210,6 @@ BLOCKED_KINDS=(
     "DiscoveryEngineIdentityMappingStore"
     "DiscoveryEngineSampleQuerySet"
     "DLPConnection"
-    "DLPContentPolicy"
     "DLPDiscoveryConfig"
     "EdgeNetworkInterconnectAttachment"
     "EdgenetworkRouter"
