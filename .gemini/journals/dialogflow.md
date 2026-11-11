@@ -92,3 +92,13 @@
   2. Tested in-place updates on supported mutable fields (`displayName`, `goal`, `instruction.guidelines`) across minimal and maximal fixtures.
   3. Recorded authentic golden HTTP logs, reports, and object representations against real GCP, passing all 7/7 validation checks.
 - **Impact**: Fully validates the direct controller lifecycle, golden HTTP logs, and identity resolution for `DialogflowPlaybook`.
+
+### [2026-11-11] DialogflowCompanionAgent Greenfield Step 1a Prepopulate
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for DialogflowCompanionAgent (Issue #15367).
+- **Details**:
+  1. `DialogflowCompanionAgent` belongs to `google.cloud.dialogflow.v2` (GCP resource: `projects/{project}/locations/{location}/companionAgents/{companion_agent}`).
+  2. The proto definition is in `.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb` (`google/cloud/dialogflow/v2/companion_agent.proto`).
+  3. Added `generate-types` and `generate-identity` with `--prepopulate-resource` for `DialogflowCompanionAgent:CompanionAgent` to `apis/dialogflow/generate.sh`.
+  4. Added `DialogflowCompanionAgent` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  5. Handled empty proto struct `CompanionAgent_KnowledgeSource` by allowlisting `dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com` in `knownInvalidCRDs` in `tests/apichecks/crds_test.go`.
+- **Impact**: Sets up clean scaffolding and open judgement queue items for subsequent triage in Step 1b.

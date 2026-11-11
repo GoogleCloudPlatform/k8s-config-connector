@@ -3253,6 +3253,26 @@
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.supportedLanguageCodes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.tier" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeZone" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.cesToolSpecs[].cesTool" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.cesToolSpecs[].confirmationRequirement" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].actions[].description" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].condition" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].disableSuggestedReply" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].displayDetails" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.guidanceInstructions[].triggerEvent" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.knowledgeSource" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].guidanceSkillConfig.overarchingGuidance" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].skillTriggeringEvent" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].translationSkillConfig.agentLanguageCode" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.skillConfigs[].translationSkillConfig.customerLanguageCode" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsetTools[].confirmationRequirement" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsetTools[].operationID" is not set in unstructured objects
+[missing_field] crd=dialogflowcompanionagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolsetTools[].toolset" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.articleSuggestionModelMetadata.trainingModelType" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.datasets[].dataset" is not set in unstructured objects
 [missing_field] crd=dialogflowconversationmodels.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects

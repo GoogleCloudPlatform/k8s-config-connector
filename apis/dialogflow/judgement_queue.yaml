@@ -21,6 +21,35 @@
 # file does not have.
 
 entries:
+  - kind: DialogflowCompanionAgent
+    group: dialogflow.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: DialogflowCompanionAgent
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.cesToolSpecs[].cesTool
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: DialogflowCompanionAgent
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: DialogflowCompanionAgent
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.toolsetTools[].operationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: DialogflowCompanionAgent
+    group: dialogflow.cnrm.cloud.google.com
+    field: .spec.toolsetTools[].toolset
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
   - kind: DialogflowConversationModel
     group: dialogflow.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
