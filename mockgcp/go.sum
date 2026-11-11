@@ -188,6 +188,7 @@ cloud.google.com/go/parallelstore v1.2.0 h1:VXi9dggRgjugOoSC2iCsdwSmfqwqoSj1H6Tn
 cloud.google.com/go/parallelstore v1.2.0/go.mod h1:WvAO6RXodd9N39pM5mCzLSB+X7aZYDQYskeGCcNC80o=
 cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
 cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
+cloud.google.com/go/parametermanager v1.1.0/go.mod h1:kMe4ZH0nuH7LIrfVowtVeT9zuJlWXZVIxRr7IzySIbI=
 cloud.google.com/go/privilegedaccessmanager v0.3.1 h1:gnsf+cXnxF3BLsIFbfeVNxQsvcF0EkeezuB3ZOT2ggA=
 cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ6f31fcgC6UYU0Np+Sc9yIiB4=
 cloud.google.com/go/pubsub v1.50.2 h1:54Up97HnThdP4H8jjWJSSQ/mnYG2EKon7ZSNETRq0tM=

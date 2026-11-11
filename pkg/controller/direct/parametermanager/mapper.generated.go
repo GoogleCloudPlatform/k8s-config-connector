@@ -40,6 +40,7 @@ func ParameterManagerParameterObservedState_FromProto(mapCtx *direct.MapContext,
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	out.PolicyMember = ResourcePolicyMemberObservedState_FromProto(mapCtx, in.GetPolicyMember())
+	// MISSING: Tags
 	return out
 }
 func ParameterManagerParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerParameterObservedState) *pb.Parameter {
@@ -52,6 +53,7 @@ func ParameterManagerParameterObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	out.PolicyMember = ResourcePolicyMemberObservedState_ToProto(mapCtx, in.PolicyMember)
+	// MISSING: Tags
 	return out
 }
 func ParameterManagerParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Parameter) *krm.ParameterManagerParameterSpec {
@@ -64,8 +66,27 @@ func ParameterManagerParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.P
 	if in.GetKmsKey() != "" {
 		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
+	// MISSING: Tags
 	return out
 }
+
+/*
+found existing non-generated mapping function "ParameterManagerParameterSpec_ToProto", skipping
+
+	func ParameterManagerParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerParameterSpec) *pb.Parameter {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Parameter{}
+		// MISSING: Labels
+		out.Format = direct.Enum_ToProto[pb.ParameterFormat](mapCtx, in.Format)
+		if in.KMSKeyRef != nil {
+			out.KmsKey = in.KMSKeyRef.External
+		}
+		// MISSING: Tags
+		return out
+	}
+*/
 func ParameterManagerParameterVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ParameterVersion) *krm.ParameterManagerParameterVersionObservedState {
 	if in == nil {
 		return nil
@@ -75,6 +96,7 @@ func ParameterManagerParameterVersionObservedState_FromProto(mapCtx *direct.MapC
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.KMSKeyVersion = in.KmsKeyVersion
+	// MISSING: ChecksumSource
 	return out
 }
 func ParameterManagerParameterVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerParameterVersionObservedState) *pb.ParameterVersion {
@@ -86,6 +108,7 @@ func ParameterManagerParameterVersionObservedState_ToProto(mapCtx *direct.MapCon
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.KmsKeyVersion = in.KMSKeyVersion
+	// MISSING: ChecksumSource
 	return out
 }
 func ParameterManagerParameterVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ParameterVersion) *krm.ParameterManagerParameterVersionSpec {
@@ -96,6 +119,7 @@ func ParameterManagerParameterVersionSpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	out.Payload = ParameterVersionPayload_FromProto(mapCtx, in.GetPayload())
+	// MISSING: ChecksumSource
 	return out
 }
 func ParameterManagerParameterVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerParameterVersionSpec) *pb.ParameterVersion {
@@ -106,5 +130,72 @@ func ParameterManagerParameterVersionSpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.Disabled = direct.ValueOf(in.Disabled)
 	out.Payload = ParameterVersionPayload_ToProto(mapCtx, in.Payload)
+	// MISSING: ChecksumSource
 	return out
 }
+func ParameterManagerTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Template) *krm.ParameterManagerTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterManagerTemplateObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	return out
+}
+func ParameterManagerTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerTemplateObservedState) *pb.Template {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Template{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	return out
+}
+func ParameterManagerTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Template) *krm.ParameterManagerTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterManagerTemplateSpec{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	return out
+}
+func ParameterManagerTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerTemplateSpec) *pb.Template {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Template{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.Format = direct.Enum_ToProto[pb.TemplateFormat](mapCtx, in.Format)
+	return out
+}
+
+/* found existing non-generated mapping function "ParameterVersionPayload_FromProto", skipping
+func ParameterVersionPayload_FromProto(mapCtx *direct.MapContext, in *pb.ParameterVersionPayload) *krm.ParameterVersionPayload {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterVersionPayload{}
+	out.Data = in.GetData()
+	// MISSING: DataCrc32c
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ParameterVersionPayload_ToProto", skipping
+func ParameterVersionPayload_ToProto(mapCtx *direct.MapContext, in *krm.ParameterVersionPayload) *pb.ParameterVersionPayload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParameterVersionPayload{}
+	out.Data = in.Data
+	// MISSING: DataCrc32c
+	return out
+}
+*/
