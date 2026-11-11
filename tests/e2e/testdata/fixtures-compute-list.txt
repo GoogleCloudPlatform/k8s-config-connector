@@ -18,6 +18,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservatio
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-disable2
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-enable
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computefuturereservation/sharefuturereservation-remove-project
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-maximal
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeinstantsnapshot/computeinstantsnapshot-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/computemachineimageautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment/computenetworkattachment-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice/computenetworkedgesecurityservice-minimal

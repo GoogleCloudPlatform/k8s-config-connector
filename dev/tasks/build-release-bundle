@@ -157,7 +157,6 @@ BLOCKED_KINDS=(
     "CloudTalentSolutionCompany"
     "CloudTalentSolutionTenant"
     "CloudTasksQueue"
-    "ComputeInstantSnapshot"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
