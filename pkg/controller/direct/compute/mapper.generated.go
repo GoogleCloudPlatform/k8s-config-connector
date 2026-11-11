@@ -1134,6 +1134,48 @@ found existing non-generated mapping function "ComputeBackendServiceSpec_v1beta1
 		return out
 	}
 */
+func ComputeCrossSiteNetworkObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CrossSiteNetwork) *krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeCrossSiteNetworkObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCrossSiteNetworkObservedState) *pb.CrossSiteNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossSiteNetwork{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeCrossSiteNetworkSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CrossSiteNetwork) *krmcomputev1alpha1.ComputeCrossSiteNetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeCrossSiteNetworkSpec{}
+	out.Description = in.Description
+	// MISSING: Name
+	return out
+}
+func ComputeCrossSiteNetworkSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeCrossSiteNetworkSpec) *pb.CrossSiteNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossSiteNetwork{}
+	out.Description = in.Description
+	// MISSING: Name
+	return out
+}
 func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krmcomputev1beta1.ComputeDiskSpec {
 	if in == nil {
 		return nil

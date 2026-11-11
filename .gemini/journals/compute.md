@@ -58,6 +58,13 @@
   5. Validated against real GCP and MockGCP with recorded test fixtures and golden comparisons.
 - **Impact**: Provides a robust, idiomatic direct controller for `ComputeManagedSSLCertificate` with zero-write re-reconciliation and clean immutability enforcement.
 
+### [2026-11-10] Greenfield: Prepopulate types, identity, and judgement queue for ComputeCrossSiteNetwork
+- **Context**: Greenfield implementation of `ComputeCrossSiteNetwork` (issue #15355).
+- **Proto & Service**: `CrossSiteNetwork` is a GA resource under Google Cloud Compute Engine v1 (and present in `cloud.google.com/go/compute/apiv1/computepb`), but was not present in the pinned googleapis SHA in `.build/third_party/googleapis`. Following the existing pattern in `dev/tools/controllerbuilder/generate-proto.sh` (e.g. `SecurityPolicyAssociation`), we patched `google/cloud/compute/v1/compute.proto` to include `CrossSiteNetwork` message and service definitions, keeping the pinned commit intact.
+- **Prepopulation**: Ran `generate-types --prepopulate-resource` and `generate-identity` with pattern `projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}`.
+- **Release Bundle**: Added `ComputeCrossSiteNetwork` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+- **Validation**: Added entry to `alpha-missingfields.txt` via golden test runner. All tests in `apis/compute/...`, `tests/apichecks/...`, and `dev/tasks/build-release-bundle` passed cleanly.
+
 ### [2026-11-11] Greenfield Prepopulate of ComputeInstantSnapshot
 - **Context**: Prepopulating direct KRM types, identity, and judgement queue for Greenfield resource `ComputeInstantSnapshot` (issue #15354).
 - **Problem**: When configuring `apis/compute/generate.sh`, passing `--prepopulate-resource` to the existing multi-resource `generate-types` command enabled `--emit-message-maps`, causing `AutoscalingPolicy` to be un-commented in `apis/compute/v1alpha1/types.generated.go`. This triggered a compilation conflict in `mapper.generated.go` because a handwritten `FixedOrPercent_v1alpha1_FromProto` had a mismatched return type.

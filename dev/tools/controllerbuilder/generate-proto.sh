@@ -369,6 +369,148 @@ service ZoneVmExtensionPolicies {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include CrossSiteNetwork (which exists in apiv1/computepb) if missing
+if ! grep -q "message CrossSiteNetwork " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// A resource that represents a cross-site network.
+message CrossSiteNetwork {
+  // Output only. [Output Only] Creation timestamp in RFC3339 text format.
+  optional string creation_timestamp = 30525366;
+
+  // An optional description of the cross-site network.
+  optional string description = 422937596;
+
+  // Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
+  optional uint64 id = 3355;
+
+  // Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
+  optional string kind = 3292052;
+
+  // Name of the resource. Provided by the client when the resource is created.
+  optional string name = 3373707;
+
+  // Output only. [Output Only] Server-defined URL for the resource.
+  optional string self_link = 456214797;
+}
+
+// A request message for CrossSiteNetworks.Delete.
+message DeleteCrossSiteNetworkRequest {
+  // Name of the cross-site network to delete.
+  string cross_site_network = 108192469 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  optional string request_id = 37109963;
+}
+
+// A request message for CrossSiteNetworks.Get.
+message GetCrossSiteNetworkRequest {
+  // Name of the cross-site network to return.
+  string cross_site_network = 108192469 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+}
+
+// A request message for CrossSiteNetworks.Insert.
+message InsertCrossSiteNetworkRequest {
+  CrossSiteNetwork cross_site_network_resource = 30896696 [(google.api.field_behavior) = REQUIRED];
+
+  // Project ID for this request.
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+
+  optional string request_id = 37109963;
+}
+
+// Response to the list request that contains a list of cross-site networks.
+message CrossSiteNetworkList {
+  optional string etag = 3123477;
+  optional string id = 3355;
+  repeated CrossSiteNetwork items = 100526016;
+  optional string kind = 3292052;
+  optional string next_page_token = 79797525;
+  optional string self_link = 456214797;
+  repeated string unreachables = 243372063;
+  optional Warning warning = 50704284;
+}
+
+// A request message for CrossSiteNetworks.List.
+message ListCrossSiteNetworksRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+}
+
+// A request message for CrossSiteNetworks.Patch.
+message PatchCrossSiteNetworkRequest {
+  string cross_site_network = 108192469 [(google.api.field_behavior) = REQUIRED];
+  CrossSiteNetwork cross_site_network_resource = 30896696 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  optional string update_mask = 500078867;
+}
+
+// The CrossSiteNetworks API.
+service CrossSiteNetworks {
+  option (google.api.default_host) = "compute.googleapis.com";
+
+  rpc Delete(DeleteCrossSiteNetworkRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/global/crossSiteNetworks/{cross_site_network}"
+    };
+    option (google.api.method_signature) = "project,cross_site_network";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  rpc Get(GetCrossSiteNetworkRequest) returns (CrossSiteNetwork) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/crossSiteNetworks/{cross_site_network}"
+    };
+    option (google.api.method_signature) = "project,cross_site_network";
+  }
+
+  rpc Insert(InsertCrossSiteNetworkRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "cross_site_network_resource"
+      post: "/compute/v1/projects/{project}/global/crossSiteNetworks"
+    };
+    option (google.api.method_signature) = "project,cross_site_network_resource";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  rpc List(ListCrossSiteNetworksRequest) returns (CrossSiteNetworkList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/crossSiteNetworks"
+    };
+    option (google.api.method_signature) = "project";
+  }
+
+  rpc Patch(PatchCrossSiteNetworkRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "cross_site_network_resource"
+      patch: "/compute/v1/projects/{project}/global/crossSiteNetworks/{cross_site_network}"
+    };
+    option (google.api.method_signature) = "project,cross_site_network,cross_site_network_resource";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
