@@ -383,6 +383,8 @@ func SaaSServiceMgmtSaaSObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.SaaSServiceMgmtSaaSObservedState{}
 	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -395,6 +397,8 @@ func SaaSServiceMgmtSaaSObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.Saas{}
 	// MISSING: Name
+	// MISSING: Labels
+	// MISSING: Annotations
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -408,8 +412,8 @@ func SaaSServiceMgmtSaaSSpec_FromProto(mapCtx *direct.MapContext, in *pb.Saas) *
 	out := &krm.SaaSServiceMgmtSaaSSpec{}
 	// MISSING: Name
 	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, Location_FromProto)
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
+	// MISSING: Labels
+	// MISSING: Annotations
 	return out
 }
 func SaaSServiceMgmtSaaSSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtSaaSSpec) *pb.Saas {
@@ -419,8 +423,8 @@ func SaaSServiceMgmtSaaSSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServ
 	out := &pb.Saas{}
 	// MISSING: Name
 	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, Location_ToProto)
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
+	// MISSING: Labels
+	// MISSING: Annotations
 	return out
 }
 func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantObservedState {

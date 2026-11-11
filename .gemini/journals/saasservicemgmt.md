@@ -1,3 +1,12 @@
+### [2026-11-11] Greenfield Judgement Queue Triage and Types Finalization for SaaSServiceMgmtSaaS
+- **Context**: Triaging `judgement_queue.yaml` and finalizing direct KRM types, identity, and CRD for `SaaSServiceMgmtSaaS` under `saasservicemgmt.cnrm.cloud.google.com/v1alpha1`.
+- **Triage Decisions**:
+  - `location-or-parent-ref`: Replaced separate `ProjectRef` and `Location` fields on `SaaSServiceMgmtSaaSSpec` with inlined `*parent.ProjectAndLocationRef` following `go/kcc-oneparent`.
+  - Top-level `Labels` and `Annotations`: Removed top-level `Labels map[string]string` and `Annotations map[string]string` from `SaaSServiceMgmtSaaSSpec`. In KRM direct controllers, top-level labels and annotations are reconciled via `metadata.labels` and `metadata.annotations`.
+  - Added stability label comment `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"` on `SaaSServiceMgmtSaaS`.
+  - Resolved `untriaged-bulk-generation` and `location-or-parent-ref` entries in `apis/saasservicemgmt/judgement_queue.yaml`.
+  - Re-generated artifacts using `apis/saasservicemgmt/generate.sh`, updating CRD, `deepcopy`, and `mapper.generated.go`. Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 ### [2026-11-10] Greenfield Prepopulation of Types and Identity for SaaSServiceMgmtSaaS
 - **Context**: Prepopulating direct KRM types, IdentityV2, and judgement queue for `SaaSServiceMgmtSaaS` under `saasservicemgmt.cnrm.cloud.google.com/v1alpha1`.
 - **Problem**: 
