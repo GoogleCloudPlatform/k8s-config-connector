@@ -73,7 +73,7 @@ X-Gfe-Server: ESF
       {
         "mode": "REQUIRED",
         "name": "id",
-        "type": "STRING"
+        "type": "TIMESTAMP"
       }
     ]
   },
