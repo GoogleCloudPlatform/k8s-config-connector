@@ -250,6 +250,61 @@ func TestComputeCCCConfigHash(t *testing.T) {
 			t.Errorf("expected distinct hash when maxConcurrentReconcilesOverrides changes")
 		}
 	})
+
+	t.Run("usePriorityQueue toggling changes hash", func(t *testing.T) {
+		cccUnset := &corev1beta1.ConfigConnectorContext{}
+		if got := ComputeCCCConfigHash(cccUnset); got != "" {
+			t.Errorf("expected empty hash for unset CCC, got %q", got)
+		}
+
+		cccTrue := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					UsePriorityQueue: ptr.To(true),
+				},
+			},
+		}
+		cccFalse := &corev1beta1.ConfigConnectorContext{
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				Experiments: &corev1beta1.Experiments{
+					UsePriorityQueue: ptr.To(false),
+				},
+			},
+		}
+
+		hTrue := ComputeCCCConfigHash(cccTrue)
+		hFalse := ComputeCCCConfigHash(cccFalse)
+		if hTrue == "" || hFalse == "" {
+			t.Fatalf("expected non-empty hash for usePriorityQueue, got true: %q, false: %q", hTrue, hFalse)
+		}
+		if hTrue == hFalse {
+			t.Errorf("expected different hash when usePriorityQueue changes, got same: %q", hTrue)
+		}
+
+		ccTrue := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					UsePriorityQueue: ptr.To(true),
+				},
+			},
+		}
+		ccFalse := &corev1beta1.ConfigConnector{
+			Spec: corev1beta1.ConfigConnectorSpec{
+				Experiments: &corev1beta1.CCExperiments{
+					UsePriorityQueue: ptr.To(false),
+				},
+			},
+		}
+
+		ccHTrue := ComputeCCConfigHash(ccTrue)
+		ccHFalse := ComputeCCConfigHash(ccFalse)
+		if ccHTrue == "" || ccHFalse == "" {
+			t.Fatalf("expected non-empty hash for CC usePriorityQueue, got true: %q, false: %q", ccHTrue, ccHFalse)
+		}
+		if ccHTrue == ccHFalse {
+			t.Errorf("expected different CC hash when usePriorityQueue changes, got same: %q", ccHTrue)
+		}
+	})
 }
 
 func TestSetPodTemplateAnnotation(t *testing.T) {
