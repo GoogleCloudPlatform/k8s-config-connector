@@ -15,10 +15,25 @@
 package ces
 
 import (
+	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
+
+func DataStoreSettings_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreSettings) *pb.DataStoreSettings {
+	if in == nil {
+		return nil
+	}
+	return &pb.DataStoreSettings{}
+}
+
+func DataStoreSettings_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreSettings) *krm.DataStoreSettings {
+	if in == nil {
+		return nil
+	}
+	return &krm.DataStoreSettings{}
+}
 
 func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 	if in == nil {

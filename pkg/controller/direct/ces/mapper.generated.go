@@ -27,6 +27,8 @@ package ces
 import (
 	pb "cloud.google.com/go/ces/apiv1/cespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/ces/v1alpha1"
+	krmdlpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dlp/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
@@ -142,7 +144,7 @@ func App_VariableDeclaration_FromProto(mapCtx *direct.MapContext, in *pb.App_Var
 	out := &krm.App_VariableDeclaration{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Schema = SchemaWithRequired_FromProto(mapCtx, in.GetSchema())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
 	return out
 }
 func App_VariableDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.App_VariableDeclaration) *pb.App_VariableDeclaration {
@@ -152,7 +154,7 @@ func App_VariableDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.App_Vari
 	out := &pb.App_VariableDeclaration{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.Schema = SchemaWithRequired_ToProto(mapCtx, in.Schema)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
 	return out
 }
 func App_VariableDeclarationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.App_VariableDeclaration) *krm.App_VariableDeclarationObservedState {
@@ -272,6 +274,7 @@ func CESAppObservedState_FromProto(mapCtx *direct.MapContext, in *pb.App) *krm.C
 	out := &krm.CESAppObservedState{}
 	// MISSING: Name
 	out.PredefinedVariableDeclarations = direct.Slice_FromProto(mapCtx, in.PredefinedVariableDeclarations, App_VariableDeclarationObservedState_FromProto)
+	// MISSING: Guardrails
 	out.DataStoreSettings = DataStoreSettingsObservedState_FromProto(mapCtx, in.GetDataStoreSettings())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -286,6 +289,7 @@ func CESAppObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CESAppObserv
 	out := &pb.App{}
 	// MISSING: Name
 	out.PredefinedVariableDeclarations = direct.Slice_ToProto(mapCtx, in.PredefinedVariableDeclarations, App_VariableDeclarationObservedState_ToProto)
+	// MISSING: Guardrails
 	out.DataStoreSettings = DataStoreSettingsObservedState_ToProto(mapCtx, in.DataStoreSettings)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -302,7 +306,9 @@ func CESAppSpec_FromProto(mapCtx *direct.MapContext, in *pb.App) *krm.CESAppSpec
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Pinned = direct.LazyPtr(in.GetPinned())
-	out.RootAgent = direct.LazyPtr(in.GetRootAgent())
+	if in.GetRootAgent() != "" {
+		out.RootAgentRef = &krm.CesAgentRef{External: in.GetRootAgent()}
+	}
 	out.LanguageSettings = LanguageSettings_FromProto(mapCtx, in.GetLanguageSettings())
 	out.TimeZoneSettings = TimeZoneSettings_FromProto(mapCtx, in.GetTimeZoneSettings())
 	out.AudioProcessingConfig = AudioProcessingConfig_FromProto(mapCtx, in.GetAudioProcessingConfig())
@@ -313,7 +319,14 @@ func CESAppSpec_FromProto(mapCtx *direct.MapContext, in *pb.App) *krm.CESAppSpec
 	out.EvaluationMetricsThresholds = EvaluationMetricsThresholds_FromProto(mapCtx, in.GetEvaluationMetricsThresholds())
 	out.VariableDeclarations = direct.Slice_FromProto(mapCtx, in.VariableDeclarations, App_VariableDeclaration_FromProto)
 	out.GlobalInstruction = direct.LazyPtr(in.GetGlobalInstruction())
-	out.Guardrails = in.Guardrails
+
+	if v := in.GetGuardrails(); len(v) != 0 {
+		for i := range v {
+			out.GuardrailRefs = append(out.GuardrailRefs, krm.CesGuardrailRef{External: v[i]})
+		}
+	}
+
+	out.DataStoreSettings = DataStoreSettings_FromProto(mapCtx, in.GetDataStoreSettings())
 	out.DefaultChannelProfile = ChannelProfile_FromProto(mapCtx, in.GetDefaultChannelProfile())
 	out.Metadata = in.Metadata
 	out.ClientCertificateSettings = ClientCertificateSettings_FromProto(mapCtx, in.GetClientCertificateSettings())
@@ -329,7 +342,9 @@ func CESAppSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESAppSpec) *pb.App {
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Pinned = direct.ValueOf(in.Pinned)
-	out.RootAgent = direct.ValueOf(in.RootAgent)
+	if in.RootAgentRef != nil {
+		out.RootAgent = in.RootAgentRef.External
+	}
 	out.LanguageSettings = LanguageSettings_ToProto(mapCtx, in.LanguageSettings)
 	out.TimeZoneSettings = TimeZoneSettings_ToProto(mapCtx, in.TimeZoneSettings)
 	out.AudioProcessingConfig = AudioProcessingConfig_ToProto(mapCtx, in.AudioProcessingConfig)
@@ -340,7 +355,14 @@ func CESAppSpec_ToProto(mapCtx *direct.MapContext, in *krm.CESAppSpec) *pb.App {
 	out.EvaluationMetricsThresholds = EvaluationMetricsThresholds_ToProto(mapCtx, in.EvaluationMetricsThresholds)
 	out.VariableDeclarations = direct.Slice_ToProto(mapCtx, in.VariableDeclarations, App_VariableDeclaration_ToProto)
 	out.GlobalInstruction = direct.ValueOf(in.GlobalInstruction)
-	out.Guardrails = in.Guardrails
+
+	if v := in.GuardrailRefs; len(v) != 0 {
+		for i := range v {
+			out.Guardrails = append(out.Guardrails, v[i].External)
+		}
+	}
+
+	out.DataStoreSettings = DataStoreSettings_ToProto(mapCtx, in.DataStoreSettings)
 	out.DefaultChannelProfile = ChannelProfile_ToProto(mapCtx, in.DefaultChannelProfile)
 	out.Metadata = in.Metadata
 	out.ClientCertificateSettings = ClientCertificateSettings_ToProto(mapCtx, in.ClientCertificateSettings)
@@ -549,8 +571,12 @@ func ClientCertificateSettings_FromProto(mapCtx *direct.MapContext, in *pb.Clien
 	}
 	out := &krm.ClientCertificateSettings{}
 	out.TLSCertificate = direct.LazyPtr(in.GetTlsCertificate())
-	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
-	out.Passphrase = direct.LazyPtr(in.GetPassphrase())
+	if in.GetPrivateKey() != "" {
+		out.PrivateKeyRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetPrivateKey()}
+	}
+	if in.GetPassphrase() != "" {
+		out.PassphraseRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetPassphrase()}
+	}
 	return out
 }
 func ClientCertificateSettings_ToProto(mapCtx *direct.MapContext, in *krm.ClientCertificateSettings) *pb.ClientCertificateSettings {
@@ -559,8 +585,12 @@ func ClientCertificateSettings_ToProto(mapCtx *direct.MapContext, in *krm.Client
 	}
 	out := &pb.ClientCertificateSettings{}
 	out.TlsCertificate = direct.ValueOf(in.TLSCertificate)
-	out.PrivateKey = direct.ValueOf(in.PrivateKey)
-	out.Passphrase = direct.ValueOf(in.Passphrase)
+	if in.PrivateKeyRef != nil {
+		out.PrivateKey = in.PrivateKeyRef.External
+	}
+	if in.PassphraseRef != nil {
+		out.Passphrase = in.PassphraseRef.External
+	}
 	return out
 }
 func CloudLoggingSettings_FromProto(mapCtx *direct.MapContext, in *pb.CloudLoggingSettings) *krm.CloudLoggingSettings {
@@ -877,8 +907,12 @@ func RedactionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RedactionConfig
 	}
 	out := &krm.RedactionConfig{}
 	out.EnableRedaction = direct.LazyPtr(in.GetEnableRedaction())
-	out.InspectTemplate = direct.LazyPtr(in.GetInspectTemplate())
-	out.DeidentifyTemplate = direct.LazyPtr(in.GetDeidentifyTemplate())
+	if in.GetInspectTemplate() != "" {
+		out.InspectTemplateRef = &krmdlpv1alpha1.DLPInspectTemplateRef{External: in.GetInspectTemplate()}
+	}
+	if in.GetDeidentifyTemplate() != "" {
+		out.DeidentifyTemplateRef = &krmdlpv1alpha1.DLPDeidentifyTemplateRef{External: in.GetDeidentifyTemplate()}
+	}
 	return out
 }
 func RedactionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RedactionConfig) *pb.RedactionConfig {
@@ -887,8 +921,12 @@ func RedactionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RedactionConfig)
 	}
 	out := &pb.RedactionConfig{}
 	out.EnableRedaction = direct.ValueOf(in.EnableRedaction)
-	out.InspectTemplate = direct.ValueOf(in.InspectTemplate)
-	out.DeidentifyTemplate = direct.ValueOf(in.DeidentifyTemplate)
+	if in.InspectTemplateRef != nil {
+		out.InspectTemplate = in.InspectTemplateRef.External
+	}
+	if in.DeidentifyTemplateRef != nil {
+		out.DeidentifyTemplate = in.DeidentifyTemplateRef.External
+	}
 	return out
 }
 func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {

@@ -87,52 +87,6 @@ type Agent_RemoteDialogflowAgent struct {
 	RespectResponseInterruptionSettings *bool `json:"respectResponseInterruptionSettings,omitempty"`
 }
 
-// +kcc:proto=google.cloud.ces.v1.AmbientSoundConfig
-type AmbientSoundConfig struct {
-	// Optional. Deprecated: `prebuilt_ambient_noise` is deprecated in favor of
-	//  `prebuilt_ambient_sound`.
-	// +kcc:proto:field=google.cloud.ces.v1.AmbientSoundConfig.prebuilt_ambient_noise
-	PrebuiltAmbientNoise *string `json:"prebuiltAmbientNoise,omitempty"`
-
-	// Optional. Ambient noise as a mono-channel, 16kHz WAV file stored in
-	//  [Cloud Storage](https://cloud.google.com/storage).
-	//
-	//  Note: Please make sure the CES service agent
-	//  `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com` has
-	//  `storage.objects.get` permission to the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.ces.v1.AmbientSoundConfig.gcs_uri
-	GCSURI *string `json:"gcsURI,omitempty"`
-
-	// Optional. Name of the prebuilt ambient sound.
-	//  Valid values are:
-	//  - "coffee_shop"
-	//  - "keyboard"
-	//  - "keypad"
-	//  - "hum"
-	//  - "office_1"
-	//  - "office_2"
-	//  - "office_3"
-	//  - "room_1"
-	//  - "room_2"
-	//  - "room_3"
-	//  - "room_4"
-	//  - "room_5"
-	//  - "air_conditioner"
-	// +kcc:proto:field=google.cloud.ces.v1.AmbientSoundConfig.prebuilt_ambient_sound
-	PrebuiltAmbientSound *string `json:"prebuiltAmbientSound,omitempty"`
-
-	// Optional. Volume gain (in dB) of the normal native volume supported by
-	//  ambient noise, in the range [-96.0, 16.0]. If unset, or set to a value of
-	//  0.0 (dB), will play at normal native signal amplitude. A value of -6.0 (dB)
-	//  will play at approximately half the amplitude of the normal native signal
-	//  amplitude. A value of +6.0 (dB) will play at approximately twice the
-	//  amplitude of the normal native signal amplitude. We strongly recommend not
-	//  to exceed +10 (dB) as there's usually no effective increase in loudness for
-	//  any value greater than that.
-	// +kcc:proto:field=google.cloud.ces.v1.AmbientSoundConfig.volume_gain_db
-	VolumeGainDb *float64 `json:"volumeGainDb,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.AudioProcessingConfig
 type AudioProcessingConfig struct {
 	// Optional. Configuration of how the agent response should be synthesized,
@@ -162,74 +116,6 @@ type AudioProcessingConfig struct {
 	//  synthesized agent response, to enhance the naturalness of the conversation.
 	// +kcc:proto:field=google.cloud.ces.v1.AudioProcessingConfig.ambient_sound_config
 	AmbientSoundConfig *AmbientSoundConfig `json:"ambientSoundConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.AudioRecordingConfig
-type AudioRecordingConfig struct {
-	// Optional. The [Cloud Storage](https://cloud.google.com/storage) bucket to
-	//  store the session audio recordings. The URI must start with "gs://".
-	//
-	//  Please choose a bucket location that meets your data residency
-	//  requirements.
-	//
-	//  Note: If the Cloud Storage bucket is in a different project from the app,
-	//  you should grant `storage.objects.create` permission to the CES service
-	//  agent `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-	// +kcc:proto:field=google.cloud.ces.v1.AudioRecordingConfig.gcs_bucket
-	GCSBucket *string `json:"gcsBucket,omitempty"`
-
-	// Optional. The Cloud Storage path prefix for audio recordings.
-	//
-	//  This prefix can include the following placeholders, which will be
-	//  dynamically substituted at serving time:
-	//    - $project:   project ID
-	//    - $location:  app location
-	//    - $app:       app ID
-	//    - $date:      session date in YYYY-MM-DD format
-	//    - $session:   session ID
-	//
-	//  If the path prefix is not specified, the default prefix
-	//  `$project/$location/$app/$date/$session/` will be used.
-	// +kcc:proto:field=google.cloud.ces.v1.AudioRecordingConfig.gcs_path_prefix
-	GCSPathPrefix *string `json:"gcsPathPrefix,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.BargeInConfig
-type BargeInConfig struct {
-	// Optional. Disables user barge-in while the agent is speaking. If true, user
-	//  input during agent response playback will be ignored.
-	//
-	//  Deprecated: `disable_barge_in` is deprecated in favor of
-	//  [`disable_barge_in_control`][google.cloud.ces.v1.ChannelProfile.disable_barge_in_control]
-	//  in ChannelProfile.
-	// +kcc:proto:field=google.cloud.ces.v1.BargeInConfig.disable_barge_in
-	DisableBargeIn *bool `json:"disableBargeIn,omitempty"`
-
-	// Optional. If enabled, the agent will adapt its next response based on the
-	//  assumption that the user hasn't heard the full preceding agent message.
-	//  This should not be used in scenarios where agent responses are displayed
-	//  visually.
-	// +kcc:proto:field=google.cloud.ces.v1.BargeInConfig.barge_in_awareness
-	BargeInAwareness *bool `json:"bargeInAwareness,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.BigQueryExportSettings
-type BigQueryExportSettings struct {
-	// Optional. Indicates whether the BigQuery export is enabled.
-	// +kcc:proto:field=google.cloud.ces.v1.BigQueryExportSettings.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Optional. The **project ID** of the BigQuery dataset to export the data to.
-	//
-	//  Note: If the BigQuery dataset is in a different project from the app,
-	//  you should grant `roles/bigquery.admin` role to the CES service agent
-	//  `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
-	// +kcc:proto:field=google.cloud.ces.v1.BigQueryExportSettings.project
-	Project *string `json:"project,omitempty"`
-
-	// Optional. The BigQuery **dataset ID** to export the data to.
-	// +kcc:proto:field=google.cloud.ces.v1.BigQueryExportSettings.dataset
-	Dataset *string `json:"dataset,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1.Callback
@@ -348,41 +234,11 @@ type ChannelProfile_WebWidgetConfig_SecuritySettings struct {
 	EnableRecaptcha *bool `json:"enableRecaptcha,omitempty"`
 }
 
-// +kcc:proto=google.cloud.ces.v1.ClientCertificateSettings
-type ClientCertificateSettings struct {
-	// Required. The TLS certificate encoded in PEM format. This string must
-	//  include the begin header and end footer lines.
-	// +kcc:proto:field=google.cloud.ces.v1.ClientCertificateSettings.tls_certificate
-	// +required
-	TLSCertificate *string `json:"tlsCertificate,omitempty"`
-
-	// Required. The name of the SecretManager secret version resource storing the
-	//  private key encoded in PEM format.
-	//  Format: `projects/{project}/secrets/{secret}/versions/{version}`
-	// +kcc:proto:field=google.cloud.ces.v1.ClientCertificateSettings.private_key
-	// +required
-	PrivateKey *string `json:"privateKey,omitempty"`
-
-	// Optional. The name of the SecretManager secret version resource storing the
-	//  passphrase to decrypt the private key. Should be left unset if the private
-	//  key is not encrypted.
-	//  Format: `projects/{project}/secrets/{secret}/versions/{version}`
-	// +kcc:proto:field=google.cloud.ces.v1.ClientCertificateSettings.passphrase
-	Passphrase *string `json:"passphrase,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.CloudLoggingSettings
 type CloudLoggingSettings struct {
 	// Optional. Whether to enable Cloud Logging for the sessions.
 	// +kcc:proto:field=google.cloud.ces.v1.CloudLoggingSettings.enable_cloud_logging
 	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.ConversationLoggingSettings
-type ConversationLoggingSettings struct {
-	// Optional. Whether to disable conversation logging for the sessions.
-	// +kcc:proto:field=google.cloud.ces.v1.ConversationLoggingSettings.disable_conversation_logging
-	DisableConversationLogging *bool `json:"disableConversationLogging,omitempty"`
 }
 
 /* unreachable type DataStoreSettings
@@ -396,33 +252,6 @@ type DataStoreSettings struct {
 type DataStoreSettings_Engine struct {
 }
 */
-
-// +kcc:proto=google.cloud.ces.v1.ErrorHandlingSettings
-type ErrorHandlingSettings struct {
-	// Optional. The strategy to use for error handling.
-	// +kcc:proto:field=google.cloud.ces.v1.ErrorHandlingSettings.error_handling_strategy
-	ErrorHandlingStrategy *string `json:"errorHandlingStrategy,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.EvaluationMetricsThresholds
-type EvaluationMetricsThresholds struct {
-	// Optional. The golden evaluation metrics thresholds.
-	// +kcc:proto:field=google.cloud.ces.v1.EvaluationMetricsThresholds.golden_evaluation_metrics_thresholds
-	GoldenEvaluationMetricsThresholds *EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds `json:"goldenEvaluationMetricsThresholds,omitempty"`
-
-	// Optional. Deprecated: Use `golden_hallucination_metric_behavior` instead.
-	//  The hallucination metric behavior is currently used for golden evaluations.
-	// +kcc:proto:field=google.cloud.ces.v1.EvaluationMetricsThresholds.hallucination_metric_behavior
-	HallucinationMetricBehavior *string `json:"hallucinationMetricBehavior,omitempty"`
-
-	// Optional. The hallucination metric behavior for golden evaluations.
-	// +kcc:proto:field=google.cloud.ces.v1.EvaluationMetricsThresholds.golden_hallucination_metric_behavior
-	GoldenHallucinationMetricBehavior *string `json:"goldenHallucinationMetricBehavior,omitempty"`
-
-	// Optional. The hallucination metric behavior for scenario evaluations.
-	// +kcc:proto:field=google.cloud.ces.v1.EvaluationMetricsThresholds.scenario_hallucination_metric_behavior
-	ScenarioHallucinationMetricBehavior *string `json:"scenarioHallucinationMetricBehavior,omitempty"`
-}
 
 // +kcc:proto=google.cloud.ces.v1.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds
 type EvaluationMetricsThresholds_GoldenEvaluationMetricsThresholds struct {
@@ -482,75 +311,6 @@ type ExpressionCondition struct {
 	Expression *string `json:"expression,omitempty"`
 }
 
-// +kcc:proto=google.cloud.ces.v1.LanguageSettings
-type LanguageSettings struct {
-	// Optional. The default language code of the app.
-	// +kcc:proto:field=google.cloud.ces.v1.LanguageSettings.default_language_code
-	DefaultLanguageCode *string `json:"defaultLanguageCode,omitempty"`
-
-	// Optional. List of languages codes supported by the app, in addition to the
-	//  `default_language_code`.
-	// +kcc:proto:field=google.cloud.ces.v1.LanguageSettings.supported_language_codes
-	SupportedLanguageCodes []string `json:"supportedLanguageCodes,omitempty"`
-
-	// Optional. Enables multilingual support. If true, agents in the app will use
-	//  pre-built instructions to improve handling of multilingual input.
-	// +kcc:proto:field=google.cloud.ces.v1.LanguageSettings.enable_multilingual_support
-	EnableMultilingualSupport *bool `json:"enableMultilingualSupport,omitempty"`
-
-	// Optional. Deprecated: This feature is no longer supported. Use
-	//  `enable_multilingual_support` instead to improve handling of multilingual
-	//  input.
-	//  The action to perform when an agent receives input in an unsupported
-	//  language.
-	//
-	//  This can be a predefined action or a custom tool call.
-	//  Valid values are:
-	//  - A tool's full resource name, which triggers a specific tool execution.
-	//  - A predefined system action, such as "escalate" or "exit", which triggers
-	//  an [EndSession][google.cloud.ces.v1.EndSession] signal with corresponding
-	//  [metadata][google.cloud.ces.v1.EndSession.metadata] to terminate the
-	//  conversation.
-	// +kcc:proto:field=google.cloud.ces.v1.LanguageSettings.fallback_action
-	FallbackAction *string `json:"fallbackAction,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.LoggingSettings
-type LoggingSettings struct {
-	// Optional. Configuration for how sensitive data should be redacted.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.redaction_config
-	RedactionConfig *RedactionConfig `json:"redactionConfig,omitempty"`
-
-	// Optional. Configuration for how audio interactions should be recorded.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.audio_recording_config
-	AudioRecordingConfig *AudioRecordingConfig `json:"audioRecordingConfig,omitempty"`
-
-	// Optional. Settings to describe the BigQuery export behaviors for the app.
-	//  The conversation data will be exported to BigQuery tables if it is enabled.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.bigquery_export_settings
-	BigqueryExportSettings *BigQueryExportSettings `json:"bigqueryExportSettings,omitempty"`
-
-	// Optional. Settings to describe the Cloud Logging behaviors for the app.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.cloud_logging_settings
-	CloudLoggingSettings *CloudLoggingSettings `json:"cloudLoggingSettings,omitempty"`
-
-	// Optional. Settings to describe the conversation logging behaviors for the
-	//  app.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.conversation_logging_settings
-	ConversationLoggingSettings *ConversationLoggingSettings `json:"conversationLoggingSettings,omitempty"`
-
-	// Optional. Configuration for how audio interactions should be recorded for
-	//  the evaluation. By default, audio recording is not enabled for evaluation
-	//  sessions.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.evaluation_audio_recording_config
-	EvaluationAudioRecordingConfig *AudioRecordingConfig `json:"evaluationAudioRecordingConfig,omitempty"`
-
-	// Optional. Settings to describe the conversation data collection behaviors
-	//  for the LLM analysis pipeline for the app.
-	// +kcc:proto:field=google.cloud.ces.v1.LoggingSettings.metric_analysis_settings
-	MetricAnalysisSettings *MetricAnalysisSettings `json:"metricAnalysisSettings,omitempty"`
-}
-
 // +kcc:proto=google.cloud.ces.v1.MetricAnalysisSettings
 type MetricAnalysisSettings struct {
 	// Optional. Whether to collect conversation data for llm analysis metrics. If
@@ -581,30 +341,6 @@ type PythonCodeCondition struct {
 	// +kcc:proto:field=google.cloud.ces.v1.PythonCodeCondition.python_code
 	// +required
 	PythonCode *string `json:"pythonCode,omitempty"`
-}
-
-// +kcc:proto=google.cloud.ces.v1.RedactionConfig
-type RedactionConfig struct {
-	// Optional. If true, redaction will be applied in various logging scenarios,
-	//  including conversation history, Cloud Logging and audio recording.
-	// +kcc:proto:field=google.cloud.ces.v1.RedactionConfig.enable_redaction
-	EnableRedaction *bool `json:"enableRedaction,omitempty"`
-
-	// Optional. [DLP](https://cloud.google.com/dlp/docs) inspect template name to
-	//  configure detection of sensitive data types.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
-	// +kcc:proto:field=google.cloud.ces.v1.RedactionConfig.inspect_template
-	InspectTemplate *string `json:"inspectTemplate,omitempty"`
-
-	// Optional. [DLP](https://cloud.google.com/dlp/docs) deidentify template name
-	//  to instruct on how to de-identify content.
-	//
-	//  Format:
-	//  `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
-	// +kcc:proto:field=google.cloud.ces.v1.RedactionConfig.deidentify_template
-	DeidentifyTemplate *string `json:"deidentifyTemplate,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1.Schema

@@ -106,20 +106,16 @@ spec:
                       barge-in activities.
                     properties:
                       bargeInAwareness:
-                        description: Optional. If enabled, the agent will adapt its
-                          next response based on the assumption that the user hasn't
-                          heard the full preceding agent message. This should not
-                          be used in scenarios where agent responses are displayed
-                          visually.
+                        description: Optional. Whether to disable user barge-in control
+                          in the conversation.
                         type: boolean
                       disableBargeIn:
-                        description: |-
-                          Optional. Disables user barge-in while the agent is speaking. If true, user
-                           input during agent response playback will be ignored.
-
-                           Deprecated: `disable_barge_in` is deprecated in favor of
-                           [`disable_barge_in_control`][google.cloud.ces.v1.ChannelProfile.disable_barge_in_control]
-                           in ChannelProfile.
+                        description: 'Optional. Deprecated: `disable_barge_in` is
+                          deprecated in favor of `barge_in_awareness`. Whether to
+                          disable user barge-in control in the conversation. - **true**:
+                          User interruptions are disabled while the agent is speaking.
+                          - **false**: User interruptions are allowed while the agent
+                          is speaking.'
                         type: boolean
                     type: object
                   inactivityTimeout:
@@ -164,25 +160,78 @@ spec:
                 description: Optional. The default client certificate settings for
                   the app.
                 properties:
-                  passphrase:
+                  passphraseRef:
                     description: 'Optional. The name of the SecretManager secret version
                       resource storing the passphrase to decrypt the private key.
                       Should be left unset if the private key is not encrypted. Format:
                       `projects/{project}/secrets/{secret}/versions/{version}`'
-                    type: string
-                  privateKey:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                        type: string
+                      name:
+                        description: The `name` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                    type: object
+                  privateKeyRef:
                     description: 'Required. The name of the SecretManager secret version
                       resource storing the private key encoded in PEM format. Format:
                       `projects/{project}/secrets/{secret}/versions/{version}`'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                        type: string
+                      name:
+                        description: The `name` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                    type: object
                   tlsCertificate:
                     description: Required. The TLS certificate encoded in PEM format.
                       This string must include the begin header and end footer lines.
                     type: string
-                required:
-                - privateKey
-                - tlsCertificate
                 type: object
+              dataStoreSettings:
+                description: Optional. The data store settings for the app.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
               defaultChannelProfile:
                 description: Optional. The default channel profile used by the app.
                 properties:
@@ -266,9 +315,24 @@ spec:
               errorHandlingSettings:
                 description: Optional. Error handling settings of the app.
                 properties:
+                  endSessionConfig:
+                    properties:
+                      escalateSession:
+                        type: boolean
+                    type: object
                   errorHandlingStrategy:
                     description: Optional. The strategy to use for error handling.
                     type: string
+                  fallbackResponseConfig:
+                    properties:
+                      customFallbackMessages:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      maxFallbackAttempts:
+                        format: int32
+                        type: integer
+                    type: object
                 type: object
               evaluationMetricsThresholds:
                 description: Optional. The evaluation thresholds for the app.
@@ -320,13 +384,97 @@ spec:
                       evaluations.
                     type: string
                   hallucinationMetricBehavior:
-                    description: 'Optional. Deprecated: Use `golden_hallucination_metric_behavior`
-                      instead. The hallucination metric behavior is currently used
-                      for golden evaluations.'
+                    description: 'Optional. Deprecated: `hallucination_metric_behavior`
+                      is deprecated in favor of `golden_hallucination_metric_behavior`
+                      and `scenario_hallucination_metric_behavior`. Behavior if hallucination
+                      metric threshold is not met.'
                     type: string
                   scenarioHallucinationMetricBehavior:
                     description: Optional. The hallucination metric behavior for scenario
                       evaluations.
+                    type: string
+                type: object
+              evaluationPersonas:
+                description: Optional. The evaluation personas for the app.
+                items:
+                  properties:
+                    description:
+                      type: string
+                    displayName:
+                      type: string
+                    instruction:
+                      type: string
+                    nameRef:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          type: string
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              evaluationSettings:
+                description: Optional. The evaluation settings for the app.
+                properties:
+                  goldenEvaluationToolCallBehaviour:
+                    type: string
+                  goldenRunMethod:
+                    type: string
+                  metricsConfig:
+                    properties:
+                      goldenMetricsConfig:
+                        properties:
+                          semanticSimilarityMetricsConfig:
+                            properties:
+                              enableSemanticSimilarityMetrics:
+                                type: boolean
+                            type: object
+                          stepToolCorrectnessMetricsConfig:
+                            properties:
+                              enableToolCorrectnessMetrics:
+                                type: boolean
+                            type: object
+                          toolCorrectnessMetricsConfig:
+                            properties:
+                              enableToolCorrectnessMetrics:
+                                type: boolean
+                            type: object
+                        type: object
+                      scenarioMetricsConfig:
+                        properties:
+                          expectationsMetMetricsConfig:
+                            properties:
+                              enableExpectationsMetMetrics:
+                                type: boolean
+                            type: object
+                          userGoalMetMetricsConfig:
+                            properties:
+                              enableUserGoalMetMetrics:
+                                type: boolean
+                            type: object
+                        type: object
+                    type: object
+                  scenarioConversationInitiator:
+                    type: string
+                  scenarioEvaluationToolCallBehaviour:
+                    type: string
+                  scenarioExecutionMode:
                     type: string
                 type: object
               globalInstruction:
@@ -334,48 +482,65 @@ spec:
                   You can use this instruction to set up a stable identity or personality
                   across all the agents.
                 type: string
-              guardrails:
+              guardrailRefs:
                 description: 'Optional. List of guardrails for the app. Format: `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`'
                 items:
-                  type: string
+                  description: CesGuardrailRef is a reference to a GCP CesGuardrail.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: A reference to an externally managed CesGuardrail
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/guardrails/{{guardrailID}}".
+                      type: string
+                    name:
+                      description: The name of a CesGuardrail resource.
+                      type: string
+                    namespace:
+                      description: The namespace of a CesGuardrail resource.
+                      type: string
+                  type: object
                 type: array
               languageSettings:
                 description: Optional. Language settings of the app.
                 properties:
                   defaultLanguageCode:
-                    description: Optional. The default language code of the app.
+                    description: Required. The default language code of the app.
                     type: string
                   enableMultilingualSupport:
-                    description: Optional. Enables multilingual support. If true,
-                      agents in the app will use pre-built instructions to improve
-                      handling of multilingual input.
+                    description: Optional. Whether to enable multilingual support
+                      for the app.
                     type: boolean
                   fallbackAction:
-                    description: |-
-                      Optional. Deprecated: This feature is no longer supported. Use
-                       `enable_multilingual_support` instead to improve handling of multilingual
-                       input.
-                       The action to perform when an agent receives input in an unsupported
-                       language.
-
-                       This can be a predefined action or a custom tool call.
-                       Valid values are:
-                       - A tool's full resource name, which triggers a specific tool execution.
-                       - A predefined system action, such as "escalate" or "exit", which triggers
-                       an [EndSession][google.cloud.ces.v1.EndSession] signal with corresponding
-                       [metadata][google.cloud.ces.v1.EndSession.metadata] to terminate the
-                       conversation.
+                    description: 'Optional. Deprecated: `fallback_action` is deprecated.
+                      Action to take when a user speaks in a language that is not
+                      supported.'
                     type: string
                   supportedLanguageCodes:
-                    description: Optional. List of languages codes supported by the
-                      app, in addition to the `default_language_code`.
+                    description: Optional. The list of languages supported by the
+                      app.
                     items:
                       type: string
                     type: array
                 type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               locked:
                 description: Optional. Indicates whether the app is locked for changes.
                   If the app is locked, modifications to the app resources will be
@@ -385,8 +550,8 @@ spec:
                 description: Optional. Logging settings of the app.
                 properties:
                   audioRecordingConfig:
-                    description: Optional. Configuration for how audio interactions
-                      should be recorded.
+                    description: Optional. Configuration of how the audio should be
+                      recorded.
                     properties:
                       gcsBucket:
                         description: |-
@@ -400,6 +565,35 @@ spec:
                            you should grant `storage.objects.create` permission to the CES service
                            agent `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
                         type: string
+                      gcsBucketRef:
+                        description: Reference to the Cloud Storage bucket to store
+                          session audio recordings.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                       gcsPathPrefix:
                         description: |-
                           Optional. The Cloud Storage path prefix for audio recordings.
@@ -410,16 +604,11 @@ spec:
                              - $location:  app location
                              - $app:       app ID
                              - $date:      session date in YYYY-MM-DD format
-                             - $session:   session ID
-
-                           If the path prefix is not specified, the default prefix
-                           `$project/$location/$app/$date/$session/` will be used.
                         type: string
                     type: object
                   bigqueryExportSettings:
-                    description: Optional. Settings to describe the BigQuery export
-                      behaviors for the app. The conversation data will be exported
-                      to BigQuery tables if it is enabled.
+                    description: Optional. Configuration of how the data should be
+                      exported to BigQuery.
                     properties:
                       dataset:
                         description: Optional. The BigQuery **dataset ID** to export
@@ -437,10 +626,42 @@ spec:
                            you should grant `roles/bigquery.admin` role to the CES service agent
                            `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
                         type: string
+                      projectRef:
+                        description: Reference to the Project of the BigQuery dataset.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `projectID` field of a project, when
+                              not managed by Config Connector.
+                            type: string
+                          kind:
+                            description: The kind of the Project resource; optional
+                              but must be `Project` if provided.
+                            type: string
+                          name:
+                            description: The `name` field of a `Project` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `Project` resource.
+                            type: string
+                        type: object
                     type: object
                   cloudLoggingSettings:
-                    description: Optional. Settings to describe the Cloud Logging
-                      behaviors for the app.
+                    description: Optional. Configuration of how the data should be
+                      logged to Cloud Logging.
                     properties:
                       enableCloudLogging:
                         description: Optional. Whether to enable Cloud Logging for
@@ -448,18 +669,18 @@ spec:
                         type: boolean
                     type: object
                   conversationLoggingSettings:
-                    description: Optional. Settings to describe the conversation logging
-                      behaviors for the app.
+                    description: Optional. Configuration of how the conversation should
+                      be logged.
                     properties:
                       disableConversationLogging:
-                        description: Optional. Whether to disable conversation logging
-                          for the sessions.
+                        description: Optional. Whether to disable conversation logging.
                         type: boolean
+                      retentionWindow:
+                        type: string
                     type: object
                   evaluationAudioRecordingConfig:
-                    description: Optional. Configuration for how audio interactions
-                      should be recorded for the evaluation. By default, audio recording
-                      is not enabled for evaluation sessions.
+                    description: Optional. Configuration of how the evaluation audio
+                      should be recorded.
                     properties:
                       gcsBucket:
                         description: |-
@@ -473,6 +694,35 @@ spec:
                            you should grant `storage.objects.create` permission to the CES service
                            agent `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
                         type: string
+                      gcsBucketRef:
+                        description: Reference to the Cloud Storage bucket to store
+                          session audio recordings.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                       gcsPathPrefix:
                         description: |-
                           Optional. The Cloud Storage path prefix for audio recordings.
@@ -483,15 +733,11 @@ spec:
                              - $location:  app location
                              - $app:       app ID
                              - $date:      session date in YYYY-MM-DD format
-                             - $session:   session ID
-
-                           If the path prefix is not specified, the default prefix
-                           `$project/$location/$app/$date/$session/` will be used.
                         type: string
                     type: object
                   metricAnalysisSettings:
-                    description: Optional. Settings to describe the conversation data
-                      collection behaviors for the LLM analysis pipeline for the app.
+                    description: Optional. Configuration of how the metric analysis
+                      should be performed.
                     properties:
                       llmMetricsOptedOut:
                         description: Optional. Whether to collect conversation data
@@ -501,29 +747,135 @@ spec:
                         type: boolean
                     type: object
                   redactionConfig:
-                    description: Optional. Configuration for how sensitive data should
-                      be redacted.
+                    description: Optional. Configuration of how the sensitive data
+                      should be redacted.
                     properties:
-                      deidentifyTemplate:
+                      deidentifyTemplateRef:
                         description: |-
                           Optional. [DLP](https://cloud.google.com/dlp/docs) deidentify template name
                            to instruct on how to de-identify content.
 
                            Format:
                            `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DLP
+                              Deidentify Template. Should be in the format `projects/[project_id]/locations/[location]/deidentifyTemplates/[deidentify_template]`.
+                            type: string
+                          name:
+                            description: The `name` of a `DLPDeidentifyTemplate` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` of a `DLPDeidentifyTemplate`
+                              resource.
+                            type: string
+                        type: object
                       enableRedaction:
-                        description: Optional. If true, redaction will be applied
-                          in various logging scenarios, including conversation history,
-                          Cloud Logging and audio recording.
+                        description: Optional. Whether redaction is enabled.
                         type: boolean
-                      inspectTemplate:
+                      inspectTemplateRef:
                         description: |-
                           Optional. [DLP](https://cloud.google.com/dlp/docs) inspect template name to
                            configure detection of sensitive data types.
 
                            Format:
                            `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed DLP
+                              Inspect Template. Should be in the format `projects/[project_id]/locations/[location]/inspectTemplates/[inspect_template]`.
+                            type: string
+                          name:
+                            description: The `name` of a `DLPInspectTemplate` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` of a `DLPInspectTemplate`
+                              resource.
+                            type: string
+                        type: object
+                    type: object
+                  unredactedAudioRecordingConfig:
+                    description: Optional. Configuration of unredacted audio recording.
+                    properties:
+                      gcsBucket:
+                        description: |-
+                          Optional. The [Cloud Storage](https://cloud.google.com/storage) bucket to
+                           store the session audio recordings. The URI must start with "gs://".
+
+                           Please choose a bucket location that meets your data residency
+                           requirements.
+
+                           Note: If the Cloud Storage bucket is in a different project from the app,
+                           you should grant `storage.objects.create` permission to the CES service
+                           agent `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
+                        type: string
+                      gcsBucketRef:
+                        description: Reference to the Cloud Storage bucket to store
+                          session audio recordings.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
+                      gcsPathPrefix:
+                        description: |-
+                          Optional. The Cloud Storage path prefix for audio recordings.
+
+                           This prefix can include the following placeholders, which will be
+                           dynamically substituted at serving time:
+                             - $project:   project ID
+                             - $location:  app location
+                             - $app:       app ID
+                             - $date:      session date in YYYY-MM-DD format
                         type: string
                     type: object
                 type: object
@@ -556,7 +908,7 @@ spec:
                 description: Optional. Whether the app is pinned in the app list.
                 type: boolean
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -591,10 +943,35 @@ spec:
                 description: The CESApp name. If not given, the metadata.name will
                   be used.
                 type: string
-              rootAgent:
+              rootAgentRef:
                 description: 'Optional. The root agent is the entry point of the app.
                   Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CesAgent resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/apps/{{appID}}/agents/{{agentID}}".
+                    type: string
+                  name:
+                    description: The name of a CesAgent resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CesAgent resource.
+                    type: string
+                type: object
               timeZoneSettings:
                 description: Optional. TimeZone settings of the app.
                 properties:
@@ -624,14 +1001,9 @@ spec:
                       description: Required. The schema of the variable.
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
-                  required:
-                  - description
-                  - name
-                  - schema
                   type: object
                 type: array
             required:
-            - displayName
             - location
             - projectRef
             type: object
