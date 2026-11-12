@@ -1,0 +1,231 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "AppEngineStandardAppVersion/appenginestandardappversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "automatic_scaling.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "automatic_scaling.0.max_concurrent_requests",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "automatic_scaling.0.max_idle_instances",
+        "old": "",
+        "new": "3"
+      },
+      {
+        "id": "automatic_scaling.0.max_pending_latency",
+        "old": "",
+        "new": "5s"
+      },
+      {
+        "id": "automatic_scaling.0.min_idle_instances",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "automatic_scaling.0.min_pending_latency",
+        "old": "",
+        "new": "1s"
+      },
+      {
+        "id": "automatic_scaling.0.standard_scheduler_settings.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "automatic_scaling.0.standard_scheduler_settings.0.max_instances",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "automatic_scaling.0.standard_scheduler_settings.0.min_instances",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "automatic_scaling.0.standard_scheduler_settings.0.target_cpu_utilization",
+        "old": "",
+        "new": "0.5"
+      },
+      {
+        "id": "automatic_scaling.0.standard_scheduler_settings.0.target_throughput_utilization",
+        "old": "",
+        "new": "0.75"
+      },
+      {
+        "id": "delete_service_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "deployment.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "deployment.0.files.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "deployment.0.files.120634102.name",
+        "old": "",
+        "new": "main.py"
+      },
+      {
+        "id": "deployment.0.files.120634102.sha1_sum",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "deployment.0.files.120634102.source_url",
+        "old": "",
+        "new": "https://storage.googleapis.com/staging.${projectId}.appspot.com/05e6871e9161335ea72fe540fb798803633b43ba"
+      },
+      {
+        "id": "deployment.0.files.3085460093.name",
+        "old": "",
+        "new": "app.yaml"
+      },
+      {
+        "id": "deployment.0.files.3085460093.sha1_sum",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "deployment.0.files.3085460093.source_url",
+        "old": "",
+        "new": "https://storage.googleapis.com/staging.${projectId}.appspot.com/fccc0c6d2e2fcb05c84f69f40c7a613d2338e8d8"
+      },
+      {
+        "id": "entrypoint.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "entrypoint.0.shell",
+        "old": "",
+        "new": "gunicorn -b :$PORT main:app"
+      },
+      {
+        "id": "env_variables.%",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "env_variables.PORT",
+        "old": "",
+        "new": "8080"
+      },
+      {
+        "id": "handlers.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "instance_class",
+        "old": "",
+        "new": "F1"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "noop_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "runtime",
+        "old": "",
+        "new": "python311"
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "default"
+      },
+      {
+        "id": "service_account",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "version_id",
+        "old": "",
+        "new": "v${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "AppEngineStandardAppVersion/appenginestandardappversion-${uniqueId}",
+    "fields": [
+      {
+        "id": "deployment.0.files.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "deployment.0.files.120634102.name",
+        "old": "",
+        "new": "main.py"
+      },
+      {
+        "id": "deployment.0.files.120634102.sha1_sum",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "deployment.0.files.120634102.source_url",
+        "old": "",
+        "new": "https://storage.googleapis.com/staging.${projectId}.appspot.com/05e6871e9161335ea72fe540fb798803633b43ba"
+      },
+      {
+        "id": "deployment.0.files.3085460093.name",
+        "old": "",
+        "new": "app.yaml"
+      },
+      {
+        "id": "deployment.0.files.3085460093.sha1_sum",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "deployment.0.files.3085460093.source_url",
+        "old": "",
+        "new": "https://storage.googleapis.com/staging.${projectId}.appspot.com/fccc0c6d2e2fcb05c84f69f40c7a613d2338e8d8"
+      },
+      {
+        "id": "entrypoint.0.shell",
+        "old": "",
+        "new": "gunicorn -b :$PORT main:app"
+      },
+      {
+        "id": "env_variables.%",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "env_variables.PORT",
+        "old": "",
+        "new": "8080"
+      }
+    ]
+  }
+]
