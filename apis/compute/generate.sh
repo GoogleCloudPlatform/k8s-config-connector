@@ -60,25 +60,20 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeHealthCheckService:HealthCheckService \
   --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --resource ComputeNotificationEndpoint:NotificationEndpoint \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeHealthCheckService:HealthCheckService
+  --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
   --pattern ComputeCrossSiteNetwork="projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}"
-
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --prepopulate-resource \
-  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
@@ -92,12 +87,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
-
-${CONTROLLERBUILDER} generate-identity \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
-
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \

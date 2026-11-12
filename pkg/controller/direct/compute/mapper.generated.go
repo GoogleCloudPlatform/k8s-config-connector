@@ -2343,6 +2343,7 @@ func ComputeHealthAggregationPolicyObservedState_v1alpha1_FromProto(mapCtx *dire
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
@@ -2356,6 +2357,7 @@ func ComputeHealthAggregationPolicyObservedState_v1alpha1_ToProto(mapCtx *direct
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
 	return out
@@ -2371,7 +2373,6 @@ func ComputeHealthAggregationPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out.MinHealthyThreshold = in.MinHealthyThreshold
 	// MISSING: Name
 	out.PolicyType = in.PolicyType
-	out.Region = in.Region
 	return out
 }
 func ComputeHealthAggregationPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthAggregationPolicySpec) *pb.HealthAggregationPolicy {
@@ -2385,7 +2386,6 @@ func ComputeHealthAggregationPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.MinHealthyThreshold = in.MinHealthyThreshold
 	// MISSING: Name
 	out.PolicyType = in.PolicyType
-	out.Region = in.Region
 	return out
 }
 func ComputeHealthCheckServiceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheckService) *krmcomputev1alpha1.ComputeHealthCheckServiceObservedState {

@@ -1443,6 +1443,11 @@ func (in *ComputeHealthAggregationPolicyObservedState) DeepCopyInto(out *Compute
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -1488,11 +1493,6 @@ func (in *ComputeHealthAggregationPolicySpec) DeepCopyInto(out *ComputeHealthAgg
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -1520,11 +1520,6 @@ func (in *ComputeHealthAggregationPolicySpec) DeepCopyInto(out *ComputeHealthAgg
 	}
 	if in.PolicyType != nil {
 		in, out := &in.PolicyType, &out.PolicyType
-		*out = new(string)
-		**out = **in
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
 		*out = new(string)
 		**out = **in
 	}

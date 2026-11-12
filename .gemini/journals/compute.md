@@ -181,6 +181,19 @@
 - **Verification**:
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
 
+### [2026-11-12] Greenfield: Triage judgement queue and finalize direct KRM types and identity for ComputeHealthAggregationPolicy
+- **Context**: Triaged and finalized direct KRM types, identity, and references for `ComputeHealthAggregationPolicy` (issue #15482) following Greenfield Step 1b (`judgement/SKILL.md`).
+- **Judgement Queue Resolutions & Learnings**:
+  1. `untriaged-bulk-generation`: Accepted after validating fields, conventions, references, and omissions.
+  2. `verify-resource-docs-link`: Corrected resource documentation URL to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthAggregationPolicies`.
+  3. `location-parent-unknown`: Verified `HealthAggregationPolicy` is a regional resource located under `projects/{project}/regions/{region}/healthAggregationPolicies/{healthAggregationPolicy}`. Kept `spec.location` as a required string representing the region, matching Compute service conventions (`ComputeNetworkAttachment`, `ComputeHealthCheckService`).
+  4. `location-or-parent-ref` for `spec.region`: The proto field `region` is an output-only URL string populated by GCP server. Removed `spec.region` and moved to `status.observedState.region`.
+  5. `server-set-field-placed` for `creationTimestamp`, `id`, `kind`, `selfLink`, and `selfLinkWithId`: Confirmed server-generated output-only fields; verified their placement under `status.observedState`.
+  6. Incorporated `ComputeHealthAggregationPolicy:HealthAggregationPolicy` into the primary `generate-types` and `generate-identity` commands in `apis/compute/generate.sh`.
+  7. Regenerated types, CRDs, mappers, deepcopy code, and updated `alpha-missingfields.txt`.
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
 ### [2026-11-13] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeVMExtensionPolicy
 - **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeVMExtensionPolicy` (issue #15517).
 - **Findings & Implementation**:
