@@ -96,7 +96,18 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	// We use mgr.GetAPIReader() because the manager's cache is not started yet.
 	// This results in a direct API call, which is acceptable for this one-time startup operation.
 	c := mgr.GetAPIReader()
+	regOpts, err := determineDefaultControllerOptions(ctx, c, scopedNamespace)
+	if err != nil {
+		return err
+	}
 
+	if err := add(mgr, rd, registerDefaultControllers(ctx, regOpts), opt); err != nil {
+		return fmt.Errorf("error adding default registration controller: %w", err)
+	}
+	return nil
+}
+
+func determineDefaultControllerOptions(ctx context.Context, c client.Reader, scopedNamespace string) (*defaultControllerOptions, error) {
 	// The `cccSettings` and `ccSettings` are fetched only once when `AddDefaultControllers` is called
 	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
 	// resources at runtime will not be reflected until the manager process is restarted.
@@ -107,7 +118,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
 			if !errors.IsNotFound(err) {
-				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+				return nil, fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
 			}
 			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
 		} else if ccc.Spec.Experiments != nil {
@@ -126,7 +137,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	cc := &operatorv1beta1.ConfigConnector{}
 	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
 		if !errors.IsNotFound(err) {
-			return fmt.Errorf("error getting ConfigConnector: %w", err)
+			return nil, fmt.Errorf("error getting ConfigConnector: %w", err)
 		}
 	} else if cc.Spec.Experiments != nil {
 		ccSettings = cc.Spec.Experiments.ResourceSettings
@@ -146,7 +157,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		ccInclusive := ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
 		cccInclusive := cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
 		if ccInclusive != cccInclusive {
-			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
+			return nil, fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
 		}
 	} else if (ccSettings == nil || ccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
 		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
@@ -161,11 +172,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 		maxConcurrentReconcilesOverrides: mergeMaxConcurrentReconcilesOverrides(ctx, ccMaxConcurrentReconcilesOverrides, cccMaxConcurrentReconcilesOverrides),
 		usePriorityQueue:                 usePriorityQueue,
 	}
-
-	if err := add(mgr, rd, registerDefaultControllers(ctx, regOpts), opt); err != nil {
-		return fmt.Errorf("error adding default registration controller: %w", err)
-	}
-	return nil
+	return regOpts, nil
 }
 
 // AddDeletionDefender creates the registration controller with the deletion-defender factory,

@@ -153,22 +153,56 @@ type boundedPriorityQueue[T comparable] struct {
 	items map[T]*queueItem[T]
 	// processing tracks keys currently being processed (between Get and Done)
 	processing map[T]struct{}
+	// dirty tracks keys requested while being processed, mapping to the highest pending priority
+	dirty map[T]int
 
 	starvationCeiling    int
 	consecutiveHighCount int
 	addedCounter         uint64
 
-	shuttingDown atomic.Bool
-	stopCh       chan struct{}
+	shuttingDown    atomic.Bool
+	stopCh          chan struct{}
+	delayedUpdateCh chan struct{}
+
+	metrics queueMetrics[T]
 
 	// Clock hooks for testing
 	now func() time.Time
 }
 
+// Option configures boundedPriorityQueue options.
+type Option[T comparable] func(*options[T])
+
+type options[T comparable] struct {
+	metricsProvider   workqueue.MetricsProvider
+	starvationCeiling int
+}
+
+// WithMetricsProvider specifies a custom MetricsProvider.
+func WithMetricsProvider[T comparable](mp workqueue.MetricsProvider) Option[T] {
+	return func(o *options[T]) {
+		o.metricsProvider = mp
+	}
+}
+
+// WithStarvationCeiling sets the starvation ceiling.
+func WithStarvationCeiling[T comparable](ceiling int) Option[T] {
+	return func(o *options[T]) {
+		o.starvationCeiling = ceiling
+	}
+}
+
 // New constructs a new starvation-bounded priority work queue.
-func New[T comparable](name string, rateLimiter workqueue.TypedRateLimiter[T]) PriorityWorkQueue[T] {
+func New[T comparable](name string, rateLimiter workqueue.TypedRateLimiter[T], opts ...Option[T]) PriorityWorkQueue[T] {
 	if rateLimiter == nil {
 		rateLimiter = workqueue.DefaultTypedControllerRateLimiter[T]()
+	}
+
+	optConfig := &options[T]{
+		starvationCeiling: StarvationCeiling,
+	}
+	for _, opt := range opts {
+		opt(optConfig)
 	}
 
 	q := &boundedPriorityQueue[T]{
@@ -179,27 +213,71 @@ func New[T comparable](name string, rateLimiter workqueue.TypedRateLimiter[T]) P
 		delayed:           make(delayedHeap[T], 0),
 		items:             make(map[T]*queueItem[T]),
 		processing:        make(map[T]struct{}),
-		starvationCeiling: StarvationCeiling,
+		dirty:             make(map[T]int),
+		starvationCeiling: optConfig.starvationCeiling,
 		stopCh:            make(chan struct{}),
+		delayedUpdateCh:   make(chan struct{}, 1),
 		now:               time.Now,
 	}
 	q.cond = sync.NewCond(&q.lock)
+	q.metrics = newQueueMetrics[T](optConfig.metricsProvider, name, q.now)
 
 	heap.Init(&q.delayed)
 	go q.delayedLoop()
+	if _, ok := q.metrics.(noMetrics[T]); !ok {
+		go q.updateUnfinishedWorkLoop()
+	}
 
 	return q
 }
 
 // NewQueueFunc returns a NewQueue constructor compatible with controller.Options.NewQueue.
-func NewQueueFunc(rateLimiter workqueue.TypedRateLimiter[reconcile.Request]) func(controllerName string, rl workqueue.TypedRateLimiter[reconcile.Request]) workqueue.TypedRateLimitingInterface[reconcile.Request] {
+func NewQueueFunc(rateLimiter workqueue.TypedRateLimiter[reconcile.Request], opts ...Option[reconcile.Request]) func(controllerName string, rl workqueue.TypedRateLimiter[reconcile.Request]) workqueue.TypedRateLimitingInterface[reconcile.Request] {
 	return func(controllerName string, rl workqueue.TypedRateLimiter[reconcile.Request]) workqueue.TypedRateLimitingInterface[reconcile.Request] {
 		limiter := rateLimiter
 		if limiter == nil {
 			limiter = rl
 		}
-		return New[reconcile.Request](controllerName, limiter)
+		return New[reconcile.Request](controllerName, limiter, opts...)
 	}
+}
+
+func (q *boundedPriorityQueue[T]) notifyDelayedUpdate() {
+	select {
+	case q.delayedUpdateCh <- struct{}{}:
+	default:
+	}
+}
+
+func (q *boundedPriorityQueue[T]) enqueueReadyLocked(key T, priority int) {
+	if _, isProcessing := q.processing[key]; isProcessing {
+		// Key is currently being processed by a worker.
+		// Mark it dirty so it gets enqueued when Done() is invoked.
+		currPri, exists := q.dirty[key]
+		if !exists || priority > currPri {
+			q.dirty[key] = priority
+		}
+		return
+	}
+
+	it := &queueItem[T]{
+		key:          key,
+		priority:     priority,
+		addedCounter: q.addedCounter,
+		index:        -1,
+	}
+	q.items[key] = it
+
+	var added bool
+	if priority >= PriorityDefault {
+		added = q.highReady.add(key)
+	} else {
+		added = q.lowReady.add(key)
+	}
+	if added {
+		q.metrics.add(key)
+	}
+	q.cond.Broadcast()
 }
 
 func (q *boundedPriorityQueue[T]) Add(item T) {
@@ -237,45 +315,101 @@ func (q *boundedPriorityQueue[T]) AddWithOpts(o priorityqueue.AddOpts, items ...
 			}
 			// Rate-limited error retries always route to PriorityDefault
 			effectivePriority = PriorityDefault
+			q.metrics.retry()
 		} else if after > 0 {
 			// Periodic drift resyncs (after > 0) route to PriorityLow unless explicitly set higher
 			if o.Priority <= PriorityDefault {
 				effectivePriority = PriorityLow
 			}
+			q.metrics.retry()
+		}
+
+		// Handle keys currently being reconciled by a worker (processing set)
+		if _, isProcessing := q.processing[key]; isProcessing {
+			if after == 0 {
+				// Immediate arrival while processing:
+				// If a delayed entry existed, cancel it because the immediate event supersedes it.
+				if existing, exists := q.items[key]; exists && existing.index >= 0 {
+					heap.Remove(&q.delayed, existing.index)
+					existing.index = -1
+					delete(q.items, key)
+				}
+				currPri, wasDirty := q.dirty[key]
+				if !wasDirty || effectivePriority > currPri {
+					q.dirty[key] = effectivePriority
+				}
+			} else {
+				// Delayed arrival while processing:
+				// If already dirty from an immediate event, immediate event takes precedence.
+				if _, isDirty := q.dirty[key]; isDirty {
+					continue
+				}
+				existing, exists := q.items[key]
+				if exists && existing.index >= 0 {
+					newReadyAt := q.now().Add(after)
+					if newReadyAt.Before(existing.readyAt) {
+						existing.readyAt = newReadyAt
+						heap.Fix(&q.delayed, existing.index)
+						q.notifyDelayedUpdate()
+					}
+					if effectivePriority > existing.priority {
+						existing.priority = effectivePriority
+					}
+				} else if !exists {
+					q.addedCounter++
+					it := &queueItem[T]{
+						key:          key,
+						priority:     effectivePriority,
+						readyAt:      q.now().Add(after),
+						addedCounter: q.addedCounter,
+						index:        -1,
+					}
+					q.items[key] = it
+					heap.Push(&q.delayed, it)
+					q.notifyDelayedUpdate()
+				}
+			}
+			continue
 		}
 
 		existing, exists := q.items[key]
 		if exists {
 			// The item is already queued (either ready or delayed).
-			// If an immediate event or higher priority arrives, promote it.
 			if after == 0 {
 				// Immediate arrival promotions:
-				// If existing was delayed, remove it from delayed heap and make it ready immediately.
 				if existing.index >= 0 {
 					heap.Remove(&q.delayed, existing.index)
 					existing.index = -1
-				}
-				// Remove from existing ready queue if present
-				if existing.priority == PriorityLow {
-					q.lowReady.remove(key)
-				}
-				// Promote to PriorityDefault (or higher)
-				if effectivePriority > existing.priority {
-					existing.priority = effectivePriority
-				} else if existing.priority < PriorityDefault {
-					existing.priority = PriorityDefault
-				}
-				existing.readyAt = time.Time{}
-				if existing.priority >= PriorityDefault {
-					q.highReady.add(key)
+					if effectivePriority > existing.priority {
+						existing.priority = effectivePriority
+					} else if existing.priority < PriorityDefault {
+						existing.priority = PriorityDefault
+					}
+					existing.readyAt = time.Time{}
+					var added bool
+					if existing.priority >= PriorityDefault {
+						added = q.highReady.add(key)
+					} else {
+						added = q.lowReady.add(key)
+					}
+					if added {
+						q.metrics.add(key)
+					}
+					q.cond.Broadcast()
 				} else {
-					q.lowReady.add(key)
+					// Already in ready queue
+					if existing.priority == PriorityLow && effectivePriority >= PriorityDefault {
+						q.lowReady.remove(key)
+						q.highReady.add(key)
+					}
+					if effectivePriority > existing.priority {
+						existing.priority = effectivePriority
+					}
 				}
 			} else {
-				// Both are delayed or existing is already ready.
-				// If existing is already ready, it is already ready earlier than 'after', so keep it ready.
+				// Incoming is delayed.
 				if existing.index < 0 {
-					// Already in a ready queue; upgrade priority if applicable.
+					// Already ready in ready queue; keep it ready.
 					if effectivePriority > existing.priority {
 						if existing.priority == PriorityLow && effectivePriority >= PriorityDefault {
 							q.lowReady.remove(key)
@@ -285,11 +419,11 @@ func (q *boundedPriorityQueue[T]) AddWithOpts(o priorityqueue.AddOpts, items ...
 					}
 				} else {
 					// Both existing and incoming are delayed.
-					// Use earlier readyAt and higher priority.
 					newReadyAt := q.now().Add(after)
 					if newReadyAt.Before(existing.readyAt) {
 						existing.readyAt = newReadyAt
 						heap.Fix(&q.delayed, existing.index)
+						q.notifyDelayedUpdate()
 					}
 					if effectivePriority > existing.priority {
 						existing.priority = effectivePriority
@@ -301,27 +435,21 @@ func (q *boundedPriorityQueue[T]) AddWithOpts(o priorityqueue.AddOpts, items ...
 
 		// New item
 		q.addedCounter++
-		it := &queueItem[T]{
-			key:          key,
-			priority:     effectivePriority,
-			addedCounter: q.addedCounter,
-			index:        -1,
-		}
-
 		if after > 0 {
-			it.readyAt = q.now().Add(after)
-			heap.Push(&q.delayed, it)
-		} else {
-			if effectivePriority >= PriorityDefault {
-				q.highReady.add(key)
-			} else {
-				q.lowReady.add(key)
+			it := &queueItem[T]{
+				key:          key,
+				priority:     effectivePriority,
+				readyAt:      q.now().Add(after),
+				addedCounter: q.addedCounter,
+				index:        -1,
 			}
+			q.items[key] = it
+			heap.Push(&q.delayed, it)
+			q.notifyDelayedUpdate()
+		} else {
+			q.enqueueReadyLocked(key, effectivePriority)
 		}
-		q.items[key] = it
 	}
-
-	q.cond.Broadcast()
 }
 
 func (q *boundedPriorityQueue[T]) Get() (item T, shutdown bool) {
@@ -343,9 +471,6 @@ func (q *boundedPriorityQueue[T]) GetWithPriority() (item T, priority int, shutd
 		lowLen := q.lowReady.len()
 
 		if highLen > 0 || lowLen > 0 {
-			// Starvation prevention logic:
-			// If consecutiveHighCount >= starvationCeiling and low queue has ready items,
-			// pop 1 low priority item and reset consecutive count.
 			serveLow := false
 			if lowLen > 0 {
 				if highLen == 0 || q.consecutiveHighCount >= q.starvationCeiling {
@@ -371,6 +496,8 @@ func (q *boundedPriorityQueue[T]) GetWithPriority() (item T, priority int, shutd
 				}
 				delete(q.items, key)
 				q.processing[key] = struct{}{}
+				delete(q.dirty, key)
+				q.metrics.get(key)
 				return key, pri, false
 			}
 		}
@@ -389,6 +516,13 @@ func (q *boundedPriorityQueue[T]) Done(item T) {
 	defer q.lock.Unlock()
 
 	delete(q.processing, item)
+	q.metrics.done(item)
+
+	if pri, isDirty := q.dirty[item]; isDirty {
+		delete(q.dirty, item)
+		q.addedCounter++
+		q.enqueueReadyLocked(item, pri)
+	}
 }
 
 func (q *boundedPriorityQueue[T]) ShutDown() {
@@ -399,6 +533,7 @@ func (q *boundedPriorityQueue[T]) ShutDown() {
 	q.lock.Lock()
 	q.cond.Broadcast()
 	q.lock.Unlock()
+	q.notifyDelayedUpdate()
 }
 
 func (q *boundedPriorityQueue[T]) ShutDownWithDrain() {
@@ -423,9 +558,22 @@ func (q *boundedPriorityQueue[T]) Len() int {
 	return q.highReady.len() + q.lowReady.len()
 }
 
-func (q *boundedPriorityQueue[T]) delayedLoop() {
-	ticker := time.NewTimer(time.Hour)
+func (q *boundedPriorityQueue[T]) updateUnfinishedWorkLoop() {
+	ticker := time.NewTicker(500 * time.Millisecond)
 	defer ticker.Stop()
+	for {
+		select {
+		case <-q.stopCh:
+			return
+		case <-ticker.C:
+			q.metrics.updateUnfinishedWork()
+		}
+	}
+}
+
+func (q *boundedPriorityQueue[T]) delayedLoop() {
+	timer := time.NewTimer(time.Hour)
+	defer timer.Stop()
 
 	for {
 		q.lock.Lock()
@@ -442,12 +590,7 @@ func (q *boundedPriorityQueue[T]) delayedLoop() {
 			}
 			it := heap.Pop(&q.delayed).(*queueItem[T])
 			it.index = -1
-			if it.priority >= PriorityDefault {
-				q.highReady.add(it.key)
-			} else {
-				q.lowReady.add(it.key)
-			}
-			q.cond.Broadcast()
+			q.enqueueReadyLocked(it.key, it.priority)
 		}
 
 		var waitDuration time.Duration
@@ -461,12 +604,19 @@ func (q *boundedPriorityQueue[T]) delayedLoop() {
 		}
 		q.lock.Unlock()
 
-		ticker.Reset(waitDuration)
+		if !timer.Stop() {
+			select {
+			case <-timer.C:
+			default:
+			}
+		}
+		timer.Reset(waitDuration)
 
 		select {
 		case <-q.stopCh:
 			return
-		case <-ticker.C:
+		case <-q.delayedUpdateCh:
+		case <-timer.C:
 		}
 	}
 }

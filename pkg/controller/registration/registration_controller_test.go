@@ -21,6 +21,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -347,51 +348,95 @@ func buildTestCRD(name, group, version, kind string, specProperties map[string]a
 }
 
 func TestUsePriorityQueueOptionPlumbing(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	if err := operatorv1beta1.AddToScheme(scheme); err != nil {
+		t.Fatalf("error adding operatorv1beta1 to scheme: %v", err)
+	}
+
 	tests := []struct {
 		name                 string
 		ccUsePriorityQueue   *bool
 		cccUsePriorityQueue  *bool
+		scopedNamespace      string
 		wantUsePriorityQueue bool
 	}{
 		{
 			name:                 "both unset -> false",
+			scopedNamespace:      "test-ns",
 			wantUsePriorityQueue: false,
 		},
 		{
 			name:                 "cc true -> true",
 			ccUsePriorityQueue:   ptr.To(true),
+			scopedNamespace:      "test-ns",
 			wantUsePriorityQueue: true,
 		},
 		{
 			name:                 "cc false -> false",
 			ccUsePriorityQueue:   ptr.To(false),
+			scopedNamespace:      "test-ns",
 			wantUsePriorityQueue: false,
 		},
 		{
 			name:                 "cc true but ccc false -> false (ccc override)",
 			ccUsePriorityQueue:   ptr.To(true),
 			cccUsePriorityQueue:  ptr.To(false),
+			scopedNamespace:      "test-ns",
 			wantUsePriorityQueue: false,
 		},
 		{
 			name:                 "cc false but ccc true -> true (ccc override)",
 			ccUsePriorityQueue:   ptr.To(false),
 			cccUsePriorityQueue:  ptr.To(true),
+			scopedNamespace:      "test-ns",
+			wantUsePriorityQueue: true,
+		},
+		{
+			name:                 "cluster mode (scopedNamespace empty) respects cc true",
+			ccUsePriorityQueue:   ptr.To(true),
+			scopedNamespace:      "",
 			wantUsePriorityQueue: true,
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			usePriorityQueue := false
-			if tc.ccUsePriorityQueue != nil && *tc.ccUsePriorityQueue {
-				usePriorityQueue = true
+			var initObjs []client.Object
+			if tc.ccUsePriorityQueue != nil {
+				initObjs = append(initObjs, &operatorv1beta1.ConfigConnector{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: operatorv1beta1.ConfigConnectorAllowedName,
+					},
+					Spec: operatorv1beta1.ConfigConnectorSpec{
+						Experiments: &operatorv1beta1.CCExperiments{
+							UsePriorityQueue: tc.ccUsePriorityQueue,
+						},
+					},
+				})
 			}
-			if tc.cccUsePriorityQueue != nil {
-				usePriorityQueue = *tc.cccUsePriorityQueue
+			if tc.cccUsePriorityQueue != nil && tc.scopedNamespace != "" {
+				initObjs = append(initObjs, &operatorv1beta1.ConfigConnectorContext{
+					ObjectMeta: metav1.ObjectMeta{
+						Namespace: tc.scopedNamespace,
+						Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
+					},
+					Spec: operatorv1beta1.ConfigConnectorContextSpec{
+						Experiments: &operatorv1beta1.Experiments{
+							UsePriorityQueue: tc.cccUsePriorityQueue,
+						},
+					},
+				})
 			}
-			if usePriorityQueue != tc.wantUsePriorityQueue {
-				t.Errorf("got %v, want %v", usePriorityQueue, tc.wantUsePriorityQueue)
+
+			fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithObjects(initObjs...).Build()
+
+			regOpts, err := determineDefaultControllerOptions(ctx, fakeClient, tc.scopedNamespace)
+			if err != nil {
+				t.Fatalf("unexpected error from determineDefaultControllerOptions: %v", err)
+			}
+			if regOpts.usePriorityQueue != tc.wantUsePriorityQueue {
+				t.Errorf("got %v, want %v", regOpts.usePriorityQueue, tc.wantUsePriorityQueue)
 			}
 		})
 	}

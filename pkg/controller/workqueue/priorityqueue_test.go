@@ -385,3 +385,179 @@ func TestConcurrentAccess(t *testing.T) {
 		t.Fatalf("expected %d items consumed, got %d", numItems*2, len(consumed))
 	}
 }
+
+// TestNoConcurrentReconciliation verifies that an item currently being reconciled
+// is never handed out to another worker concurrently, and is re-queued upon Done().
+func TestNoConcurrentReconciliation(t *testing.T) {
+	q := New[reconcile.Request]("test-no-concurrent", nil)
+	defer q.ShutDown()
+
+	req := newTestRequest("concurrent-target")
+	q.Add(req)
+
+	// Worker 1 gets the item
+	item1, _, shutdown := q.GetWithPriority()
+	if shutdown || item1 != req {
+		t.Fatalf("expected worker 1 to get %v, got %v", req, item1)
+	}
+
+	// While worker 1 is still processing (Done has NOT been called):
+	// A watch event arrives for the same resource
+	q.Add(req)
+
+	// Another worker attempts to dequeue
+	worker2Done := make(chan reconcile.Request, 1)
+	go func() {
+		item2, _ := q.Get()
+		worker2Done <- item2
+	}()
+
+	// Verify worker 2 does NOT get the item while worker 1 is processing
+	select {
+	case it := <-worker2Done:
+		t.Fatalf("worker 2 received item %v while worker 1 was still processing it!", it)
+	case <-time.After(50 * time.Millisecond):
+		// Expected: worker 2 is blocked waiting
+	}
+
+	// Now worker 1 finishes processing
+	q.Done(item1)
+
+	// Now worker 2 must receive the item
+	select {
+	case it := <-worker2Done:
+		if it != req {
+			t.Fatalf("worker 2 received %v, want %v", it, req)
+		}
+		q.Done(it)
+	case <-time.After(1 * time.Second):
+		t.Fatalf("timed out waiting for worker 2 to dequeue item after worker 1 finished")
+	}
+}
+
+// TestDelayedLoopWakeupOnAddAfter verifies that delayedLoop wakes up immediately when AddAfter
+// is called on an idle queue, without sleeping for an hour.
+func TestDelayedLoopWakeupOnAddAfter(t *testing.T) {
+	q := New[reconcile.Request]("test-delayed-wakeup", nil)
+	defer q.ShutDown()
+
+	// Wait 50ms so delayedLoop is definitely sleeping in its timer wait
+	time.Sleep(50 * time.Millisecond)
+
+	req := newTestRequest("delayed-item")
+	start := time.Now()
+	// Schedule for 20ms in the future
+	q.AddAfter(req, 20*time.Millisecond)
+
+	item, shutdown := q.Get()
+	elapsed := time.Since(start)
+	if shutdown || item != req {
+		t.Fatalf("expected %v, got %v (shutdown=%v)", req, item, shutdown)
+	}
+	q.Done(item)
+
+	if elapsed > 2*time.Second {
+		t.Fatalf("delayedLoop took %v to wake up, expected ~20ms", elapsed)
+	}
+}
+
+type fakeGauge struct {
+	mu  sync.Mutex
+	val float64
+}
+
+func (g *fakeGauge) Inc()            { g.mu.Lock(); defer g.mu.Unlock(); g.val++ }
+func (g *fakeGauge) Dec()            { g.mu.Lock(); defer g.mu.Unlock(); g.val-- }
+func (g *fakeGauge) Set(val float64) { g.mu.Lock(); defer g.mu.Unlock(); g.val = val }
+
+type fakeCounter struct {
+	mu  sync.Mutex
+	val float64
+}
+
+func (c *fakeCounter) Inc() { c.mu.Lock(); defer c.mu.Unlock(); c.val++ }
+
+type fakeHistogram struct {
+	mu    sync.Mutex
+	count int
+}
+
+func (h *fakeHistogram) Observe(float64) { h.mu.Lock(); defer h.mu.Unlock(); h.count++ }
+
+type fakeMetricsProvider struct {
+	depth        *fakeGauge
+	adds         *fakeCounter
+	latency      *fakeHistogram
+	workDuration *fakeHistogram
+	unfinished   *fakeGauge
+	longestProc  *fakeGauge
+	retries      *fakeCounter
+}
+
+func newFakeMetricsProvider() *fakeMetricsProvider {
+	return &fakeMetricsProvider{
+		depth:        &fakeGauge{},
+		adds:         &fakeCounter{},
+		latency:      &fakeHistogram{},
+		workDuration: &fakeHistogram{},
+		unfinished:   &fakeGauge{},
+		longestProc:  &fakeGauge{},
+		retries:      &fakeCounter{},
+	}
+}
+
+func (f *fakeMetricsProvider) NewDepthMetric(string) workqueue.GaugeMetric  { return f.depth }
+func (f *fakeMetricsProvider) NewAddsMetric(string) workqueue.CounterMetric { return f.adds }
+func (f *fakeMetricsProvider) NewLatencyMetric(string) workqueue.HistogramMetric {
+	return f.latency
+}
+func (f *fakeMetricsProvider) NewWorkDurationMetric(string) workqueue.HistogramMetric {
+	return f.workDuration
+}
+func (f *fakeMetricsProvider) NewUnfinishedWorkSecondsMetric(string) workqueue.SettableGaugeMetric {
+	return f.unfinished
+}
+func (f *fakeMetricsProvider) NewLongestRunningProcessorSecondsMetric(string) workqueue.SettableGaugeMetric {
+	return f.longestProc
+}
+func (f *fakeMetricsProvider) NewRetriesMetric(string) workqueue.CounterMetric { return f.retries }
+
+// TestWorkqueueMetrics verifies that priority workqueue records depth, adds, latency,
+// work duration, and retries using the metrics provider.
+func TestWorkqueueMetrics(t *testing.T) {
+	mp := newFakeMetricsProvider()
+	q := New[reconcile.Request]("test-metrics", nil, WithMetricsProvider[reconcile.Request](mp))
+	defer q.ShutDown()
+
+	req := newTestRequest("metric-req")
+
+	// 1. Add item -> adds++ and depth++
+	q.Add(req)
+	if mp.adds.val != 1 {
+		t.Errorf("expected adds=1, got %v", mp.adds.val)
+	}
+	if mp.depth.val != 1 {
+		t.Errorf("expected depth=1, got %v", mp.depth.val)
+	}
+
+	// 2. Get item -> depth-- and latency observed
+	item, _ := q.Get()
+	if mp.depth.val != 0 {
+		t.Errorf("expected depth=0, got %v", mp.depth.val)
+	}
+	if mp.latency.count != 1 {
+		t.Errorf("expected latency count=1, got %v", mp.latency.count)
+	}
+
+	// 3. Done item -> work duration observed
+	q.Done(item)
+	if mp.workDuration.count != 1 {
+		t.Errorf("expected work duration count=1, got %v", mp.workDuration.count)
+	}
+
+	// 4. Rate-limited add / retry -> retries++
+	q.AddRateLimited(req)
+	if mp.retries.val != 1 {
+		t.Errorf("expected retries=1, got %v", mp.retries.val)
+	}
+}
