@@ -15,12 +15,16 @@
 package mocksql
 
 import (
+	"fmt"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
 )
+
+var pscServiceAttachmentLinkRegex = regexp.MustCompile(`^projects/[^/]+/regions/([^/]+)/serviceAttachments/[^/]+$`)
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
@@ -55,8 +59,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	}
 
 	var sqlInstance struct {
-		DNSName     string `json:"dnsName"`
-		IPAddresses []struct {
+		DNSName                  string `json:"dnsName"`
+		PSCServiceAttachmentLink string `json:"pscServiceAttachmentLink"`
+		IPAddresses              []struct {
 			IPAddress string `json:"ipAddress"`
 			Type      string `json:"type"`
 		} `json:"ipAddresses"`
@@ -64,6 +69,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if ok := event.ParseResponseInto(&sqlInstance); ok {
 		if sqlInstance.DNSName != "" {
 			replacements.ReplaceStringValue(sqlInstance.DNSName, "${dnsName}")
+		}
+		if m := pscServiceAttachmentLinkRegex.FindStringSubmatch(sqlInstance.PSCServiceAttachmentLink); len(m) == 2 {
+			replacements.ReplaceStringValue(
+				sqlInstance.PSCServiceAttachmentLink,
+				fmt.Sprintf("projects/tenanta-tp/regions/%s/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef", m[1]),
+			)
 		}
 		for _, ipAddress := range sqlInstance.IPAddresses {
 			switch ipAddress.Type {
