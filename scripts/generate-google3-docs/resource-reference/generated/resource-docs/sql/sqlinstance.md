@@ -198,6 +198,10 @@ settings:
     pscConfig:
     - allowedConsumerProjects:
       - string
+      networkAttachmentRef:
+        external: string
+        name: string
+        namespace: string
       pscEnabled: boolean
     requireSsl: boolean
     serverCAMode: string
@@ -1399,6 +1403,46 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].networkAttachmentRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The network attachment of the consumer network that the Private Service Connect enabled Cloud SQL instance is authorized to connect via PSC interface. Requires `pscEnabled: true` and a `ComputeNetworkAttachment` in the same region as the instance. Note: Cloud SQL currently does not support enabling PSC outbound connectivity during instance creation; configure this field via an update on an existing PSC-enabled instance. Enabling or disabling PSC outbound connectivity takes approximately 8 minutes and incurs brief database downtime, and GCP prevents deleting an attached `ComputeNetworkAttachment` until it is detached or the `SQLInstance` is deleted.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].networkAttachmentRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetworkAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].networkAttachmentRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetworkAttachment resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].networkAttachmentRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetworkAttachment resource.</p>
         </td>
     </tr>
     <tr>

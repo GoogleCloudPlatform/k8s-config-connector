@@ -164,6 +164,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Settings.IpConfiguration.PrivateNetwork")
 	f.SpecField(".Settings.IpConfiguration.PscConfig")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.AllowedConsumerProjects")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.NetworkAttachmentUri")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.PscEnabled")
 	f.SpecField(".Settings.IpConfiguration.RequireSsl")
 	f.SpecField(".Settings.IpConfiguration.ServerCaMode")
@@ -274,7 +275,6 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.BackupConfiguration.Kind")
 
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCertificateRotationMode")
-	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.NetworkAttachmentUri")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")

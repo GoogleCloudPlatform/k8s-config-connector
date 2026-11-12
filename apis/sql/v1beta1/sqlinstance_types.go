@@ -18,6 +18,7 @@ import (
 	"reflect"
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 
@@ -244,6 +245,10 @@ type InstancePscConfig struct {
 	/* List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric). */
 	// +optional
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	/* Optional. The network attachment of the consumer network that the Private Service Connect enabled Cloud SQL instance is authorized to connect via PSC interface. Requires `pscEnabled: true` and a `ComputeNetworkAttachment` in the same region as the instance. Note: Cloud SQL currently does not support enabling PSC outbound connectivity during instance creation; configure this field via an update on an existing PSC-enabled instance. Enabling or disabling PSC outbound connectivity takes approximately 8 minutes and incurs brief database downtime, and GCP prevents deleting an attached `ComputeNetworkAttachment` until it is detached or the `SQLInstance` is deleted. */
+	// +optional
+	NetworkAttachmentRef *computev1alpha1.ComputeNetworkAttachmentRef `json:"networkAttachmentRef,omitempty"`
 
 	/* Whether PSC connectivity is enabled for this instance. */
 	// +optional

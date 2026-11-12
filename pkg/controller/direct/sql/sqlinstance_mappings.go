@@ -16,8 +16,10 @@ package sql
 
 import (
 	"fmt"
+	"strings"
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -26,6 +28,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -495,14 +498,36 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 
 	out := &api.PscConfig{
 		AllowedConsumerProjects: inFixed.AllowedConsumerProjects,
+		NetworkAttachmentUri:    InstanceNetworkAttachmentRefKRMToGCP(inFixed.NetworkAttachmentRef),
 		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
 	}
 
+	if out.NetworkAttachmentUri != "" {
+		out.ForceSendFields = append(out.ForceSendFields, "NetworkAttachmentUri")
+	}
 	if inFixed.PscEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
 	}
 
 	return out
+}
+
+func InstanceNetworkAttachmentRefKRMToGCP(in *computev1alpha1.ComputeNetworkAttachmentRef) string {
+	if in == nil {
+		return ""
+	}
+
+	return normalizeNetworkAttachmentURI(in.External)
+}
+
+func normalizeNetworkAttachmentURI(s string) string {
+	s = strings.TrimPrefix(s, "//compute.googleapis.com/")
+	s = strings.TrimPrefix(s, "https://www.googleapis.com/compute/v1/")
+	s = strings.TrimPrefix(s, "https://compute.googleapis.com/compute/v1/")
+	s = strings.TrimPrefix(s, "https://compute.googleapis.com/v1/")
+	s = apirefs.TrimComputeURIPrefix(s)
+	s = strings.TrimPrefix(s, "https://compute.googleapis.com/")
+	return s
 }
 
 func InstanceLocationPreferenceKRMToGCP(in *krm.InstanceLocationPreference) *api.LocationPreference {
@@ -1038,11 +1063,22 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 	out := []krm.InstancePscConfig{
 		{
 			AllowedConsumerProjects: in.AllowedConsumerProjects,
+			NetworkAttachmentRef:    InstanceNetworkAttachmentRefGCPToKRM(in.NetworkAttachmentUri),
 			PscEnabled:              direct.PtrTo(in.PscEnabled),
 		},
 	}
 
 	return out
+}
+
+func InstanceNetworkAttachmentRefGCPToKRM(in string) *computev1alpha1.ComputeNetworkAttachmentRef {
+	if in == "" {
+		return nil
+	}
+
+	return &computev1alpha1.ComputeNetworkAttachmentRef{
+		External: in,
+	}
 }
 
 func InstancePrivateNetworkRefRefGCPToKRM(in string) *computerefs.ComputeNetworkRef {
