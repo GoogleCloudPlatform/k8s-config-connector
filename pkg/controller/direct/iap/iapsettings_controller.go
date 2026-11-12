@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"slices"
 
 	gcp "cloud.google.com/go/iap/apiv1"
 	pb "cloud.google.com/go/iap/apiv1/iappb"
@@ -28,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -239,11 +241,14 @@ func calculateUpdateMask(desired, actual *pb.IapSettings) []string {
 				paths = append(paths, "iap_settings.access_settings.cors_settings.allow_http_options")
 			}
 		}
-		if desired.AccessSettings.OauthSettings != nil {
-			if actual.AccessSettings == nil || actual.AccessSettings.OauthSettings == nil ||
-				!reflect.DeepEqual(desired.AccessSettings.OauthSettings.LoginHint, actual.AccessSettings.OauthSettings.LoginHint) ||
-				!reflect.DeepEqual(desired.AccessSettings.OauthSettings.ProgrammaticClients, actual.AccessSettings.OauthSettings.ProgrammaticClients) {
-				paths = append(paths, "iap_settings.access_settings.oauth_settings")
+		if desiredOAuth := desired.AccessSettings.OauthSettings; desiredOAuth != nil {
+			actualOAuth := actual.GetAccessSettings().GetOauthSettings()
+			// A parent mask also selects OAuth credentials that this resource does not manage.
+			if !proto.Equal(desiredOAuth.GetLoginHint(), actualOAuth.GetLoginHint()) {
+				paths = append(paths, "iap_settings.access_settings.oauth_settings.login_hint")
+			}
+			if !slices.Equal(desiredOAuth.GetProgrammaticClients(), actualOAuth.GetProgrammaticClients()) {
+				paths = append(paths, "iap_settings.access_settings.oauth_settings.programmatic_clients")
 			}
 		}
 		if desired.AccessSettings.ReauthSettings != nil {
