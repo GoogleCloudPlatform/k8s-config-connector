@@ -146,8 +146,8 @@ func (in *DialogflowCXAgentSpec) DeepCopyInto(out *DialogflowCXAgentSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.AvatarUri != nil {
-		in, out := &in.AvatarUri, &out.AvatarUri
+	if in.AvatarURI != nil {
+		in, out := &in.AvatarURI, &out.AvatarURI
 		*out = new(string)
 		**out = **in
 	}
