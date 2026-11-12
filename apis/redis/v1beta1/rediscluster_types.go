@@ -189,6 +189,11 @@ type RedisClusterObservedState struct {
 
 	// Output only. Cross cluster replication config.
 	CrossClusterReplicationConfig *CrossClusterReplicationConfigObservedState `json:"crossClusterReplicationConfig,omitempty"`
+
+	// Output only. This config will be used to determine how the customer wants us
+	//  to distribute cluster resources within the region.
+	// +optional
+	ZoneDistributionConfig *ZoneDistributionConfigObservedState `json:"zoneDistributionConfig,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster

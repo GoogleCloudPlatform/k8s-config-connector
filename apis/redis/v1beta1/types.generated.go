@@ -396,6 +396,11 @@ type ZoneDistributionConfig struct {
 	//  MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.zone
 	Zone *string `json:"zone,omitempty"`
+
+	// Optional. Specify the zones of a multi-zone cluster where Redis Cluster
+	//  allocates resources. This flag isn't applicable for single-zone clusters.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.zones
+	Zones []string `json:"zones,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.Instance", skipping
@@ -721,6 +726,11 @@ type ClusterObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.precise_size_gb
 	PreciseSizeGB *float64 `json:"preciseSizeGB,omitempty"`
 
+	// Optional. This config will be used to determine how the customer wants us
+	//  to distribute cluster resources within the region.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.zone_distribution_config
+	ZoneDistributionConfig *ZoneDistributionConfigObservedState `json:"zoneDistributionConfig,omitempty"`
+
 	// Optional. Cross cluster replication config.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.cross_cluster_replication_config
 	CrossClusterReplicationConfig *CrossClusterReplicationConfigObservedState `json:"crossClusterReplicationConfig,omitempty"`
@@ -968,6 +978,14 @@ type PSCServiceAttachmentObservedState struct {
 	// Output only. Type of a PSC connection targeting this service attachment.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscServiceAttachment.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ZoneDistributionConfig
+type ZoneDistributionConfigObservedState struct {
+	// Output only. The exact list of zones where the cluster currently has active
+	//  VMs.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.active_zones
+	ActiveZones []string `json:"activeZones,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.Instance", skipping

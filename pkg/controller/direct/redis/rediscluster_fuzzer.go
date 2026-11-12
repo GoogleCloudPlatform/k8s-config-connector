@@ -43,6 +43,8 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".server_ca_mode")
 	f.UnimplementedFields.Insert(".server_ca_pool")
 	f.UnimplementedFields.Insert(".async_cluster_endpoints_deletion_enabled")
+	f.Unimplemented_NotYetTriaged(".acl_policy")
+	f.Unimplemented_NotYetTriaged(".acl_policy_info")
 
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
@@ -52,7 +54,9 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".persistence_config")
 	f.SpecFields.Insert(".redis_configs")
 	f.SpecFields.Insert(".replica_count")
-	f.SpecFields.Insert(".zone_distribution_config")
+	f.SpecFields.Insert(".zone_distribution_config.mode")
+	f.SpecFields.Insert(".zone_distribution_config.zone")
+	f.SpecFields.Insert(".zone_distribution_config.zones")
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".automated_backup_config")
 	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
@@ -77,6 +81,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".encryption_info")
 	f.StatusFields.Insert(".cross_cluster_replication_config")
 	f.StatusFields.Insert(".cluster_endpoints")
+	f.StatusFields.Insert(".zone_distribution_config.active_zones")
 
 	return f
 }
