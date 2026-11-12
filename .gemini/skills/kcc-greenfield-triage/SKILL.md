@@ -114,8 +114,8 @@ dependencies, lifecycle, state on master, start block), a bullet with
 what you found and how. When blocked, end with "To unblock:" and what a
 maintainer must do, each item its own bullet; name the missing KCC
 kinds. When unsure, end with "To check:" and what a person must
-check. When ready, end with "To start: add `overseer/graph`."
+check. When ready, end with "Starting its graph: labelled
+`overseer/graph`."
 
-Labels: none when ready - triage does not start the graph, a maintainer
-does, by adding `overseer/graph`; `overseer/stop` when blocked or unsure.
-No other labels.
+Labels: `overseer/graph` when ready - it starts the graph;
+`overseer/stop` when blocked or unsure. No other labels.
