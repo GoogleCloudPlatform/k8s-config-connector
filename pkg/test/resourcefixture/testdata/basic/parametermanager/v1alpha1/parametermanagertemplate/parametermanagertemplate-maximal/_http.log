@@ -122,7 +122,6 @@ X-Xss-Protection: 0
 
 ---
 
-# Phase: DELETE
 GET https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/templates/parametermanagertemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -153,6 +152,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/templates/parametermanagertemplate-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
