@@ -112,3 +112,15 @@
   4. Resolved `possible-reference-by-name` for `operationID`: Confirmed it is an OpenAPI operationId within the toolset schema, not a GCP resource reference (`resolution: not-applicable`).
   5. Resolved `untriaged-bulk-generation` after verifying all fields and types.
 - **Impact**: All 5 judgement queue entries for DialogflowCompanionAgent resolved; CRD and API checks cleanly pass.
+
+### [2026-11-12] DialogflowCompanionAgent Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowCompanionAgent` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #15457).
+- **Details**:
+  1. `CompanionAgentsClient` in `cloud.google.com/go/dialogflow` was added in `v1.87.0`. Upgraded module dependency from `v1.82.0` to `v1.87.0` in both `go.mod` and `mockgcp/go.mod`.
+  2. Isolated `DialogflowCompanionAgent` mappers in `pkg/controller/direct/dialogflow/dialogflowcompanionagent_mapper.go` to avoid clobbering CX v3 mappers in `mapper.generated.go` and comply with `TestDirectResourceFileNaming`.
+  3. Controller and fuzzer generated using `controllerbuilder` with `NewCompanionAgentsRESTClient`.
+  4. Handled status update with `ObservedState` on `Create` and `Update`.
+  5. Recorded minimal and maximal fixtures (`dialogflowcompanionagent-minimal` and `dialogflowcompanionagent-maximal`) against real GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` (project `cnrm-barni-4`, location `global`), passing all 7/7 validation checks and generating audit log actuation entries.
+  6. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` to remove tested spec fields.
+- **Impact**: Fully enables direct reconciliation, fuzzer round-tripping, and authentic E2E test verification for `DialogflowCompanionAgent`.
+
