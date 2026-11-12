@@ -254,7 +254,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		meta = r.provider.Meta()
 	}
 
-	requeue, err := r.sync(ctx, resource, meta)
+	requeue, err := r.sync(ctx, resource, meta, schemaRef.JSONSchema)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -269,7 +269,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tfProviderMeta interface{}) (requeue bool, err error) {
+func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tfProviderMeta interface{}, jsonSchema *apiextensions.JSONSchemaProps) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 	if !krmResource.GetDeletionTimestamp().IsZero() {
@@ -353,7 +353,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.Load().JSONSchema, true,
+		krmResource, r, r.smLoader, liveState, jsonSchema, true,
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -629,6 +629,10 @@ func (r *Reconciler) UpdateSchema(crd *apiextensions.CustomResourceDefinition) e
 	}
 	r.schemaRef.Store(newRef)
 	return nil
+}
+
+func (r *Reconciler) SchemaReference() *k8s.SchemaReference {
+	return r.schemaRef.Load()
 }
 
 func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) error {

@@ -49,28 +49,9 @@ func NewSchemaReference(crd *apiextensions.CustomResourceDefinition) *SchemaRefe
 // NewUpdatedSchemaReference creates a new updated SchemaReference for the given crd,
 // ensuring the GVK matches oldRef. This supports lock-free copy-on-write atomic schema updates.
 func NewUpdatedSchemaReference(oldRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) (*SchemaReference, error) {
-	gvk := schema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
+	newRef := NewSchemaReference(crd)
+	if oldRef != nil && oldRef.GVK != newRef.GVK {
+		return nil, fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", oldRef.GVK.String(), newRef.GVK.String())
 	}
-	if oldRef != nil && oldRef.GVK.String() != gvk.String() {
-		return nil, fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", oldRef.GVK.String(), gvk.String())
-	}
-	return &SchemaReference{
-		CRD:        crd,
-		JSONSchema: GetOpenAPIV3SchemaFromCRD(crd),
-		GVK:        gvk,
-	}, nil
-}
-
-// UpdateSchema is a helper function to update the input schema reference using the input crd.
-func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) error {
-	newRef, err := NewUpdatedSchemaReference(schemaRef, crd)
-	if err != nil {
-		return err
-	}
-	schemaRef.CRD = newRef.CRD
-	schemaRef.JSONSchema = newRef.JSONSchema
-	return nil
+	return newRef, nil
 }

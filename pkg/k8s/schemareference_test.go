@@ -122,27 +122,3 @@ func TestNewUpdatedSchemaReference_MismatchedGVK(t *testing.T) {
 		t.Fatalf("expected newRef to be nil on error, got %v", newRef)
 	}
 }
-
-func TestUpdateSchema(t *testing.T) {
-	// Arrange
-	group := "foo.cnrm.cloud.google.com"
-	version := "v1beta1"
-	kind := "FooResource"
-	oldCRD := newTestCRD(group, version, kind, "original description")
-	ref := k8s.NewSchemaReference(oldCRD)
-	updatedCRD := newTestCRD(group, version, kind, "updated description")
-
-	// Act
-	err := k8s.UpdateSchema(ref, updatedCRD)
-
-	// Assert
-	if err != nil {
-		t.Fatalf("unexpected error updating schema: %v", err)
-	}
-	if ref.JSONSchema.Description != "updated description" {
-		t.Fatalf("expected ref description to be 'updated description', got %q", ref.JSONSchema.Description)
-	}
-	if ref.CRD != updatedCRD {
-		t.Fatalf("expected ref CRD to be updatedCRD, got %v", ref.CRD)
-	}
-}

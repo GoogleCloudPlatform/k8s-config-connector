@@ -255,7 +255,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
-	requeue, err := r.sync(ctx, resource)
+	requeue, err := r.sync(ctx, resource, schemaRef.JSONSchema)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -270,7 +270,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue bool, err error) {
+func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource, jsonSchema *apiextensions.JSONSchemaProps) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 
@@ -312,7 +312,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 		return false, r.HandleObtainLeaseFailed(ctx, &resource.Resource, err)
 	}
 	// construct the trimmed desired state by only preserving k8s-managed fields
-	desired, err := r.constructDesiredStateWithManagedFields(resource)
+	desired, err := r.constructDesiredStateWithManagedFields(resource, jsonSchema)
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, err)
 	}
@@ -554,13 +554,13 @@ func (r *Reconciler) updateSpecAndStatusWithLiveState(ctx context.Context, liveL
 	return false, r.HandleUpToDate(ctx, &resource.Resource)
 }
 
-func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resource) (*dcl.Resource, error) {
+func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resource, jsonSchema *apiextensions.JSONSchemaProps) (*dcl.Resource, error) {
 	gvk := original.GroupVersionKind()
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
 		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
-	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.Load().JSONSchema, hierarchicalRefs)
+	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, jsonSchema, hierarchicalRefs)
 	if err != nil {
 		return nil, err
 	}
@@ -749,6 +749,10 @@ func (r *Reconciler) UpdateSchema(crd *apiextensions.CustomResourceDefinition) e
 	}
 	r.schemaRef.Store(newRef)
 	return nil
+}
+
+func (r *Reconciler) SchemaReference() *k8s.SchemaReference {
+	return r.schemaRef.Load()
 }
 
 func updateMutableButUnreadableFieldsAnnotationFor(resource *dcl.Resource) error {
