@@ -1,0 +1,312 @@
+# Phase: CREATE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "ContentPolicy with name projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "contentPolicy": {
+    "displayName": "Minimal DLP Content Policy",
+    "inspectConfig": {
+      "infoTypes": [
+        {
+          "name": "EMAIL_ADDRESS"
+        }
+      ]
+    },
+    "rules": [
+      {
+        "action": {
+          "returnVerdict": 2
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "EMAIL_ADDRESS"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "contentPolicyId": "dlpcontentpolicy-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal DLP Content Policy",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      }
+    ],
+    "limits": {}
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal DLP Content Policy",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      }
+    ],
+    "limits": {}
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-minimal-${uniqueId}
+
+{
+  "contentPolicy": {
+    "displayName": "Minimal DLP Content Policy Updated",
+    "inspectConfig": {
+      "infoTypes": [
+        {
+          "name": "EMAIL_ADDRESS"
+        }
+      ],
+      "limits": {}
+    },
+    "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+    "rules": [
+      {
+        "action": {
+          "returnVerdict": 2
+        },
+        "conditions": [
+          {
+            "infoTypeCondition": {
+              "infoTypes": {
+                "infoTypeNames": [
+                  "EMAIL_ADDRESS"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+  "updateMask": "displayName"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal DLP Content Policy Updated",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      }
+    ],
+    "limits": {}
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal DLP Content Policy Updated",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "EMAIL_ADDRESS"
+      }
+    ],
+    "limits": {}
+  },
+  "name": "projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}",
+  "rules": [
+    {
+      "action": {
+        "returnVerdict": 2
+      },
+      "conditions": [
+        {
+          "infoTypeCondition": {
+            "infoTypes": {
+              "infoTypeNames": [
+                "EMAIL_ADDRESS"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dlp.googleapis.com/v2/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcontentPolicies%2Fdlpcontentpolicy-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
