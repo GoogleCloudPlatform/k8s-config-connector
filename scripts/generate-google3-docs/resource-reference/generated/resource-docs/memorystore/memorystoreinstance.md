@@ -134,6 +134,8 @@ transitEncryptionMode: string
 zoneDistributionConfig:
   mode: string
   zone: string
+  zones:
+  - string
 ```
 
 <table class="properties responsive">
@@ -949,6 +951,26 @@ zoneDistributionConfig:
             <p>Optional. Defines zone where all resources will be allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>zoneDistributionConfig.zones</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. Immutable. Specify the zones of a multi-zone instance where Memorystore instance allocates resources. This flag isn't applicable for single-zone instances.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>zoneDistributionConfig.zones[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -1019,6 +1041,9 @@ observedState:
       targetShardCount: integer
   uid: string
   updateTime: string
+  zoneDistributionConfig:
+    activeZones:
+    - string
 ```
 
 <table class="properties responsive">
@@ -1508,6 +1533,27 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. Latest update timestamp of the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Zone distribution configuration for allocation of instance resources.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig.activeZones</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Output only. The exact list of zones where the instance currently has active VMs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig.activeZones[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
 </tbody>

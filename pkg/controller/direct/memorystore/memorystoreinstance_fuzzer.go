@@ -66,7 +66,10 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".persistence_config")
 	f.SpecFields.Insert(".engine_version")
 	f.SpecFields.Insert(".engine_configs")
-	f.SpecFields.Insert(".zone_distribution_config")
+	f.SpecField(".zone_distribution_config.zone")
+	f.SpecField(".zone_distribution_config.mode")
+	f.SpecField(".zone_distribution_config.zones")
+	f.StatusField(".zone_distribution_config.active_zones")
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
@@ -95,5 +98,8 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".server_ca_pool")
 	f.Unimplemented_NotYetTriaged(".rotate_server_certificate")
 	f.Unimplemented_NotYetTriaged(".server_ca_mode")
+	f.Unimplemented_NotYetTriaged(".migration_config")
+	f.Unimplemented_NotYetTriaged(".acl_policy")
+	f.Unimplemented_NotYetTriaged(".acl_policy_info")
 	return f
 }
