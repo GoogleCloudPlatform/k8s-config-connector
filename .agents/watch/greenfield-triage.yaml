@@ -18,8 +18,8 @@
 # lifecycle, the state on master: the greenfield-triage recipe), and the
 # result is commented on it: overseer/stop is added when it is blocked or
 # when the agent could not tell (the comment says what a person must
-# check); when it is ready, no label - a maintainer starts its graph by
-# adding overseer/graph. Once the triage
+# check); when it is ready, overseer/graph is added, which starts its
+# graph. Once the triage
 # is posted, overseer/triage comes off and overseer/triaged goes on (it
 # stays, to show the issue was triaged); adding overseer/triage again
 # triages again.
