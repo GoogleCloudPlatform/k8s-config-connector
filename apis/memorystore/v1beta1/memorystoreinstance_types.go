@@ -232,6 +232,10 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. Encryption information for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.encryption_info
 	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
+
+	// Output only. Zone distribution configuration for allocation of instance resources.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.zone_distribution_config
+	ZoneDistributionConfig *ZoneDistributionConfigObservedState `json:"zoneDistributionConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -311,6 +315,20 @@ type ZoneDistributionConfig struct {
 	// Optional. Current zone distribution mode. Defaults to MULTI_ZONE.
 	// +kcc:proto:field=google.cloud.memorystore.v1.ZoneDistributionConfig.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Immutable. Specify the zones of a multi-zone instance where Memorystore
+	//  instance allocates resources. This flag isn't applicable for single-zone
+	//  instances.
+	// +kcc:proto:field=google.cloud.memorystore.v1.ZoneDistributionConfig.zones
+	Zones []string `json:"zones,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.ZoneDistributionConfig
+type ZoneDistributionConfigObservedState struct {
+	// Output only. The exact list of zones where the instance currently has
+	//  active VMs.
+	// +kcc:proto:field=google.cloud.memorystore.v1.ZoneDistributionConfig.active_zones
+	ActiveZones []string `json:"activeZones,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.DiscoveryEndpoint

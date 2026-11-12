@@ -175,6 +175,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	return out
 }
 func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -196,6 +197,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
 	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
+	out.ZoneDistributionConfig = ZoneDistributionConfigObservedState_ToProto(mapCtx, in.ZoneDistributionConfig)
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
@@ -401,6 +403,7 @@ func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDist
 	out := &krmv1beta1.ZoneDistributionConfig{}
 	out.Zone = direct.LazyPtr(in.GetZone())
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.Zones = in.Zones
 	return out
 }
 func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ZoneDistributionConfig) *pb.ZoneDistributionConfig {
@@ -410,6 +413,25 @@ func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Zo
 	out := &pb.ZoneDistributionConfig{}
 	out.Zone = direct.ValueOf(in.Zone)
 	out.Mode = direct.Enum_ToProto[pb.ZoneDistributionConfig_ZoneDistributionMode](mapCtx, in.Mode)
+	out.Zones = in.Zones
+	return out
+}
+
+func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krmv1beta1.ZoneDistributionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.ZoneDistributionConfigObservedState{}
+	out.ActiveZones = in.ActiveZones
+	return out
+}
+
+func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ZoneDistributionConfig{}
+	out.ActiveZones = in.ActiveZones
 	return out
 }
 

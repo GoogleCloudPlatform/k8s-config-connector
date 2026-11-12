@@ -264,6 +264,9 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		obj.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
 	}
+	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_MULTI_ZONE && len(obj.ZoneDistributionConfig.Zones) > 0 {
+		obj.ZoneDistributionConfig.ActiveZones = obj.ZoneDistributionConfig.Zones
+	}
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}

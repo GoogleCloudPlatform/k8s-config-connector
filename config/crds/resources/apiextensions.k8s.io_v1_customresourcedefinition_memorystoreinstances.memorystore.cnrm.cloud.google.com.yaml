@@ -490,6 +490,13 @@ spec:
                     description: Optional. Defines zone where all resources will be
                       allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
                     type: string
+                  zones:
+                    description: Optional. Immutable. Specify the zones of a multi-zone
+                      instance where Memorystore instance allocates resources. This
+                      flag isn't applicable for single-zone instances.
+                    items:
+                      type: string
+                    type: array
                 type: object
             required:
             - location
@@ -781,6 +788,17 @@ spec:
                   updateTime:
                     description: Output only. Latest update timestamp of the instance.
                     type: string
+                  zoneDistributionConfig:
+                    description: Output only. Zone distribution configuration for
+                      allocation of instance resources.
+                    properties:
+                      activeZones:
+                        description: Output only. The exact list of zones where the
+                          instance currently has active VMs.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
             type: object
         required:
@@ -1255,6 +1273,13 @@ spec:
                     description: Optional. Defines zone where all resources will be
                       allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
                     type: string
+                  zones:
+                    description: Optional. Immutable. Specify the zones of a multi-zone
+                      instance where Memorystore instance allocates resources. This
+                      flag isn't applicable for single-zone instances.
+                    items:
+                      type: string
+                    type: array
                 type: object
             required:
             - location
@@ -1546,6 +1571,17 @@ spec:
                   updateTime:
                     description: Output only. Latest update timestamp of the instance.
                     type: string
+                  zoneDistributionConfig:
+                    description: Output only. Zone distribution configuration for
+                      allocation of instance resources.
+                    properties:
+                      activeZones:
+                        description: Output only. The exact list of zones where the
+                          instance currently has active VMs.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
             type: object
         required:
