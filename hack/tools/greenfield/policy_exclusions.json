@@ -1,0 +1,269 @@
+{
+  "description": "Resources dropped from the --manageability list by product/policy review: data-plane APIs (Datapath API), private-cloud-only APIs (Private Cloud), and resources with configuration drift risk (Drip risk). Patterns are matched against the google.api.resource type.",
+  "exclusions": [
+    {
+      "pattern": "^alloydb\\.googleapis\\.com/Database$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^bigquerystorage\\.googleapis\\.com/ReadSession$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^chat\\.googleapis\\.com/Attachment$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^chat\\.googleapis\\.com/Section$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^chat\\.googleapis\\.com/Space$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^cloudsupport\\.googleapis\\.com/Case$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^cloudsupport\\.googleapis\\.com/Comment$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^confidentialcomputing\\.googleapis\\.com/Challenge$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^dataqna\\.googleapis\\.com/Question$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^file\\.googleapis\\.com/Share$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^gdchardwaremanagement\\.googleapis\\.com/Comment$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^meet\\.googleapis\\.com/Space$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^moblab\\.googleapis\\.com/Session$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^monitoring\\.googleapis\\.com/Snooze$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^policysimulator\\.googleapis\\.com/OrgPolicyViolationsPreview$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^policysimulator\\.googleapis\\.com/Replay$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^privilegedaccessmanager\\.googleapis\\.com/Grant$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^resultstore\\.googleapis\\.com/Action$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^resultstore\\.googleapis\\.com/Configuration$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^resultstore\\.googleapis\\.com/ConfiguredTarget$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^resultstore\\.googleapis\\.com/FileSet$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^resultstore\\.googleapis\\.com/Target$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^translate\\.googleapis\\.com/Dataset$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^translate\\.googleapis\\.com/Glossary$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^translate\\.googleapis\\.com/GlossaryEntry$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^translate\\.googleapis\\.com/Model$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^videostitcher\\.googleapis\\.com/LiveConfig$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^videostitcher\\.googleapis\\.com/LiveSession$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^videostitcher\\.googleapis\\.com/Slate$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^videostitcher\\.googleapis\\.com/VodConfig$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^videostitcher\\.googleapis\\.com/VodSession$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vision\\.googleapis\\.com/ProductSet$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vision\\.googleapis\\.com/ReferenceImage$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Analysis$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Annotation$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Asset$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Cluster$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Collection$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Corpus$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/DataSchema$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Draft$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Event$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Index$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/IndexEndpoint$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Operator$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Process$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Processor$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/SearchConfig$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/SearchHypernym$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Series$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^visionai\\.googleapis\\.com/Stream$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/CloneJob$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/CutoverJob$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/DatacenterConnector$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/DiskMigrationJob$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/ImageImport$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/MigratingVm$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/Source$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/TargetProject$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^vmmigration\\.googleapis\\.com/UtilizationReport$",
+      "reason": "Datapath API"
+    },
+    {
+      "pattern": "^analyticsadmin\\.googleapis\\.com/GoogleAdsLink$",
+      "reason": "Drip risk"
+    },
+    {
+      "pattern": "^drivelabels\\.googleapis\\.com/LabelPermission$",
+      "reason": "Drip risk"
+    },
+    {
+      "pattern": "^baremetalsolution\\.googleapis\\.com/ProvisioningConfig$",
+      "reason": "Private Cloud"
+    },
+    {
+      "pattern": "^gdchardwaremanagement\\.googleapis\\.com/HardwareGroup$",
+      "reason": "Private Cloud"
+    },
+    {
+      "pattern": "^gdchardwaremanagement\\.googleapis\\.com/Order$",
+      "reason": "Private Cloud"
+    },
+    {
+      "pattern": "^gdchardwaremanagement\\.googleapis\\.com/Site$",
+      "reason": "Private Cloud"
+    }
+  ]
+}
