@@ -10,3 +10,12 @@
   6. Isolated generated proto bindings into `pkg/controller/direct/observability/pb` with an exception in `mappergenerator.go` (following the precedent of `connectors` and `cloudnumberregistry`) to avoid pulling in external `cloud.google.com/go/observability` dependencies that conflict with KCC's pinned `genproto`.
   7. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` via `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...`.
 - **Impact**: Enables clean mechanical scaffolding of `ObservabilityTraceScope` and unblocks Step 1b (judgement queue triage) and Phase 2 (controller implementation).
+
+### [2026-11-12] ObservabilityTraceScope Judgement Queue Triage and Types Finalization
+- **Context**: Triaged `apis/observability/judgement_queue.yaml` and finalized KRM types and identity for `ObservabilityTraceScope`.
+- **Decisions**:
+  1. Replaced separate `ProjectRef` and `Location` in `ObservabilityTraceScopeSpec` with inlined `*parent.ProjectAndLocationRef` (Case A: regional project-parented resource with pattern `projects/{project}/locations/{location}/traceScopes/{traceScope}`).
+  2. Converted `resourceNames []string` to `resourceNameRefs []refsv1beta1.ProjectRef` with `json:"resourceNameRefs,omitempty"`, reflecting the proto's `resource_reference` to `projects/*`.
+  3. Regenerated CRD and mappers via `./apis/observability/generate.sh`, verifying that mapper generator correctly pairs `ResourceNameRefs` with proto `resource_names`.
+  4. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for `observabilitytracescopes` and verified all apichecks pass cleanly.
+
