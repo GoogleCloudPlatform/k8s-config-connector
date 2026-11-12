@@ -55,7 +55,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowCXEntityType:EntityType \
-  --resource DialogflowCXWebhook:Webhook
+  --resource DialogflowCXWebhook:Webhook \
+  --resource DialogflowCXPage:Page
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
