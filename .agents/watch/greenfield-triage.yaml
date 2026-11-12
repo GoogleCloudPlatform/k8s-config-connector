@@ -24,6 +24,13 @@
 # stays, to show the issue was triaged); adding overseer/triage again
 # triages again.
 #
+# The trigger label (overseer) comes off too. A fan-out labels each child it
+# starts overseer and counts it in flight while it has the label; once
+# triaged, a ready child is its graph's parent (the graph does not need
+# overseer, and fix leaves a graph's parent alone) and a blocked one waits
+# under overseer/stop, so neither should hold a slot of the fan-out's
+# window. The fan-out does not label a child it started again.
+#
 # To triage a stopped issue again, once its blocker is cleared: take
 # overseer/stop off and add overseer/triage (the overseer skips an issue
 # labelled overseer/stop), or add overseer/graph to start it straight away.
@@ -43,7 +50,7 @@ run:
   recipe: greenfield-triage
   apply: [comment, label]
   on-success:
-    unlabel: [overseer/triage]
+    unlabel: [overseer/triage, "{{trigger}}"]
     label: [overseer/triaged]
 policy:
   cooldown:
