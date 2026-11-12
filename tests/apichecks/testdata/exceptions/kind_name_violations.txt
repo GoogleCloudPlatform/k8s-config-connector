@@ -1,0 +1,76 @@
+[kind-name-violation] kind=APIQuotaAdjusterSettings api=cloudquotas message=QuotaAdjusterSettings: the service prefix of API cloudquotas (CloudQuotas) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=APIQuotaPreference api=cloudquotas message=QuotaPreference: the service prefix of API cloudquotas (CloudQuotas) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=ApigeeregistryAPIDeployment api=apigeeregistry message=ApiDeployment: expected kind name is ApigeeRegistryAPIDeployment
+[kind-name-violation] kind=ApigeeregistryAPISpec api=apigeeregistry message=ApiSpec: expected kind name is ApigeeRegistryAPISpec
+[kind-name-violation] kind=ApihubSpec api=apihub message=Spec: expected kind name is APIHubSpec
+[kind-name-violation] kind=CCInsightsQaQuestion api=contactcenterinsights message=QaQuestion: expected kind name is CCInsightsQAQuestion
+[kind-name-violation] kind=CESApp api=ces message=App: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CesAgent api=ces message=Agent: the service prefix of API ces (CES) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CloudBatchResourceAllowance api=batch message=ResourceAllowance: expected kind name is BatchResourceAllowance
+[kind-name-violation] kind=CloudDMSConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CloudDMSMigrationJob api=datamigration message=MigrationJob: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CloudDMSPrivateConnection api=datamigration message=PrivateConnection: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=CloudNumberRegistryIpamAdminScope api=cloudnumberregistry message=IpamAdminScope: expected kind name is CloudNumberRegistryIPAMAdminScope
+[kind-name-violation] kind=CloudcontrolspartnerCustomer api=cloudcontrolspartner message=Customer: the service prefix of API cloudcontrolspartner (Cloudcontrolspartner) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=ComputeOrganizationSecurityPolicyRule api=compute message=FirewallPolicyRule: expected kind name is ComputeFirewallPolicyRule
+[kind-name-violation] kind=ConfigDeployment api=config message=Deployment: expected kind name is ConfigDeploymentDeployment
+[kind-name-violation] kind=ConfigdeliveryVariant api=configdelivery message=Variant: expected kind name is ConfigDeliveryVariant
+[kind-name-violation] kind=DataMigrationMappingRule api=datamigration message=MappingRule: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=DatabaseMigrationConversionWorkspace api=datamigration message=ConversionWorkspace: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=DatabaseMigrationMigrationJob api=datamigration message=MigrationJob: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=DatabaseMigrationPrivateConnection api=datamigration message=PrivateConnection: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=DataflowFlexTemplateJob api=dataflow message=FlexTemplateRuntimeEnvironment: expected kind name is DataflowFlexTemplateRuntimeEnvironment
+[kind-name-violation] kind=DatamigrationConnectionProfile api=datamigration message=ConnectionProfile: the service prefix of API datamigration (CloudDMS) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=DeveloperConnectGitRepositoryLink api=developerconnect message=GitRepositoryLink: expected kind name is DevConnectGitRepositoryLink
+[kind-name-violation] kind=DeviceStreamingSession api=devicestreaming message=DeviceSession: expected kind name is DeviceStreamingDeviceSession
+[kind-name-violation] kind=DialogflowEnvironment api=dialogflow message=Environment: expected kind name is DialogflowCXEnvironment
+[kind-name-violation] kind=DialogflowFlow api=dialogflow message=Flow: expected kind name is DialogflowCXFlow
+[kind-name-violation] kind=DialogflowPage api=dialogflow message=Page: expected kind name is DialogflowCXPage
+[kind-name-violation] kind=DialogflowPlaybook api=dialogflow message=Playbook: expected kind name is DialogflowCXPlaybook
+[kind-name-violation] kind=DialogflowSecuritySettings api=dialogflow message=SecuritySettings: expected kind name is DialogflowCXSecuritySettings
+[kind-name-violation] kind=DialogflowTransitionRouteGroup api=dialogflow message=TransitionRouteGroup: expected kind name is DialogflowCXTransitionRouteGroup
+[kind-name-violation] kind=DiscoveryEngineDataStoreTargetSite api=discoveryengine message=TargetSite: expected kind name is DiscoveryEngineTargetSite
+[kind-name-violation] kind=EdgenetworkRouter api=edgenetwork message=Router: expected kind name is EdgeNetworkRouter
+[kind-name-violation] kind=GKEHubFeatureMembership api=gkehub message=MembershipFeatureSpec: expected kind name is GKEHubMembershipFeatureSpec
+[kind-name-violation] kind=GKEMultiCloudAWSNodePool api=gkemulticloud message=AwsNodePool: the service prefix of API gkemulticloud (GKEMultiCloud) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=GKEMultiCloudAzureClient api=gkemulticloud message=AzureClient: the service prefix of API gkemulticloud (GKEMultiCloud) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=GKEMultiCloudAzureNodePool api=gkemulticloud message=AzureNodePool: the service prefix of API gkemulticloud (GKEMultiCloud) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=GKEMulticloudAttachedCluster api=gkemulticloud message=AttachedCluster: the service prefix of API gkemulticloud (GKEMultiCloud) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=GrafeasNote api=containeranalysis message=Note: the service prefix of API containeranalysis (ContainerAnalysis) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=KMSEkmConnection api=cloudkms message=EkmConnection: expected kind name is KMSEKMConnection
+[kind-name-violation] kind=MapmanagementMapContextConfig api=mapmanagement message=MapContextConfig: expected kind name is MapManagementMapContextConfig
+[kind-name-violation] kind=NetappQuotaRule api=netapp message=QuotaRule: expected kind name is NetAppQuotaRule
+[kind-name-violation] kind=NetappReplication api=netapp message=Replication: expected kind name is NetAppReplication
+[kind-name-violation] kind=NotebookInstance api=notebooks message=Instance: expected kind name is NotebooksInstance
+[kind-name-violation] kind=NotebookInstanceV2 api=notebooks message=Instance: expected kind name is NotebooksInstance
+[kind-name-violation] kind=RecaptchaEnterpriseKey api=recaptchaenterprise message=Key: expected kind name is ReCAPTCHAEnterpriseKey
+[kind-name-violation] kind=SQLAdminBackup api=sqladmin message=BackupRun: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=SQLInstance api=sqladmin message=DatabaseInstance: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=SQLSSLCert api=sqladmin message=SslCert: the service prefix of API sqladmin (SQLAdmin) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=SaasServiceMgmtRelease api=saasservicemgmt message=Release: expected kind name is SaaSServiceMgmtRelease
+[kind-name-violation] kind=SecuritycenterEventThreatDetectionCustomModule api=securitycenter message=EventThreatDetectionCustomModule: expected kind name is SecurityCenterEventThreatDetectionCustomModule
+[kind-name-violation] kind=SecuritycenterSecurityHealthAnalyticsCustomModule api=securitycenter message=SecurityHealthAnalyticsCustomModule: expected kind name is SecurityCenterSecurityHealthAnalyticsCustomModule
+[kind-name-violation] kind=Service api=serviceusage message=Service: the service prefix of API serviceusage (ServiceUsage) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=ServiceIdentity api=serviceusage message=ServiceIdentity: the service prefix of API serviceusage (ServiceUsage) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=TPUVirtualMachine api=tpu message=Node: expected kind name is TPUNode
+[kind-name-violation] kind=VectorsearchIndex api=vectorsearch message=Index: expected kind name is VectorSearchIndex
+[kind-name-violation] kind=VertexAIDataLabelingJob api=aiplatform message=DataLabelingJob: expected kind name is AIPlatformDataLabelingJob
+[kind-name-violation] kind=VertexAIDataset api=aiplatform message=Dataset: expected kind name is AIPlatformDataset
+[kind-name-violation] kind=VertexAIDeploymentResourcePool api=aiplatform message=DeploymentResourcePool: expected kind name is AIPlatformDeploymentResourcePool
+[kind-name-violation] kind=VertexAIExampleStore api=aiplatform message=ExampleStore: expected kind name is AIPlatformExampleStore
+[kind-name-violation] kind=VertexAIFeatureGroup api=aiplatform message=FeatureGroup: expected kind name is AIPlatformFeatureGroup
+[kind-name-violation] kind=VertexAIFeatureOnlineStore api=aiplatform message=FeatureOnlineStore: expected kind name is AIPlatformFeatureOnlineStore
+[kind-name-violation] kind=VertexAIFeaturestore api=aiplatform message=Featurestore: expected kind name is AIPlatformFeaturestore
+[kind-name-violation] kind=VertexAIFeaturestoreEntityType api=aiplatform message=EntityType: expected kind name is AIPlatformEntityType
+[kind-name-violation] kind=VertexAIFeaturestoreEntityTypeFeature api=aiplatform message=Feature: expected kind name is AIPlatformFeature
+[kind-name-violation] kind=VertexAIMetadataStore api=aiplatform message=MetadataStore: expected kind name is AIPlatformMetadataStore
+[kind-name-violation] kind=VertexAIStudy api=aiplatform message=Study: expected kind name is AIPlatformStudy
+[kind-name-violation] kind=VertexAITensorboard api=aiplatform message=Tensorboard: expected kind name is AIPlatformTensorboard
+[kind-name-violation] kind=VertexAITensorboardExperiment api=aiplatform message=TensorboardExperiment: expected kind name is AIPlatformTensorboardExperiment
+[kind-name-violation] kind=VertexAITrainingPipeline api=aiplatform message=TrainingPipeline: expected kind name is AIPlatformTrainingPipeline
+[kind-name-violation] kind=VertexAITuningJob api=aiplatform message=TuningJob: expected kind name is AIPlatformTuningJob
+[kind-name-violation] kind=WebSecurityScannerScanConfig api=websecurityscanner message=ScanConfig: the service prefix of API websecurityscanner (WebSecurityScanner) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=WorkflowsExecution api=workflowexecutions message=Execution: the service prefix of API workflowexecutions (WorkflowExecutions) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=Workstation api=workstations message=Workstation: the service prefix of API workstations (Workstations) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=WorkstationCluster api=workstations message=WorkstationCluster: the service prefix of API workstations (Workstations) is pending approval in service-prefix-pending.yaml
+[kind-name-violation] kind=WorkstationConfig api=workstations message=WorkstationConfig: the service prefix of API workstations (Workstations) is pending approval in service-prefix-pending.yaml

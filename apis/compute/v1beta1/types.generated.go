@@ -57,7 +57,7 @@
 // resource: ComputeTargetInstance:TargetInstance
 // resource: ComputeTargetPool:TargetPool
 // resource: ComputeTargetSSLProxy:TargetSslProxy
-// resource: ComputeTargetTcpProxy:TargetTcpProxy
+// resource: ComputeTargetTCPProxy:TargetTcpProxy
 // resource: ComputeTargetVPNGateway:TargetVpnGateway
 // resource: ComputeURLMap:UrlMap
 // resource: ComputeVPNGateway:VpnGateway
