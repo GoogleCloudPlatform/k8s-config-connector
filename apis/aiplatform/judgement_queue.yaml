@@ -25,45 +25,61 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged all findings; updated parentRef to *vertexaiv1beta1.MetadataStoreRef, moved etag to observedState, removed spec.labels, fixed docs link, and verified identity/references.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-root-unknown
     detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformArtifactSpec
-    status: open
+    status: resolved
+    resolution: edited
+    note: resolved by modelling spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per single-parent rule.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: CreateArtifactRequest supports client-specified artifact_id; implements IdentityV2.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     reason: parent-ref-not-modelled
     detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: modelled spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) reusing existing MetadataStoreRef in apis/vertexai/v1beta1 per single-parent rule.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.artifacts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.artifacts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.artifacts'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com URL and removed +kcc:guess tag.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from spec to observedState.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced projectRef and location with required spec.parentRef (*vertexaiv1beta1.MetadataStoreRef) per single-parent rule.
   - kind: AIPlatformArtifact
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.state
     reason: possible-status-field-in-spec
     detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: accepted
+    note: user-configurable state managed by clients per proto comment; retained in spec.
   - kind: AIPlatformCachedContent
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

@@ -156,3 +156,23 @@
   3. **Release Bundle Blocklist**: Added `"AIPlatformArtifact"` in alphabetical order to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
   4. **Judgement Queue & API Checks**: Open review findings were recorded in `apis/aiplatform/judgement_queue.yaml` for Step 1b triage. Golden test exceptions were recorded in `alpha-missingfields.txt` and `spec_dislike_etag.txt`.
 
+### [2026-11-12] Greenfield Step 1b: Triaging Judgement Queue and Finalizing Direct KRM Types for AIPlatformArtifact
+- **Context**: Finalizing KRM types, parent reference, and triaging `apis/aiplatform/judgement_queue.yaml` for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15505).
+- **Implementation & Learnings**:
+  1. **Single-Parent Rule (`spec.parentRef`)**:
+     - `Artifact` is a child resource under `projects/{project}/locations/{location}/metadataStores/{metadata_store}`.
+     - Following `PARENT_AND_IDENTITY.md` Case B, replaced `projectRef` and `location` with required, immutable `spec.parentRef *vertexaiv1beta1.MetadataStoreRef`.
+     - Reused existing `MetadataStoreRef` from `apis/vertexai/v1beta1/`.
+  2. **Updating `MetadataStoreRef` to Implement `refs.Ref`**:
+     - `MetadataStoreRef` in `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go` had legacy `NormalizedExternal` but did not implement modern `refs.Ref` methods (`GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`, `Normalize`), which caused `controllerbuilder generate-identity` normalization to fail compilation.
+     - Implemented `refs.Ref` on `MetadataStoreRef` and `identity.Identity` on `MetadataStoreIdentity`, preserving the existing struct schema and backwards compatibility with `NormalizedExternal`.
+  3. **Field Triage & Cleanup**:
+     - Moved `etag` from `AIPlatformArtifactSpec` to `AIPlatformArtifactObservedState`.
+     - Removed `spec.labels` (reconciled through `metadata.labels`).
+     - Kept `state` in `spec` as the proto comments indicate it is client-managed state.
+     - Fixed `+kcc:source:resource-docs` link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.artifacts` and removed `+kcc:guess` marker.
+  4. **Judgement Queue Resolution**:
+     - Triaged and marked all 8 entries for `AIPlatformArtifact` in `apis/aiplatform/judgement_queue.yaml` as `resolved`.
+     - Closed `untriaged-bulk-generation` last with summary note.
+
+

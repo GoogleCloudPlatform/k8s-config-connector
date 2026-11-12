@@ -45,6 +45,8 @@ func AIPlatformArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	}
 	out := &krm.AIPlatformArtifactObservedState{}
 	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -56,6 +58,8 @@ func AIPlatformArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	}
 	out := &pb.Artifact{}
 	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -69,8 +73,7 @@ func AIPlatformArtifactSpec_FromProto(mapCtx *direct.MapContext, in *pb.Artifact
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.URI = direct.LazyPtr(in.GetUri())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
 	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
@@ -89,8 +92,7 @@ func AIPlatformArtifactSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfor
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Uri = direct.ValueOf(in.URI)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.State = direct.Enum_ToProto[pb.Artifact_State](mapCtx, in.State)
 	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
 	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
