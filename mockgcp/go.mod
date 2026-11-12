@@ -49,7 +49,6 @@ require (
 	cloud.google.com/go/devicestreaming v1.0.0
 	cloud.google.com/go/dialogflow v1.82.0
 	cloud.google.com/go/discoveryengine v1.32.0
-	cloud.google.com/go/dlp v1.38.0
 	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/edgenetwork v1.8.0
@@ -100,7 +99,6 @@ require (
 	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
-	cloud.google.com/go/websecurityscanner v1.12.0
 	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workloadmanager v1.1.0
 	cloud.google.com/go/workstations v1.1.6

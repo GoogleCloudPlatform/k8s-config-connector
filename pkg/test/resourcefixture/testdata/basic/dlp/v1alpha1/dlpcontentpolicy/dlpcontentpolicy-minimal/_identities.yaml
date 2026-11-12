@@ -1,6 +1,0 @@
-- caisURL: //dlp.googleapis.com/projects/${projectId}/locations/global/contentPolicies/dlpcontentpolicy-minimal-${uniqueId}
-  group: dlp.cnrm.cloud.google.com
-  kind: DLPContentPolicy
-  name: dlpcontentpolicy-minimal-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1alpha1
