@@ -35,22 +35,9 @@
 // resource: ComputeHealthCheckService:HealthCheckService
 // resource: ComputeVMExtensionPolicy:VmExtensionPolicy
 // resource: ComputeNotificationEndpoint:NotificationEndpoint
+// resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 package v1alpha1
-
-/* found existing non-generated go type "AcceleratorConfig", skipping
-
-// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
-type AcceleratorConfig struct {
-	// The number of the guest accelerator cards exposed to this instance.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
-	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
-
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-}
-*/
 
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
@@ -571,20 +558,6 @@ type Data struct {
 }
 */
 
-/* found existing non-generated go type "Duration", skipping
-
-// +kcc:proto=google.cloud.compute.v1.Duration
-type Duration struct {
-	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-
-	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
-	Seconds *int64 `json:"seconds,omitempty"`
-}
-*/
-
 /* unreachable type Expr
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -806,6 +779,48 @@ type GuestOSFeature struct {
 	//  Check the Type enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
 	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthAggregationPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthAggregationPolicy
+type HealthAggregationPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.healthy_percent_threshold
+	HealthyPercentThreshold *uint32 `json:"healthyPercentThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.min_healthy_threshold
+	MinHealthyThreshold *uint32 `json:"minHealthyThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 
@@ -3388,5 +3403,26 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthAggregationPolicy", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.HealthAggregationPolicy
+type HealthAggregationPolicyObservedState struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */

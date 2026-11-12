@@ -73,6 +73,13 @@ ${CONTROLLERBUILDER} generate-identity \
   --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
   --pattern ComputeCrossSiteNetwork="projects/{project}/global/crossSiteNetworks/{crossSiteNetwork}"
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
+
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 ${CONTROLLERBUILDER} generate-identity \
@@ -85,6 +92,11 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \

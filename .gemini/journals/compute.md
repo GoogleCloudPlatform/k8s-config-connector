@@ -169,6 +169,18 @@
   6. **Testing**: Added comprehensive unit tests in `computenotificationendpoint_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeNotificationEndpointRef.ValidateExternal`/`Normalize`. Re-recorded golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 - **Impact**: Cleanly resolved all 9 entries in `apis/compute/judgement_queue.yaml`. All unit tests, API checks, and linters pass cleanly.
 
+### [2026-11-12] Greenfield: Prepopulate direct KRM types, identity, and judgement queue for ComputeHealthAggregationPolicy
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for `ComputeHealthAggregationPolicy` (issue #15466).
+- **Proto & Service**:
+  - `HealthAggregationPolicy` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `RegionHealthAggregationPolicies` service (`projects/{project}/regions/{region}/healthAggregationPolicies/{healthAggregationPolicy}`).
+  - Pinned `apis/git.versions` (`1765b559c4`) predates the inclusion of `HealthAggregationPolicy` in `compute.proto` (which was merged upstream in revision 20261026). Similar to `SecurityPolicyAssociation`, patched `dev/tools/controllerbuilder/generate-proto.sh` to include `HealthAggregationPolicy` and `RegionHealthAggregationPolicies` during proto compilation.
+- **Scaffolding**:
+  - Ran `generate-types` with `--prepopulate-resource` for `ComputeHealthAggregationPolicy:HealthAggregationPolicy` and `generate-identity`.
+  - Added `ComputeHealthAggregationPolicy` to `apis/compute/generate.sh` and added to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  - Regenerated CRDs and updated test exception for alpha missing fields (`tests/apichecks/testdata/exceptions/alpha-missingfields.txt`).
+- **Verification**:
+  - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
+
 ### [2026-11-13] Greenfield Controller, Fuzzer, and E2E Fixtures for ComputeVMExtensionPolicy
 - **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeVMExtensionPolicy` (issue #15517).
 - **Findings & Implementation**:
@@ -191,6 +203,4 @@
   3. **Harness Support**: Added `ComputeVMExtensionPolicy` to the mock supported kinds in `config/tests/samples/create/harness.go`.
   4. **Normalization**: Configured normalization in `mockgcp/mockcompute/normalize.go` and `tests/e2e/normalize.go` for `updateTimestamp` (`mockgcpregistry.PlaceholderTimestamp` / `mockgcpregistry.PlaceholderTime`) matching server timestamps.
   5. **Validation**: Ran `hack/compare-mock` for minimal and maximal fixtures; both passed with zero diff in golden objects and mock HTTP logs (`_http_mock.log`), and verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` succeeded.
-
-
 
