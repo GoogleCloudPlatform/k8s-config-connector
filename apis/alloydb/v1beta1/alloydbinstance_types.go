@@ -138,6 +138,45 @@ type Instance_ConnectionPoolConfig struct {
 	Flags map[string]string `json:"flags,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
+type Instance_PSCInstanceConfig struct {
+	// Optional. List of consumer projects that are allowed to create
+	// PSC endpoints to service-attachments to this instance.
+	// Specify project numbers if Config Connector cannot read the consumer project.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.allowed_consumer_projects
+	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	// Optional. Configurations for setting up PSC interfaces attached to the
+	// instance which are used for outbound connectivity. Only primary instances
+	// can have PSC interface attached. Currently we only support 0 or 1 PSC
+	// interface.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_interface_configs
+	PSCInterfaceConfigs []Instance_PSCInterfaceConfig `json:"pscInterfaceConfigs,omitempty"`
+
+	// Optional. Configurations for setting up PSC service automation.
+	// Specify project numbers if Config Connector cannot read the consumer project.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
+	PSCAutoConnections []Instance_PSCAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
+
+	// Optional. Configuration for setting up PSC auto DNS for the instance.
+	// For new PSC instances, leaving this field unset enables PSC auto DNS by default.
+	// Check status.observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled for the effective state.
+	// Possible values: ["PSC_AUTO_DNS_STATE_ENABLED", "PSC_AUTO_DNS_STATE_DISABLED"].
+	// +kubebuilder:validation:Enum=PSC_AUTO_DNS_STATE_ENABLED;PSC_AUTO_DNS_STATE_DISABLED
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_dns_state
+	PSCAutoDNSState *string `json:"pscAutoDNSState,omitempty"`
+
+	// Optional. Configuration for setting up PSC auto connection policy automation for the instance.
+	// For new PSC instances, leaving this field unset enables PSC auto connection policy automation by default.
+	// When enabled, AlloyDB may create or update a Network Connectivity ServiceConnectionPolicy in the consumer
+	// network that Config Connector does not manage or delete, and deleting the AlloyDBInstance does not delete
+	// that policy. Check status.observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy for the effective state.
+	// Possible values: ["ENABLED", "DISABLED"].
+	// +kubebuilder:validation:Enum=ENABLED;DISABLED
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connection_policy_state
+	PSCAutoConnectionPolicyState *string `json:"pscAutoConnectionPolicyState,omitempty"`
+}
+
 // AlloyDBInstanceStatus defines the config connector machine state of AlloyDBInstance
 // +kcc:status:proto=google.cloud.alloydb.v1beta.Instance
 type AlloyDBInstanceStatus struct {
@@ -216,6 +255,25 @@ type Instance_ConnectionPoolConfigObservedState struct {
 	// Output only. The number of running poolers per instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
 	PoolerCount *int32 `json:"poolerCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
+type Instance_PSCInstanceConfigObservedState struct {
+	// Output only. The service attachment created when Private
+	// Service Connect (PSC) is enabled for the instance.
+	// The name of the resource will be in the format of
+	// `projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>`
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.service_attachment_link
+	ServiceAttachmentLink *string `json:"serviceAttachmentLink,omitempty"`
+
+	// Output only. The DNS name of the instance for PSC connectivity.
+	// Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_dns_name
+	PSCDNSName *string `json:"pscDNSName,omitempty"`
+
+	// Optional. Configurations for setting up PSC service automation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
+	PSCAutoConnections []Instance_PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
 }
 
 // +genclient

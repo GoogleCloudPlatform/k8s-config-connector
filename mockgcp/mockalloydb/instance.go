@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -28,7 +29,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
+	ncpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+const alloydbPSCServiceClass = "google-cloud-alloydb"
 
 func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {
 	name, err := s.parseInstanceName(req.Name)
@@ -45,10 +50,169 @@ func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		return nil, err
 	}
 
-	return obj, nil
+	ret := proto.CloneOf(obj)
+	if ret.GetPscInstanceConfig() != nil {
+		s.refreshPSCStatus(ctx, name, ret)
+	}
+	return ret, nil
 }
 
-func setInstanceFields(name *instanceName, obj *pb.Instance) {
+func (s *AlloyDBAdminV1) isClusterPSCEnabled(ctx context.Context, name *instanceName) bool {
+	if s == nil || s.storage == nil || name == nil || name.Project == nil {
+		return false
+	}
+	parent := clusterName{Project: name.Project, Location: name.Location, ClusterName: name.ClusterName}
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, parent.String(), cluster); err != nil {
+		return false
+	}
+	return cluster.GetPscConfig().GetPscEnabled()
+}
+
+func (s *AlloyDBAdminV1) normalizeMockNetworkPath(network string) string {
+	trimmed := strings.TrimSpace(network)
+	for _, prefix := range []string{
+		"https://www.googleapis.com/compute/v1/",
+		"https://compute.googleapis.com/compute/v1/",
+		"//compute.googleapis.com/",
+	} {
+		trimmed = strings.TrimPrefix(trimmed, prefix)
+	}
+	trimmed = strings.TrimPrefix(trimmed, "/")
+	parts := strings.Split(trimmed, "/")
+	if len(parts) == 5 && parts[0] == "projects" && parts[2] == "global" && parts[3] == "networks" && parts[4] != "" {
+		if s != nil && s.Projects != nil {
+			if proj, err := s.Projects.GetProjectByIDOrNumber(parts[1]); err == nil && proj != nil {
+				parts[1] = proj.ID
+			}
+		}
+		return strings.Join(parts, "/")
+	}
+	return trimmed
+}
+
+func (s *AlloyDBAdminV1) findMatchingServiceConnectionPolicy(ctx context.Context, location, consumerNetwork string) string {
+	if s == nil || s.storage == nil || consumerNetwork == "" {
+		return ""
+	}
+	normalizedTargetNet := s.normalizeMockNetworkPath(consumerNetwork)
+	parts := strings.Split(normalizedTargetNet, "/")
+	prefix := ""
+	if len(parts) == 5 && parts[0] == "projects" {
+		prefix = fmt.Sprintf("projects/%s/locations/%s/serviceConnectionPolicies/", parts[1], location)
+	}
+
+	var matchedName string
+	scpKind := (&ncpb.ServiceConnectionPolicy{}).ProtoReflect().Descriptor()
+	_ = s.storage.List(ctx, scpKind, storage.ListOptions{Prefix: prefix}, func(msg proto.Message) error {
+		scp, ok := msg.(*ncpb.ServiceConnectionPolicy)
+		if !ok {
+			return nil
+		}
+		if prefix == "" && !strings.Contains(scp.GetName(), "/locations/"+location+"/serviceConnectionPolicies/") {
+			return nil
+		}
+		if scp.GetServiceClass() == alloydbPSCServiceClass && s.normalizeMockNetworkPath(scp.GetNetwork()) == normalizedTargetNet {
+			matchedName = scp.GetName()
+		}
+		return nil
+	})
+	return matchedName
+}
+
+func (s *AlloyDBAdminV1) normalizePSCConfigInputs(obj *pb.Instance) {
+	if obj.PscInstanceConfig == nil {
+		return
+	}
+	if len(obj.PscInstanceConfig.AllowedConsumerProjects) > 0 {
+		seen := make(map[string]bool, len(obj.PscInstanceConfig.AllowedConsumerProjects))
+		deduped := make([]string, 0, len(obj.PscInstanceConfig.AllowedConsumerProjects))
+		for _, p := range obj.PscInstanceConfig.AllowedConsumerProjects {
+			resolved := strings.TrimPrefix(strings.TrimSpace(p), "projects/")
+			if s != nil && s.Projects != nil {
+				if proj, err := s.Projects.GetProjectByIDOrNumber(resolved); err == nil && proj != nil {
+					resolved = strconv.FormatInt(proj.Number, 10)
+				}
+			}
+			if !seen[resolved] {
+				seen[resolved] = true
+				deduped = append(deduped, resolved)
+			}
+		}
+		obj.PscInstanceConfig.AllowedConsumerProjects = deduped
+	}
+	if len(obj.PscInstanceConfig.PscAutoConnections) > 0 {
+		type connKey struct {
+			project string
+			network string
+		}
+		seen := make(map[connKey]bool, len(obj.PscInstanceConfig.PscAutoConnections))
+		deduped := make([]*pb.Instance_PscAutoConnectionConfig, 0, len(obj.PscInstanceConfig.PscAutoConnections))
+		for _, ac := range obj.PscInstanceConfig.PscAutoConnections {
+			if ac == nil {
+				continue
+			}
+			projID := strings.TrimPrefix(strings.TrimSpace(ac.GetConsumerProject()), "projects/")
+			if s != nil && s.Projects != nil && projID != "" {
+				if proj, err := s.Projects.GetProjectByIDOrNumber(projID); err == nil && proj != nil {
+					projID = proj.ID
+				}
+			}
+			netPath := s.normalizeMockNetworkPath(ac.GetConsumerNetwork())
+			key := connKey{project: projID, network: netPath}
+			if seen[key] {
+				continue
+			}
+			seen[key] = true
+			cloned := proto.CloneOf(ac)
+			cloned.ConsumerProject = projID
+			cloned.ConsumerNetwork = netPath
+			deduped = append(deduped, cloned)
+		}
+		obj.PscInstanceConfig.PscAutoConnections = deduped
+	}
+}
+
+func (s *AlloyDBAdminV1) refreshPSCStatus(ctx context.Context, name *instanceName, obj *pb.Instance) {
+	if obj.PscInstanceConfig == nil {
+		return
+	}
+	dnsEnabled := obj.PscInstanceConfig.PscAutoDnsState != pb.Instance_PSC_AUTO_DNS_STATE_DISABLED
+	policyEnabled := obj.PscInstanceConfig.PscAutoConnectionPolicyState != pb.Instance_PscInstanceConfig_DISABLED
+
+	hasActiveConnection := false
+	matchedPolicyName := ""
+	for _, ac := range obj.PscInstanceConfig.PscAutoConnections {
+		policyName := s.findMatchingServiceConnectionPolicy(ctx, name.Location, ac.GetConsumerNetwork())
+		if policyName != "" {
+			ac.ConsumerNetworkStatus = "VALID"
+			ac.Status = "ACTIVE"
+			ac.IpAddress = "10.0.0.2"
+			hasActiveConnection = true
+			if policyEnabled && matchedPolicyName == "" {
+				matchedPolicyName = policyName
+			}
+		} else {
+			ac.ConsumerNetworkStatus = "CONNECTION_POLICY_MISSING"
+			ac.Status = ""
+			ac.IpAddress = ""
+		}
+	}
+
+	info := &pb.Instance_PscInstanceInfo{
+		EffectivePscAutoDnsEnabled:       dnsEnabled,
+		EffectivePscAutoConnectionPolicy: policyEnabled,
+		ServiceConnectionPolicy:          matchedPolicyName,
+	}
+	if dnsEnabled && hasActiveConnection {
+		info.PscAutoDnsNames = []string{
+			fmt.Sprintf("00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.%s.alloydb.goog.", name.Location),
+		}
+	}
+	obj.PscInstanceInfo = info
+}
+
+func (s *AlloyDBAdminV1) setInstanceFields(ctx context.Context, name *instanceName, obj *pb.Instance) {
 	// Set default values to optional fields when unset.
 	if obj.ClientConnectionConfig == nil {
 		obj.ClientConnectionConfig = &pb.Instance_ClientConnectionConfig{
@@ -115,10 +279,14 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
-	if obj.PscInstanceConfig == nil {
-		obj.IpAddress = "10.1.2.3"
-	} else {
+	isPSC := s.isClusterPSCEnabled(ctx, name) || obj.GetPscInstanceConfig() != nil
+	if isPSC {
 		obj.IpAddress = ""
+		if obj.PscInstanceConfig == nil {
+			obj.PscInstanceConfig = &pb.Instance_PscInstanceConfig{}
+		}
+	} else {
+		obj.IpAddress = "10.1.2.3"
 	}
 	obj.State = pb.Instance_READY
 	obj.Uid = "12345678"
@@ -143,20 +311,11 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.NetworkConfig != nil && obj.NetworkConfig.EnablePublicIp {
 		obj.PublicIpAddress = "34.88.151.45"
 	}
-	if obj.PscInstanceConfig != nil {
+	if isPSC {
 		obj.PscInstanceConfig.ServiceAttachmentLink = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/tenant-project/regions/%s/serviceAttachments/alloydb-psc-sa", name.Location)
 		obj.PscInstanceConfig.PscDnsName = fmt.Sprintf("00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.%s.alloydb-psc.goog.", name.Location)
-		for _, ac := range obj.PscInstanceConfig.PscAutoConnections {
-			if ac.ConsumerNetworkStatus == "" {
-				ac.ConsumerNetworkStatus = "CONNECTION_POLICY_MISSING"
-			}
-		}
-		dnsEnabled := obj.PscInstanceConfig.PscAutoDnsState != pb.Instance_PSC_AUTO_DNS_STATE_DISABLED
-		policyEnabled := obj.PscInstanceConfig.PscAutoConnectionPolicyState != pb.Instance_PscInstanceConfig_DISABLED
-		obj.PscInstanceInfo = &pb.Instance_PscInstanceInfo{
-			EffectivePscAutoDnsEnabled:       dnsEnabled,
-			EffectivePscAutoConnectionPolicy: policyEnabled,
-		}
+		s.normalizePSCConfigInputs(obj)
+		s.refreshPSCStatus(ctx, name, obj)
 	}
 }
 
@@ -172,7 +331,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
 	log.Printf("vkanishk: Creating instance with name: %s", fqn)
-	setInstanceFields(name, obj)
+	s.setInstanceFields(ctx, name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -197,7 +356,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.Cr
 
 	obj := proto.CloneOf(req.Instance)
 	obj.Name = fqn
-	setInstanceFields(name, obj)
+	s.setInstanceFields(ctx, name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -283,7 +442,7 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	}
 
 	// Re-apply defaults/output-only fields
-	setInstanceFields(name, obj)
+	s.setInstanceFields(ctx, name, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

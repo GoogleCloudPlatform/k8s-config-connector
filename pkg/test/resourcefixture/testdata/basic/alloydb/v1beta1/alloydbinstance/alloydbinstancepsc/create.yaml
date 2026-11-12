@@ -26,10 +26,10 @@ spec:
     cpuCount: 2
   pscInstanceConfig:
     allowedConsumerProjects:
-      - "${projectNumber}"
+      - "${projectId}"
     pscAutoConnections:
       - consumerProject: "${projectId}"
-        consumerNetwork: "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+        consumerNetwork: "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
     pscInterfaceConfigs:
       - networkAttachmentResource: "projects/${projectNumber}/regions/europe-west1/networkAttachments/na-${uniqueId}"
     pscAutoDNSState: PSC_AUTO_DNS_STATE_ENABLED

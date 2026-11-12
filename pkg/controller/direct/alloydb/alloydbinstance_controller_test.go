@@ -18,11 +18,20 @@ import (
 	"context"
 	"reflect"
 	"testing"
+	"time"
 
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func newTestProjectMapper() *projects.ProjectMapper {
+	cache := projects.NewProjectCache(nil, time.Hour)
+	cache.InsertForTest("my-project", 123456789)
+	cache.InsertForTest("other-project", 987654321)
+	return projects.NewProjectMapper(cache)
+}
 
 func TestAlloyDBInstancePSCMappings(t *testing.T) {
 	mapCtx := &direct.MapContext{}
@@ -97,22 +106,24 @@ func TestAlloyDBInstancePSCMappings(t *testing.T) {
 
 func TestCompareInstancePSC(t *testing.T) {
 	ctx := context.Background()
+	mapper := newTestProjectMapper()
+
 	actual := &krm.AlloyDBInstanceSpec{
 		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
-			AllowedConsumerProjects:      []string{"111"},
+			AllowedConsumerProjects:      []string{"123456789"},
 			PSCAutoDNSState:              direct.PtrTo("PSC_AUTO_DNS_STATE_ENABLED"),
 			PSCAutoConnectionPolicyState: direct.PtrTo("ENABLED"),
 		},
 	}
 	desired := &krm.AlloyDBInstanceSpec{
 		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
-			AllowedConsumerProjects:      []string{"111", "222"},
+			AllowedConsumerProjects:      []string{"123456789", "987654321"},
 			PSCAutoDNSState:              direct.PtrTo("PSC_AUTO_DNS_STATE_DISABLED"),
 			PSCAutoConnectionPolicyState: direct.PtrTo("DISABLED"),
 		},
 	}
 
-	paths, err := compareInstance(ctx, actual, desired)
+	paths, err := compareInstance(ctx, actual, desired, mapper)
 	if err != nil {
 		t.Fatalf("compareInstance returned unexpected error: %v", err)
 	}
@@ -124,25 +135,167 @@ func TestCompareInstancePSC(t *testing.T) {
 	if !reflect.DeepEqual(paths, wantPaths) {
 		t.Errorf("compareInstance paths = %v, want %v", paths, wantPaths)
 	}
+}
 
-	// Verify that explicit *_UNSPECIFIED does not trigger a diff when actual enum is nil (0 in proto).
-	actualUnspecified := &krm.AlloyDBInstanceSpec{
+func TestCompareInstancePSCNormalizationAndUnspecified(t *testing.T) {
+	ctx := context.Background()
+	mapper := newTestProjectMapper()
+
+	// GCP returns project numbers in allowedConsumerProjects and project IDs in pscAutoConnections.
+	actual := &krm.AlloyDBInstanceSpec{
 		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
-			AllowedConsumerProjects: []string{"111"},
+			AllowedConsumerProjects: []string{"123456789", "987654321"},
+			PSCAutoConnections: []krm.Instance_PSCAutoConnectionConfig{
+				{
+					ConsumerProject: direct.PtrTo("my-project"),
+					ConsumerNetwork: direct.PtrTo("projects/my-project/global/networks/net-a"),
+				},
+				{
+					ConsumerProject: direct.PtrTo("other-project"),
+					ConsumerNetwork: direct.PtrTo("projects/other-project/global/networks/net-b"),
+				},
+			},
+			PSCInterfaceConfigs: []krm.Instance_PSCInterfaceConfig{
+				{
+					NetworkAttachmentResource: direct.PtrTo("projects/123456789/regions/us-central1/networkAttachments/my-na"),
+				},
+			},
+			PSCAutoDNSState:              direct.PtrTo("PSC_AUTO_DNS_STATE_ENABLED"),
+			PSCAutoConnectionPolicyState: direct.PtrTo("ENABLED"),
 		},
 	}
-	desiredUnspecified := &krm.AlloyDBInstanceSpec{
+
+	// Desired uses project IDs + duplicates + reversed order in allowedConsumerProjects,
+	// project numbers + full Compute URI + duplicates + reversed order in pscAutoConnections,
+	// project ID + full Compute URI in pscInterfaceConfigs,
+	// and *_UNSPECIFIED on enums when actual has non-nil values.
+	desired := &krm.AlloyDBInstanceSpec{
 		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
-			AllowedConsumerProjects:      []string{"111"},
+			AllowedConsumerProjects: []string{"other-project", "my-project", "123456789"},
+			PSCAutoConnections: []krm.Instance_PSCAutoConnectionConfig{
+				{
+					ConsumerProject: direct.PtrTo("987654321"),
+					ConsumerNetwork: direct.PtrTo("https://www.googleapis.com/compute/v1/projects/987654321/global/networks/net-b"),
+				},
+				{
+					ConsumerProject: direct.PtrTo("my-project"),
+					ConsumerNetwork: direct.PtrTo("projects/123456789/global/networks/net-a"),
+				},
+				{
+					ConsumerProject: direct.PtrTo("123456789"),
+					ConsumerNetwork: direct.PtrTo("projects/my-project/global/networks/net-a"),
+				},
+			},
+			PSCInterfaceConfigs: []krm.Instance_PSCInterfaceConfig{
+				{
+					NetworkAttachmentResource: direct.PtrTo("https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/networkAttachments/my-na"),
+				},
+			},
 			PSCAutoDNSState:              direct.PtrTo("PSC_AUTO_DNS_STATE_UNSPECIFIED"),
 			PSCAutoConnectionPolicyState: direct.PtrTo("PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED"),
 		},
 	}
-	unspecifiedPaths, err := compareInstance(ctx, actualUnspecified, desiredUnspecified)
+
+	paths, err := compareInstance(ctx, actual, desired, mapper)
 	if err != nil {
-		t.Fatalf("compareInstance returned unexpected error for UNSPECIFIED: %v", err)
+		t.Fatalf("compareInstance returned unexpected error: %v", err)
 	}
-	if len(unspecifiedPaths) != 0 {
-		t.Errorf("compareInstance paths for UNSPECIFIED = %v, want empty", unspecifiedPaths)
+	if len(paths) != 0 {
+		t.Errorf("expected zero updatePaths after normalization, got %v", paths)
+	}
+
+	// Also verify *_UNSPECIFIED when actual enum pointers are nil.
+	actualNilEnums := &krm.AlloyDBInstanceSpec{
+		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
+			AllowedConsumerProjects: []string{"123456789"},
+		},
+	}
+	desiredNilEnums := &krm.AlloyDBInstanceSpec{
+		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
+			AllowedConsumerProjects:      []string{"my-project"},
+			PSCAutoDNSState:              direct.PtrTo("PSC_AUTO_DNS_STATE_UNSPECIFIED"),
+			PSCAutoConnectionPolicyState: direct.PtrTo("PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED"),
+		},
+	}
+	pathsNilEnums, err := compareInstance(ctx, actualNilEnums, desiredNilEnums, mapper)
+	if err != nil {
+		t.Fatalf("compareInstance returned unexpected error for nil actual enums: %v", err)
+	}
+	if len(pathsNilEnums) != 0 {
+		t.Errorf("expected zero updatePaths for UNSPECIFIED with nil actual enums, got %v", pathsNilEnums)
+	}
+
+	// Verify genuine diffs on pscAutoConnections and pscInterfaceConfigs are detected.
+	desiredChanged := &krm.AlloyDBInstanceSpec{
+		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
+			PSCAutoConnections: []krm.Instance_PSCAutoConnectionConfig{
+				{
+					ConsumerProject: direct.PtrTo("my-project"),
+					ConsumerNetwork: direct.PtrTo("projects/my-project/global/networks/different-net"),
+				},
+			},
+			PSCInterfaceConfigs: []krm.Instance_PSCInterfaceConfig{
+				{
+					NetworkAttachmentResource: direct.PtrTo("projects/my-project/regions/us-central1/networkAttachments/different-na"),
+				},
+			},
+		},
+	}
+	changedPaths, err := compareInstance(ctx, actual, desiredChanged, mapper)
+	if err != nil {
+		t.Fatalf("compareInstance returned unexpected error for genuine changes: %v", err)
+	}
+	wantChangedPaths := []string{
+		"psc_instance_config.psc_interface_configs",
+		"psc_instance_config.psc_auto_connections",
+	}
+	if !reflect.DeepEqual(changedPaths, wantChangedPaths) {
+		t.Errorf("compareInstance paths = %v, want %v", changedPaths, wantChangedPaths)
+	}
+
+	// Verify unresolvable external project IDs fall back to raw comparison without failing reconciliation.
+	actualExternal := &krm.AlloyDBInstanceSpec{
+		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
+			AllowedConsumerProjects: []string{"555666777"},
+			PSCAutoConnections: []krm.Instance_PSCAutoConnectionConfig{
+				{
+					ConsumerProject: direct.PtrTo("unreadable-external-project"),
+					ConsumerNetwork: direct.PtrTo("projects/unreadable-external-project/global/networks/ext-net"),
+				},
+			},
+			PSCInterfaceConfigs: []krm.Instance_PSCInterfaceConfig{
+				{
+					NetworkAttachmentResource: direct.PtrTo("projects/555666777/regions/us-central1/networkAttachments/ext-na"),
+				},
+			},
+		},
+	}
+	desiredExternal := &krm.AlloyDBInstanceSpec{
+		PSCInstanceConfig: &krm.Instance_PSCInstanceConfig{
+			AllowedConsumerProjects: []string{"unreadable-external-project"},
+			PSCAutoConnections: []krm.Instance_PSCAutoConnectionConfig{
+				{
+					ConsumerProject: direct.PtrTo("555666777"),
+					ConsumerNetwork: direct.PtrTo("projects/555666777/global/networks/ext-net"),
+				},
+			},
+			PSCInterfaceConfigs: []krm.Instance_PSCInterfaceConfig{
+				{
+					NetworkAttachmentResource: direct.PtrTo("projects/unreadable-external-project/regions/us-central1/networkAttachments/ext-na"),
+				},
+			},
+		},
+	}
+	fallbackPaths, err := compareInstance(ctx, actualExternal, desiredExternal, mapper)
+	if err != nil {
+		t.Fatalf("compareInstance returned unexpected error on unresolvable project ID: %v", err)
+	}
+	wantFallbackPaths := []string{
+		"psc_instance_config.allowed_consumer_projects",
+		"psc_instance_config.psc_interface_configs",
+		"psc_instance_config.psc_auto_connections",
+	}
+	if !reflect.DeepEqual(fallbackPaths, wantFallbackPaths) {
+		t.Errorf("compareInstance fallback paths = %v, want %v", fallbackPaths, wantFallbackPaths)
 	}
 }

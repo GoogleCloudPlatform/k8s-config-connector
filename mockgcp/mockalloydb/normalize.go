@@ -23,6 +23,7 @@ import (
 
 var (
 	pscDNSNameRegex            = regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.([a-z0-9\-]+)\.alloydb-psc\.goog\.`)
+	pscAutoDNSNameRegex        = regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.([a-z0-9\-]+)\.alloydb\.goog\.`)
 	serviceAttachmentLinkRegex = regexp.MustCompile(`projects/[^/]+/regions/([^/]+)/serviceAttachments/[^/]+`)
 )
 
@@ -30,6 +31,10 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func normalizePSCDNSName(s string) string {
 	return pscDNSNameRegex.ReplaceAllString(s, "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.$1.alloydb-psc.goog.")
+}
+
+func normalizePSCAutoDNSName(s string) string {
+	return pscAutoDNSNameRegex.ReplaceAllString(s, "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.$1.alloydb.goog.")
 }
 
 func normalizeServiceAttachmentLink(s string) string {
@@ -54,6 +59,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.pscConfig.serviceOwnedProjectNumber", "123456789")
 	replacements.TransformString(".pscInstanceConfig.pscDnsName", normalizePSCDNSName)
 	replacements.TransformString(".response.pscInstanceConfig.pscDnsName", normalizePSCDNSName)
+	replacements.TransformString(".pscInstanceInfo.pscAutoDnsNames[]", normalizePSCAutoDNSName)
+	replacements.TransformString(".response.pscInstanceInfo.pscAutoDnsNames[]", normalizePSCAutoDNSName)
+	replacements.ReplacePath(".pscInstanceConfig.pscAutoConnections[].ipAddress", "10.0.0.2")
+	replacements.ReplacePath(".response.pscInstanceConfig.pscAutoConnections[].ipAddress", "10.0.0.2")
 	replacements.TransformString(".pscInstanceConfig.serviceAttachmentLink", normalizeServiceAttachmentLink)
 	replacements.TransformString(".response.pscInstanceConfig.serviceAttachmentLink", normalizeServiceAttachmentLink)
 }
