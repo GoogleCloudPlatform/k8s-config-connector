@@ -1,0 +1,13 @@
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerTemplate
+metadata:
+  labels:
+    label-one: value-two
+    label-two: value-three
+  name: parametermanagertemplate-maximal-${uniqueId}
+spec:
+  resourceID: parametermanagertemplate-maximal-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  format: TEMPLATE_FORMAT_JSON

@@ -1,0 +1,31 @@
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerTemplate
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+    label-one: value-two
+    label-two: value-three
+  name: parametermanagertemplate-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  format: TEMPLATE_FORMAT_JSON
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  resourceID: parametermanagertemplate-maximal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/templates/parametermanagertemplate-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
