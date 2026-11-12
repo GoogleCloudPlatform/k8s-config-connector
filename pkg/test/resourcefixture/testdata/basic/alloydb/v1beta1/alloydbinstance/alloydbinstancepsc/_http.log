@@ -619,12 +619,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west1
   },
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 1,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -897,6 +897,34 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -915,12 +943,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1082,12 +1110,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1249,12 +1277,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1416,12 +1444,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1583,12 +1611,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1750,12 +1778,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -1917,12 +1945,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -2084,12 +2112,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -2251,179 +2279,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
-        "consumerProject": "${projectId}"
-      }
-    ],
-    "pscAutoDnsState": 2,
-    "pscInterfaceConfigs": [
-      {
-        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
-      }
-    ]
-  },
-  "reconciling": false
-}
-
-409 Conflict
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 409,
-    "message": "unable to queue the operation",
-    "status": "ABORTED"
-  }
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "activationPolicy": 1,
-  "availabilityType": 2,
-  "clientConnectionConfig": {
-    "sslConfig": {
-      "sslMode": 5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "gcaConfig": {},
-  "geminiConfig": {
-    "entitled": true
-  },
-  "instanceType": 1,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "machineConfig": {
-    "cpuCount": 2
-  },
-  "maintenanceVersionName": "POSTGRES_18.20260930.03_07",
-  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
-  "nodes": [
-    {
-      "isHotStandby": true,
-      "zoneId": "europe-west1-d"
-    }
-  ],
-  "observabilityConfig": {
-    "assistiveExperiencesEnabled": false,
-    "enabled": false,
-    "maxQueryStringLength": 10240,
-    "preserveComments": false,
-    "queryPlansPerMinute": 20,
-    "recordApplicationTags": false,
-    "trackActiveQueries": false,
-    "trackClientAddress": false,
-    "trackWaitEventTypes": true,
-    "trackWaitEvents": true
-  },
-  "observabilityInstanceInfo": {
-    "maxQueryStringLength": 10240,
-    "queryPlansPerMinute": 20,
-    "trackWaitEventTypes": true,
-    "trackWaitEvents": true
-  },
-  "pscInstanceConfig": {
-    "allowedConsumerProjects": [
-      "${projectNumber}"
-    ],
-    "pscAutoConnectionPolicyState": 1,
-    "pscAutoConnections": [
-      {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
-        "consumerNetworkStatus": "CONNECTION_POLICY_MISSING",
-        "consumerProject": "${projectId}",
-        "serviceConnectionPolicyCreationState": "PERMISSION_DENIED"
-      }
-    ],
-    "pscAutoDnsState": 1,
-    "pscDnsName": "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.europe-west1.alloydb-psc.goog.",
-    "pscInterfaceConfigs": [
-      {
-        "networkAttachmentResource": "projects/${projectNumber}/regions/europe-west1/networkAttachments/${networkAttachmentID}"
-      }
-    ],
-    "serviceAttachmentLink": "https://www.googleapis.com/compute/v1/projects/tenant-project/regions/europe-west1/serviceAttachments/alloydb-psc-sa"
-  },
-  "pscInstanceInfo": {
-    "effectivePscAutoConnectionPolicy": true,
-    "effectivePscAutoDnsEnabled": true
-  },
-  "queryInsightsConfig": {
-    "queryPlansPerMinute": 5,
-    "queryStringLength": 1024,
-    "recordApplicationTags": false,
-    "recordClientAddress": false
-  },
-  "queryInsightsInfo": {
-    "enabled": true,
-    "queryPlansPerMinute": 5,
-    "queryStringLength": 1024
-  },
-  "reconciling": true,
-  "state": 1,
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "writableNode": {
-    "zoneId": "europe-west1-b"
-  }
-}
-
----
-
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=pscInstanceConfig.pscAutoDnsState%2CpscInstanceConfig.pscAutoConnectionPolicyState
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-west1%2Fclusters%2Falloydbcluster-${uniqueId}%2Finstances%2Falloydbinstance-${uniqueId}
-
-{
-  "availabilityType": 2,
-  "instanceType": 1,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "machineConfig": {
-    "cpuCount": 2
-  },
-  "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
-  "pscInstanceConfig": {
-    "allowedConsumerProjects": [
-      "${projectNumber}"
-    ],
-    "pscAutoConnectionPolicyState": 2,
-    "pscAutoConnections": [
-      {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -2585,12 +2446,12 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "pscInstanceConfig": {
     "allowedConsumerProjects": [
-      "${projectNumber}"
+      "${projectId}"
     ],
     "pscAutoConnectionPolicyState": 2,
     "pscAutoConnections": [
       {
-        "consumerNetwork": "projects/${projectId}/global/networks/${networkID}",
+        "consumerNetwork": "projects/${projectNumber}/global/networks/${networkID}",
         "consumerProject": "${projectId}"
       }
     ],
@@ -3270,501 +3131,6 @@ X-Xss-Protection: 0
   "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${subnetworkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "error": {
-    "errors": [
-      {
-        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
-        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-e7mxb3iqxpacep2yufaua5xe'"
-      }
-    ]
-  },
-  "httpErrorMessage": "BAD REQUEST",
-  "httpErrorStatusCode": 400,
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "error": {
-    "errors": [
-      {
-        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
-        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-e7mxb3iqxpacep2yufaua5xe'"
-      }
-    ]
-  },
-  "httpErrorMessage": "BAD REQUEST",
-  "httpErrorStatusCode": 400,
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "error": {
-    "errors": [
-      {
-        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
-        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-e7mxb3iqxpacep2yufaua5xe'"
-      }
-    ]
-  },
-  "httpErrorMessage": "BAD REQUEST",
-  "httpErrorStatusCode": 400,
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "error": {
-    "errors": [
-      {
-        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
-        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-e7mxb3iqxpacep2yufaua5xe'"
-      }
-    ]
-  },
-  "httpErrorMessage": "BAD REQUEST",
-  "httpErrorStatusCode": 400,
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "error": {
-    "errors": [
-      {
-        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
-        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-ygmk6bsxwqwslgva56uurekb'"
-      }
-    ]
-  },
-  "httpErrorMessage": "BAD REQUEST",
-  "httpErrorStatusCode": 400,
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 

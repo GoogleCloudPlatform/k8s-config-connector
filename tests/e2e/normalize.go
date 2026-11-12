@@ -143,11 +143,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
+	visitor.replacePaths[".status.observedState.pscInstanceConfig.pscAutoConnections[].ipAddress"] = "10.0.0.2"
 	alloydbPSCDNSRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.([a-z0-9\-]+)\.alloydb-psc\.goog\.`)
+	alloydbPSCAutoDNSRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.([a-z0-9\-]+)\.alloydb\.goog\.`)
 	alloydbServiceAttachmentRegex := regexp.MustCompile(`projects/[^/]+/regions/([^/]+)/serviceAttachments/[^/]+`)
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if path == ".status.observedState.pscInstanceConfig.pscDNSName" {
 			s = alloydbPSCDNSRegex.ReplaceAllString(s, "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.$1.alloydb-psc.goog.")
+		}
+		if path == ".status.observedState.pscInstanceInfo.pscAutoDNSNames[]" {
+			s = alloydbPSCAutoDNSRegex.ReplaceAllString(s, "00000000-0000-0000-0000-000000000001.00000000-0000-0000-0000-000000000001.$1.alloydb.goog.")
 		}
 		if path == ".status.observedState.pscInstanceConfig.serviceAttachmentLink" {
 			s = alloydbServiceAttachmentRegex.ReplaceAllString(s, "projects/tenant-project/regions/$1/serviceAttachments/alloydb-psc-sa")

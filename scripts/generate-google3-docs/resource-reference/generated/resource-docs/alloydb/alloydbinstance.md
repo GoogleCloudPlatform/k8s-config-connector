@@ -520,7 +520,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.</p>
+            <p>Optional. List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance. Specify project numbers if Config Connector cannot read the consumer project.</p>
         </td>
     </tr>
     <tr>
@@ -540,7 +540,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Configuration for setting up PSC auto connection for the instance.</p>
+            <p>Optional. Configuration for setting up PSC auto connection policy automation for the instance. For new PSC instances, leaving this field unset enables PSC auto connection policy automation by default. When enabled, AlloyDB may create or update a Network Connectivity ServiceConnectionPolicy in the consumer network that Config Connector does not manage or delete, and deleting the AlloyDBInstance does not delete that policy. Check status.observedState.pscInstanceInfo.effectivePSCAutoConnectionPolicy for the effective state. Possible values: ["ENABLED", "DISABLED"].</p>
         </td>
     </tr>
     <tr>
@@ -550,7 +550,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Optional. Configurations for setting up PSC service automation.</p>
+            <p>Optional. Configurations for setting up PSC service automation. Specify project numbers if Config Connector cannot read the consumer project.</p>
         </td>
     </tr>
     <tr>
@@ -590,7 +590,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Configuration for setting up PSC auto DNS for the instance.</p>
+            <p>Optional. Configuration for setting up PSC auto DNS for the instance. For new PSC instances, leaving this field unset enables PSC auto DNS by default. Check status.observedState.pscInstanceInfo.effectivePSCAutoDNSEnabled for the effective state. Possible values: ["PSC_AUTO_DNS_STATE_ENABLED", "PSC_AUTO_DNS_STATE_DISABLED"].</p>
         </td>
     </tr>
     <tr>

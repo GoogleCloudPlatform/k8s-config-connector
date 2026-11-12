@@ -2,25 +2,26 @@
 
 - **Primary Resource:** `AlloyDBInstance` (`alloydb.cnrm.cloud.google.com/v1beta1`)
 - **Resource Name:** `alloydbinstance-${uniqueId}`
-- **Source Log:** `_http.log` (71 total HTTP entries, 42 dependency entries)
+- **Source Log:** `_http.log` (55 total HTTP entries, 28 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:18d773d07860f062`
+- **Integrity Hash:** `sha256:e18ae4a2d5f3cee2`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 
 | Field | Change (`create` -> `update`) | Sent in Update? | Final GCP State |
 | :--- | :--- | :--- | :--- |
-| `spec.pscInstanceConfig.`<br>`.pscAutoConnectionPolicyState` | **from:** `"ENABLED"`<br>**to:** `"DISABLED"` | Yes (#40 `PATCH`) | Yes |
-| `spec.pscInstanceConfig.`<br>`.pscAutoDNSState` | **from:** `"PSC_AUTO_DNS_STATE_ENABLED"`<br>**to:** `"PSC_AUTO_DNS_STATE_DISABLED"` | Yes (#40 `PATCH`) | Yes |
+| `spec.pscInstanceConfig.`<br>`.pscAutoConnectionPolicyState` | **from:** `"ENABLED"`<br>**to:** `"DISABLED"` | Yes (#39 `PATCH`) | Yes |
+| `spec.pscInstanceConfig.`<br>`.pscAutoDNSState` | **from:** `"PSC_AUTO_DNS_STATE_ENABLED"`<br>**to:** `"PSC_AUTO_DNS_STATE_DISABLED"` | Yes (#39 `PATCH`) | Yes |
 
 ## Dependency Traffic Summary
 
 | Dependency Kind | Total RPCs | Phases |
 | :--- | :--- | :--- |
 | `AlloyDBCluster` | 6 | `CREATE`, `DELETE` |
-| `ComputeNetwork` | 24 | `CREATE`, `DELETE` |
+| `ComputeNetwork` | 9 | `CREATE`, `DELETE` |
 | `ComputeNetworkAttachment` | 7 | `CREATE`, `DELETE` |
 | `ComputeSubnetwork` | 5 | `CREATE`, `DELETE` |
+| `Project` | 1 | `UPDATE` |
 
 ## 2. Primary Resource RPC Summary
 
@@ -29,29 +30,27 @@
 | 16 | `CREATE` | `GET` `404` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Pre-create existence check |
 | 17 | `CREATE` | `POST` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/`<br>`instances`<br>`?instanceId=alloydbinstance-${uniqueId}` | LRO: create -> done (#18)<br>Created resource |
 | 19 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Pre-update read |
-| 20 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 21 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 22 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 23 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 24 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 25 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 26 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 27 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 28 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 29 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 30 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 31 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 32 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 33 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 34 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 35 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 36 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 37 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 38 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 39 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
-| 40 | `UPDATE` | `PATCH` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | LRO: update -> done (#41)<br>updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
-| 42 | `DELETE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Pre-delete read |
-| 43 | `DELETE` | `DELETE` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | LRO: delete -> done (#44)<br>Deleted resource |
+| 21 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 22 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 23 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 24 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 25 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 26 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 27 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 28 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 29 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 30 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 31 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 32 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 33 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 34 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 35 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 36 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 37 | `UPDATE` | `PATCH` `409` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 38 | `UPDATE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Post-update read (matches `update.yaml`) |
+| 39 | `UPDATE` | `PATCH` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | LRO: update -> done (#40)<br>updateMask: pscInstanceConfig.pscAutoDnsState, pscInstanceConfig.pscAutoConnectionPolicyState |
+| 41 | `DELETE` | `GET` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | Pre-delete read |
+| 42 | `DELETE` | `DELETE` `200` | `.../locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/`<br>`alloydbinstance-${uniqueId}` | LRO: delete -> done (#43)<br>Deleted resource |
 
 ## 3. Automated Validation Checks
 

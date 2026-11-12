@@ -19,10 +19,10 @@ spec:
     cpuCount: 2
   pscInstanceConfig:
     allowedConsumerProjects:
-    - ${projectNumber}
+    - ${projectId}
     pscAutoConnectionPolicyState: DISABLED
     pscAutoConnections:
-    - consumerNetwork: projects/${projectId}/global/networks/${networkID}
+    - consumerNetwork: projects/${projectNumber}/global/networks/${networkID}
       consumerProject: ${projectId}
     pscAutoDNSState: PSC_AUTO_DNS_STATE_DISABLED
     pscInterfaceConfigs:
