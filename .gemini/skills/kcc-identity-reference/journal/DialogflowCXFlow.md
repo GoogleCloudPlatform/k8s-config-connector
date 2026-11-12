@@ -9,7 +9,7 @@
 
 - **Hierarchical Parent Structure (`spec.parent`)**:
   - The resource uses `spec.parent` with format `projects/{project}/locations/{location}/agents/{agent}` rather than direct `spec.location` and `spec.agentRef` fields due to its legacy Terraform schema.
-  - We use a scoped `gcpurls.Template` helper `dialogflowCXAgentIdentityFormat` to parse `spec.parent` into project, location, and agent segments.
+  - Reused `agentParentFormat` defined in `apis/dialogflowcx/v1alpha1` (`dialogflowcxentitytype_identity.go`) to parse `spec.parent` into project, location, and agent segments.
   - `getIdentityFromDialogflowCXFlowSpec` and `GetIdentity` are overridden declaration-by-declaration in `dialogflowcxflow_identity.go`.
 
 - **Status Cross-Check & Legacy Fallback**:

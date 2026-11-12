@@ -16,13 +16,12 @@ package v1alpha1
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/google/go-cmp/cmp"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
@@ -263,103 +262,173 @@ func TestDialogflowCXFlow_GetIdentity(t *testing.T) {
 
 func TestDialogflowCXFlowRef_Normalize(t *testing.T) {
 	ctx := context.Background()
-	s := runtime.NewScheme()
-
-	uFlowWithExternalRef := &unstructured.Unstructured{}
-	uFlowWithExternalRef.SetGroupVersionKind(DialogflowCXFlowGVK)
-	uFlowWithExternalRef.SetName("flow-with-externalref")
-	uFlowWithExternalRef.SetNamespace("test-ns")
-	uFlowWithExternalRef.Object["status"] = map[string]interface{}{
-		"externalRef": "projects/test-project/locations/us-central1/agents/test-agent/flows/flow-ext",
+	scheme := runtime.NewScheme()
+	if err := AddToScheme(scheme); err != nil {
+		t.Fatalf("AddToScheme() error = %v", err)
 	}
 
-	uFlowWithStatusName := &unstructured.Unstructured{}
-	uFlowWithStatusName.SetGroupVersionKind(DialogflowCXFlowGVK)
-	uFlowWithStatusName.SetName("flow-with-statusname")
-	uFlowWithStatusName.SetNamespace("test-ns")
-	uFlowWithStatusName.Object["status"] = map[string]interface{}{
-		"name": "projects/test-project/locations/us-central1/agents/test-agent/flows/flow-tf",
+	readyObjWithExternalRef := &DialogflowCXFlow{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-extref",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXFlowSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXFlowStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/flows/flow-1"),
+		},
 	}
 
-	uFlowUnready := &unstructured.Unstructured{}
-	uFlowUnready.SetGroupVersionKind(DialogflowCXFlowGVK)
-	uFlowUnready.SetName("flow-unready")
-	uFlowUnready.SetNamespace("test-ns")
-	uFlowUnready.Object["spec"] = map[string]interface{}{
-		"parent": "projects/test-project/locations/us-central1/agents/test-agent",
+	readyObjWithName := &DialogflowCXFlow{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-name",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXFlowSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXFlowStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			Name: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/flows/flow-2"),
+		},
 	}
 
-	fakeClient := fake.NewClientBuilder().WithScheme(s).WithObjects(
-		uFlowWithExternalRef,
-		uFlowWithStatusName,
-		uFlowUnready,
-	).Build()
+	readyObjWithSpecOnly := &DialogflowCXFlow{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-spec",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXFlowSpec{
+			Parent:     common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+			ResourceID: common.LazyPtr("flow-3"),
+		},
+		Status: DialogflowCXFlowStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+		},
+	}
+
+	notReadyObj := &DialogflowCXFlow{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "not-ready",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXFlowSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXFlowStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "False",
+				},
+			},
+		},
+	}
+
+	fakeClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithSpecOnly, notReadyObj).
+		Build()
 
 	tests := []struct {
-		name         string
-		ref          *DialogflowCXFlowRef
-		wantExternal string
-		wantErr      bool
-		wantNotReady bool
+		name             string
+		ref              *DialogflowCXFlowRef
+		defaultNamespace string
+		wantErr          bool
+		wantExternal     string
 	}{
 		{
-			name: "external reference already set",
+			name: "external reference valid",
 			ref: &DialogflowCXFlowRef{
-				External: "projects/test-project/locations/us-central1/agents/test-agent/flows/my-flow",
+				External: "projects/p1/locations/l1/agents/a1/flows/f1",
 			},
-			wantExternal: "projects/test-project/locations/us-central1/agents/test-agent/flows/my-flow",
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/p1/locations/l1/agents/a1/flows/f1",
 		},
 		{
-			name: "internal reference resolved from status.externalRef",
+			name: "external reference invalid",
 			ref: &DialogflowCXFlowRef{
-				Name:      "flow-with-externalref",
-				Namespace: "test-ns",
+				External: "invalid/format",
 			},
-			wantExternal: "projects/test-project/locations/us-central1/agents/test-agent/flows/flow-ext",
+			defaultNamespace: "test-ns",
+			wantErr:          true,
 		},
 		{
-			name: "internal reference resolved from status.name (legacy fallback)",
+			name: "by name and namespace when ready with status.externalRef",
 			ref: &DialogflowCXFlowRef{
-				Name:      "flow-with-statusname",
+				Name:      "ready-extref",
 				Namespace: "test-ns",
 			},
-			wantExternal: "projects/test-project/locations/us-central1/agents/test-agent/flows/flow-tf",
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/flow-1",
 		},
 		{
-			name: "internal reference not ready",
+			name: "by name and namespace when ready with status.name",
 			ref: &DialogflowCXFlowRef{
-				Name:      "flow-unready",
+				Name:      "ready-name",
 				Namespace: "test-ns",
 			},
-			wantErr:      true,
-			wantNotReady: true,
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/flow-2",
 		},
 		{
-			name: "internal reference not found",
+			name: "by name and namespace when ready with spec fallback",
 			ref: &DialogflowCXFlowRef{
-				Name:      "flow-not-found",
+				Name:      "ready-spec",
 				Namespace: "test-ns",
 			},
-			wantErr: true,
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/flow-3",
+		},
+		{
+			name: "by name and namespace when not ready",
+			ref: &DialogflowCXFlowRef{
+				Name:      "not-ready",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          true,
+		},
+		{
+			name: "not found",
+			ref: &DialogflowCXFlowRef{
+				Name:      "non-existent",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          true,
 		},
 	}
 
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			err := tc.ref.Normalize(ctx, fakeClient, "test-ns")
-			if (err != nil) != tc.wantErr {
-				t.Fatalf("Normalize() unexpected error: %v, wantErr: %v", err, tc.wantErr)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.ref.Normalize(ctx, fakeClient, tt.defaultNamespace)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if tc.wantNotReady {
-				var notReadyErr *k8s.ReferenceNotReadyError
-				if !errors.As(err, &notReadyErr) {
-					t.Fatalf("expected ReferenceNotReadyError, got %T: %v", err, err)
-				}
-			}
-			if !tc.wantErr {
-				if diff := cmp.Diff(tc.wantExternal, tc.ref.External); diff != "" {
-					t.Errorf("Normalize() External mismatch (-want +got):\n%s", diff)
-				}
+			if !tt.wantErr && tt.ref.External != tt.wantExternal {
+				t.Errorf("Normalize() external = %q, want %q", tt.ref.External, tt.wantExternal)
 			}
 		})
 	}

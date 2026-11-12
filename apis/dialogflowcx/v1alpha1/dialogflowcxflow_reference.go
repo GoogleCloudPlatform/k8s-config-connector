@@ -17,21 +17,46 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ refs.Ref = &DialogflowCXFlowRef{}
+
 func (r *DialogflowCXFlowRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
-		if name != "" {
-			id := &DialogflowCXFlowIdentity{}
-			if err := id.FromExternal(name); err == nil {
-				return name
+		ready := false
+		conditions, found, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+		if found {
+			for _, condVal := range conditions {
+				cond, ok := condVal.(map[string]interface{})
+				if !ok {
+					continue
+				}
+				if cond["type"] == "Ready" && cond["status"] == "True" {
+					ready = true
+					break
+				}
 			}
 		}
-		return ""
+		if !ready {
+			return ""
+		}
+		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+		if name != "" {
+			return name
+		}
+		obj, err := common.ToStructuredType[*DialogflowCXFlow](u)
+		if err != nil {
+			return ""
+		}
+		id, err := getIdentityFromDialogflowCXFlowSpec(ctx, reader, obj)
+		if err != nil || id.Flow == "" {
+			return ""
+		}
+		return id.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

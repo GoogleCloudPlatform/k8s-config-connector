@@ -20,7 +20,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -28,31 +27,25 @@ var (
 	_ identity.Resource = &DialogflowCXFlow{}
 )
 
-type dialogflowCXAgentIdentity struct {
-	Project  string
-	Location string
-	Agent    string
-}
-
-var dialogflowCXAgentIdentityFormat = gcpurls.Template[dialogflowCXAgentIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/agents/{agent}")
-
 func getIdentityFromDialogflowCXFlowSpec(ctx context.Context, reader client.Reader, obj *DialogflowCXFlow) (*DialogflowCXFlowIdentity, error) {
-	parent := common.ValueOf(obj.Spec.Parent)
-	if parent == "" {
+	if obj.Spec.Parent == nil || *obj.Spec.Parent == "" {
 		return nil, fmt.Errorf("spec.parent is required")
 	}
 
-	parsedParent, match, err := dialogflowCXAgentIdentityFormat.Parse(parent)
-	if err != nil || !match {
-		return nil, fmt.Errorf("spec.parent %q is invalid, expected format: projects/{project}/locations/{location}/agents/{agent}", parent)
+	parent, match, err := agentParentFormat.Parse(*obj.Spec.Parent)
+	if err != nil {
+		return nil, fmt.Errorf("parsing spec.parent %q: %w", *obj.Spec.Parent, err)
+	}
+	if !match {
+		return nil, fmt.Errorf("format of DialogflowCXFlow spec.parent=%q was not known (use %s)", *obj.Spec.Parent, agentParentFormat.CanonicalForm())
 	}
 
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	return &DialogflowCXFlowIdentity{
-		Project:  parsedParent.Project,
-		Location: parsedParent.Location,
-		Agent:    parsedParent.Agent,
+		Project:  parent.Project,
+		Location: parent.Location,
+		Agent:    parent.Agent,
 		Flow:     resourceID,
 	}, nil
 }
