@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeHealthCheckService
+metadata:
+  name: computehealthcheckservice-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  description: Updated description for maximal health check service
+  healthCheckRefs:
+    - name: computehealthcheck-${uniqueId}
+  healthStatusAggregationPolicy: AND
