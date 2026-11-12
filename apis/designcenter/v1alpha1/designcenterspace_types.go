@@ -14,15 +14,14 @@
 
 // API sources for DesignCenterSpace, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/547f8fdb4b91dbac70d540b3757520f0608ae356/google/cloud/designcenter/v1/catalog_management.proto
-// +kcc:guess=source-link reason=verify-service-docs-link
-// +kcc:source:service-docs=
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=
+// +kcc:source:service-docs=https://cloud.google.com/application-design-center/docs
+// +kcc:source:resource-docs=https://cloud.google.com/application-design-center/docs/reference/rest/v1/projects.locations.spaces
 
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,11 +32,7 @@ var DesignCenterSpaceGVK = GroupVersion.WithKind("DesignCenterSpace")
 // +kcc:spec:proto=google.cloud.designcenter.v1.Space
 // +kcc:required-from-proto
 type DesignCenterSpaceSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The DesignCenterSpace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -63,7 +58,7 @@ type DesignCenterSpaceSpec struct {
 	//  example, if the Cloud Storage bucket URI is gs:\/\/{$bucket_name}, the
 	//  format is {$bucket_name}.
 	// +kcc:proto:field=google.cloud.designcenter.v1.Space.gcs_bucket
-	GCSBucket *string `json:"gcsBucket,omitempty"`
+	GCSBucketRef *storagev1beta1.StorageBucketRef `json:"gcsBucketRef,omitempty"`
 
 	// Optional. Input only. Immutable. Tags are key/values bound to space
 	//  resource. Example:
