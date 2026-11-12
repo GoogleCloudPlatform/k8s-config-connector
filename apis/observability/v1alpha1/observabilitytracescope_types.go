@@ -20,6 +20,7 @@
 package v1alpha1
 
 import (
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -31,14 +32,11 @@ var ObservabilityTraceScopeGVK = GroupVersion.WithKind("ObservabilityTraceScope"
 // +kcc:spec:proto=google.cloud.observability.v1.TraceScope
 // +kcc:required-from-proto
 type ObservabilityTraceScopeSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ObservabilityTraceScope name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// Required. Names of the projects that are included in this trace scope.
 	//
 	//  *  `projects/[PROJECT_ID]`
@@ -46,7 +44,7 @@ type ObservabilityTraceScopeSpec struct {
 	//  A trace scope can include a maximum of 20 projects.
 	// +kcc:proto:field=google.cloud.observability.v1.TraceScope.resource_names
 	// +required
-	ResourceNames []string `json:"resourceNames,omitempty"`
+	ResourceNameRefs []refsv1beta1.ProjectRef `json:"resourceNameRefs,omitempty"`
 
 	// Optional. Describes this trace scope.
 	//

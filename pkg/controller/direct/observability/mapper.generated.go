@@ -25,6 +25,7 @@ package observability
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/observability/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	observabilitypb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/observability/pb"
 )
@@ -35,6 +36,7 @@ func ObservabilityTraceScopeObservedState_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krm.ObservabilityTraceScopeObservedState{}
 	// MISSING: Name
+	// MISSING: ResourceNames
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -45,6 +47,7 @@ func ObservabilityTraceScopeObservedState_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &observabilitypb.TraceScope{}
 	// MISSING: Name
+	// MISSING: ResourceNames
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -55,7 +58,13 @@ func ObservabilityTraceScopeSpec_FromProto(mapCtx *direct.MapContext, in *observ
 	}
 	out := &krm.ObservabilityTraceScopeSpec{}
 	// MISSING: Name
-	out.ResourceNames = in.ResourceNames
+
+	if v := in.GetResourceNames(); len(v) != 0 {
+		for i := range v {
+			out.ResourceNameRefs = append(out.ResourceNameRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
@@ -65,7 +74,13 @@ func ObservabilityTraceScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Obse
 	}
 	out := &observabilitypb.TraceScope{}
 	// MISSING: Name
-	out.ResourceNames = in.ResourceNames
+
+	if v := in.ResourceNameRefs; len(v) != 0 {
+		for i := range v {
+			out.ResourceNames = append(out.ResourceNames, v[i].External)
+		}
+	}
+
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
