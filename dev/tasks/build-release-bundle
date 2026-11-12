@@ -115,6 +115,7 @@ BLOCKED_KINDS=(
     "ArtifactRegistryRule"
     "ArtifactRegistryVPCSCConfig"
     "AutoMLDataset"
+    "BackupDRAutoProtectionPolicy"
     "BackupdrBackup"
     "BackupDRRestoreVerificationPlan"
     "BeyondCorpClientConnectorService"
