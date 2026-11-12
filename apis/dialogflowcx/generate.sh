@@ -48,7 +48,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowCXFlow:Flow \
   --resource DialogflowCXEntityType:EntityType \
   --resource DialogflowCXWebhook:Webhook \
-  --resource DialogflowCXPage:Page
+  --resource DialogflowCXPage:Page \
+  --resource DialogflowCXIntent:Intent
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.dialogflow.cx.v3 \
