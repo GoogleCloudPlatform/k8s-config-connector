@@ -119,6 +119,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/filestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/financialservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebase"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasedatabase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firebasehosting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/geminidataanalytics"
