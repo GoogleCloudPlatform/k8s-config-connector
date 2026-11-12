@@ -36,6 +36,11 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowCXAgent:Agent
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowCXAgent:Agent
+
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflowcx.cnrm.cloud.google.com/v1alpha1 \
