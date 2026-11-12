@@ -42,7 +42,6 @@
 - In `pkg/cais/caistesting/testing.go` (`NormalizeDynamicIDs`), added a normalizer rule for `DialogflowCXAgent` (`/agents/<agentId>`) to normalize dynamic server-assigned agent IDs to `unknown`, ensuring consistent comparison with golden `_identities.yaml` files in dependent fixtures (such as `dialogflowplaybook` and `dialogflowwebhook`).
 
 ### 6. Verification
-- Verified with package-level fuzzer test: `go test -v ./pkg/controller/direct/dialogflowcx/...`.
 - Verified with central focused fuzz tests: `FOCUS=DialogflowCXAgent go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers`.
 - Verified attribution test: `go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestFuzzersAttributedToService`.
 - Verified fuzzer coverage list: `go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestListTypesWithoutFuzzers` confirms `DialogflowCXAgent` is no longer on the missing fuzzers list.

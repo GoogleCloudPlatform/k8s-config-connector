@@ -33,6 +33,23 @@ func dialogflowCXAgentFuzzer() fuzztesting.KRMFuzzer {
 		DialogflowCXAgentObservedState_FromProto, DialogflowCXAgentObservedState_ToProto,
 	)
 
+	// +proto=google.cloud.dialogflow.cx.v3.Agent
+	// +krm=dialogflowcx.cnrm.cloud.google.com/DialogflowCXAgent
+	//
+	// Field Comparison:
+	// | KRM Spec Field                       | Proto Field                                | Notes |
+	// |--------------------------------------|--------------------------------------------|-------|
+	// | defaultLanguageCode                  | default_language_code                      |       |
+	// | displayName                          | display_name                               |       |
+	// | timeZone                             | time_zone                                  |       |
+	// | description                          | description                                |       |
+	// | avatarUri                            | avatar_uri                                 |       |
+	// | speechToTextSettings                 | speech_to_text_settings                    |       |
+	// | securitySettings                     | security_settings                          |       |
+	// | enableStackdriverLogging             | enable_stackdriver_logging                 |       |
+	// | enableSpellCorrection                | enable_spell_correction                    |       |
+	// | supportedLanguageCodes               | supported_language_codes                   |       |
+
 	// Spec fields
 	f.SpecField(".avatar_uri")
 	f.SpecField(".default_language_code")
