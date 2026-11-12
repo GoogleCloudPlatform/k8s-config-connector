@@ -134,6 +134,17 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		if in.Spec.Settings.IpConfiguration == nil || in.Spec.Settings.IpConfiguration.CustomSubjectAlternativeNames == nil {
 			out.Settings.IpConfiguration.CustomSubjectAlternativeNames = actual.Settings.IpConfiguration.CustomSubjectAlternativeNames
 		}
+		// When pscConfig is managed in KRM and networkAttachmentRef is omitted/removed while live GCP
+		// has networkAttachmentUri set, explicitly send null so Cloud SQL detaches outbound PSC on both
+		// full Update (PUT, which rebuilds PscConfig) and partial Patch (PATCH) without reconcile loops.
+		if in.Spec.Settings.IpConfiguration != nil &&
+			len(in.Spec.Settings.IpConfiguration.PscConfig) > 0 &&
+			in.Spec.Settings.IpConfiguration.PscConfig[0].NetworkAttachmentRef == nil &&
+			out.Settings.IpConfiguration.PscConfig != nil &&
+			actual.Settings.IpConfiguration.PscConfig != nil &&
+			actual.Settings.IpConfiguration.PscConfig.NetworkAttachmentUri != "" {
+			out.Settings.IpConfiguration.PscConfig.NullFields = append(out.Settings.IpConfiguration.PscConfig.NullFields, "NetworkAttachmentUri")
+		}
 	}
 	if in.Spec.Settings.LocationPreference == nil && actual != nil {
 		// Use GCP specified locationPreference.

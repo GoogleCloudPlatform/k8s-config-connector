@@ -633,6 +633,9 @@ func DiffPscConfig(desired *api.PscConfig, actual *api.PscConfig) *structuredrep
 	if !slicesMatch(desired.AllowedConsumerProjects, actual.AllowedConsumerProjects) {
 		diff.AddField(".settings.ipConfiguration.pscConfig.allowedConsumerProjects", actual.AllowedConsumerProjects, desired.AllowedConsumerProjects)
 	}
+	if normalizeNetworkAttachmentURI(desired.NetworkAttachmentUri) != normalizeNetworkAttachmentURI(actual.NetworkAttachmentUri) {
+		diff.AddField(".settings.ipConfiguration.pscConfig.networkAttachmentUri", actual.NetworkAttachmentUri, desired.NetworkAttachmentUri)
+	}
 	if desired.PscEnabled != actual.PscEnabled {
 		diff.AddField(".settings.ipConfiguration.pscConfig.pscEnabled", actual.PscEnabled, desired.PscEnabled)
 	}
