@@ -49,15 +49,6 @@ fi
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
 
-# Fast-path check: if versioned pb file already exists (and force is not set), exit immediately
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
-if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    fi
-    exit 0
-fi
-
 DEFAULT_GOOGLEAPI_DIR="${THIRD_PARTY}/googleapis"
 if [ ! -d "${DEFAULT_GOOGLEAPI_DIR}" ]; then
     git clone --depth 1 https://github.com/googleapis/googleapis.git "${DEFAULT_GOOGLEAPI_DIR}"
@@ -76,6 +67,17 @@ else
     # Default output path, version it with the SHA.
     # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
     VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+fi
+
+# Fast-path check: if versioned pb file already exists, matches script hash, and force is not set, exit immediately
+SCRIPT_HASH=$(sha256sum "${REPO_ROOT}/dev/tools/controllerbuilder/generate-proto.sh" | awk '{print $1}')
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ] && [ -f "${VERSIONED_OUTPUT_PATH}.hash" ]; then
+    if [ "$(cat "${VERSIONED_OUTPUT_PATH}.hash" 2>/dev/null)" == "${SCRIPT_HASH}" ]; then
+        if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+            cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+        fi
+        exit 0
+    fi
 fi
 
 if [[ "${FORCE_GENERATE}" != "1" ]] && [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
@@ -161,6 +163,212 @@ message SecurityPolicyAssociation {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include VmExtensionPolicy (which exists in apiv1/computepb) if missing
+if ! grep -q "message VmExtensionPolicy " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// Configuration for a specific VM extension.
+message VmExtensionPolicyExtensionPolicy {
+  // Optional. The specific version of the extension to install. If not set, the latest
+  // version is used.
+  optional string pinned_version = 446267249;
+
+  // Optional. String-based configuration data for the extension.
+  optional string string_config = 318905136;
+}
+
+// A LabelSelector is applied to a VM only if it matches all the specified
+// labels.
+message VmExtensionPolicyLabelSelector {
+  // Optional. A map of key-value pairs representing VM labels.
+  map<string, string> inclusion_labels = 501312642;
+}
+
+// Defines how to select VMs to apply a zone VM extension policy.
+message VmExtensionPolicyInstanceSelector {
+  // Optional. LabelSelector selects VMs based on their labels.
+  optional VmExtensionPolicyLabelSelector label_selector = 349780170;
+}
+
+// Represents a VM Extension Policy resource.
+message VmExtensionPolicy {
+  // Optional. Output only. [Output Only] Current state of the policy: ACTIVE or DELETING.
+  enum State {
+    // A value indicating that the enum field is not set.
+    UNDEFINED_STATE = 0;
+
+    // The policy is active and applied to matching VMs.
+    ACTIVE = 314733318;
+
+    // The policy is in the process of being deleted.
+    DELETING = 528602024;
+
+    // Default value. Do not use.
+    STATE_UNSPECIFIED = 470755401;
+  }
+
+  // Output only. [Output Only] Creation timestamp inRFC3339 text format.
+  optional string creation_timestamp = 30525366;
+
+  // An optional description of this resource.
+  optional string description = 422937596;
+
+  // Required. A map of extension names (for example, "ops-agent") to their corresponding
+  // policy configurations.
+  map<string, VmExtensionPolicyExtensionPolicy> extension_policies = 227761488;
+
+  // Optional. Output only. [Output Only] Link to the global policy that manages this zone policy, if
+  // applicable.
+  optional string global_resource_link = 516569583;
+
+  // Output only. [Output Only] The unique identifier for the resource. This identifier is
+  // defined by the server.
+  optional uint64 id = 3355;
+
+  // Optional. Selectors to target VMs for this policy.
+  repeated VmExtensionPolicyInstanceSelector instance_selectors = 520298826;
+
+  // Output only. [Output Only] Type of the resource. Alwayscompute#vmExtensionPolicy.
+  optional string kind = 3292052;
+
+  // Optional. Output only. [Output Only] Indicates if this policy is managed by a global policy.
+  optional bool managed_by_global = 88605675;
+
+  // Name of the resource. Provided by the client when the resource is created.
+  optional string name = 3373707;
+
+  // Optional. Priority of this policy.
+  optional int32 priority = 445151652;
+
+  // Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Server-defined URL for this resource's resource id.
+  optional string self_link_with_id = 44520962;
+
+  // Optional. Output only. [Output Only] Current state of the policy: ACTIVE or DELETING.
+  optional string state = 109757585;
+
+  // Output only. [Output Only] Update timestamp inRFC3339 text format.
+  optional string update_timestamp = 120894752;
+}
+
+message VmExtensionPolicyList {
+  optional string etag = 3123477;
+  optional string id = 3355;
+  repeated VmExtensionPolicy items = 100526016;
+  optional string kind = 3292052;
+  optional string next_page_token = 79797525;
+  optional string self_link = 456214797;
+  repeated string unreachables = 243372063;
+  optional Warning warning = 50704284;
+}
+
+message DeleteZoneVmExtensionPolicyRequest {
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  string vm_extension_policy = 331532730 [(google.api.field_behavior) = REQUIRED];
+  string zone = 3744684 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "zone"
+  ];
+}
+
+message GetZoneVmExtensionPolicyRequest {
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  string vm_extension_policy = 331532730 [(google.api.field_behavior) = REQUIRED];
+  string zone = 3744684 [(google.api.field_behavior) = REQUIRED];
+}
+
+message InsertZoneVmExtensionPolicyRequest {
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  VmExtensionPolicy vm_extension_policy_resource = 515669235 [(google.api.field_behavior) = REQUIRED];
+  string zone = 3744684 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "zone"
+  ];
+}
+
+message ListZoneVmExtensionPoliciesRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+  string zone = 3744684 [(google.api.field_behavior) = REQUIRED];
+}
+
+message UpdateZoneVmExtensionPolicyRequest {
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+  string vm_extension_policy = 331532730 [(google.api.field_behavior) = REQUIRED];
+  VmExtensionPolicy vm_extension_policy_resource = 515669235 [(google.api.field_behavior) = REQUIRED];
+  string zone = 3744684 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "zone"
+  ];
+}
+
+service ZoneVmExtensionPolicies {
+  option (google.api.default_host) = "compute.googleapis.com";
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc Delete(DeleteZoneVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies/{vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,zone,vm_extension_policy";
+    option (google.cloud.operation_service) = "ZoneOperations";
+  }
+
+  rpc Get(GetZoneVmExtensionPolicyRequest) returns (VmExtensionPolicy) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies/{vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,zone,vm_extension_policy";
+  }
+
+  rpc Insert(InsertZoneVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "vm_extension_policy_resource"
+      post: "/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies"
+    };
+    option (google.api.method_signature) = "project,zone,vm_extension_policy_resource";
+    option (google.cloud.operation_service) = "ZoneOperations";
+  }
+
+  rpc List(ListZoneVmExtensionPoliciesRequest) returns (VmExtensionPolicyList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies"
+    };
+    option (google.api.method_signature) = "project,zone";
+  }
+
+  rpc Update(UpdateZoneVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "vm_extension_policy_resource"
+      patch: "/compute/v1/projects/{project}/zones/{zone}/vmExtensionPolicies/{vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,zone,vm_extension_policy,vm_extension_policy_resource";
+    option (google.cloud.operation_service) = "ZoneOperations";
+  }
+}
+EOF
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -175,16 +383,6 @@ else
       sudo apt install -y protobuf-compiler
     fi
 fi
-
-
-if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    fi
-    exit 0
-fi
-
 
 # Enable nullglob shell option so that unmatched glob patterns (e.g. if certain subdirectories don't contain any .proto files)
 # expand to an empty string instead of the literal wildcard string, avoiding protoc errors.
@@ -246,3 +444,4 @@ protoc --include_imports --include_source_info \
 if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
 fi
+echo "${SCRIPT_HASH}" > "${VERSIONED_OUTPUT_PATH}.hash"

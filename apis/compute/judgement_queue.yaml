@@ -280,3 +280,120 @@ entries:
     status: resolved
     resolution: edited
     note: confirmed output-only per proto comment and moved to status.observedState.zone
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged spec and status fields; resolved location, docs link, and output-only fields
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.VmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}, organizations/{organizationsid}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}, projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}); generated identity uses "projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy}" (pass --pattern ComputeVMExtensionPolicy=<pattern> to override)
+    status: resolved
+    resolution: accepted
+    note: locked in projects/{project}/zones/{zone}/vmExtensionPolicies/{vmextensionpolicy} pattern matching ZoneVmExtensionPolicies service
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute ZoneVmExtensionPolicies REST reference
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]VMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.VmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: resolved
+    resolution: accepted
+    note: verified map[string]VMExtensionPolicyExtensionPolicy type and mapper helpers compile cleanly
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing zone matching Compute conventions
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.state
+    reason: possible-status-field-in-spec
+    detail: state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.state
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.globalResourceLink
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.globalResourceLink. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.globalResourceLink if it is confirmed output only. Proto comment: Optional. Output only. [Output Only] Link to the global policy that manages this zone policy, if applicable.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.globalResourceLink
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.managedByGlobal
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.managedByGlobal. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.managedByGlobal if it is confirmed output only. Proto comment: Optional. Output only. [Output Only] Indicates if this policy is managed by a global policy.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.managedByGlobal
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only server-set field
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.state
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.state. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.state if it is confirmed output only. Proto comment: Optional. Output only. [Output Only] Current state of the policy: ACTIVE or DELETING.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.state
+  - kind: ComputeVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.updateTimestamp
