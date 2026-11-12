@@ -57,6 +57,8 @@ func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".job_uuid")
 	f.StatusFields.Insert(".done")
 
+	f.UnimplementedFields.Insert(".yarn_applications[].vcore_seconds")
+	f.UnimplementedFields.Insert(".yarn_applications[].memory_mb_seconds")
 	f.UnimplementedFields.Insert(".status")
 	f.UnimplementedFields.Insert(".status_history")
 	f.UnimplementedFields.Insert(".hadoop_job.logging_config")

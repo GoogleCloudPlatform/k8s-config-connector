@@ -56,7 +56,7 @@ require (
 	cloud.google.com/go/designcenter v0.1.0
 	cloud.google.com/go/developerconnect v1.1.0
 	cloud.google.com/go/devicestreaming v1.0.0
-	cloud.google.com/go/dialogflow v1.82.0
+	cloud.google.com/go/dialogflow v1.87.0
 	cloud.google.com/go/discoveryengine v1.32.0
 	cloud.google.com/go/dlp v1.38.0
 	cloud.google.com/go/documentai v1.51.0

@@ -56,6 +56,8 @@ func dialogflowSipTrunkFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".connections")
 
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".google_root_cert_file")
+	f.Unimplemented_NotYetTriaged(".peer_hostnames")
 
 	return f
 }
