@@ -26,6 +26,7 @@ package designcenter
 import (
 	pb "cloud.google.com/go/designcenter/apiv1/designcenterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/designcenter/v1alpha1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -58,7 +59,9 @@ func DesignCenterSpaceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Space) *k
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.EnableGcpSharedTemplates = in.EnableGcpSharedTemplates
-	out.GCSBucket = direct.LazyPtr(in.GetGcsBucket())
+	if in.GetGcsBucket() != "" {
+		out.GCSBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetGcsBucket()}
+	}
 	out.Tags = in.Tags
 	return out
 }
@@ -71,7 +74,9 @@ func DesignCenterSpaceSpec_ToProto(mapCtx *direct.MapContext, in *krm.DesignCent
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.EnableGcpSharedTemplates = in.EnableGcpSharedTemplates
-	out.GcsBucket = direct.ValueOf(in.GCSBucket)
+	if in.GCSBucketRef != nil {
+		out.GcsBucket = in.GCSBucketRef.External
+	}
 	out.Tags = in.Tags
 	return out
 }

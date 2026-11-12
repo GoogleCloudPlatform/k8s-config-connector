@@ -25,31 +25,43 @@ entries:
     group: designcenter.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: triaged DesignCenterSpace; inlined ProjectAndLocationRef, converted gcsBucket to gcsBucketRef, and added API doc links
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: identity-not-in-cai
     detail: template "//designcenter.googleapis.com/projects/{project}/locations/{location}/spaces/{space}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
-    status: open
+    status: resolved
+    resolution: accepted
+    note: verified template against proto google.api.resource pattern
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: found no docs root for this API; find the REST reference page by hand
-    status: open
+    status: resolved
+    resolution: edited
+    note: added resource REST reference URL
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     reason: verify-service-docs-link
     detail: neither the Discovery directory nor the service config names a docs page; add one
-    status: open
+    status: resolved
+    resolution: edited
+    note: added service docs URL
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     field: .spec.gcsBucket
     reason: possible-reference-by-description
     detail: the field name has bucket and the description mentions Cloud Storage
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to gcsBucketRef (*storagev1beta1.StorageBucketRef)
   - kind: DesignCenterSpace
     group: designcenter.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
