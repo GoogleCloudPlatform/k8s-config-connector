@@ -542,3 +542,15 @@ func (m *gcpClient) newMachineImagesClient(ctx context.Context) (*compute.Machin
 	}
 	return client, err
 }
+
+func (m *gcpClient) newRegionHealthCheckServicesClient(ctx context.Context) (*compute.RegionHealthCheckServicesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionHealthCheckServicesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute RegionHealthCheckServices client: %w", err)
+	}
+	return client, err
+}
