@@ -21,12 +21,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 )
 
-const (
-	appEngineMigrateTrafficField        = "migrate_traffic"
-	appEngineSplitShardByField          = "split.0.shard_by"
-	appEngineSplitAllocationsCountField = "split.0.allocations.%"
-)
-
 func GetAppEngineServiceSplitTrafficResourceOverrides() ResourceOverrides {
 	ro := ResourceOverrides{
 		Kind: "AppEngineServiceSplitTraffic",
@@ -35,6 +29,8 @@ func GetAppEngineServiceSplitTrafficResourceOverrides() ResourceOverrides {
 	ro.Overrides = append(ro.Overrides, keepShardByDroppedByAppEngine())
 	return ro
 }
+
+const appEngineMigrateTrafficField = "migrate_traffic"
 
 // useDesiredMigrateTraffic stops a change to spec.migrateTraffic on its own from
 // triggering an update.
@@ -78,6 +74,11 @@ func useDesiredMigrateTraffic() ResourceOverride {
 	}
 	return o
 }
+
+const (
+	appEngineSplitShardByField          = "split.0.shard_by"
+	appEngineSplitAllocationsCountField = "split.0.allocations.%"
+)
 
 // keepShardByDroppedByAppEngine stops a shardBy that App Engine dropped from looking like a
 // change.

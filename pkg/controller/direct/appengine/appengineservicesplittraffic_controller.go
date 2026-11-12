@@ -202,7 +202,7 @@ func (a *splitTrafficAdapter) diffSplit(ctx context.Context) (*common.SpecDiffRe
 	return common.CompareSpecifiedSpec(
 		ctx,
 		&a.desired.Spec,
-		withShardByDroppedByAppEngine(a.desired, a.actual),
+		a.withShardByDroppedByAppEngine(),
 		AppEngineServiceSplitTrafficSpec_v1alpha1_FromProto,
 		AppEngineServiceSplitTrafficSpec_v1alpha1_ToProto,
 		nil,
@@ -218,19 +218,19 @@ func (a *splitTrafficAdapter) diffSplit(ctx context.Context) (*common.SpecDiffRe
 // back on a copy of the live service. A shardBy that App Engine dropped then doesn't look
 // like a change, while a change to the allocations is still detected and the update still
 // sends the desired shardBy.
-func withShardByDroppedByAppEngine(desired *krm.AppEngineServiceSplitTraffic, actual *pb.Service) *pb.Service {
-	split := actual.GetSplit()
+func (a *splitTrafficAdapter) withShardByDroppedByAppEngine() *pb.Service {
+	split := a.actual.GetSplit()
 	if split == nil || len(split.GetAllocations()) != 1 || split.GetShardBy() != pb.TrafficSplit_UNSPECIFIED {
-		return actual
+		return a.actual
 	}
-	if desired == nil || desired.Spec.Split == nil || desired.Spec.Split.ShardBy == nil {
-		return actual
+	if a.desired == nil || a.desired.Spec.Split == nil || a.desired.Spec.Split.ShardBy == nil {
+		return a.actual
 	}
-	shardBy, ok := pb.TrafficSplit_ShardBy_value[*desired.Spec.Split.ShardBy]
+	shardBy, ok := pb.TrafficSplit_ShardBy_value[*a.desired.Spec.Split.ShardBy]
 	if !ok {
-		return actual
+		return a.actual
 	}
-	filled := proto.Clone(actual).(*pb.Service)
+	filled := proto.Clone(a.actual).(*pb.Service)
 	filled.Split.ShardBy = pb.TrafficSplit_ShardBy(shardBy)
 	return filled
 }
