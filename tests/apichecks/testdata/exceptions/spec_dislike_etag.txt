@@ -15,3 +15,4 @@
 [spec_etag] crd=networkconnectivityserviceconnectiontokens.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=securitypostureposturedeployments.securityposture.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
 [spec_etag] crd=spannerinstancepartitions.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=vectorsearchdataobjects.vectorsearch.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag

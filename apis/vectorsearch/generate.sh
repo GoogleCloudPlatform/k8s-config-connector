@@ -55,6 +55,20 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
   --resource VectorsearchIndex:Index
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --allow-non-declarative \
+  --resource VectorSearchDataObject:DataObject
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --resource VectorSearchDataObject:DataObject
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.vectorsearch.v1 \
     --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \

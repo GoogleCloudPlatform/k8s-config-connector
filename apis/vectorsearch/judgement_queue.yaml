@@ -21,6 +21,45 @@
 # file does not have.
 
 entries:
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}" contains ancestor segment(s) collections/{collection} with no matching reference or field on VectorSearchDataObjectSpec
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    field: .spec.collectionRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to VectorSearchCollectionRef, read from the collections segment of projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/collections/{collection}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VectorSearchDataObject
+    group: vectorsearch.cnrm.cloud.google.com
+    field: .spec.vectors
+    reason: message-map-derived
+    detail: derived as map[string]Vector from proto google.cloud.vectorsearch.v1.Vector; verify Go type and mapping
+    status: open
   - kind: VectorsearchIndex
     group: vectorsearch.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

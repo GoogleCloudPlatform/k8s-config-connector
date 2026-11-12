@@ -34,4 +34,11 @@
   3. Ordered `NormalizeGreenfieldReferences` before `GetIdentity` in `AdapterForObject`, implemented `a.gcpClient.UpdateIndex` for in-place updates, and exported `ParentRef`, `ResourceID`, and `u.SetName(a.id.Index)`.
 - **Impact**: Clean real-GCP recording (7/7 lifecycle report checks pass, Cloud Audit Logs verified) and 100% CRD field coverage without modifying global test files or `dev/tools/controllerbuilder/`.
 
+### [2026-11-12] VectorSearchDataObject Prepopulation and Non-Declarative RPCs
+- **Context**: Greenfield Step 1a prepopulation for `VectorSearchDataObject` (`vectorsearch.cnrm.cloud.google.com/v1alpha1`).
+- **Problem**: `controllerbuilder generate-types` flagged `VectorSearchDataObject` as non-declarative because the underlying service `DataObjectService` defines bulk RPCs (`BatchCreateDataObjects`, `BatchUpdateDataObjects`, `BatchDeleteDataObjects`).
+- **Solution**: Passed `--allow-non-declarative` to `generate-types` in `apis/vectorsearch/generate.sh`.
+- **Impact**: Generated KRM types, identity, reference, mapper, and judgement queue successfully while registering `VectorSearchDataObject` in `BLOCKED_KINDS`.
+
+
 

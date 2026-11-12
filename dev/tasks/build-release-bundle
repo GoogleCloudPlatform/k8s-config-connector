@@ -309,6 +309,7 @@ BLOCKED_KINDS=(
     "TranslateGlossaryEntry"
     "TranslateModel"
     "VectorSearchCollection"
+    "VectorSearchDataObject"
     "VertexAICachedContent"
     "VertexAIDeploymentResourcePool"
     "VertexAIExampleStore"
