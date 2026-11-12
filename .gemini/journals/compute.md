@@ -87,11 +87,11 @@
   3. When `SourceDisk` is returned from GCP `Get`, it has the full URL format (`https://www.googleapis.com/...`), while `SourceDiskRef` on KRM objects or resolved by `NormalizeGreenfieldReferences` uses the relative format (`projects/...`). A normalization hook was supplied to `CompareGreenfieldSpec` to strip the compute URL prefix, preventing false diffs during re-reconciliation.
   4. Fuzzer round-trip testing (`FOCUS=ComputeInstantSnapshot`) required marking unmapped proto fields (`.params`, `.source_instant_snapshot_group`, `.source_instant_snapshot_group_id`) as `f.Unimplemented_NotYetTriaged`.
   5. Minimal and maximal fixtures were created and recorded against real GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated validation checks.
-  - **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
+- **Impact**: Clean direct controller and fuzzer implementation for `ComputeInstantSnapshot` verified end-to-end against real GCP.
 
-  ### [2026-11-11] MockGCP Implementation and Alignment for ComputeInstantSnapshot
-  - **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeInstantSnapshot` (issue #15421).
-  - **Implementation**:
+### [2026-11-11] MockGCP Implementation and Alignment for ComputeInstantSnapshot
+- **Context**: Implementing MockGCP service handlers and aligning mock golden logs with authentic real GCP traffic for `ComputeInstantSnapshot` (issue #15421).
+- **Implementation**:
   1. Implemented `InstantSnapshotsV1` (zonal) and `RegionInstantSnapshotsV1` (regional) in `mockgcp/mockcompute/instantsnapshotsv1.go`, handling Get, Insert, Delete, and SetLabels.
   2. Registered both gRPC servers and HTTP mux handlers in `mockgcp/mockcompute/service.go`.
   3. Added `ComputeInstantSnapshot` to supported GroupKinds for MockGCP testing in `config/tests/samples/create/harness.go`.
@@ -99,7 +99,26 @@
   5. Populated `SatisfiesPzi: true` on instant snapshots to match real GCP behavior observed in KRM status objects.
   6. Automatically populated source disk metadata (`SourceDiskId`, `DiskSizeGb`) from mock storage when available, defaulting to standard 10GB pd size.
   7. Ran `hack/compare-mock` and verified 0 diff in golden objects, generated `_http_mock.log` files, and verified clean pass of `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite compute`.
-  - **Impact**: Provides hermetic MockGCP simulation for both zonal and regional instant snapshots with zero diff against authentic real GCP golden logs.
+- **Impact**: Provides hermetic MockGCP simulation for both zonal and regional instant snapshots with zero diff against authentic real GCP golden logs.
 
+### [2026-11-11] Greenfield Prepopulate of ComputeHealthCheckService
+- **Context**: Prepopulating direct KRM types, identity, and judgement queue for Greenfield resource `ComputeHealthCheckService` (issue #15400).
+- **Implementation**:
+  1. Configured dedicated `generate-types` and `generate-identity` commands for `ComputeHealthCheckService:HealthCheckService` in `apis/compute/generate.sh` using `--prepopulate-resource`.
+  2. Executed `./apis/compute/generate.sh`, which automatically generated `computehealthcheckservice_types.go`, `computehealthcheckservice_identity.generated.go`, `computehealthcheckservice_reference.generated.go`, `computehealthcheckservice_identity_generated_test.go`, and CRD manifests.
+  3. Added `ComputeHealthCheckService` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Added `computehealthcheckservices.compute.cnrm.cloud.google.com` entries to `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Idempotency verified and all tests pass.
 
+### [2026-11-11] Greenfield Judgement Queue Triage for ComputeHealthCheckService
+- **Context**: Triaging `apis/compute/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeHealthCheckService` (issue #15418).
+- **Findings & Resolutions**:
+  1. `ComputeHealthCheckService` is a regional resource under `projects/{project}/regions/{region}/healthCheckServices/{healthcheckservice}`. In `computehealthcheckservice_types.go`, `spec.location` was made a required string (`Location string`) representing the region name, matching standard Compute conventions.
+  2. `spec.region` was confirmed as output-only per proto comments ("It is not settable as a field in the request body") and moved to `ComputeHealthCheckServiceObservedState.Region`.
+  3. Verified documentation link and updated `+kcc:source:resource-docs` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionHealthCheckServices`, removing guess annotations.
+  4. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only and retained in `ComputeHealthCheckServiceObservedState` with guess markers removed.
+  5. Deterministic identity and reference generation via `controllerbuilder generate-identity` were retained in `apis/compute/generate.sh`, while `ComputeHealthCheckService:HealthCheckService` was moved into the primary `generate-types` invocation.
+  6. Modeled `spec.healthChecks` and `spec.networkEndpointGroups` as typed KCC references (`HealthCheckRefs []*computev1beta1.ComputeHealthCheckRef` and `NetworkEndpointGroupRefs []*computev1beta1.ComputeNetworkEndpointGroupRef`) referencing existing KCC resources `ComputeHealthCheck` and `ComputeNetworkEndpointGroup`.
+  7. Resolved all 9 entries in `apis/compute/judgement_queue.yaml` for `ComputeHealthCheckService`.
+- **Impact**: Cleanly resolved the entire judgement queue for `ComputeHealthCheckService`. CRDs and mapper bindings updated, and all unit tests and API checks pass.
 
