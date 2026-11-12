@@ -21,8 +21,16 @@ awk -v kind="<Kind>" '
 ```
 
 - **If `untriaged-bulk-generation` is `open` (Step 1a / `step/gen-types`: Mechanical Prepopulate PR)**:
-  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md)** using `view_file`.
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`](.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md)**.
 - **If `untriaged-bulk-generation` is `resolved` (Step 1b / `step/types-judgement`: Judgement Queue Triage & Finalize Types PR)**:
-  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md)** using `view_file`.
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md`](.gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md)**.
 - **If `apis/<service>/judgement_queue.yaml` does not exist or has no entry for `<Kind>` (In-Flight Legacy Greenfield Types PR)**:
-  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md)** using `view_file`.
+  - Read and follow **[`.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md`](.gemini/skills/reviewgen-greenfield-new-types/legacy/SKILL.md)**.
+
+---
+
+## SOUL.md Invariant 7: Internal Information Sanitization (Blocking Finding)
+
+Across all greenfield new types reviews:
+*   **Blocking Finding**: Treat any Buganizer ID (`b/<id>`), internal bug URL (`buganizer.corp.google.com`), or customer name anywhere on GitHub (PR title, description, commit messages, code comments, or release notes) as an absolute **BLOCKING FINDING**. Request changes until removed.
+*   **Reviewer Hygiene**: Reviewer comments must **NEVER** contain Buganizer IDs or customer names. Refer strictly to public GitHub issues or PRs.
