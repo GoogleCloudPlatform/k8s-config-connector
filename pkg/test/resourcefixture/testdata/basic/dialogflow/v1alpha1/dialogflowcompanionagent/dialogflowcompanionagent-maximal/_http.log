@@ -1,0 +1,323 @@
+# Phase: CREATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CompanionAgent with ID dialogflowcompanionagent-max-${uniqueId} not found in projects/${projectId}/location/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents?%24alt=json%3Benum-encoding%3Dint&companionAgentId=dialogflowcompanionagent-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "description": "Maximal description for companion agent",
+  "displayName": "Max Companion Agent ${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Ask for order number"
+              }
+            ],
+            "condition": "customer asks to cancel order",
+            "displayDetails": "Help customer cancel order",
+            "displayName": "Order cancellation",
+            "triggerEvent": 2
+          }
+        ],
+        "overarchingGuidance": "Always be polite and helpful."
+      },
+      "skillTriggeringEvent": 2
+    },
+    {
+      "skillTriggeringEvent": 2,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-US",
+        "customerLanguageCode": "es"
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal description for companion agent",
+  "displayName": "Max Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Ask for order number"
+              }
+            ],
+            "condition": "customer asks to cancel order",
+            "displayDetails": "Help customer cancel order",
+            "displayName": "Order cancellation",
+            "triggerEvent": 2
+          }
+        ],
+        "overarchingGuidance": "Always be polite and helpful."
+      },
+      "skillTriggeringEvent": 2
+    },
+    {
+      "skillTriggeringEvent": 2,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-US",
+        "customerLanguageCode": "es"
+      }
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: UPDATE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal description for companion agent",
+  "displayName": "Max Companion Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Ask for order number"
+              }
+            ],
+            "condition": "customer asks to cancel order",
+            "displayDetails": "Help customer cancel order",
+            "displayName": "Order cancellation",
+            "triggerEvent": 2
+          }
+        ],
+        "overarchingGuidance": "Always be polite and helpful."
+      },
+      "skillTriggeringEvent": 2
+    },
+    {
+      "skillTriggeringEvent": 2,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-US",
+        "customerLanguageCode": "es"
+      }
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CskillConfigs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: companion_agent.name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-max-${uniqueId}
+
+{
+  "description": "Updated maximal description for companion agent",
+  "displayName": "Updated Max Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Lookup order status in system"
+              }
+            ],
+            "condition": "customer asks for status",
+            "displayDetails": "Help customer check order status",
+            "displayName": "Order status",
+            "triggerEvent": 3
+          }
+        ],
+        "overarchingGuidance": "Always provide accurate information."
+      },
+      "skillTriggeringEvent": 3
+    },
+    {
+      "skillTriggeringEvent": 3,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-GB",
+        "customerLanguageCode": "fr"
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal description for companion agent",
+  "displayName": "Updated Max Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Lookup order status in system"
+              }
+            ],
+            "condition": "customer asks for status",
+            "displayDetails": "Help customer check order status",
+            "displayName": "Order status",
+            "triggerEvent": 3
+          }
+        ],
+        "overarchingGuidance": "Always provide accurate information."
+      },
+      "skillTriggeringEvent": 3
+    },
+    {
+      "skillTriggeringEvent": 3,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-GB",
+        "customerLanguageCode": "fr"
+      }
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+# Phase: DELETE
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal description for companion agent",
+  "displayName": "Updated Max Agent ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}",
+  "skillConfigs": [
+    {
+      "guidanceSkillConfig": {
+        "guidanceInstructions": [
+          {
+            "actions": [
+              {
+                "description": "Lookup order status in system"
+              }
+            ],
+            "condition": "customer asks for status",
+            "displayDetails": "Help customer check order status",
+            "displayName": "Order status",
+            "triggerEvent": 3
+          }
+        ],
+        "overarchingGuidance": "Always provide accurate information."
+      },
+      "skillTriggeringEvent": 3
+    },
+    {
+      "skillTriggeringEvent": 3,
+      "translationSkillConfig": {
+        "agentLanguageCode": "en-GB",
+        "customerLanguageCode": "fr"
+      }
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/companionAgents/dialogflowcompanionagent-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcompanionAgents%2Fdialogflowcompanionagent-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
