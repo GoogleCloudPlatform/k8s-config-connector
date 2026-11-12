@@ -461,6 +461,38 @@ entries:
     status: resolved
     resolution: edited
     note: removed deprecated field.
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformContextSpec
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.contexts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.contexts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.contexts'
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
   - kind: AIPlatformFeatureView
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

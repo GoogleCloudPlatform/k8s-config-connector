@@ -62,6 +62,7 @@ ${CONTROLLERBUILDER} generate-types \
   --allow-non-declarative \
   --resource AIPlatformArtifact:Artifact \
   --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformContext:Context \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \
@@ -79,6 +80,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --resource AIPlatformArtifact:Artifact \
   --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformContext:Context \
   --resource AIPlatformFeatureView:FeatureView \
   --resource AIPlatformHyperparameterTuningJob:HyperparameterTuningJob \
   --resource AIPlatformNotebookRuntimeTemplate:NotebookRuntimeTemplate \

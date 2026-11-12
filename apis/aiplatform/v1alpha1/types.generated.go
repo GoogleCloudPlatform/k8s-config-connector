@@ -40,6 +40,7 @@
 // resource: AIPlatformPipelineJob:PipelineJob
 // resource: AIPlatformRAGCorpus:RagCorpus
 // resource: AIPlatformArtifact:Artifact
+// resource: AIPlatformContext:Context
 
 package v1alpha1
 

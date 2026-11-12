@@ -175,4 +175,12 @@
      - Triaged and marked all 8 entries for `AIPlatformArtifact` in `apis/aiplatform/judgement_queue.yaml` as `resolved`.
      - Closed `untriaged-bulk-generation` last with summary note.
 
-
+### [2026-11-12] Prepopulating Direct KRM Types, Identity, Reference, and Judgement Queue for AIPlatformContext
+- **Context**: Greenfield Step 1a prepopulate for `AIPlatformContext` under `apis/aiplatform/v1alpha1/` (Issue #15498).
+- **Actions**:
+  1. Updated `apis/aiplatform/generate.sh` to include `--resource AIPlatformContext:Context` in `generate-types` and `generate-identity`.
+  2. Executed `./apis/aiplatform/generate.sh`, generating `aiplatformcontext_types.go`, `aiplatformcontext_identity.generated.go`, `aiplatformcontext_reference.generated.go`, `aiplatformcontext_identity_generated_test.go`, mapper code, deepcopy methods, and CRD manifest (`apiextensions.k8s.io_v1_customresourcedefinition_aiplatformcontexts.aiplatform.cnrm.cloud.google.com.yaml`).
+  3. Added `"AIPlatformContext"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to record untriaged entries in apichecks exception files.
+  5. Verified all unit tests (`go test -v ./apis/aiplatform/... ./pkg/controller/direct/aiplatform/... ./tests/apichecks/...`) pass and script execution is idempotent.
+- **Impact**: Standard mechanical prepopulation for `AIPlatformContext` completed with open entries in `judgement_queue.yaml` ready for Step 1b triage.
