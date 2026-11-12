@@ -44,7 +44,7 @@ type DialogflowCXAgentSpec struct {
 
 	// The URI of the agent's avatar. Avatars are used throughout the Dialogflow console and in the self-hosted Web Demo integration.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Agent.avatar_uri
-	AvatarUri *string `json:"avatarUri,omitempty"`
+	AvatarURI *string `json:"avatarUri,omitempty"`
 
 	// Immutable. The default language of the agent as a language tag. [See Language Support](https://cloud.google.com/dialogflow/cx/docs/reference/language) for a list of the currently supported language codes. This field cannot be updated after creation.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Agent.default_language_code

@@ -316,6 +316,18 @@ func NormalizeDynamicIDs(s string) string {
 			}
 			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/styleConfigs/", "projects/${projectId}/styleConfigs/", 1)
 		}
+		// Normalize DialogflowCXAgent IDs: locations/.../agents/<agentId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/agents/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			remainder := line[idx+len("/agents/"):]
+			if !strings.Contains(remainder, "/") {
+				if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+					lines[i] = "- caisURL: unknown"
+				} else {
+					lines[i] = "  caisURL: unknown"
+				}
+			}
+		}
 		// Normalize DialogflowWebhook IDs: locations/.../agents/.../webhooks/<webhookId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/webhooks/"); idx != -1 && strings.Contains(line, "dialogflow") {
