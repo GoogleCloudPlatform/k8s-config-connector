@@ -25,36 +25,48 @@ entries:
     group: backupdr.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: finalized ProjectAndLocationRef, BackupPlanRef, etag in observedState
   - kind: BackupDRAutoProtectionPolicy
     group: backupdr.cnrm.cloud.google.com
     reason: identity-server-generated-id
     detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
-    status: open
+    status: resolved
+    resolution: accepted
+    note: confirmed CreateAutoProtectionPolicyRequest has auto_protection_policy_id; ID is client-specified
   - kind: BackupDRAutoProtectionPolicy
     group: backupdr.cnrm.cloud.google.com
     field: .spec.backupPlanDetails[].backupPlan
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to backupdr.googleapis.com/BackupPlan (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to BackupPlanRef (*backupdrv1beta1.BackupPlanRef)
   - kind: BackupDRAutoProtectionPolicy
     group: backupdr.cnrm.cloud.google.com
     field: .spec.etag
     reason: etag-in-spec
     detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from Spec to ObservedState
   - kind: BackupDRAutoProtectionPolicy
     group: backupdr.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
   - kind: BackupDRAutoProtectionPolicy
     group: backupdr.cnrm.cloud.google.com
     field: .status.observedState.etag
     reason: well-known-output-only-pattern-in-comment
     detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.etag. Move the field to .status.observedState.etag if it is confirmed output only. Proto comment: Output only. The etag for the policy. If this is provided on update, it must match the server''s etag.'
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved etag from Spec to ObservedState
   - kind: BackupDRRestoreVerificationPlan
     group: backupdr.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

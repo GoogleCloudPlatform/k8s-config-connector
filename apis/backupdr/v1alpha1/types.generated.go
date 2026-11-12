@@ -48,13 +48,14 @@ type AutoProtectionPolicy struct {
 }
 */
 
+/* found existing non-generated go type "BackupPlanDetail", skipping
+
 // +kcc:proto=google.cloud.backupdr.v1.BackupPlanDetail
 type BackupPlanDetail struct {
 	// Required. The type of resource that this policy will automatically protect.
 	//  Allowed values are, `compute.googleapis.com/Instance` and
 	//  `compute.googleapis.com/Disk` are supported.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.resource_type
-	// +required
 	ResourceType *string `json:"resourceType,omitempty"`
 
 	// Required. The resource name of the BackupPlan to apply to resources that
@@ -62,9 +63,9 @@ type BackupPlanDetail struct {
 	//  as AutoProtectionPolicy. Format:
 	//  projects/{project}/locations/{location}/backupPlans/{backupPlanId}
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.backup_plan
-	// +required
 	BackupPlan *string `json:"backupPlan,omitempty"`
 }
+*/
 
 /* unreachable type BindingSummary
 // +kcc:proto=google.cloud.backupdr.v1.BindingSummary

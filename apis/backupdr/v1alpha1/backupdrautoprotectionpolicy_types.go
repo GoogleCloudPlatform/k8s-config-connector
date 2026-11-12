@@ -20,7 +20,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,11 +31,7 @@ var BackupDRAutoProtectionPolicyGVK = GroupVersion.WithKind("BackupDRAutoProtect
 // +kcc:spec:proto=google.cloud.backupdr.v1.AutoProtectionPolicy
 // +kcc:required-from-proto
 type BackupDRAutoProtectionPolicySpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The BackupDRAutoProtectionPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -53,11 +49,22 @@ type BackupDRAutoProtectionPolicySpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.criteria
 	// +required
 	Criteria *Criteria `json:"criteria,omitempty"`
+}
 
-	// Output only. The etag for the policy.
-	//  If this is provided on update, it must match the server's etag.
-	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.etag
-	Etag *string `json:"etag,omitempty"`
+// +kcc:proto=google.cloud.backupdr.v1.BackupPlanDetail
+type BackupPlanDetail struct {
+	// Required. The type of resource that this policy will automatically protect.
+	// Allowed values are, `compute.googleapis.com/Instance` and
+	// `compute.googleapis.com/Disk` are supported.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Required. The resource name of the BackupPlan to apply to resources that
+	// match the policy's criteria. This backup plan must be in the same location
+	// as AutoProtectionPolicy. Format:
+	// projects/{project}/locations/{location}/backupPlans/{backupPlanId}
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanDetail.backup_plan
+	BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
 }
 
 // BackupDRAutoProtectionPolicyStatus defines the config connector machine state of BackupDRAutoProtectionPolicy
@@ -82,6 +89,11 @@ type BackupDRAutoProtectionPolicyObservedState struct {
 	// Output only. The current state of the AutoProtectionPolicy.
 	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.state
 	State *string `json:"state,omitempty"`
+
+	// Output only. The etag for the policy.
+	// If this is provided on update, it must match the server's etag.
+	// +kcc:proto:field=google.cloud.backupdr.v1.AutoProtectionPolicy.etag
+	Etag *string `json:"etag,omitempty"`
 
 	// Output only. Summary of total count of different containers covered through
 	//  this policy.

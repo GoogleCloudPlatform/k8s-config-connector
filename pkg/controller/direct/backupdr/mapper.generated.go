@@ -39,6 +39,7 @@ func BackupDRAutoProtectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct
 	out := &krmbackupdrv1alpha1.BackupDRAutoProtectionPolicyObservedState{}
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.BindingSummary = BindingSummaryObservedState_v1alpha1_FromProto(mapCtx, in.GetBindingSummary())
 	out.PolicyEvaluationSummary = PolicyEvaluationSummaryObservedState_v1alpha1_FromProto(mapCtx, in.GetPolicyEvaluationSummary())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -52,6 +53,7 @@ func BackupDRAutoProtectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.M
 	out := &pb.AutoProtectionPolicy{}
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.AutoProtectionPolicy_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.BindingSummary = BindingSummaryObservedState_v1alpha1_ToProto(mapCtx, in.BindingSummary)
 	out.PolicyEvaluationSummary = PolicyEvaluationSummaryObservedState_v1alpha1_ToProto(mapCtx, in.PolicyEvaluationSummary)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -67,7 +69,6 @@ func BackupDRAutoProtectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.BackupPlanDetails = direct.Slice_FromProto(mapCtx, in.BackupPlanDetails, BackupPlanDetail_v1alpha1_FromProto)
 	out.Criteria = Criteria_v1alpha1_FromProto(mapCtx, in.GetCriteria())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupDRAutoProtectionPolicySpec) *pb.AutoProtectionPolicy {
@@ -79,7 +80,6 @@ func BackupDRAutoProtectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Description = direct.ValueOf(in.Description)
 	out.BackupPlanDetails = direct.Slice_ToProto(mapCtx, in.BackupPlanDetails, BackupPlanDetail_v1alpha1_ToProto)
 	out.Criteria = Criteria_v1alpha1_ToProto(mapCtx, in.Criteria)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationObservedState {
@@ -407,7 +407,9 @@ func BackupPlanDetail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Backu
 	}
 	out := &krmbackupdrv1alpha1.BackupPlanDetail{}
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.BackupPlan = direct.LazyPtr(in.GetBackupPlan())
+	if in.GetBackupPlan() != "" {
+		out.BackupPlanRef = &krmbackupdrv1alpha1.BackupPlanRef{External: in.GetBackupPlan()}
+	}
 	return out
 }
 func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupdrv1alpha1.BackupPlanDetail) *pb.BackupPlanDetail {
@@ -416,7 +418,9 @@ func BackupPlanDetail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbackupd
 	}
 	out := &pb.BackupPlanDetail{}
 	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.BackupPlan = direct.ValueOf(in.BackupPlan)
+	if in.BackupPlanRef != nil {
+		out.BackupPlan = in.BackupPlanRef.External
+	}
 	return out
 }
 func BackupRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krm.BackupRule {
