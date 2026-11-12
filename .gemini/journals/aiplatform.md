@@ -220,4 +220,11 @@
      - Verified all apichecks, CAI template, and package tests with clean passes.
 - **Impact**: Cleanly finalized types, identity, and CRD for `AIPlatformExecution`.
 
+### [2026-11-12] Prepopulating Direct KRM Types, Identity, and Judgement Queue for AIPlatformNotebookExecutionJob
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and judgement queue for `AIPlatformNotebookExecutionJob` (Issue #15511) under `apis/aiplatform/v1alpha1/` from `google.cloud.aiplatform.v1.NotebookExecutionJob`.
+- **Implementation & Observations**:
+  1. **Non-Declarative Generation**: In `notebook_service.proto`, `NotebookService` exposes `CreateNotebookExecutionJob`, `GetNotebookExecutionJob`, and `DeleteNotebookExecutionJob`, but lacks an `UpdateNotebookExecutionJob` RPC. Added `AIPlatformNotebookExecutionJob:NotebookExecutionJob` to the `--allow-non-declarative` block of `generate-types` in `apis/aiplatform/generate.sh`.
+  2. **Empty oneof Option Handling**: `NotebookExecutionJob` defines `oneof runtime_environment { WorkbenchRuntime workbench_runtime = 23; }` where `message WorkbenchRuntime {}` contains no fields. Added `aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com` to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with comment `// GCP known pattern: Empty oneof option (spec.workbenchRuntime)`.
+  3. **Release Bundle Blocked Kinds**: Added `AIPlatformNotebookExecutionJob` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. **Verification**: Executed `./apis/aiplatform/generate.sh` idempotently, verified open entries in `apis/aiplatform/judgement_queue.yaml`, and confirmed all unit tests and `tests/apichecks` pass cleanly.
 

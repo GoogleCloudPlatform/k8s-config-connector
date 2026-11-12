@@ -1138,6 +1138,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"transcoderjobtemplates.transcoder.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.config.elementaryStreams[].videoStream.h264.sdr)
 		"vmmigrationmigratingvms.vmmigration.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (status.observedState.currentSyncInfo.steps[].initializingReplication)
 		"aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (spec.tools[].googleMaps)
+		"aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.workbenchRuntime)
 		"aiplatformragcorpuses.aiplatform.cnrm.cloud.google.com":                        true, // GCP known pattern: Empty oneof option (spec.vectorDbConfig.ragManagedDb.knn)
 		"dlpcontentpolicies.dlp.cnrm.cloud.google.com":                                  true, // GCP known pattern: Empty oneof option (spec.rules[].conditions[].infoTypeCondition.anyInfoType)
 	}

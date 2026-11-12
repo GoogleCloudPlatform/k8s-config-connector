@@ -1275,6 +1275,99 @@ entries:
     status: resolved
     resolution: edited
     note: converted to EndpointRefs ([]vertexaiv1beta1.VertexAIEndpointRef).
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.notebookExecutionJobs: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookExecutionJobs, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.notebookExecutionJobs'
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.machineSpec.reservationAffinity.values
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Reservation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.networkSpec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.customEnvironmentSpec.networkSpec.subnetwork
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Subnetwork (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dataformRepositorySource.dataformRepositoryResourceName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_id}/locations/{location}/repositories/{repository_id}"
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookRuntimeTemplate, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookExecutionJob only, give AIPlatformNotebookExecutionJob its own copy of EncryptionSpec. AIPlatformNotebookExecutionJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsNotebookSource
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsNotebookSource.uri
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.gcsOutputURI
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.notebookRuntimeTemplateResourceName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/NotebookRuntimeTemplate (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.scheduleResourceName
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to aiplatform.googleapis.com/Schedule (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: AIPlatformNotebookExecutionJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -1295,7 +1388,7 @@ entries:
     group: aiplatform.cnrm.cloud.google.com
     field: .spec.encryptionSpec.kmsKeyRef
     reason: required-not-enforced
-    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in aiplatformschedule_types.go is also used by AIPlatformCachedContent, AIPlatformCustomJob, AIPlatformHyperparameterTuningJob, AIPlatformModel, AIPlatformModelDeploymentMonitoringJob, AIPlatformModelMonitor, AIPlatformNotebookExecutionJob, AIPlatformPersistentResource, AIPlatformPipelineJob, AIPlatformRAGCorpus, AIPlatformReasoningEngine, AIPlatformSchedule, VertexAIFeatureOnlineStore, VertexAITrainingPipeline, VertexAITuningJob. +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformNotebookRuntimeTemplate only, give AIPlatformNotebookRuntimeTemplate its own copy of EncryptionSpec. AIPlatformNotebookRuntimeTemplate is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
     status: open
   - kind: AIPlatformNotebookRuntimeTemplate
     group: aiplatform.cnrm.cloud.google.com

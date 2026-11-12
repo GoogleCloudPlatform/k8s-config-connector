@@ -19,6 +19,9 @@
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.instanceSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.parametersSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.predictionSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsNotebookSource" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsNotebookSource.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsOutputURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.softwareConfig.postStartupScriptConfig.postStartupScriptURL" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.gcsNotebookSource" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformschedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.gcsNotebookSource.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
