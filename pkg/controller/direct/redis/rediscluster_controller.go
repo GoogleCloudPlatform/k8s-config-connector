@@ -357,6 +357,33 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
 	}
 
+	// If ClusterEndpoints is unspecified, use the actual value as default
+	if len(desired.ClusterEndpoints) == 0 {
+		desired.ClusterEndpoints = maskedActual.ClusterEndpoints
+	} else if len(desired.ClusterEndpoints) == len(maskedActual.ClusterEndpoints) {
+		// If each desired endpoint corresponds to an existing actual endpoint (same network/project),
+		// adopt the actual connections so we don't produce false diffs against server-expanded connections.
+		allMatch := true
+		for i, desiredEP := range desired.ClusterEndpoints {
+			actualEP := maskedActual.ClusterEndpoints[i]
+			if len(desiredEP.Connections) > 0 && len(actualEP.Connections) > 0 {
+				desiredAuto := desiredEP.Connections[0].GetPscAutoConnection()
+				if desiredAuto != nil {
+					for _, actualConn := range actualEP.Connections {
+						actualAuto := actualConn.GetPscAutoConnection()
+						if actualAuto != nil && (actualAuto.GetNetwork() != desiredAuto.GetNetwork() || actualAuto.GetProjectId() != desiredAuto.GetProjectId()) {
+							allMatch = false
+							break
+						}
+					}
+				}
+			}
+		}
+		if allMatch {
+			desired.ClusterEndpoints = maskedActual.ClusterEndpoints
+		}
+	}
+
 	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err

@@ -137,6 +137,8 @@ transitEncryptionMode: string
 zoneDistributionConfig:
   mode: string
   zone: string
+  zones:
+  - string
 ```
 
 <table class="properties responsive">
@@ -1001,6 +1003,26 @@ zoneDistributionConfig:
             <p>Optional. When SINGLE ZONE distribution is selected, zone field would be used to allocate all resources in that zone. This is not applicable to MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>zoneDistributionConfig.zones</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. Specify the zones of a multi-zone cluster where Redis Cluster allocates resources. This flag isn't applicable for single-zone clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>zoneDistributionConfig.zones[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -1080,6 +1102,9 @@ observedState:
       targetReplicaCount: integer
       targetShardCount: integer
   uid: string
+  zoneDistributionConfig:
+    activeZones:
+    - string
 ```
 
 <table class="properties responsive">
@@ -1654,6 +1679,27 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. System assigned, unique identifier for the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. This config will be used to determine how the customer wants us to distribute cluster resources within the region.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig.activeZones</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Output only. The exact list of zones where the cluster currently has active VMs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.zoneDistributionConfig.activeZones[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
 </tbody>

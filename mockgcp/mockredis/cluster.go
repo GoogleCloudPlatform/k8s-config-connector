@@ -455,6 +455,17 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
 		obj.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
 	}
+	if obj.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_MULTI_ZONE {
+		if len(obj.ZoneDistributionConfig.Zones) > 0 {
+			obj.ZoneDistributionConfig.ActiveZones = obj.ZoneDistributionConfig.Zones
+		} else if len(obj.ZoneDistributionConfig.ActiveZones) == 0 {
+			obj.ZoneDistributionConfig.ActiveZones = []string{
+				fmt.Sprintf("%s-a", name.Location),
+				fmt.Sprintf("%s-b", name.Location),
+				fmt.Sprintf("%s-c", name.Location),
+			}
+		}
+	}
 
 	if obj.CrossClusterReplicationConfig != nil {
 		config := obj.CrossClusterReplicationConfig
