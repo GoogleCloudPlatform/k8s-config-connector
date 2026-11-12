@@ -194,3 +194,12 @@
   4. **Identity & Unit Testing**: Verified deterministic regeneration of `aiplatformcontext_identity.generated.go` via `generate-identity` using `parentRef`. Added unit tests in `aiplatformcontext_identity_test.go` covering `GetIdentity` resolution from `parentRef` and error cases. Resolved all open entries for `AIPlatformContext` in `apis/aiplatform/judgement_queue.yaml`.
 - **Impact**: All judgement queue entries for `AIPlatformContext` are triaged and resolved, CRD schema and mappers regenerated cleanly, and all unit tests pass.
 
+### [2026-11-12] Prepopulating Direct KRM Types, Identity, and Judgement Queue for AIPlatformExecution
+- **Context**: Greenfield Step 1a mechanical prepopulation for `AIPlatformExecution` (Issue #15503).
+- **Implementation & Observations**:
+  1. **Proto Verification & Declarative Exemption**: `google.cloud.aiplatform.v1.Execution` (`AIPlatformExecution`) is in GA proto package `google.cloud.aiplatform.v1`. The proto collection is `projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}`, which matches `ephemeralCollectionSegments["executions"]` in `controllerbuilder`. Configured `generate-types` with `--prepopulate-resource` and `--allow-non-declarative`.
+  2. **Code Generation**: Added `AIPlatformExecution:Execution` to `generate-types` and `generate-identity` in `apis/aiplatform/generate.sh`. Running `generate.sh` generated `aiplatformexecution_types.go`, identity, reference, conformance tests, and updated `judgement_queue.yaml` with open findings (including parent and identity ancestor segments `metadataStores/{metadata_store}`).
+  3. **Release Bundle Blocklist**: Added `"AIPlatformExecution"` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. **Exceptions & Golden Updates**: Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to record untriaged entries in `spec_dislike_etag.txt` and `alpha-missingfields.txt`. Reverted spurious formatting diff in `tests/apichecks/testdata/exceptions/multi_version_crd_diff/IAPSettings.diff`.
+- **Impact**: Clean mechanical prepopulation ready for Step 1b triage.
+

@@ -293,6 +293,64 @@ func AIPlatformCustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatfo
 	return out
 }
 
+func AIPlatformExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AIPlatformExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformExecutionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func AIPlatformExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformExecutionObservedState) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func AIPlatformExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AIPlatformExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformExecutionSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func AIPlatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformExecutionSpec) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
 func AIPlatformFeatureViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureView) *krm.AIPlatformFeatureViewObservedState {
 	if in == nil {
 		return nil
