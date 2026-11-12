@@ -159,7 +159,7 @@ func (r *KRMSyncerReconciler) expandRule(ctx context.Context, krmsyncer *krmv1al
 			// Match group
 			groupMatch := false
 			if rule.Group == "*.cnrm.cloud.google.com" {
-				groupMatch = strings.HasSuffix(gv.Group, "cnrm.cloud.google.com")
+				groupMatch = kccGlobMatchesGroup(gv.Group)
 			} else {
 				groupMatch = (gv.Group == rule.Group)
 			}
@@ -388,7 +388,7 @@ func (r *DynamicResourceReconciler) ruleMatchesGVK(rule krmv1alpha1.ResourceRule
 
 	if isKCCGlob {
 		if rule.Group == "*.cnrm.cloud.google.com" {
-			return strings.HasSuffix(gvk.Group, "cnrm.cloud.google.com")
+			return kccGlobMatchesGroup(gvk.Group)
 		}
 		return gvk.Group == rule.Group
 	}
