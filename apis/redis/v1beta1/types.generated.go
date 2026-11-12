@@ -22,6 +22,18 @@
 
 package v1beta1
 
+/* unreachable type AclPolicyInfo
+// +kcc:proto=google.cloud.redis.cluster.v1.AclPolicyInfo
+type AclPolicyInfo struct {
+}
+*/
+
+/* unreachable type AclPolicyRevisionStatus
+// +kcc:proto=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus
+type AclPolicyRevisionStatus struct {
+}
+*/
+
 // +kcc:proto=google.cloud.redis.cluster.v1.AutomatedBackupConfig
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
@@ -135,6 +147,31 @@ type Cluster struct {
 	// Optional. The automated backup config for the cluster.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. If true, cluster endpoints that are created and registered by
+	//  customers can be deleted asynchronously. That is, such a cluster endpoint
+	//  can be de-registered before the forwarding rules in the cluster endpoint
+	//  are deleted.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.async_cluster_endpoints_deletion_enabled
+	AsyncClusterEndpointsDeletionEnabled *bool `json:"asyncClusterEndpointsDeletionEnabled,omitempty"`
+
+	// Optional. Server CA mode for the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.server_ca_mode
+	ServerCAMode *string `json:"serverCAMode,omitempty"`
+
+	// Optional. Customer-managed CA pool for the cluster. Only applicable for
+	//  BYOCA i.e. if server_ca_mode is SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA.
+	//  Format: "projects/{project}/locations/{region}/caPools/{ca_pool}".
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.server_ca_pool
+	ServerCAPool *string `json:"serverCAPool,omitempty"`
+
+	// Optional. Input only. Rotate the server certificates.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.rotate_server_certificate
+	RotateServerCertificate *bool `json:"rotateServerCertificate,omitempty"`
+
+	// Optional. The ACL policy to be applied to the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.acl_policy
+	AclPolicy *string `json:"aclPolicy,omitempty"`
 }
 */
 
@@ -396,6 +433,11 @@ type ZoneDistributionConfig struct {
 	//  MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.zone
 	Zone *string `json:"zone,omitempty"`
+
+	// Optional. Specify the zones of a multi-zone cluster where Redis Cluster
+	//  allocates resources. This flag isn't applicable for single-zone clusters.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.zones
+	Zones []string `json:"zones,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.Instance", skipping
@@ -680,6 +722,56 @@ type TimeOfDay struct {
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 
+/* unreachable type AclPolicyInfoObservedState
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.AclPolicyInfo
+type AclPolicyInfoObservedState struct {
+	// Output only. The resource name of the applied ACL policy.
+	//  Format: "projects/{project}/locations/{location}/aclPolicies/{acl_policy}"
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyInfo.applied_acl_policy
+	AppliedAclPolicy *string `json:"appliedAclPolicy,omitempty"`
+
+	// Output only. The resource name of the applied ACL policy revision.
+	//  Format:
+	//  "projects/{project}/locations/{location}/aclPolicies/{acl_policy}/revisions/{revision}"
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyInfo.applied_acl_policy_revision
+	AppliedAclPolicyRevision *string `json:"appliedAclPolicyRevision,omitempty"`
+
+	// Output only. The revision number of the applied ACL policy revision.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyInfo.applied_acl_policy_revision_number
+	AppliedAclPolicyRevisionNumber *int64 `json:"appliedAclPolicyRevisionNumber,omitempty"`
+
+	// Output only. A list of status for various revisions of this ACL policy on
+	//  the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyInfo.acl_policy_revision_statuses
+	AclPolicyRevisionStatuses []AclPolicyRevisionStatusObservedState `json:"aclPolicyRevisionStatuses,omitempty"`
+}
+*/
+
+/* unreachable type AclPolicyRevisionStatusObservedState
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus
+type AclPolicyRevisionStatusObservedState struct {
+	// Output only. The resource name of the ACL policy revision this status
+	//  refers to. Format:
+	//  "projects/{project}/locations/{location}/aclPolicies/{acl_policy}/revisions/{revision}"
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus.acl_policy_revision
+	AclPolicyRevision *string `json:"aclPolicyRevision,omitempty"`
+
+	// Output only. The revision number of the ACL policy revision this status
+	//  refers to.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus.acl_policy_revision_number
+	AclPolicyRevisionNumber *int64 `json:"aclPolicyRevisionNumber,omitempty"`
+
+	// Output only. AclPolicyRevision state.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Human-readable error message providing more details for FAILED
+	//  states.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.AclPolicyRevisionStatus.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.Cluster", skipping
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.Cluster
@@ -721,6 +813,11 @@ type ClusterObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.precise_size_gb
 	PreciseSizeGB *float64 `json:"preciseSizeGB,omitempty"`
 
+	// Optional. This config will be used to determine how the customer wants us
+	//  to distribute cluster resources within the region.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.zone_distribution_config
+	ZoneDistributionConfig *ZoneDistributionConfigObservedState `json:"zoneDistributionConfig,omitempty"`
+
 	// Optional. Cross cluster replication config.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.cross_cluster_replication_config
 	CrossClusterReplicationConfig *CrossClusterReplicationConfigObservedState `json:"crossClusterReplicationConfig,omitempty"`
@@ -751,6 +848,10 @@ type ClusterObservedState struct {
 	// Output only. Encryption information of the data at rest of the cluster.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.encryption_info
 	EncryptionInfo *EncryptionInfoObservedState `json:"encryptionInfo,omitempty"`
+
+	// Output only. Details of the applied ACL policy.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.acl_policy_info
+	AclPolicyInfo *AclPolicyInfoObservedState `json:"aclPolicyInfo,omitempty"`
 }
 */
 
@@ -968,6 +1069,14 @@ type PSCServiceAttachmentObservedState struct {
 	// Output only. Type of a PSC connection targeting this service attachment.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscServiceAttachment.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ZoneDistributionConfig
+type ZoneDistributionConfigObservedState struct {
+	// Output only. The exact list of zones where the cluster currently has active
+	//  VMs.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.ZoneDistributionConfig.active_zones
+	ActiveZones []string `json:"activeZones,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.Instance", skipping

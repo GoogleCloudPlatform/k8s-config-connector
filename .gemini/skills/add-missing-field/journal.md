@@ -24,3 +24,5 @@
    }
    ```
 
+- **Avoid Empty ObservedState Child Structs**: When adding an output-only field inside a child struct under `observedState` (e.g., `ZoneDistributionConfigObservedState.ActiveZones`), ensure the handwritten or generated `_FromProto` mapper returns `nil` when the struct has no populated fields (e.g., `if in == nil || len(in.ActiveZones) == 0 { return nil }`). Otherwise, existing resources without the field will have an empty object `{}` serialized into `status.observedState`, producing spurious diffs in existing golden test files.
+

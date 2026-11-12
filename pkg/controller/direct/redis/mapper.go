@@ -113,6 +113,9 @@ var (
 	ZoneDistributionConfig_FromProto = ZoneDistributionConfig_v1beta1_FromProto
 	ZoneDistributionConfig_ToProto   = ZoneDistributionConfig_v1beta1_ToProto
 
+	ZoneDistributionConfigObservedState_FromProto = ZoneDistributionConfigObservedState_v1beta1_FromProto
+	ZoneDistributionConfigObservedState_ToProto   = ZoneDistributionConfigObservedState_v1beta1_ToProto
+
 	Cluster_GCSBackupSource_FromProto = Cluster_GCSBackupSource_v1beta1_FromProto
 	Cluster_GCSBackupSource_ToProto   = Cluster_GCSBackupSource_v1beta1_ToProto
 

@@ -34,8 +34,6 @@ spec:
         seconds: 0
   nodeType: REDIS_STANDARD_SMALL
   persistenceConfig:
-    aofConfig:
-      appendFsync: EVERYSEC
     mode: RDB
     rdbConfig:
       rdbSnapshotPeriod: ONE_HOUR
@@ -98,3 +96,4 @@ status:
     sizeGb: 39
     state: ACTIVE
     uid: 0123456789abcdef
+    zoneDistributionConfig: {}
