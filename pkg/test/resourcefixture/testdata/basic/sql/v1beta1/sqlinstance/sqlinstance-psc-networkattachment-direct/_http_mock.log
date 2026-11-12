@@ -1,0 +1,1339 @@
+# Phase: CREATE
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "ipCidrRange": "10.0.0.0/24",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/europe-north2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&network_attachment=${networkAttachmentID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "name": "${networkAttachmentID}",
+  "subnetworks": [
+    "projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}"
+  ]
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The Cloud SQL instance does not exist.",
+        "reason": "instanceDoesNotExist"
+      }
+    ],
+    "message": "The Cloud SQL instance does not exist."
+  }
+}
+
+---
+
+POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "databaseVersion": "POSTGRES_16",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "name": "sqlinstance-psc-na-direct-${uniqueId}",
+  "region": "europe-north2",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskType": "PD_SSD",
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": false,
+      "pscConfig": {
+        "allowedConsumerProjects": [
+          "${projectId}"
+        ],
+        "pscEnabled": true
+      },
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "europe-north2-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "storageAutoResize": true,
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:europe-north2:sqlinstance-psc-na-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "dnsName": "${dnsName}",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-psc-na-direct-${uniqueId}",
+  "project": "${projectId}",
+  "pscServiceAttachmentLink": "projects/tenanta-tp/regions/europe-north2/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef",
+  "region": "europe-north2",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-psc-na-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": false,
+      "pscConfig": {
+        "allowedConsumerProjects": [
+          "${projectId}"
+        ],
+        "pscEnabled": true
+      },
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "europe-north2-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
+      "instance": "sqlinstance-psc-na-direct-${uniqueId}",
+      "kind": "sql#user",
+      "name": "postgres",
+      "passwordPolicy": {
+        "status": {}
+      },
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
+}
+
+---
+
+# Phase: UPDATE
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:europe-north2:sqlinstance-psc-na-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "dnsName": "${dnsName}",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-psc-na-direct-${uniqueId}",
+  "project": "${projectId}",
+  "pscServiceAttachmentLink": "projects/tenanta-tp/regions/europe-north2/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef",
+  "region": "europe-north2",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-psc-na-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": false,
+      "pscConfig": {
+        "allowedConsumerProjects": [
+          "${projectId}"
+        ],
+        "pscEnabled": true
+      },
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "europe-north2-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "databaseVersion": "POSTGRES_16",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-psc-na-direct-${uniqueId}",
+  "region": "europe-north2",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": false,
+      "pscConfig": {
+        "allowedConsumerProjects": [
+          "${projectId}"
+        ],
+        "networkAttachmentUri": "projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+        "pscEnabled": true
+      },
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "europe-north2-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:europe-north2:sqlinstance-psc-na-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "dnsName": "${dnsName}",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-psc-na-direct-${uniqueId}",
+  "project": "${projectId}",
+  "pscServiceAttachmentLink": "projects/tenanta-tp/regions/europe-north2/serviceAttachments/a-abcdef-psc-service-attachment-0123456789abcdef",
+  "region": "europe-north2",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-psc-na-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
+      "ipv4Enabled": false,
+      "pscConfig": {
+        "allowedConsumerProjects": [
+          "${projectId}"
+        ],
+        "networkAttachmentUri": "projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+        "pscEnabled": true
+      },
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "europe-north2-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+# Phase: DELETE
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-psc-na-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-psc-na-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=europe-north2&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/24",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
