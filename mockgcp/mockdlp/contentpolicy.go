@@ -35,6 +35,10 @@ type dlpServiceServer struct {
 	pb.UnimplementedDlpServiceServer
 }
 
+func newDLPServiceServer(s *MockService) *dlpServiceServer {
+	return &dlpServiceServer{MockService: s}
+}
+
 // CreateContentPolicy creates a ContentPolicy.
 func (s *dlpServiceServer) CreateContentPolicy(ctx context.Context, req *pb.CreateContentPolicyRequest) (*pb.ContentPolicy, error) {
 	contentPolicyID := req.GetContentPolicyId()
@@ -47,10 +51,10 @@ func (s *dlpServiceServer) CreateContentPolicy(ctx context.Context, req *pb.Crea
 		return nil, err
 	}
 
-	reqName := parent.String() + "/contentPolicies/" + contentPolicyID
-	name, err := s.parseContentPolicyName(reqName)
-	if err != nil {
-		return nil, err
+	name := &contentPolicyName{
+		Project:         parent.Project,
+		Location:        parent.Location,
+		ContentPolicyID: contentPolicyID,
 	}
 
 	if req.GetContentPolicy() == nil {
@@ -80,6 +84,88 @@ func (s *dlpServiceServer) CreateContentPolicy(ctx context.Context, req *pb.Crea
 	}
 
 	return obj, nil
+}
+
+type parentName struct {
+	Project  *projects.ProjectData
+	Location string
+}
+
+func (n *parentName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location
+}
+
+func (s *dlpServiceServer) parseParent(parent string) (*parentName, error) {
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		project, err := s.Projects.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+
+		return &parentName{
+			Project:  project,
+			Location: tokens[3],
+		}, nil
+	}
+	return nil, status.Errorf(
+		codes.InvalidArgument,
+		"parent %q is not valid. expected format is projects/<projectID>/locations/<location>",
+		parent,
+	)
+}
+
+type contentPolicyName struct {
+	Project         *projects.ProjectData
+	Location        string
+	ContentPolicyID string
+}
+
+func (n *contentPolicyName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/contentPolicies/" + n.ContentPolicyID
+}
+
+func (s *dlpServiceServer) parseContentPolicyName(name string) (*contentPolicyName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "contentPolicies" {
+		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		project, err := s.Projects.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+
+		return &contentPolicyName{
+			Project:         project,
+			Location:        tokens[3],
+			ContentPolicyID: tokens[5],
+		}, nil
+	}
+	return nil, status.Errorf(
+		codes.InvalidArgument,
+		"name %q is not valid. expected format is projects/<projectID>/locations/<location>/contentPolicies/<contentPolicyID>",
+		name,
+	)
+}
+
+// populateDefaultsForContentPolicy populates default values on both write and read paths.
+// Note: If default_action, failed_to_scan_supported_file_type, input_too_large, or
+// unsupported_file_type are not configured, they remain unspecified (zero-value)
+// and are omitted by proto3 JSON serialization, matching real GCP API behavior.
+func populateDefaultsForContentPolicy(obj *pb.ContentPolicy) {
+	if obj.InspectConfig != nil {
+		if obj.InspectConfig.Limits == nil {
+			obj.InspectConfig.Limits = &pb.InspectConfig_FindingLimits{}
+		}
+	}
 }
 
 // GetContentPolicy gets a ContentPolicy.
@@ -175,7 +261,7 @@ func (s *dlpServiceServer) ListContentPolicies(ctx context.Context, req *pb.List
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{
 		Prefix: prefix,
 	}, func(obj proto.Message) error {
-		item := obj.(*pb.ContentPolicy)
+		item := proto.Clone(obj).(*pb.ContentPolicy)
 		populateDefaultsForContentPolicy(item)
 		response.ContentPolicies = append(response.ContentPolicies, item)
 		return nil
@@ -184,86 +270,4 @@ func (s *dlpServiceServer) ListContentPolicies(ctx context.Context, req *pb.List
 	}
 
 	return response, nil
-}
-
-// populateDefaultsForContentPolicy populates default values on both write and read paths.
-// Note: If default_action, failed_to_scan_supported_file_type, input_too_large, or
-// unsupported_file_type are not configured, they remain unspecified (zero-value)
-// and are omitted by proto3 JSON serialization, matching real GCP API behavior.
-func populateDefaultsForContentPolicy(obj *pb.ContentPolicy) {
-	if obj.InspectConfig != nil {
-		if obj.InspectConfig.Limits == nil {
-			obj.InspectConfig.Limits = &pb.InspectConfig_FindingLimits{}
-		}
-	}
-}
-
-type contentPolicyName struct {
-	Project         *projects.ProjectData
-	Location        string
-	ContentPolicyID string
-}
-
-func (n *contentPolicyName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/contentPolicies/" + n.ContentPolicyID
-}
-
-func (s *MockService) parseContentPolicyName(name string) (*contentPolicyName, error) {
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "contentPolicies" {
-		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		project, err := s.Projects.GetProject(projectName)
-		if err != nil {
-			return nil, err
-		}
-
-		return &contentPolicyName{
-			Project:         project,
-			Location:        tokens[3],
-			ContentPolicyID: tokens[5],
-		}, nil
-	}
-	return nil, status.Errorf(
-		codes.InvalidArgument,
-		"name %q is not valid. expected format is projects/<projectID>/locations/<location>/contentPolicies/<contentPolicyID>",
-		name,
-	)
-}
-
-type parentName struct {
-	Project  *projects.ProjectData
-	Location string
-}
-
-func (n *parentName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location
-}
-
-func (s *MockService) parseParent(parent string) (*parentName, error) {
-	tokens := strings.Split(parent, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		project, err := s.Projects.GetProject(projectName)
-		if err != nil {
-			return nil, err
-		}
-
-		return &parentName{
-			Project:  project,
-			Location: tokens[3],
-		}, nil
-	}
-	return nil, status.Errorf(
-		codes.InvalidArgument,
-		"parent %q is not valid. expected format is projects/<projectID>/locations/<location>",
-		parent,
-	)
 }

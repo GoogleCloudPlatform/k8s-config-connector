@@ -78,29 +78,22 @@ func (m *modelContentPolicy) AdapterForObject(ctx context.Context, op *directbas
 	if err != nil {
 		return nil, err
 	}
-	return &ContentPolicyAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
-	}, nil
+	return newContentPolicyAdapter(id, gcpClient, obj), nil
 }
 
 func (m *modelContentPolicy) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	if !strings.HasPrefix(url, "//dlp.googleapis.com/") {
+	if !strings.HasPrefix(url, "//dlp.googleapis.com/") && !strings.HasPrefix(url, "https://dlp.googleapis.com/") {
 		return nil, nil
 	}
 	id := &krm.DLPContentPolicyIdentity{}
 	if err := id.FromExternal(url); err != nil {
-		return nil, nil
+		return nil, fmt.Errorf("parsing DLPContentPolicy URL %q: %w", url, err)
 	}
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &ContentPolicyAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-	}, nil
+	return newContentPolicyAdapter(id, gcpClient, nil), nil
 }
 func (m *modelContentPolicy) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
@@ -120,6 +113,14 @@ type ContentPolicyAdapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.DLPContentPolicy
 	actual    *dlppb.ContentPolicy
+}
+
+func newContentPolicyAdapter(id *krm.DLPContentPolicyIdentity, gcpClient *gcp.Client, desired *krm.DLPContentPolicy) *ContentPolicyAdapter {
+	return &ContentPolicyAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   desired,
+	}
 }
 
 var _ directbase.Adapter = &ContentPolicyAdapter{}
@@ -243,7 +244,7 @@ func (a *ContentPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.String())
+	u.SetName(a.id.ContentPolicy)
 	u.SetGroupVersionKind(krm.DLPContentPolicyGVK)
 
 	return u, nil
