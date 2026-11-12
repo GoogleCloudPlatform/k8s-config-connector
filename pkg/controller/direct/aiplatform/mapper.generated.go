@@ -175,6 +175,8 @@ func AIPlatformContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.AIPlatformContextObservedState{}
 	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ParentContexts = in.ParentContexts
@@ -187,6 +189,8 @@ func AIPlatformContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.A
 	}
 	out := &pb.Context{}
 	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.ParentContexts = in.ParentContexts
@@ -200,8 +204,7 @@ func AIPlatformContextSpec_FromProto(mapCtx *direct.MapContext, in *pb.Context) 
 	out := &krm.AIPlatformContextSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
 	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
 	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
@@ -218,8 +221,7 @@ func AIPlatformContextSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatform
 	out := &pb.Context{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
 	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
 	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)

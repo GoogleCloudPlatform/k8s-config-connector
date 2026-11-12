@@ -184,3 +184,13 @@
   4. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to record untriaged entries in apichecks exception files.
   5. Verified all unit tests (`go test -v ./apis/aiplatform/... ./pkg/controller/direct/aiplatform/... ./tests/apichecks/...`) pass and script execution is idempotent.
 - **Impact**: Standard mechanical prepopulation for `AIPlatformContext` completed with open entries in `judgement_queue.yaml` ready for Step 1b triage.
+
+### [2026-11-12] Triaging Judgement Queue and Finalizing Direct Types and Identity for AIPlatformContext
+- **Context**: Greenfield Step 1b triage and finalization for `AIPlatformContext` under `apis/aiplatform/v1alpha1/` (Issue #15513).
+- **Problems & Solutions**:
+  1. **Parent Hierarchy (`MetadataStoreRef`)**: `AIPlatformContext` is a child resource under `projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}`. Reused the existing `MetadataStoreRef` from `apis/vertexai/v1beta1/` (representing `VertexAIMetadataStore`) and implemented `refs.Ref` interface methods on `MetadataStoreRef` in `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go` and `apis/vertexai/v1alpha1/vertexaimetadatastore_reference.go`. Modelled `spec.parentRef` (`*vertexaiv1beta1.MetadataStoreRef`) with `+required` and CEL immutability (`self == oldSelf`) on `AIPlatformContextSpec`, removing redundant `projectRef` and `location`.
+  2. **Etag & Labels Cleanup**: Removed top-level `labels` from `AIPlatformContextSpec` (managed via `metadata.labels`), and moved `etag` from `AIPlatformContextSpec` to `AIPlatformContextObservedState`.
+  3. **Resource Documentation Link**: Updated `+kcc:source:resource-docs` to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.contexts` and removed the `+kcc:guess` annotation.
+  4. **Identity & Unit Testing**: Verified deterministic regeneration of `aiplatformcontext_identity.generated.go` via `generate-identity` using `parentRef`. Added unit tests in `aiplatformcontext_identity_test.go` covering `GetIdentity` resolution from `parentRef` and error cases. Resolved all open entries for `AIPlatformContext` in `apis/aiplatform/judgement_queue.yaml`.
+- **Impact**: All judgement queue entries for `AIPlatformContext` are triaged and resolved, CRD schema and mappers regenerated cleanly, and all unit tests pass.
+
