@@ -425,7 +425,8 @@ func valuesCompatible(foundVal, expectedVal, createVal any, diffPath string) boo
 	if createVal != nil && ValuesMatch(foundVal, createVal) {
 		return false
 	}
-	if jsonContainsExpected(foundVal, expectedVal) && (createVal == nil || !jsonContainsExpected(foundVal, createVal)) {
+	if jsonContainsExpected(foundVal, expectedVal) &&
+		(createVal == nil || !jsonContainsExpected(foundVal, createVal) || jsonContainsExpected(expectedVal, createVal)) {
 		return true
 	}
 	// Allow proto enum integer encoding vs string enum name
@@ -462,6 +463,9 @@ func jsonContainsExpected(actual, expected any) bool {
 		return false
 	}
 	if aMap, aOk := actual.(map[string]any); aOk {
+		if eSlice, eIsSlice := expected.([]any); eIsSlice && len(eSlice) == 1 {
+			expected = eSlice[0]
+		}
 		eMap, eOk := expected.(map[string]any)
 		if !eOk {
 			return false
@@ -472,6 +476,16 @@ func jsonContainsExpected(actual, expected any) bool {
 		}
 		for k, eVal := range eMap {
 			nk := normalizeKey(k)
+			if strings.HasSuffix(k, "Ref") {
+				refVal := simplifyRefValue(k, eVal)
+				if nestedRefMatchesMap(aNorm, nk, refVal) {
+					continue
+				}
+				if isOmissibleEmptyCollection(eVal) || isZeroOrEmptyValue(eVal) {
+					continue
+				}
+				return false
+			}
 			aVal, exists := aNorm[nk]
 			if !exists {
 				if isOmissibleEmptyCollection(eVal) || isZeroOrEmptyValue(eVal) {
@@ -510,6 +524,35 @@ func jsonContainsExpected(actual, expected any) bool {
 		return true
 	}
 	return fmt.Sprintf("%v", actual) == fmt.Sprintf("%v", expected)
+}
+
+func nestedRefMatchesMap(aNorm map[string]any, baseKey string, refVal any) bool {
+	if baseKey == "" || refVal == nil {
+		return false
+	}
+	refStr, ok := refVal.(string)
+	if !ok || refStr == "" {
+		return false
+	}
+	for _, candidateKey := range []string{baseKey, baseKey + "uri", baseKey + "id", baseKey + "name", baseKey + "link"} {
+		av, exists := aNorm[candidateKey]
+		if !exists {
+			continue
+		}
+		avStr, isStr := av.(string)
+		if !isStr || avStr == "" {
+			continue
+		}
+		if valuesCompatible(avStr, refStr, nil, "") {
+			return true
+		}
+		// In fixture YAML, in-cluster dependency names use "${uniqueId}" (e.g. "computenetworkattachment-dep-${uniqueId}"),
+		// which the HTTP log normalizer replaces with a typed placeholder such as "${networkAttachmentID}".
+		if strings.Contains(refStr, "${uniqueId}") && strings.Contains(avStr, "${") {
+			return true
+		}
+	}
+	return false
 }
 
 func isNumericValue(v any) bool {

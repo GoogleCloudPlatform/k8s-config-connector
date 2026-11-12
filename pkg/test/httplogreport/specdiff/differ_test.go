@@ -98,6 +98,132 @@ func TestValuesCompatible(t *testing.T) {
 			diffPath: "spec.columnLayout.columns",
 			want:     true,
 		},
+		{
+			name: "singleton KRM list block vs GCP object adding nested Ref field",
+			foundVal: map[string]any{
+				"allowedConsumerProjects": []any{"${projectId}"},
+				"networkAttachmentUri":    "projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+				"pscEnabled":              true,
+			},
+			expectedVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "${networkAttachmentID}"},
+					"pscEnabled":              true,
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"pscEnabled":              true,
+				},
+			},
+			diffPath: "spec.settings.ipConfiguration.pscConfig",
+			want:     true,
+		},
+		{
+			name: "singleton KRM list block vs GCP object dropping added nested Ref field",
+			foundVal: map[string]any{
+				"allowedConsumerProjects": []any{"${projectId}"},
+				"pscEnabled":              true,
+			},
+			expectedVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "${networkAttachmentID}"},
+					"pscEnabled":              true,
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"pscEnabled":              true,
+				},
+			},
+			diffPath: "spec.settings.ipConfiguration.pscConfig",
+			want:     false,
+		},
+		{
+			name: "singleton KRM list block vs GCP object failing to clear removed nested Ref field",
+			foundVal: map[string]any{
+				"allowedConsumerProjects": []any{"${projectId}"},
+				"networkAttachmentUri":    "projects/${projectId}/regions/europe-north2/networkAttachments/${networkAttachmentID}",
+				"pscEnabled":              true,
+			},
+			expectedVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"pscEnabled":              true,
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "${networkAttachmentID}"},
+					"pscEnabled":              true,
+				},
+			},
+			diffPath: "spec.settings.ipConfiguration.pscConfig",
+			want:     false,
+		},
+		{
+			name: "singleton KRM list block vs GCP object clearing removed nested Ref field",
+			foundVal: map[string]any{
+				"allowedConsumerProjects": []any{"${projectId}"},
+				"pscEnabled":              true,
+			},
+			expectedVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"pscEnabled":              true,
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "${networkAttachmentID}"},
+					"pscEnabled":              true,
+				},
+			},
+			diffPath: "spec.settings.ipConfiguration.pscConfig",
+			want:     true,
+		},
+		{
+			name: "singleton KRM list block rejects wrong literal attachment URI",
+			foundVal: map[string]any{
+				"allowedConsumerProjects": []any{"${projectId}"},
+				"networkAttachmentUri":    "projects/${projectId}/regions/europe-north2/networkAttachments/na-1",
+				"pscEnabled":              true,
+			},
+			expectedVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "na-2"},
+					"pscEnabled":              true,
+				},
+			},
+			createVal: []any{
+				map[string]any{
+					"allowedConsumerProjects": []any{"${projectId}"},
+					"networkAttachmentRef":    map[string]any{"name": "na-1"},
+					"pscEnabled":              true,
+				},
+			},
+			diffPath: "spec.settings.ipConfiguration.pscConfig",
+			want:     false,
+		},
+		{
+			name: "nested networkRef does not false-match unrelated networkTier field",
+			foundVal: map[string]any{
+				"networkTier": "PREMIUM",
+			},
+			expectedVal: map[string]any{
+				"networkRef": map[string]any{"name": "computenetwork-${uniqueId}"},
+			},
+			createVal: map[string]any{},
+			diffPath:  "spec.networkConfig",
+			want:      false,
+		},
 	}
 
 	for _, tc := range tests {
