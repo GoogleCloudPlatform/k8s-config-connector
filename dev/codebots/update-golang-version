@@ -98,8 +98,8 @@ def update_dockerfile(file_path, go_version):
         content = f.read()
 
     # Replace FROM golang:X.Y.Z with FROM golang:NEW_VERSION
-    pattern = r'FROM golang:[0-9]+\.[0-9]+(?:\.[0-9]+)?'
-    replacement = f'FROM golang:{go_version}'
+    pattern = r'FROM (--platform=\$BUILDPLATFORM )?golang:[0-9]+\.[0-9]+(?:\.[0-9]+)?'
+    replacement = rf'FROM \1golang:{go_version}'
     new_content = re.sub(pattern, replacement, content)
 
     if content != new_content:
