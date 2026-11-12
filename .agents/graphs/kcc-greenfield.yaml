@@ -92,8 +92,9 @@ spec:
       no-change: ok
       title: 'Greenfield: Prepopulate direct KRM types, identity, and judgement queue for {{ .Params.kind }}'
       labels: [step/gen-types]
-      review: |
-        Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
+      # No review of its own: in a grouped graph its work goes on in the same
+      # PR as types-judgement's, which is reviewed (same skill) before it
+      # is handed over.
       body: |
         Prepopulate the initial direct KRM types, identity, and `judgement_queue.yaml` for {{ .Params.kind }}.
 
