@@ -324,7 +324,7 @@ GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnline
   "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = The FeatureOnlineStore "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}" does not exist.
+error: rpc error: code = NotFound desc = The FeatureOnlineStore does not exist.
 
 {}
 
@@ -381,19 +381,33 @@ OK
   "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1.FeatureOnlineStore",
-    "bigtable": {
-      "autoScaling": {
-        "cpuUtilizationTarget": 50,
-        "maxNodeCount": 2,
-        "minNodeCount": 1
-      }
-    },
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
-    "state": "STABLE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
   }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
