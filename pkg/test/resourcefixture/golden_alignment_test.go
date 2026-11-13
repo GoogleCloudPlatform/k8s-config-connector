@@ -683,6 +683,15 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 		}
 
+		// Normalize DialogflowCXAgent fields between TF and Direct controller mock/real logs:
+		// Direct controller passes the full proto object to UpdateAgent, which includes defaultLanguageCode and name.
+		if _, hasDefaultLanguage := v["defaultLanguageCode"]; hasDefaultLanguage {
+			if _, hasStartFlow := v["startFlow"]; !hasStartFlow {
+				delete(v, "defaultLanguageCode")
+				delete(v, "name")
+			}
+		}
+
 		// AssuredWorkloads specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "complianceStatus")
 		delete(v, "partnerPermissions")

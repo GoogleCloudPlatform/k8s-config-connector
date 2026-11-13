@@ -1,0 +1,28 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+---
+> POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+49c49,50
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+---
+> # Phase: UPDATE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?%24alt=json%3Benum-encoding%3Dint
+83,84c84
+< # Phase: UPDATE
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json&updateMask=displayName%2CsupportedLanguageCodes%2CtimeZone%2Cdescription%2CspeechToTextSettings%2CenableSpellCorrection
+---
+> PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CenableSpellCorrection%2CspeechToTextSettings%2CsupportedLanguageCodes%2CtimeZone
+88a89
+>   "defaultLanguageCode": "en",
+92a94
+>   "name": "projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc",
+136c138,139
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?%24alt=json%3Benum-encoding%3Dint
+173,174c176
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc?%24alt=json%3Benum-encoding%3Dint
