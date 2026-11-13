@@ -1,0 +1,33 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXWebhook
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxwebhook-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  disabled: true
+  displayName: webhook-updated-${uniqueId}
+  genericWebService:
+    requestHeaders:
+      X-Custom-Header: custom-value
+    uri: https://example.com/webhook-updated
+  parent: projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9
+  resourceID: bd72b10f-953f-4543-8f9b-715425c14612
+  timeout: 20s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: bd72b10f-953f-4543-8f9b-715425c14612
+  observedGeneration: 3
