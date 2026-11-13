@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
@@ -84,6 +85,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {
@@ -186,34 +188,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
-
-{
-  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
-}
-
-OK
-
-{
-  "bigtable": {
-    "autoScaling": {
-      "cpuUtilizationTarget": 50,
-      "maxNodeCount": 2,
-      "minNodeCount": 1
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
-  "state": "STABLE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
 
 {

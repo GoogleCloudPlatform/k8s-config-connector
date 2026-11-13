@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-dep-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -628,6 +629,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -818,6 +820,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 DELETE https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -875,37 +878,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test aspect type for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "metadataTemplate": {
-    "name": "test_template",
-    "recordFields": [
-      {
-        "index": 1,
-        "name": "test_field",
-        "type": "string"
-      }
-    ],
-    "type": "record"
-  },
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1010,30 +982,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test entry type for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryType
 
 {
@@ -1075,29 +1023,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test entry group for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

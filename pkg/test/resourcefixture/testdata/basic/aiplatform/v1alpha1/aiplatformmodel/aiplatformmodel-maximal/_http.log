@@ -84,17 +84,6 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-max-${uniqueId}"
-}
-
-OK
-
-
----
-
 GRPC /google.cloud.aiplatform.v1.ModelService/UpdateModel
 
 {
@@ -114,17 +103,6 @@ GRPC /google.cloud.aiplatform.v1.ModelService/UpdateModel
     "versionDescription": "Initial version description"
   },
   "updateMask": "description,displayName,labels"
-}
-
-OK
-
-
----
-
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-max-${uniqueId}"
 }
 
 OK

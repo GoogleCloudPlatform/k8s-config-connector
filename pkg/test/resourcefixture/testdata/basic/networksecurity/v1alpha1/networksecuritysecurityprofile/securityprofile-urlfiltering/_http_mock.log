@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
@@ -136,41 +137,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      }
-    ]
-  }
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfile
 
 {
@@ -317,90 +284,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      },
-      {
-        "filteringAction": "DENY",
-        "priority": 2,
-        "urls": [
-          "*restricted.example.com"
-        ]
-      }
-    ]
-  }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      },
-      {
-        "filteringAction": "DENY",
-        "priority": 2,
-        "urls": [
-          "*restricted.example.com"
-        ]
-      }
-    ]
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {

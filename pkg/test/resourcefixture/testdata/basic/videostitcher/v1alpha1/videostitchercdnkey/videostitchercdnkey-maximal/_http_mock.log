@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
 
 {
@@ -86,24 +87,7 @@ OK
 
 ---
 
-GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
-
-{
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
-OK
-
-{
-  "googleCdnKey": {
-    "keyName": "test-key-name"
-  },
-  "hostname": "test-hostname-${uniqueId}.com",
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/UpdateCdnKey
 
 {
@@ -180,42 +164,7 @@ OK
 
 ---
 
-GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
-
-{
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
-OK
-
-{
-  "googleCdnKey": {
-    "keyName": "updated-key-name"
-  },
-  "hostname": "updated-hostname-${uniqueId}.com",
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
----
-
-GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey
-
-{
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
-OK
-
-{
-  "googleCdnKey": {
-    "keyName": "updated-key-name"
-  },
-  "hostname": "updated-hostname-${uniqueId}.com",
-  "name": "projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.video.stitcher.v1.VideoStitcherService/DeleteCdnKey
 
 {

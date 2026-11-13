@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/CreateSpecialistPool
 
 {
@@ -84,28 +85,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
-  "specialistManagerEmails": [
-    "manager1-${uniqueId}@example.com"
-  ],
-  "specialistManagersCount": 1,
-  "specialistWorkerEmails": [
-    "worker1-${uniqueId}@example.com"
-  ]
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/UpdateSpecialistPool
 
 {
@@ -173,50 +153,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
-  "specialistManagerEmails": [
-    "manager2-${uniqueId}@example.com"
-  ],
-  "specialistManagersCount": 1,
-  "specialistWorkerEmails": [
-    "worker2-${uniqueId}@example.com"
-  ]
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}",
-  "specialistManagerEmails": [
-    "manager2-${uniqueId}@example.com"
-  ],
-  "specialistManagersCount": 1,
-  "specialistWorkerEmails": [
-    "worker2-${uniqueId}@example.com"
-  ]
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/DeleteSpecialistPool
 
 {

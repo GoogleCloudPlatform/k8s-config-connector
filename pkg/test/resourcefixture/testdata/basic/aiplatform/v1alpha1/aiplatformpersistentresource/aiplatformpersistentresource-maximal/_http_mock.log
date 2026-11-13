@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
 
 {
@@ -110,78 +111,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
-
-{
-  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Maximal Persistent Resource",
-  "error": {},
-  "labels": {
-    "key1": "val1"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-max-${uniqueId}",
-  "resourcePools": [
-    {
-      "diskSpec": {
-        "bootDiskSizeGb": 100,
-        "bootDiskType": "pd-ssd"
-      },
-      "id": "n1-standard-4",
-      "machineSpec": {
-        "machineType": "n1-standard-4"
-      },
-      "replicaCount": "1"
-    }
-  ],
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "RUNNING",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
-
-{
-  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Maximal Persistent Resource",
-  "error": {},
-  "labels": {
-    "key1": "val1"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-max-${uniqueId}",
-  "resourcePools": [
-    {
-      "diskSpec": {
-        "bootDiskSizeGb": 100,
-        "bootDiskType": "pd-ssd"
-      },
-      "id": "n1-standard-4",
-      "machineSpec": {
-        "machineType": "n1-standard-4"
-      },
-      "replicaCount": "1"
-    }
-  ],
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "RUNNING",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.PersistentResourceService/DeletePersistentResource
 
 {

@@ -354,21 +354,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
-
-{
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
-}
-
-OK
-
-{
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-  "query": "SELECT 2 AS new_value"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteLogicalView
 
 {

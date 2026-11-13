@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
 
 {
@@ -88,66 +89,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}"
-}
-
-OK
-
-{
-  "containerSpec": {
-    "imageUri": "gcr.io/google-samples/hello-app:1.0"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Minimal Model",
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}"
-}
-
-OK
-
-{
-  "containerSpec": {
-    "imageUri": "gcr.io/google-samples/hello-app:1.0"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Minimal Model",
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}"
-}
-
-OK
-
-{
-  "containerSpec": {
-    "imageUri": "gcr.io/google-samples/hello-app:1.0"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Minimal Model",
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.ModelService/DeleteModel
 
 {

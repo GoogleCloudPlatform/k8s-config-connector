@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -268,44 +269,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
 
 {
@@ -345,6 +308,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
 
 {
@@ -419,27 +383,7 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}",
-  "subsetView": {
-    "rowPrefixes": [
-      "dXNlcg==",
-      "YWRtaW4="
-    ]
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
 
 {

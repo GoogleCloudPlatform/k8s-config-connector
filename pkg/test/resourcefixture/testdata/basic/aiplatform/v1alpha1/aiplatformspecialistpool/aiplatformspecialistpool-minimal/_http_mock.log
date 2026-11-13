@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/CreateSpecialistPool
 
 {
@@ -64,21 +65,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/UpdateSpecialistPool
 
 {
@@ -126,36 +113,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/DeleteSpecialistPool
 
 {

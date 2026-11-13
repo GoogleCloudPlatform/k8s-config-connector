@@ -926,37 +926,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test aspect type for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "metadataTemplate": {
-    "name": "test_template",
-    "recordFields": [
-      {
-        "index": 1,
-        "name": "test_field",
-        "type": "string"
-      }
-    ],
-    "type": "record"
-  },
-  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/DeleteAspectType
 
 {
@@ -1026,30 +995,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test entry type for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/entrytype-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryType
 
 {
@@ -1091,29 +1036,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test entry group for metadatafeed maximal test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/entrygroup-dep-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

@@ -64,21 +64,6 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
----
-
 GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/UpdateSpecialistPool
 
 {
@@ -107,36 +92,6 @@ OK
     "displayName": "specialistpool-${uniqueId}-upd",
     "name": "projects/${projectNumber}/locations/us-central1/specialistPools/${specialistPoolID}"
   }
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.SpecialistPoolService/GetSpecialistPool
-
-{
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
-}
-
-OK
-
-{
-  "displayName": "specialistpool-${uniqueId}-upd",
-  "name": "projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}"
 }
 
 ---

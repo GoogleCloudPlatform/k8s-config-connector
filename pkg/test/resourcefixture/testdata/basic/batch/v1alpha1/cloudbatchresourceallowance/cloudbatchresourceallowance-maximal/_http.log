@@ -216,47 +216,6 @@ OK
 }
 ---
 
-GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
-
-{
-  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "gcp-label": "updated-value",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
-  "notifications": [
-    {
-      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
-    }
-  ],
-  "uid": "111111111111111111111",
-  "usageResourceAllowance": {
-    "spec": {
-      "limit": {
-        "calendarPeriod": "MONTH",
-        "limit": 300
-      },
-      "type": "cpu-core-hour"
-    },
-    "status": {
-      "limitStatus": {
-        "consumed": 0,
-        "limit": 300
-      },
-      "state": "RESOURCE_ALLOWANCE_ACTIVE"
-    }
-  }
-}
----
-
 GRPC /google.cloud.batch.v1alpha.BatchService/DeleteResourceAllowance
 
 {
@@ -277,17 +236,6 @@ OK
   },
   "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}/operations/${operationID}"
 }
----
-
-GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
-
-{
-  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
-
-{}
 ---
 
 GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance

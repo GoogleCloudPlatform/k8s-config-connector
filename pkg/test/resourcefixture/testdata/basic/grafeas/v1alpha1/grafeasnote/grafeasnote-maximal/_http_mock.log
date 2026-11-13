@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /grafeas.v1.Grafeas/GetNote
 
 {
@@ -56,6 +57,7 @@ OK
 
 ---
 
+# Phase: UPDATE
 GRPC /grafeas.v1.Grafeas/GetNote
 
 {
@@ -132,36 +134,7 @@ OK
 
 ---
 
-GRPC /grafeas.v1.Grafeas/GetNote
-
-{
-  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
-}
-
-OK
-
-{
-  "attestation": {
-    "hint": {
-      "humanReadableName": "prod"
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "ATTESTATION",
-  "longDescription": "An updated detailed description of the maximal Grafeas Note",
-  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
-  "relatedUrl": [
-    {
-      "label": "Google Cloud Update",
-      "url": "https://cloud.google.com/update"
-    }
-  ],
-  "shortDescription": "Updated Maximal Grafeas Note",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /grafeas.v1.Grafeas/GetNote
 
 {

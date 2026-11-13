@@ -239,26 +239,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/GetDnsThreatDetector
-
-{
-  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-max-${uniqueId}",
-  "provider": "INFOBLOX",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/DeleteDnsThreatDetector
 
 {

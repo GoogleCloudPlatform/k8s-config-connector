@@ -65,52 +65,6 @@ OK
 
 ---
 
-GRPC /grafeas.v1.Grafeas/GetNote
-
-{
-  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "attestation": {
-    "hint": {
-      "humanReadableName": "qa"
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "ATTESTATION",
-  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}",
-  "shortDescription": "Minimal Grafeas Note",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /grafeas.v1.Grafeas/GetNote
-
-{
-  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "attestation": {
-    "hint": {
-      "humanReadableName": "qa"
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "ATTESTATION",
-  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}",
-  "shortDescription": "Minimal Grafeas Note",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /grafeas.v1.Grafeas/DeleteNote
 
 {

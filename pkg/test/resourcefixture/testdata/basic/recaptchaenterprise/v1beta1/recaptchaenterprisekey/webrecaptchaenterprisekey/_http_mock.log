@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
 
 {
@@ -60,31 +61,7 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-one",
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingChallenge": "NOCAPTCHA",
-    "testingScore": 0.5
-  },
-  "webSettings": {
-    "allowAllDomains": true,
-    "challengeSecurityPreference": "USABILITY",
-    "integrationType": "CHECKBOX"
-  }
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
 
 {
@@ -127,33 +104,7 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-two",
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingChallenge": "NOCAPTCHA",
-    "testingScore": 0.5
-  },
-  "webSettings": {
-    "allowedDomains": [
-      "subdomain.example.com"
-    ],
-    "challengeSecurityPreference": "SECURITY",
-    "integrationType": "CHECKBOX"
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
 
 {

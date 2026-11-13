@@ -451,77 +451,6 @@ OK
 
 ---
 
-GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "exportResult": {
-    "exportedEntries": "15"
-  },
-  "exportSpec": {
-    "outputPath": "gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/",
-    "scope": {
-      "aspectTypes": [
-        "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
-      ],
-      "entryGroups": [
-        "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
-      ],
-      "entryTypes": [
-        "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
-      ],
-      "projects": [
-        "projects/${projectId}"
-      ]
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
-  "status": {
-    "completionPercent": 100,
-    "state": "SUCCEEDED",
-    "updateTime": "1970-01-01T00:00:00Z"
-  },
-  "type": "EXPORT",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
-}
-
-OK
-
-{
-  "authorization": {},
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Entry Type for Dataplex Metadata Job Maximal Export Test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
 
 {
@@ -587,29 +516,6 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
-
-{
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Entry Group for Dataplex Metadata Job Maximal Export Test",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

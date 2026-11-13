@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
 
 {
@@ -51,28 +52,7 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-one",
-  "iosSettings": {
-    "allowAllBundleIds": true
-  },
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingScore": 1
-  }
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
 
 {
@@ -109,30 +89,7 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-two",
-  "iosSettings": {
-    "allowedBundleIds": [
-      "com.companyname.appname"
-    ]
-  },
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingScore": 1
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
 
 {

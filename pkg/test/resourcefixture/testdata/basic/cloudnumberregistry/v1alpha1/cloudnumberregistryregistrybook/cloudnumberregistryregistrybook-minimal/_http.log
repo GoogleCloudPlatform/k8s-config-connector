@@ -78,22 +78,6 @@ OK
 
 ---
 
-GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
-
-{
-  "name": "projects/${projectId}/locations/global/registryBooks/cnr-rb-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/global/registryBooks/cnr-rb-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
 
 {

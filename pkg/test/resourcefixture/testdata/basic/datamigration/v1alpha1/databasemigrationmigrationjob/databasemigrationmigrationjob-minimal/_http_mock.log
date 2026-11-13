@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
 
 {
@@ -90,46 +91,7 @@ OK
 
 ---
 
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-min-${uniqueId}",
-  "source": "projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}",
-  "state": "NOT_STARTED",
-  "type": "ONE_TIME",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-min-${uniqueId}",
-  "source": "projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}",
-  "state": "NOT_STARTED",
-  "type": "ONE_TIME",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteMigrationJob
 
 {

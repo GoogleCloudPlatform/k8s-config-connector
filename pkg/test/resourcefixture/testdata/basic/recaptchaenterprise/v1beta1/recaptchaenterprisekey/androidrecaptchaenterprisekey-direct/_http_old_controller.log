@@ -51,28 +51,6 @@ OK
 
 ---
 
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
-}
-
-OK
-
-{
-  "androidSettings": {
-    "allowAllPackageNames": true
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-one",
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingScore": 0.8
-  }
-}
-
----
-
 GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
 
 {
@@ -89,30 +67,6 @@ GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
     }
   },
   "updateMask": "androidSettings.allowAllPackageNames,androidSettings.allowedPackageNames,displayName"
-}
-
-OK
-
-{
-  "androidSettings": {
-    "allowedPackageNames": [
-      "com.android.application"
-    ]
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "display-name-two",
-  "name": "projects/1935411576/keys/${keyID}",
-  "testingOptions": {
-    "testingScore": 0.8
-  }
-}
-
----
-
-GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
-
-{
-  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
 }
 
 OK

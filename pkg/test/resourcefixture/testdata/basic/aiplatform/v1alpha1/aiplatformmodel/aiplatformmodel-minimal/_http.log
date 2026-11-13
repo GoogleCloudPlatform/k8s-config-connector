@@ -76,28 +76,6 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}"
-}
-
-OK
-
-
----
-
-GRPC /google.cloud.aiplatform.v1.ModelService/GetModel
-
-{
-  "name": "projects/${projectId}/locations/us-central1/models/model-min-${uniqueId}"
-}
-
-OK
-
-
----
-
 GRPC /google.cloud.aiplatform.v1.ModelService/DeleteModel
 
 {

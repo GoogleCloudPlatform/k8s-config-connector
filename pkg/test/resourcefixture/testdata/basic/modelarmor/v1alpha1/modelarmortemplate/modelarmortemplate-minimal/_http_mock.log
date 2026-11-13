@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
 
 {
@@ -42,29 +43,7 @@ OK
 
 ---
 
-GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
-
-{
-  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filterConfig": {
-    "piAndJailbreakFilterSettings": {
-      "confidenceLevel": "LOW_AND_ABOVE",
-      "filterEnforcement": "ENABLED"
-    }
-  },
-  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
-  "templateMetadata": {},
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
 
 {

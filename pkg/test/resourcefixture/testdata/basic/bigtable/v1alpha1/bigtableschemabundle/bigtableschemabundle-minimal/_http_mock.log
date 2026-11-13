@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -268,44 +269,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "cf1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "cf1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
 
 {
@@ -391,24 +354,7 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
-
-{
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}",
-  "protoSchema": {
-    "protoDescriptors": "Cj4KD215X3NjaGVtYS5wcm90bxIKbXkucGFja2FnZSIXCglNeU1lc3NhZ2USCgoCaWQYASABKAliBnByb3RvMw=="
-  }
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateSchemaBundle
 
 {
@@ -481,42 +427,7 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
-
-{
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}",
-  "protoSchema": {
-    "protoDescriptors": "Ck0KD215X3NjaGVtYS5wcm90bxIKbXkucGFja2FnZSImCglNeU1lc3NhZ2USCgoCaWQYASABKAkSDQoFdmFsdWUYAiABKAViBnByb3RvMw=="
-  }
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle
-
-{
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}"
-}
-
-OK
-
-{
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}",
-  "protoSchema": {
-    "protoDescriptors": "Ck0KD215X3NjaGVtYS5wcm90bxIKbXkucGFja2FnZSImCglNeU1lc3NhZ2USCgoCaWQYASABKAkSDQoFdmFsdWUYAiABKAViBnByb3RvMw=="
-  }
-}
-
----
-
+# Phase: DELETE
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteSchemaBundle
 
 {

@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
 
 {
@@ -153,47 +154,7 @@ OK
 
 ---
 
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}",
-  "destinationDatabase": {
-    "engine": "POSTGRESQL",
-    "provider": "CLOUDSQL"
-  },
-  "displayName": "Maximal Migration Job",
-  "labels": {
-    "test-label": "test-value"
-  },
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}",
-  "performanceConfig": {
-    "dumpParallelLevel": "OPTIMAL"
-  },
-  "reverseSshConnectivity": {
-    "vm": "projects/${projectId}/zones/us-central1-a/instances/bastion-vm",
-    "vmIp": "1.2.3.4",
-    "vmPort": 22,
-    "vpc": "projects/${projectId}/global/networks/default"
-  },
-  "source": "projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}",
-  "sourceDatabase": {
-    "engine": "MYSQL",
-    "provider": "CLOUDSQL"
-  },
-  "state": "NOT_STARTED",
-  "type": "ONE_TIME",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/UpdateMigrationJob
 
 {
@@ -337,88 +298,7 @@ OK
 
 ---
 
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}",
-  "destinationDatabase": {
-    "engine": "POSTGRESQL",
-    "provider": "CLOUDSQL"
-  },
-  "displayName": "Maximal Migration Job Updated",
-  "labels": {
-    "test-label": "test-value-updated"
-  },
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}",
-  "performanceConfig": {
-    "dumpParallelLevel": "MIN"
-  },
-  "reverseSshConnectivity": {
-    "vm": "projects/${projectId}/zones/us-central1-a/instances/bastion-vm",
-    "vmIp": "1.2.3.4",
-    "vmPort": 22,
-    "vpc": "projects/${projectId}/global/networks/default"
-  },
-  "source": "projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}",
-  "sourceDatabase": {
-    "engine": "MYSQL",
-    "provider": "CLOUDSQL"
-  },
-  "state": "NOT_STARTED",
-  "type": "ONE_TIME",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destination": "projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}",
-  "destinationDatabase": {
-    "engine": "POSTGRESQL",
-    "provider": "CLOUDSQL"
-  },
-  "displayName": "Maximal Migration Job Updated",
-  "labels": {
-    "test-label": "test-value-updated"
-  },
-  "name": "projects/${projectId}/locations/us-central1/migrationJobs/db-mj-max-${uniqueId}",
-  "performanceConfig": {
-    "dumpParallelLevel": "MIN"
-  },
-  "reverseSshConnectivity": {
-    "vm": "projects/${projectId}/zones/us-central1-a/instances/bastion-vm",
-    "vmIp": "1.2.3.4",
-    "vmPort": 22,
-    "vpc": "projects/${projectId}/global/networks/default"
-  },
-  "source": "projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}",
-  "sourceDatabase": {
-    "engine": "MYSQL",
-    "provider": "CLOUDSQL"
-  },
-  "state": "NOT_STARTED",
-  "type": "ONE_TIME",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteMigrationJob
 
 {

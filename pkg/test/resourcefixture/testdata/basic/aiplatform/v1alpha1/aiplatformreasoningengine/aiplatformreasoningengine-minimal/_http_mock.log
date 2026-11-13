@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/CreateReasoningEngine
 
 {
@@ -68,24 +69,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
-
-{
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "reasoningengine-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
-  "spec": {},
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/UpdateReasoningEngine
 
 {
@@ -141,44 +125,7 @@ OK
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
-
-{
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "displayName": "reasoningengine-update-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
-  "spec": {},
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/GetReasoningEngine
-
-{
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "displayName": "reasoningengine-update-${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}",
-  "spec": {},
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.aiplatform.v1.ReasoningEngineService/DeleteReasoningEngine
 
 {

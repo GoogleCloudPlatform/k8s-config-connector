@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
@@ -181,56 +182,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "bar"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "threatPreventionProfile": {
-    "antivirusOverrides": [
-      {
-        "action": "ALERT",
-        "protocol": "FTP"
-      },
-      {
-        "action": "ALLOW",
-        "protocol": "HTTP"
-      }
-    ],
-    "severityOverrides": [
-      {
-        "action": "ALLOW",
-        "severity": "INFORMATIONAL"
-      },
-      {
-        "action": "ALERT",
-        "severity": "LOW"
-      }
-    ],
-    "threatOverrides": [
-      {
-        "action": "ALERT",
-        "threatId": "1000001"
-      }
-    ]
-  },
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: UPDATE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfile
 
 {
@@ -377,90 +329,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "threatPreventionProfile": {
-    "antivirusOverrides": [
-      {
-        "action": "ALLOW",
-        "protocol": "FTP"
-      }
-    ],
-    "severityOverrides": [
-      {
-        "action": "ALERT",
-        "severity": "INFORMATIONAL"
-      }
-    ],
-    "threatOverrides": [
-      {
-        "action": "ALLOW",
-        "threatId": "1000001"
-      }
-    ]
-  },
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "security profile description updated",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
-  "threatPreventionProfile": {
-    "antivirusOverrides": [
-      {
-        "action": "ALLOW",
-        "protocol": "FTP"
-      }
-    ],
-    "severityOverrides": [
-      {
-        "action": "ALERT",
-        "severity": "INFORMATIONAL"
-      }
-    ],
-    "threatOverrides": [
-      {
-        "action": "ALLOW",
-        "threatId": "1000001"
-      }
-    ]
-  },
-  "type": "THREAT_PREVENTION",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {

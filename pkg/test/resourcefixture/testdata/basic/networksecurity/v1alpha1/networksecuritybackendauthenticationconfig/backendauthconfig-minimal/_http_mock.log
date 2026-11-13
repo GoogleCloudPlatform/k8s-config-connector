@@ -1,3 +1,4 @@
+# Phase: CREATE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
 
 {
@@ -82,42 +83,7 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "PUBLIC_ROOTS"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
-
-{
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "wellKnownRoots": "PUBLIC_ROOTS"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig
 
 {

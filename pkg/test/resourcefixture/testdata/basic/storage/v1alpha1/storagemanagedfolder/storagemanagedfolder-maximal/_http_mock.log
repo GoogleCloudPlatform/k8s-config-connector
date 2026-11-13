@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
@@ -219,24 +220,7 @@ OK
 
 ---
 
-GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
-
-{
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}",
-  "requestId": "1234"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "metageneration": "1",
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}/",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
+# Phase: DELETE
 GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
 
 {
