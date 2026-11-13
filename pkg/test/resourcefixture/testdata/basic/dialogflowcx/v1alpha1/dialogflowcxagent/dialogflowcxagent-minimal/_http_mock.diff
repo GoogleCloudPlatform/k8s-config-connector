@@ -1,0 +1,28 @@
+2c2
+< POST https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents?alt=json
+---
+> POST https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents?%24alt=json%3Benum-encoding%3Dint
+33c33,34
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+---
+> # Phase: UPDATE
+> GET https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+58,59c59
+< # Phase: UPDATE
+< PATCH https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json&updateMask=timeZone%2Cdescription
+---
+> PATCH https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CtimeZone
+62a63
+>   "defaultLanguageCode": "en",
+64a66
+>   "name": "projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75",
+91c93,94
+< GET https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+---
+> # Phase: DELETE
+> GET https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint
+117,118c120
+< # Phase: DELETE
+< DELETE https://global-dialogflow.googleapis.com/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?alt=json
+---
+> DELETE https://global-dialogflow.googleapis.com:443/v3/projects/${projectId}/locations/global/agents/9ff582e4-9e01-416e-b373-418b2e4f4e75?%24alt=json%3Benum-encoding%3Dint

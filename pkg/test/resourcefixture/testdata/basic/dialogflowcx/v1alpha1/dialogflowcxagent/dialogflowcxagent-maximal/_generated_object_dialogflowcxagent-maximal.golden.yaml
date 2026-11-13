@@ -3,11 +3,10 @@ kind: DialogflowCXAgent
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: dialogflowcxagent-${uniqueId}
@@ -22,7 +21,6 @@ spec:
   location: global
   projectRef:
     external: ${projectId}
-  resourceID: 55e317ec-6752-43b2-bb5c-98b81f5178dc
   speechToTextSettings:
     enableSpeechAdaptation: true
   supportedLanguageCodes:
@@ -35,6 +33,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc
   name: 55e317ec-6752-43b2-bb5c-98b81f5178dc
-  observedGeneration: 3
+  observedGeneration: 2
   startFlow: projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/flows/00000000-0000-0000-0000-000000000000
