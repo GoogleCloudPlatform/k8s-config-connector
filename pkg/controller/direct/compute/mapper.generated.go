@@ -2334,6 +2334,60 @@ found existing non-generated mapping function "ComputeHTTPSHealthCheckStatus_v1b
 		return out
 	}
 */
+func ComputeHealthAggregationPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthAggregationPolicy) *krmcomputev1alpha1.ComputeHealthAggregationPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeHealthAggregationPolicyObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	return out
+}
+func ComputeHealthAggregationPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthAggregationPolicyObservedState) *pb.HealthAggregationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthAggregationPolicy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func ComputeHealthAggregationPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthAggregationPolicy) *krmcomputev1alpha1.ComputeHealthAggregationPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeHealthAggregationPolicySpec{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthyPercentThreshold = in.HealthyPercentThreshold
+	out.MinHealthyThreshold = in.MinHealthyThreshold
+	// MISSING: Name
+	out.PolicyType = in.PolicyType
+	return out
+}
+func ComputeHealthAggregationPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeHealthAggregationPolicySpec) *pb.HealthAggregationPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HealthAggregationPolicy{}
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.HealthyPercentThreshold = in.HealthyPercentThreshold
+	out.MinHealthyThreshold = in.MinHealthyThreshold
+	// MISSING: Name
+	out.PolicyType = in.PolicyType
+	return out
+}
 func ComputeHealthCheckServiceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheckService) *krmcomputev1alpha1.ComputeHealthCheckServiceObservedState {
 	if in == nil {
 		return nil

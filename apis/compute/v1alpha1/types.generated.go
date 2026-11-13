@@ -35,6 +35,7 @@
 // resource: ComputeHealthCheckService:HealthCheckService
 // resource: ComputeVMExtensionPolicy:VmExtensionPolicy
 // resource: ComputeNotificationEndpoint:NotificationEndpoint
+// resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 package v1alpha1
 
@@ -806,6 +807,48 @@ type GuestOSFeature struct {
 	//  Check the Type enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
 	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthAggregationPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthAggregationPolicy
+type HealthAggregationPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.healthy_percent_threshold
+	HealthyPercentThreshold *uint32 `json:"healthyPercentThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.min_healthy_threshold
+	MinHealthyThreshold *uint32 `json:"minHealthyThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.policy_type
+	PolicyType *string `json:"policyType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthAggregationPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */
 

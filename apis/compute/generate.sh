@@ -60,12 +60,14 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeHealthCheckService:HealthCheckService \
   --resource ComputeVMExtensionPolicy:VmExtensionPolicy \
   --resource ComputeNotificationEndpoint:NotificationEndpoint \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
-  --resource ComputeHealthCheckService:HealthCheckService
+  --resource ComputeHealthCheckService:HealthCheckService \
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
@@ -85,7 +87,6 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
-
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
