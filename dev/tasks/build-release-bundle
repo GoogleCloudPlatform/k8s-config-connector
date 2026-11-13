@@ -165,6 +165,7 @@ BLOCKED_KINDS=(
     "ComputeGlobalVMExtensionPolicy"
     "ComputeHealthAggregationPolicy"
     "ComputeHealthCheckService"
+    "ComputeInterconnectGroup"
     "ComputeNotificationEndpoint"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"

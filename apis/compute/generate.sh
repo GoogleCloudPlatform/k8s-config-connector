@@ -37,6 +37,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --prepopulate-resource \
   --resource ComputeCrossSiteNetwork:CrossSiteNetwork \
+  --resource ComputeInterconnectGroup:InterconnectGroup \
   --include-skipped-output
 
 ${CONTROLLERBUILDER} generate-types \
@@ -68,7 +69,8 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeHealthCheckService:HealthCheckService \
-  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy
+  --resource ComputeHealthAggregationPolicy:HealthAggregationPolicy \
+  --resource ComputeInterconnectGroup:InterconnectGroup
 
 ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \

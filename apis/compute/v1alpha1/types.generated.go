@@ -37,22 +37,10 @@
 // resource: ComputeNotificationEndpoint:NotificationEndpoint
 // resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
 // resource: ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
+// resource: ComputeCrossSiteNetwork:CrossSiteNetwork
+// resource: ComputeInterconnectGroup:InterconnectGroup
 
 package v1alpha1
-
-/* found existing non-generated go type "AcceleratorConfig", skipping
-
-// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
-type AcceleratorConfig struct {
-	// The number of the guest accelerator cards exposed to this instance.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
-	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
-
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-}
-*/
 
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
@@ -534,6 +522,36 @@ type ConfidentialInstanceConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CrossSiteNetwork", skipping
+
+// +kcc:proto=google.cloud.compute.v1.CrossSiteNetwork
+type CrossSiteNetwork struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of the cross-site network.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.CustomerEncryptionKey", skipping
 
 // +kcc:proto=google.cloud.compute.v1.CustomerEncryptionKey
@@ -570,20 +588,6 @@ type Data struct {
 	// [Output Only] A warning data value corresponding to the key.
 	// +kcc:proto:field=google.cloud.compute.v1.Data.value
 	Value *string `json:"value,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "Duration", skipping
-
-// +kcc:proto=google.cloud.compute.v1.Duration
-type Duration struct {
-	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-
-	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
-	Seconds *int64 `json:"seconds,omitempty"`
 }
 */
 
@@ -1484,6 +1488,154 @@ type InterconnectCircuitInfo struct {
 	GoogleDemarcID *string `json:"googleDemarcID,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectGroup", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroup
+type InterconnectGroup struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.configured
+	Configured *InterconnectGroupConfigured `json:"configured,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by API 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.intent
+	Intent *InterconnectGroupIntent `json:"intent,omitempty"`
+
+	// Interconnects in the InterconnectGroup. Keys are arbitrary user-specified strings. Users are encouraged, but not required, to use their preferred format for resource links as keys. Note that there are add-members and remove-members methods in gcloud. The size of this map is limited by an "Interconnects per group" quota.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.interconnects
+	Interconnects map[string]InterconnectGroupInterconnect `json:"interconnects,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#InterconnectGroup
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.physical_structure
+	PhysicalStructure *InterconnectGroupPhysicalStructure `json:"physicalStructure,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfigured
+type InterconnectGroupConfigured struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfigured.topology_capability
+	TopologyCapability *InterconnectGroupConfiguredTopologyCapability `json:"topologyCapability,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability
+type InterconnectGroupConfiguredTopologyCapability struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability.intended_capability_blockers
+	IntendedCapabilityBlockers []InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers `json:"intendedCapabilityBlockers,omitempty"`
+
+	// Check the SupportedSla enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapability.supported_sla
+	SupportedSla *string `json:"supportedSla,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers
+type InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers struct {
+	// Check the BlockerType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.blocker_type
+	BlockerType *string `json:"blockerType,omitempty"`
+
+	// [Output Only] The url of Google Cloud public documentation explaining this requirement. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.documentation_link
+	DocumentationLink *string `json:"documentationLink,omitempty"`
+
+	// [Output Only] A human-readable explanation of this requirement and why it's not met. This is set for every type of requirement.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.explanation
+	Explanation *string `json:"explanation,omitempty"`
+
+	// [Output Only] Facilities used to explain this blocker in more detail. Like physicalStructure.metros.facilities.facility, this is a numeric string like "5467".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.facilities
+	Facilities []string `json:"facilities,omitempty"`
+
+	// [Output Only] Interconnects used to explain this blocker in more detail.
+	// +kcc:guess=possible-reference target=ComputeInterconnect
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.interconnects
+	Interconnects []string `json:"interconnects,omitempty"`
+
+	// [Output Only] Metros used to explain this blocker in more detail. These are three-letter lowercase strings like "iad". A blocker like INCOMPATIBLE_METROS will specify the problematic metros in this field.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.metros
+	Metros []string `json:"metros,omitempty"`
+
+	// [Output Only] Zones used to explain this blocker in more detail. Zone names are "zone1" and/or "zone2".
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers.zones
+	Zones []string `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupIntent
+type InterconnectGroupIntent struct {
+	// Check the TopologyCapability enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupIntent.topology_capability
+	TopologyCapability *string `json:"topologyCapability,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupInterconnect
+type InterconnectGroupInterconnect struct {
+	// The URL of an Interconnect in this group. All Interconnects in the group are unique.
+	// +kcc:guess=possible-reference target=ComputeInterconnect
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupInterconnect.interconnect
+	Interconnect *string `json:"interconnect,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructure
+type InterconnectGroupPhysicalStructure struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructure.metros
+	Metros []InterconnectGroupPhysicalStructureMetros `json:"metros,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros
+type InterconnectGroupPhysicalStructureMetros struct {
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros.facilities
+	Facilities []InterconnectGroupPhysicalStructureMetrosFacilities `json:"facilities,omitempty"`
+
+	// [Output Only] The name of the metro, as a three-letter lowercase string like "iad". This is the first component of the location of Interconnects underneath this.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetros.metro
+	Metro *string `json:"metro,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities
+type InterconnectGroupPhysicalStructureMetrosFacilities struct {
+	// [Output Only] The ID of this facility, as a numeric string like "5467". This is the third component of the location of Interconnects in this facility.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities.facility
+	Facility *string `json:"facility,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilities.zones
+	Zones []InterconnectGroupPhysicalStructureMetrosFacilitiesZones `json:"zones,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones
+type InterconnectGroupPhysicalStructureMetrosFacilitiesZones struct {
+	// [Output Only] URLs of Interconnects in this redundancy group in the given metro, facility, and zone.
+	// +kcc:guess=possible-reference target=ComputeInterconnect
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones.interconnects
+	Interconnects []string `json:"interconnects,omitempty"`
+
+	// [Output Only] The name of the zone, either "zone1" or "zone2". This is the second component of the location of Interconnects in this facility.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroupPhysicalStructureMetrosFacilitiesZones.zone
+	Zone *string `json:"zone,omitempty"`
+}
 
 /* found existing non-generated go type "InterconnectMacsec", skipping
 
@@ -3596,5 +3748,53 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.CrossSiteNetwork", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.CrossSiteNetwork
+type CrossSiteNetworkObservedState struct {
+	// Output only. [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Always compute#crossSiteNetwork for cross-site networks.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.CrossSiteNetwork.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InterconnectGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.InterconnectGroup
+type InterconnectGroupObservedState struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Opaque system-generated token that uniquely identifies the configuration. If provided when patching a configuration in update mode, the provided token must match the current token or the update is rejected. This provides a reliable means of doing read-modify-write (optimistic locking) as described by API 154.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#InterconnectGroup
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InterconnectGroup.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 */
