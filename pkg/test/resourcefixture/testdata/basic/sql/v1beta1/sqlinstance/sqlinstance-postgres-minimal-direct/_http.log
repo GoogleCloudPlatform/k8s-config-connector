@@ -135,7 +135,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_18",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -144,8 +144,9 @@ X-Xss-Protection: 0
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
+    "oomSessionCancelEnabled": true
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -158,7 +159,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_18.R20260712.01_06",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -184,6 +185,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -195,10 +197,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -207,6 +211,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -224,6 +229,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
@@ -252,9 +267,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-postgres-minimal-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}"
     }
   ],
@@ -280,7 +292,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_18",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -289,8 +301,9 @@ X-Xss-Protection: 0
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
+    "oomSessionCancelEnabled": true
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -303,7 +316,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_18.R20260712.01_06",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -329,6 +342,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -340,10 +354,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -352,6 +368,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -369,6 +386,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
@@ -455,7 +482,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseInstalledVersion": "POSTGRES_16_14",
   "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -464,8 +491,9 @@ X-Xss-Protection: 0
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
+    "oomSessionCancelEnabled": true
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -478,7 +506,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_14.R20260712.01_06",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -504,9 +532,9 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -516,10 +544,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -528,6 +558,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -539,7 +570,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
@@ -552,7 +595,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_14.R20260712.01_06",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -563,6 +606,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
@@ -665,7 +709,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseInstalledVersion": "POSTGRES_16_14",
   "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -674,8 +718,9 @@ X-Xss-Protection: 0
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
+    "oomSessionCancelEnabled": true
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -688,7 +733,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_14.R20260712.01_06",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -714,9 +759,9 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -726,10 +771,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -738,6 +785,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -749,7 +797,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
