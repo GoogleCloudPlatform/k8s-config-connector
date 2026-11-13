@@ -62,6 +62,12 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowConversationDataset:ConversationDataset \
   --resource DialogflowAgent:Agent
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowAgent:Agent \
+  --pattern DialogflowAgent=projects/{project}/agent
+
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
