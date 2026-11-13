@@ -325,3 +325,148 @@ func TestPanics(t *testing.T) {
 		Template[string]("", "items/{foo}")
 	})
 }
+
+func TestHardening(t *testing.T) {
+	type RegionalItemIdentity struct {
+		Project  string
+		Location string
+		Item     string
+	}
+	tmpl := Template[RegionalItemIdentity]("example.com", "projects/{project}/locations/{location}/items/{item}")
+
+	validLocations := []string{
+		"us-central1",
+		"europe-west4",
+		"global",
+		"us",
+		"u-france-south1",
+		"us-central1-a",
+	}
+	for _, loc := range validLocations {
+		id, match, err := tmpl.Parse("projects/my-project/locations/" + loc + "/items/my-item")
+		if err != nil {
+			t.Errorf("Parse(%q) unexpected error: %v", loc, err)
+		}
+		if !match {
+			t.Errorf("Parse(%q) expected match=true, got false", loc)
+		} else if err := tmpl.Validate(*id); err != nil {
+			t.Errorf("Validate(%+v) unexpected error: %v", *id, err)
+		}
+	}
+
+	maliciousInputs := []struct {
+		name  string
+		input string
+	}{
+		{
+			name:  "SSRF host with slash and query in location",
+			input: "projects/my-project/locations/127.0.0.1:34567/?/items/my-item",
+		},
+		{
+			name:  "SSRF host with query delimiter without slash in location",
+			input: "projects/my-project/locations/127.0.0.1:34567?/items/my-item",
+		},
+		{
+			name:  "SSRF domain with query delimiter in location",
+			input: "projects/my-project/locations/attacker.com?/items/my-item",
+		},
+		{
+			name:  "SSRF domain with fragment delimiter in location",
+			input: "projects/my-project/locations/attacker.com#/items/my-item",
+		},
+		{
+			name:  "SSRF userinfo injection in location",
+			input: "projects/my-project/locations/user@attacker.com/items/my-item",
+		},
+		{
+			name:  "dot-dot path traversal in location",
+			input: "projects/my-project/locations/../items/my-item",
+		},
+		{
+			name:  "dot-dot path traversal in item",
+			input: "projects/my-project/locations/us-central1/items/..",
+		},
+		{
+			name:  "single-dot segment in item",
+			input: "projects/my-project/locations/us-central1/items/.",
+		},
+		{
+			name:  "query injection in item segment",
+			input: "projects/my-project/locations/us-central1/items/my-item?foo=bar",
+		},
+		{
+			name:  "fragment injection in item segment",
+			input: "projects/my-project/locations/us-central1/items/my-item#frag",
+		},
+		{
+			name:  "backslash injection in item segment",
+			input: `projects/my-project/locations/us-central1/items/my\item`,
+		},
+		{
+			name:  "whitespace in segment",
+			input: "projects/my-project/locations/us-central1/items/my item",
+		},
+		{
+			name:  "leading hyphen in location",
+			input: "projects/my-project/locations/-us-central1/items/my-item",
+		},
+		{
+			name:  "trailing hyphen in location",
+			input: "projects/my-project/locations/us-central1-/items/my-item",
+		},
+	}
+
+	for _, tc := range maliciousInputs {
+		t.Run(tc.name, func(t *testing.T) {
+			if _, match, _ := tmpl.Parse(tc.input); match {
+				t.Errorf("Parse(%q) matched unexpectedly", tc.input)
+			}
+		})
+	}
+
+	invalidStructs := []struct {
+		name string
+		val  RegionalItemIdentity
+	}{
+		{
+			name: "SSRF payload in Location with slash",
+			val: RegionalItemIdentity{
+				Project:  "my-project",
+				Location: "127.0.0.1:34567/?",
+				Item:     "my-item",
+			},
+		},
+		{
+			name: "SSRF payload in Location without slash",
+			val: RegionalItemIdentity{
+				Project:  "my-project",
+				Location: "127.0.0.1:34567?",
+				Item:     "my-item",
+			},
+		},
+		{
+			name: "empty Project",
+			val: RegionalItemIdentity{
+				Project:  "",
+				Location: "us-central1",
+				Item:     "my-item",
+			},
+		},
+		{
+			name: "traversal in Item",
+			val: RegionalItemIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Item:     "..",
+			},
+		},
+	}
+
+	for _, tc := range invalidStructs {
+		t.Run("Validate/"+tc.name, func(t *testing.T) {
+			if err := tmpl.Validate(tc.val); err == nil {
+				t.Errorf("Validate(%+v) succeeded unexpectedly, want error", tc.val)
+			}
+		})
+	}
+}
