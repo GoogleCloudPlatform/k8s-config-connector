@@ -159,6 +159,20 @@
   5. Scaffolded `apis/compute/v1alpha1/computeglobalvmextensionpolicy_types.go`, generated identity, reference, deepcopy, CRD, and `judgement_queue.yaml` with open triage findings.
   6. Verified compilation of `apis/compute/...` and `pkg/controller/direct/compute/...`, conformance tests, and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-13] Greenfield Judgement Queue Triage for ComputeGlobalVMExtensionPolicy
+- **Context**: Triaged `judgement_queue.yaml` and finalized direct KRM types, identity, and references for `ComputeGlobalVMExtensionPolicy` (issue #15558).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeGlobalVMExtensionPolicy` is managed via the `GlobalVmExtensionPolicies` REST API under `projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}`. Locked in this pattern in `apis/compute/generate.sh` via `--pattern ComputeGlobalVMExtensionPolicy=projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}` and resolved `identity-multi-pattern`.
+  2. **Location**: Removed `spec.location` because `ComputeGlobalVMExtensionPolicy` is global and has no location/region/zone segment (`location-parent-unknown`). Made `spec.projectRef` required with `// +required`.
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/globalVmExtensionPolicies` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields & RolloutOperation Structs**:
+     - `scopedResourceStatus` and `updateTimestamp` were identified as output-only per proto comments and moved from `ComputeGlobalVMExtensionPolicySpec` to `ComputeGlobalVMExtensionPolicyObservedState`.
+     - `GlobalVmExtensionPolicyRolloutOperation` was split into desired state (`GlobalVMExtensionPolicyRolloutOperation` containing only user-configurable `rolloutInput`) and observed state (`GlobalVMExtensionPolicyRolloutOperationObservedState` containing output-only `rolloutStatus`).
+     - Moved `GlobalVMExtensionPolicyRolloutOperation*` structs to `computeglobalvmextensionpolicy_types.go` to preserve `map[string]...` in `LocationRolloutStatus` without requiring repo-wide `--emit-message-maps`.
+  5. **Triage Queue**: Resolved all 27 entries for `ComputeGlobalVMExtensionPolicy` in `apis/compute/judgement_queue.yaml`.
+  6. **Testing**: Added unit tests in `computeglobalvmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeGlobalVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+
+
 
 
 ### [2026-11-13] Greenfield Prepopulate of ComputeNotificationEndpoint

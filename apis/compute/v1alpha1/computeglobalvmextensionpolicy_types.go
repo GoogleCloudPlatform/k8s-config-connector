@@ -15,8 +15,7 @@
 // API sources for ComputeGlobalVMExtensionPolicy, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/compute/v1/compute.proto
 // +kcc:source:service-docs=https://developers.google.com/compute/docs/reference/latest/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/compute/docs/reference/rest
+// +kcc:source:resource-docs=https://cloud.google.com/compute/docs/reference/rest/v1/globalVmExtensionPolicies
 
 package v1alpha1
 
@@ -33,13 +32,12 @@ var ComputeGlobalVMExtensionPolicyGVK = GroupVersion.WithKind("ComputeGlobalVMEx
 // +kcc:required-from-proto
 type ComputeGlobalVMExtensionPolicySpec struct {
 	// The project that this resource belongs to.
+	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
 
 	// The ComputeGlobalVMExtensionPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// An optional description of this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.description
 	Description *string `json:"description,omitempty"`
@@ -60,15 +58,57 @@ type ComputeGlobalVMExtensionPolicySpec struct {
 	// Required. The rollout strategy and status.
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.rollout_operation
 	RolloutOperation *GlobalVMExtensionPolicyRolloutOperation `json:"rolloutOperation,omitempty"`
+}
 
-	// Output only. [Output Only] The scoped resource status. It's only for tracking the
-	//  purging status of the policy.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.scoped_resource_status
-	ScopedResourceStatus *string `json:"scopedResourceStatus,omitempty"`
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation
+type GlobalVMExtensionPolicyRolloutOperation struct {
+	// Required. The rollout input which defines the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_input
+	RolloutInput *GlobalVMExtensionPolicyRolloutOperationRolloutInput `json:"rolloutInput,omitempty"`
+}
 
-	// Output only. [Output Only] Update timestamp inRFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.update_timestamp
-	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation
+type GlobalVMExtensionPolicyRolloutOperationObservedState struct {
+	// Output only. [Output Only] The rollout status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_status
+	RolloutStatus *GlobalVMExtensionPolicyRolloutOperationRolloutStatus `json:"rolloutStatus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatus struct {
+	// Output only. [Output Only] The current rollouts for the latest version of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.current_rollouts
+	CurrentRollouts []GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"currentRollouts,omitempty"`
+
+	// Output only. [Output Only] The last completed rollout resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.previous_rollout
+	PreviousRollout *GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"previousRollout,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata struct {
+	// Output only. [Output Only] The rollout status for each location.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.location_rollout_status
+	LocationRolloutStatus map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus `json:"locationRolloutStatus,omitempty"`
+
+	// Output only. [Output Only] The name of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout
+	Rollout *string `json:"rollout,omitempty"`
+
+	// Output only. [Output Only] The name of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout_plan
+	RolloutPlan *string `json:"rolloutPlan,omitempty"`
+
+	// Output only. [Output Only] The overall state of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus struct {
+	// Output only. [Output Only] The state of the location rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus.state
+	State *string `json:"state,omitempty"`
 }
 
 // ComputeGlobalVMExtensionPolicyStatus defines the config connector machine state of ComputeGlobalVMExtensionPolicy
@@ -91,30 +131,38 @@ type ComputeGlobalVMExtensionPolicyStatus struct {
 // +kcc:observedstate:proto=google.cloud.compute.v1.GlobalVmExtensionPolicy
 type ComputeGlobalVMExtensionPolicyObservedState struct {
 	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
 	// Output only. [Output Only] The unique identifier for the resource. This identifier is
 	//  defined by the server.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.id
 	ID *uint64 `json:"id,omitempty"`
 
 	// Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.kind
 	Kind *string `json:"kind,omitempty"`
 
+	// Output only. [Output Only] The rollout operation.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.rollout_operation
+	RolloutOperation *GlobalVMExtensionPolicyRolloutOperationObservedState `json:"rolloutOperation,omitempty"`
+
+	// Output only. [Output Only] The scoped resource status. It's only for tracking the
+	//  purging status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.scoped_resource_status
+	ScopedResourceStatus *string `json:"scopedResourceStatus,omitempty"`
+
 	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	// Output only. [Output Only] Server-defined URL for this resource's resource id.
-	// +kcc:guess=placement reason=no-field-behavior-on-message
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Output only. [Output Only] Update timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
 }
 
 // +genclient

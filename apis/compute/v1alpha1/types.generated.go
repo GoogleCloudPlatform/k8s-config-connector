@@ -40,6 +40,20 @@
 
 package v1alpha1
 
+/* found existing non-generated go type "AcceleratorConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// The number of the guest accelerator cards exposed to this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+*/
+
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
 type AccessConfig struct {
@@ -559,6 +573,20 @@ type Data struct {
 }
 */
 
+/* found existing non-generated go type "Duration", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
+	Seconds *int64 `json:"seconds,omitempty"`
+}
+*/
+
 /* unreachable type Expr
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -785,10 +813,8 @@ type GlobalVMExtensionPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.description
 	Description *string `json:"description,omitempty"`
 
-	// Required. A map of extension names (for example, "ops-agent") to their corresponding
-	//  policy configurations.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.extension_policies
-	ExtensionPolicies map[string]GlobalVMExtensionPolicyExtensionPolicy `json:"extensionPolicies,omitempty"`
+	// TODO: unsupported map type with key string and value message
+
 
 	// Output only. [Output Only] The unique identifier for the resource. This identifier is
 	//  defined by the server.
@@ -860,6 +886,8 @@ type GlobalVMExtensionPolicyLabelSelector struct {
 	InclusionLabels map[string]string `json:"inclusionLabels,omitempty"`
 }
 
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperation", skipping
+
 // +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation
 type GlobalVMExtensionPolicyRolloutOperation struct {
 	// Required. The rollout input which defines the rollout plan.
@@ -870,6 +898,7 @@ type GlobalVMExtensionPolicyRolloutOperation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_status
 	RolloutStatus *GlobalVMExtensionPolicyRolloutOperationRolloutStatus `json:"rolloutStatus,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput
 type GlobalVMExtensionPolicyRolloutOperationRolloutInput struct {
@@ -890,6 +919,8 @@ type GlobalVMExtensionPolicyRolloutOperationRolloutInput struct {
 	RetryUuid *string `json:"retryUuid,omitempty"`
 }
 
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatus", skipping
+
 // +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus
 type GlobalVMExtensionPolicyRolloutOperationRolloutStatus struct {
 	// Output only. [Output Only] The current rollouts for the latest version of the resource.
@@ -900,12 +931,15 @@ type GlobalVMExtensionPolicyRolloutOperationRolloutStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.previous_rollout
 	PreviousRollout *GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"previousRollout,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata", skipping
 
 // +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata
 type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata struct {
-	// Output only. [Output Only] The rollout status for each location.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.location_rollout_status
-	LocationRolloutStatus map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus `json:"locationRolloutStatus,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
 
 	// Output only. [Output Only] The name of the rollout.
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout
@@ -919,6 +953,9 @@ type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata struct 
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.state
 	State *string `json:"state,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus", skipping
 
 // +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
 type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus struct {
@@ -926,6 +963,7 @@ type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocation
 	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 /* unreachable type GuestOSFeature
 // +kcc:proto=google.cloud.compute.v1.GuestOsFeature
@@ -3558,32 +3596,5 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GlobalVmExtensionPolicy", skipping
-
-// +kcc:observedstate:proto=google.cloud.compute.v1.GlobalVmExtensionPolicy
-type GlobalVMExtensionPolicyObservedState struct {
-	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// Output only. [Output Only] The unique identifier for the resource. This identifier is
-	//  defined by the server.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	// Output only. [Output Only] Server-defined URL for this resource's resource id.
-	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link_with_id
-	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */

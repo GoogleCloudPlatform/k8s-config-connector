@@ -98,9 +98,6 @@ spec:
                       type: object
                   type: object
                 type: array
-              location:
-                description: The location of this resource.
-                type: string
               priority:
                 description: Optional. Priority of this policy.
                 format: int32
@@ -164,80 +161,8 @@ spec:
                           retry attempt.
                         type: string
                     type: object
-                  rolloutStatus:
-                    description: Output only. [Output Only] The rollout status of
-                      the policy.
-                    properties:
-                      currentRollouts:
-                        description: Output only. [Output Only] The current rollouts
-                          for the latest version of the resource.
-                        items:
-                          properties:
-                            locationRolloutStatus:
-                              additionalProperties:
-                                properties:
-                                  state:
-                                    description: Output only. [Output Only] The state
-                                      of the location rollout.
-                                    type: string
-                                type: object
-                              description: Output only. [Output Only] The rollout
-                                status for each location.
-                              type: object
-                            rollout:
-                              description: Output only. [Output Only] The name of
-                                the rollout.
-                              type: string
-                            rolloutPlan:
-                              description: Output only. [Output Only] The name of
-                                the rollout plan.
-                              type: string
-                            state:
-                              description: Output only. [Output Only] The overall
-                                state of the rollout.
-                              type: string
-                          type: object
-                        type: array
-                      previousRollout:
-                        description: Output only. [Output Only] The last completed
-                          rollout resource.
-                        properties:
-                          locationRolloutStatus:
-                            additionalProperties:
-                              properties:
-                                state:
-                                  description: Output only. [Output Only] The state
-                                    of the location rollout.
-                                  type: string
-                              type: object
-                            description: Output only. [Output Only] The rollout status
-                              for each location.
-                            type: object
-                          rollout:
-                            description: Output only. [Output Only] The name of the
-                              rollout.
-                            type: string
-                          rolloutPlan:
-                            description: Output only. [Output Only] The name of the
-                              rollout plan.
-                            type: string
-                          state:
-                            description: Output only. [Output Only] The overall state
-                              of the rollout.
-                            type: string
-                        type: object
-                    type: object
                 type: object
-              scopedResourceStatus:
-                description: Output only. [Output Only] The scoped resource status.
-                  It's only for tracking the purging status of the policy.
-                type: string
-              updateTimestamp:
-                description: Output only. [Output Only] Update timestamp inRFC3339
-                  text format.
-                type: string
             required:
-            - location
             - projectRef
             type: object
           status:
@@ -299,6 +224,77 @@ spec:
                     description: Output only. [Output Only] Type of the resource.
                       Alwayscompute#globalVmExtensionPolicy.
                     type: string
+                  rolloutOperation:
+                    description: Output only. [Output Only] The rollout operation.
+                    properties:
+                      rolloutStatus:
+                        description: Output only. [Output Only] The rollout status
+                          of the policy.
+                        properties:
+                          currentRollouts:
+                            description: Output only. [Output Only] The current rollouts
+                              for the latest version of the resource.
+                            items:
+                              properties:
+                                locationRolloutStatus:
+                                  additionalProperties:
+                                    properties:
+                                      state:
+                                        description: Output only. [Output Only] The
+                                          state of the location rollout.
+                                        type: string
+                                    type: object
+                                  description: Output only. [Output Only] The rollout
+                                    status for each location.
+                                  type: object
+                                rollout:
+                                  description: Output only. [Output Only] The name
+                                    of the rollout.
+                                  type: string
+                                rolloutPlan:
+                                  description: Output only. [Output Only] The name
+                                    of the rollout plan.
+                                  type: string
+                                state:
+                                  description: Output only. [Output Only] The overall
+                                    state of the rollout.
+                                  type: string
+                              type: object
+                            type: array
+                          previousRollout:
+                            description: Output only. [Output Only] The last completed
+                              rollout resource.
+                            properties:
+                              locationRolloutStatus:
+                                additionalProperties:
+                                  properties:
+                                    state:
+                                      description: Output only. [Output Only] The
+                                        state of the location rollout.
+                                      type: string
+                                  type: object
+                                description: Output only. [Output Only] The rollout
+                                  status for each location.
+                                type: object
+                              rollout:
+                                description: Output only. [Output Only] The name of
+                                  the rollout.
+                                type: string
+                              rolloutPlan:
+                                description: Output only. [Output Only] The name of
+                                  the rollout plan.
+                                type: string
+                              state:
+                                description: Output only. [Output Only] The overall
+                                  state of the rollout.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  scopedResourceStatus:
+                    description: Output only. [Output Only] The scoped resource status.
+                      It's only for tracking the purging status of the policy.
+                    type: string
                   selfLink:
                     description: Output only. [Output Only] Server-defined fully-qualified
                       URL for this resource.
@@ -306,6 +302,10 @@ spec:
                   selfLinkWithID:
                     description: Output only. [Output Only] Server-defined URL for
                       this resource's resource id.
+                    type: string
+                  updateTimestamp:
+                    description: Output only. [Output Only] Update timestamp inRFC3339
+                      text format.
                     type: string
                 type: object
             type: object
