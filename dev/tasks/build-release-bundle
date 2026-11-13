@@ -247,6 +247,7 @@ BLOCKED_KINDS=(
     "MapmanagementMapContextConfig"
     "MapsPlatformDatasetsDataset"
     "MarketingPlatformAdminAnalyticsAccountLink"
+    "MemorystoreACLPolicy"
     "MigrationCenterImportJob"
     "MigrationCenterReportConfig"
     "ModelArmorTemplate"
