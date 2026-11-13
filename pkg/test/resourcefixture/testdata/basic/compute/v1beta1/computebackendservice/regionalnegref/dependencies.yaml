@@ -1,0 +1,29 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: default-net-${uniqueId}
+spec:
+  routingMode: REGIONAL
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: my-regional-neg-${uniqueId}
+spec:
+  region: us-central1
+  networkRef:
+    name: default-net-${uniqueId}
+  networkEndpointType: SERVERLESS
+  cloudRun:
+    serviceRef:
+      external: "hello"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computehealthcheck-${uniqueId}
+spec:
+  checkIntervalSec: 10
+  httpHealthCheck:
+    port: 80
+  location: global
