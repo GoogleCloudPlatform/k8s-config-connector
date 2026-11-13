@@ -146,6 +146,20 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  memoryConfig:
+                    description: 'DEPRECATED: MemoryConfig no longer surfaces storageSizeGib
+                      in the Bigtable API, and memory layer presence is modelled by
+                      the existence of the BigtableMemoryLayer object. Output only.
+                      The configuration of this memory layer.'
+                    properties:
+                      storageSizeGib:
+                        description: 'DEPRECATED: storage_size_gib is removed from
+                          the Bigtable MemoryLayer API and is no longer populated.
+                          Output only. Reporting the current size of the memory layer
+                          in GiB.'
+                        format: int32
+                        type: integer
+                    type: object
                   state:
                     description: Output only. The current state of the memory layer.
                     type: string
