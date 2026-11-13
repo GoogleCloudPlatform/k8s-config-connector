@@ -1,0 +1,33 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXAgent
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: dialogflowcxagent-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  defaultLanguageCode: en
+  description: Updated minimal agent description
+  displayName: agent-${uniqueId}
+  location: global
+  projectRef:
+    external: ${projectId}
+  resourceID: 21e77f4b-2dff-4d21-ab6a-50fbafbfccb4
+  timeZone: America/Chicago
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  name: 21e77f4b-2dff-4d21-ab6a-50fbafbfccb4
+  observedGeneration: 3
+  startFlow: projects/${projectId}/locations/global/agents/21e77f4b-2dff-4d21-ab6a-50fbafbfccb4/flows/00000000-0000-0000-0000-000000000000
