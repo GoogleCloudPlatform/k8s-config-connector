@@ -16,6 +16,7 @@ package ha
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"testing"
 
@@ -77,6 +78,30 @@ func TestFetchClusterHAStateToleratesMissingHACRDs(t *testing.T) {
 	if state.multiClusterLease != nil || len(state.krmSyncers) != 0 {
 		t.Fatalf("expected nil MultiClusterLease and empty KRMSyncers when CRDs are absent, got %+v", state)
 	}
+}
+
+func TestFetchClusterHAStateTypedErrors(t *testing.T) {
+	t.Run("ConfigConnector not found", func(t *testing.T) {
+		handle := newFakeClusterHandle(t, "cluster-a")
+
+		_, err := fetchClusterHAState(context.Background(), handle)
+
+		var notFound *configConnectorNotFoundError
+		if !errors.As(err, &notFound) {
+			t.Fatalf("expected a configConnectorNotFoundError, got %v", err)
+		}
+	})
+
+	t.Run("multiClusterLease not configured", func(t *testing.T) {
+		handle := newFakeClusterHandle(t, "cluster-a", &operatorv1beta1.ConfigConnector{ObjectMeta: metav1.ObjectMeta{Name: configConnectorResourceName}})
+
+		_, err := fetchClusterHAState(context.Background(), handle)
+
+		var notConfigured *multiClusterLeaseNotConfiguredError
+		if !errors.As(err, &notConfigured) {
+			t.Fatalf("expected a multiClusterLeaseNotConfiguredError, got %v", err)
+		}
+	})
 }
 
 func TestFetchAllClusterHAStatesErrors(t *testing.T) {

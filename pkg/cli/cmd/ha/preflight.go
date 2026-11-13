@@ -95,15 +95,38 @@ func fetchClusterHAState(ctx context.Context, handle *clusterHandle) (*clusterHA
 	}, nil
 }
 
+// configConnectorNotFoundError is returned when the ConfigConnector object (or its CRD) is not
+// on the cluster, so callers can tell it apart from other failures.
+type configConnectorNotFoundError struct {
+	contextName string
+}
+
+func (e *configConnectorNotFoundError) Error() string {
+	return fmt.Sprintf(
+		"cluster %q is missing the %q ConfigConnector object; install Config Connector and create the %q resource before running HA commands",
+		e.contextName, configConnectorResourceName, configConnectorResourceName,
+	)
+}
+
+// multiClusterLeaseNotConfiguredError is returned when spec.experiments.multiClusterLease is not
+// set on the ConfigConnector, so callers can tell it apart from other failures.
+type multiClusterLeaseNotConfiguredError struct {
+	contextName string
+}
+
+func (e *multiClusterLeaseNotConfiguredError) Error() string {
+	return fmt.Sprintf(
+		"cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector %q; run `config-connector ha setup` or configure spec.experiments.multiClusterLease",
+		e.contextName, configConnectorResourceName,
+	)
+}
+
 func fetchConfigConnector(ctx context.Context, handle *clusterHandle) (*operatorv1beta1.ConfigConnector, error) {
 	cc := &operatorv1beta1.ConfigConnector{}
 	key := types.NamespacedName{Name: configConnectorResourceName}
 	if err := handle.client.Get(ctx, key, cc); err != nil {
 		if isResourceOrKindAbsent(err) {
-			return nil, fmt.Errorf(
-				"cluster %q is missing the %q ConfigConnector object; install Config Connector and create the %q resource before running HA commands",
-				handle.contextName, configConnectorResourceName, configConnectorResourceName,
-			)
+			return nil, &configConnectorNotFoundError{contextName: handle.contextName}
 		}
 
 		return nil, fmt.Errorf("fetching ConfigConnector on cluster %q: %w", handle.contextName, err)
@@ -121,7 +144,7 @@ func multiClusterLeaseSpec(cc *operatorv1beta1.ConfigConnector) *operatorv1beta1
 
 func validateClusterLeaseSpec(contextName string, mcl *operatorv1beta1.MultiClusterLeaseSpec) error {
 	if mcl == nil {
-		return fmt.Errorf("cluster %q does not have spec.experiments.multiClusterLease configured on ConfigConnector %q; run `config-connector ha setup` or configure spec.experiments.multiClusterLease", contextName, configConnectorResourceName)
+		return &multiClusterLeaseNotConfiguredError{contextName: contextName}
 	}
 	var errs []error
 	if mcl.LeaseName == "" {
