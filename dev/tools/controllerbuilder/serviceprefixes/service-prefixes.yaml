@@ -460,6 +460,11 @@ services:
     protoPackages:
       - google.firestore.admin.v1
       - google.firestore.v1
+  - api: ftp
+    title: Cloud FTP API
+    servicePrefix: FTP
+    protoPackages:
+      - google.cloud.ftp.v1
   - api: geminidataanalytics
     title: Gemini Data Analytics API
     servicePrefix: GeminiDataAnalytics
