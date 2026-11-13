@@ -1,9 +1,0 @@
-apiVersion: ces.cnrm.cloud.google.com/v1alpha1
-kind: CESApp
-metadata:
-  name: cesapp-basic
-spec:
-  location: "global"
-  projectRef:
-    external: "projects/${projectId}"
-  displayName: "cesapp-basic"

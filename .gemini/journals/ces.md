@@ -31,3 +31,13 @@
   4. Resolved all 24 open `CESApp` entries in `apis/ces/judgement_queue.yaml`.
 - **Impact**: All unit and apichecks tests pass cleanly without naming or CRD backward-compatibility regressions.
 
+### [2026-11-13] Direct Controller, Fuzzer, and E2E Fixtures for CESApp
+- **Context**: Implementing Greenfield Step 2 for `CESApp` (`ces.cnrm.cloud.google.com/v1alpha1`).
+- **Learnings & Service Behaviors**:
+  1. **Supported Locations**: The Customer Engagement Suite (CES) API (`ces.googleapis.com/v1`) only supports multi-region locations `us` and `eu`. Requests directed to `global` return HTTP 403 Forbidden. Test fixtures must specify `location: us` (or `eu`).
+  2. **LRO Behavior**: `CreateApp` and `DeleteApp` return Long-Running Operations (LROs), handled via `op.Wait(ctx)`. `UpdateApp` is synchronous and returns `*cespb.App`.
+  3. **Language Code Normalization**: The CES API automatically normalizes short language codes like `en` or `es` to full BCP-47 tags (`en-US`, `es-ES`). Fixture YAMLs should declare canonical BCP-47 tags in `languageSettings` to avoid spurious diffs.
+  4. **VariableDeclarations Schema**: `App_VariableDeclaration.Schema` is an OpenAPI 3.0 recursive schema object with `type Schema struct {}` in KRM (`Schemaless` and `PreserveUnknownFields`). Since `Schema_ToProto` in `mapper.go` is stubbed and `schema.type` is required by GCP when variable declarations are present, `variableDeclarations` is omitted from maximal fixtures until full schema serialization is implemented.
+  5. **Audit Probe & E2E Validation**: Golden HTTP logs and audit probes were recorded against real GCP project `cnrm-barni-4` for `cesapp-minimal` and `cesapp-maximal`, with all 7/7 automated lifecycle checks passing cleanly.
+
+
