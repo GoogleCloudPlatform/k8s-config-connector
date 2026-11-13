@@ -4300,6 +4300,52 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+func ComputeNotificationEndpointObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationEndpoint) *krmcomputev1alpha1.ComputeNotificationEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeNotificationEndpointObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeNotificationEndpointObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNotificationEndpointObservedState) *pb.NotificationEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationEndpoint{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeNotificationEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationEndpoint) *krmcomputev1alpha1.ComputeNotificationEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeNotificationEndpointSpec{}
+	out.Description = in.Description
+	out.GrpcSettings = NotificationEndpointGrpcSettings_v1alpha1_FromProto(mapCtx, in.GetGrpcSettings())
+	// MISSING: Name
+	return out
+}
+func ComputeNotificationEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNotificationEndpointSpec) *pb.NotificationEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationEndpoint{}
+	out.Description = in.Description
+	out.GrpcSettings = NotificationEndpointGrpcSettings_v1alpha1_ToProto(mapCtx, in.GrpcSettings)
+	// MISSING: Name
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto", skipping
 func ComputeOrganizationSecurityPolicyAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAssociation) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicyAssociationSpec {
@@ -7526,6 +7572,30 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.ServerBinding{}
 	out.Type = in.Type
+	return out
+}
+func NotificationEndpointGrpcSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationEndpointGrpcSettings) *krmcomputev1alpha1.NotificationEndpointGrpcSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.NotificationEndpointGrpcSettings{}
+	out.Authority = in.Authority
+	out.Endpoint = in.Endpoint
+	out.PayloadName = in.PayloadName
+	out.ResendInterval = Duration_v1alpha1_FromProto(mapCtx, in.GetResendInterval())
+	out.RetryDurationSec = in.RetryDurationSec
+	return out
+}
+func NotificationEndpointGrpcSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NotificationEndpointGrpcSettings) *pb.NotificationEndpointGrpcSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotificationEndpointGrpcSettings{}
+	out.Authority = in.Authority
+	out.Endpoint = in.Endpoint
+	out.PayloadName = in.PayloadName
+	out.ResendInterval = Duration_v1alpha1_ToProto(mapCtx, in.ResendInterval)
+	out.RetryDurationSec = in.RetryDurationSec
 	return out
 }
 

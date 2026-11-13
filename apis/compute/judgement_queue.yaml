@@ -280,6 +280,76 @@ entries:
     status: resolved
     resolution: edited
     note: confirmed output-only per proto comment and moved to status.observedState.zone
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: edited
+    note: triaged spec and status fields; resolved location, docs link, and output-only fields
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionNotificationEndpoints REST reference
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.region
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.region. Move the field to .status.observedState.region if it is confirmed output only. Proto comment: [Output Only] URL of the region where the notification endpoint resides. This field applies only to the regional resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.'
+    status: resolved
+    resolution: edited
+    note: confirmed output-only per proto comment and moved to status.observedState.region
+  - kind: ComputeNotificationEndpoint
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
   - kind: ComputeVMExtensionPolicy
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
