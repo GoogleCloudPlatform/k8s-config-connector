@@ -435,7 +435,6 @@ type ExternalDataConfiguration struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.ExternalDataConfiguration.bigtable_options
 	// BigtableOptions *BigtableOptions `json:"bigtableOptions,omitempty"`
 
-	// NOT YET
 	// Defines the list of possible SQL data types to which the source decimal
 	//  values are converted. This list and the precision and the scale parameters
 	//  of the decimal field determine the target type. In the order of NUMERIC,
@@ -463,7 +462,8 @@ type ExternalDataConfiguration struct {
 	//  Defaults to ["NUMERIC", "STRING"] for ORC and ["NUMERIC"] for the other
 	//  file formats.
 	// +kcc:proto:field=google.cloud.bigquery.v2.ExternalDataConfiguration.decimal_target_types
-	// DecimalTargetTypes []string `json:"decimalTargetTypes,omitempty"`
+	// +optional
+	DecimalTargetTypes []string `json:"decimalTargetTypes,omitempty"`
 
 	// NOT YET
 	// Optional. Load option to be used together with source_format
