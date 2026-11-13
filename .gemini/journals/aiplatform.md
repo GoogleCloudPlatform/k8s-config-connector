@@ -297,3 +297,17 @@
   3. **Vertex AI ML Metadata API Schema Requirement**: GCP's Vertex AI ML Metadata API requires `schemaTitle` (e.g. `"system.ContainerExecution"`) on `Execution` resources (`rpc error: code = InvalidArgument desc = Resource Type through schema_title for beta API or instance_schema or instance_schema_title for alpha API is expected.`). Included `schemaTitle: "system.ContainerExecution"` in both minimal and maximal test fixtures.
   4. **Real GCP E2E Recording**: Recorded golden logs for `aiplatformexecution-minimal` and `aiplatformexecution-maximal` against real GCP (`./hack/record-gcp`). All V1-V7 automated validation checks passed cleanly.
 - **Impact**: Greenfield direct controller, fuzzer, and golden test fixtures for `AIPlatformExecution` are fully implemented and verified against real GCP.
+
+### [2026-11-13] Greenfield Step 3: Implementing MockGCP and Alignment for AIPlatformExecution
+- **Context**: Greenfield Step 3 MockGCP implementation and golden log alignment for `AIPlatformExecution` (Issue #15603).
+- **Implementation & Learnings**:
+  1. **Mock Service Implementation**: Implemented `executionService` in `mockgcp/mockaiplatform/aiplatformexecution.go` fulfilling `google.cloud.aiplatform.v1.MetadataService` methods `GetExecution`, `CreateExecution`, `UpdateExecution`, `DeleteExecution`, and `ListExecutions`.
+  2. **MetadataService Registration**: Registered `executionService` with `pbv1.RegisterMetadataServiceServer(grpcServer, &executionService{MockService: s})` and added `pbv1.NewMetadataServiceClient(conn)` to `NewHTTPMux` in `mockgcp/mockaiplatform/service.go`.
+  3. **Mock GCP Test Allowlist**: Added `AIPlatformExecution` to `config/tests/samples/create/harness.go` under `MaybeSkip`.
+  4. **Behavioral Alignment**:
+     - `CreateExecution`: Handles default `schemaVersion: "0.0.1"`, empty structpb `metadata: {}`, computeEtag hash, and resource name formatting matching real GCP (`projects/{projectNumber}/locations/{location}/metadataStores/{metadatastore}/executions/{execution}`).
+     - `GetExecution`: Returns exact NotFound error format matching real GCP (`Resource not found.; GetExecution is unable to find execution resource with name: ...`).
+     - `UpdateExecution`: Supports fieldmask paths (`description`, `displayName`, `metadata`, `state`, `labels`, `schemaTitle`, `schemaVersion`).
+     - `DeleteExecution`: Returns completed LRO with `DeleteOperationMetadata` matching v1 schema.
+  5. **Verification**: Successfully generated and aligned `_http_mock.log` for both `aiplatformexecution-minimal` and `aiplatformexecution-maximal`. `TestGoldenLogAlignment` and `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform` pass with zero diffs and zero errors.
+- **Impact**: Behavioral simulation for `AIPlatformExecution` in MockGCP fully matches real GCP.
