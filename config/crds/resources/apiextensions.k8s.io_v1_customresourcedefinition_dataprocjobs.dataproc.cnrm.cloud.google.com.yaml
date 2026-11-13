@@ -849,11 +849,6 @@ spec:
                        might be changed before final release.
                     items:
                       properties:
-                        memoryMbSeconds:
-                          description: Optional. The cumulative memory usage of the
-                            application for a job, measured in mb-seconds.
-                          format: int64
-                          type: integer
                         name:
                           description: Required. The application name.
                           type: string
@@ -870,11 +865,6 @@ spec:
                             information. The URL uses the internal hostname, and requires
                             a proxy server for resolution and, possibly, access.
                           type: string
-                        vcoreSeconds:
-                          description: Optional. The cumulative CPU time consumed
-                            by the application for a job, measured in vcore-seconds.
-                          format: int64
-                          type: integer
                       type: object
                     type: array
                 type: object

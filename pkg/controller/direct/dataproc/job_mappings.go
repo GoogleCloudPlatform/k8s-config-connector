@@ -717,8 +717,6 @@ func YarnApplication_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.YarnAp
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Progress = direct.LazyPtr(in.GetProgress())
 	out.TrackingURL = direct.LazyPtr(in.GetTrackingUrl())
-	out.VcoreSeconds = direct.LazyPtr(in.GetVcoreSeconds())
-	out.MemoryMbSeconds = direct.LazyPtr(in.GetMemoryMbSeconds())
 	return out
 }
 func YarnApplication_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.YarnApplication) *pb.YarnApplication {
@@ -730,7 +728,5 @@ func YarnApplication_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.YarnApp
 	out.State = direct.Enum_ToProto[pb.YarnApplication_State](mapCtx, in.State)
 	out.Progress = direct.ValueOf(in.Progress)
 	out.TrackingUrl = direct.ValueOf(in.TrackingURL)
-	out.VcoreSeconds = direct.ValueOf(in.VcoreSeconds)
-	out.MemoryMbSeconds = direct.ValueOf(in.MemoryMbSeconds)
 	return out
 }
