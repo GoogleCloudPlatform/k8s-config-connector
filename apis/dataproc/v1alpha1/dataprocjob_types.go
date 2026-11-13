@@ -717,6 +717,16 @@ type YarnApplication struct {
 	//  possibly, access.
 	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.tracking_url
 	TrackingURL *string `json:"trackingURL,omitempty"`
+
+	// Optional. The cumulative CPU time consumed by the application for a job,
+	//  measured in vcore-seconds.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.vcore_seconds
+	VcoreSeconds *int64 `json:"vcoreSeconds,omitempty"`
+
+	// Optional. The cumulative memory usage of the application for a job,
+	//  measured in mb-seconds.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.memory_mb_seconds
+	MemoryMbSeconds *int64 `json:"memoryMbSeconds,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.JobPlacement
