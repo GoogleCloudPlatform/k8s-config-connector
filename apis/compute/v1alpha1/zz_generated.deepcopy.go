@@ -2753,6 +2753,11 @@ func (in *ComputeNotificationEndpointObservedState) DeepCopyInto(out *ComputeNot
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.SelfLink != nil {
 		in, out := &in.SelfLink, &out.SelfLink
 		*out = new(string)
@@ -2793,11 +2798,6 @@ func (in *ComputeNotificationEndpointSpec) DeepCopyInto(out *ComputeNotification
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -2812,11 +2812,6 @@ func (in *ComputeNotificationEndpointSpec) DeepCopyInto(out *ComputeNotification
 		in, out := &in.GrpcSettings, &out.GrpcSettings
 		*out = new(NotificationEndpointGrpcSettings)
 		(*in).DeepCopyInto(*out)
-	}
-	if in.Region != nil {
-		in, out := &in.Region, &out.Region
-		*out = new(string)
-		**out = **in
 	}
 }
 

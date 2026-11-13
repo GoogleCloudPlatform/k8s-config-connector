@@ -113,7 +113,9 @@ spec:
                     type: integer
                 type: object
               location:
-                description: The location of this resource.
+                description: 'Location represents the geographical location of the
+                  ComputeNotificationEndpoint. Specify a region name. Reference: GCP
+                  definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -147,12 +149,6 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                description: '[Output Only] URL of the region where the notification
-                  endpoint resides. This field applies only to the regional resource.
-                  You must specify this field as part of the HTTP request URL. It
-                  is not settable as a field in the request body.'
-                type: string
               resourceID:
                 description: The ComputeNotificationEndpoint name. If not given, the
                   metadata.name will be used.
@@ -219,6 +215,10 @@ spec:
                   kind:
                     description: '[Output Only] Type of the resource. Always compute#notificationEndpoint
                       for notification endpoints.'
+                    type: string
+                  region:
+                    description: '[Output Only] URL of the region where the notification
+                      endpoint resides.'
                     type: string
                   selfLink:
                     description: '[Output Only] Server-defined URL for the resource.'

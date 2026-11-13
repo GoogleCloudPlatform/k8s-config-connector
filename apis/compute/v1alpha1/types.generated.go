@@ -38,6 +38,20 @@
 
 package v1alpha1
 
+/* found existing non-generated go type "AcceleratorConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
+type AcceleratorConfig struct {
+	// The number of the guest accelerator cards exposed to this instance.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
+	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+}
+*/
+
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
 type AccessConfig struct {
@@ -3059,6 +3073,20 @@ type AllocationSpecificSkuAllocationReservedInstanceProperties struct {
 }
 */
 
+/* found existing non-generated go type "Duration", skipping
+
+// +kcc:proto=google.cloud.compute.v1beta.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1beta.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1beta.Duration.seconds
+	Seconds *int64 `json:"seconds,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "FutureReservation", skipping
 
 // +kcc:proto=google.cloud.compute.v1beta.FutureReservation
@@ -3360,27 +3388,5 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NotificationEndpoint", skipping
-
-// +kcc:observedstate:proto=google.cloud.compute.v1.NotificationEndpoint
-type NotificationEndpointObservedState struct {
-	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// [Output Only] A unique identifier for this resource type. The server generates this identifier.
-	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// [Output Only] Type of the resource. Always compute#notificationEndpoint for notification endpoints.
-	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// [Output Only] Server-defined URL for the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.NotificationEndpoint.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
 }
 */

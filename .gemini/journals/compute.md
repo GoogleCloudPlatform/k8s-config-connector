@@ -151,4 +151,16 @@
   5. Kept all entries in `apis/compute/judgement_queue.yaml` with `status: open` for Step 1b triage.
 - **Impact**: Prepopulation completed mechanically with all queue entries left open for Step 1b triage. Generation is idempotent and all unit tests and API checks pass cleanly.
 
+### [2026-11-13] Greenfield Judgement Queue Triage for ComputeNotificationEndpoint
+- **Context**: Triaging `apis/compute/judgement_queue.yaml` and finalizing direct KRM types, identity, and references for `ComputeNotificationEndpoint` (issue #15557).
+- **Findings & Resolutions**:
+  1. **Pattern & Service Hierarchy**: `ComputeNotificationEndpoint` is a regional resource under `projects/{project}/regions/{region}/notificationEndpoints/{notificationendpoint}`, managed via `RegionNotificationEndpoints`.
+  2. **Location & Parent**: Modeled parentage using `spec.projectRef` (`*refsv1beta1.ProjectRef`) and `spec.location` (`Location string`) as required fields, matching established Compute conventions.
+  3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/regionNotificationEndpoints` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
+  4. **Output-Only Fields**: `region` is confirmed output-only per proto comments ("It is not settable as a field in the request body") and moved from `ComputeNotificationEndpointSpec` to `ComputeNotificationEndpointObservedState`. Server-set fields (`creationTimestamp`, `id`, `kind`, `selfLink`) were confirmed output-only in `ObservedState`, and all guess placement annotations were removed.
+  5. **Script & Mapper Alignment**: In `apis/compute/generate.sh`, removed the isolated prepopulation block and added `ComputeNotificationEndpoint:NotificationEndpoint` to the primary `generate-types` invocation without `--prepopulate-resource`. Mapper bindings regenerated cleanly.
+  6. **Testing**: Added comprehensive unit tests in `computenotificationendpoint_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeNotificationEndpointRef.ValidateExternal`/`Normalize`. Re-recorded golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+- **Impact**: Cleanly resolved all 9 entries in `apis/compute/judgement_queue.yaml`. All unit tests, API checks, and linters pass cleanly.
+
+
 

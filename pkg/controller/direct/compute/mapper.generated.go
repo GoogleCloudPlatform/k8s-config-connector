@@ -4309,6 +4309,7 @@ func ComputeNotificationEndpointObservedState_v1alpha1_FromProto(mapCtx *direct.
 	out.ID = in.Id
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -4321,6 +4322,7 @@ func ComputeNotificationEndpointObservedState_v1alpha1_ToProto(mapCtx *direct.Ma
 	out.Id = in.ID
 	out.Kind = in.Kind
 	// MISSING: Name
+	out.Region = in.Region
 	out.SelfLink = in.SelfLink
 	return out
 }
@@ -4332,7 +4334,6 @@ func ComputeNotificationEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out.Description = in.Description
 	out.GrpcSettings = NotificationEndpointGrpcSettings_v1alpha1_FromProto(mapCtx, in.GetGrpcSettings())
 	// MISSING: Name
-	out.Region = in.Region
 	return out
 }
 func ComputeNotificationEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNotificationEndpointSpec) *pb.NotificationEndpoint {
@@ -4343,7 +4344,6 @@ func ComputeNotificationEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.Description = in.Description
 	out.GrpcSettings = NotificationEndpointGrpcSettings_v1alpha1_ToProto(mapCtx, in.GrpcSettings)
 	// MISSING: Name
-	out.Region = in.Region
 	return out
 }
 
