@@ -1,0 +1,16 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeNotificationEndpoint
+metadata:
+  name: computenotificationendpoint-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: A test notification endpoint with maximal configuration
+  grpcSettings:
+    authority: health-monitor.example.com
+    endpoint: endpoint.example.com
+    payloadName: health-update
+    resendInterval:
+      seconds: 1200
+    retryDurationSec: 60
