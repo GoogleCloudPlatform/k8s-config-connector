@@ -452,6 +452,30 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
+			// Inject status.externalRef for VertexAIMetadataStore to simulate a reconciled metadata store in static unit tests.
+			if u.GetKind() == "VertexAIMetadataStore" && u.GroupVersionKind().Group == "vertexai.cnrm.cloud.google.com" {
+				projectID, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+				projectID = strings.TrimPrefix(projectID, "projects/")
+				if projectID == "" {
+					projectID = annotations["cnrm.cloud.google.com/project-id"]
+				}
+				if projectID == "" {
+					projectID = "mock-project"
+				}
+				region, _, _ := unstructured.NestedString(u.Object, "spec", "region")
+				if region == "" {
+					region = "us-central1"
+				}
+				storeID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if storeID == "" {
+					storeID = u.GetName()
+				}
+				extRef := fmt.Sprintf("projects/%s/locations/%s/metadataStores/%s", projectID, region, storeID)
+				if err := unstructured.SetNestedField(u.Object, extRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for VertexAIMetadataStore %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
