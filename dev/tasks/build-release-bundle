@@ -84,7 +84,6 @@ kustomize create
 # dropping it from the bundle would remove it from new installs. The build fails if a listed kind's
 # CRD has a v1beta1 or later version, or if its versions can't be read.
 BLOCKED_KINDS=(
-    "AIPlatformArtifact"
     "AIPlatformCachedContent"
     "AIPlatformExecution"
     "AIPlatformHyperparameterTuningJob"
