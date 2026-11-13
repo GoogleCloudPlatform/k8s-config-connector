@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -96,7 +97,7 @@ func (m *resourceBundleModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, mapCtx.Err()
 	}
 
-	desired.Labels = obj.GetLabels()
+	desired.Labels = label.GCPLabels(obj)
 	desired.Name = id.String()
 
 	gcpClient, err := m.client(ctx, id.Project)

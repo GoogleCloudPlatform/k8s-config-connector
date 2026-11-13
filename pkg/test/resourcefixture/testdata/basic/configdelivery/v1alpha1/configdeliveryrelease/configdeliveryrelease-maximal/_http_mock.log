@@ -35,7 +35,8 @@ X-Goog-User-Project: ${projectId}
   "description": "Sample description for resource bundle",
   "labels": {
     "cnrm-test": "true",
-    "env": "prod"
+    "env": "prod",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}"
 }
@@ -333,7 +334,8 @@ X-Xss-Protection: 0
   "description": "Sample description for resource bundle",
   "labels": {
     "cnrm-test": "true",
-    "env": "prod"
+    "env": "prod",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/resourceBundles/cdrbundle-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
