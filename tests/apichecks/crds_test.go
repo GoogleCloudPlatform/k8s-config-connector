@@ -1095,6 +1095,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
+		"aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.workbenchRuntime)
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
 		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object

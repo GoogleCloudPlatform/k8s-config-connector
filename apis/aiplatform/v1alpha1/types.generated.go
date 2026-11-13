@@ -41,6 +41,7 @@
 // resource: AIPlatformRAGCorpus:RagCorpus
 // resource: AIPlatformArtifact:Artifact
 // resource: AIPlatformContext:Context
+// resource: AIPlatformNotebookExecutionJob:NotebookExecutionJob
 
 package v1alpha1
 
@@ -2069,6 +2070,21 @@ type NotebookExecutionJob_CustomEnvironmentSpec struct {
 	// The specification of a single machine for the execution job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
 	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// The specification of a persistent disk to attach for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
+	PersistentDiskSpec *PersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
+
+	// The network configuration to use for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.network_spec
+	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
+type NotebookExecutionJob_CustomEnvironmentSpecWithRequired struct {
+	// The specification of a single machine for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
+	MachineSpec *MachineSpecWithRequired `json:"machineSpec,omitempty"`
 
 	// The specification of a persistent disk to attach for the execution job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
