@@ -1078,6 +1078,8 @@ func ZoneDistributionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistr
 	// MISSING: ActiveZones
 	return out
 }
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_FromProto", skipping
 func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfigObservedState {
 	if in == nil {
 		return nil
@@ -1089,6 +1091,9 @@ func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.ActiveZones = in.ActiveZones
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ZoneDistributionConfigObservedState_ToProto", skipping
 func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
 	if in == nil {
 		return nil
@@ -1100,3 +1105,4 @@ func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.ActiveZones = in.ActiveZones
 	return out
 }
+*/

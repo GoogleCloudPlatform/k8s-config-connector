@@ -21,6 +21,7 @@ package redis
 import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func init() {
@@ -83,5 +84,31 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".cluster_endpoints")
 	f.StatusFields.Insert(".zone_distribution_config.active_zones")
 
+	f.FilterStatus = func(in *pb.Cluster) {
+		cleanEmptyMessages(in.ProtoReflect())
+	}
+
 	return f
+}
+
+func cleanEmptyMessages(m protoreflect.Message) {
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		if fd.Kind() == protoreflect.MessageKind {
+			if fd.IsList() || fd.IsMap() {
+				return true
+			}
+			sub := v.Message()
+			cleanEmptyMessages(sub)
+			// check if sub has any populated fields now
+			hasFields := false
+			sub.Range(func(fd2 protoreflect.FieldDescriptor, v2 protoreflect.Value) bool {
+				hasFields = true
+				return false
+			})
+			if !hasFields {
+				m.Clear(fd)
+			}
+		}
+		return true
+	})
 }
