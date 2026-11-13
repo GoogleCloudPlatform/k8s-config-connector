@@ -198,7 +198,6 @@ BLOCKED_KINDS=(
     "DeveloperConnectGitRepositoryLink"
     "DeviceStreamingSession"
     "DialogflowCompanionAgent"
-    "DialogflowConversationDataset"
     "DialogflowConversationModel"
     "DialogflowEnvironment"
     "DialogflowFlow"
