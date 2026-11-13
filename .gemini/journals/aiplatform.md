@@ -273,3 +273,19 @@
      - Recorded real GCP golden logs (`_http.log`, `_identities.yaml`, `_generated_object_*.golden.yaml`, and `_audit_probe.log`) using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`, with all 7/7 automated validation checks passing.
      - Ran `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`, removing all 8 missing field exceptions from `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+### [2026-11-13] Greenfield Step 3: Implementing MockGCP and Alignment for AIPlatformArtifact
+- **Context**: Implementing Greenfield Step 3 MockGCP and Alignment for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15583).
+- **Implementation & Learnings**:
+  1. **Dual API Version Support in Mock Service**:
+     - `MetadataService` in `cloud.google.com/go/aiplatform/apiv1/aiplatformpb` (v1) and `cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb` (v1beta1) have different service descriptors (`google.cloud.aiplatform.v1.MetadataService` vs `google.cloud.aiplatform.v1beta1.MetadataService`).
+     - Implemented `artifactService` embedding `pbv1.UnimplementedMetadataServiceServer` in `mockgcp/mockaiplatform/artifact.go`, handling `GetArtifact`, `CreateArtifact`, `UpdateArtifact`, `DeleteArtifact`, and `ListArtifacts`.
+     - Registered `artifactService` under `pbv1.RegisterMetadataServiceServer` on the gRPC server and registered `pbv1.NewMetadataServiceClient(conn)` on `mux` in `mockgcp/mockaiplatform/service.go`.
+  2. **Metadata & Schema Defaults**:
+     - On creation and retrieval, defaulted `metadata` to empty `structpb.Struct` when nil, and defaulted `schemaVersion` to `"0.0.1"` when `schemaTitle` is provided without an explicit version, matching real Vertex AI behavior.
+     - Formatted `NotFound` error messages to match live GCP's canonical string pattern with resolved project numbers (`Resource not found.; GetArtifact is unable to find artifact resource with name: ...`).
+     - Supported field mask paths in `UpdateArtifact` for selective field mutation, and implemented LRO completion with `DeleteOperationMetadata` on deletion.
+  3. **Verification**:
+     - Added unit tests in `mockgcp/mockaiplatform/artifact_test.go` verifying name parsing and the full CRUD lifecycle.
+     - Added `AIPlatformArtifact` to the MockGCP allowlist in `config/tests/samples/create/harness.go`.
+     - Verified alignment via `hack/compare-mock` and confirmed 0 discrepancies in `TestGoldenLogAlignment` for both `aiplatformartifact-minimal` and `aiplatformartifact-maximal`. All 29 tests in `./dev/ci/presubmits/tests-e2e-fixtures-suite aiplatform` passed.
+
