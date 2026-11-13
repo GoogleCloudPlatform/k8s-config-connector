@@ -20,6 +20,8 @@ commonAnnotations:
   cnrm.cloud.google.com/version: 0.0.0-dev
 resources:
   - ../../../../base
+  - ../../../../components/mcl-controller
+  - ../../../../components/syncer-controller
   - ../../../../components/unmanageddetector
   # Grant unmanageddetector permissions to list StatefulSets, create events, etc.
   - unmanageddetector_clusterrole.yaml
