@@ -14,13 +14,13 @@
 
 // API sources for FTPServer, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/ftp/v1/service.proto
-// +kcc:source:service-docs=https://docs.cloud.google.com/cloud-ftp
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers
+// +kcc:source:service-docs=https://cloud.google.com/cloud-ftp/docs
+// +kcc:source:resource-docs=https://cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers
 
 package v1alpha1
 
 import (
+	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -32,11 +32,8 @@ var FTPServerGVK = GroupVersion.WithKind("FTPServer")
 // +kcc:spec:proto=google.cloud.ftp.v1.Server
 // +kcc:required-from-proto
 type FTPServerSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The FTPServer name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -48,10 +45,6 @@ type FTPServerSpec struct {
 	// +kcc:proto:field=google.cloud.ftp.v1.Server.internal_config
 	InternalConfig *InternalServerConfig `json:"internalConfig,omitempty"`
 
-	// Optional. Labels as key value pairs
-	// +kcc:proto:field=google.cloud.ftp.v1.Server.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
 	// Optional. Display name of the Server
 	// +kcc:proto:field=google.cloud.ftp.v1.Server.display_name
 	DisplayName *string `json:"displayName,omitempty"`
@@ -60,6 +53,28 @@ type FTPServerSpec struct {
 	// +kcc:proto:field=google.cloud.ftp.v1.Server.access_type
 	// +required
 	AccessType *string `json:"accessType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ftp.v1.InternalServerConfig.AllowedConsumer
+type InternalServerConfig_AllowedConsumer struct {
+	// The project ID or number of the consumer project.
+	//  Must be in the format: `projects/{project}`.
+	// +kcc:proto:field=google.cloud.ftp.v1.InternalServerConfig.AllowedConsumer.project
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Required. The connection limit for the consumer.
+	//  Value must be greater than 0.
+	// +kcc:proto:field=google.cloud.ftp.v1.InternalServerConfig.AllowedConsumer.connection_limit
+	// +required
+	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ftp.v1.InternalServerConfig.DeniedConsumer
+type InternalServerConfig_DeniedConsumer struct {
+	// The project ID or number of the consumer project.
+	//  Must be in the format: `projects/{project}`.
+	// +kcc:proto:field=google.cloud.ftp.v1.InternalServerConfig.DeniedConsumer.project
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // FTPServerStatus defines the config connector machine state of FTPServer

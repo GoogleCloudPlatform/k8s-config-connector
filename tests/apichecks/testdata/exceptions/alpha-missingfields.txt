@@ -4869,9 +4869,8 @@
 [missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.externalConfig.allowedCIDRBlocks[]" is not set in unstructured objects
 [missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.internalConfig.consumerAcceptList[].connectionLimit" is not set in unstructured objects
-[missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.internalConfig.consumerAcceptList[].project" is not set in unstructured objects
-[missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.internalConfig.consumerRejectList[].project" is not set in unstructured objects
-[missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.internalConfig.consumerAcceptList[].projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.internalConfig.consumerRejectList[].projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=ftpservers.ftp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set

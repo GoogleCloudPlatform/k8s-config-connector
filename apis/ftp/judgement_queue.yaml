@@ -25,27 +25,37 @@ entries:
     group: ftp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
-    status: open
+    status: resolved
+    resolution: edited
+    note: inlined *parent.ProjectAndLocationRef; removed top-level labels; converted consumer project references to ProjectRef; resolved resource-docs link
   - kind: FTPServer
     group: ftp.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: 'none of these loaded as a page ending in /v1/projects.locations.servers: https://docs.cloud.google.com/cloud-ftp/docs/reference/rest/v1/projects.locations.servers'
-    status: open
+    status: resolved
+    resolution: edited
+    note: updated resource-docs link to valid cloud.google.com REST reference and removed guess marker
   - kind: FTPServer
     group: ftp.cnrm.cloud.google.com
     field: .spec.internalConfig.consumerAcceptList[].project
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to cloudresourcemanager.googleapis.com/Project (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to projectRef (*ProjectRef)
   - kind: FTPServer
     group: ftp.cnrm.cloud.google.com
     field: .spec.internalConfig.consumerRejectList[].project
     reason: authoritative-proto-reference
     detail: the proto marks this field as a reference to cloudresourcemanager.googleapis.com/Project (google.api.resource_reference); confirm whether it should be a KCC reference
-    status: open
+    status: resolved
+    resolution: edited
+    note: converted to projectRef (*ProjectRef)
   - kind: FTPServer
     group: ftp.cnrm.cloud.google.com
     field: .spec.location
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
-    status: open
+    status: resolved
+    resolution: edited
+    note: replaced ProjectRef and Location with inlined *parent.ProjectAndLocationRef
