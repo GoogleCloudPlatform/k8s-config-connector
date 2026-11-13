@@ -130,6 +130,37 @@ func resolveHealthCheckServiceReferences(ctx context.Context, reader client.Read
 		}
 		ref.External = apirefs.TrimComputeURIPrefix(selfLink)
 	}
+	for _, ref := range obj.Spec.NetworkEndpointGroupRefs {
+		if ref == nil {
+			continue
+		}
+		if ref.External != "" {
+			ref.External = apirefs.TrimComputeURIPrefix(ref.External)
+			continue
+		}
+		if ref.Name == "" {
+			continue
+		}
+		ns := ref.Namespace
+		if ns == "" {
+			ns = defaultNamespace
+		}
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(computev1beta1.ComputeNetworkEndpointGroupGVK)
+		key := types.NamespacedName{Namespace: ns, Name: ref.Name}
+		if err := reader.Get(ctx, key, u); err != nil {
+			return fmt.Errorf("getting referenced ComputeNetworkEndpointGroup %s: %w", key, err)
+		}
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink == "" {
+			externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+			selfLink = externalRef
+		}
+		if selfLink == "" {
+			return fmt.Errorf("referenced ComputeNetworkEndpointGroup %s does not have status.selfLink or status.externalRef populated", key)
+		}
+		ref.External = apirefs.TrimComputeURIPrefix(selfLink)
+	}
 	return nil
 }
 
@@ -240,10 +271,13 @@ func (a *HealthCheckServiceAdapter) Update(ctx context.Context, updateOp *direct
 		if pb.NetworkEndpointGroups != nil {
 			pb.NetworkEndpointGroups = canonicalizeComputeURLs(pb.NetworkEndpointGroups)
 		}
+		if pb.NotificationEndpoints != nil {
+			pb.NotificationEndpoints = canonicalizeComputeURLs(pb.NotificationEndpoints)
+		}
 		return nil
 	}
 
-	_, report, _, err := common.CompareGreenfieldSpec(
+	resource, report, _, err := common.CompareGreenfieldSpec(
 		ctx,
 		&a.desired.Spec,
 		a.actual,
@@ -258,11 +292,6 @@ func (a *HealthCheckServiceAdapter) Update(ctx context.Context, updateOp *direct
 		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
 
-		mapCtx := &direct.MapContext{}
-		resource := ComputeHealthCheckServiceSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
 		resource.Name = direct.LazyPtr(a.id.Healthcheckservice)
 		resource.Fingerprint = a.actual.Fingerprint
 
