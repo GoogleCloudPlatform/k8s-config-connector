@@ -41,7 +41,7 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
-        valueTemplate: "projects/{{project}}/agent/entityTypes//{{value}}"
+        valueTemplate: "projects/{{project}}/agent/entityTypes/{{value}}"
       hierarchicalReferences:
         - type: project
           key: projectRef
@@ -63,7 +63,7 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
-        valueTemplate: "projects/{{project}}/agent/fulfillment//{{value}}"
+        valueTemplate: "projects/{{project}}/agent/fulfillment/{{value}}"
       hierarchicalReferences:
         - type: project
           key: projectRef
@@ -85,7 +85,7 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
-        valueTemplate: "projects/{{project}}/agent/intents//{{value}}"
+        valueTemplate: "projects/{{project}}/agent/intents/{{value}}"
       hierarchicalReferences:
         - type: project
           key: projectRef
