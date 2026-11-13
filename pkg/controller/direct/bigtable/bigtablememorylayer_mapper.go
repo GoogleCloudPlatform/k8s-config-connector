@@ -26,9 +26,9 @@ func BigtableMemoryLayerObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	}
 	out := &krm.BigtableMemoryLayerObservedState{}
 	// MISSING: Name
+	// MISSING: MemoryConfig, which is an empty message whose presence is modelled by the existence of the BigtableMemoryLayer object.
 	// MISSING: Etag, which is not declarative-friendly and so is not surfaced in the KRM API.
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.MemoryConfig = MemoryLayer_MemoryConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetMemoryConfig())
 	return out
 }
 
@@ -38,27 +38,9 @@ func BigtableMemoryLayerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.MemoryLayer{}
 	// MISSING: Name
+	// MISSING: MemoryConfig, which is an empty message whose presence is modelled by the existence of the BigtableMemoryLayer object.
 	// MISSING: Etag, which is not declarative-friendly and so is not surfaced in the KRM API.
 	out.State = direct.Enum_ToProto[pb.MemoryLayer_State](mapCtx, in.State)
-	out.MemoryConfig = MemoryLayer_MemoryConfigObservedState_v1alpha1_ToProto(mapCtx, in.MemoryConfig)
-	return out
-}
-
-func MemoryLayer_MemoryConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MemoryLayer_MemoryConfig) *krm.MemoryLayer_MemoryConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MemoryLayer_MemoryConfigObservedState{}
-	out.StorageSizeGib = direct.LazyPtr(in.GetStorageSizeGib())
-	return out
-}
-
-func MemoryLayer_MemoryConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.MemoryLayer_MemoryConfigObservedState) *pb.MemoryLayer_MemoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MemoryLayer_MemoryConfig{}
-	out.StorageSizeGib = direct.ValueOf(in.StorageSizeGib)
 	return out
 }
 

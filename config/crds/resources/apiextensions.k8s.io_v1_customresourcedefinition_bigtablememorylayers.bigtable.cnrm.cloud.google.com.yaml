@@ -146,15 +146,6 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  memoryConfig:
-                    description: Output only. The configuration of this memory layer.
-                    properties:
-                      storageSizeGib:
-                        description: Output only. Reporting the current size of the
-                          memory layer in GiB.
-                        format: int32
-                        type: integer
-                    type: object
                   state:
                     description: Output only. The current state of the memory layer.
                     type: string

@@ -33,14 +33,15 @@ func BigtableMemoryLayerFuzzer() fuzztesting.KRMFuzzer {
 		BigtableMemoryLayerObservedState_v1alpha1_FromProto, BigtableMemoryLayerObservedState_v1alpha1_ToProto,
 	)
 
-	// A memory layer has no settable fields today: memory_config is output only
-	// apart from its presence, which the KRM API models as the existence of the
-	// BigtableMemoryLayer object.
-	f.StatusFields.Insert(".memory_config")
+	// A memory layer has no settable fields today: memory_config has no
+	// configurable subfields and its presence is modelled as the existence of
+	// the BigtableMemoryLayer object.
 	f.StatusFields.Insert(".state")
 
 	// name is the resource identity, modelled as spec.clusterRef.
 	f.UnimplementedFields.Insert(".name")
+	// memory_config is an empty message enabled by the existence of the KRM object.
+	f.UnimplementedFields.Insert(".memory_config")
 	// etag is not declarative-friendly, so it is not surfaced in the KRM API.
 	f.UnimplementedFields.Insert(".etag")
 	return f

@@ -61,20 +61,6 @@ type BigtableMemoryLayerObservedState struct {
 	// +optional
 	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.state
 	State *string `json:"state,omitempty"`
-
-	// Output only. The configuration of this memory layer.
-	// +optional
-	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.memory_config
-	MemoryConfig *MemoryLayer_MemoryConfigObservedState `json:"memoryConfig,omitempty"`
-}
-
-// MemoryLayer_MemoryConfigObservedState is the observed configuration of a memory layer.
-// +kcc:observedstate:proto=google.bigtable.admin.v2.MemoryLayer.MemoryConfig
-type MemoryLayer_MemoryConfigObservedState struct {
-	// Output only. Reporting the current size of the memory layer in GiB.
-	// +optional
-	// +kcc:proto:field=google.bigtable.admin.v2.MemoryLayer.MemoryConfig.storage_size_gib
-	StorageSizeGib *int32 `json:"storageSizeGib,omitempty"`
 }
 
 // +genclient
