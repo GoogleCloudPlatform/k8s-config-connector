@@ -1,0 +1,132 @@
+# Phase: CREATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/2147483647?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F2147483647
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "The default action.",
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+---
+
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/2147483647?%24alt=json%3Benum-encoding%3Dint&updateMask=action
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F2147483647
+
+{
+  "action": 2,
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 2,
+  "description": "The default action.",
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+---
+
+# Phase: UPDATE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/2147483647?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F2147483647
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 2,
+  "description": "The default action.",
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+---
+
+PATCH https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/2147483647?%24alt=json%3Benum-encoding%3Dint&updateMask=action
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F2147483647
+
+{
+  "action": 1,
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "The default action.",
+  "priority": 2147483647,
+  "sourceRange": "*"
+}
+
+---
+
+# Phase: DELETE
+GET https://appengine.googleapis.com/v1/apps/${projectId}/firewall/ingressRules/2147483647?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=apps%2F${projectId}%2Ffirewall%2FingressRules%2F2147483647
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "description": "The default action.",
+  "priority": 2147483647,
+  "sourceRange": "*"
+}

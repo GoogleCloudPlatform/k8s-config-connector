@@ -41,6 +41,7 @@ type httpBindingRule struct {
 	host       string
 	httpMethod string
 	segments   []string
+	customVerb string
 	reqMsg     protoreflect.MessageDescriptor
 	respMsg    protoreflect.MessageDescriptor
 }
@@ -304,10 +305,12 @@ func collectMethodHTTPRules(host string, m protoreflect.MethodDescriptor, rule *
 			respMsg = m.Output()
 		}
 
+		segments, customVerb := expandHTTPPathTemplate(pattern)
 		out[host] = append(out[host], httpBindingRule{
 			host:       host,
 			httpMethod: httpMethod,
-			segments:   expandHTTPPathTemplate(pattern),
+			segments:   segments,
+			customVerb: customVerb,
 			reqMsg:     reqMsg,
 			respMsg:    respMsg,
 		})
@@ -337,7 +340,7 @@ func extractMethodAndPattern(rule *annotations.HttpRule) (string, string) {
 	return "", ""
 }
 
-func expandHTTPPathTemplate(pattern string) []string {
+func expandHTTPPathTemplate(pattern string) ([]string, string) {
 	expanded := templateVarRegex.ReplaceAllStringFunc(pattern, func(m string) string {
 		sub := templateVarRegex.FindStringSubmatch(m)
 		if len(sub) == 3 && sub[2] != "" {
@@ -345,10 +348,26 @@ func expandHTTPPathTemplate(pattern string) []string {
 		}
 		return "*"
 	})
-	if colonIdx := strings.Index(expanded, ":"); colonIdx != -1 {
-		expanded = expanded[:colonIdx]
+	return splitSegmentsAndCustomVerb(expanded)
+}
+
+func splitSegmentsAndCustomVerb(p string) ([]string, string) {
+	segs := splitNonEmptySegments(p)
+	if len(segs) == 0 {
+		return nil, ""
 	}
-	return splitNonEmptySegments(expanded)
+	last := segs[len(segs)-1]
+	if colonIdx := strings.Index(last, ":"); colonIdx != -1 {
+		verb := last[colonIdx+1:]
+		base := last[:colonIdx]
+		if base == "" {
+			segs = segs[:len(segs)-1]
+		} else {
+			segs[len(segs)-1] = base
+		}
+		return segs, verb
+	}
+	return segs, ""
 }
 
 func splitNonEmptySegments(p string) []string {
@@ -384,17 +403,13 @@ func (r *descriptorRegistry) matchHTTPRule(rawURL, httpMethod string) *httpBindi
 		return nil
 	}
 	host := strings.ToLower(parsed.Hostname())
-	uPath := parsed.Path
-	if colonIdx := strings.Index(uPath, ":"); colonIdx != -1 {
-		uPath = uPath[:colonIdx]
-	}
-	urlSegs := splitNonEmptySegments(uPath)
+	urlSegs, urlVerb := splitSegmentsAndCustomVerb(parsed.Path)
 
 	for _, candidateHost := range []string{host, ""} {
 		rules := r.httpRules[candidateHost]
 		for i := range rules {
 			rule := &rules[i]
-			if rule.httpMethod == httpMethod && matchSegments(rule.segments, urlSegs) {
+			if rule.httpMethod == httpMethod && rule.customVerb == urlVerb && matchSegments(rule.segments, urlSegs) {
 				return rule
 			}
 		}
