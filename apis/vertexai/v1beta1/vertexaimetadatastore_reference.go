@@ -18,15 +18,24 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &MetadataStoreRef{}
+var (
+	_ refs.ExternalNormalizer = &MetadataStoreRef{}
+	_ refs.Ref                = &MetadataStoreRef{}
+)
+
+func init() {
+	refs.Register(&MetadataStoreRef{}, &VertexAIMetadataStore{})
+}
 
 // MetadataStoreRef is a reference to a VertexAIMetadataStore.
 type MetadataStoreRef struct {
@@ -39,6 +48,45 @@ type MetadataStoreRef struct {
 
 	// The namespace of a VertexAIMetadataStore resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *MetadataStoreRef) GetGVK() schema.GroupVersionKind {
+	return VertexAIMetadataStoreGVK
+}
+
+func (r *MetadataStoreRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *MetadataStoreRef) GetExternal() string {
+	return r.External
+}
+
+func (r *MetadataStoreRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *MetadataStoreRef) ValidateExternal(ref string) error {
+	id := &MetadataStoreIdentity{}
+	return id.FromExternal(ref)
+}
+
+func (r *MetadataStoreRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &MetadataStoreIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *MetadataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	_, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	return err
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on VertexAIMetadataStore.

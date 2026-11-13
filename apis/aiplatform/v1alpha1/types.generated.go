@@ -39,6 +39,7 @@
 // resource: AIPlatformCachedContent:CachedContent
 // resource: AIPlatformPipelineJob:PipelineJob
 // resource: AIPlatformRAGCorpus:RagCorpus
+// resource: AIPlatformArtifact:Artifact
 
 package v1alpha1
 

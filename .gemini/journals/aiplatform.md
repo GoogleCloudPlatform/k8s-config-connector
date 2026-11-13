@@ -147,3 +147,32 @@
   2. **Immutability and Update Handling**: `UpdateRagCorpus` in Vertex AI's `VertexRagDataService` rejects updates if immutable fields or unmasked payloads are supplied. In accordance with KCC Greenfield guidelines, `AIPlatformRAGCorpusAdapter.Update` uses `common.CompareGreenfieldSpec` to compare desired spec with actual state and returns `updating AIPlatformRAGCorpus is not supported, fields modified: %v` if any diff is detected.
   3. **Real GCP E2E Fixtures**: Minimal and maximal test fixtures (`aiplatformragcorpus-minimal` and `aiplatformragcorpus-maximal`) were created under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformragcorpus/`. Golden logs were recorded against real GCP, passing all E2E validation checks (V1-V7).
 - **Impact**: Greenfield direct controller and round-trip fuzzer for `AIPlatformRAGCorpus` are fully implemented, tested, and verified against real GCP.
+
+### [2026-11-12] Greenfield Step 1a: Prepopulating Direct KRM Types, Identity, and Judgement Queue for AIPlatformArtifact
+- **Context**: Prepopulating direct KRM types, identity, reference, and open judgement queue for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15495).
+- **Implementation & Learnings**:
+  1. **Non-Declarative Leaf Collection**: `google.cloud.aiplatform.v1.Artifact` is cataloged in `nonDeclarativeLeafCollections` (`artifacts: "data-plane lineage"`), requiring `--allow-non-declarative` when running `controllerbuilder generate-types`. In `apis/aiplatform/generate.sh`, added `--resource AIPlatformArtifact:Artifact` to the existing block that specifies `--allow-non-declarative` and `--service google.cloud.aiplatform.v1`.
+  2. **Deterministic Identity Generation**: Added `--resource AIPlatformArtifact:Artifact` to the `generate-identity` invocation in `apis/aiplatform/generate.sh`. Deterministically generated `aiplatformartifact_identity.generated.go`, `aiplatformartifact_reference.generated.go`, and conformance tests in `aiplatformartifact_identity_generated_test.go` matching the pattern `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`.
+  3. **Release Bundle Blocklist**: Added `"AIPlatformArtifact"` in alphabetical order to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  4. **Judgement Queue & API Checks**: Open review findings were recorded in `apis/aiplatform/judgement_queue.yaml` for Step 1b triage. Golden test exceptions were recorded in `alpha-missingfields.txt` and `spec_dislike_etag.txt`.
+
+### [2026-11-12] Greenfield Step 1b: Triaging Judgement Queue and Finalizing Direct KRM Types for AIPlatformArtifact
+- **Context**: Finalizing KRM types, parent reference, and triaging `apis/aiplatform/judgement_queue.yaml` for `AIPlatformArtifact` under `aiplatform.cnrm.cloud.google.com/v1alpha1` (Issue #15505).
+- **Implementation & Learnings**:
+  1. **Single-Parent Rule (`spec.parentRef`)**:
+     - `Artifact` is a child resource under `projects/{project}/locations/{location}/metadataStores/{metadata_store}`.
+     - Following `PARENT_AND_IDENTITY.md` Case B, replaced `projectRef` and `location` with required, immutable `spec.parentRef *vertexaiv1beta1.MetadataStoreRef`.
+     - Reused existing `MetadataStoreRef` from `apis/vertexai/v1beta1/`.
+  2. **Updating `MetadataStoreRef` to Implement `refs.Ref`**:
+     - `MetadataStoreRef` in `apis/vertexai/v1beta1/vertexaimetadatastore_reference.go` had legacy `NormalizedExternal` but did not implement modern `refs.Ref` methods (`GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`, `Normalize`), which caused `controllerbuilder generate-identity` normalization to fail compilation.
+     - Implemented `refs.Ref` on `MetadataStoreRef` and `identity.Identity` on `MetadataStoreIdentity`, preserving the existing struct schema and backwards compatibility with `NormalizedExternal`.
+  3. **Field Triage & Cleanup**:
+     - Moved `etag` from `AIPlatformArtifactSpec` to `AIPlatformArtifactObservedState`.
+     - Removed `spec.labels` (reconciled through `metadata.labels`).
+     - Kept `state` in `spec` as the proto comments indicate it is client-managed state.
+     - Fixed `+kcc:source:resource-docs` link to `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.artifacts` and removed `+kcc:guess` marker.
+  4. **Judgement Queue Resolution**:
+     - Triaged and marked all 8 entries for `AIPlatformArtifact` in `apis/aiplatform/judgement_queue.yaml` as `resolved`.
+     - Closed `untriaged-bulk-generation` last with summary note.
+
+

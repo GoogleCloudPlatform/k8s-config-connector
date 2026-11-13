@@ -39,6 +39,68 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AIPlatformArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.AIPlatformArtifactObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformArtifactObservedState{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func AIPlatformArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformArtifactObservedState) *pb.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifact{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func AIPlatformArtifactSpec_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.AIPlatformArtifactSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformArtifactSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func AIPlatformArtifactSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformArtifactSpec) *pb.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifact{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Uri = direct.ValueOf(in.URI)
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.Artifact_State](mapCtx, in.State)
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
 func AIPlatformCachedContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.AIPlatformCachedContentObservedState {
 	if in == nil {
 		return nil
