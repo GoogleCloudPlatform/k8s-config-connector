@@ -772,11 +772,14 @@ func AIPlatformNotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &krm.AIPlatformNotebookExecutionJobObservedState{}
+	// MISSING: NotebookRuntimeTemplateResourceName
 	// MISSING: Name
+	// MISSING: ScheduleResourceName
 	out.JobState = direct.Enum_FromProto(mapCtx, in.GetJobState())
 	out.Status = direct.Status_FromProto(mapCtx, in.GetStatus())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 
@@ -785,11 +788,14 @@ func AIPlatformNotebookExecutionJobObservedState_ToProto(mapCtx *direct.MapConte
 		return nil
 	}
 	out := &pb.NotebookExecutionJob{}
+	// MISSING: NotebookRuntimeTemplateResourceName
 	// MISSING: Name
+	// MISSING: ScheduleResourceName
 	out.JobState = direct.Enum_ToProto[pb.JobState](mapCtx, in.JobState)
 	out.Status = direct.Status_ToProto(mapCtx, in.Status)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 
@@ -801,22 +807,25 @@ func AIPlatformNotebookExecutionJobSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.DataformRepositorySource = NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx, in.GetDataformRepositorySource())
 	out.GCSNotebookSource = NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx, in.GetGcsNotebookSource())
 	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
-	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
+	// MISSING: NotebookRuntimeTemplateResourceName
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpecWithRequired_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
 	out.GCSOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
 	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.WorkbenchRuntime = NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx, in.GetWorkbenchRuntime())
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
-	out.ScheduleResourceName = direct.LazyPtr(in.GetScheduleResourceName())
-	out.Labels = in.Labels
+	// MISSING: ScheduleResourceName
+	// MISSING: Labels
 	out.KernelName = direct.LazyPtr(in.GetKernelName())
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 
+/* found existing non-generated mapping function "AIPlatformNotebookExecutionJobSpec_ToProto", skipping
 func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformNotebookExecutionJobSpec) *pb.NotebookExecutionJob {
 	if in == nil {
 		return nil
@@ -831,9 +840,7 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	if oneof := NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx, in.DirectNotebookSource); oneof != nil {
 		out.NotebookSource = &pb.NotebookExecutionJob_DirectNotebookSource_{DirectNotebookSource: oneof}
 	}
-	if oneof := AIPlatformNotebookExecutionJobSpec_NotebookRuntimeTemplateResourceName_ToProto(mapCtx, in.NotebookRuntimeTemplateResourceName); oneof != nil {
-		out.EnvironmentSpec = oneof
-	}
+	// MISSING: NotebookRuntimeTemplateResourceName
 	if oneof := NotebookExecutionJob_CustomEnvironmentSpecWithRequired_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
 		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 	}
@@ -843,8 +850,8 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	if oneof := AIPlatformNotebookExecutionJobSpec_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
 		out.ExecutionIdentity = oneof
 	}
-	if oneof := AIPlatformNotebookExecutionJobSpec_ServiceAccount_ToProto(mapCtx, in.ServiceAccount); oneof != nil {
-		out.ExecutionIdentity = oneof
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
 		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
@@ -852,19 +859,13 @@ func AIPlatformNotebookExecutionJobSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
-	out.ScheduleResourceName = direct.ValueOf(in.ScheduleResourceName)
-	out.Labels = in.Labels
+	// MISSING: ScheduleResourceName
+	// MISSING: Labels
 	out.KernelName = direct.ValueOf(in.KernelName)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
-
-func AIPlatformNotebookExecutionJobSpec_NotebookRuntimeTemplateResourceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_NotebookRuntimeTemplateResourceName {
-	if in == nil {
-		return nil
-	}
-	return &pb.NotebookExecutionJob_NotebookRuntimeTemplateResourceName{NotebookRuntimeTemplateResourceName: *in}
-}
+*/
 
 func AIPlatformNotebookExecutionJobSpec_GcsOutputUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_GcsOutputUri {
 	if in == nil {
@@ -878,13 +879,6 @@ func AIPlatformNotebookExecutionJobSpec_ExecutionUser_ToProto(mapCtx *direct.Map
 		return nil
 	}
 	return &pb.NotebookExecutionJob_ExecutionUser{ExecutionUser: *in}
-}
-
-func AIPlatformNotebookExecutionJobSpec_ServiceAccount_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_ServiceAccount {
-	if in == nil {
-		return nil
-	}
-	return &pb.NotebookExecutionJob_ServiceAccount{ServiceAccount: *in}
 }
 
 func AIPlatformNotebookRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.AIPlatformNotebookRuntimeTemplateObservedState {

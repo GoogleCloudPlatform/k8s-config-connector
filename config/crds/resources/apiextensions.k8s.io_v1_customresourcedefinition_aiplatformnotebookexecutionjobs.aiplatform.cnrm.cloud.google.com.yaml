@@ -343,29 +343,44 @@ spec:
                 description: The name of the kernel to use during notebook execution.
                   If unset, the default kernel is used.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The labels with user-defined metadata to organize NotebookExecutionJobs.
-
-                   Label keys and values can be no longer than 64 characters
-                   (Unicode codepoints), can only contain lowercase letters, numeric
-                   characters, underscores and dashes. International characters are allowed.
-
-                   See https://goo.gl/xmQnxf for more information and examples of labels.
-                   System reserved label keys are prefixed with "aiplatform.googleapis.com/"
-                   and are immutable.
-                type: object
               location:
-                description: The location of this resource.
+                description: The location that this resource belongs to.
                 type: string
-              notebookRuntimeTemplateResourceName:
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
+              notebookRuntimeTemplateRef:
                 description: The NotebookRuntimeTemplate to source compute configuration
                   from.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed AIPlatformNotebookRuntimeTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookRuntimeTemplateID}}".
+                    type: string
+                  name:
+                    description: The name of a AIPlatformNotebookRuntimeTemplate resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a AIPlatformNotebookRuntimeTemplate
+                      resource.
+                    type: string
+                type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -400,13 +415,62 @@ spec:
                 description: The AIPlatformNotebookExecutionJob name. If not given,
                   the metadata.name will be used.
                 type: string
-              scheduleResourceName:
+              scheduleRef:
                 description: 'The Schedule resource name if this job is triggered
                   by one. Format: `projects/{project_id}/locations/{location}/schedules/{schedule_id}`'
-                type: string
-              serviceAccount:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed AIPlatformSchedule
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/schedules/{{scheduleID}}".
+                    type: string
+                  name:
+                    description: The name of an AIPlatformSchedule resource.
+                    type: string
+                  namespace:
+                    description: The namespace of an AIPlatformSchedule resource.
+                    type: string
+                type: object
+              serviceAccountRef:
                 description: The service account to run the execution as.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               workbenchRuntime:
                 description: The Workbench runtime configuration to use for the notebook
                   execution.

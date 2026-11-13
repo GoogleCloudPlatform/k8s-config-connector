@@ -15,13 +15,13 @@
 // API sources for AIPlatformNotebookExecutionJob, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/e7513c828b8db536fa12fc5493d541f323aedf90/google/cloud/aiplatform/v1/notebook_execution_job.proto
 // +kcc:source:service-docs=https://cloud.google.com/vertex-ai/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookExecutionJobs
+// +kcc:source:resource-docs=https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.notebookExecutionJobs
 
 package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,14 +33,11 @@ var AIPlatformNotebookExecutionJobGVK = GroupVersion.WithKind("AIPlatformNoteboo
 // +kcc:spec:proto=google.cloud.aiplatform.v1.NotebookExecutionJob
 // +kcc:required-from-proto
 type AIPlatformNotebookExecutionJobSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
-
-	// The location of this resource.
-	Location *string `json:"location"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The AIPlatformNotebookExecutionJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
 	// The Dataform Repository pointing to a single file notebook repository.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.dataform_repository_source
 	DataformRepositorySource *NotebookExecutionJob_DataformRepositorySource `json:"dataformRepositorySource,omitempty"`
@@ -56,7 +53,7 @@ type AIPlatformNotebookExecutionJobSpec struct {
 
 	// The NotebookRuntimeTemplate to source compute configuration from.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.notebook_runtime_template_resource_name
-	NotebookRuntimeTemplateResourceName *string `json:"notebookRuntimeTemplateResourceName,omitempty"`
+	NotebookRuntimeTemplateRef *AIPlatformNotebookRuntimeTemplateRef `json:"notebookRuntimeTemplateRef,omitempty"`
 
 	// The custom compute configuration for an execution job.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.custom_environment_spec
@@ -73,7 +70,7 @@ type AIPlatformNotebookExecutionJobSpec struct {
 
 	// The service account to run the execution as.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// The Workbench runtime configuration to use for the notebook execution.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.workbench_runtime
@@ -91,19 +88,7 @@ type AIPlatformNotebookExecutionJobSpec struct {
 	// The Schedule resource name if this job is triggered by one. Format:
 	//  `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.schedule_resource_name
-	ScheduleResourceName *string `json:"scheduleResourceName,omitempty"`
-
-	// The labels with user-defined metadata to organize NotebookExecutionJobs.
-	//
-	//  Label keys and values can be no longer than 64 characters
-	//  (Unicode codepoints), can only contain lowercase letters, numeric
-	//  characters, underscores and dashes. International characters are allowed.
-	//
-	//  See https://goo.gl/xmQnxf for more information and examples of labels.
-	//  System reserved label keys are prefixed with "aiplatform.googleapis.com/"
-	//  and are immutable.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	ScheduleRef *AIPlatformScheduleRef `json:"scheduleRef,omitempty"`
 
 	// The name of the kernel to use during notebook execution. If unset, the
 	//  default kernel is used.

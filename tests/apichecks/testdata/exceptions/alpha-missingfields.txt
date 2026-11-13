@@ -582,12 +582,11 @@
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsNotebookSource.uri" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsOutputURI" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.kernelName" is not set in unstructured objects
-[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notebookRuntimeTemplateResourceName" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notebookRuntimeTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.scheduleResourceName" is not set in unstructured objects
-[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.scheduleRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformnotebookexecutionjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.workbenchRuntime" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPersistentDiskSpec.diskSizeGB" is not set in unstructured objects
 [missing_field] crd=aiplatformnotebookruntimetemplates.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataPersistentDiskSpec.diskType" is not set in unstructured objects
