@@ -511,6 +511,233 @@ service CrossSiteNetworks {
 EOF
 fi
 
+# Patch compute v1 compute.proto to include GlobalVmExtensionPolicy (which exists in discovery) if missing
+if ! grep -q "message GlobalVmExtensionPolicy " google/cloud/compute/v1/compute.proto; then
+cat >> google/cloud/compute/v1/compute.proto <<EOF
+
+// Configuration for a specific VM extension.
+message GlobalVmExtensionPolicyExtensionPolicy {
+  // Optional. The specific version of the extension to install. If not set, the latest
+  // version is used.
+  optional string pinned_version = 446267249;
+
+  // Optional. String-based configuration data for the extension.
+  optional string string_config = 318905136;
+}
+
+// A LabelSelector is applied to a VM only if it matches all the specified
+// labels.
+message GlobalVmExtensionPolicyLabelSelector {
+  // Optional. A map of key-value pairs representing VM labels.
+  map<string, string> inclusion_labels = 501312642;
+}
+
+// Defines how to select VMs to apply a global VM extension policy.
+message GlobalVmExtensionPolicyInstanceSelector {
+  // Optional. LabelSelector selects VMs based on their labels.
+  optional GlobalVmExtensionPolicyLabelSelector label_selector = 349780170;
+}
+
+// Status of the rollout for a single location.
+message GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus {
+  // Output only. [Output Only] The state of the location rollout.
+  optional string state = 109757585;
+}
+
+// Metadata for a rollout operation.
+message GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata {
+  // Output only. [Output Only] The rollout status for each location.
+  map<string, GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus> location_rollout_status = 278036490;
+
+  // Output only. [Output Only] The name of the rollout.
+  optional string rollout = 303366577;
+
+  // Output only. [Output Only] The name of the rollout plan.
+  optional string rollout_plan = 459057399;
+
+  // Output only. [Output Only] The overall state of the rollout.
+  optional string state = 109757585;
+}
+
+// Status of the rollout operation.
+message GlobalVmExtensionPolicyRolloutOperationRolloutStatus {
+  // Output only. [Output Only] The current rollouts for the latest version of the resource.
+  repeated GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata current_rollouts = 39829736;
+
+  // Output only. [Output Only] The last completed rollout resource.
+  optional GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata previous_rollout = 375749737;
+}
+
+// Input for a rollout operation.
+message GlobalVmExtensionPolicyRolloutOperationRolloutInput {
+  // Optional. Specifies the behavior of the rollout if a conflict is detected.
+  optional string conflict_behavior = 115729439;
+
+  // Optional. The name of the rollout plan.
+  optional string name = 3373707;
+
+  // Optional. Specifies the predefined rollout plan for the policy.
+  optional string predefined_rollout_plan = 364023440;
+
+  // Optional. The UUID that identifies a policy rollout retry attempt.
+  optional string retry_uuid = 472838898;
+}
+
+// Represents the rollout operation.
+message GlobalVmExtensionPolicyRolloutOperation {
+  // Required. The rollout input which defines the rollout plan.
+  optional GlobalVmExtensionPolicyRolloutOperationRolloutInput rollout_input = 265745340;
+
+  // Output only. [Output Only] The rollout status of the policy.
+  optional GlobalVmExtensionPolicyRolloutOperationRolloutStatus rollout_status = 476426816;
+}
+
+// Represents a Global VM Extension Policy resource.
+message GlobalVmExtensionPolicy {
+  // Output only. [Output Only] Creation timestamp inRFC3339 text format.
+  optional string creation_timestamp = 30525366;
+
+  // An optional description of this resource.
+  optional string description = 422937596;
+
+  // Required. A map of extension names (for example, "ops-agent") to their corresponding
+  // policy configurations.
+  map<string, GlobalVmExtensionPolicyExtensionPolicy> extension_policies = 227761488;
+
+  // Output only. [Output Only] The unique identifier for the resource. This identifier is
+  // defined by the server.
+  optional uint64 id = 3355;
+
+  // Optional. Selectors to target VMs for this policy.
+  repeated GlobalVmExtensionPolicyInstanceSelector instance_selectors = 520298826;
+
+  // Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
+  optional string kind = 3292052;
+
+  // Name of the resource. Provided by the client when the resource is created.
+  optional string name = 3373707;
+
+  // Optional. Priority of this policy.
+  optional int32 priority = 445151652;
+
+  // Required. The rollout strategy and status.
+  optional GlobalVmExtensionPolicyRolloutOperation rollout_operation = 486746201;
+
+  // Output only. [Output Only] The scoped resource status. It's only for tracking the
+  // purging status of the policy.
+  optional string scoped_resource_status = 181976980;
+
+  // Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+  optional string self_link = 456214797;
+
+  // Output only. [Output Only] Server-defined URL for this resource's resource id.
+  optional string self_link_with_id = 44520962;
+
+  // Output only. [Output Only] Update timestamp inRFC3339 text format.
+  optional string update_timestamp = 120894752;
+}
+
+message GlobalVmExtensionPolicyList {
+  optional string etag = 3123477;
+  optional string id = 3355;
+  repeated GlobalVmExtensionPolicy items = 100526016;
+  optional string kind = 3292052;
+  optional string next_page_token = 79797525;
+  optional string self_link = 456214797;
+  repeated string unreachables = 243372063;
+  optional Warning warning = 50704284;
+}
+
+message DeleteGlobalVmExtensionPolicyRequest {
+  string global_vm_extension_policy = 8334110 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+}
+
+message GetGlobalVmExtensionPolicyRequest {
+  string global_vm_extension_policy = 8334110 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+}
+
+message InsertGlobalVmExtensionPolicyRequest {
+  GlobalVmExtensionPolicy global_vm_extension_policy_resource = 101542927 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+}
+
+message ListGlobalVmExtensionPoliciesRequest {
+  optional string filter = 336120696;
+  optional uint32 max_results = 54715419;
+  optional string order_by = 160562920;
+  optional string page_token = 19994697;
+  string project = 227560217 [(google.api.field_behavior) = REQUIRED];
+  optional bool return_partial_success = 517198390;
+}
+
+message UpdateGlobalVmExtensionPolicyRequest {
+  string global_vm_extension_policy = 8334110 [(google.api.field_behavior) = REQUIRED];
+  GlobalVmExtensionPolicy global_vm_extension_policy_resource = 101542927 [(google.api.field_behavior) = REQUIRED];
+  string project = 227560217 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.cloud.operation_request_field) = "project"
+  ];
+  optional string request_id = 37109963;
+}
+
+service GlobalVmExtensionPolicies {
+  option (google.api.default_host) = "compute.googleapis.com";
+  option (google.api.oauth_scopes) =
+    "https://www.googleapis.com/auth/compute,"
+    "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc Delete(DeleteGlobalVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      delete: "/compute/v1/projects/{project}/global/vmExtensionPolicies/{global_vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,global_vm_extension_policy";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  rpc Get(GetGlobalVmExtensionPolicyRequest) returns (GlobalVmExtensionPolicy) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/vmExtensionPolicies/{global_vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,global_vm_extension_policy";
+  }
+
+  rpc Insert(InsertGlobalVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "global_vm_extension_policy_resource"
+      post: "/compute/v1/projects/{project}/global/vmExtensionPolicies"
+    };
+    option (google.api.method_signature) = "project,global_vm_extension_policy_resource";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+
+  rpc List(ListGlobalVmExtensionPoliciesRequest) returns (GlobalVmExtensionPolicyList) {
+    option (google.api.http) = {
+      get: "/compute/v1/projects/{project}/global/vmExtensionPolicies"
+    };
+    option (google.api.method_signature) = "project";
+  }
+
+  rpc Update(UpdateGlobalVmExtensionPolicyRequest) returns (Operation) {
+    option (google.api.http) = {
+      body: "global_vm_extension_policy_resource"
+      patch: "/compute/v1/projects/{project}/global/vmExtensionPolicies/{global_vm_extension_policy}"
+    };
+    option (google.api.method_signature) = "project,global_vm_extension_policy,global_vm_extension_policy_resource";
+    option (google.cloud.operation_service) = "GlobalOperations";
+  }
+}
+EOF
+fi
 
 # Patch compute v1 compute.proto to include HealthAggregationPolicy and RegionHealthAggregationPolicies (which exists in apiv1/computepb) if missing
 if ! grep -q "message HealthAggregationPolicy" google/cloud/compute/v1/compute.proto; then
