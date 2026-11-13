@@ -4,7 +4,7 @@
 - **Resource Name:** `computevmextensionpolicy-maximal-${uniqueId}`
 - **Source Log:** `_http.log` (9 total HTTP entries, 0 dependency entries)
 - **Validation Status:** PASS (7/7 checks passed)
-- **Integrity Hash:** `sha256:7bd41bdcfb8f7945`
+- **Integrity Hash:** `sha256:dda9d5a2b616f06b`
 
 ## 1. Spec Diff (`create.yaml` -> `update.yaml`)
 

@@ -381,6 +381,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionInstantSnapshotsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := RegisterZoneVmExtensionPoliciesHandler(ctx, mux.ServeMux, &ZoneVmExtensionPoliciesV1{MockService: s}); err != nil {
+		return nil, err
+	}
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {

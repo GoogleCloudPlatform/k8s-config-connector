@@ -117,6 +117,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.updateTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.resources[].resourceID"] = int64(12345678)
