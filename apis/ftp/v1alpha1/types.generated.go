@@ -56,6 +56,8 @@ type InternalServerConfig struct {
 	ConsumerRejectList []InternalServerConfig_DeniedConsumer `json:"consumerRejectList,omitempty"`
 }
 
+/* found existing non-generated go type "InternalServerConfig_AllowedConsumer", skipping
+
 // +kcc:proto=google.cloud.ftp.v1.InternalServerConfig.AllowedConsumer
 type InternalServerConfig_AllowedConsumer struct {
 	// The project ID or number of the consumer project.
@@ -66,9 +68,11 @@ type InternalServerConfig_AllowedConsumer struct {
 	// Required. The connection limit for the consumer.
 	//  Value must be greater than 0.
 	// +kcc:proto:field=google.cloud.ftp.v1.InternalServerConfig.AllowedConsumer.connection_limit
-	// +required
 	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "InternalServerConfig_DeniedConsumer", skipping
 
 // +kcc:proto=google.cloud.ftp.v1.InternalServerConfig.DeniedConsumer
 type InternalServerConfig_DeniedConsumer struct {
@@ -77,6 +81,7 @@ type InternalServerConfig_DeniedConsumer struct {
 	// +kcc:proto:field=google.cloud.ftp.v1.InternalServerConfig.DeniedConsumer.project
 	Project *string `json:"project,omitempty"`
 }
+*/
 
 /* unreachable type InternalServerConfig_PSCEndpoint
 // +kcc:proto=google.cloud.ftp.v1.InternalServerConfig.PscEndpoint
