@@ -94,6 +94,14 @@ func PSCConnectionObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	return PSCConnectionObservedState_ToProto(mapCtx, in)
 }
 
+func ZoneDistributionConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfigObservedState {
+	return ZoneDistributionConfigObservedState_FromProto(mapCtx, in)
+}
+
+func ZoneDistributionConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
+	return ZoneDistributionConfigObservedState_ToProto(mapCtx, in)
+}
+
 var (
 	RedisClusterObservedState_FromProto = RedisClusterObservedState_v1beta1_FromProto
 	RedisClusterObservedState_ToProto   = RedisClusterObservedState_v1beta1_ToProto
@@ -112,9 +120,6 @@ var (
 
 	ZoneDistributionConfig_FromProto = ZoneDistributionConfig_v1beta1_FromProto
 	ZoneDistributionConfig_ToProto   = ZoneDistributionConfig_v1beta1_ToProto
-
-	ZoneDistributionConfigObservedState_FromProto = ZoneDistributionConfigObservedState_v1beta1_FromProto
-	ZoneDistributionConfigObservedState_ToProto   = ZoneDistributionConfigObservedState_v1beta1_ToProto
 
 	Cluster_GCSBackupSource_FromProto = Cluster_GCSBackupSource_v1beta1_FromProto
 	Cluster_GCSBackupSource_ToProto   = Cluster_GCSBackupSource_v1beta1_ToProto

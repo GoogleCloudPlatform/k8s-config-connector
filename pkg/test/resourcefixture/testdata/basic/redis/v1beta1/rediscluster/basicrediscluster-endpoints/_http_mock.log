@@ -254,11 +254,6 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
-      "activeZones": [
-        "us-east1-a",
-        "us-east1-b",
-        "us-east1-c"
-      ],
       "mode": "MULTI_ZONE"
     }
   }
@@ -370,11 +365,6 @@ X-Xss-Protection: 0
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {
-    "activeZones": [
-      "us-east1-a",
-      "us-east1-b",
-      "us-east1-c"
-    ],
     "mode": 1
   }
 }
@@ -541,11 +531,6 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
-      "activeZones": [
-        "us-east1-a",
-        "us-east1-b",
-        "us-east1-c"
-      ],
       "mode": "MULTI_ZONE"
     }
   }
@@ -657,11 +642,6 @@ X-Xss-Protection: 0
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {
-    "activeZones": [
-      "us-east1-a",
-      "us-east1-b",
-      "us-east1-c"
-    ],
     "mode": 1
   }
 }

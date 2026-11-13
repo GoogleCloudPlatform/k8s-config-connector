@@ -248,3 +248,21 @@ func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Clus
 	}
 	return out
 }
+
+func ZoneDistributionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfigObservedState {
+	if in == nil || len(in.ActiveZones) == 0 {
+		return nil
+	}
+	out := &krm.ZoneDistributionConfigObservedState{}
+	out.ActiveZones = in.ActiveZones
+	return out
+}
+
+func ZoneDistributionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ZoneDistributionConfigObservedState) *pb.ZoneDistributionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ZoneDistributionConfig{}
+	out.ActiveZones = in.ActiveZones
+	return out
+}
