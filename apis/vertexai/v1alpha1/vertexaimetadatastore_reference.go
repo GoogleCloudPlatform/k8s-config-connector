@@ -17,9 +17,7 @@ package v1alpha1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -74,18 +72,7 @@ func (r *MetadataStoreRef) ValidateExternal(ref string) error {
 }
 
 func (r *MetadataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*VertexAIMetadataStore](u)
-		if err != nil {
-			return ""
-		}
-		identity, err := NewMetadataStoreIdentity(ctx, reader, obj)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
-	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on VertexAIMetadataStore.
