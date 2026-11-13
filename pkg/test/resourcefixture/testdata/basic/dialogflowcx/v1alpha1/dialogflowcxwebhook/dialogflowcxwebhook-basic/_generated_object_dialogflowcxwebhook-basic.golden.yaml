@@ -20,7 +20,7 @@ spec:
       X-Custom-Header: custom-value
     uri: https://example.com/webhook-updated
   parent: projects/${projectId}/locations/global/agents/9fc1dd9f-b1a2-4c57-9d91-f9d7a7b263d9
-  resourceID: bd72b10f-953f-4543-8f9b-715425c14612
+  resourceID: 4150c119-76bc-4592-b12d-8d65e0b22606
   timeout: 20s
 status:
   conditions:
@@ -29,5 +29,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: bd72b10f-953f-4543-8f9b-715425c14612
+  name: 4150c119-76bc-4592-b12d-8d65e0b22606
   observedGeneration: 3

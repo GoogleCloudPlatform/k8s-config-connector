@@ -201,6 +201,23 @@ func TestDialogflowCXWebhook_GetIdentity(t *testing.T) {
 			},
 		},
 		{
+			name: "spec without resourceID, resolved from short status.name (e.g. Terraform provider)",
+			obj: &DialogflowCXWebhook{
+				Spec: DialogflowCXWebhookSpec{
+					Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+				},
+				Status: DialogflowCXWebhookStatus{
+					Name: common.LazyPtr("server-id-short"),
+				},
+			},
+			want: &DialogflowCXWebhookIdentity{
+				Project:  "my-project",
+				Location: "us-central1",
+				Agent:    "my-agent",
+				Webhook:  "server-id-short",
+			},
+		},
+		{
 			name: "drift detection error when spec resourceID does not match status",
 			obj: &DialogflowCXWebhook{
 				Spec: DialogflowCXWebhookSpec{
@@ -209,6 +226,19 @@ func TestDialogflowCXWebhook_GetIdentity(t *testing.T) {
 				},
 				Status: DialogflowCXWebhookStatus{
 					ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent/webhooks/different-id"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "drift detection error when spec resourceID does not match short status.name",
+			obj: &DialogflowCXWebhook{
+				Spec: DialogflowCXWebhookSpec{
+					Parent:     common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+					ResourceID: common.LazyPtr("spec-id"),
+				},
+				Status: DialogflowCXWebhookStatus{
+					Name: common.LazyPtr("different-id"),
 				},
 			},
 			wantErr: true,
@@ -330,6 +360,25 @@ func TestDialogflowCXWebhookRef_Normalize(t *testing.T) {
 		},
 	}
 
+	readyObjWithShortName := &DialogflowCXWebhook{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-short-name",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXWebhookSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXWebhookStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			Name: common.LazyPtr("webhook-short"),
+		},
+	}
+
 	readyObjWithSpecOnly := &DialogflowCXWebhook{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-spec",
@@ -369,7 +418,7 @@ func TestDialogflowCXWebhookRef_Normalize(t *testing.T) {
 
 	fakeClient := fake.NewClientBuilder().
 		WithScheme(scheme).
-		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithSpecOnly, notReadyObj).
+		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithShortName, readyObjWithSpecOnly, notReadyObj).
 		Build()
 
 	tests := []struct {
@@ -415,6 +464,16 @@ func TestDialogflowCXWebhookRef_Normalize(t *testing.T) {
 			defaultNamespace: "test-ns",
 			wantErr:          false,
 			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/webhooks/webhook-2",
+		},
+		{
+			name: "by name and namespace when ready with short status.name",
+			ref: &DialogflowCXWebhookRef{
+				Name:      "ready-short-name",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/webhooks/webhook-short",
 		},
 		{
 			name: "by name and namespace when ready with spec fallback",
