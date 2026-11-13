@@ -86,6 +86,7 @@ kustomize create
 BLOCKED_KINDS=(
     "AIPlatformArtifact"
     "AIPlatformCachedContent"
+    "AIPlatformContext"
     "AIPlatformHyperparameterTuningJob"
     "AIPlatformModelDeploymentMonitoringJob"
     "AIPlatformModelMonitor"

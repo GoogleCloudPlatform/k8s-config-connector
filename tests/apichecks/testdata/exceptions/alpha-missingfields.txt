@@ -198,6 +198,12 @@
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.similarityTopK" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.vectorDistanceThreshold" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].urlContext" is not set in unstructured objects
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.schemaTitle" is not set in unstructured objects
+[missing_field] crd=aiplatformcontexts.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.schemaVersion" is not set in unstructured objects
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.baseOutputDirectory.outputURIPrefix" is not set in unstructured objects
 [missing_field] crd=aiplatformcustomjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.jobSpec.enableDashboardAccess" is not set in unstructured objects

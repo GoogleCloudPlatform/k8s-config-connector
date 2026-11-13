@@ -169,6 +169,66 @@ func AIPlatformCachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPl
 	return out
 }
 
+func AIPlatformContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.AIPlatformContextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformContextObservedState{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ParentContexts = in.ParentContexts
+	return out
+}
+
+func AIPlatformContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformContextObservedState) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ParentContexts = in.ParentContexts
+	return out
+}
+
+func AIPlatformContextSpec_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.AIPlatformContextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformContextSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func AIPlatformContextSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformContextSpec) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
 func AIPlatformCustomJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krm.AIPlatformCustomJobObservedState {
 	if in == nil {
 		return nil

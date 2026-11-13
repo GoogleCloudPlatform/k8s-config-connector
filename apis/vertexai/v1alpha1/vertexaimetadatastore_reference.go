@@ -22,11 +22,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &MetadataStoreRef{}
+var (
+	_ refsv1beta1.ExternalNormalizer = &MetadataStoreRef{}
+	_ refsv1beta1.Ref                = &MetadataStoreRef{}
+)
 
 // MetadataStoreRef is a reference to a VertexAIMetadataStore.
 type MetadataStoreRef struct {
@@ -39,6 +43,40 @@ type MetadataStoreRef struct {
 
 	// The namespace of a VertexAIMetadataStore resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&MetadataStoreRef{}, &VertexAIMetadataStore{})
+}
+
+func (r *MetadataStoreRef) GetGVK() schema.GroupVersionKind {
+	return VertexAIMetadataStoreGVK
+}
+
+func (r *MetadataStoreRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *MetadataStoreRef) GetExternal() string {
+	return r.External
+}
+
+func (r *MetadataStoreRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *MetadataStoreRef) ValidateExternal(ref string) error {
+	_, _, err := ParseMetadataStoreExternal(ref)
+	return err
+}
+
+func (r *MetadataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on VertexAIMetadataStore.
