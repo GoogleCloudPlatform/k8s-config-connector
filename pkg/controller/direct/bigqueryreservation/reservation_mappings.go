@@ -35,8 +35,8 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: UpdateTime
 	// MISSING: MultiRegionAuxiliary
 	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_ToProto[pb.Reservation_ScalingMode](mapCtx, in.ScalingMode)
 	// MISSING: ReplicationStatus
 	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
 	out.SchedulingPolicy = SchedulingPolicy_ToProto(mapCtx, in.SchedulingPolicy)
@@ -155,8 +155,8 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 			External: in.GetReservationGroup(),
 		}
 	}
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_FromProto(mapCtx, in.GetScalingMode())
 	// MISSING: ReplicationStatus
 	out.SchedulingPolicy = SchedulingPolicy_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
