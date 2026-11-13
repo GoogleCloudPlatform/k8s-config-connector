@@ -118,9 +118,35 @@ spec:
                         properties:
                           password:
                             description: The initial password for the user.
-                            type: string
+                            properties:
+                              value:
+                                description: Value of the field. Cannot be used if
+                                  'valueFrom' is specified.
+                                type: string
+                              valueFrom:
+                                description: Source for the field's value. Cannot
+                                  be used if 'value' is specified.
+                                properties:
+                                  secretKeyRef:
+                                    description: Reference to a value with the given
+                                      key in the given Secret in the resource's namespace.
+                                    properties:
+                                      key:
+                                        description: Key that identifies the value
+                                          to be extracted.
+                                        type: string
+                                      name:
+                                        description: Name of the Secret to extract
+                                          a value from.
+                                        type: string
+                                    required:
+                                    - key
+                                    - name
+                                    type: object
+                                type: object
+                            type: object
                           user:
-                            description: The database username.
+                            description: Required. The database username.
                             type: string
                         type: object
                       labels:
@@ -354,7 +380,33 @@ spec:
                         type: object
                       rootPassword:
                         description: Input only. Initial root password.
-                        type: string
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Reference to a value with the given key
+                                  in the given Secret in the resource's namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the Secret to extract a value
+                                      from.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            type: object
+                        type: object
                       secondaryZone:
                         description: The Google Cloud Platform secondary zone where
                           your Cloud SQL database instance will be located in case
@@ -434,7 +486,32 @@ spec:
                       Database Migration Service will be using to connect to the database.
                       This field is not returned on request, and the value is encrypted
                       when stored in Database Migration Service.
-                    type: string
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                        type: object
+                    type: object
                   port:
                     description: Required. The network port of the source MySQL database.
                     format: int32
@@ -489,7 +566,33 @@ spec:
                         type: string
                       password:
                         description: Input only. SSH password.
-                        type: string
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Reference to a value with the given key
+                                  in the given Secret in the resource's namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the Secret to extract a value
+                                      from.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            type: object
+                        type: object
                       port:
                         description: Port for the SSH tunnel, default value is 22.
                         format: int32
@@ -513,7 +616,32 @@ spec:
                       Database Migration Service will be using to connect to the database.
                       This field is not returned on request, and the value is encrypted
                       when stored in Database Migration Service.
-                    type: string
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                        type: object
+                    type: object
                   port:
                     description: Required. The network port of the source Oracle database.
                     format: int32
@@ -613,7 +741,32 @@ spec:
                       Database Migration Service will be using to connect to the database.
                       This field is not returned on request, and the value is encrypted
                       when stored in Database Migration Service.
-                    type: string
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                        type: object
+                    type: object
                   port:
                     description: Required. The network port of the source PostgreSQL
                       database.

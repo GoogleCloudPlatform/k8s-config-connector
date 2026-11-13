@@ -25,6 +25,7 @@ import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -77,6 +78,17 @@ type AlloyDbSettings_EncryptionConfig struct {
 	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.EncryptionConfig.kms_key_name
 	KMSKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
+type AlloyDbSettings_UserPassword struct {
+	// Required. The database username.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.user
+	User *string `json:"user,omitempty"`
+
+	// The initial password for the user.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
 }
 
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings
@@ -175,7 +187,7 @@ type CloudSQLSettings struct {
 
 	// Input only. Initial root password.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password
-	RootPassword *string `json:"rootPassword,omitempty"`
+	RootPassword *refsv1beta1secret.Legacy `json:"rootPassword,omitempty"`
 
 	// The Cloud SQL default instance level collation.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.collation
@@ -248,6 +260,165 @@ type PrivateServiceConnectConnectivity struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity.service_attachment
 	// +required
 	ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
+type MySQLConnectionProfile struct {
+	// Required. The IP or hostname of the source MySQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source MySQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password
+	// +required
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// If the source is a Cloud SQL database, use this field to
+	//  provide the Cloud SQL instance ID of the source.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity
+type ForwardSSHTunnelConnectivity struct {
+	// Required. Hostname for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.hostname
+	// +required
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Required. Username for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Port for the SSH tunnel, default value is 22.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Input only. SSH password.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.password
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
+
+	// Input only. SSH private key.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.OracleConnectionProfile
+type OracleConnectionProfile struct {
+	// Required. The IP or hostname of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password
+	// +required
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
+
+	// Required. Database service for the Oracle connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.database_service
+	// +required
+	DatabaseService *string `json:"databaseService,omitempty"`
+
+	// SSL configuration for the connection to the source Oracle database.
+	//
+	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	//   * SSL is supported for Oracle versions 12 and above.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// Static Service IP connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.static_service_ip_connectivity
+	StaticServiceIPConnectivity *StaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
+
+	// Forward SSH tunnel connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.forward_ssh_connectivity
+	ForwardSSHConnectivity *ForwardSSHTunnelConnectivity `json:"forwardSSHConnectivity,omitempty"`
+
+	// Private connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.private_connectivity
+	PrivateConnectivity *PrivateConnectivity `json:"privateConnectivity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
+type PostgreSQLConnectionProfile struct {
+	// Required. The IP or hostname of the source PostgreSQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.host
+	// +required
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source PostgreSQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.port
+	// +required
+	Port *int32 `json:"port,omitempty"`
+
+	// Required. The username that Database Migration Service will use to connect
+	//  to the database. The value is encrypted when stored in Database Migration
+	//  Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Input only. The password for the user that Database Migration
+	//  Service will be using to connect to the database. This field is not
+	//  returned on request, and the value is encrypted when stored in Database
+	//  Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password
+	// +required
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
+
+	// SSL configuration for the destination to connect to the source database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// If the source is a Cloud SQL database, use this field to
+	//  provide the Cloud SQL instance ID of the source.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+
+	// Static ip connectivity data (default, no additional details needed).
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.static_ip_connectivity
+	StaticIPConnectivity *StaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
+
+	// Private service connect connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.private_service_connect_connectivity
+	PrivateServiceConnectConnectivity *PrivateServiceConnectConnectivity `json:"privateServiceConnectConnectivity,omitempty"`
 }
 
 // CloudDMSConnectionProfileStatus defines the config connector machine state of CloudDMSConnectionProfile

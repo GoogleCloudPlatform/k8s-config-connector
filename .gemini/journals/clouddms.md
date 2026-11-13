@@ -19,5 +19,5 @@
   - `oracle.privateConnectivity.privateConnectionRef` (*PrivateConnectionRef)
   - `postgresql.privateServiceConnectConnectivity.serviceAttachmentRef` (*refsv1beta1.ComputeServiceAttachmentRef)
 - **Non-References**: `alloydb.clusterID`, `mysql.cloudSQLID`, and `postgresql.cloudSQLID` are plain string identifiers, not full GCP resource references.
-- **Sensitive Fields**: Sensitive password fields left open in `judgement_queue.yaml` pending unified secret design.
+- **Sensitive Fields**: Modeled sensitive password fields (.spec.alloydb.settings.initialUser.password, .spec.cloudsql.settings.rootPassword, .spec.mysql.password, .spec.oracle.forwardSSHConnectivity.password, .spec.oracle.password, and .spec.postgresql.password) using `*refsv1beta1secret.Legacy` following the KCC secret ref style, implemented custom proto mappers, and resolved the corresponding `sensitive-field` entries in `judgement_queue.yaml`.
 

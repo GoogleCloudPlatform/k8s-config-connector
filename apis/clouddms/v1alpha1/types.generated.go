@@ -116,6 +116,8 @@ type AlloyDbSettings_PrimaryInstanceSettings_MachineConfig struct {
 	CPUCount *int32 `json:"cpuCount,omitempty"`
 }
 
+/* found existing non-generated go type "AlloyDbSettings_UserPassword", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
 type AlloyDbSettings_UserPassword struct {
 	// The database username.
@@ -126,6 +128,7 @@ type AlloyDbSettings_UserPassword struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
 	Password *string `json:"password,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
 type CloudSQLConnectionProfile struct {
@@ -363,16 +366,16 @@ type DatabaseType struct {
 	Engine *string `json:"engine,omitempty"`
 }
 
+/* found existing non-generated go type "ForwardSSHTunnelConnectivity", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity
 type ForwardSSHTunnelConnectivity struct {
 	// Required. Hostname for the SSH tunnel.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.hostname
-	// +required
 	Hostname *string `json:"hostname,omitempty"`
 
 	// Required. Username for the SSH tunnel.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.username
-	// +required
 	Username *string `json:"username,omitempty"`
 
 	// Port for the SSH tunnel, default value is 22.
@@ -387,6 +390,7 @@ type ForwardSSHTunnelConnectivity struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.private_key
 	PrivateKey *string `json:"privateKey,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.MigrationJob", skipping
 
@@ -515,23 +519,22 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
+/* found existing non-generated go type "MySQLConnectionProfile", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
 type MySQLConnectionProfile struct {
 	// Required. The IP or hostname of the source MySQL database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.host
-	// +required
 	Host *string `json:"host,omitempty"`
 
 	// Required. The network port of the source MySQL database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.port
-	// +required
 	Port *int32 `json:"port,omitempty"`
 
 	// Required. The username that Database Migration Service will use to connect
 	//  to the database. The value is encrypted when stored in Database Migration
 	//  Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.username
-	// +required
 	Username *string `json:"username,omitempty"`
 
 	// Required. Input only. The password for the user that Database Migration
@@ -539,7 +542,6 @@ type MySQLConnectionProfile struct {
 	//  returned on request, and the value is encrypted when stored in Database
 	//  Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password
-	// +required
 	Password *string `json:"password,omitempty"`
 
 	// SSL configuration for the destination to connect to the source database.
@@ -551,24 +553,24 @@ type MySQLConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.cloud_sql_id
 	CloudSQLID *string `json:"cloudSQLID,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "OracleConnectionProfile", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.OracleConnectionProfile
 type OracleConnectionProfile struct {
 	// Required. The IP or hostname of the source Oracle database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.host
-	// +required
 	Host *string `json:"host,omitempty"`
 
 	// Required. The network port of the source Oracle database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.port
-	// +required
 	Port *int32 `json:"port,omitempty"`
 
 	// Required. The username that Database Migration Service will use to connect
 	//  to the database. The value is encrypted when stored in Database Migration
 	//  Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
-	// +required
 	Username *string `json:"username,omitempty"`
 
 	// Required. Input only. The password for the user that Database Migration
@@ -576,12 +578,10 @@ type OracleConnectionProfile struct {
 	//  returned on request, and the value is encrypted when stored in Database
 	//  Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password
-	// +required
 	Password *string `json:"password,omitempty"`
 
 	// Required. Database service for the Oracle connection.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.database_service
-	// +required
 	DatabaseService *string `json:"databaseService,omitempty"`
 
 	// SSL configuration for the connection to the source Oracle database.
@@ -603,24 +603,24 @@ type OracleConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.private_connectivity
 	PrivateConnectivity *PrivateConnectivity `json:"privateConnectivity,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "PostgreSQLConnectionProfile", skipping
 
 // +kcc:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
 type PostgreSQLConnectionProfile struct {
 	// Required. The IP or hostname of the source PostgreSQL database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.host
-	// +required
 	Host *string `json:"host,omitempty"`
 
 	// Required. The network port of the source PostgreSQL database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.port
-	// +required
 	Port *int32 `json:"port,omitempty"`
 
 	// Required. The username that Database Migration Service will use to connect
 	//  to the database. The value is encrypted when stored in Database Migration
 	//  Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.username
-	// +required
 	Username *string `json:"username,omitempty"`
 
 	// Required. Input only. The password for the user that Database Migration
@@ -628,7 +628,6 @@ type PostgreSQLConnectionProfile struct {
 	//  returned on request, and the value is encrypted when stored in Database
 	//  Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password
-	// +required
 	Password *string `json:"password,omitempty"`
 
 	// SSL configuration for the destination to connect to the source database.
@@ -648,6 +647,7 @@ type PostgreSQLConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.private_service_connect_connectivity
 	PrivateServiceConnectConnectivity *PrivateServiceConnectConnectivity `json:"privateServiceConnectConnectivity,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.clouddms.v1.PrivateConnection", skipping
 

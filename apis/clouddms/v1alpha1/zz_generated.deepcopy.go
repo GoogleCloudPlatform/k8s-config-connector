@@ -25,6 +25,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -250,8 +251,8 @@ func (in *AlloyDbSettings_UserPassword) DeepCopyInto(out *AlloyDbSettings_UserPa
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -1234,8 +1235,8 @@ func (in *CloudSQLSettings) DeepCopyInto(out *CloudSQLSettings) {
 	}
 	if in.RootPassword != nil {
 		in, out := &in.RootPassword, &out.RootPassword
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Collation != nil {
 		in, out := &in.Collation, &out.Collation
@@ -1434,8 +1435,8 @@ func (in *ForwardSSHTunnelConnectivity) DeepCopyInto(out *ForwardSSHTunnelConnec
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.PrivateKey != nil {
 		in, out := &in.PrivateKey, &out.PrivateKey
@@ -1541,8 +1542,8 @@ func (in *MySQLConnectionProfile) DeepCopyInto(out *MySQLConnectionProfile) {
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SSL != nil {
 		in, out := &in.SSL, &out.SSL
@@ -1611,8 +1612,8 @@ func (in *OracleConnectionProfile) DeepCopyInto(out *OracleConnectionProfile) {
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DatabaseService != nil {
 		in, out := &in.DatabaseService, &out.DatabaseService
@@ -1716,8 +1717,8 @@ func (in *PostgreSQLConnectionProfile) DeepCopyInto(out *PostgreSQLConnectionPro
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SSL != nil {
 		in, out := &in.SSL, &out.SSL

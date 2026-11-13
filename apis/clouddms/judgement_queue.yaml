@@ -27,7 +27,7 @@ entries:
     detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
     status: resolved
     resolution: accepted
-    note: "all queue entries triaged, references modeled, parent standardized to ProjectAndLocationRef, state moved to observedState, and labels removed from spec"
+    note: "all queue entries triaged, references modeled, parent standardized to ProjectAndLocationRef, state moved to observedState, sensitive fields modeled as secret references, and labels removed from spec"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.alloydb.clusterID
@@ -49,7 +49,9 @@ entries:
     field: .spec.alloydb.settings.initialUser.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.alloydb.settings.vpcNetwork
@@ -71,7 +73,9 @@ entries:
     field: .spec.cloudsql.settings.rootPassword
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.cloudsql.settings.sourceID
@@ -109,19 +113,25 @@ entries:
     field: .spec.mysql.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.oracle.forwardSSHConnectivity.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.oracle.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.oracle.privateConnectivity.privateConnection
@@ -150,7 +160,9 @@ entries:
     field: .spec.postgresql.password
     reason: sensitive-field
     detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
-    status: open
+    status: resolved
+    resolution: edited
+    note: "modeled as *refsv1beta1secret.Legacy using KCC secret ref style"
   - kind: CloudDMSConnectionProfile
     group: clouddms.cnrm.cloud.google.com
     field: .spec.postgresql.privateServiceConnectConnectivity.serviceAttachment
