@@ -1,0 +1,455 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computerouters.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeRouter
+    listKind: ComputeRouterList
+    plural: computerouters
+    shortNames:
+    - gcpcomputerouter
+    - gcpcomputerouters
+    singular: computerouter
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeRouter is the Schema for the ComputeRouter API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeRouterSpec defines the desired state of ComputeRouter
+            properties:
+              bgp:
+                description: BGP information specific to this router.
+                properties:
+                  advertiseMode:
+                    description: |-
+                      User-specified flag to indicate which mode to use for advertisement. The options are DEFAULT or CUSTOM.
+                       Check the AdvertiseMode enum for the list of possible values.
+                    type: string
+                  advertisedGroups:
+                    description: |-
+                      User-specified list of prefix groups to advertise in custom mode. This field can only be populated if advertise_mode is CUSTOM and is advertised to all peers of the router. These groups will be advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups.
+                       Check the AdvertisedGroups enum for the list of possible values.
+                    items:
+                      type: string
+                    type: array
+                  advertisedIPRanges:
+                    description: User-specified list of individual IP ranges to advertise
+                      in custom mode. This field can only be populated if advertise_mode
+                      is CUSTOM and is advertised to all peers of the router. These
+                      IP ranges will be advertised in addition to any specified groups.
+                      Leave this field blank to advertise no custom IP ranges.
+                    items:
+                      properties:
+                        description:
+                          description: User-specified description for the IP range.
+                          type: string
+                        range:
+                          description: The IP range to advertise. The value must be
+                            a CIDR-formatted string.
+                          type: string
+                      type: object
+                    type: array
+                  asn:
+                    description: Local BGP Autonomous System Number (ASN). Must be
+                      an RFC6996 private ASN, either 16-bit or 32-bit. The value will
+                      be fixed for this router resource. All VPN tunnels that link
+                      to this router will have the same local ASN.
+                    format: int32
+                    type: integer
+                  identifierRange:
+                    description: Explicitly specifies a range of valid BGP Identifiers
+                      for this Router. It is provided as a link-local IPv4 range (from
+                      169.254.0.0/16), of size at least /30, even if the BGP sessions
+                      are over IPv6. It must not overlap with any IPv4 BGP session
+                      ranges. Other vendors commonly call this "router ID".
+                    type: string
+                  keepaliveInterval:
+                    description: The interval in seconds between BGP keepalive messages
+                      that are sent to the peer. Hold time is three times the interval
+                      at which keepalive messages are sent, and the hold time is the
+                      maximum number of seconds allowed to elapse between successive
+                      keepalive messages that BGP receives from a peer. BGP will use
+                      the smaller of either the local hold time value or the peer's
+                      hold time value as the hold time for the BGP connection between
+                      the two peers. If set, this value must be between 20 and 60.
+                      The default is 20.
+                    format: int32
+                    type: integer
+                type: object
+              bgpPeers:
+                description: BGP information that must be configured into the routing
+                  stack to establish BGP peering. This information must specify the
+                  peer ASN and either the interface name, IP address, or peer IP address.
+                  Please refer to RFC4273.
+                items:
+                  properties:
+                    advertiseMode:
+                      description: |-
+                        User-specified flag to indicate which mode to use for advertisement.
+                         Check the AdvertiseMode enum for the list of possible values.
+                      type: string
+                    advertisedGroups:
+                      description: |-
+                        User-specified list of prefix groups to advertise in custom mode, which currently supports the following option: - ALL_SUBNETS: Advertises all of the router's own VPC subnets. This excludes any routes learned for subnets that use VPC Network Peering. Note that this field can only be populated if advertise_mode is CUSTOM and overrides the list defined for the router (in the "bgp" message). These groups are advertised in addition to any specified prefixes. Leave this field blank to advertise no custom groups.
+                         Check the AdvertisedGroups enum for the list of possible values.
+                      items:
+                        type: string
+                      type: array
+                    advertisedIPRanges:
+                      description: User-specified list of individual IP ranges to
+                        advertise in custom mode. This field can only be populated
+                        if advertise_mode is CUSTOM and overrides the list defined
+                        for the router (in the "bgp" message). These IP ranges are
+                        advertised in addition to any specified groups. Leave this
+                        field blank to advertise no custom IP ranges.
+                      items:
+                        properties:
+                          description:
+                            description: User-specified description for the IP range.
+                            type: string
+                          range:
+                            description: The IP range to advertise. The value must
+                              be a CIDR-formatted string.
+                            type: string
+                        type: object
+                      type: array
+                    advertisedRoutePriority:
+                      description: The priority of routes advertised to this BGP peer.
+                        Where there is more than one matching route of maximum length,
+                        the routes with the lowest priority value win.
+                      format: int32
+                      type: integer
+                    bfd:
+                      description: BFD configuration for the BGP peering.
+                      properties:
+                        minReceiveInterval:
+                          description: The minimum interval, in milliseconds, between
+                            BFD control packets received from the peer router. The
+                            actual value is negotiated between the two routers and
+                            is equal to the greater of this value and the transmit
+                            interval of the other router. If set, this value must
+                            be between 1000 and 30000. The default is 1000.
+                          format: int32
+                          type: integer
+                        minTransmitInterval:
+                          description: The minimum interval, in milliseconds, between
+                            BFD control packets transmitted to the peer router. The
+                            actual value is negotiated between the two routers and
+                            is equal to the greater of this value and the corresponding
+                            receive interval of the other router. If set, this value
+                            must be between 1000 and 30000. The default is 1000.
+                          format: int32
+                          type: integer
+                        multiplier:
+                          description: The number of consecutive BFD packets that
+                            must be missed before BFD declares that a peer is unavailable.
+                            If set, the value must be a value between 5 and 16. The
+                            default is 5.
+                          format: int32
+                          type: integer
+                        sessionInitializationMode:
+                          description: |-
+                            The BFD session initialization mode for this BGP peer. If set to ACTIVE, the Cloud Router will initiate the BFD session for this BGP peer. If set to PASSIVE, the Cloud Router will wait for the peer router to initiate the BFD session for this BGP peer. If set to DISABLED, BFD is disabled for this BGP peer. The default is DISABLED.
+                             Check the SessionInitializationMode enum for the list of possible values.
+                          type: string
+                      type: object
+                    customLearnedIPRanges:
+                      description: A list of user-defined custom learned route IP
+                        address ranges for a BGP session.
+                      items:
+                        properties:
+                          range:
+                            description: The custom learned route IP address range.
+                              Must be a valid CIDR-formatted prefix. If an IP address
+                              is provided without a subnet mask, it is interpreted
+                              as, for IPv4, a `/32` singular IP address range, and,
+                              for IPv6, `/128`.
+                            type: string
+                        type: object
+                      type: array
+                    customLearnedRoutePriority:
+                      description: The user-defined custom learned route priority
+                        for a BGP session. This value is applied to all custom learned
+                        route ranges for the session. You can choose a value from
+                        `0` to `65335`. If you don't provide a value, Google Cloud
+                        assigns a priority of `100` to the ranges.
+                      format: int32
+                      type: integer
+                    enable:
+                      description: |-
+                        The status of the BGP peer connection. If set to FALSE, any active session with the peer is terminated and all associated routing information is removed. If set to TRUE, the peer connection can be established with routing information. The default is TRUE.
+                         Check the Enable enum for the list of possible values.
+                      type: string
+                    enableIPV4:
+                      description: Enable IPv4 traffic over BGP Peer. It is enabled
+                        by default if the peerIpAddress is version 4.
+                      type: boolean
+                    enableIPV6:
+                      description: Enable IPv6 traffic over BGP Peer. It is enabled
+                        by default if the peerIpAddress is version 6.
+                      type: boolean
+                    exportPolicies:
+                      description: List of export policies applied to this peer, in
+                        the order they must be evaluated. The name must correspond
+                        to an existing policy that has ROUTE_POLICY_TYPE_EXPORT type.
+                      items:
+                        type: string
+                      type: array
+                    importPolicies:
+                      description: List of import policies applied to this peer, in
+                        the order they must be evaluated. The name must correspond
+                        to an existing policy that has ROUTE_POLICY_TYPE_IMPORT type.
+                      items:
+                        type: string
+                      type: array
+                    interfaceName:
+                      description: Name of the interface the BGP peer is associated
+                        with.
+                      type: string
+                    ipAddress:
+                      description: IP address of the interface inside Google Cloud
+                        Platform.
+                      type: string
+                    ipv4NexthopAddress:
+                      description: IPv4 address of the interface inside Google Cloud
+                        Platform.
+                      type: string
+                    ipv6NexthopAddress:
+                      description: IPv6 address of the interface inside Google Cloud
+                        Platform.
+                      type: string
+                    managementType:
+                      description: |-
+                        [Output Only] The resource that configures and manages this BGP peer. - MANAGED_BY_USER is the default value and can be managed by you or other users - MANAGED_BY_ATTACHMENT is a BGP peer that is configured and managed by Cloud Interconnect, specifically by an InterconnectAttachment of type PARTNER. Google automatically creates, updates, and deletes this type of BGP peer when the PARTNER InterconnectAttachment is created, updated, or deleted.
+                         Check the ManagementType enum for the list of possible values.
+                      type: string
+                    md5AuthenticationKeyName:
+                      description: Present if MD5 authentication is enabled for the
+                        peering. Must be the name of one of the entries in the Router.md5_authentication_keys.
+                        The field must comply with RFC1035.
+                      type: string
+                    name:
+                      description: Name of this BGP peer. The name must be 1-63 characters
+                        long, and comply with RFC1035. Specifically, the name must
+                        be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`
+                        which means the first character must be a lowercase letter,
+                        and all following characters must be a dash, lowercase letter,
+                        or digit, except the last character, which cannot be a dash.
+                      type: string
+                    peerAsn:
+                      description: Peer BGP Autonomous System Number (ASN). Each BGP
+                        interface may use a different value.
+                      format: int32
+                      type: integer
+                    peerIPAddress:
+                      description: IP address of the BGP interface outside Google
+                        Cloud Platform.
+                      type: string
+                    peerIPV4NexthopAddress:
+                      description: IPv4 address of the BGP interface outside Google
+                        Cloud Platform.
+                      type: string
+                    peerIPV6NexthopAddress:
+                      description: IPv6 address of the BGP interface outside Google
+                        Cloud Platform.
+                      type: string
+                    routerApplianceInstance:
+                      description: URI of the VM instance that is used as third-party
+                        router appliances such as Next Gen Firewalls, Virtual Routers,
+                        or Router Appliances. The VM instance must be located in zones
+                        contained in the same region as this Cloud Router. The VM
+                        instance is the peer side of the BGP session.
+                      type: string
+                  type: object
+                type: array
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              encryptedInterconnectRouter:
+                description: Indicates if a router is dedicated for use with encrypted
+                  VLAN attachments (interconnectAttachments).
+                type: boolean
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              interfaces:
+                description: 'Router interfaces. To create a BGP peer that uses a
+                  router interface, the interface must have one of the following fields
+                  specified: - linkedVpnTunnel - linkedInterconnectAttachment - subnetwork
+                  You can create a router interface without any of these fields specified.
+                  However, you cannot create a BGP peer that uses that interface.'
+                items: {}
+                type: array
+              kind:
+                description: '[Output Only] Type of resource. Always compute#router
+                  for routers.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              md5AuthenticationKeys:
+                description: Keys used for MD5 authentication.
+                items:
+                  properties:
+                    key:
+                      description: '[Input only] Value of the key. For patch and update
+                        calls, it can be skipped to copy the value from the previous
+                        configuration. This is allowed if the key with the same name
+                        existed before the operation. Maximum length is 80 characters.
+                        Can only contain printable ASCII characters.'
+                      type: string
+                    name:
+                      description: Name used to identify the key. Must be unique within
+                        a router. Must be referenced by exactly one bgpPeer. Must
+                        comply with RFC1035.
+                      type: string
+                  type: object
+                type: array
+              nats:
+                description: A list of NAT services created in this router.
+                items: {}
+                type: array
+              network:
+                description: URI of the network to which this router belongs.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              region:
+                description: '[Output Only] URI of the region where the router resides.
+                  You must specify this field as part of the HTTP request URL. It
+                  is not settable as a field in the request body.'
+                type: string
+              resourceID:
+                description: The ComputeRouter name. If not given, the metadata.name
+                  will be used.
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeRouterStatus defines the config connector machine
+              state of ComputeRouter
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeRouter resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

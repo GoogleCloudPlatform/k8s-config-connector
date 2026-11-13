@@ -1,0 +1,596 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeimages.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeImage
+    listKind: ComputeImageList
+    plural: computeimages
+    shortNames:
+    - gcpcomputeimage
+    - gcpcomputeimages
+    singular: computeimage
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeImage is the Schema for the ComputeImage API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeImageSpec defines the desired state of ComputeImage
+            properties:
+              architecture:
+                description: |-
+                  The architecture of the image. Valid values are ARM64 or X86_64.
+                   Check the Architecture enum for the list of possible values.
+                type: string
+              archiveSizeBytes:
+                description: Size of the image tar.gz archive stored in Google Cloud
+                  Storage (in bytes).
+                format: int64
+                type: integer
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              deprecated:
+                description: The deprecation status associated with this image.
+                properties:
+                  deleted:
+                    description: An optional RFC3339 timestamp on or after which the
+                      state of this resource is intended to change to DELETED. This
+                      is only informational and the status will not change unless
+                      the client explicitly changes it.
+                    type: string
+                  deprecated:
+                    description: An optional RFC3339 timestamp on or after which the
+                      state of this resource is intended to change to DEPRECATED.
+                      This is only informational and the status will not change unless
+                      the client explicitly changes it.
+                    type: string
+                  obsolete:
+                    description: An optional RFC3339 timestamp on or after which the
+                      state of this resource is intended to change to OBSOLETE. This
+                      is only informational and the status will not change unless
+                      the client explicitly changes it.
+                    type: string
+                  replacement:
+                    description: The URL of the suggested replacement for a deprecated
+                      resource. The suggested replacement resource must be the same
+                      kind of resource as the deprecated resource.
+                    type: string
+                  state:
+                    description: |-
+                      The deprecation state of this resource. This can be ACTIVE, DEPRECATED, OBSOLETE, or DELETED. Operations which communicate the end of life date for an image, can use ACTIVE. Operations which create a new resource using a DEPRECATED resource will return successfully, but with a warning indicating the deprecated resource and recommending its replacement. Operations which use OBSOLETE or DELETED resources will be rejected and result in an error.
+                       Check the State enum for the list of possible values.
+                    type: string
+                type: object
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              diskSizeGB:
+                description: Size of the image when restored onto a persistent disk
+                  (in GB).
+                format: int64
+                type: integer
+              enableConfidentialCompute:
+                description: 'Whether this image is created from a confidential compute
+                  mode disk. [Output Only]: This field is not set by user, but from
+                  source disk.'
+                type: boolean
+              family:
+                description: The name of the image family to which this image belongs.
+                  The image family name can be from a publicly managed image family
+                  provided by Compute Engine, or from a custom image family you create.
+                  For example, centos-stream-9 is a publicly available image family.
+                  For more information, see Image family best practices. When creating
+                  disks, you can specify an image family instead of a specific image
+                  name. The image family always returns its latest image that is not
+                  deprecated. The name of the image family must comply with RFC1035.
+                type: string
+              guestOSFeatures:
+                description: A list of features to enable on the guest operating system.
+                  Applicable only for bootable images. To see a list of available
+                  options, see the guestOSfeatures[].type parameter.
+                items:
+                  properties:
+                    type:
+                      description: |-
+                        The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE_V2 - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF - SNP_SVSM_CAPABLE For more information, see Enabling guest operating system features.
+                         Check the Type enum for the list of possible values.
+                      type: string
+                  type: object
+                type: array
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              imageEncryptionKey:
+                description: Encrypts the image using a customer-supplied encryption
+                  key. After you encrypt an image with a customer-supplied key, you
+                  must provide the same key if you use the image later (e.g. to create
+                  a disk from the image). Customer-supplied encryption keys do not
+                  protect access to metadata of the disk. If you do not provide an
+                  encryption key when creating the image, then the disk will be encrypted
+                  using an automatically generated key and you do not need to provide
+                  a key to use the image later.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#image
+                  for images.'
+                type: string
+              labelFingerprint:
+                description: A fingerprint for the labels being applied to this image,
+                  which is essentially a hash of the labels used for optimistic locking.
+                  The fingerprint is initially generated by Compute Engine and changes
+                  after every request to modify or update labels. You must always
+                  provide an up-to-date fingerprint hash in order to update or change
+                  labels, otherwise the request will fail with error 412 conditionNotMet.
+                  To see the latest fingerprint, make a get() request to retrieve
+                  an image.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels to apply to this image. These can be later modified
+                  by the setLabels method.
+                type: object
+              licenseCodes:
+                description: Integer license codes indicating which licenses are attached
+                  to this image.
+                items:
+                  format: int64
+                  type: integer
+                type: array
+              licenses:
+                description: Any applicable license URI.
+                items:
+                  type: string
+                type: array
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              rawDisk:
+                description: The parameters of the raw disk image.
+                properties:
+                  containerType:
+                    description: |-
+                      The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created.
+                       Check the ContainerType enum for the list of possible values.
+                    type: string
+                  sha1Checksum:
+                    description: '[Deprecated] This field is deprecated. An optional
+                      SHA1 checksum of the disk image before unpackaging provided
+                      by the client when the disk image is created.'
+                    type: string
+                  source:
+                    description: 'The full Google Cloud Storage URL where the raw
+                      disk image archive is stored. The following are valid formats
+                      for the URL: - https://storage.googleapis.com/bucket_name/image_archive_name
+                      - https://storage.googleapis.com/bucket_name/folder_name/ image_archive_name
+                      In order to create an image, you must provide the full or partial
+                      URL of one of the following: - The rawDisk.source URL - The
+                      sourceDisk URL - The sourceImage URL - The sourceSnapshot URL'
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeImage name. If not given, the metadata.name
+                  will be used.
+                type: string
+              satisfiesPzi:
+                description: Output only. Reserved for future use.
+                type: boolean
+              satisfiesPzs:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              shieldedInstanceInitialState:
+                description: Set the secure boot keys of shielded instance.
+                properties:
+                  dbs:
+                    description: The Key Database (db).
+                    items:
+                      properties:
+                        content:
+                          description: The raw content in the secure keys file.
+                          type: string
+                        fileType:
+                          description: |-
+                            The file type of source file.
+                             Check the FileType enum for the list of possible values.
+                          type: string
+                      type: object
+                    type: array
+                  dbxs:
+                    description: The forbidden key database (dbx).
+                    items:
+                      properties:
+                        content:
+                          description: The raw content in the secure keys file.
+                          type: string
+                        fileType:
+                          description: |-
+                            The file type of source file.
+                             Check the FileType enum for the list of possible values.
+                          type: string
+                      type: object
+                    type: array
+                  keks:
+                    description: The Key Exchange Key (KEK).
+                    items:
+                      properties:
+                        content:
+                          description: The raw content in the secure keys file.
+                          type: string
+                        fileType:
+                          description: |-
+                            The file type of source file.
+                             Check the FileType enum for the list of possible values.
+                          type: string
+                      type: object
+                    type: array
+                  pk:
+                    description: The Platform Key (PK).
+                    properties:
+                      content:
+                        description: The raw content in the secure keys file.
+                        type: string
+                      fileType:
+                        description: |-
+                          The file type of source file.
+                           Check the FileType enum for the list of possible values.
+                        type: string
+                    type: object
+                type: object
+              sourceDisk:
+                description: 'URL of the source disk used to create this image. For
+                  example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone
+                  /disks/disk - projects/project/zones/zone/disks/disk - zones/zone/disks/disk
+                  In order to create an image, you must provide the full or partial
+                  URL of one of the following: - The rawDisk.source URL - The sourceDisk
+                  URL - The sourceImage URL - The sourceSnapshot URL'
+                type: string
+              sourceDiskEncryptionKey:
+                description: The customer-supplied encryption key of the source disk.
+                  Required if the source disk is protected by a customer-supplied
+                  encryption key.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              sourceDiskID:
+                description: '[Output Only] The ID value of the disk used to create
+                  this image. This value may be used to determine whether the image
+                  was taken from the current or a previous instance of a given disk
+                  name.'
+                type: string
+              sourceImage:
+                description: 'URL of the source image used to create this image. The
+                  following are valid formats for the URL: - https://www.googleapis.com/compute/v1/projects/project_id/global/
+                  images/image_name - projects/project_id/global/images/image_name
+                  In order to create an image, you must provide the full or partial
+                  URL of one of the following: - The rawDisk.source URL - The sourceDisk
+                  URL - The sourceImage URL - The sourceSnapshot URL'
+                type: string
+              sourceImageEncryptionKey:
+                description: The customer-supplied encryption key of the source image.
+                  Required if the source image is protected by a customer-supplied
+                  encryption key.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              sourceImageID:
+                description: '[Output Only] The ID value of the image used to create
+                  this image. This value may be used to determine whether the image
+                  was taken from the current or a previous instance of a given image
+                  name.'
+                type: string
+              sourceSnapshot:
+                description: 'URL of the source snapshot used to create this image.
+                  The following are valid formats for the URL: - https://www.googleapis.com/compute/v1/projects/project_id/global/
+                  snapshots/snapshot_name - projects/project_id/global/snapshots/snapshot_name
+                  In order to create an image, you must provide the full or partial
+                  URL of one of the following: - The rawDisk.source URL - The sourceDisk
+                  URL - The sourceImage URL - The sourceSnapshot URL'
+                type: string
+              sourceSnapshotEncryptionKey:
+                description: The customer-supplied encryption key of the source snapshot.
+                  Required if the source snapshot is protected by a customer-supplied
+                  encryption key.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              sourceSnapshotID:
+                description: '[Output Only] The ID value of the snapshot used to create
+                  this image. This value may be used to determine whether the snapshot
+                  was taken from the current or a previous instance of a given snapshot
+                  name.'
+                type: string
+              sourceType:
+                description: |-
+                  The type of the image used to create this disk. The default and only valid value is RAW.
+                   Check the SourceType enum for the list of possible values.
+                type: string
+              status:
+                description: |-
+                  [Output Only] The status of the image. An image can be used to create other resources, such as instances, only after the image has been successfully created and the status is set to READY. Possible values are FAILED, PENDING, or READY.
+                   Check the Status enum for the list of possible values.
+                type: string
+              storageLocations:
+                description: Cloud Storage bucket storage location of the image (regional
+                  or multi-regional).
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeImageStatus defines the config connector machine state
+              of ComputeImage
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeImage resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
