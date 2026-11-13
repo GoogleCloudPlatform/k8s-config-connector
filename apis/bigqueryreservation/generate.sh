@@ -45,6 +45,7 @@ ${CONTROLLERBUILDER} generate-types \
     --include-skipped-output \
     --resource BigQueryReservationCapacityCommitment:CapacityCommitment \
     --resource BigQueryReservationReservationGroup:ReservationGroup \
+    --resource BigQueryReservationBiReservation:BiReservation \
     --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \

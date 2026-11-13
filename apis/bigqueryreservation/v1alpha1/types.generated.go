@@ -19,8 +19,29 @@
 // proto.service: google.cloud.bigquery.reservation.v1
 // resource: BigQueryReservationCapacityCommitment:CapacityCommitment
 // resource: BigQueryReservationReservationGroup:ReservationGroup
+// resource: BigQueryReservationBiReservation:BiReservation
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.BiReservation", skipping
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.BiReservation
+type BiReservation struct {
+	// Identifier. The resource name of the singleton BI reservation.
+	//  Reservation names have the form
+	//  `projects/{project_id}/locations/{location_id}/biReservation`.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Size of a reservation, in bytes.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.size
+	Size *int64 `json:"size,omitempty"`
+
+	// Optional. Preferred tables to use BI capacity for.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.preferred_tables
+	PreferredTables []TableReference `json:"preferredTables,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.CapacityCommitment", skipping
 
@@ -71,6 +92,34 @@ type ReservationGroup struct {
 	//  dash. Its maximum length is 64 characters.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.ReservationGroup.name
 	Name *string `json:"name,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TableReference", skipping
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.TableReference
+type TableReference struct {
+	// Optional. The assigned project ID of the project.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Optional. The ID of the dataset in the above project.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Optional. The ID of the table in the above dataset.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.TableReference.table_id
+	TableID *string `json:"tableID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.BiReservation", skipping
+
+// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.BiReservation
+type BiReservationObservedState struct {
+	// Output only. The last update timestamp of a reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.BiReservation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
