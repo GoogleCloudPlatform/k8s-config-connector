@@ -2165,6 +2165,26 @@
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.globalNetworkEndpointGroup" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipAddress" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionPolicies" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceSelectors[].labelSelector.inclusionLabels" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.priority" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.conflictBehavior" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.name" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.predefinedRolloutPlan" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.retryUuid" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.currentRollouts[].state" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.previousRollout.rollout" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutStatus.previousRollout.state" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.scopedResourceStatus" is not set in unstructured objects
+[missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.updateTimestamp" is not set in unstructured objects
 [missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
 [missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.healthyPercentThreshold" is not set in unstructured objects

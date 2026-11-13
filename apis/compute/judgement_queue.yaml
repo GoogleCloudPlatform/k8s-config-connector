@@ -75,6 +75,1563 @@ entries:
     status: resolved
     resolution: accepted
     note: confirmed selfLink is server-defined URL and belongs in observedState
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: resolved
+    resolution: accepted
+    note: triaged all findings; finalized direct KRM types, identity, and references
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: resolved
+    resolution: edited
+    note: verified and updated resource-docs link to point to Compute RegionHealthAggregationPolicies REST reference
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: resolved
+    resolution: accepted
+    note: kept spec.location as a required string representing region matching Compute conventions
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.region
+    reason: location-or-parent-ref
+    detail: proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: resolved
+    resolution: edited
+    note: removed from spec; region is output-only in proto and moved to status.observedState.region
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.creationTimestamp
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.id
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.kind
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLink
+  - kind: ComputeHealthAggregationPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: resolved
+    resolution: accepted
+    note: confirmed output-only; already placed in status.observedState.selfLinkWithID
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.compute.v1.GlobalVmExtensionPolicy declares 3 resource name patterns (folders/{foldersid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, organizations/{organizationsid}/global/vmExtensionPolicies/{globalvmextensionpolicy}, projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}); generated identity uses "projects/{project}/global/vmExtensionPolicies/{globalvmextensionpolicy}" (pass --pattern ComputeGlobalVMExtensionPolicy=<pattern> to override)
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.extensionPolicies
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyExtensionPolicy from proto google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: message-map-derived
+    detail: derived as map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus from proto google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus; verify Go type and mapping
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.creationTimestamp
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.id
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts if it is confirmed output only. Proto comment: Output only. [Output Only] The current rollouts for the latest version of the resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.currentRollouts[].state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.currentRollouts[].state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout if it is confirmed output only. Proto comment: Output only. [Output Only] The last completed rollout resource.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The rollout status for each location.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.locationRolloutStatus.KEY.state if it is confirmed output only. Proto comment: Output only. [Output Only] The state of the location rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rollout. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rollout if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.rolloutPlan if it is confirmed output only. Proto comment: Output only. [Output Only] The name of the rollout plan.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.rolloutOperation.rolloutStatus.previousRollout.state. Move the field to .status.observedState.rolloutOperation.rolloutStatus.previousRollout.state if it is confirmed output only. Proto comment: Output only. [Output Only] The overall state of the rollout.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.scopedResourceStatus
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.scopedResourceStatus. Move the field to .status.observedState.scopedResourceStatus if it is confirmed output only. Proto comment: Output only. [Output Only] The scoped resource status. It''s only for tracking the purging status of the policy.'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLink
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.selfLinkWithID
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: ComputeGlobalVMExtensionPolicy
+    group: compute.cnrm.cloud.google.com
+    field: .status.observedState.updateTimestamp
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.updateTimestamp. Move the field to .status.observedState.updateTimestamp if it is confirmed output only. Proto comment: Output only. [Output Only] Update timestamp inRFC3339 text format.'
+    status: open
   - kind: ComputeHealthAggregationPolicy
     group: compute.cnrm.cloud.google.com
     reason: untriaged-bulk-generation

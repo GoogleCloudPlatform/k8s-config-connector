@@ -87,6 +87,18 @@ ${CONTROLLERBUILDER} generate-identity \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
   --resource ComputeNotificationEndpoint:NotificationEndpoint
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --prepopulate-resource \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
@@ -146,7 +158,17 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --prepopulate-resource
+  --prepopulate-resource \
+  --skip-proto GlobalVmExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyExtensionPolicy \
+  --skip-proto GlobalVmExtensionPolicyInstanceSelector \
+  --skip-proto GlobalVmExtensionPolicyLabelSelector \
+  --skip-proto GlobalVmExtensionPolicyList \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperation \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutInput \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatus \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata \
+  --skip-proto GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

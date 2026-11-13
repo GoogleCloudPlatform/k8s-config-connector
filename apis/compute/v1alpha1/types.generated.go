@@ -36,22 +36,9 @@
 // resource: ComputeVMExtensionPolicy:VmExtensionPolicy
 // resource: ComputeNotificationEndpoint:NotificationEndpoint
 // resource: ComputeHealthAggregationPolicy:HealthAggregationPolicy
+// resource: ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy
 
 package v1alpha1
-
-/* found existing non-generated go type "AcceleratorConfig", skipping
-
-// +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
-type AcceleratorConfig struct {
-	// The number of the guest accelerator cards exposed to this instance.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_count
-	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
-
-	// Full or partial URL of the accelerator type resource to attach to this instance. For example: projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100 If you are creating an instance template, specify only the accelerator name. See GPUs on Compute Engine for a full list of accelerator types.
-	// +kcc:proto:field=google.cloud.compute.v1.AcceleratorConfig.accelerator_type
-	AcceleratorType *string `json:"acceleratorType,omitempty"`
-}
-*/
 
 /* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
@@ -572,20 +559,6 @@ type Data struct {
 }
 */
 
-/* found existing non-generated go type "Duration", skipping
-
-// +kcc:proto=google.cloud.compute.v1.Duration
-type Duration struct {
-	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-
-	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
-	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
-	Seconds *int64 `json:"seconds,omitempty"`
-}
-*/
-
 /* unreachable type Expr
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -799,6 +772,160 @@ type FixedOrPercent struct {
 	Percent *int32 `json:"percent,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GlobalVmExtensionPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicy
+type GlobalVMExtensionPolicy struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. A map of extension names (for example, "ops-agent") to their corresponding
+	//  policy configurations.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.extension_policies
+	ExtensionPolicies map[string]GlobalVMExtensionPolicyExtensionPolicy `json:"extensionPolicies,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Optional. Selectors to target VMs for this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.instance_selectors
+	InstanceSelectors []GlobalVMExtensionPolicyInstanceSelector `json:"instanceSelectors,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Priority of this policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Required. The rollout strategy and status.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.rollout_operation
+	RolloutOperation *GlobalVMExtensionPolicyRolloutOperation `json:"rolloutOperation,omitempty"`
+
+	// Output only. [Output Only] The scoped resource status. It's only for tracking the
+	//  purging status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.scoped_resource_status
+	ScopedResourceStatus *string `json:"scopedResourceStatus,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// Output only. [Output Only] Update timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.update_timestamp
+	UpdateTimestamp *string `json:"updateTimestamp,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy
+type GlobalVMExtensionPolicyExtensionPolicy struct {
+	// Optional. The specific version of the extension to install. If not set, the latest
+	//  version is used.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy.pinned_version
+	PinnedVersion *string `json:"pinnedVersion,omitempty"`
+
+	// Optional. String-based configuration data for the extension.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyExtensionPolicy.string_config
+	StringConfig *string `json:"stringConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyInstanceSelector
+type GlobalVMExtensionPolicyInstanceSelector struct {
+	// Optional. LabelSelector selects VMs based on their labels.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyInstanceSelector.label_selector
+	LabelSelector *GlobalVMExtensionPolicyLabelSelector `json:"labelSelector,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyLabelSelector
+type GlobalVMExtensionPolicyLabelSelector struct {
+	// Optional. A map of key-value pairs representing VM labels.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyLabelSelector.inclusion_labels
+	InclusionLabels map[string]string `json:"inclusionLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation
+type GlobalVMExtensionPolicyRolloutOperation struct {
+	// Required. The rollout input which defines the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_input
+	RolloutInput *GlobalVMExtensionPolicyRolloutOperationRolloutInput `json:"rolloutInput,omitempty"`
+
+	// Output only. [Output Only] The rollout status of the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperation.rollout_status
+	RolloutStatus *GlobalVMExtensionPolicyRolloutOperationRolloutStatus `json:"rolloutStatus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput
+type GlobalVMExtensionPolicyRolloutOperationRolloutInput struct {
+	// Optional. Specifies the behavior of the rollout if a conflict is detected.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.conflict_behavior
+	ConflictBehavior *string `json:"conflictBehavior,omitempty"`
+
+	// Optional. The name of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Specifies the predefined rollout plan for the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.predefined_rollout_plan
+	PredefinedRolloutPlan *string `json:"predefinedRolloutPlan,omitempty"`
+
+	// Optional. The UUID that identifies a policy rollout retry attempt.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutInput.retry_uuid
+	RetryUuid *string `json:"retryUuid,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatus struct {
+	// Output only. [Output Only] The current rollouts for the latest version of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.current_rollouts
+	CurrentRollouts []GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"currentRollouts,omitempty"`
+
+	// Output only. [Output Only] The last completed rollout resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatus.previous_rollout
+	PreviousRollout *GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata `json:"previousRollout,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata struct {
+	// Output only. [Output Only] The rollout status for each location.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.location_rollout_status
+	LocationRolloutStatus map[string]GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus `json:"locationRolloutStatus,omitempty"`
+
+	// Output only. [Output Only] The name of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout
+	Rollout *string `json:"rollout,omitempty"`
+
+	// Output only. [Output Only] The name of the rollout plan.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.rollout_plan
+	RolloutPlan *string `json:"rolloutPlan,omitempty"`
+
+	// Output only. [Output Only] The overall state of the rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus
+type GlobalVMExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus struct {
+	// Output only. [Output Only] The state of the location rollout.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus.state
+	State *string `json:"state,omitempty"`
+}
 
 /* unreachable type GuestOSFeature
 // +kcc:proto=google.cloud.compute.v1.GuestOsFeature
@@ -3431,5 +3558,32 @@ type ShareSettingsProjectConfig struct {
 	// The project ID, should be same as the key of this project config in the parent map.
 	// +kcc:proto:field=google.cloud.compute.v1beta.ShareSettingsProjectConfig.project_id
 	ProjectID *string `json:"projectID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GlobalVmExtensionPolicy", skipping
+
+// +kcc:observedstate:proto=google.cloud.compute.v1.GlobalVmExtensionPolicy
+type GlobalVMExtensionPolicyObservedState struct {
+	// Output only. [Output Only] Creation timestamp inRFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// Output only. [Output Only] The unique identifier for the resource. This identifier is
+	//  defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Output only. [Output Only] Type of the resource. Alwayscompute#globalVmExtensionPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Output only. [Output Only] Server-defined fully-qualified URL for this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Output only. [Output Only] Server-defined URL for this resource's resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.GlobalVmExtensionPolicy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 }
 */

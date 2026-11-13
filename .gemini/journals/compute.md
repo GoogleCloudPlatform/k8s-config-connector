@@ -145,8 +145,21 @@
   2. **Location**: Retained `spec.location` as a required string representing the zone name (`location-parent-unknown`), matching Compute conventions (e.g. `ComputeInstantSnapshot`).
   3. **Documentation**: Updated `+kcc:source:resource-docs=` to `https://cloud.google.com/compute/docs/reference/rest/v1/zoneVmExtensionPolicies` and removed `// +kcc:guess=source-link reason=verify-resource-docs-link`, resolving `verify-resource-docs-link`.
   4. **Output-Only Fields**: `globalResourceLink`, `managedByGlobal`, `state`, and `updateTimestamp` were identified as output-only per proto comments and moved from `ComputeVMExtensionPolicySpec` to `ComputeVMExtensionPolicyObservedState`. Removed resolved `// +kcc:guess=placement` comments.
-  5. **Custom Mappers**: Implemented `ComputeVMExtensionPolicySpec_v1alpha1_FromProto` and `ComputeVMExtensionPolicySpec_v1alpha1_ToProto` in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` so `generate-mapper` avoids attempting to map the moved output-only fields to Spec.
-  6. **Testing**: Added unit tests in `computevmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+  5. Custom Mappers: Implemented `ComputeVMExtensionPolicySpec_v1alpha1_FromProto` and `ComputeVMExtensionPolicySpec_v1alpha1_ToProto` in `pkg/controller/direct/compute/computevmextensionpolicy_mapper.go` so `generate-mapper` avoids attempting to map the moved output-only fields to Spec.
+  6. Testing: Added unit tests in `computevmextensionpolicy_identity_test.go` covering `FromExternal`, `ParentString`, `GetIdentity` (including status drift detection), and `ComputeVMExtensionPolicyRef.ValidateExternal`/`Normalize`. Updated `tests/apichecks/testdata/exceptions/alpha-missingfields.txt` for the removed Spec fields.
+
+### [2026-11-13] Greenfield Prepopulate of ComputeGlobalVMExtensionPolicy
+- **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for `ComputeGlobalVMExtensionPolicy` under `apis/compute/v1alpha1/` (issue #15534).
+- **Proto & Service Details**: `GlobalVmExtensionPolicy` and `GlobalVmExtensionPolicies` service exist in the Compute v1 Discovery document (`projects/{project}/global/vmExtensionPolicies/{globalVmExtensionPolicy}`), but were missing from the pinned googleapis commit (1765b559c4). Following the established pattern for Compute (e.g. `SecurityPolicyAssociation`, `VmExtensionPolicy`), patched `dev/tools/controllerbuilder/generate-proto.sh` to inject `GlobalVmExtensionPolicy` messages and `GlobalVmExtensionPolicies` service into `google/cloud/compute/v1/compute.proto`.
+- **Implementation**:
+  1. Added `GlobalVmExtensionPolicy` definitions to `dev/tools/controllerbuilder/generate-proto.sh`.
+  2. Registered `ComputeGlobalVMExtensionPolicy` in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`.
+  3. Configured `apis/compute/generate.sh` with dedicated `generate-types --prepopulate-resource` and `generate-identity` for `ComputeGlobalVMExtensionPolicy:GlobalVmExtensionPolicy`.
+  4. Added `--skip-proto` for `GlobalVmExtensionPolicy` messages to `generate-mapper` in `apis/compute/generate.sh` to prevent undefined symbol compilation errors against the currently pinned `cloud.google.com/go/compute` client library version (`v1.63.0`) which has not yet exposed Go SDK types for global VM extension policies.
+  5. Scaffolded `apis/compute/v1alpha1/computeglobalvmextensionpolicy_types.go`, generated identity, reference, deepcopy, CRD, and `judgement_queue.yaml` with open triage findings.
+  6. Verified compilation of `apis/compute/...` and `pkg/controller/direct/compute/...`, conformance tests, and updated golden exceptions in `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
+
 
 ### [2026-11-13] Greenfield Prepopulate of ComputeNotificationEndpoint
 - **Context**: Prepopulating direct KRM types, identity, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeNotificationEndpoint` under `apis/compute/v1alpha1/` (issue #15537).
