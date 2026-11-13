@@ -3356,8 +3356,6 @@
 [missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
 [missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" is not set in unstructured objects
 [missing_field] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.redact" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].event" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].name" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetFlow" is not set in unstructured objects
@@ -3381,10 +3379,6 @@
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.tag" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].triggerFulfillment.webhook" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.languageCode" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.nluSettings.classificationThreshold" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.nluSettings.modelTrainingMode" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.nluSettings.modelType" is not set in unstructured objects
-[missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRouteGroups[]" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].condition" is not set in unstructured objects
 [missing_field] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitionRoutes[].intent" is not set in unstructured objects
