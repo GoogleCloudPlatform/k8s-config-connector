@@ -53,6 +53,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource \
+  --resource NetAppStoragePool:StoragePool \
   --resource NetappQuotaRule:QuotaRule \
   --resource NetappReplication:Replication
 
@@ -60,6 +61,7 @@ ${CONTROLLERBUILDER} generate-identity \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.netapp.v1 \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetAppStoragePool:StoragePool \
   --resource NetappQuotaRule:QuotaRule \
   --resource NetappReplication:Replication
 
@@ -67,7 +69,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.netapp.v1 \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
