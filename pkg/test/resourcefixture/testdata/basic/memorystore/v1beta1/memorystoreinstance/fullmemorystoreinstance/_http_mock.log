@@ -1170,6 +1170,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -1398,6 +1399,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -1626,6 +1628,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -1855,6 +1858,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -2083,6 +2087,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -2311,6 +2316,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -2540,6 +2546,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }
@@ -2769,6 +2776,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
       "connections": [
         {
           "pscAutoConnection": {
+            "ipVersion": 1,
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}"
           }

@@ -41,10 +41,11 @@ spec:
   endpoints:
   - connections:
     - pscAutoConnection:
-          networkRef:
-            external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-          projectRef:
-            external: ${projectId}
+        ipVersion: IPV4
+        networkRef:
+          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+        projectRef:
+          external: ${projectId}
   mode: CLUSTER
   labels:
     keyx: valx
