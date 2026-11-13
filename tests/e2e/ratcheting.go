@@ -66,6 +66,10 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaAdjusterSettings"}:
 	case schema.GroupKind{Group: "cloudquota.cnrm.cloud.google.com", Kind: "APIQuotaPreference"}:
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineDomainMapping"}:
+		// The legacy Terraform provider for google_app_engine_domain_mapping defines `override_strategy` with Default: "STRICT".
+		// Because override_strategy is a creation-only request parameter not returned in GET responses, Terraform detects a diff
+		// on override_strategy during re-reconciliation and issues a PATCH request.
+		return false
 	case schema.GroupKind{Group: "appengine.cnrm.cloud.google.com", Kind: "AppEngineFlexibleAppVersion"}:
 		// The legacy Terraform provider for google_app_engine_flexible_app_version does not have DiffSuppressFunc
 		// for deployment.0.container.0.image (GCP resolves image tags to digests @sha256:...).
