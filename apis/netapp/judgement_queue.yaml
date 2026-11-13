@@ -21,6 +21,47 @@
 # file does not have.
 
 entries:
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.activeDirectory
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/ActiveDirectory (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.globalAccessAllowed
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.kmsConfig
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/KmsConfig (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.network
+    reason: authoritative-proto-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetAppStoragePool
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.zone
+    reason: location-or-parent-ref
+    detail: proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string
+    status: open
   - kind: NetappQuotaRule
     group: netapp.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
