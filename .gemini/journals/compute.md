@@ -244,6 +244,18 @@
   4. **Normalization**: Configured normalization in `mockgcp/mockcompute/normalize.go` and `tests/e2e/normalize.go` for `updateTimestamp` (`mockgcpregistry.PlaceholderTimestamp` / `mockgcpregistry.PlaceholderTime`) matching server timestamps.
   5. **Validation**: Ran `hack/compare-mock` for minimal and maximal fixtures; both passed with zero diff in golden objects and mock HTTP logs (`_http_mock.log`), and verified `./dev/ci/presubmits/tests-e2e-fixtures-suite compute` succeeded.
 
+### [2026-11-13] Greenfield Direct Controller, Fuzzer, and E2E Fixtures for ComputeCrossSiteNetwork
+- **Context**: Implementing direct controller, fuzzer, and real-GCP recorded E2E fixtures for `ComputeCrossSiteNetwork` (issue #15591).
+- **Controller Implementation**:
+  1. Added `newCrossSiteNetworksClient` in `pkg/controller/direct/compute/client.go` using GAPIC REST client (`compute.NewCrossSiteNetworksRESTClient`).
+  2. Implemented `CrossSiteNetworkAdapter` in `pkg/controller/direct/compute/computecrosssitenetwork_controller.go` adhering to the Greenfield direct controller standards: GAPIC REST client, `common.NormalizeGreenfieldReferences`, `IdentityV2`, `common.CompareGreenfieldSpec` with `structuredreporting.ReportDiff`, post-LRO `get`, and `setStatus`.
+  3. Registered model in `static_config.go` with `generate_static_config.py`.
+- **Fuzzer**:
+  1. Generated deterministic round-trip fuzzer `computecrosssitenetwork_fuzzer.generated.go`. Verified with `FOCUS=ComputeCrossSiteNetwork go test -v ./pkg/fuzztesting/fuzztests -run TestFocusedMappers`.
+- **E2E Golden Fixtures**:
+  1. Created minimal and maximal fixtures under `pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computecrosssitenetwork/`.
+  2. Recorded golden HTTP logs and object states against real GCP via `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`. Both minimal and maximal fixtures passed all 7 automated lifecycle validation checks.
+
 ### [2026-11-13] Greenfield Prepopulate of ComputeInterconnectGroup
 - **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectGroup` under `apis/compute/v1alpha1/` (issue #15613).
 - **Proto & Service Details**: `InterconnectGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectGroups` service (`projects/{project}/global/interconnectGroups/{interconnectgroup}`).
@@ -293,7 +305,6 @@
   - Re-ran `./apis/compute/generate.sh` and verified CRD generation, mappers, deepcopy code.
   - Re-recorded `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
   - All unit tests (`apis/compute/...`), conformance identity tests, and API checks (`tests/apichecks/...`) pass cleanly.
-
 ### [2026-11-14] Greenfield Prepopulate of ComputeInterconnectAttachmentGroup
 - **Context**: Prepopulating direct KRM types, IdentityV2, reference, and `judgement_queue.yaml` for Greenfield resource `ComputeInterconnectAttachmentGroup` under `apis/compute/v1alpha1/` (issue #15656).
 - **Proto & Service Details**: `InterconnectAttachmentGroup` is defined in Google Cloud Compute API v1 (`google/cloud/compute/v1/compute.proto`), and managed via the `InterconnectAttachmentGroups` service (`projects/{project}/global/interconnectAttachmentGroups/{interconnectattachmentgroup}`).
