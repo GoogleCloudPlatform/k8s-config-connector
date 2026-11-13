@@ -17,7 +17,6 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -28,10 +27,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	networksecurity "cloud.google.com/go/networksecurity/apiv1"
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -40,7 +38,6 @@ import (
 )
 
 // NetworkSecurityBackendAuthenticationConfig is a direct controller that manages NetworkSecurityBackendAuthenticationConfig resources.
-// Phase 3 (MockGCP and Alignment) is fully verified and validated through MockGCP end-to-end tests.
 func init() {
 	registry.RegisterModel(krm.NetworkSecurityBackendAuthenticationConfigGVK, NewBackendAuthenticationConfigModel)
 }
@@ -55,18 +52,19 @@ type backendAuthenticationConfigModel struct {
 	config config.ControllerConfig
 }
 
-func (m *backendAuthenticationConfigModel) client(ctx context.Context) (pb.NetworkSecurityClient, longrunningpb.OperationsClient, error) {
+func (m *backendAuthenticationConfigModel) client(ctx context.Context) (*networksecurity.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.GRPCClientOptions()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-	conn, err := grpc.Dial(ctx, opts...)
+
+	gcpClient, err := networksecurity.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("building NetworkSecurity client: %w", err)
 	}
-	return pb.NewNetworkSecurityClient(conn), longrunningpb.NewOperationsClient(conn), nil
+
+	return gcpClient, nil
 }
 
 func (m *backendAuthenticationConfigModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -86,7 +84,7 @@ func (m *backendAuthenticationConfigModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -100,10 +98,9 @@ func (m *backendAuthenticationConfigModel) AdapterForObject(ctx context.Context,
 	desired.Name = id.(*krm.NetworkSecurityBackendAuthenticationConfigIdentity).String()
 
 	return &backendAuthenticationConfigAdapter{
-		id:               id.(*krm.NetworkSecurityBackendAuthenticationConfigIdentity),
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		desired:          desired,
+		id:        id.(*krm.NetworkSecurityBackendAuthenticationConfigIdentity),
+		gcpClient: gcpClient,
+		desired:   desired,
 	}, nil
 }
 
@@ -112,11 +109,10 @@ func (m *backendAuthenticationConfigModel) AdapterForURL(ctx context.Context, ur
 }
 
 type backendAuthenticationConfigAdapter struct {
-	id               *krm.NetworkSecurityBackendAuthenticationConfigIdentity
-	gcpClient        pb.NetworkSecurityClient
-	operationsClient longrunningpb.OperationsClient
-	desired          *pb.BackendAuthenticationConfig
-	actual           *pb.BackendAuthenticationConfig
+	id        *krm.NetworkSecurityBackendAuthenticationConfigIdentity
+	gcpClient *networksecurity.Client
+	desired   *pb.BackendAuthenticationConfig
+	actual    *pb.BackendAuthenticationConfig
 }
 
 var _ directbase.Adapter = &backendAuthenticationConfigAdapter{}
@@ -153,15 +149,14 @@ func (a *backendAuthenticationConfigAdapter) Create(ctx context.Context, createO
 		return fmt.Errorf("creating BackendAuthenticationConfig %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	_, err = op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("BackendAuthenticationConfig %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("creating BackendAuthenticationConfig %s waiting creation: %w", a.id, err)
 	}
 
-	getReq := &pb.GetBackendAuthenticationConfigRequest{Name: a.id.String()}
-	latest, err := a.gcpClient.GetBackendAuthenticationConfig(ctx, getReq)
+	latest, err := a.gcpClient.GetBackendAuthenticationConfig(ctx, &pb.GetBackendAuthenticationConfigRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting BackendAuthenticationConfig after creation: %w", err)
+		return fmt.Errorf("getting BackendAuthenticationConfig %s after creation: %w", a.id, err)
 	}
 
 	log.V(2).Info("successfully created BackendAuthenticationConfig", "name", a.id)
@@ -181,37 +176,37 @@ func (a *backendAuthenticationConfigAdapter) Update(ctx context.Context, updateO
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	updated := a.actual
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
+
+		req := &pb.UpdateBackendAuthenticationConfigRequest{
+			UpdateMask:                  updateMask,
+			BackendAuthenticationConfig: a.desired,
+		}
+		req.BackendAuthenticationConfig.Name = a.id.String()
+
+		op, err := a.gcpClient.UpdateBackendAuthenticationConfig(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating BackendAuthenticationConfig %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("updating BackendAuthenticationConfig %s waiting update: %w", a.id, err)
+		}
+
+		latest, err := a.gcpClient.GetBackendAuthenticationConfig(ctx, &pb.GetBackendAuthenticationConfigRequest{Name: a.id.String()})
+		if err != nil {
+			return fmt.Errorf("getting BackendAuthenticationConfig %s after update: %w", a.id, err)
+		}
+		updated = latest
+
+		log.V(2).Info("successfully updated BackendAuthenticationConfig", "name", a.id)
 	}
 
-	log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
-
-	req := &pb.UpdateBackendAuthenticationConfigRequest{
-		UpdateMask:                  updateMask,
-		BackendAuthenticationConfig: a.desired,
-	}
-	req.BackendAuthenticationConfig.Name = a.id.String()
-
-	op, err := a.gcpClient.UpdateBackendAuthenticationConfig(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating BackendAuthenticationConfig %s: %w", a.id, err)
-	}
-	err = a.waitForOperation(ctx, op)
-	if err != nil {
-		return fmt.Errorf("BackendAuthenticationConfig %s waiting update: %w", a.id, err)
-	}
-
-	getReq := &pb.GetBackendAuthenticationConfigRequest{Name: a.id.String()}
-	latest, err := a.gcpClient.GetBackendAuthenticationConfig(ctx, getReq)
-	if err != nil {
-		return fmt.Errorf("getting BackendAuthenticationConfig after update: %w", err)
-	}
-
-	log.V(2).Info("successfully updated BackendAuthenticationConfig", "name", a.id)
-
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, updated)
 }
 
 func compareBackendAuthenticationConfig(ctx context.Context, actual, desired *pb.BackendAuthenticationConfig) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
@@ -274,7 +269,7 @@ func (a *backendAuthenticationConfigAdapter) Delete(ctx context.Context, deleteO
 		return false, fmt.Errorf("deleting BackendAuthenticationConfig %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete BackendAuthenticationConfig %s: %w", a.id, err)
 	}
@@ -292,27 +287,4 @@ func (a *backendAuthenticationConfigAdapter) updateStatus(ctx context.Context, o
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func (a *backendAuthenticationConfigAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	for {
-		req := &longrunningpb.GetOperationRequest{
-			Name: op.GetName(),
-		}
-		current, err := a.operationsClient.GetOperation(ctx, req)
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.GetName(), err)
-		}
-		if current.GetDone() {
-			if current.GetError() != nil {
-				return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-			}
-			return nil
-		}
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(1 * time.Second):
-		}
-	}
 }
