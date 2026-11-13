@@ -357,6 +357,14 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
 	}
 
+	// If clusterEndpoints is unspecified, keep the live endpoints.
+	// An empty desired list is otherwise sent as update_mask cluster_endpoints,
+	// which deletes user-created PSC connections the spec cannot represent
+	// (ConnectionDetail only maps pscAutoConnection).
+	if len(desired.GetClusterEndpoints()) == 0 {
+		desired.ClusterEndpoints = maskedActual.GetClusterEndpoints()
+	}
+
 	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
