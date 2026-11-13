@@ -190,6 +190,37 @@ func TestDialogflowCXFlow_GetIdentity(t *testing.T) {
 			wantIdentitySpecified: true,
 		},
 		{
+			name: "GetIdentity with server-generated identity without spec resourceID and short status.name (legacy TF)",
+			obj: &DialogflowCXFlow{
+				Spec: DialogflowCXFlowSpec{
+					Parent: common.LazyPtr("projects/my-proj/locations/global/agents/my-agent"),
+				},
+				Status: DialogflowCXFlowStatus{
+					Name: common.LazyPtr("tf-flow-uuid"),
+				},
+			},
+			want: &DialogflowCXFlowIdentity{
+				Project:  "my-proj",
+				Location: "global",
+				Agent:    "my-agent",
+				Flow:     "",
+			},
+			wantIdentitySpecified: false,
+		},
+		{
+			name: "GetIdentity error on identity change (spec resourceID does not match short status.name)",
+			obj: &DialogflowCXFlow{
+				Spec: DialogflowCXFlowSpec{
+					Parent:     common.LazyPtr("projects/my-proj/locations/global/agents/my-agent"),
+					ResourceID: common.LazyPtr("flow-1"),
+				},
+				Status: DialogflowCXFlowStatus{
+					Name: common.LazyPtr("tf-flow-uuid"),
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "GetIdentity without resourceID and without status (unreconciled)",
 			obj: &DialogflowCXFlow{
 				Spec: DialogflowCXFlowSpec{
@@ -305,6 +336,25 @@ func TestDialogflowCXFlowRef_Normalize(t *testing.T) {
 		},
 	}
 
+	readyObjWithShortName := &DialogflowCXFlow{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "ready-short-name",
+			Namespace: "test-ns",
+		},
+		Spec: DialogflowCXFlowSpec{
+			Parent: common.LazyPtr("projects/my-project/locations/us-central1/agents/my-agent"),
+		},
+		Status: DialogflowCXFlowStatus{
+			Conditions: []k8sv1alpha1.Condition{
+				{
+					Type:   "Ready",
+					Status: "True",
+				},
+			},
+			Name: common.LazyPtr("flow-short-uuid"),
+		},
+	}
+
 	readyObjWithSpecOnly := &DialogflowCXFlow{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "ready-spec",
@@ -344,7 +394,7 @@ func TestDialogflowCXFlowRef_Normalize(t *testing.T) {
 
 	fakeClient := fake.NewClientBuilder().
 		WithScheme(scheme).
-		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithSpecOnly, notReadyObj).
+		WithObjects(readyObjWithExternalRef, readyObjWithName, readyObjWithShortName, readyObjWithSpecOnly, notReadyObj).
 		Build()
 
 	tests := []struct {
@@ -390,6 +440,16 @@ func TestDialogflowCXFlowRef_Normalize(t *testing.T) {
 			defaultNamespace: "test-ns",
 			wantErr:          false,
 			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/flow-2",
+		},
+		{
+			name: "by name and namespace when ready with short status.name",
+			ref: &DialogflowCXFlowRef{
+				Name:      "ready-short-name",
+				Namespace: "test-ns",
+			},
+			defaultNamespace: "test-ns",
+			wantErr:          false,
+			wantExternal:     "projects/my-project/locations/us-central1/agents/my-agent/flows/flow-short-uuid",
 		},
 		{
 			name: "by name and namespace when ready with spec fallback",
