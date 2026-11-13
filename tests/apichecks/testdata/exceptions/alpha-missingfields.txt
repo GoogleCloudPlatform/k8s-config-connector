@@ -2145,13 +2145,7 @@
 [missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.name" is not set in unstructured objects
 [missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.predefinedRolloutPlan" is not set in unstructured objects
 [missing_field] crd=computeglobalvmextensionpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOperation.rolloutInput.retryUuid" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.healthyPercentThreshold" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.minHealthyThreshold" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyType" is not set in unstructured objects
-[missing_field] crd=computehealthaggregationpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fingerprint" is not set in unstructured objects
 [missing_field] crd=computehealthcheckservices.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.healthCheckRefs[]" is not set; neither 'external' nor 'name' are set
