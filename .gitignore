@@ -105,6 +105,9 @@ anaconda-mode/
 scripts/dclsampleconverter/__pycache__
 hack/tools/**/__pycache__/
 
+# calculate_coverage.py --manageability: only the JSON snapshot is checked in
+hack/tools/greenfield/manageability_list.csv
+
 # temporary YAMLs
 config/installbundle/components/manager/base/manager_image_patch.yaml
 config/installbundle/components/recorder/recorder_image_patch.yaml
