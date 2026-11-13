@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/vmExtensionPolicies/computevmextensionpolicy-maximal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeVMExtensionPolicy
+  name: computevmextensionpolicy-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

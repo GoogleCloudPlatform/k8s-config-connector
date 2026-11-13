@@ -116,6 +116,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
 			}
+			if obj["updateTimestamp"] != nil {
+				obj["updateTimestamp"] = mockgcpregistry.PlaceholderTimestamp
+			}
 			if obj["expireTime"] != nil {
 				obj["expireTime"] = mockgcpregistry.PlaceholderTimestamp
 			}

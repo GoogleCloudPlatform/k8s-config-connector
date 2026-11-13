@@ -1,0 +1,33 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/vmExtensionPolicies/computevmextensionpolicy-maximal-${uniqueId}
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "extensionPolicies": {
+    "ops-agent": {
+      "pinnedVersion": "2.58.0",
+      "stringConfig": "updated config"
+    }
+  },
+  "id": "000000000000000000000",
+  "instanceSelectors": [
+    {
+      "labelSelector": {
+        "inclusionLabels": {
+          "env": "prod"
+        }
+      }
+    }
+  ],
+  "kind": "compute#vmExtensionPolicy",
+  "name": "computevmextensionpolicy-maximal-${uniqueId}",
+  "priority": 600,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/vmExtensionPolicies/computevmextensionpolicy-maximal-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/vmExtensionPolicies/4100877937373080398",
+  "state": "ACTIVE",
+  "updateTimestamp": "2026-11-12T16:11:16-08:00"
+}

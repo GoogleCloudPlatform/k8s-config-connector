@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/vmExtensionPolicies/computevmextensionpolicy-minimal-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeVMExtensionPolicy
+  name: computevmextensionpolicy-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
