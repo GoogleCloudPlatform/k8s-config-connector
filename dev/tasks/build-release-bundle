@@ -162,7 +162,6 @@ BLOCKED_KINDS=(
     "CloudTasksQueue"
     "ComputeHealthCheckService"
     "ComputeNotificationEndpoint"
-    "ComputeVMExtensionPolicy"
     "ConfigDeliveryFleetPackage"
     "ConnectorsConnection"
     "ContactCenterInsightsConversation"
