@@ -23,10 +23,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"k8s.io/apimachinery/pkg/types"
 )
 
 // statusOptions holds flags and configuration for `config-connector ha status`.
@@ -120,23 +118,23 @@ const (
 	clusterHAConfigured        clusterHA = "Configured"
 	clusterHANotConfigured     clusterHA = "Not configured"
 	clusterHANoConfigConnector clusterHA = "No ConfigConnector"
-	clusterHAUnreachable       clusterHA = "Unreachable"
+	clusterHAError             clusterHA = "Error"
 )
 
 // clusterStatus is the observed HA status of one cluster.
 type clusterStatus struct {
 	gke gkeClusterInfo
 	ha  clusterHA
-	// problem explains why the cluster could not be inspected.
-	problem string
+	// err is the error from fetchClusterHAState; nil when HA is configured.
+	err error
 }
 
 // statusClusterTimeout bounds how long a single cluster is inspected, so that one unreachable
 // cluster cannot hang the command.
 const statusClusterTimeout = 30 * time.Second
 
-// inspectCluster reads the cluster's ConfigConnector and reports whether multi-cluster HA
-// (spec.experiments.multiClusterLease) is configured on it.
+// inspectCluster fetches the cluster's HA state with fetchClusterHAState and maps the result
+// to the HA column.
 func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	// validate() checked that every context is a GKE context.
 	gke, _ := parseGKEContext(h.contextName)
@@ -145,22 +143,19 @@ func inspectCluster(ctx context.Context, h *clusterHandle) *clusterStatus {
 	ctx, cancel := context.WithTimeout(ctx, statusClusterTimeout)
 	defer cancel()
 
-	cc := &operatorv1beta1.ConfigConnector{}
-	if err := h.client.Get(ctx, types.NamespacedName{Name: configConnectorResourceName}, cc); err != nil {
-		if isResourceOrKindAbsent(err) {
-			c.ha = clusterHANoConfigConnector
-			c.problem = fmt.Sprintf("the %q ConfigConnector object was not found; install Config Connector with the operator", configConnectorResourceName)
-		} else {
-			c.ha = clusterHAUnreachable
-			c.problem = fmt.Sprintf("could not read the ConfigConnector object: %v", err)
-		}
-		return c
-	}
+	_, c.err = fetchClusterHAState(ctx, h)
 
-	if multiClusterLeaseSpec(cc) != nil {
+	var notConfigured *multiClusterLeaseNotConfiguredError
+	var notFound *configConnectorNotFoundError
+	switch {
+	case c.err == nil:
 		c.ha = clusterHAConfigured
-	} else {
+	case errors.As(c.err, &notConfigured):
 		c.ha = clusterHANotConfigured
+	case errors.As(c.err, &notFound):
+		c.ha = clusterHANoConfigConnector
+	default:
+		c.ha = clusterHAError
 	}
 	return c
 }
@@ -193,14 +188,14 @@ func buildStatusReport(clusters []*clusterStatus) *statusReport {
 		case clusterHANotConfigured:
 			notConfigured = append(notConfigured, c)
 		default:
-			r.problems = append(r.problems, fmt.Sprintf("%s: %s", c.gke.clusterName, c.problem))
+			r.problems = append(r.problems, c.err.Error())
 		}
 	}
 
 	// HA must be configured on all clusters or on none of them.
 	if len(configured) > 0 {
 		for _, c := range notConfigured {
-			r.problems = append(r.problems, fmt.Sprintf("%s: spec.experiments.multiClusterLease is not set on the ConfigConnector; run `config-connector ha setup` with all clusters", c.gke.clusterName))
+			r.problems = append(r.problems, c.err.Error())
 		}
 	}
 

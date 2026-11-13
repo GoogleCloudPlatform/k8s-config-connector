@@ -107,10 +107,10 @@ func TestRunStatusUnreachableClusters(t *testing.T) {
 		t.Fatalf("got error %v, want %v", err, errHAStatusError)
 	}
 	for _, want := range []string{
-		"gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Unreachable\n",
-		"gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Unreachable\n",
+		"gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Error\n",
+		"gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error\n",
 		"HA Status: ERROR\n",
-		"  - cluster-a: could not read the ConfigConnector object: ",
+		"  - fetching ConfigConnector on cluster \"gke_proj-a_us-central1_cluster-a\": ",
 	} {
 		if !strings.Contains(stdout.String(), want) {
 			t.Fatalf("expected output to contain %q, got:\n%s", want, stdout.String())
@@ -177,7 +177,7 @@ gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Not configured
 
 HA Status: ERROR
 Problems:
-  - cluster-b: spec.experiments.multiClusterLease is not set on the ConfigConnector; run ` + "`config-connector ha setup`" + ` with all clusters
+  - cluster "gke_proj-b_us-east1_cluster-b" does not have spec.experiments.multiClusterLease configured on ConfigConnector "configconnector.core.cnrm.cloud.google.com"; run ` + "`config-connector ha setup`" + ` or configure spec.experiments.multiClusterLease
 `,
 		},
 		{
@@ -195,7 +195,7 @@ gke_proj-b_us-east1_cluster-b     proj-b   us-east1     No ConfigConnector
 
 HA Status: ERROR
 Problems:
-  - cluster-b: the "configconnector.core.cnrm.cloud.google.com" ConfigConnector object was not found; install Config Connector with the operator
+  - cluster "gke_proj-b_us-east1_cluster-b" is missing the "configconnector.core.cnrm.cloud.google.com" ConfigConnector object; install Config Connector and create the "configconnector.core.cnrm.cloud.google.com" resource before running HA commands
 `,
 		},
 		{
@@ -211,11 +211,29 @@ Problems:
 			wantState: haStateError,
 			want: `CONTEXT                           PROJECT  LOCATION     HA
 gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
-gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Unreachable
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error
 
 HA Status: ERROR
 Problems:
-  - cluster-b: could not read the ConfigConnector object: dial tcp 10.0.0.1:443: i/o timeout
+  - fetching ConfigConnector on cluster "gke_proj-b_us-east1_cluster-b": dial tcp 10.0.0.1:443: i/o timeout
+`,
+		},
+		{
+			name: "invalid multiClusterLease spec",
+			handles: func(t *testing.T) []*clusterHandle {
+				return []*clusterHandle{
+					newFakeClusterHandle(t, testStatusContextA, configured.DeepCopy()),
+					newFakeClusterHandle(t, testStatusContextB, newConfigConnectorWithMCL("kcc-multicluster-lease", "cnrm-system", "")),
+				}
+			},
+			wantState: haStateError,
+			want: `CONTEXT                           PROJECT  LOCATION     HA
+gke_proj-a_us-central1_cluster-a  proj-a   us-central1  Configured
+gke_proj-b_us-east1_cluster-b     proj-b   us-east1     Error
+
+HA Status: ERROR
+Problems:
+  - cluster "gke_proj-b_us-east1_cluster-b": spec.experiments.multiClusterLease.gkeCluster is required
 `,
 		},
 	}
