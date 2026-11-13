@@ -415,7 +415,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "GRPC" && (strings.HasSuffix(path, "/CancelCustomJob") || strings.HasSuffix(path, "/CancelHyperparameterTuningJob")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
-				// RedisCluster basicrediscluster-endpoints had an extraneous clusterEndpoints PATCH in real log due to false diff against server-expanded connections.
+				// RedisCluster basicrediscluster-endpoints has an extraneous clusterEndpoints PATCH in the historical real GCP log
+				// due to false diff against server-expanded connections prior to normalization. Re-recording against real GCP requires
+				// a ServiceConnectionPolicy on the default network which is not available in the test environment.
 				if strings.Contains(t.Name(), "basicrediscluster-endpoints") && method == "PATCH" && len(mockEvs) == 1 && len(realEvs) == 2 {
 					allowed = true
 				}
@@ -629,10 +631,29 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 			return
 		}
 		mockObj = normalizeRepresentation(mockObj)
+		if strings.Contains(t.Name(), "fullrediscluster") {
+			stripActiveZones(mockObj)
+		}
 	}
 
 	if diff := cmp.Diff(realObj, mockObj); diff != "" {
 		t.Errorf("%s: payload mismatch (-real +mock):\n%s", context, diff)
+	}
+}
+
+func stripActiveZones(obj interface{}) {
+	switch v := obj.(type) {
+	case map[string]interface{}:
+		if zdc, ok := v["zoneDistributionConfig"].(map[string]interface{}); ok {
+			delete(zdc, "activeZones")
+		}
+		for _, val := range v {
+			stripActiveZones(val)
+		}
+	case []interface{}:
+		for _, item := range v {
+			stripActiveZones(item)
+		}
 	}
 }
 
@@ -1185,9 +1206,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "satisfiesPzs")
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
-		}
-		if zdc, ok := v["zoneDistributionConfig"].(map[string]interface{}); ok {
-			delete(zdc, "activeZones")
 		}
 		delete(v, "clusterEndpoints")
 		delete(v, "cluster_endpoints")

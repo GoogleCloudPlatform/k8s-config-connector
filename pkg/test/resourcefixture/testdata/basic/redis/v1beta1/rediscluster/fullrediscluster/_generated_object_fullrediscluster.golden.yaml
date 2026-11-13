@@ -96,4 +96,6 @@ status:
     sizeGb: 39
     state: ACTIVE
     uid: 0123456789abcdef
-    zoneDistributionConfig: {}
+    zoneDistributionConfig:
+      activeZones:
+      - us-central1-b

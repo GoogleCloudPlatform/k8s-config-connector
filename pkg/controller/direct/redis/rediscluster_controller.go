@@ -363,23 +363,64 @@ func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*str
 	} else if len(desired.ClusterEndpoints) == len(maskedActual.ClusterEndpoints) {
 		// If each desired endpoint corresponds to an existing actual endpoint (same network/project),
 		// adopt the actual connections so we don't produce false diffs against server-expanded connections.
-		allMatch := true
-		for i, desiredEP := range desired.ClusterEndpoints {
-			actualEP := maskedActual.ClusterEndpoints[i]
-			if len(desiredEP.Connections) > 0 && len(actualEP.Connections) > 0 {
-				desiredAuto := desiredEP.Connections[0].GetPscAutoConnection()
-				if desiredAuto != nil {
-					for _, actualConn := range actualEP.Connections {
-						actualAuto := actualConn.GetPscAutoConnection()
-						if actualAuto != nil && (actualAuto.GetNetwork() != desiredAuto.GetNetwork() || actualAuto.GetProjectId() != desiredAuto.GetProjectId()) {
-							allMatch = false
-							break
-						}
-					}
+		matchedActuals := make(map[int]bool)
+		allEndpointsMatched := true
+
+		for _, desiredEP := range desired.ClusterEndpoints {
+			if len(desiredEP.Connections) == 0 {
+				allEndpointsMatched = false
+				break
+			}
+
+			// Validate all desired connections are auto-connections and have the same network and project.
+			var desiredNetwork, desiredProject string
+			desiredAutoValid := true
+			for i, conn := range desiredEP.Connections {
+				autoConn := conn.GetPscAutoConnection()
+				if autoConn == nil {
+					desiredAutoValid = false
+					break
+				}
+				if i == 0 {
+					desiredNetwork = autoConn.GetNetwork()
+					desiredProject = autoConn.GetProjectId()
+				} else if autoConn.GetNetwork() != desiredNetwork || autoConn.GetProjectId() != desiredProject {
+					desiredAutoValid = false
+					break
 				}
 			}
+			if !desiredAutoValid || desiredNetwork == "" || desiredProject == "" {
+				allEndpointsMatched = false
+				break
+			}
+
+			// Find a matching actual endpoint.
+			foundMatch := false
+			for actualIdx, actualEP := range maskedActual.ClusterEndpoints {
+				if matchedActuals[actualIdx] || len(actualEP.Connections) == 0 {
+					continue
+				}
+				actualAutoValid := true
+				for _, conn := range actualEP.Connections {
+					autoConn := conn.GetPscAutoConnection()
+					if autoConn == nil || autoConn.GetNetwork() != desiredNetwork || autoConn.GetProjectId() != desiredProject {
+						actualAutoValid = false
+						break
+					}
+				}
+				if actualAutoValid {
+					matchedActuals[actualIdx] = true
+					foundMatch = true
+					break
+				}
+			}
+			if !foundMatch {
+				allEndpointsMatched = false
+				break
+			}
 		}
-		if allMatch {
+
+		if allEndpointsMatched && len(matchedActuals) == len(desired.ClusterEndpoints) {
 			desired.ClusterEndpoints = maskedActual.ClusterEndpoints
 		}
 	}

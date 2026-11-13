@@ -1,3 +1,4 @@
+# Phase: CREATE
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -978,6 +979,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -986,6 +990,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: UPDATE
 GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -1088,6 +1093,9 @@ X-Xss-Protection: 0
   "transitEncryptionMode": 2,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {
+    "activeZones": [
+      "us-central1-b"
+    ],
     "mode": 2,
     "zone": "us-central1-b"
   }
@@ -1287,6 +1295,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -1487,6 +1498,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -1687,6 +1701,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -1888,6 +1905,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -2090,6 +2110,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -2292,6 +2315,9 @@ X-Xss-Protection: 0
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
     "uid": "0123456789abcdef",
     "zoneDistributionConfig": {
+      "activeZones": [
+        "us-central1-b"
+      ],
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
     }
@@ -2300,6 +2326,7 @@ X-Xss-Protection: 0
 
 ---
 
+# Phase: DELETE
 GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -2404,6 +2431,9 @@ X-Xss-Protection: 0
   "transitEncryptionMode": 2,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {
+    "activeZones": [
+      "us-central1-b"
+    ],
     "mode": 2,
     "zone": "us-central1-b"
   }
